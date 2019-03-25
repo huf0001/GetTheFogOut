@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Building : Entity
+public class Generator : Building
 {
-    [SerializeField] private int range;
-    protected int upkeep;
-    protected PowerSource powerSource;
-
+    public Generator()
+    {
+        upkeep = +2;
+        // costs 30 to build
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        // costs 30 to build
     }
 
     // Update is called once per frame
@@ -21,11 +22,8 @@ public abstract class Building : Entity
         
     }
 
-    public int Range
+    private void Upkeep()
     {
-        get
-        {
-            return range;
-        }
+        // call Hub.ChangePower(upkeep)
     }
 }

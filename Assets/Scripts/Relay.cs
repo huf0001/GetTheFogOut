@@ -7,6 +7,8 @@ public class Relay : PowerSource
     public Relay(PowerSource power)
     {
         powerSource = power;
+        upkeep = 0;
+        // costs 10 to build
     }
 
     // Start is called before the first frame update

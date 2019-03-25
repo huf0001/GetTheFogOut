@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Harvester : Building
 {
+    private int harvest = +5;
+    // [SerializeField]? private Element element;
+
     public Harvester(PowerSource power)
     {
         powerSource = power;
+        upkeep = -5;
+        // costs 50 to build
     }
 
     // Start is called before the first frame update
@@ -19,5 +24,11 @@ public class Harvester : Building
     void Update()
     {
         
+    }
+
+    private void Upkeep()
+    {
+        // calls Hub.ChangePower(upkeep)
+        // calls Hub.StoreElement(element, harvest) . . . or would it be powerSource.ReturnElement(element, harvest)?
     }
 }
