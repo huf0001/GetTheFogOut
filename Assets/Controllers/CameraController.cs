@@ -7,13 +7,16 @@ public class CameraController : MonoBehaviour
     //Handles control of the camera
 
     [SerializeField]
-    float moveSpeed = 4f;
+    float moveSpeed = 20f;
 
-    Vector3 currFramePosition;
-    Vector3 lastFramePostition;
+    float dragSpeed = 0.050f; //Don't change on a whim, specific value to making dragging work properly.
 
-    Vector3 up;
-    Vector3 right;
+    private Vector3 currFramePosition;
+    private Vector3 lastFramePostition;
+    private Vector3 dragOrigin;
+
+    private Vector3 up;
+    private Vector3 right;
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +30,12 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currFramePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+        currFramePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 		//currFramePosition.z = 0;
 
         UpdateCameraMovement();
 
-		lastFramePostition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		lastFramePostition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 		//lastFramePostition.z = 0;
     }
 
@@ -41,16 +44,17 @@ public class CameraController : MonoBehaviour
 
         //Handle screen dragging
 		if (Input.GetMouseButton (2) || Input.GetMouseButton (1)) {
-			//Right or middle mouse
-			Vector3 diff = lastFramePostition - currFramePosition;
-			transform.Translate (diff);
-		}
+            //Right or middle mouse
+            float h = dragSpeed * Camera.main.orthographicSize * - (Input.GetAxis("Mouse X"));
+            float v = dragSpeed * Camera.main.orthographicSize * - (Input.GetAxis("Mouse Y"));
+            transform.Translate(h, v, 0);
+        }
 
         //Camera zoom
         Camera.main.orthographicSize -= Camera.main.orthographicSize * Input.GetAxis ("Mouse ScrollWheel");
 		Camera.main.orthographicSize = Mathf.Clamp (Camera.main.orthographicSize, 5f, 15f);
 
-        //Camera movement
+        //Camera keyboard movement
         Vector3 rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
         Vector3 upMovement = up * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
 
