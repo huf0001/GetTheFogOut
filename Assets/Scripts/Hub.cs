@@ -6,6 +6,11 @@ public class Hub : PowerSource
 {
     private int maxPower = 100;
     private int storedPower = 0;
+
+    private int storedOrganic = 0;
+    private int storedMineral = 0;
+    private int storedFuel = 0;
+
     // private Dictionary<Element, int> harvest = new Dictionary<Element, int>();
 
     // Start is called before the first frame update
