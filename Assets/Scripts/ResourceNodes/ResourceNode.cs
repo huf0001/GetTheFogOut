@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ResourceNode : MonoBehaviour
+public abstract class ResourceNode : Entity
 {
 
     protected bool isHarvestable = true;
