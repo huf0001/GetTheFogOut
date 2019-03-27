@@ -6,7 +6,7 @@ public abstract class ResourceNode : MonoBehaviour
 {
 
     protected bool isHarvestable = true;
-    protected Resource resource;
+    [SerializeField] protected Resource resource;
     protected float resMultiplier;
 
     public Resource Resource { get => resource; }
