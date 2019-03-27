@@ -31,4 +31,18 @@ public class Harvester : Building
         // calls Hub.ChangePower(upkeep)
         // calls Hub.StoreElement(element, harvest) . . . or would it be powerSource.ReturnElement(element, harvest)?
     }
+
+    private void Mine()
+    {
+        // alternate or compainion function to Upkeep()
+
+        //if (Upkeep())
+        //{
+        //    ResourceNode res = this.location.getResource();
+        //    if (res != null)
+        //    {
+        //        Hub.StoreResource(res.Resource, harvest);
+        //    }
+        //}
+    }
 }
