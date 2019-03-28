@@ -9,28 +9,36 @@ using UnityEngine.EventSystems;
 public class Tile : MonoBehaviour
 {
     private GameObject placedtower;
+    public GameObject Placedtower { get => placedtower; set => placedtower = value; }
 
-    void OnMouseUp()
-    {
-            TowerManager tm = FindObjectOfType<TowerManager>();
-            placedtower = tm.GetTower();
-        //TODO: check the condition if the player has enough currency to build on this tile
-            if (!EventSystem.current.IsPointerOverGameObject() && placedtower != null)
-            {
-                placebuilding();
-        //DESC: reset the button, so you can't spam/accidentally building
-                tm.SelectedTower = null;
-            }
-    }
+    [SerializeField] private Resource resource;
+    public Resource Resource { get => resource; set => resource = value; }
+    [SerializeField] private Building building = null;
+    public Building Building { get => building; set => building = value; }
 
-    void placebuilding()
-    { 
-        //TODO: try to fix the position if replaced by 3d game object
-        //DESC: will replace a prefab on top of the tile(parent) position/rotation.
-        Instantiate(placedtower, transform.parent.position, transform.parent.rotation);
 
-        //DESC: destroy tile upon replacing new object
-        Destroy(transform.parent.gameObject);
+    // ALL THIS FUCTIONALLITY WAS MOVED TO MOUSE CONTROLLER
+    //void OnMouseUp()
+    //{
+    //    //TODO: check the condition if the player has enough currency to build on this tile
+    //        if (!EventSystem.current.IsPointerOverGameObject())
+    //        {
+    //            TowerManager tm = FindObjectOfType<TowerManager>();
+    //            placedtower = tm.GetTower();
+    //            placebuilding();
+    //    //DESC: reset the button, so you can't spam/accidentally building
+    //            //tm.SelectedTower = null;
+    //        }
+    //}
 
-    }
+    //void placebuilding()
+    //{ 
+    //    //TODO: try to fix the position if replaced by 3d game object
+    //    //DESC: will replace a prefab on top of the tile(parent) position/rotation.
+    //    Instantiate(placedtower, transform.position, transform.rotation);
+
+    //    //DESC: destroy tile upon replacing new object
+    //    //Destroy(transform.parent.gameObject);
+
+    //}
 }
