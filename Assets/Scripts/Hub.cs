@@ -17,6 +17,7 @@ public class Hub : PowerSource
     void Start()
     {
         buildingType = BuildingType.Hub;
+        
         powerSource = null;
         upkeep = +5;
         // costs 0 to build

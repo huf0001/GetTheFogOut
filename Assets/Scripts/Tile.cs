@@ -10,12 +10,24 @@ public class Tile : MonoBehaviour
 {
     private GameObject placedtower;
     public GameObject Placedtower { get => placedtower; set => placedtower = value; }
+    private PowerSource powerSource;
+    public PowerSource PowerSource { get => powerSource; /*set => powerSource = value;*/ }
 
     [SerializeField] private Resource resource;
     public Resource Resource { get => resource; set => resource = value; }
     [SerializeField] private Building building = null;
     public Building Building { get => building; set => building = value; }
+    [SerializeField] private Material onMaterial;
+    //public Material OnMaterial { get => onMaterial; set => onMaterial = value; }
 
+    public void PowerUp(PowerSource power)
+    {
+        if (powerSource == null)
+        {
+            this.gameObject.GetComponent<Renderer>().material = onMaterial;
+            powerSource = power;
+        }
+    }
 
     // ALL THIS FUCTIONALLITY WAS MOVED TO MOUSE CONTROLLER
     //void OnMouseUp()
