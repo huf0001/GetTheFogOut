@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Entity : MonoBehaviour
 {
     [SerializeField] private int health;
-    private Tile location;
+    protected Tile location;
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +16,11 @@ public abstract class Entity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+        if (health == 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     public int Health
