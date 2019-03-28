@@ -6,6 +6,7 @@ public class Relay : PowerSource
 {
     public Relay(PowerSource power)
     {
+        buildingType = BuildingType.Relay;
         powerSource = power;
         upkeep = 0;
         // costs 10 to build

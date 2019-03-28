@@ -6,6 +6,7 @@ public class Battery : Building
 {
     public Battery()
     {
+        buildingType = BuildingType.Battery;
         // call Hub.AddBattery(); adds 10 to maxStorage
         // costs 30 to build
     }

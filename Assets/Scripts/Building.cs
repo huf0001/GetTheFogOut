@@ -7,6 +7,8 @@ public abstract class Building : Entity
     [SerializeField] private int range;
     protected int upkeep;
     protected PowerSource powerSource;
+    protected BuildingType buildingType;
+    public BuildingType BuildingType { get => buildingType; }
 
 
     // Start is called before the first frame update
@@ -28,4 +30,5 @@ public abstract class Building : Entity
             return range;
         }
     }
+
 }

@@ -6,6 +6,7 @@ public class Defence : Building
 {
     public Defence(PowerSource power)
     {
+        buildingType = BuildingType.Defence;
         powerSource = power;
     }
 

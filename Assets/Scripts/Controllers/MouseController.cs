@@ -41,16 +41,20 @@ public class MouseController : MonoBehaviour
                         TowerManager tm = FindObjectOfType<TowerManager>();
                         tile.Placedtower = tm.GetTower();
 
+                        // If there is a building, delete it. If not, place one.
                         if (tile.Building != null)
                         {
                             Destroy(tile.Building.transform.gameObject);
                         }
-
-                        GameObject buildingGo = Instantiate(tile.Placedtower,
-                            tile.transform.position, tile.transform.rotation);
-                        buildingGo.transform.SetParent(tile.transform);
-                        Building building = buildingGo.AddComponent<Harvester>() as Building;
-                        tile.Building = building;
+                        else
+                        {
+                            GameObject buildingGo = Instantiate(tile.Placedtower,
+                                tile.transform.position, tile.transform.rotation);
+                            buildingGo.transform.SetParent(tile.transform);
+                            Building building = buildingGo.AddComponent<Harvester>() as Building;
+                            tile.Building = building;
+                            tm.SelectedTower = null;
+                        }
 
                         return;
                     } 

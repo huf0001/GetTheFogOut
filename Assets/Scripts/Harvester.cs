@@ -9,6 +9,7 @@ public class Harvester : Building
 
     public Harvester(PowerSource power)
     {
+        buildingType = BuildingType.Harvester;
         powerSource = power;
         upkeep = -5;
         // costs 50 to build
