@@ -10,10 +10,10 @@ public  class WorldController : MonoBehaviour
 
     [SerializeField] GameObject tilePrefab;
 
-    [SerializeField] private int width = 50;
+    [SerializeField] private int width = 30;
     public int Width { get => width; }
 
-    [SerializeField] private int length = 50;
+    [SerializeField] private int length = 30;
     public int Length { get => length; }
 
     private GameObject[,] tiles;
