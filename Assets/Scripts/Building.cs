@@ -4,10 +4,25 @@ using UnityEngine;
 
 public abstract class Building : Entity
 {
-    [SerializeField] private int range;
     protected int upkeep;
     protected PowerSource powerSource;
 
+    void Awake()
+    {
+        Collider[] tiles = Physics.OverlapSphere(this.transform.position, 0.25f);
+
+        if (tiles[0].gameObject.GetComponent<Tile>().PowerSource != null)
+        {
+            powerSource = tiles[0].gameObject.GetComponent<Tile>().PowerSource;
+            powerSource.PlugIn(this);
+        }
+        else
+        {
+            Debug.Log("There is no power source supplying this space.");
+            //Destroy(this.gameObject);
+            //Self destruct code when no power source available has been commented out for now to make testing easier
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -21,11 +36,11 @@ public abstract class Building : Entity
         
     }
 
-    public int Range
+    private void OnDestroy()
     {
-        get
+        if (powerSource != null)
         {
-            return range;
+            powerSource.Unplug(this);
         }
     }
 }

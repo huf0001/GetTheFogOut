@@ -16,6 +16,7 @@ public class Hub : PowerSource
     // Start is called before the first frame update
     void Start()
     {
+        
         powerSource = null;
         upkeep = +5;
         // costs 0 to build
