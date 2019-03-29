@@ -30,11 +30,9 @@ public class Hub : PowerSource
     protected override void Start()
     {
         base.Start();
-
-        buildingType = BuildingType.Hub;
         
         powerSource = null;
-        upkeep = +5;
+
         // costs 0 to build
 
         InvokeRepeating("ProcessUpkeep", 1f, 1f);

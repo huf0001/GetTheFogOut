@@ -41,10 +41,11 @@ public class MouseController : MonoBehaviour
                         Tile tile = hit.transform.gameObject.GetComponent<Tile>();
 
                         //If tile has power, place building. Otherwise, don't place building.
-                        //if (tile.PowerSource != null)
-                        //{
-                            TowerManager tm = FindObjectOfType<TowerManager>();
-                            tile.Placedtower = tm.GetTower();
+                        if (tile.PowerSource != null)
+                        {
+                            //TowerManager tm = FindObjectOfType<TowerManager>();
+                            //tile.Placedtower = tm.GetTower();
+                            tile.Placedtower = FindObjectOfType<TowerManager>().GetTower();
 
                             // If there is a building, delete it. If not, place one.
                             if (tile.Building != null)
@@ -54,11 +55,12 @@ public class MouseController : MonoBehaviour
                             else
                             {
                                 Build(tile.Placedtower, tile, hit.point.y);
-                                //tm.SelectedTower = null;
+                                //tm.SelectedTower = null;      //If selected tower is reverted to null after the building is created, this will create user problems atm as they won't know that they can't just click
+                                                                //another space and make another building of the same type there.
                             }
 
                             return;
-                        //}
+                        }
                     } 
                 }
             }

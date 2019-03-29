@@ -9,7 +9,7 @@ public abstract class Building : Entity
     public int Upkeep { get => upkeep; }
 
     protected PowerSource powerSource;
-    protected BuildingType buildingType;
+    [SerializeField] protected BuildingType buildingType;
     public BuildingType BuildingType { get => buildingType; }
 
     protected virtual void Awake()
@@ -20,17 +20,11 @@ public abstract class Building : Entity
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        if(location.PowerSource != null)
+        if(buildingType != BuildingType.Hub)
         {
-            //powerSource = tiles[0].gameObject.GetComponent<Tile>().PowerSource;
             powerSource = location.PowerSource;
-            powerSource.PlugIn(this);
-        }
-        else
-        {
-            Debug.Log("There is no power source supplying this space.");
-            //Destroy(this.gameObject);
-            //Self destruct code when no power source available has been commented out for now to make testing easier
+            powerSource.PlugIn
+                (this);
         }
     }
 
@@ -103,8 +97,6 @@ public abstract class Building : Entity
 
     protected virtual void OnDestroy()
     {
-        Debug.Log("Destroying building");
-
         if (powerSource != null)
         {
             powerSource.Unplug(this);

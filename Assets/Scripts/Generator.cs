@@ -6,8 +6,6 @@ public class Generator : Building
 {
     public Generator()
     {
-        buildingType = BuildingType.Generator;
-        upkeep = +2;
         // costs 30 to build
     }
 

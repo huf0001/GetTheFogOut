@@ -16,7 +16,6 @@ public class Harvester : Building
     protected override void Start()
     {
         base.Start();
-        buildingType = BuildingType.Harvester;
         upkeep = -5;
     }
 
