@@ -49,13 +49,12 @@ public class MouseController : MonoBehaviour
                         }
                         else
                         {
-
-                                Vector3 PosToInst = new Vector3(tile.transform.position.x, hit.point.y, tile.transform.position.z);
-                                GameObject buildingGo = Instantiate(tile.Placedtower,
-    PosToInst, tile.transform.rotation);
-                                    buildingGo.transform.SetParent(tile.transform);
-                                Building building = buildingGo.AddComponent<Harvester>() as Building;
-                                tile.Building = building;
+                            Vector3 PosToInst = new Vector3(tile.transform.position.x, hit.point.y, tile.transform.position.z);
+                            GameObject buildingGo = Instantiate(tile.Placedtower, 
+                                PosToInst, tile.transform.rotation);
+                            buildingGo.transform.SetParent(tile.transform);
+                            Building building = buildingGo.AddComponent<Harvester>() as Building;
+                            tile.Building = building;
                             
                             tm.SelectedTower = null;
                         }

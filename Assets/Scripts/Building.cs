@@ -38,6 +38,40 @@ public abstract class Building : Entity
         
     }
 
+    public Component GetData()
+    {
+        // Returns the correct script for the building's type
+
+        Component script = null;
+
+        switch (buildingType)
+        {
+            case BuildingType.Battery:
+                script = transform.GetComponentInChildren<Battery>();
+                break;
+            case BuildingType.Defence:
+                script = transform.GetComponentInChildren<Defence>();
+                break;
+            case BuildingType.Generator:
+                script = transform.GetComponentInChildren<Generator>();
+                break;
+            case BuildingType.Harvester:
+                script = transform.GetComponentInChildren<Harvester>();
+                break;
+            case BuildingType.Hub:
+                script = transform.GetComponentInChildren<Hub>();
+                break;
+            case BuildingType.Relay:
+                script = transform.GetComponentInChildren<Relay>();
+                break;
+            default:
+                Debug.Log("No matching script found");
+                break;
+        }
+
+        return script;
+    }
+
     private void OnDestroy()
     {
         if (powerSource != null)
