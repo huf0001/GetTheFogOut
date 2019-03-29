@@ -35,7 +35,6 @@ public  class WorldController : MonoBehaviour
             {
                 float y = 0.2f; // TODO: Account for terrain height
                 GameObject tileGo = Instantiate(tilePrefab);
-                tileGo.AddComponent<Tile>();
                 Vector3 pos = new Vector3(x, y, z);
                 tileGo.transform.position = pos;
                 tileGo.transform.SetParent(this.transform, true);

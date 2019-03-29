@@ -13,6 +13,11 @@ public abstract class PowerSource : Building
         ActivateTiles();
     }
 
+    private void OnDestroy()
+    {
+        DeactivateTiles();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +39,19 @@ public abstract class PowerSource : Building
             if (c.gameObject.GetComponent<Tile>() != null)
             {
                 c.gameObject.GetComponent<Tile>().PowerUp(this);
+            }
+        }
+    }
+
+    private void DeactivateTiles()
+    {
+        Collider[] tilesToDeactivate = Physics.OverlapSphere(transform.position, range);
+
+        foreach (Collider c in tilesToDeactivate)
+        {
+            if (c.gameObject.GetComponent<Tile>() != null)
+            {
+                c.gameObject.GetComponent<Tile>().PowerDown(this);
             }
         }
     }

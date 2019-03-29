@@ -18,6 +18,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Building building = null;
     public Building Building { get => building; set => building = value; }
     [SerializeField] private Material onMaterial;
+    [SerializeField] private Material offMaterial;
     //public Material OnMaterial { get => onMaterial; set => onMaterial = value; }
 
     public void PowerUp(PowerSource power)
@@ -26,6 +27,15 @@ public class Tile : MonoBehaviour
         {
             this.gameObject.GetComponent<Renderer>().material = onMaterial;
             powerSource = power;
+        }
+    }
+
+    public void PowerDown(PowerSource power)
+    {
+        if (powerSource != null)
+        {
+            this.gameObject.GetComponent<Renderer>().material = offMaterial;
+            powerSource = null;
         }
     }
 
