@@ -10,7 +10,7 @@ public class Tile : MonoBehaviour
 {
     private GameObject placedtower;
     public GameObject Placedtower { get => placedtower; set => placedtower = value; }
-    private PowerSource powerSource;
+    [SerializeField] private PowerSource powerSource;
     public PowerSource PowerSource { get => powerSource; /*set => powerSource = value;*/ }
 
     [SerializeField] private Resource resource;

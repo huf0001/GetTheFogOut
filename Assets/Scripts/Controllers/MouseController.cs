@@ -53,9 +53,9 @@ public class MouseController : MonoBehaviour
                             GameObject buildingGo = Instantiate(tile.Placedtower, 
                                 PosToInst, tile.transform.rotation);
                             buildingGo.transform.SetParent(tile.transform);
-                            Building building = buildingGo.AddComponent<Harvester>() as Building;
+                            Building building = buildingGo.GetComponentInChildren<Building>();
                             tile.Building = building;
-                            
+                            building.Location = tile;
                             tm.SelectedTower = null;
                         }
 

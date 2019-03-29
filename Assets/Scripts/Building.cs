@@ -4,18 +4,20 @@ using UnityEngine;
 
 public abstract class Building : Entity
 {
-    protected int upkeep;
+    [SerializeField] protected int upkeep;
+    public int Upkeep { get => upkeep; }
+
     protected PowerSource powerSource;
     protected BuildingType buildingType;
     public BuildingType BuildingType { get => buildingType; }
 
-    void Awake()
+    // Start is called before the first frame update
+    protected virtual void Start()
     {
-        Collider[] tiles = Physics.OverlapSphere(this.transform.position, 0.25f);
-
-        if (tiles[0].gameObject.GetComponent<Tile>().PowerSource != null)
+        if(location.PowerSource != null)
         {
-            powerSource = tiles[0].gameObject.GetComponent<Tile>().PowerSource;
+            //powerSource = tiles[0].gameObject.GetComponent<Tile>().PowerSource;
+            powerSource = location.PowerSource;
             powerSource.PlugIn(this);
         }
         else
@@ -26,11 +28,6 @@ public abstract class Building : Entity
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()

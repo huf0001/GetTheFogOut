@@ -12,8 +12,9 @@ public class Generator : Building
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         // costs 30 to build
     }
 

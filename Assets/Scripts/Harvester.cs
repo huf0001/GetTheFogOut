@@ -7,18 +7,12 @@ public class Harvester : Building
     private int harvest = +5;
     // [SerializeField]? private Element element;
 
-    public Harvester(PowerSource power)
-    {
-        buildingType = BuildingType.Harvester;
-        powerSource = power;
-        upkeep = -5;
-        // costs 50 to build
-    }
-
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-
+        base.Start();
+        buildingType = BuildingType.Harvester;
+        upkeep = -5;
     }
 
     // Update is called once per frame

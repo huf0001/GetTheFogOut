@@ -40,7 +40,8 @@ public class UIController : MonoBehaviour
     {
         if (hub != null)
         {
-            powerText.text = "Power: " + hub.StoredPower + "/" + hub.MaxPower;
+            powerText.text = "Power: " + hub.StoredPower + "/" 
+                + hub.MaxPower + " Change: " + hub.PowerChange;
             organicText.text = "Organic: " + hub.StoredOrganic;
             mineralText.text = "Minerals: " + hub.StoredMineral;
             fuelText.text = "Fuel: " + hub.StoredFuel;

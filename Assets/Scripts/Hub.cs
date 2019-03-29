@@ -4,31 +4,35 @@ using UnityEngine;
 
 public class Hub : PowerSource
 {
-    private int maxPower = 100;
-    private int storedPower = 0;
+    [SerializeField] private int maxPower = 100;
+    [SerializeField] private int storedPower = 0;
+    [SerializeField] private int powerChange = 0;
 
-    private int storedOrganic = 0;
-    private int storedMineral = 0;
-    private int storedFuel = 0;
+    [SerializeField] private int storedOrganic = 0;
+    [SerializeField] private int storedMineral = 0;
+    [SerializeField] private int storedFuel = 0;
 
     public int StoredOrganic { get => storedOrganic; set => storedOrganic = value; }
     public int StoredMineral { get => storedMineral; set => storedMineral = value; }
     public int StoredFuel { get => storedFuel; set => storedFuel = value; }
     public int MaxPower { get => maxPower; set => maxPower = value; }
     public int StoredPower { get => storedPower; set => storedPower = value; }
+    public int PowerChange { get => powerChange; set => powerChange = value; }
 
     // private Dictionary<Element, int> harvest = new Dictionary<Element, int>();
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         buildingType = BuildingType.Hub;
         
         powerSource = null;
         upkeep = +5;
         // costs 0 to build
 
-        InvokeRepeating("Upkeep", 1f, 1f);
+        InvokeRepeating("ProcessUpkeep", 1f, 1f);
     }
 
     // Update is called once per frame
@@ -37,9 +41,19 @@ public class Hub : PowerSource
         
     }
 
-    private void Upkeep()
+    private void ProcessUpkeep()
     {
-        ChangePower(upkeep);
+        // Change the power based on each connect building
+        // TODO: Make buildings stop working if no power
+        int totalUpkeep = 0;
+        foreach (Building building in suppliedBuildings)
+        {
+            totalUpkeep += building.Upkeep;
+        }
+
+        powerChange = totalUpkeep;
+
+        ChangePower(totalUpkeep);
     }
 
     public override bool SupplyingPower()
@@ -64,6 +78,11 @@ public class Hub : PowerSource
         if (storedPower > maxPower)
         {
             storedPower = maxPower;
+        }
+
+        if (storedPower < 0)
+        {
+            storedPower = 0;
         }
     }
 }

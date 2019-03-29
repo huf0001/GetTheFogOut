@@ -6,7 +6,7 @@ public abstract class PowerSource : Building
 {
     [SerializeField] protected float range;
 
-    private List<Building> suppliedBuildings = new List<Building>();
+    [SerializeField] protected List<Building> suppliedBuildings = new List<Building>();
     
     void Awake()
     {
@@ -19,9 +19,9 @@ public abstract class PowerSource : Building
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-
+        base.Start();
     }
 
     // Update is called once per frame
