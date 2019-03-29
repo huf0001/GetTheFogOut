@@ -11,6 +11,12 @@ public class Hub : PowerSource
     private int storedMineral = 0;
     private int storedFuel = 0;
 
+    public int StoredOrganic { get => storedOrganic; set => storedOrganic = value; }
+    public int StoredMineral { get => storedMineral; set => storedMineral = value; }
+    public int StoredFuel { get => storedFuel; set => storedFuel = value; }
+    public int MaxPower { get => maxPower; set => maxPower = value; }
+    public int StoredPower { get => storedPower; set => storedPower = value; }
+
     // private Dictionary<Element, int> harvest = new Dictionary<Element, int>();
 
     // Start is called before the first frame update
@@ -21,6 +27,8 @@ public class Hub : PowerSource
         powerSource = null;
         upkeep = +5;
         // costs 0 to build
+
+        InvokeRepeating("Upkeep", 1f, 1f);
     }
 
     // Update is called once per frame
