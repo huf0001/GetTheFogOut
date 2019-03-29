@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Harvester : Building
 {
-    private int harvest = +5;
+    private int harvestAmt = +5;
+    private bool canHarvest = false;
+
+    public int HarvestAmt { get => harvestAmt; }
+    public bool CanHarvest { get => canHarvest; }
+
     // [SerializeField]? private Element element;
 
     // Start is called before the first frame update
@@ -18,7 +23,7 @@ public class Harvester : Building
     // Update is called once per frame
     void Update()
     {
-        
+        Harvest();
     }
 
     private void Upkeep()
@@ -27,17 +32,18 @@ public class Harvester : Building
         // calls Hub.StoreElement(element, harvest) . . . or would it be powerSource.ReturnElement(element, harvest)?
     }
 
-    private void Mine()
+    private void Harvest()
     {
-        // alternate or compainion function to Upkeep()
-
-        //if (Upkeep())
-        //{
-        //    ResourceNode res = this.location.getResource();
-        //    if (res != null)
-        //    {
-        //        Hub.StoreResource(res.Resource, harvest);
-        //    }
-        //}
+        if (location.Resource == Resource.Mineral)
+        {
+            if (powerSource != null)
+            {
+                Hub hub = powerSource as Hub;
+                if (!hub.Harvesters.Contains(this))
+                {
+                    hub.Harvesters.Add(this);
+                }
+            }
+        }
     }
 }
