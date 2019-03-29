@@ -4,12 +4,18 @@ using UnityEngine;
 
 public abstract class Building : Entity
 {
+    [SerializeField] protected float visibilityRange;
     [SerializeField] protected int upkeep;
     public int Upkeep { get => upkeep; }
 
     protected PowerSource powerSource;
     protected BuildingType buildingType;
     public BuildingType BuildingType { get => buildingType; }
+
+    protected virtual void Awake()
+    {
+        MakeTilesVisible();
+    }
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -33,6 +39,32 @@ public abstract class Building : Entity
     void Update()
     {
         
+    }
+
+    private void MakeTilesVisible()
+    {
+        Collider[] tilesToActivate = Physics.OverlapSphere(transform.position, visibilityRange);
+
+        foreach (Collider c in tilesToActivate)
+        {
+            if (c.gameObject.GetComponent<Tile>() != null)
+            {
+                c.gameObject.GetComponent<Tile>().AddObserver(this as Building);
+            }
+        }
+    }
+
+    private void MakeTilesNotVisible()
+    {
+        Collider[] tilesToDeactivate = Physics.OverlapSphere(transform.position, visibilityRange);
+
+        foreach (Collider c in tilesToDeactivate)
+        {
+            if (c.gameObject.GetComponent<Tile>() != null)
+            {
+                c.gameObject.GetComponent<Tile>().RemoveObserver(this as Building);
+            }
+        }
     }
 
     public Component GetData()
@@ -69,12 +101,16 @@ public abstract class Building : Entity
         return script;
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
+        Debug.Log("Destroying building");
+
         if (powerSource != null)
         {
             powerSource.Unplug(this);
         }
+
+        MakeTilesNotVisible();
     }
 
 }

@@ -39,31 +39,40 @@ public class MouseController : MonoBehaviour
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
                         Tile tile = hit.transform.gameObject.GetComponent<Tile>();
-                        TowerManager tm = FindObjectOfType<TowerManager>();
-                        tile.Placedtower = tm.GetTower();
 
-                        // If there is a building, delete it. If not, place one.
-                        if (tile.Building != null)
-                        {
-                            Destroy(tile.Building.transform.gameObject);
-                        }
-                        else
-                        {
-                            Vector3 PosToInst = new Vector3(tile.transform.position.x, hit.point.y, tile.transform.position.z);
-                            GameObject buildingGo = Instantiate(tile.Placedtower, 
-                                PosToInst, tile.transform.rotation);
-                            buildingGo.transform.SetParent(tile.transform);
-                            Building building = buildingGo.GetComponentInChildren<Building>();
-                            tile.Building = building;
-                            building.Location = tile;
-                            tm.SelectedTower = null;
-                        }
+                        //If tile has power, place building. Otherwise, don't place building.
+                        //if (tile.PowerSource != null)
+                        //{
+                            TowerManager tm = FindObjectOfType<TowerManager>();
+                            tile.Placedtower = tm.GetTower();
 
-                        return;
+                            // If there is a building, delete it. If not, place one.
+                            if (tile.Building != null)
+                            {
+                                Destroy(tile.Building.transform.gameObject);
+                            }
+                            else
+                            {
+                                Build(tile.Placedtower, tile, hit.point.y);
+                                //tm.SelectedTower = null;
+                            }
+
+                            return;
+                        //}
                     } 
                 }
             }
         }
+    }
+
+    private void Build(GameObject toBuild, Tile tile, float height)
+    {
+        Vector3 PosToInst = new Vector3(tile.transform.position.x, height, tile.transform.position.z);
+        GameObject buildingGo = Instantiate(toBuild, PosToInst, tile.transform.rotation);
+        buildingGo.transform.SetParent(tile.transform);
+        Building building = buildingGo.GetComponentInChildren<Building>();
+        tile.Building = building;
+        building.Location = tile;
     }
 
     private void OnTriggerEnter(Collider other)
