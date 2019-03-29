@@ -9,6 +9,9 @@ public  class WorldController : MonoBehaviour
     public static WorldController Instance { get; protected set; }
 
     [SerializeField] GameObject tilePrefab;
+    [SerializeField] GameObject mineralPrefab;
+
+    [SerializeField] int mineralSpawnChance = 5;
 
     [SerializeField] private int width = 30;
     public int Width { get => width; }
@@ -41,6 +44,16 @@ public  class WorldController : MonoBehaviour
                 tileGo.name = "Tile_" + x + "_" + z;
                 tileGo.layer = 9;
                 tileGo.tag = "Tile";
+
+                if (Random.Range(1, 100) < mineralSpawnChance)
+                {
+                    tileGo.GetComponent<Tile>().Resource = Resource.Mineral;
+                    pos.y += 0.2f; 
+                    GameObject mineral = Instantiate(mineralPrefab, pos, 
+                        tileGo.transform.rotation);
+                    mineral.transform.SetParent(tileGo.transform, true);
+                }
+
                 tiles[x, z] = tileGo;
             }
         }

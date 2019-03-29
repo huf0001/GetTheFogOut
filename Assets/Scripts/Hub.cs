@@ -10,7 +10,10 @@ public class Hub : PowerSource
 
     [SerializeField] private int storedOrganic = 0;
     [SerializeField] private int storedMineral = 0;
+    [SerializeField] private int mineralChange = 0;
     [SerializeField] private int storedFuel = 0;
+
+    [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
 
     public int StoredOrganic { get => storedOrganic; set => storedOrganic = value; }
     public int StoredMineral { get => storedMineral; set => storedMineral = value; }
@@ -18,6 +21,8 @@ public class Hub : PowerSource
     public int MaxPower { get => maxPower; set => maxPower = value; }
     public int StoredPower { get => storedPower; set => storedPower = value; }
     public int PowerChange { get => powerChange; set => powerChange = value; }
+    public int MineralChange { get => mineralChange; set => mineralChange = value; }
+    public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
 
     // private Dictionary<Element, int> harvest = new Dictionary<Element, int>();
 
@@ -52,8 +57,16 @@ public class Hub : PowerSource
         }
 
         powerChange = totalUpkeep;
-
         ChangePower(totalUpkeep);
+
+        //Process minerals
+        totalUpkeep = 0;
+        foreach (Harvester harvester in harvesters)
+        {
+            totalUpkeep += harvester.HarvestAmt;
+        }
+        mineralChange = totalUpkeep;
+        storedMineral += mineralChange;
     }
 
     public override bool SupplyingPower()

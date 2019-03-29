@@ -43,7 +43,8 @@ public class UIController : MonoBehaviour
             powerText.text = "Power: " + hub.StoredPower + "/" 
                 + hub.MaxPower + " Change: " + hub.PowerChange;
             organicText.text = "Organic: " + hub.StoredOrganic;
-            mineralText.text = "Minerals: " + hub.StoredMineral;
+            mineralText.text = "Minerals: " + hub.StoredMineral
+                + " Change: " + hub.MineralChange;
             fuelText.text = "Fuel: " + hub.StoredFuel;
         }
     }
