@@ -8,9 +8,12 @@ public abstract class Building : Entity
     [SerializeField] protected int upkeep;
     public int Upkeep { get => upkeep; }
 
+    private Animator animator;
+
     protected PowerSource powerSource;
     [SerializeField] protected BuildingType buildingType;
     public BuildingType BuildingType { get => buildingType; }
+    public Animator Animator { get => animator; set => animator = value; }
 
     protected virtual void Awake()
     {
