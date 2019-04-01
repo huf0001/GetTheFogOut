@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour
 {
-
     List<GameObject> collisionList = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -45,8 +45,7 @@ public class MouseController : MonoBehaviour
                         {
                             //TowerManager tm = FindObjectOfType<TowerManager>();
                             //tile.Placedtower = tm.GetTower();
-                            tile.Placedtower = FindObjectOfType<TowerManager>().GetTower();
-
+                              tile.Placedtower = FindObjectOfType<TowerManager>().GetTower();
                             // If there is a building, delete it. If not, place one.
                             if (tile.Building != null)
                             {
@@ -86,4 +85,5 @@ public class MouseController : MonoBehaviour
     {
         collisionList.Remove(other.gameObject);
     }
+
 }
