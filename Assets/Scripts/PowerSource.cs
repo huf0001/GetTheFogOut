@@ -17,6 +17,9 @@ public abstract class PowerSource : Building
     protected override void OnDestroy()
     {
         DeactivateTiles();
+        //TODO: go through all objects being supplied power, and unplug from them; note that they
+        //have to have their power sources replaced if there is one available, or be switched off if
+        //there isn't one available
         base.OnDestroy();
     }
 
