@@ -71,7 +71,6 @@ public class btn_tower : MonoBehaviour
             Replc_Obj.transform.position = hitinfo.point;
         }
     }
-
     /*
       //TODO: change color on button pressed or clicked
 
