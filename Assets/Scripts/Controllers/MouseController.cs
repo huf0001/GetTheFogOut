@@ -75,6 +75,8 @@ public class MouseController : MonoBehaviour
         Building building = buildingGo.GetComponentInChildren<Building>();
         tile.Building = building;
         building.Location = tile;
+        building.Animator = buildingGo.GetComponentInChildren<Animator>();
+        building.Animator.SetBool("Built", true);
     }
 
     private void OnTriggerEnter(Collider other)
