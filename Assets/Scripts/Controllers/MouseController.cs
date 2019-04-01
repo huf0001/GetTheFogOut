@@ -48,7 +48,7 @@ public class MouseController : MonoBehaviour
                             tile.Placedtower = FindObjectOfType<TowerManager>().GetTower();
 
                             // If there is a building, delete it. If not, place one.
-                            if (tile.Building != null)
+                            if ((tile.Building != null) && (tile.Building.gameObject.GetComponent<Hub>() == null))
                             {
                                 Destroy(tile.Building.transform.gameObject);
                             }
