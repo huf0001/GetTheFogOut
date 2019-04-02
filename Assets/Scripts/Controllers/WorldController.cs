@@ -24,6 +24,8 @@ public  class WorldController : MonoBehaviour
 
     private bool hubBuilt = false;
 
+    private GameObject temp;
+
     private void Start()
     {
         if (Instance != null)
@@ -55,6 +57,10 @@ public  class WorldController : MonoBehaviour
                 tileGo.layer = 9;
                 tileGo.tag = "Tile";
 
+
+                //set to true will render the tile
+                tileGo.GetComponent<MeshRenderer>().enabled = false;
+
                 if (Random.Range(1, 100) < mineralSpawnChance)
                 {
                     tileGo.GetComponent<Tile>().Resource = Resource.Mineral;
@@ -66,6 +72,8 @@ public  class WorldController : MonoBehaviour
                 tiles[x, z] = tileGo;
             }
         }
+
+        
 
         // OLD CODE, IGNORE. MAY USE LATER
         //// Create a game object for each tile
@@ -86,6 +94,38 @@ public  class WorldController : MonoBehaviour
         //            (tile) => { OnTileResourceChanged(tile, tileGo); });
         //    }
         //}
+    }
+
+    public void MeshRendererTileChild(bool toggle)
+    {
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Tile");
+
+        //Caution child can be more than 4!!!
+        foreach (GameObject obj in objs)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                obj.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = toggle;
+            }
+        }
+    }
+
+    public void EnableMeshRendTile(GameObject tile_obj)
+    {
+        if (temp == null)
+        {
+            tile_obj.GetComponent<MeshRenderer>().enabled = true;
+            temp = tile_obj;
+        }
+        else {
+            if (temp != tile_obj)
+            {
+                temp.GetComponent<MeshRenderer>().enabled = false;
+                temp = null;
+            }
+        }
+
+
     }
 
     private void Update()

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class btn_tower : MonoBehaviour
@@ -18,13 +19,19 @@ public class btn_tower : MonoBehaviour
     private KeyCode temp;
     private Button _button;
 
+
+   // private GameObject tmp;
+
+
     void Update()
-    { 
+    {
+        // Debug.Log();
+
         if (Replc_Obj != null)
         {
             MoveObjToMouse();
         }
-      
+        
        GetObjInput();
     }
 
@@ -37,6 +44,7 @@ public class btn_tower : MonoBehaviour
     {
         if (Input.GetKeyDown(_key))
         {
+            
             if (Replc_Obj == null)
             {
                 Replc_Obj = Instantiate(Obj_prefab);
@@ -53,6 +61,8 @@ public class btn_tower : MonoBehaviour
 
             }
             _button.onClick.Invoke();
+       //     _button.onClick.AddListener(MoveObjToMouse);
+
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -68,6 +78,7 @@ public class btn_tower : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hitinfo))
         {
+            //Vector3 vec = new Vector3(Mathf.Round(hitinfo.point.x), Mathf.Round(hitinfo.point.y), Mathf.Round(hitinfo.point.z));
             Replc_Obj.transform.position = hitinfo.point;
         }
     }

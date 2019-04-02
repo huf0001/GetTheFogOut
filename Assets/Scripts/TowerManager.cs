@@ -29,7 +29,6 @@ public class TowerManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("PRESSSSSSSSSSSSSSSSSSS");
             selectedTower = null;
         }
     }
