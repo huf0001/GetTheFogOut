@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Entity : MonoBehaviour
 {
-    [SerializeField] private int health;
+    [SerializeField] private float health = 0.1f;
     protected Tile location;
 
     // Start is called before the first frame update
@@ -23,7 +23,7 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
-    public int Health
+    public virtual float Health
     {
         get
         {

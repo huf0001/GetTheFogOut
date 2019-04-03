@@ -35,7 +35,7 @@ public  class WorldController : MonoBehaviour
 
         InstantiateTileArray();
 
-        //InstantiateStartHub();
+        this.gameObject.GetComponent<Fog>().InstantiateFog();
     }
 
     private void InstantiateTileArray()
@@ -54,6 +54,8 @@ public  class WorldController : MonoBehaviour
                 tileGo.name = "Tile_" + x + "_" + z;
                 tileGo.layer = 9;
                 tileGo.tag = "Tile";
+                tileGo.GetComponent<Tile>().X = x;
+                tileGo.GetComponent<Tile>().Z = z;
 
                 if (Random.Range(1, 100) < mineralSpawnChance)
                 {

@@ -23,6 +23,10 @@ public class Tile : MonoBehaviour
 
     private List<Building> observers = new List<Building>();
 
+    private int x = 0;
+    public int X { get => x; set => x = value; }
+    private int z = 0;
+    public int Z { get => z; set => z = value; }
 
     public PowerSource PowerSource
     {
