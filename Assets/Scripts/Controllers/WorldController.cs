@@ -25,6 +25,16 @@ public  class WorldController : MonoBehaviour
     private bool hubBuilt = false;
 
     private GameObject temp;
+    private GameObject PlaneSpawn;
+    private GameObject TowerSpawn;
+    private GameObject TowerToSpawn;
+    private GameObject tiletest;
+    private GameObject tmp;
+    private GameObject[] objs;
+    private TowerManager tm;
+    private Vector3 pos;
+    public bool InBuildMode;
+    [SerializeField]private GameObject planeGridprefab;
 
     private void Start()
     {
@@ -33,6 +43,7 @@ public  class WorldController : MonoBehaviour
             Debug.LogError("There should never be 2 or more world managers.");
         }
 
+        InBuildMode = false;
         Instance = this;
 
         InstantiateTileArray();
@@ -60,6 +71,7 @@ public  class WorldController : MonoBehaviour
 
                 //set to true will render the tile
                 tileGo.GetComponent<MeshRenderer>().enabled = false;
+                MeshRendererTileChild(false);
 
                 if (Random.Range(1, 100) < mineralSpawnChance)
                 {
@@ -96,10 +108,10 @@ public  class WorldController : MonoBehaviour
         //}
     }
 
-    public void MeshRendererTileChild(bool toggle)
+    private void MeshRendererTileChild(bool toggle)
     {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("Tile");
-
+        objs = GameObject.FindGameObjectsWithTag("Tile");
+       
         //Caution child can be more than 4!!!
         foreach (GameObject obj in objs)
         {
@@ -110,22 +122,76 @@ public  class WorldController : MonoBehaviour
         }
     }
 
-    public void EnableMeshRendTile(GameObject tile_obj)
+    private void EnableMeshRendTile(GameObject tile_obj)
     {
+        pos = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
         if (temp == null)
-        {
-            tile_obj.GetComponent<MeshRenderer>().enabled = true;
+        {   
+            PlaneSpawn = Instantiate(planeGridprefab,pos,tile_obj.transform.rotation);           
             temp = tile_obj;
         }
         else {
             if (temp != tile_obj)
             {
-                temp.GetComponent<MeshRenderer>().enabled = false;
+                Destroy(PlaneSpawn);             
+                Destroy(TowerSpawn);
                 temp = null;
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Destroy(PlaneSpawn);
+            Destroy(TowerSpawn);
+            tm.EscToCancel();
+            MeshRendererTileChild(false);
+            InBuildMode = false;
+        }
+    }
 
+    private void RenderTower()
+    {      
+        TowerToSpawn = tm.GetTower();
 
+        if (TowerSpawn == null)
+        {
+            TowerSpawn = Instantiate(TowerToSpawn, pos, Quaternion.identity);
+        }
+        else 
+        {
+            if (TowerSpawn != TowerToSpawn)
+            { 
+                Destroy(TowerSpawn);
+                TowerSpawn = Instantiate(TowerToSpawn, pos, Quaternion.identity);
+            }
+        }
+    }
+
+    private void ShowTile()
+    {
+        RaycastHit[] hits;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        hits = Physics.RaycastAll(ray, 100.0f);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+            if (hit.transform.gameObject.tag == "Tile")
+            {
+                tiletest = hit.transform.gameObject;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    EnableMeshRendTile(tiletest);
+                }
+            }
+        }
+    }
+    public void SetToBuildMode()
+    {
+        InBuildMode = true;
+    }
+
+    private void Awake()
+    {
+        tm = FindObjectOfType<TowerManager>();
     }
 
     private void Update()
@@ -134,6 +200,12 @@ public  class WorldController : MonoBehaviour
         {
             InstantiateStartHub();
             hubBuilt = true;
+        }
+        if (InBuildMode)
+        {
+            MeshRendererTileChild(true);
+            RenderTower();
+            ShowTile();
         }
     }
 

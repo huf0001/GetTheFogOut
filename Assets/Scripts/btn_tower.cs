@@ -9,37 +9,31 @@ public class btn_tower : MonoBehaviour
 {
     [SerializeField]
     private GameObject obj_prefab;
-
     public GameObject Obj_prefab { get => obj_prefab; }
 
     [SerializeField]
-    public static GameObject Replc_Obj;
-    public KeyCode _key;
-
-    private KeyCode temp;
     private Button _button;
-
-
-   // private GameObject tmp;
+    private WorldController WC;
+    public KeyCode _key;
 
 
     void Update()
     {
-        // Debug.Log();
-
-        if (Replc_Obj != null)
+        if (Input.GetKeyDown(_key))
         {
-            MoveObjToMouse();
+            _button.onClick.Invoke();
+            WC.InBuildMode = true;
         }
-        
-       GetObjInput();
     }
 
     private void Awake()
     {
         _button = GetComponent<Button>();
+        WC = FindObjectOfType<WorldController>();
     }
-
+/*
+ * //no longer needed -  unusable function - fly away objects
+ * 
     public void GetObjInput()
     {
         if (Input.GetKeyDown(_key))
@@ -82,37 +76,7 @@ public class btn_tower : MonoBehaviour
             Replc_Obj.transform.position = hitinfo.point;
         }
     }
-    /*
-      //TODO: change color on button pressed or clicked
-
-    public void changeColor()
-    {
-        //  Debug.Log("Changing highlighed color");
-        float r = 0.1f;
-        float g = 0.4f;
-        float b = 1f;
-        ColorBlock colorVar = _button.colors;
-
-        colorVar.pressedColor = new Color(r, g, b);
-        colorVar.normalColor = new Color(r, g, b);
-        colorVar.highlightedColor = new Color(r, g, b);
-        _button.colors = colorVar;
-    }
-
-    public void changeColorToNormal()
-    {
-        float r = 1f;
-        float g = 1f;
-        float b = 1f;
-        ColorBlock colorVar = _button.colors;
-
-        colorVar.pressedColor = new Color(r, g, b);
-        colorVar.normalColor = new Color(r, g, b);
-        colorVar.highlightedColor = new Color(r, g, b);
-        _button.colors = colorVar;
-    }
     */
-
 
 
 }
