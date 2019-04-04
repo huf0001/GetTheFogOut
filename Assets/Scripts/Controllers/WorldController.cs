@@ -26,6 +26,18 @@ public  class WorldController : MonoBehaviour
     private Hub hub = null;
     public Hub Hub { get => hub; set => hub = value; }
 
+    private GameObject temp;
+    private GameObject PlaneSpawn;
+    private GameObject TowerSpawn;
+    private GameObject TowerToSpawn;
+    private GameObject tiletest;
+    private GameObject tmp;
+    private GameObject[] objs;
+    private TowerManager tm;
+    private Vector3 pos;
+    public bool InBuildMode;
+    [SerializeField]private GameObject planeGridprefab;
+
     private void Start()
     {
         if (Instance != null)
@@ -33,6 +45,7 @@ public  class WorldController : MonoBehaviour
             Debug.LogError("There should never be 2 or more world managers.");
         }
 
+        InBuildMode = false;
         Instance = this;
 
         InstantiateTileArray();
@@ -59,6 +72,11 @@ public  class WorldController : MonoBehaviour
                 tileGo.GetComponent<Tile>().X = x;
                 tileGo.GetComponent<Tile>().Z = z;
 
+
+                //set to true will render the tile
+                tileGo.GetComponent<MeshRenderer>().enabled = false;
+                MeshRendererTileChild(false);
+
                 if (Random.Range(1, 100) < mineralSpawnChance)
                 {
                     tileGo.GetComponent<Tile>().Resource = Resource.Mineral;
@@ -70,6 +88,8 @@ public  class WorldController : MonoBehaviour
                 tiles[x, z] = tileGo;
             }
         }
+
+        
 
         // OLD CODE, IGNORE. MAY USE LATER
         //// Create a game object for each tile
@@ -92,6 +112,7 @@ public  class WorldController : MonoBehaviour
         //}
     }
 
+<<<<<<< HEAD
     //Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
     private void ConnectAdjacentTiles()
     {
@@ -119,10 +140,96 @@ public  class WorldController : MonoBehaviour
                             }
                         }
                     }
+=======
+    private void MeshRendererTileChild(bool toggle)
+    {
+        objs = GameObject.FindGameObjectsWithTag("Tile");
+       
+        //Caution child can be more than 4!!!
+        foreach (GameObject obj in objs)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                obj.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = toggle;
+            }
+        }
+    }
+
+    private void EnableMeshRendTile(GameObject tile_obj)
+    {
+        pos = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
+        if (temp == null)
+        {   
+            PlaneSpawn = Instantiate(planeGridprefab,pos,tile_obj.transform.rotation);           
+            temp = tile_obj;
+        }
+        else {
+            if (temp != tile_obj)
+            {
+                Destroy(PlaneSpawn);             
+                Destroy(TowerSpawn);
+                temp = null;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Destroy(PlaneSpawn);
+            Destroy(TowerSpawn);
+            tm.EscToCancel();
+            MeshRendererTileChild(false);
+            InBuildMode = false;
+        }
+    }
+
+    private void RenderTower()
+    {      
+        TowerToSpawn = tm.GetTower();
+
+        if (TowerSpawn == null)
+        {
+            TowerSpawn = Instantiate(TowerToSpawn, pos, Quaternion.identity);
+        }
+        else 
+        {
+            if (TowerSpawn != TowerToSpawn)
+            { 
+                Destroy(TowerSpawn);
+                TowerSpawn = Instantiate(TowerToSpawn, pos, Quaternion.identity);
+            }
+        }
+    }
+
+    private void ShowTile()
+    {
+        RaycastHit[] hits;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        hits = Physics.RaycastAll(ray, 100.0f);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+            if (hit.transform.gameObject.tag == "Tile")
+            {
+                tiletest = hit.transform.gameObject;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    EnableMeshRendTile(tiletest);
+>>>>>>> 770181985f290b02731c3f57f31d118ee82a5137
                 }
             }
         }
     }
+<<<<<<< HEAD
+=======
+    public void SetToBuildMode()
+    {
+        InBuildMode = true;
+    }
+
+    private void Awake()
+    {
+        tm = FindObjectOfType<TowerManager>();
+    }
+>>>>>>> 770181985f290b02731c3f57f31d118ee82a5137
 
     private void Update()
     {
@@ -130,6 +237,12 @@ public  class WorldController : MonoBehaviour
         {
             InstantiateStartHub();
             hubBuilt = true;
+        }
+        if (InBuildMode)
+        {
+            MeshRendererTileChild(true);
+            RenderTower();
+            ShowTile();
         }
     }
 

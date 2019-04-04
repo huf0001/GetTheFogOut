@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,10 +9,10 @@ public class UIController : MonoBehaviour
 
     public static UIController instance = null;
 
-    [SerializeField] Text powerText;
-    [SerializeField] Text organicText;
-    [SerializeField] Text mineralText;
-    [SerializeField] Text fuelText;
+    [SerializeField] TextMeshProUGUI powerText;
+    [SerializeField] TextMeshProUGUI organicText;
+    [SerializeField] TextMeshProUGUI mineralText;
+    [SerializeField] TextMeshProUGUI fuelText;
     [SerializeField] Slider powerSlider;
     [SerializeField] Slider fuelSlider;
     [SerializeField] Slider organicSlider;
@@ -49,12 +50,10 @@ public class UIController : MonoBehaviour
     {
         if (hub != null)
         {
-            powerText.text = "Power: " + hub.StoredPower + "/"
-                + hub.MaxPower + " Change: " + hub.PowerChange;
-            organicText.text = "Organic: " + hub.StoredOrganic;
-            mineralText.text = "Minerals: " + hub.StoredMineral
-                + " Change: " + hub.MineralChange;
-            fuelText.text = "Fuel: " + hub.StoredFuel;
+            powerText.text = hub.StoredPower + "/" + hub.MaxPower; //+ hub.PowerChange;
+            //organicText.text = "Organic: " + hub.StoredOrganic;
+            //mineralText.text = "Minerals: " + hub.StoredMineral + " Change: " + hub.MineralChange;
+            //fuelText.text = "Fuel: " + hub.StoredFuel;
         }
 
         if (hub != null)

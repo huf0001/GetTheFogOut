@@ -10,10 +10,13 @@ public abstract class Building : Entity
 
     private Animator animator;
 
-    protected PowerSource powerSource;
+    [SerializeField] protected PowerSource powerSource;
+    [SerializeField] protected bool powered = false;
+
     [SerializeField] protected BuildingType buildingType;
     public BuildingType BuildingType { get => buildingType; }
     public Animator Animator { get => animator; set => animator = value; }
+    public bool Powered { get => powered; }
 
     protected virtual void Awake()
     {
@@ -62,6 +65,16 @@ public abstract class Building : Entity
                 c.gameObject.GetComponent<Tile>().RemoveObserver(this as Building);
             }
         }
+    }
+
+    public virtual void PowerUp()
+    {
+        powered = true;
+    }
+
+    public virtual void PowerDown()
+    {
+        powered = false;
     }
 
     public Component GetData()
