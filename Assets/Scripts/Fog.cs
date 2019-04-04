@@ -6,6 +6,7 @@ public class Fog : MonoBehaviour
 {
     //Serialized Fields
     [SerializeField] private FogUnit fogUnitPrefab;
+    [SerializeField] private float fogHealthLimit = 5f;
 
     //Container object fields
     private List<Tile> fogCoveredTiles = new List<Tile>();                      //i.e. tiles currently covered by fog
@@ -18,7 +19,7 @@ public class Fog : MonoBehaviour
     //Value fields
     private int xMax;
     private int zMax;
-    private float fogHealthLimit = 5f;
+
     private float tick = 0;
 
     //Sets up the fog at the start of the game. Called by WorldController to actually have it work.
@@ -61,16 +62,18 @@ public class Fog : MonoBehaviour
     //Takes a fog unit and puts it on the board
     private void SpawnFogUnit(int x, int z)
     {
-        GameObject f = GetFogUnit().gameObject;
+        GameObject fGO = GetFogUnit().gameObject;
+        FogUnit f = fGO.GetComponent<FogUnit>();
         Tile t = wc.GetTileAt(x, z).GetComponent<Tile>();
 
-        f.transform.position = new Vector3(x, t.transform.position.y + 0.3f, z);
-        f.name = "FogUnit(" + x + "," + z + ")";
+        fGO.transform.position = new Vector3(x, t.transform.position.y + 0.3f, z);
+        fGO.name = "FogUnit(" + x + "," + z + ")";
 
-        f.GetComponent<FogUnit>().Location = t;
-        f.GetComponent<FogUnit>().Health = 0.0001f;
+        f.Location = t;
+        f.Health = 0.0001f;
+        t.FogUnit = f;
 
-        fogUnitsInPlay.Add(f);
+        fogUnitsInPlay.Add(fGO);
         fogCoveredTiles.Add(t);
     }
 
@@ -111,7 +114,17 @@ public class Fog : MonoBehaviour
     public void ReturnFogUnitToPool(FogUnit f)
     {
         f.gameObject.name = "FogUnitInPool";
+
+        foreach (Tile t in f.Location.AdjacentTiles)
+        {
+            if (t.FogUnit != null)
+            {
+                t.FogUnit.Spilled = false;
+            }
+        }
+
         f.gameObject.SetActive(false);
+        f.Location.FogUnit = null;
 
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f.gameObject);
@@ -162,8 +175,9 @@ public class Fog : MonoBehaviour
         {
             f = g.GetComponent<FogUnit>();
 
-            if (f.Health >= fogHealthLimit)
+            if (f.Health >= fogHealthLimit && f.Spilled == false)
             {
+                f.Spilled = true;
 
                 foreach (Tile a in f.Location.AdjacentTiles)
                 {
