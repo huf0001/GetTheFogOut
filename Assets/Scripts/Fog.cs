@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//public enum Active
-//{
-//    True,
-//    False,
-//    Null
-//}
-
 public class Fog : MonoBehaviour
 {
     //Serialized Fields
     [SerializeField] private FogUnit fogUnitPrefab;
+    [SerializeField] private float fogHealthLimit = 5f;
 
     //Container object fields
     private List<Tile> fogCoveredTiles = new List<Tile>();                      //i.e. tiles currently covered by fog
@@ -25,7 +19,7 @@ public class Fog : MonoBehaviour
     //Value fields
     private int xMax;
     private int zMax;
-    private float fogHealthLimit = 1f;
+
     private float tick = 0;
 
     //Sets up the fog at the start of the game. Called by WorldController to actually have it work.
@@ -42,62 +36,6 @@ public class Fog : MonoBehaviour
 
         SpawnStartingFog();
     }
-
-    ////Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
-    //private void ConnectAdjacentTiles()
-    //{
-    //    Active[,] tilesNeighbours;
-    //    Active[,] tiles = new Active[xMax, zMax];
-    //    tilesAndNeighboursOccupied = new Active[xMax, zMax][,];
-
-    //    //Indexes for the tile neighbour arrays
-    //    int a = 0;
-    //    int b = 0;
-
-    //    for (int i = 0; i < xMax; i++)
-    //    {
-    //        for (int j = 0; j < zMax; j++)
-    //        {
-    //            tiles[i, j] = Active.False;
-    //        }
-    //    }
-
-    //    for (int i = 0; i < xMax; i++)
-    //    {
-    //        for (int j = 0; j < zMax; j++)                                  //For each valid tile
-    //        {
-    //            tilesNeighbours = new Active[3, 3];                          //Create an array of it and its neighbours
-    //            a = 0;                                                      //Reset neighbour x axis index to 0
-
-    //            for (int k = i - 1; k <= i + 1; k++)        
-    //            {
-    //                b = 0;                                                  //Reset neighbour y axis index to 0
-
-    //                for (int l = j - 1; l <= j + 1; l++)                    //For each neighbour
-    //                {
-    //                    if (k >= 0 && k < xMax && l >= 0 && l < zMax)       //If it is a tile that exists   
-    //                    {
-    //                        tilesNeighbours[a, b] = tiles[i, j];      //Assign that tile to the spot in the neighbour array
-    //                    }
-    //                    else if (a >= 0 && a < 3 && b >= 0 && b < 3)
-    //                    {
-    //                        tilesNeighbours[a, b] = Active.Null;             //Otherwise it's a null value
-    //                    }
-    //                    else
-    //                    {
-    //                        Debug.Log("i: " + i + ". j: " + j + "./r/n k: " + k + ". l: " + l + "./r/n a: " + a + ". b: " + b + ".");
-    //                    }
-
-    //                    b++;
-    //                }
-
-    //                a++;
-    //            }
-
-    //            tilesAndNeighboursOccupied[i, j] = tilesNeighbours;           //Assign the tile its neighbour array
-    //        }
-    //    }
-    //}
 
     //Create the max no. of fog units the game should need
     private void PopulateFogPool()
@@ -124,18 +62,19 @@ public class Fog : MonoBehaviour
     //Takes a fog unit and puts it on the board
     private void SpawnFogUnit(int x, int z)
     {
-        GameObject f = GetFogUnit().gameObject;
+        GameObject fGO = GetFogUnit().gameObject;
+        FogUnit f = fGO.GetComponent<FogUnit>();
         Tile t = wc.GetTileAt(x, z).GetComponent<Tile>();
 
-        f.transform.position = new Vector3(x, t.transform.position.y + 0.3f, z);
-        f.name = "FogUnit(" + x + "," + z + ")";
+        fGO.transform.position = new Vector3(x, t.transform.position.y + 0.3f, z);
+        fGO.name = "FogUnit(" + x + "," + z + ")";
 
-        f.GetComponent<FogUnit>().Location = t;
-        f.GetComponent<FogUnit>().Health = 0.0001f;
+        f.Location = t;
+        f.Health = 0.0001f;
+        t.FogUnit = f;
 
-        fogUnitsInPlay.Add(f);
+        fogUnitsInPlay.Add(fGO);
         fogCoveredTiles.Add(t);
-        //tilesAndNeighboursOccupied[x, z][1, 1] = Active.True;
     }
 
     ///Start pooling methods borrowed / adapted from example
@@ -175,12 +114,21 @@ public class Fog : MonoBehaviour
     public void ReturnFogUnitToPool(FogUnit f)
     {
         f.gameObject.name = "FogUnitInPool";
+
+        foreach (Tile t in f.Location.AdjacentTiles)
+        {
+            if (t.FogUnit != null)
+            {
+                t.FogUnit.Spilled = false;
+            }
+        }
+
         f.gameObject.SetActive(false);
+        f.Location.FogUnit = null;
 
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f.gameObject);
         fogCoveredTiles.Remove(f.Location);
-        //tilesAndNeighboursOccupied[f.Location.X, f.Location.Z][1, 1] = Active.False;
     }
 
     ///End pooling methods borrowed / adapted from example
@@ -188,8 +136,6 @@ public class Fog : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Fog Units in Play: " + fogUnitsInPlay.Count + ". Fog Units in Pool: " + fogUnitsInPool.Count + ".");
-
         tick += Time.deltaTime;
 
         foreach (GameObject f in fogUnitsInPlay)
@@ -229,17 +175,9 @@ public class Fog : MonoBehaviour
         {
             f = g.GetComponent<FogUnit>();
 
-            if (f.Health >= fogHealthLimit)
+            if (f.Health >= fogHealthLimit && f.Spilled == false)
             {
-
-                //foreach (Active a in tilesAndNeighboursOccupied[f.Location.X, f.Location.Z])
-                //{
-                //    if (a == Active.False)
-                //    {
-                //        newTiles.Add(f.Location);
-                //        continue;
-                //    }
-                //}
+                f.Spilled = true;
 
                 foreach (Tile a in f.Location.AdjacentTiles)
                 {

@@ -8,28 +8,37 @@ using UnityEngine.EventSystems;
 //TODO: add Null ref / exception :(
 public class Tile : MonoBehaviour
 {
-    private GameObject placedtower;
-    public GameObject Placedtower { get => placedtower; set => placedtower = value; }
+    //Serialized Fields
     [SerializeField] private List<PowerSource> powerSources = new List<PowerSource>();
 
     [SerializeField] private Resource resource;
-    public Resource Resource { get => resource; set => resource = value; }
     [SerializeField] private Building building = null;
-    public Building Building { get => building; set => building = value; }
+
     [SerializeField] private Material onMaterial;
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material startMaterial;
-    //public Material OnMaterial { get => onMaterial; set => onMaterial = value; }
+
+    //Private fields
+    private int x = 0;
+    private int z = 0;
+    private FogUnit fogUnit = null;
+    private GameObject placedtower;
     private List<Tile> adjacentTiles = new List<Tile>();
-    public List<Tile> AdjacentTiles { get => adjacentTiles; }
 
     private List<Building> observers = new List<Building>();
 
-    private int x = 0;
+    //Simple public properties
     public int X { get => x; set => x = value; }
-    private int z = 0;
     public int Z { get => z; set => z = value; }
 
+    public Resource Resource { get => resource; set => resource = value; }
+    public FogUnit FogUnit { get => fogUnit; set => fogUnit = value; }
+    public Building Building { get => building; set => building = value; }
+    public GameObject Placedtower { get => placedtower; set => placedtower = value; }
+
+    public List<Tile> AdjacentTiles { get => adjacentTiles; }
+
+    //Altered public properties
     public PowerSource PowerSource
     {
         get
@@ -43,8 +52,6 @@ public class Tile : MonoBehaviour
                 return powerSources[0];
             }
         }
-            
-        /*set => powerSource = value;*/
     }
 
     public void PowerUp(PowerSource power)
