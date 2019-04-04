@@ -14,6 +14,7 @@ public class Hub : PowerSource
     [SerializeField] private int storedFuel = 0;
 
     [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
+    [SerializeField] private List<Battery> batteries = new List<Battery>();
 
     public int StoredOrganic { get => storedOrganic; set => storedOrganic = value; }
     public int StoredMineral { get => storedMineral; set => storedMineral = value; }
@@ -23,6 +24,7 @@ public class Hub : PowerSource
     public int PowerChange { get => powerChange; set => powerChange = value; }
     public int MineralChange { get => mineralChange; set => mineralChange = value; }
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
+    public List<Battery> Batteries { get => batteries; set => batteries = value; }
 
     // private Dictionary<Element, int> harvest = new Dictionary<Element, int>();
 
@@ -48,7 +50,7 @@ public class Hub : PowerSource
     {
         // Change the power based on each connect building
         // TODO: Make buildings stop working if no power
-        int totalUpkeep = 0;
+        int totalUpkeep = 5;
         foreach (Building building in suppliedBuildings)
         {
             totalUpkeep += building.Upkeep;
@@ -57,7 +59,10 @@ public class Hub : PowerSource
         powerChange = totalUpkeep;
         ChangePower(totalUpkeep);
 
-        //Process minerals
+        // Process batteries
+        maxPower = (batteries.Count * 10) + 100;
+
+        // Process minerals
         totalUpkeep = 0;
         foreach (Harvester harvester in harvesters)
         {

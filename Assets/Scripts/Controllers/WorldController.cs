@@ -23,6 +23,8 @@ public  class WorldController : MonoBehaviour
     private GameObject[,] tiles;
 
     private bool hubBuilt = false;
+    private Hub hub = null;
+    public Hub Hub { get => hub; set => hub = value; }
 
     private void Start()
     {
@@ -104,10 +106,11 @@ public  class WorldController : MonoBehaviour
         Tile startingTile = tiles[Mathf.FloorToInt(width / 2), Mathf.FloorToInt(length / 2)].GetComponent<Tile>();
         Vector3 PosToInst = new Vector3(startingTile.transform.position.x, startingTile.transform.position.y + 0.4125f, startingTile.transform.position.z);
         GameObject hubGO = Instantiate(hubPrefab, PosToInst, startingTile.transform.rotation);
-        Hub hub = hubGO.GetComponentInChildren<Hub>();
+        Hub startHub = hubGO.GetComponentInChildren<Hub>();
+        hub = startHub;
 
         hubGO.transform.SetParent(startingTile.transform);
-        startingTile.Building = hub;
+        startingTile.Building = startHub;
         hub.Location = startingTile;
     }
 

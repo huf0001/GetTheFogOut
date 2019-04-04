@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour
     {
         if (hub == null)
         {
-            hub = FindObjectOfType<Hub>();
+            hub = WorldController.Instance.Hub;
         }
 
         UpdateResourceText();

@@ -14,6 +14,11 @@ public class Battery : Building
     protected override void Start()
     {
         base.Start();
+
+        if (!WorldController.Instance.Hub.Batteries.Contains(this))
+        {
+            WorldController.Instance.Hub.Batteries.Add(this);
+        }
     }
 
     // Update is called once per frame
@@ -24,6 +29,9 @@ public class Battery : Building
 
     private void OnDestroy()
     {
-        //call Hub.RemoveBattery(); removes 10 from maxStorage
+        if (WorldController.Instance.Hub.Batteries.Contains(this))
+        {
+            WorldController.Instance.Hub.Batteries.Remove(this);
+        }
     }
 }
