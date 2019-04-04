@@ -51,6 +51,8 @@ public  class WorldController : MonoBehaviour
         InstantiateTileArray();
 
         ConnectAdjacentTiles();
+
+        GetComponent<Fog>().SpawnFog();
     }
 
     private void InstantiateTileArray()
@@ -73,9 +75,9 @@ public  class WorldController : MonoBehaviour
                 tileGo.GetComponent<Tile>().Z = z;
 
 
-                //set to true will render the tile
-                tileGo.GetComponent<MeshRenderer>().enabled = false;
-                MeshRendererTileChild(false);
+                //set to true will render the tile; set to false, and it won't
+                tileGo.GetComponent<MeshRenderer>().enabled = true;
+                MeshRendererTileChild(true);
 
                 if (Random.Range(1, 100) < mineralSpawnChance)
                 {
@@ -112,7 +114,6 @@ public  class WorldController : MonoBehaviour
         //}
     }
 
-<<<<<<< HEAD
     //Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
     private void ConnectAdjacentTiles()
     {
@@ -140,7 +141,11 @@ public  class WorldController : MonoBehaviour
                             }
                         }
                     }
-=======
+                }
+            }
+        }
+    }
+
     private void MeshRendererTileChild(bool toggle)
     {
         objs = GameObject.FindGameObjectsWithTag("Tile");
@@ -213,13 +218,11 @@ public  class WorldController : MonoBehaviour
                 if (Physics.Raycast(ray, out hit))
                 {
                     EnableMeshRendTile(tiletest);
->>>>>>> 770181985f290b02731c3f57f31d118ee82a5137
                 }
             }
         }
     }
-<<<<<<< HEAD
-=======
+
     public void SetToBuildMode()
     {
         InBuildMode = true;
@@ -229,7 +232,6 @@ public  class WorldController : MonoBehaviour
     {
         tm = FindObjectOfType<TowerManager>();
     }
->>>>>>> 770181985f290b02731c3f57f31d118ee82a5137
 
     private void Update()
     {
@@ -263,12 +265,12 @@ public  class WorldController : MonoBehaviour
     {
         if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
         {
-            Debug.Log("Tile (" + x + "," + y + ") is out of range.");
+            //Debug.Log("Tile (" + x + "," + y + ") is out of range.");
             Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
             return null;
         }
 
-        Debug.Log("Getting tile at (" + x + "," + y + "). Width: " + width + ". Length: " + length + ".");
+        //Debug.Log("Getting tile at (" + x + "," + y + "). Width: " + width + ". Length: " + length + ".");
         return tiles[x, y];
     }
 

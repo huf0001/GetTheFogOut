@@ -21,8 +21,8 @@ public class Fog : MonoBehaviour
     private float fogHealthLimit = 5f;
     private float tick = 0;
 
-    //Sets up the fog at the start of the game.
-    void Start()
+    //Sets up the fog at the start of the game. Called by WorldController to actually have it work.
+    public void SpawnFog()
     {
         wc = GameObject.Find("GameManager").GetComponent<WorldController>();
         xMax = wc.Width;
