@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Entity : MonoBehaviour
 {
-    [SerializeField] private float health = 0.1f;
+    [SerializeField] private float health = 1f;
     protected Tile location;
 
     // Start is called before the first frame update

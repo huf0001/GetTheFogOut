@@ -20,6 +20,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material startMaterial;
     //public Material OnMaterial { get => onMaterial; set => onMaterial = value; }
+    private List<Tile> adjacentTiles = new List<Tile>();
+    public List<Tile> AdjacentTiles { get => adjacentTiles; }
 
     private List<Building> observers = new List<Building>();
 

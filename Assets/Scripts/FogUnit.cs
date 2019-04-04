@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class FogUnit : Entity
 {
+    //Fields
+    private Fog fog;
     private float healthLimit;
+    private bool inPlay = true;
 
+    //Properties
+    public Fog Fog { get => fog; set => fog = value; }
     public float HealthLimit { get => healthLimit; set => healthLimit = value; }
 
     // Start is called before the first frame update
@@ -17,9 +22,9 @@ public class FogUnit : Entity
     // Update is called once per frame
     void Update()
     {
-        if (Health == 0)
+        if (Health <= 0)
         {
-            //Destroy this fog unit
+            ReturnToFogPool();
         }
     }
 
@@ -38,8 +43,18 @@ public class FogUnit : Entity
             {
                 base.Health = healthLimit;
             }
+        }
+    }
 
-            //Debug.Log("Health update for fog unit. Health is " + Health);
+    public void ReturnToFogPool()
+    {
+        if (fog)
+        {
+            fog.ReturnFogUnitToPool(this);
+        }
+        else
+        {
+            Destroy(this.gameObject);
         }
     }
 }

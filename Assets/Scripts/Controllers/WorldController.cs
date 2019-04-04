@@ -37,7 +37,7 @@ public  class WorldController : MonoBehaviour
 
         InstantiateTileArray();
 
-        this.gameObject.GetComponent<Fog>().InstantiateFog();
+        ConnectAdjacentTiles();
     }
 
     private void InstantiateTileArray()
@@ -92,6 +92,38 @@ public  class WorldController : MonoBehaviour
         //}
     }
 
+    //Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
+    private void ConnectAdjacentTiles()
+    {
+        Tile t;
+        Tile a;
+
+        foreach (GameObject o in tiles)
+        {
+            t = o.GetComponent<Tile>();
+
+            for (int i = t.X - 1; i <= t.X + 1; i++)
+            {
+                if (i >= 0 && i < width)
+                {
+                    for (int j = t.Z - 1; j <= t.Z + 1; j++)
+                    {
+                        if (j >= 0 && j < length)
+                        {
+                            a = GetTileAt(i, j).GetComponent<Tile>();
+
+                            if (!t.AdjacentTiles.Contains(a))
+                            {
+                                t.AdjacentTiles.Add(a);
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void Update()
     {
         if (!hubBuilt)
@@ -116,11 +148,14 @@ public  class WorldController : MonoBehaviour
 
     public GameObject GetTileAt(int x, int y)
     {
-        if (x > width || x < 0 || y > length || y < 0)
+        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
         {
+            Debug.Log("Tile (" + x + "," + y + ") is out of range.");
             Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
             return null;
         }
+
+        Debug.Log("Getting tile at (" + x + "," + y + "). Width: " + width + ". Length: " + length + ".");
         return tiles[x, y];
     }
 
