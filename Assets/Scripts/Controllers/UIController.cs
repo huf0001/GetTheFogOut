@@ -9,14 +9,14 @@ public class UIController : MonoBehaviour
 
     public static UIController instance = null;
 
-    [SerializeField] TextMeshProUGUI powerText;
-    [SerializeField] TextMeshProUGUI organicText;
-    [SerializeField] TextMeshProUGUI mineralText;
-    [SerializeField] TextMeshProUGUI fuelText;
-    [SerializeField] Slider powerSlider;
-    [SerializeField] Slider fuelSlider;
-    [SerializeField] Slider organicSlider;
-    [SerializeField] Slider mineralSlider;
+    TextMeshProUGUI powerText;
+    TextMeshProUGUI organicText;
+    TextMeshProUGUI mineralText;
+    TextMeshProUGUI fuelText;
+    Slider powerSlider;
+    Slider fuelSlider;
+    Slider organicSlider;
+    Slider mineralSlider;
 
     Hub hub = null;
 
@@ -33,6 +33,8 @@ public class UIController : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+
+        FindSliders();
     }
 
     // Update is called once per frame
@@ -46,16 +48,17 @@ public class UIController : MonoBehaviour
         UpdateResourceText();
     }
 
+    void FindSliders()
+    {
+        powerSlider = GameObject.Find("PowerSlider").GetComponent<Slider>();
+        fuelSlider = GameObject.Find("FuelSlider").GetComponent<Slider>();
+        organicSlider = GameObject.Find("OrganicSlider").GetComponent<Slider>();
+        mineralSlider = GameObject.Find("MineralSlider").GetComponent<Slider>();
+        powerText = powerSlider.GetComponentInChildren<TextMeshProUGUI>();
+    }
+
     void UpdateResourceText()
     {
-        if (hub != null)
-        {
-            powerText.text = hub.StoredPower + "/" + hub.MaxPower; //+ hub.PowerChange;
-            //organicText.text = "Organic: " + hub.StoredOrganic;
-            //mineralText.text = "Minerals: " + hub.StoredMineral + " Change: " + hub.MineralChange;
-            //fuelText.text = "Fuel: " + hub.StoredFuel;
-        }
-
         if (hub != null)
         {
             powerSlider.maxValue = hub.MaxPower;
@@ -63,6 +66,11 @@ public class UIController : MonoBehaviour
             fuelSlider.value = hub.StoredFuel;
             organicSlider.value = hub.StoredOrganic;
             mineralSlider.value = hub.StoredMineral;
+
+            powerText.text = hub.StoredPower + "/" + hub.MaxPower; //+ hub.PowerChange;
+            //organicText.text = "Organic: " + hub.StoredOrganic;
+            //mineralText.text = "Minerals: " + hub.StoredMineral + " Change: " + hub.MineralChange;
+            //fuelText.text = "Fuel: " + hub.StoredFuel;
         }
     }
 }
