@@ -54,6 +54,14 @@ public class Hub : PowerSource
         foreach (Building building in suppliedBuildings)
         {
             totalUpkeep += building.Upkeep;
+            if (totalUpkeep >= 0 || storedPower > 0)
+            {
+                building.PowerUp();
+            }
+            else
+            {
+                building.PowerDown();
+            }
         }
 
         powerChange = totalUpkeep;

@@ -5,10 +5,8 @@ using UnityEngine;
 public class Harvester : Building
 {
     private int harvestAmt = +5;
-    private bool canHarvest = false;
 
     public int HarvestAmt { get => harvestAmt; }
-    public bool CanHarvest { get => canHarvest; }
 
     // [SerializeField]? private Element element;
 
@@ -22,27 +20,28 @@ public class Harvester : Building
     // Update is called once per frame
     void Update()
     {
-        Harvest();
+
     }
 
-    private void Upkeep()
-    {
-        // calls Hub.ChangePower(upkeep)
-        // calls Hub.StoreElement(element, harvest) . . . or would it be powerSource.ReturnElement(element, harvest)?
-    }
-
-    private void Harvest()
+    public override void PowerUp()
     {
         if (location.Resource == Resource.Mineral)
-        {
-            if (powerSource != null)
+        { 
+            base.PowerUp();
+            if (!WorldController.Instance.Hub.Harvesters.Contains(this))
             {
-                Hub hub = powerSource as Hub;
-                if (!hub.Harvesters.Contains(this))
-                {
-                    hub.Harvesters.Add(this);
-                }
+                WorldController.Instance.Hub.Harvesters.Add(this);
             }
+        }
+    }
+
+    public override void PowerDown()
+    {
+        base.PowerDown();
+
+        if (WorldController.Instance.Hub.Harvesters.Contains(this))
+        {
+            WorldController.Instance.Hub.Harvesters.Remove(this);
         }
     }
 }
