@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//public enum Active
+//{
+//    True,
+//    False,
+//    Null
+//}
+
 public class Fog : MonoBehaviour
 {
     //Serialized Fields
@@ -18,7 +25,7 @@ public class Fog : MonoBehaviour
     //Value fields
     private int xMax;
     private int zMax;
-    private float fogHealthLimit = 5f;
+    private float fogHealthLimit = 1f;
     private float tick = 0;
 
     //Sets up the fog at the start of the game. Called by WorldController to actually have it work.
@@ -35,6 +42,62 @@ public class Fog : MonoBehaviour
 
         SpawnStartingFog();
     }
+
+    ////Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
+    //private void ConnectAdjacentTiles()
+    //{
+    //    Active[,] tilesNeighbours;
+    //    Active[,] tiles = new Active[xMax, zMax];
+    //    tilesAndNeighboursOccupied = new Active[xMax, zMax][,];
+
+    //    //Indexes for the tile neighbour arrays
+    //    int a = 0;
+    //    int b = 0;
+
+    //    for (int i = 0; i < xMax; i++)
+    //    {
+    //        for (int j = 0; j < zMax; j++)
+    //        {
+    //            tiles[i, j] = Active.False;
+    //        }
+    //    }
+
+    //    for (int i = 0; i < xMax; i++)
+    //    {
+    //        for (int j = 0; j < zMax; j++)                                  //For each valid tile
+    //        {
+    //            tilesNeighbours = new Active[3, 3];                          //Create an array of it and its neighbours
+    //            a = 0;                                                      //Reset neighbour x axis index to 0
+
+    //            for (int k = i - 1; k <= i + 1; k++)        
+    //            {
+    //                b = 0;                                                  //Reset neighbour y axis index to 0
+
+    //                for (int l = j - 1; l <= j + 1; l++)                    //For each neighbour
+    //                {
+    //                    if (k >= 0 && k < xMax && l >= 0 && l < zMax)       //If it is a tile that exists   
+    //                    {
+    //                        tilesNeighbours[a, b] = tiles[i, j];      //Assign that tile to the spot in the neighbour array
+    //                    }
+    //                    else if (a >= 0 && a < 3 && b >= 0 && b < 3)
+    //                    {
+    //                        tilesNeighbours[a, b] = Active.Null;             //Otherwise it's a null value
+    //                    }
+    //                    else
+    //                    {
+    //                        Debug.Log("i: " + i + ". j: " + j + "./r/n k: " + k + ". l: " + l + "./r/n a: " + a + ". b: " + b + ".");
+    //                    }
+
+    //                    b++;
+    //                }
+
+    //                a++;
+    //            }
+
+    //            tilesAndNeighboursOccupied[i, j] = tilesNeighbours;           //Assign the tile its neighbour array
+    //        }
+    //    }
+    //}
 
     //Create the max no. of fog units the game should need
     private void PopulateFogPool()
@@ -72,6 +135,7 @@ public class Fog : MonoBehaviour
 
         fogUnitsInPlay.Add(f);
         fogCoveredTiles.Add(t);
+        //tilesAndNeighboursOccupied[x, z][1, 1] = Active.True;
     }
 
     ///Start pooling methods borrowed / adapted from example
@@ -116,6 +180,7 @@ public class Fog : MonoBehaviour
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f.gameObject);
         fogCoveredTiles.Remove(f.Location);
+        //tilesAndNeighboursOccupied[f.Location.X, f.Location.Z][1, 1] = Active.False;
     }
 
     ///End pooling methods borrowed / adapted from example
@@ -123,6 +188,8 @@ public class Fog : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Fog Units in Play: " + fogUnitsInPlay.Count + ". Fog Units in Pool: " + fogUnitsInPool.Count + ".");
+
         tick += Time.deltaTime;
 
         foreach (GameObject f in fogUnitsInPlay)
@@ -164,6 +231,15 @@ public class Fog : MonoBehaviour
 
             if (f.Health >= fogHealthLimit)
             {
+
+                //foreach (Active a in tilesAndNeighboursOccupied[f.Location.X, f.Location.Z])
+                //{
+                //    if (a == Active.False)
+                //    {
+                //        newTiles.Add(f.Location);
+                //        continue;
+                //    }
+                //}
 
                 foreach (Tile a in f.Location.AdjacentTiles)
                 {

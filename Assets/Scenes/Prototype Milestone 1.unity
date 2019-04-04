@@ -1289,6 +1289,7 @@ GameObject:
   - component: {fileID: 934254939}
   - component: {fileID: 934254942}
   - component: {fileID: 934254943}
+  - component: {fileID: 934254944}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1394,6 +1395,20 @@ MonoBehaviour:
   obj_prefab: {fileID: 0}
   _button: {fileID: 0}
   _key: 0
+--- !u!114 &934254944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934254937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37a928823b9f6a48814cc817e7d13c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fogUnitPrefab: {fileID: 6045479659823427939, guid: f16f94a244adbcf47a2a91498a1edb9a,
+    type: 3}
 --- !u!1 &1009566786
 GameObject:
   m_ObjectHideFlags: 0
