@@ -26,6 +26,18 @@ public class btn_tower : MonoBehaviour
         }
     }
 
+    // Matt Germon: Test Code to see if moving the mouse over a button would trigger.
+    // considering as a means of making "Tooltip" appear in the Canvas.
+    // void OnMouseOver()
+    // {
+    //     Debug.Log("Mouse is over the Button.");
+    // }
+
+    // void OnMouseExit()
+    // {
+    //     Debug.Log("Mouse is off the Button.");
+    // }
+
     private void Awake()
     {
         _button = GetComponent<Button>();
