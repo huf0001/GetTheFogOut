@@ -635,6 +635,7 @@ GameObject:
   - component: {fileID: 934254939}
   - component: {fileID: 934254942}
   - component: {fileID: 934254943}
+  - component: {fileID: 934254944}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -927,8 +928,8 @@ MonoBehaviour:
   m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
+  m_HorizontalAxis: HorizontalUI
+  m_VerticalAxis: VerticalUI
   m_SubmitButton: Submit
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
@@ -946,7 +947,7 @@ MonoBehaviour:
   m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1804415281}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1349608070
@@ -1340,3 +1341,9 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1804415281 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6005610044211655723, guid: 3350bd52bd7d0de4897d3b5955efcc2e,
+    type: 3}
+  m_PrefabInstance: {fileID: 543741425}
+  m_PrefabAsset: {fileID: 0}
