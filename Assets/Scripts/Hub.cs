@@ -13,6 +13,25 @@ public class Hub : PowerSource
     [SerializeField] private int mineralChange = 0;
     [SerializeField] private int storedFuel = 0;
 
+    [Header("Building Costs")]
+    [SerializeField] private int batteryPowerCost = 30;
+    [SerializeField] private int batteryMineralCost = 0;
+    [SerializeField] private int batteryOrganicCost = 0;
+    [SerializeField] private int batteryFuelCost = 0;
+    [SerializeField] private int generatorPowerCost = 30;
+    [SerializeField] private int generatorMineralCost = 0;
+    [SerializeField] private int generatorOrganicCost = 0;
+    [SerializeField] private int generatorFuelCost = 0;
+    [SerializeField] private int harvesterPowerCost = 50;
+    [SerializeField] private int harvesterMineralCost = 0;
+    [SerializeField] private int harvesterOrganicCost = 0;
+    [SerializeField] private int harvesterFuelCost = 0;
+    [SerializeField] private int relayPowerCost = 10;
+    [SerializeField] private int relayMineralCost = 0;
+    [SerializeField] private int relayOrganicCost = 0;
+    [SerializeField] private int relayFuelCost = 0;
+
+
     private Dictionary<string, int> batteryCosts = new Dictionary<string, int>();
     private Dictionary<string, int> generatorCosts = new Dictionary<string, int>();
     private Dictionary<string, int> harvesterCosts = new Dictionary<string, int>();
@@ -46,25 +65,25 @@ public class Hub : PowerSource
         // costs 0 to build
 
         // Set all building costs
-        batteryCosts.Add("power", 30);
-        batteryCosts.Add("mineral", 0);
-        batteryCosts.Add("organic", 0);
-        batteryCosts.Add("fuel", 0);
+        batteryCosts.Add("power", batteryPowerCost);
+        batteryCosts.Add("mineral", batteryMineralCost);
+        batteryCosts.Add("organic", batteryOrganicCost);
+        batteryCosts.Add("fuel", batteryFuelCost);
 
-        generatorCosts.Add("power", 30);
-        generatorCosts.Add("mineral", 0);
-        generatorCosts.Add("organic", 0);
-        generatorCosts.Add("fuel", 0);
+        generatorCosts.Add("power", generatorPowerCost);
+        generatorCosts.Add("mineral", generatorMineralCost);
+        generatorCosts.Add("organic", generatorOrganicCost);
+        generatorCosts.Add("fuel", generatorFuelCost);
 
-        harvesterCosts.Add("power", 50);
-        harvesterCosts.Add("mineral", 0);
-        harvesterCosts.Add("organic", 0);
-        harvesterCosts.Add("fuel", 0);
+        harvesterCosts.Add("power", harvesterPowerCost);
+        harvesterCosts.Add("mineral", harvesterMineralCost);
+        harvesterCosts.Add("organic", harvesterOrganicCost);
+        harvesterCosts.Add("fuel", harvesterFuelCost);
 
-        relayCosts.Add("power", 10);
-        relayCosts.Add("mineral", 0);
-        relayCosts.Add("organic", 0);
-        relayCosts.Add("fuel", 0);
+        relayCosts.Add("power", relayPowerCost);
+        relayCosts.Add("mineral", relayMineralCost);
+        relayCosts.Add("organic", relayOrganicCost);
+        relayCosts.Add("fuel", relayFuelCost);
 
         buildingsCosts.Add(BuildingType.Battery, batteryCosts);
         buildingsCosts.Add(BuildingType.Generator, generatorCosts);
