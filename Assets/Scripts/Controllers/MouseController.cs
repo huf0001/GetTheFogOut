@@ -11,7 +11,6 @@ public class MouseController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -72,14 +71,36 @@ public class MouseController : MonoBehaviour
 
     private void Build(GameObject toBuild, Tile tile, float height)
     {
-        Vector3 PosToInst = new Vector3(tile.transform.position.x, height, tile.transform.position.z);
-        GameObject buildingGo = Instantiate(toBuild, PosToInst, tile.transform.rotation);
-        buildingGo.transform.SetParent(tile.transform);
-        Building building = buildingGo.GetComponentInChildren<Building>();
-        tile.Building = building;
-        building.Location = tile;
-        building.Animator = buildingGo.GetComponentInChildren<Animator>();
-        building.Animator.SetBool("Built", true);
+        Hub hub = WorldController.Instance.Hub;
+        BuildingType buildType = toBuild.GetComponentInChildren<Building>().BuildingType;
+
+        // Check if required resources are avaliable
+        if (hub.BuildingsCosts[buildType]["power"] <= hub.StoredPower &&
+            hub.BuildingsCosts[buildType]["mineral"] <= hub.StoredMineral &&
+            hub.BuildingsCosts[buildType]["organic"] <= hub.StoredOrganic &&
+            hub.BuildingsCosts[buildType]["fuel"] <= hub.StoredFuel)
+        {
+            // Remove required resources
+            hub.StoredPower -= hub.BuildingsCosts[buildType]["power"];
+            hub.StoredMineral -= hub.BuildingsCosts[buildType]["mineral"];
+            hub.StoredOrganic -= hub.BuildingsCosts[buildType]["organic"];
+            hub.StoredFuel -= hub.BuildingsCosts[buildType]["fuel"];
+
+            // Place new building
+            Vector3 PosToInst = new Vector3(tile.transform.position.x, height, tile.transform.position.z);
+            GameObject buildingGo = Instantiate(toBuild, PosToInst, tile.transform.rotation);
+            buildingGo.transform.SetParent(tile.transform);
+            Building building = buildingGo.GetComponentInChildren<Building>();
+            tile.Building = building;
+            building.Location = tile;
+            building.Animator = buildingGo.GetComponentInChildren<Animator>();
+            building.Animator.SetBool("Built", true);
+        }
+        else
+        {
+            Debug.Log("Can't build, do not have the required resources.");
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)

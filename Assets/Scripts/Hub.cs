@@ -13,6 +13,13 @@ public class Hub : PowerSource
     [SerializeField] private int mineralChange = 0;
     [SerializeField] private int storedFuel = 0;
 
+    private Dictionary<string, int> batteryCosts = new Dictionary<string, int>();
+    private Dictionary<string, int> generatorCosts = new Dictionary<string, int>();
+    private Dictionary<string, int> harvesterCosts = new Dictionary<string, int>();
+    private Dictionary<string, int> relayCosts = new Dictionary<string, int>();
+    private Dictionary<BuildingType, Dictionary<string, int>> buildingsCosts = 
+        new Dictionary<BuildingType, Dictionary<string, int>>();
+
     [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
     [SerializeField] private List<Battery> batteries = new List<Battery>();
 
@@ -25,6 +32,7 @@ public class Hub : PowerSource
     public int MineralChange { get => mineralChange; set => mineralChange = value; }
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<Battery> Batteries { get => batteries; set => batteries = value; }
+    public Dictionary<BuildingType, Dictionary<string, int>> BuildingsCosts { get => buildingsCosts; }
 
     // private Dictionary<Element, int> harvest = new Dictionary<Element, int>();
 
@@ -36,6 +44,32 @@ public class Hub : PowerSource
         powerSource = null;
 
         // costs 0 to build
+
+        // Set all building costs
+        batteryCosts.Add("power", 30);
+        batteryCosts.Add("mineral", 0);
+        batteryCosts.Add("organic", 0);
+        batteryCosts.Add("fuel", 0);
+
+        generatorCosts.Add("power", 30);
+        generatorCosts.Add("mineral", 0);
+        generatorCosts.Add("organic", 0);
+        generatorCosts.Add("fuel", 0);
+
+        harvesterCosts.Add("power", 50);
+        harvesterCosts.Add("mineral", 0);
+        harvesterCosts.Add("organic", 0);
+        harvesterCosts.Add("fuel", 0);
+
+        relayCosts.Add("power", 10);
+        relayCosts.Add("mineral", 0);
+        relayCosts.Add("organic", 0);
+        relayCosts.Add("fuel", 0);
+
+        buildingsCosts.Add(BuildingType.Battery, batteryCosts);
+        buildingsCosts.Add(BuildingType.Generator, generatorCosts);
+        buildingsCosts.Add(BuildingType.Harvester, harvesterCosts);
+        buildingsCosts.Add(BuildingType.Relay, relayCosts);
 
         InvokeRepeating("ProcessUpkeep", 1f, 1f);
     }
