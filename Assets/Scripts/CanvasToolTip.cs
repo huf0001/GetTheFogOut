@@ -26,19 +26,37 @@ public class CanvasToolTip : MonoBehaviour
 
     public void OnPointerEnter(PointerEventData data)
     {
+        // Code to check the value, update string to show.
+        //
+        // Battery
+        // ToolTipText.text = "Battery\nBattery description\nXps";
+        //
+        // Defence
+        // ToolTipText.text = "Defence\nDefence description\nXps";
+        //
+        // Generator
+        // ToolTipText.text = "Generator\nGenerator description\nXps";
+        //
+        // Harvester
+        // ToolTipText.text = "Harvester\nHarvester description\nXps";
+        //
+        // Relay
+        // ToolTipText.text = "Relay\nRelay description\nXps";
+
     	ToolTip.SetActive(true);
         Debug.Log("OnPointerEnter called.");
+
     }
 
     void Update()
     {
         if (IsVisible)
         {
-        	ToolTip.SetActive(true);
+            ToolTip.SetActive(true);
         }
         else
         {
-        	ToolTip.SetActive(false);
+            ToolTip.SetActive(false);
         }
     }
 }
