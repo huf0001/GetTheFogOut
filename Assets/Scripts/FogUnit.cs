@@ -8,6 +8,7 @@ public class FogUnit : Entity
     private Fog fog;
     private float healthLimit;
     private bool spilled = false;
+    private bool visible = false;
 
     //Properties
     public Fog Fog { get => fog; set => fog = value; }

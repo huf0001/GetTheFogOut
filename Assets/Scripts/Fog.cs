@@ -7,6 +7,8 @@ public class Fog : MonoBehaviour
     //Serialized Fields
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private float fogHealthLimit = 5f;
+    [SerializeField] private Material visibleMaterial;
+    [SerializeField] private Material invisibleMaterial;
 
     //Container object fields
     private List<Tile> fogCoveredTiles = new List<Tile>();                      //i.e. tiles currently covered by fog
@@ -69,8 +71,10 @@ public class Fog : MonoBehaviour
         fGO.transform.position = new Vector3(x, t.transform.position.y + 0.3f, z);
         fGO.name = "FogUnit(" + x + "," + z + ")";
 
+        f.gameObject.GetComponent<Renderer>().material = visibleMaterial;
         f.Location = t;
         f.Health = 0.0001f;
+        f.Spilled = false;
         t.FogUnit = f;
 
         fogUnitsInPlay.Add(fGO);
@@ -125,6 +129,8 @@ public class Fog : MonoBehaviour
 
         f.gameObject.SetActive(false);
         f.Location.FogUnit = null;
+        f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
+        f.Spilled = true;
 
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f.gameObject);
