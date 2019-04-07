@@ -16,6 +16,14 @@ public class btn_tower : MonoBehaviour
     private WorldController WC;
     public KeyCode _key;
 
+    // Matt Germon: Test Code to see if moving the mouse over a button would trigger.
+    // considering as a means of making "Tooltip" appear in the Canvas.
+    //private bool IsMouseOver;
+
+    // void Start()
+    // {
+    //     IsMouseOver = false;
+    // }
 
     void Update()
     {
@@ -30,11 +38,13 @@ public class btn_tower : MonoBehaviour
     // considering as a means of making "Tooltip" appear in the Canvas.
     // void OnMouseOver()
     // {
+    //     IsMouseOver = true;
     //     Debug.Log("Mouse is over the Button.");
     // }
 
     // void OnMouseExit()
     // {
+    //     IsMouseOver = false;
     //     Debug.Log("Mouse is off the Button.");
     // }
 
