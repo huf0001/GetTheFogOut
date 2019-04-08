@@ -131,28 +131,31 @@ public class WorldController : MonoBehaviour
         Tile t;
         Tile a;
 
-        //if (gameObject.GetComponent<Fog>().Expansion == FogExpansion.Orthogonal)
-        //{
-        //    foreach (GameObject o in tiles)
-        //    {
-        //        t = o.GetComponent<Tile>();
+        if (gameObject.GetComponent<Fog>().Expansion == FogExpansion.Orthogonal)
+        {
+            foreach (GameObject o in tiles)
+            {
+                t = o.GetComponent<Tile>();
 
-        //        Point2D[] pts = { new Point2D(t.X, t.Z - 1), new Point2D(t.X, t.Z + 1), new Point2D(t.X - 1, t.Z), new Point2D(t.X - 1, t.Z) };
+                Point2D[] pts = { new Point2D(t.X, t.Z - 1), new Point2D(t.X, t.Z + 1), new Point2D(t.X - 1, t.Z), new Point2D(t.X + 1, t.Z) };
 
-        //        foreach (Point2D p in pts)
-        //        {
-        //            a = GetTileAt(p.x, p.y).GetComponent<Tile>();
+                foreach (Point2D p in pts)
+                {
+                    if (p.x >= 0 && p.x < width && p.y >= 0 && p.y < length)
+                    {
+                        a = GetTileAt(p.x, p.y).GetComponent<Tile>();
 
-        //            if (!t.AdjacentTiles.Contains(a))
-        //            {
-        //                t.AdjacentTiles.Add(a);
-        //                continue;
-        //            }
-        //        }
-        //    }
-        //}
-        //else
-        //{
+                        if (!t.AdjacentTiles.Contains(a))
+                        {
+                            t.AdjacentTiles.Add(a);
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
             foreach (GameObject o in tiles)
             {
                 t = o.GetComponent<Tile>();
@@ -177,7 +180,7 @@ public class WorldController : MonoBehaviour
                     }
                 }
             }
-        //}
+        }
     }
 
     private void MeshRendererTileChild(bool toggle)
