@@ -61,13 +61,13 @@ public class UIController : MonoBehaviour
     {
         if (hub != null)
         {
-            powerSlider.maxValue = hub.MaxPower;
-            powerSlider.value = hub.StoredPower;
-            fuelSlider.value = hub.StoredFuel;
-            organicSlider.value = hub.StoredOrganic;
-            mineralSlider.value = hub.StoredMineral;
+            powerSlider.maxValue = Mathf.Lerp(powerSlider.maxValue, hub.MaxPower, 1f * Time.deltaTime);
+            powerSlider.value = Mathf.Lerp(powerSlider.value, hub.StoredPower, 1f * Time.deltaTime);
+            fuelSlider.value = Mathf.Lerp(fuelSlider.value, hub.StoredFuel, 1f * Time.deltaTime);
+            organicSlider.value = Mathf.Lerp(organicSlider.value, hub.StoredOrganic, 1f * Time.deltaTime);
+            mineralSlider.value = Mathf.Lerp(mineralSlider.value, hub.StoredMineral, 1f * Time.deltaTime);
 
-            powerText.text = hub.StoredPower + "/" + hub.MaxPower; //+ hub.PowerChange;
+            powerText.text = Mathf.Round(Mathf.Lerp(powerSlider.value, hub.StoredPower, 1f * Time.deltaTime)) + "/" + hub.MaxPower; //+ hub.PowerChange;
             //organicText.text = "Organic: " + hub.StoredOrganic;
             //mineralText.text = "Minerals: " + hub.StoredMineral + " Change: " + hub.MineralChange;
             //fuelText.text = "Fuel: " + hub.StoredFuel;
