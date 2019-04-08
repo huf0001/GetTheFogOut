@@ -249,10 +249,9 @@ public class WorldController : MonoBehaviour
             if (hit.transform.gameObject.tag == "Tile")
             {
                 tiletest = hit.transform.gameObject;
-                if (Physics.Raycast(ray, out hit))
-                {
-                    EnableMeshRendTile(tiletest);
-                }
+
+                EnableMeshRendTile(tiletest);
+
             }
         }
     }

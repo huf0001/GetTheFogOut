@@ -7,7 +7,7 @@ public class ResourceNode : Entity
 
     protected bool isHarvestable = true;
     [SerializeField] protected Resource resourceType;
-    [SerializeField] protected float resMultiplier = 1f;
+    protected float resMultiplier;
 
     public Resource ResourceType { get => resourceType; }
     public float ResMultiplier { get => resMultiplier; }
