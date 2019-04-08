@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5857332731719570305}
-  - component: {fileID: 1463398031382540715}
   - component: {fileID: 6533663886365946928}
   - component: {fileID: 5461160745666874787}
+  - component: {fileID: 5903268026336039911}
   m_Layer: 0
   m_Name: MineralResourceNode
   m_TagString: Untagged
@@ -33,20 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1463398031382540715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762063269852825293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1926dba99df177a4ba948bbb92f5752f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 20
-  resource: 2
 --- !u!33 &6533663886365946928
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -92,3 +78,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5903268026336039911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762063269852825293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed6d37a806b280498c454644f3bf924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  resourceType: 3
+  resMultiplier: 1
