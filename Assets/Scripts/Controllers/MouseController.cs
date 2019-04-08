@@ -95,6 +95,7 @@ public class MouseController : MonoBehaviour
             building.Location = tile;
             building.Animator = buildingGo.GetComponentInChildren<Animator>();
             building.Animator.SetBool("Built", true);
+            building.Place();
         }
         else
         {

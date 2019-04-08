@@ -81,9 +81,9 @@ public  class WorldController : MonoBehaviour
 
                 if (Random.Range(1, 100) < mineralSpawnChance)
                 {
+                    tileGo.GetComponent<Tile>().Resource = Resource.Mineral;
                     pos.y += 0.2f;
                     GameObject mineral = Instantiate(mineralPrefab, pos, tileGo.transform.rotation);
-                    tileGo.GetComponent<Tile>().Resource = mineral.GetComponentInChildren<ResourceNode>();
                     mineral.transform.SetParent(tileGo.transform, true);
                 }
 
@@ -215,10 +215,9 @@ public  class WorldController : MonoBehaviour
             if (hit.transform.gameObject.tag == "Tile")
             {
                 tiletest = hit.transform.gameObject;
-                if (Physics.Raycast(ray, out hit))
-                {
-                    EnableMeshRendTile(tiletest);
-                }
+
+                EnableMeshRendTile(tiletest);
+
             }
         }
     }

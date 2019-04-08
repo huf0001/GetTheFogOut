@@ -378,6 +378,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+<<<<<<< HEAD
+  - {fileID: 2544332252346601577}
+=======
   - {fileID: 5416581811924583435}
   - {fileID: 9108344199723263434}
   - {fileID: 866589444650615803}
@@ -385,6 +388,7 @@ Transform:
   - {fileID: 3407222318306463763}
   - {fileID: 311160333383083296}
   - {fileID: 5173363030591899446}
+>>>>>>> a3627e4c96076536e852e016302f4b5459a9822d
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -400,6 +404,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed6d37a806b280498c454644f3bf924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
+  health: 20
+  resource: 1
+--- !u!1001 &2544332252346993385
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3767451649405566112}
+    m_Modifications:
+    - target: {fileID: 100000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_Name
+      value: Floating Baubble Plant
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.1765
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.9267
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.97005
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 64.725
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 64.725
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 64.725
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 24066bbebc48bc64ab906d531f9dc2d5, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aad5a40faf3c36341aa0c2356f18acc0, type: 3}
+--- !u!4 &2544332252346601577 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: aad5a40faf3c36341aa0c2356f18acc0,
+    type: 3}
+  m_PrefabInstance: {fileID: 2544332252346993385}
+  m_PrefabAsset: {fileID: 0}
+=======
   health: 1
   resourceType: 2
   resMultiplier: 1
@@ -496,3 +583,4 @@ Transform:
   m_Father: {fileID: 2578322101211959809}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+>>>>>>> a3627e4c96076536e852e016302f4b5459a9822d
