@@ -4,10 +4,21 @@ using UnityEngine;
 
 public class Fog : MonoBehaviour
 {
+    private enum StartConfiguration
+    {
+        OneSide,
+        Corners,
+        FourCompassPoints,
+        EightCompassPoints,
+        FourSides
+    }
+
     //Serialized Fields
     [SerializeField] private FogUnit fogUnitPrefab;
-    [SerializeField] private float fogHealthLimit = 100f;
+    [SerializeField] private StartConfiguration configuration;
     [SerializeField] private float fogGrowth = 5f;
+    [SerializeField] private float fogHealthLimit = 100f;
+
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
 
@@ -53,14 +64,58 @@ public class Fog : MonoBehaviour
     //Spawns the starting fog on the board
     private void SpawnStartingFog()
     {
-        //TODO: Create more sophisticated algorithm for selecting the starting points for the fog,
-        //      even if it's just starting in the four corners or on all four sides.
-
-        //Spawns fog on one side of the board.
-        for (int i = 0; i < zMax; i++)
+        if (configuration == StartConfiguration.OneSide)
         {
-            SpawnFogUnit(i, zMax - 1);
+            //Spawns fog on one side of the board.
+            for (int i = 0; i < xMax; i++)
+            {
+                SpawnFogUnit(i, zMax - 1);
+            }
         }
+        else if (configuration == StartConfiguration.Corners)
+        {
+            //Corner spaces
+            SpawnFogUnit(0, 0);
+            SpawnFogUnit(0, zMax - 1);
+            SpawnFogUnit(xMax - 1, 0);
+            SpawnFogUnit(xMax - 1, zMax - 1);
+        }
+        else if (configuration == StartConfiguration.FourCompassPoints)
+        {
+            //Four compass points
+        }
+        else if (configuration == StartConfiguration.EightCompassPoints)
+        {
+            //Corner spaces
+            SpawnFogUnit(0, 0);
+            SpawnFogUnit(0, zMax - 1);
+            SpawnFogUnit(xMax - 1, 0);
+            SpawnFogUnit(xMax - 1, zMax - 1);
+
+            //Four compass points
+        }
+        else if (configuration == StartConfiguration.FourSides)
+        {
+            //Each side
+            for (int i = 1; i < xMax - 1; i++)
+            {
+                SpawnFogUnit(i, 0);
+                SpawnFogUnit(i, zMax - 1);
+            }
+
+            for (int i = 1; i < zMax - 1; i++)
+            {
+                SpawnFogUnit(0, i);
+                SpawnFogUnit(xMax - 1, i);
+            }
+
+            //Corner spaces
+            SpawnFogUnit(0, 0);
+            SpawnFogUnit(0, zMax - 1);
+            SpawnFogUnit(xMax - 1, 0);
+            SpawnFogUnit(xMax - 1, zMax - 1);
+        }
+        
     }
 
     //Takes a fog unit and puts it on the board
