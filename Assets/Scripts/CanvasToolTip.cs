@@ -27,30 +27,29 @@ public class CanvasToolTip : MonoBehaviour
         {
             if (message == "Battery")
             {
-                ToolTipText.text = "Battery\nBattery description\nXps";
+                ToolTipText.text = "Battery\nIncrease your Maximum battery storage.\n+10 Storage, Cost: xx";
             }
             if (message == "Defence")
             {
-                ToolTipText.text = "Defence\nDefence description\nXps";
+                ToolTipText.text = "Defence\nDefence description\nXps, Cost: xx";
             }
             if (message == "Generator")
             {
-                ToolTipText.text = "Generator\nGenerator description\nXps";
+                ToolTipText.text = "Generator\nIncrease the rate of generating power.\n+2 per second, Cost: xx";
             }
             if (message == "Harvester")
             {
-                ToolTipText.text = "Harvester\nHarvester description\nXps";
+                ToolTipText.text = "Harvester\nHarvester description\nXps, Cost: xx";
             }
             if (message == "Relay")
             {
-                ToolTipText.text = "Relay\nRelay description\nXps";
+                ToolTipText.text = "Relay\nConnect buildings to send back to base.\nXps, Cost: xx";
             }
             ToolTip.SetActive(true);
         }
         else
         {
             ToolTipText.text = "Error, unknown message, ZIPPIDEE DOO.";
-            return;
         }
     }
 
