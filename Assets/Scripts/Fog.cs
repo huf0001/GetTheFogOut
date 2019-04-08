@@ -6,7 +6,8 @@ public class Fog : MonoBehaviour
 {
     //Serialized Fields
     [SerializeField] private FogUnit fogUnitPrefab;
-    [SerializeField] private float fogHealthLimit = 5f;
+    [SerializeField] private float fogHealthLimit = 100f;
+    [SerializeField] private float fogGrowth = 5f;
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
 
@@ -21,6 +22,7 @@ public class Fog : MonoBehaviour
     //Value fields
     private int xMax;
     private int zMax;
+
 
     private float tick = 0;
 
@@ -144,9 +146,14 @@ public class Fog : MonoBehaviour
     {
         tick += Time.deltaTime;
 
+        if (fogGrowth < 100)
+        {
+            fogGrowth += Time.deltaTime;
+        }
+
         foreach (GameObject f in fogUnitsInPlay)
         {
-            f.GetComponent<FogUnit>().Health += Time.deltaTime;
+            f.GetComponent<FogUnit>().Health += Time.deltaTime * fogGrowth;
         }
 
         if (tick >= 1)

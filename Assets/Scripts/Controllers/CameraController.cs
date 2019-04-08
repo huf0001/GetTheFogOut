@@ -9,6 +9,9 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     float moveSpeed = 20f;
 
+    [SerializeField]
+    bool enableEdgePan = false;
+
     float dragSpeed = 0.050f; //Don't change on a whim, specific value to making dragging work properly.
 
     private Vector3 currFramePosition;
@@ -62,37 +65,40 @@ public class CameraController : MonoBehaviour
         rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
         upMovement = up * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
 
-        //mouse scroll
-        if (Input.mousePosition.x >= Screen.width - 20)
+        if (enableEdgePan)
         {
-            //scroll right
-            rightMovement = right * moveSpeed * Time.deltaTime * 1;
-        }
-        if (Input.mousePosition.x <= 10)
-        {
-            //scroll left
-            rightMovement = right * moveSpeed * Time.deltaTime * -1;
-        }
+            //mouse scroll
+            if (Input.mousePosition.x >= Screen.width - 20)
+            {
+                //scroll right
+                rightMovement = right * moveSpeed * Time.deltaTime * 1;
+            }
+            if (Input.mousePosition.x <= 10)
+            {
+                //scroll left
+                rightMovement = right * moveSpeed * Time.deltaTime * -1;
+            }
 
-        if (Input.mousePosition.y >= Screen.height - 20)
-        {
-            //scroll up
-            rightMovement = up * moveSpeed * Time.deltaTime * 1;
-        }
-        if (Input.mousePosition.y <= 20)
-        {
-            rightMovement = up * moveSpeed * Time.deltaTime * -1;
-        }
+            if (Input.mousePosition.y >= Screen.height - 20)
+            {
+                //scroll up
+                rightMovement = up * moveSpeed * Time.deltaTime * 1;
+            }
+            if (Input.mousePosition.y <= 20)
+            {
+                rightMovement = up * moveSpeed * Time.deltaTime * -1;
+            }
 
-        if (Input.GetKey("q"))
-        {
-            //scroll down
-            transform.Rotate(Vector3.forward * moveSpeed * Time.deltaTime);
-        }
+            if (Input.GetKey("q"))
+            {
+                //scroll down
+                transform.Rotate(Vector3.forward * moveSpeed * Time.deltaTime);
+            }
 
-        if (Input.GetKey("e"))
-        {
-            transform.Rotate(Vector3.forward * -moveSpeed * Time.deltaTime);
+            if (Input.GetKey("e"))
+            {
+                transform.Rotate(Vector3.forward * -moveSpeed * Time.deltaTime);
+            }
         }
 
         transform.position += rightMovement;

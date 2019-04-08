@@ -8,7 +8,6 @@ public class FogUnit : Entity
     private Fog fog;
     private float healthLimit;
     private bool spilled = false;
-    private bool visible = false;
 
     //Properties
     public Fog Fog { get => fog; set => fog = value; }
@@ -24,10 +23,7 @@ public class FogUnit : Entity
     // Update is called once per frame
     void Update()
     {
-        if (Health <= 0)
-        {
-            ReturnToFogPool();
-        }
+        
     }
 
     public override float Health
@@ -39,11 +35,24 @@ public class FogUnit : Entity
 
         set
         {
+            //Set start and end points at start
+            //float start = base.Health;
+            //float end = value;
+            //float progress = 0;
+
+            //Lerp and increment progress in update
+            //base.Health = Mathf.Lerp(start, end, progress);
+            //progress += Time.deltaTime;
+
             base.Health = value;
 
             if (base.Health > healthLimit)
             {
                 base.Health = healthLimit;
+            }
+            else if (base.Health <= 0)
+            {
+                ReturnToFogPool();
             }
         }
     }
