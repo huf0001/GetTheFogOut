@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ResourceNode : Entity
+public class ResourceNode : Entity
 {
 
     protected bool isHarvestable = true;
-    [SerializeField] protected Resource resource;
-    protected float resMultiplier;
+    [SerializeField] protected Resource resourceType;
+    [SerializeField] protected float resMultiplier = 1f;
 
-    public Resource Resource { get => resource; }
+    public Resource ResourceType { get => resourceType; }
     public float ResMultiplier { get => resMultiplier; }
 }
