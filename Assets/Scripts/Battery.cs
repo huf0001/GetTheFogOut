@@ -14,7 +14,11 @@ public class Battery : Building
     protected override void Start()
     {
         base.Start();
+    }
 
+    public override void Place()
+    {
+        base.Place();
         if (!WorldController.Instance.Hub.Batteries.Contains(this))
         {
             WorldController.Instance.Hub.Batteries.Add(this);
@@ -27,11 +31,13 @@ public class Battery : Building
         
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         if (WorldController.Instance.Hub.Batteries.Contains(this))
         {
             WorldController.Instance.Hub.Batteries.Remove(this);
         }
     }
+    
 }
