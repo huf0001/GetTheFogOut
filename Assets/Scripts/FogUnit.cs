@@ -10,8 +10,8 @@ public class FogUnit : Entity
     private bool spilled = false;
 
     private bool lerp = false;
-    private float start = 0.6f;
-    private float end = -0.6f;
+    private float start = 0f;
+    private float end = 0.45f;
 
     //Properties
     public Fog Fog { get => fog; set => fog = value; }
@@ -25,17 +25,12 @@ public class FogUnit : Entity
         
     }
 
-    //public void Lerp()
-    //{
-    //    lerp = true;
-    //}
-
     // Update is called once per frame
     void Update()
     {
         if (lerp)
         {
-            gameObject.GetComponent<Renderer>().material.SetFloat("_FogFade", Mathf.Lerp(start, end, Health/HealthLimit));
+            gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, Health / HealthLimit));
 
             if (Health == HealthLimit)
             {

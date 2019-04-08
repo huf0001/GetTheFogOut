@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum FogExpansion
+{
+    Orthogonal,
+    OrthogonalAndDiagonal
+}
+
 public class Fog : MonoBehaviour
 {
     private enum StartConfiguration
@@ -16,6 +22,7 @@ public class Fog : MonoBehaviour
     //Serialized Fields
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
+    [SerializeField] private FogExpansion expansion;
     [SerializeField] private float fogGrowth = 5f;
     [SerializeField] private float fogHealthLimit = 100f;
 
@@ -33,9 +40,10 @@ public class Fog : MonoBehaviour
     //Value fields
     private int xMax;
     private int zMax;
-
-
     private float tick = 0;
+
+    //Public properties
+    public FogExpansion Expansion { get => expansion; }
 
     //Sets up the fog at the start of the game. Called by WorldController to actually have it work.
     public void SpawnFog()
@@ -83,6 +91,10 @@ public class Fog : MonoBehaviour
         else if (configuration == StartConfiguration.FourCompassPoints)
         {
             //Four compass points
+            SpawnFogUnit(Mathf.RoundToInt(xMax / 2), 0);
+            SpawnFogUnit(Mathf.RoundToInt(xMax / 2), zMax - 1);
+            SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2));
+            SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2));
         }
         else if (configuration == StartConfiguration.EightCompassPoints)
         {
@@ -93,6 +105,10 @@ public class Fog : MonoBehaviour
             SpawnFogUnit(xMax - 1, zMax - 1);
 
             //Four compass points
+            SpawnFogUnit(Mathf.RoundToInt(xMax / 2), 0);
+            SpawnFogUnit(Mathf.RoundToInt(xMax / 2), zMax - 1);
+            SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2));
+            SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2));
         }
         else if (configuration == StartConfiguration.FourSides)
         {
@@ -115,7 +131,6 @@ public class Fog : MonoBehaviour
             SpawnFogUnit(xMax - 1, 0);
             SpawnFogUnit(xMax - 1, zMax - 1);
         }
-        
     }
 
     //Takes a fog unit and puts it on the board

@@ -2,8 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public  class WorldController : MonoBehaviour
+public class WorldController : MonoBehaviour
 {
+    private class Point2D
+    {
+        public int x;
+        public int y;
+
+        public Point2D(int a, int b)
+        {
+            x = a;
+            y = b;
+        }
+    }
 
     // Used to get the instance of the WorldManager from anywhere.
     public static WorldController Instance { get; protected set; }
@@ -36,7 +47,7 @@ public  class WorldController : MonoBehaviour
     private TowerManager tm;
     private Vector3 pos;
     public bool InBuildMode;
-    [SerializeField]private GameObject planeGridprefab;
+    [SerializeField] private GameObject planeGridprefab;
 
     private void Start()
     {
@@ -91,7 +102,7 @@ public  class WorldController : MonoBehaviour
             }
         }
 
-        
+
 
         // OLD CODE, IGNORE. MAY USE LATER
         //// Create a game object for each tile
@@ -120,30 +131,53 @@ public  class WorldController : MonoBehaviour
         Tile t;
         Tile a;
 
-        foreach (GameObject o in tiles)
-        {
-            t = o.GetComponent<Tile>();
+        //if (gameObject.GetComponent<Fog>().Expansion == FogExpansion.Orthogonal)
+        //{
+        //    foreach (GameObject o in tiles)
+        //    {
+        //        t = o.GetComponent<Tile>();
 
-            for (int i = t.X - 1; i <= t.X + 1; i++)
+        //        Point2D[] pts = { new Point2D(t.X, t.Z - 1), new Point2D(t.X, t.Z + 1), new Point2D(t.X - 1, t.Z), new Point2D(t.X - 1, t.Z) };
+
+        //        foreach (Point2D p in pts)
+        //        {
+        //            a = GetTileAt(p.x, p.y).GetComponent<Tile>();
+
+        //            if (!t.AdjacentTiles.Contains(a))
+        //            {
+        //                t.AdjacentTiles.Add(a);
+        //                continue;
+        //            }
+        //        }
+        //    }
+        //}
+        //else
+        //{
+            foreach (GameObject o in tiles)
             {
-                if (i >= 0 && i < width)
-                {
-                    for (int j = t.Z - 1; j <= t.Z + 1; j++)
-                    {
-                        if (j >= 0 && j < length)
-                        {
-                            a = GetTileAt(i, j).GetComponent<Tile>();
+                t = o.GetComponent<Tile>();
 
-                            if (!t.AdjacentTiles.Contains(a))
+                for (int i = t.X - 1; i <= t.X + 1; i++)
+                {
+                    if (i >= 0 && i < width)
+                    {
+                        for (int j = t.Z - 1; j <= t.Z + 1; j++)
+                        {
+                            if (j >= 0 && j < length)
                             {
-                                t.AdjacentTiles.Add(a);
-                                continue;
+                                a = GetTileAt(i, j).GetComponent<Tile>();
+
+                                if (!t.AdjacentTiles.Contains(a))
+                                {
+                                    t.AdjacentTiles.Add(a);
+                                    continue;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
+        //}
     }
 
     private void MeshRendererTileChild(bool toggle)
