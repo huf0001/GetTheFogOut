@@ -11,7 +11,7 @@ public class Tile : MonoBehaviour
     //Serialized Fields
     [SerializeField] private List<PowerSource> powerSources = new List<PowerSource>();
 
-    [SerializeField] private Resource resource;
+    [SerializeField] private ResourceNode resource;
     [SerializeField] private Building building = null;
 
     [SerializeField] private Material onMaterial;
@@ -31,7 +31,7 @@ public class Tile : MonoBehaviour
     public int X { get => x; set => x = value; }
     public int Z { get => z; set => z = value; }
 
-    public Resource Resource { get => resource; set => resource = value; }
+    public ResourceNode Resource { get => resource; set => resource = value; }
     public FogUnit FogUnit { get => fogUnit; set => fogUnit = value; }
     public Building Building { get => building; set => building = value; }
     public GameObject Placedtower { get => placedtower; set => placedtower = value; }

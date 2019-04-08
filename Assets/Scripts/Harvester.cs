@@ -25,7 +25,7 @@ public class Harvester : Building
 
     public override void PowerUp()
     {
-        if (location.Resource == Resource.Mineral)
+        if (location.Resource.ResourceType == Resource.Mineral)
         { 
             base.PowerUp();
             if (!WorldController.Instance.Hub.Harvesters.Contains(this))
