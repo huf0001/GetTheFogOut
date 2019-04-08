@@ -26,12 +26,7 @@ public abstract class Building : Entity
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        if(buildingType != BuildingType.Hub)
-        {
-            powerSource = location.PowerSource;
-            powerSource.PlugIn
-                (this);
-        }
+        
     }
 
 
@@ -39,6 +34,16 @@ public abstract class Building : Entity
     void Update()
     {
         
+    }
+
+    public virtual void Place()
+    {
+        if (buildingType != BuildingType.Hub)
+        {
+            powerSource = location.PowerSource;
+            powerSource.PlugIn
+                (this);
+        }
     }
 
     private void MakeTilesVisible()
