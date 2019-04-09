@@ -39,7 +39,7 @@ public class CanvasToolTip : MonoBehaviour
             }
             if (message == "Harvester")
             {
-                ToolTipText.text = "Harvester\nHarvester description\nXps, Cost: xx";
+                ToolTipText.text = "Harvester\nHarvester description\nXps, Cost: 50";
             }
             if (message == "Relay")
             {
