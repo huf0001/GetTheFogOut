@@ -5,13 +5,16 @@ using UnityEngine;
 public class Hub : PowerSource
 {
     [SerializeField] private int maxPower = 100;
-    [SerializeField] private int storedPower = 0;
-    [SerializeField] private int powerChange = 0;
 
-    [SerializeField] private int storedOrganic = 0;
+    [SerializeField] private int storedPower = 0;
     [SerializeField] private int storedMineral = 0;
-    [SerializeField] private int mineralChange = 0;
+    [SerializeField] private int storedOrganic = 0;
     [SerializeField] private int storedFuel = 0;
+
+    [SerializeField] private int powerChange = 0;
+    [SerializeField] private int mineralChange = 0;
+    [SerializeField] private int organicChange = 0;
+    [SerializeField] private int fuelChange = 0;
 
     [Header("Building Costs")]
     [SerializeField] private int batteryPowerCost = 30;
@@ -35,6 +38,7 @@ public class Hub : PowerSource
     [SerializeField] private int defenceOrganicCost = 0;
     [SerializeField] private int defenceFuelCost = 0;
 
+    private Resource ResourceOn;
 
     private Dictionary<string, int> batteryCosts = new Dictionary<string, int>();
     private Dictionary<string, int> generatorCosts = new Dictionary<string, int>();
@@ -47,13 +51,18 @@ public class Hub : PowerSource
     [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
     [SerializeField] private List<Battery> batteries = new List<Battery>();
 
-    public int StoredOrganic { get => storedOrganic; set => storedOrganic = value; }
-    public int StoredMineral { get => storedMineral; set => storedMineral = value; }
-    public int StoredFuel { get => storedFuel; set => storedFuel = value; }
     public int MaxPower { get => maxPower; set => maxPower = value; }
+
     public int StoredPower { get => storedPower; set => storedPower = value; }
+    public int StoredMineral { get => storedMineral; set => storedMineral = value; }
+    public int StoredOrganic { get => storedOrganic; set => storedOrganic = value; }
+    public int StoredFuel { get => storedFuel; set => storedFuel = value; }
+
     public int PowerChange { get => powerChange; set => powerChange = value; }
     public int MineralChange { get => mineralChange; set => mineralChange = value; }
+    public int OrganicChange { get => organicChange; set => organicChange = value; }
+    public int FuelChange { get => fuelChange; set => fuelChange = value; }
+
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<Battery> Batteries { get => batteries; set => batteries = value; }
     public Dictionary<BuildingType, Dictionary<string, int>> BuildingsCosts { get => buildingsCosts; }
@@ -136,12 +145,41 @@ public class Hub : PowerSource
 
         // Process minerals
         totalUpkeep = 0;
-        foreach (Harvester harvester in harvesters)
+
+        if (harvesters.Count != 0)
         {
-            totalUpkeep += harvester.HarvestAmt;
-        }
-        mineralChange = totalUpkeep;
-        storedMineral += mineralChange;
+            foreach (Harvester harvester in harvesters)
+            {
+                totalUpkeep += harvester.HarvestAmt;
+                ResourceOn = harvester.Location.Resource.ResourceType;
+
+                switch (ResourceOn)
+                {
+                    case Resource.Power:
+                        powerChange = totalUpkeep;
+                        break;
+                    case Resource.Organic:
+                        organicChange = totalUpkeep;
+                        StoredOrganic += organicChange;
+                        break;
+                    case Resource.Mineral:
+                        mineralChange = totalUpkeep;
+                        storedMineral += mineralChange;
+                        break;
+                    case Resource.Fuel:
+                        fuelChange = totalUpkeep;
+                        StoredFuel += fuelChange;
+                        break;
+                }
+            }
+        }else
+            {
+                powerChange = 0;
+                organicChange = 0;
+                mineralChange = 0;
+                fuelChange = 0;
+            }
+
     }
 
     public override bool SupplyingPower()

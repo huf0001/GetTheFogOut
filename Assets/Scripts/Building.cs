@@ -137,7 +137,7 @@ public abstract class Building : Entity
         {
             powerSource.Unplug(this);
         }
-
+        PowerDown();
         MakeTilesNotVisible();
     }
 

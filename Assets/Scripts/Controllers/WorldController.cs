@@ -18,14 +18,20 @@ public class WorldController : MonoBehaviour
 
     // Used to get the instance of the WorldManager from anywhere.
     public static WorldController Instance { get; protected set; }
+    [SerializeField] private int width = 30;
 
     [SerializeField] GameObject tilePrefab;
-    [SerializeField] GameObject mineralPrefab;
     [SerializeField] GameObject hubPrefab;
+    [SerializeField] GameObject mineralPrefab;
+    [SerializeField] GameObject fuelPrefab;
+    [SerializeField] GameObject powerPrefab;
+    [SerializeField] GameObject organPrefab;
 
     [SerializeField] int mineralSpawnChance = 5;
+    [SerializeField] int fuelSpawnChance = 5;
+    [SerializeField] int powerSpawnChance = 5;
+    [SerializeField] int organSpawnChance = 5;
 
-    [SerializeField] private int width = 30;
     public int Width { get => width; }
 
     [SerializeField] private int length = 30;
@@ -91,39 +97,55 @@ public class WorldController : MonoBehaviour
                 MeshRendererTileChild(true);
 
                 if (Random.Range(1, 100) < mineralSpawnChance)
-                {
-                    pos.y += 0.2f;
-                    GameObject mineral = Instantiate(mineralPrefab, pos, tileGo.transform.rotation);
-                    tileGo.GetComponent<Tile>().Resource = mineral.GetComponentInChildren<ResourceNode>();
-                    mineral.transform.SetParent(tileGo.transform, true);
+                { 
+                        pos.y += 0.2f;
+                        GameObject mineral = Instantiate(mineralPrefab, pos, tileGo.transform.rotation);
+                        tileGo.GetComponent<Tile>().Resource = mineral.GetComponentInChildren<ResourceNode>();
+                        mineral.transform.SetParent(tileGo.transform, true);
                 }
+
+                if (Random.Range(1, 100) < fuelSpawnChance)
+                {
+                        pos.y += 0.3f;
+                        GameObject fuel = Instantiate(fuelPrefab, pos, tileGo.transform.rotation);
+                        tileGo.GetComponent<Tile>().Resource = fuel.GetComponentInChildren<ResourceNode>();
+                        fuel.transform.SetParent(tileGo.transform, true);
+                }
+
+                if (Random.Range(1, 100) < organSpawnChance)
+                {
+                        pos.y += 0.3f;
+                        GameObject organ = Instantiate(organPrefab, pos, tileGo.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
+                        tileGo.GetComponent<Tile>().Resource = organ.GetComponentInChildren<ResourceNode>();
+                        organ.transform.SetParent(tileGo.transform, true);
+                }
+
 
                 tiles[x, z] = tileGo;
             }
         }
-
-
-
-        // OLD CODE, IGNORE. MAY USE LATER
-        //// Create a game object for each tile
-        //for (int x = 0; x < width; x++)
-        //{
-        //    for (int y = 0; y < length; y++)
-        //    {
-        //        Tile tileData = GetTileAt(x, y);
-
-        //        GameObject tileGo = Instantiate(tilePrefab);
-        //        tileGo.name = "Tile_" + x + "_" + y;
-        //        tileGo.transform.position = new Vector3(tileData.X, tileData.Y, tileData.Z);
-        //        tileGo.transform.SetParent(this.transform, true);
-
-        //        tileData.RegisterTileBuildingChangedCallback(
-        //            (tile, building) => { OnTileBuildingChanged(tile, tileGo, building); });
-        //        tileData.RegisterTileResourceChangedCallback(
-        //            (tile) => { OnTileResourceChanged(tile, tileGo); });
-        //    }
-        //}
     }
+
+
+    // OLD CODE, IGNORE. MAY USE LATER
+    //// Create a game object for each tile
+    //for (int x = 0; x < width; x++)
+    //{
+    //    for (int y = 0; y < length; y++)
+    //    {
+    //        Tile tileData = GetTileAt(x, y);
+
+    //        GameObject tileGo = Instantiate(tilePrefab);
+    //        tileGo.name = "Tile_" + x + "_" + y;
+    //        tileGo.transform.position = new Vector3(tileData.X, tileData.Y, tileData.Z);
+    //        tileGo.transform.SetParent(this.transform, true);
+
+    //        tileData.RegisterTileBuildingChangedCallback(
+    //            (tile, building) => { OnTileBuildingChanged(tile, tileGo, building); });
+    //        tileData.RegisterTileResourceChangedCallback(
+    //            (tile) => { OnTileResourceChanged(tile, tileGo); });
+    //    }
+    //}
 
     //Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
     private void ConnectAdjacentTiles()
@@ -283,12 +305,12 @@ public class WorldController : MonoBehaviour
             ShowTile();
         }
     }
-
+    //rotate to 90
     private void InstantiateStartHub()
     {
         Tile startingTile = tiles[Mathf.FloorToInt(width / 2), Mathf.FloorToInt(length / 2)].GetComponent<Tile>();
         Vector3 PosToInst = new Vector3(startingTile.transform.position.x, startingTile.transform.position.y + 0.4125f, startingTile.transform.position.z);
-        GameObject hubGO = Instantiate(hubPrefab, PosToInst, startingTile.transform.rotation);
+        GameObject hubGO = Instantiate(hubPrefab, PosToInst, startingTile.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
         Hub startHub = hubGO.GetComponentInChildren<Hub>();
         hub = startHub;
 
