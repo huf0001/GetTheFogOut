@@ -6,8 +6,7 @@ public class WorldController : MonoBehaviour
 {
     private class Point2D
     {
-        public int x;
-        public int y;
+        public int x, y;
 
         public Point2D(int a, int b)
         {
@@ -18,19 +17,12 @@ public class WorldController : MonoBehaviour
 
     // Used to get the instance of the WorldManager from anywhere.
     public static WorldController Instance { get; protected set; }
+    
     [SerializeField] private int width = 30;
 
-    [SerializeField] GameObject tilePrefab;
-    [SerializeField] GameObject hubPrefab;
-    [SerializeField] GameObject mineralPrefab;
-    [SerializeField] GameObject fuelPrefab;
-    [SerializeField] GameObject powerPrefab;
-    [SerializeField] GameObject organPrefab;
+    [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
-    [SerializeField] int mineralSpawnChance = 5;
-    [SerializeField] int fuelSpawnChance = 5;
-    [SerializeField] int powerSpawnChance = 5;
-    [SerializeField] int organSpawnChance = 5;
+    [SerializeField] int mineralSpawnChance = 5, fuelSpawnChance = 5, powerSpawnChance = 5, organSpawnChance = 5;
 
     public int Width { get => width; }
 
@@ -43,17 +35,14 @@ public class WorldController : MonoBehaviour
     private Hub hub = null;
     public Hub Hub { get => hub; set => hub = value; }
 
-    private GameObject temp;
-    private GameObject PlaneSpawn;
-    private GameObject TowerSpawn;
-    private GameObject TowerToSpawn;
-    private GameObject tiletest;
-    private GameObject tmp;
+    private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
     public bool InBuildMode;
     [SerializeField] private GameObject planeGridprefab;
+
+    private bool isGameOver;
 
     private void Start()
     {
@@ -64,11 +53,10 @@ public class WorldController : MonoBehaviour
 
         InBuildMode = false;
         Instance = this;
+        isGameOver = false;
 
         InstantiateTileArray();
-
         ConnectAdjacentTiles();
-
         GetComponent<Fog>().SpawnFog();
     }
 
@@ -98,28 +86,27 @@ public class WorldController : MonoBehaviour
 
                 if (Random.Range(1, 100) < mineralSpawnChance)
                 { 
-                        pos.y += 0.2f;
-                        GameObject mineral = Instantiate(mineralPrefab, pos, tileGo.transform.rotation);
-                        tileGo.GetComponent<Tile>().Resource = mineral.GetComponentInChildren<ResourceNode>();
-                        mineral.transform.SetParent(tileGo.transform, true);
+                    pos.y += 0.2f;
+                    GameObject mineral = Instantiate(mineralPrefab, pos, tileGo.transform.rotation);
+                    tileGo.GetComponent<Tile>().Resource = mineral.GetComponentInChildren<ResourceNode>();
+                    mineral.transform.SetParent(tileGo.transform, true);
                 }
 
                 if (Random.Range(1, 100) < fuelSpawnChance)
                 {
-                        pos.y += 0.3f;
-                        GameObject fuel = Instantiate(fuelPrefab, pos, tileGo.transform.rotation);
-                        tileGo.GetComponent<Tile>().Resource = fuel.GetComponentInChildren<ResourceNode>();
-                        fuel.transform.SetParent(tileGo.transform, true);
+                    pos.y += 0.3f;
+                    GameObject fuel = Instantiate(fuelPrefab, pos, tileGo.transform.rotation);
+                    tileGo.GetComponent<Tile>().Resource = fuel.GetComponentInChildren<ResourceNode>();
+                    fuel.transform.SetParent(tileGo.transform, true);
                 }
 
                 if (Random.Range(1, 100) < organSpawnChance)
                 {
-                        pos.y += 0.3f;
-                        GameObject organ = Instantiate(organPrefab, pos, tileGo.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-                        tileGo.GetComponent<Tile>().Resource = organ.GetComponentInChildren<ResourceNode>();
-                        organ.transform.SetParent(tileGo.transform, true);
+                    pos.y += 0.3f;
+                    GameObject organ = Instantiate(organPrefab, pos, tileGo.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
+                    tileGo.GetComponent<Tile>().Resource = organ.GetComponentInChildren<ResourceNode>();
+                    organ.transform.SetParent(tileGo.transform, true);
                 }
-
 
                 tiles[x, z] = tileGo;
             }
@@ -150,8 +137,7 @@ public class WorldController : MonoBehaviour
     //Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
     private void ConnectAdjacentTiles()
     {
-        Tile t;
-        Tile a;
+        Tile t, a;
 
         if (gameObject.GetComponent<Fog>().Expansion == FogExpansion.Orthogonal)
         {
@@ -227,7 +213,8 @@ public class WorldController : MonoBehaviour
             PlaneSpawn = Instantiate(planeGridprefab,pos,tile_obj.transform.rotation);           
             temp = tile_obj;
         }
-        else {
+        else
+        {
             if (temp != tile_obj)
             {
                 Destroy(PlaneSpawn);             
@@ -293,16 +280,19 @@ public class WorldController : MonoBehaviour
 
     private void Update()
     {
-        if (!hubBuilt)
+        if (!isGameOver)
         {
-            InstantiateStartHub();
-            hubBuilt = true;
-        }
-        if (InBuildMode)
-        {
-            MeshRendererTileChild(true);
-            RenderTower();
-            ShowTile();
+            if (!hubBuilt)
+            {
+                InstantiateStartHub();
+                hubBuilt = true;
+            }
+            if (InBuildMode)
+            {
+                MeshRendererTileChild(true);
+                RenderTower();
+                ShowTile();
+            }
         }
     }
     //rotate to 90
