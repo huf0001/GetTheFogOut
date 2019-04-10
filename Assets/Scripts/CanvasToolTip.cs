@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class CanvasToolTip : MonoBehaviour
 {
 	public GameObject ToolTip;
-	public Text ToolTipText;
+	public TextMeshProUGUI ToolTipText;
 
     void Start()
     {
@@ -49,7 +50,7 @@ public class CanvasToolTip : MonoBehaviour
         }
         else
         {
-            ToolTipText.text = "Error, unknown message, ZIPPIDEE DOO.";
+            ToolTipText.text = "Error, unknown building message.";
         }
     }
 
