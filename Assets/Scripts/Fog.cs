@@ -24,6 +24,7 @@ public class Fog : MonoBehaviour
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private FogExpansion expansion;
+    [SerializeField] private bool fogAccelerates = true;
     [SerializeField] private float fogGrowth = 5f;
     [SerializeField] private float fogHealthLimit = 100f;
     [SerializeField] private bool damageOn = false;
@@ -230,7 +231,7 @@ public class Fog : MonoBehaviour
     {
         tick += Time.deltaTime;
 
-        if (fogGrowth < 100)
+        if (fogAccelerates && fogGrowth < 100)
         {
             fogGrowth += Time.deltaTime;
         }
