@@ -153,6 +153,14 @@ public class Fog : MonoBehaviour
                 }
             }
         }
+
+        if (fillType == FogFillType.Fluid)
+        {
+            foreach(FogUnit f in fogUnitsInPlay)
+            {
+                f.Health = fogHealthLimit;
+            }
+        }
     }
 
     //Takes a fog unit and puts it on the board
@@ -255,7 +263,18 @@ public class Fog : MonoBehaviour
         {
             foreach (FogUnit f in fogUnitsInPlay)
             {
-                //Stuff
+                if (f.Health >= fogHealthLimit)
+                {
+                    int count = f.Location.AdjacentTiles.Count;
+
+                    foreach (Tile t in f.Location.AdjacentTiles)
+                    {
+                        if (t.FogUnit != null)
+                        {
+                            t.FogUnit.Health += Time.deltaTime * fogGrowth / count;
+                        }
+                    }
+                }
             }
         }
         else
