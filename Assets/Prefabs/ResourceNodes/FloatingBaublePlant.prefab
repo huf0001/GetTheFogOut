@@ -423,8 +423,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2032583418019200272}
   - component: {fileID: 7774853684096022164}
+  - component: {fileID: 2551290971839566366}
   m_Layer: 0
-  m_Name: Floating Baubble Plant
+  m_Name: FloatingBaublePlant
   m_TagString: Resource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -465,6 +466,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 1
   resourceType: 2
+--- !u!65 &2551290971839566366
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7857378348933392223}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.05, y: 0.058, z: 0.055}
+  m_Center: {x: -0.035, y: 0.06, z: 0.015}
 --- !u!1 &8331029425338989330
 GameObject:
   m_ObjectHideFlags: 0
