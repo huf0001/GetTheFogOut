@@ -153,7 +153,7 @@ public class WorldController : MonoBehaviour
         Tile t;
         Tile a;
 
-        if (gameObject.GetComponent<Fog>().Expansion == FogExpansion.Orthogonal)
+        if (gameObject.GetComponent<Fog>().ExpansionDirection == FogExpansionDirection.Orthogonal)
         {
             foreach (GameObject o in tiles)
             {
