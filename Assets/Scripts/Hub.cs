@@ -5,17 +5,20 @@ using UnityEngine;
 public class Hub : PowerSource
 {
     [SerializeField] private int maxPower = 100;
+    [SerializeField] private int maxMineral = 100;
+    [SerializeField] private int maxOrganic = 100;
+    [SerializeField] private int maxFuel = 100;
 
     [SerializeField] private int storedPower = 0;
     [SerializeField] private int storedMineral = 0;
     [SerializeField] private int storedOrganic = 0;
     [SerializeField] private int storedFuel = 0;
-
+    /*
     [SerializeField] private int powerChange = 0;
     [SerializeField] private int mineralChange = 0;
     [SerializeField] private int organicChange = 0;
     [SerializeField] private int fuelChange = 0;
-
+    */
     [Header("Building Costs")]
     [SerializeField] private int batteryPowerCost = 30;
     [SerializeField] private int batteryMineralCost = 0;
@@ -57,12 +60,12 @@ public class Hub : PowerSource
     public int StoredMineral { get => storedMineral; set => storedMineral = value; }
     public int StoredOrganic { get => storedOrganic; set => storedOrganic = value; }
     public int StoredFuel { get => storedFuel; set => storedFuel = value; }
-
+    /*
     public int PowerChange { get => powerChange; set => powerChange = value; }
     public int MineralChange { get => mineralChange; set => mineralChange = value; }
     public int OrganicChange { get => organicChange; set => organicChange = value; }
     public int FuelChange { get => fuelChange; set => fuelChange = value; }
-
+    */
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<Battery> Batteries { get => batteries; set => batteries = value; }
     public Dictionary<BuildingType, Dictionary<string, int>> BuildingsCosts { get => buildingsCosts; }
@@ -137,49 +140,34 @@ public class Hub : PowerSource
             }
         }
 
-        powerChange = totalUpkeep;
-        ChangePower(totalUpkeep);
-
         // Process batteries
         maxPower = (batteries.Count * 10) + 100;
-
-        // Process minerals
-        totalUpkeep = 0;
 
         if (harvesters.Count != 0)
         {
             foreach (Harvester harvester in harvesters)
             {
-                totalUpkeep += harvester.HarvestAmt;
                 ResourceOn = harvester.Location.Resource.ResourceType;
 
                 switch (ResourceOn)
                 {
-                    case Resource.Power:
-                        powerChange = totalUpkeep;
+                    case Resource.Power:                   
+                        storedPower += harvester.HarvestAmt;
                         break;
                     case Resource.Organic:
-                        organicChange = totalUpkeep;
-                        StoredOrganic += organicChange;
+                        storedOrganic += harvester.HarvestAmt;
                         break;
                     case Resource.Mineral:
-                        mineralChange = totalUpkeep;
-                        storedMineral += mineralChange;
+                        storedMineral += harvester.HarvestAmt;
                         break;
                     case Resource.Fuel:
-                        fuelChange = totalUpkeep;
-                        StoredFuel += fuelChange;
+                        storedFuel += harvester.HarvestAmt;
                         break;
                 }
             }
-        }else
-            {
-                powerChange = 0;
-                organicChange = 0;
-                mineralChange = 0;
-                fuelChange = 0;
-            }
-
+            CheckLimit();
+        }
+        storedPower += 5;
     }
 
     public override bool SupplyingPower()
@@ -197,18 +185,40 @@ public class Hub : PowerSource
         maxPower -= 10;
     }
 
-    public void ChangePower(int change)
+    public void CheckLimit()
     {
-        storedPower += change;
-
         if (storedPower > maxPower)
         {
             storedPower = maxPower;
+        }
+        if (storedFuel > maxFuel)
+        {
+            storedFuel = maxFuel;
+        }
+        if (storedMineral > maxMineral)
+        {
+            storedMineral = maxMineral;
+        }
+        if (storedOrganic > maxOrganic)
+        {
+            storedOrganic = maxOrganic;
         }
 
         if (storedPower < 0)
         {
             storedPower = 0;
+        }
+        if (storedFuel < 0)
+        {
+            storedFuel = 0;
+        }
+        if (storedMineral < 0)
+        {
+            storedMineral = 0;
+        }
+        if (storedOrganic < 0)
+        {
+            storedOrganic = 0;
         }
     }
 }

@@ -94,7 +94,7 @@ public class WorldController : MonoBehaviour
 
                 //set to true will render the tile; set to false, and it won't
                 tileGo.GetComponent<MeshRenderer>().enabled = true;
-                MeshRendererTileChild(true);
+                MeshRendererTileChild(false);
 
                 if (Random.Range(1, 100) < mineralSpawnChance)
                 { 
@@ -118,6 +118,14 @@ public class WorldController : MonoBehaviour
                         GameObject organ = Instantiate(organPrefab, pos, tileGo.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
                         tileGo.GetComponent<Tile>().Resource = organ.GetComponentInChildren<ResourceNode>();
                         organ.transform.SetParent(tileGo.transform, true);
+                }
+
+                if (Random.Range(1, 100) < powerSpawnChance)
+                {
+                    pos.y += 0.2f;
+                    GameObject power = Instantiate(powerPrefab, pos, tileGo.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
+                    tileGo.GetComponent<Tile>().Resource = power.GetComponentInChildren<ResourceNode>();
+                    power.transform.SetParent(tileGo.transform, true);
                 }
 
 

@@ -51,6 +51,15 @@ public class Harvester : Building
                 WorldController.Instance.Hub.Harvesters.Add(this);
             }
         }
+
+        if (location.Resource.ResourceType == Resource.Power)
+        {
+            base.PowerUp();
+            if (!WorldController.Instance.Hub.Harvesters.Contains(this))
+            {
+                WorldController.Instance.Hub.Harvesters.Add(this);
+            }
+        }
     }
 
     public override void PowerDown()
