@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class FogUnit : Entity
 {
+    //Serialized Fields
+    [SerializeField] private float damage = 1f;
+
     //Fields
-    private float damage = 1f;
     private Fog fog;
     private float healthLimit;
     private bool spilled = false;
