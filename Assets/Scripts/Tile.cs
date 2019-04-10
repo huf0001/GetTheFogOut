@@ -93,41 +93,19 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void CollectAllTilesInRange(List<Tile> tiles, int range)
+    public void CollectTilesInRange(List<Tile> tiles, int range)
     {
         // Adds all tiles in a specified range to a List.
         // IMPORTANT!!! SET ALL TILES IN THE LIST '.VISITED' TO FALSE AFTER USE!!!
         if (!visited)
         {
             tiles.Add(this);
+            visited = true;
             foreach (Tile tile in adjacentTiles)
             {
-                visited = true;
                 if (range - 1 > 0)
                 { 
-                    CollectAllTilesInRange(tiles, range - 1);
-                }
-            }
-        }
-    }
-
-    public void CollectFogTilesInRange(List<Tile> tiles, int range)
-    {
-        // Adds all tiles in a specified range to a List.
-        // IMPORTANT!!! SET ALL TILES IN THE LIST '.VISITED' TO FALSE AFTER USE!!!
-        if (!visited)
-        {
-            if (fogUnit != null)
-            {
-                tiles.Add(this);
-            }
-
-            foreach (Tile tile in adjacentTiles)
-            {
-                visited = true;
-                if (range - 1 > 0)
-                {
-                    CollectFogTilesInRange(tiles, range - 1);
+                    tile.CollectTilesInRange(tiles, range - 1);
                 }
             }
         }
