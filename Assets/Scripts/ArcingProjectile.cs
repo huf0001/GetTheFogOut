@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Defence : Building
+public class ArcingProjectile : MonoBehaviour
 {
-
     // Start is called before the first frame update
-    protected override void Start()
+    void Start()
     {
-        base.Start();
+        
     }
 
     // Update is called once per frame
