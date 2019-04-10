@@ -28,7 +28,7 @@ public class Battery : Building
     // Update is called once per frame
     void Update()
     {
-        
+        base.Update();
     }
 
     protected override void OnDestroy()
