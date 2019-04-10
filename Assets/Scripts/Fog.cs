@@ -16,15 +16,18 @@ public class Fog : MonoBehaviour
         Corners,
         FourCompassPoints,
         EightCompassPoints,
-        FourSides
+        FourSides,
+        FullBoard
     }
 
     //Serialized Fields
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private FogExpansion expansion;
+    [SerializeField] private bool fogAccelerates = true;
     [SerializeField] private float fogGrowth = 5f;
     [SerializeField] private float fogHealthLimit = 100f;
+    [SerializeField] private bool damageOn = false;
 
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
@@ -131,6 +134,17 @@ public class Fog : MonoBehaviour
             SpawnFogUnit(xMax - 1, 0);
             SpawnFogUnit(xMax - 1, zMax - 1);
         }
+        else if (configuration == StartConfiguration.FullBoard)
+        {
+            //Every space on the board
+            for (int i = 0; i < xMax; i++)
+            {
+                for (int j = 0; j < zMax; j++)
+                {
+                    SpawnFogUnit(i, j);
+                }
+            }
+        }
     }
 
     //Takes a fog unit and puts it on the board
@@ -217,7 +231,7 @@ public class Fog : MonoBehaviour
     {
         tick += Time.deltaTime;
 
-        if (fogGrowth < 100)
+        if (fogAccelerates && fogGrowth < 100)
         {
             fogGrowth += Time.deltaTime;
         }
@@ -231,9 +245,23 @@ public class Fog : MonoBehaviour
         {
             tick -= 1;
 
-            if (fogUnitsInPool.Count > 0)
+            if (damageOn)
             {
-                ExpandFog();
+                if (fogUnitsInPlay.Count > 0)
+                {
+                    foreach (GameObject g in fogUnitsInPlay)
+                    {
+                        g.GetComponent<FogUnit>().DamageBuilding();
+                    }
+                }
+            }
+
+            if (fogUnitsInPool.Count > 0)
+            { 
+                if (configuration != StartConfiguration.FullBoard)
+                {
+                    ExpandFog();
+                }
             }
             else
             {

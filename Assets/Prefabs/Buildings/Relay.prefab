@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7592836070690420601}
   m_Layer: 0
   m_Name: Relay
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,6 +107,8 @@ MonoBehaviour:
   health: 35
   visibilityRange: 7
   upkeep: 0
+  powerSource: {fileID: 0}
+  powered: 0
   buildingType: 5
   powerRange: 5
   suppliedBuildings: []

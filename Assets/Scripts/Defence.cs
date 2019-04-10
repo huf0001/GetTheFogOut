@@ -14,6 +14,6 @@ public class Defence : Building
     // Update is called once per frame
     void Update()
     {
-        
+        base.Update();
     }
 }
