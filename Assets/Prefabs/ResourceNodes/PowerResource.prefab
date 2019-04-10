@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5175523455839104547}
   - component: {fileID: 2806399852890883567}
   - component: {fileID: 1339199112994813031}
+  - component: {fileID: 2162974463095478310}
   m_Layer: 0
   m_Name: PowerResource
   m_TagString: Resource
@@ -92,3 +93,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 1
   resourceType: 1
+--- !u!65 &2162974463095478310
+BoxCollider:
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.019948427, y: 0.010448812, z: 0.023717808}
+  m_Center: {x: -0.002205999, y: 0.0007904093, z: 0.00036820635}
