@@ -5,6 +5,7 @@ using UnityEngine;
 public class FogUnit : Entity
 {
     //Fields
+    private float damage = 1f;
     private Fog fog;
     private float healthLimit;
     private bool spilled = false;
@@ -36,6 +37,14 @@ public class FogUnit : Entity
             {
                 lerp = false;
             }
+        }
+    }
+
+    public void DamageBuilding()
+    {
+        if (Location.Building != null)
+        {
+            Location.Building.Health -= damage * (Health / HealthLimit);
         }
     }
 

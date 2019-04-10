@@ -30,9 +30,9 @@ public abstract class PowerSource : Building
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
-
+        base.Update();
     }
 
     private void ActivateTiles()

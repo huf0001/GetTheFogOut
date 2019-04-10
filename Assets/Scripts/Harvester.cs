@@ -20,7 +20,7 @@ public class Harvester : Building
     // Update is called once per frame
     void Update()
     {
-
+        base.Update();
     }
 
     public override void PowerUp()
