@@ -74,7 +74,7 @@ public class WorldController : MonoBehaviour
                 tileGo.transform.position = pos;
                 tileGo.transform.SetParent(this.transform, true);
                 tileGo.name = "Tile_" + x + "_" + z;
-                tileGo.layer = 9;
+                tileGo.layer = 8;
                 tileGo.tag = "Tile";
                 tileGo.GetComponent<Tile>().X = x;
                 tileGo.GetComponent<Tile>().Z = z;

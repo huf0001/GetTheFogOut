@@ -4,17 +4,27 @@ using UnityEngine;
 
 public class ClusterFan : Defence
 {
+
+    [SerializeField] private int directDamage = 30;
+    [SerializeField] private int aoeDamage = 10;
+    [SerializeField] private float rateOfFire = 0.25f;
+
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        InvokeRepeating("Fire", 0.5f, 0.5f);
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        
+        base.Update();
+    }
+
+    public override void Place()
+    {
+        base.Place();
+        InvokeRepeating("Fire", 0.25f, rateOfFire);
     }
 
     protected override void OnDestroy()
@@ -28,12 +38,12 @@ public class ClusterFan : Defence
         Tile target = GetTarget();
         if (target != null)
         {
-            target.FogUnit.Health -= 30;
+            target.FogUnit.Health -= directDamage;
             foreach (Tile tile in target.AdjacentTiles)
             {
                 if (tile.FogUnit != null)
                 {
-                tile.FogUnit.Health -= 10;
+                tile.FogUnit.Health -= aoeDamage;
                 }
             }
         }
@@ -42,13 +52,24 @@ public class ClusterFan : Defence
     Tile GetTarget()
     {
         // Get the tile with the highest fog concentration.
-        List<Tile> tiles = new List<Tile>();
-        location.CollectFogTilesInRange(tiles, (int)visibilityRange);
-        tiles.Sort((t1, t2) => t1.FogUnit.Health.CompareTo(t2.FogUnit.Health));
-        foreach (Tile tile in tiles) tile.Visited = false;
-        if (tiles != null)
+        //location.CollectTilesInRange(tiles, (int)visibilityRange);
+        Collider[] tiles = Physics.OverlapSphere(transform.position, visibilityRange, LayerMask.GetMask("Tiles"));
+        List<Tile> fogTiles = new List<Tile>();
+
+        foreach (Collider tile in tiles)
         {
-            Tile target = tiles[0];
+            if (tile.gameObject.GetComponent<Tile>().FogUnit != null)
+            {
+                fogTiles.Add(tile.gameObject.GetComponent<Tile>());
+            }
+        }
+
+        fogTiles.Sort((t1, t2) => t1.FogUnit.Health.CompareTo(t2.FogUnit.Health));
+        fogTiles.Reverse();
+
+        if (fogTiles.Count > 0)
+        {
+            Tile target = fogTiles[0];
             return target;
         } else
         {
