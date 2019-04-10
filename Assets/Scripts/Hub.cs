@@ -30,12 +30,17 @@ public class Hub : PowerSource
     [SerializeField] private int relayMineralCost = 0;
     [SerializeField] private int relayOrganicCost = 0;
     [SerializeField] private int relayFuelCost = 0;
+    [SerializeField] private int defencePowerCost = 0;
+    [SerializeField] private int defenceMineralCost = 0;
+    [SerializeField] private int defenceOrganicCost = 0;
+    [SerializeField] private int defenceFuelCost = 0;
 
 
     private Dictionary<string, int> batteryCosts = new Dictionary<string, int>();
     private Dictionary<string, int> generatorCosts = new Dictionary<string, int>();
     private Dictionary<string, int> harvesterCosts = new Dictionary<string, int>();
     private Dictionary<string, int> relayCosts = new Dictionary<string, int>();
+    private Dictionary<string, int> defenceCosts = new Dictionary<string, int>();
     private Dictionary<BuildingType, Dictionary<string, int>> buildingsCosts = 
         new Dictionary<BuildingType, Dictionary<string, int>>();
 
@@ -85,10 +90,16 @@ public class Hub : PowerSource
         relayCosts.Add("organic", relayOrganicCost);
         relayCosts.Add("fuel", relayFuelCost);
 
+        defenceCosts.Add("power", defencePowerCost);
+        defenceCosts.Add("mineral", defenceMineralCost);
+        defenceCosts.Add("organic", defenceOrganicCost);
+        defenceCosts.Add("fuel", defenceFuelCost);
+
         buildingsCosts.Add(BuildingType.Battery, batteryCosts);
         buildingsCosts.Add(BuildingType.Generator, generatorCosts);
         buildingsCosts.Add(BuildingType.Harvester, harvesterCosts);
         buildingsCosts.Add(BuildingType.Relay, relayCosts);
+        buildingsCosts.Add(BuildingType.Defence, defenceCosts);
 
         InvokeRepeating("ProcessUpkeep", 1f, 1f);
     }
