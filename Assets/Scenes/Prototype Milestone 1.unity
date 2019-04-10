@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.067397416, g: 0.08987051, b: 0.13496713, a: 1}
+  m_IndirectSpecularColor: {r: 0.05846805, g: 0.08237015, b: 0.1293589, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -214,6 +214,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942876920977903620, guid: 3350bd52bd7d0de4897d3b5955efcc2e,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942876920977903620, guid: 3350bd52bd7d0de4897d3b5955efcc2e,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942876920977903620, guid: 3350bd52bd7d0de4897d3b5955efcc2e,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3726380252180320746, guid: 3350bd52bd7d0de4897d3b5955efcc2e,
         type: 3}
@@ -525,21 +540,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 465
       objectReference: {fileID: 0}
-    - target: {fileID: 1942876920977903620, guid: 3350bd52bd7d0de4897d3b5955efcc2e,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1942876920977903620, guid: 3350bd52bd7d0de4897d3b5955efcc2e,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1942876920977903620, guid: 3350bd52bd7d0de4897d3b5955efcc2e,
-        type: 3}
-      propertyPath: m_inputSource
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5986453045656388346, guid: 3350bd52bd7d0de4897d3b5955efcc2e,
         type: 3}
       propertyPath: m_inputSource
@@ -743,7 +743,7 @@ MonoBehaviour:
   fuelPrefab: {fileID: 8393472377661496211, guid: 4d4c598dd9bc8cb43a0d126a2b0e2eb8,
     type: 3}
   powerPrefab: {fileID: 0}
-  organPrefab: {fileID: 7857378348933392223, guid: 64477c9431c4b684cb6bc0f21fa9ebc0,
+  organPrefab: {fileID: 7857378348933392223, guid: 5ab951eea836f594ea15cdb13afd6328,
     type: 3}
   mineralSpawnChance: 5
   fuelSpawnChance: 5
@@ -810,6 +810,7 @@ MonoBehaviour:
     type: 3}
   configuration: 3
   expansion: 0
+  fogAccelerates: 1
   fogGrowth: 5
   fogHealthLimit: 100
   damageOn: 0
