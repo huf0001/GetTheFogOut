@@ -34,6 +34,7 @@ public class Fog : MonoBehaviour
     [SerializeField] private bool fogAccelerates = true;
     [SerializeField] private float fogGrowth = 5f;
     [SerializeField] private float fogHealthLimit = 100f;
+    [SerializeField] private float fogSpillThreshold = 50f;
     [SerializeField] private bool damageOn = false;
 
     [SerializeField] private Material visibleMaterial;
@@ -176,7 +177,7 @@ public class Fog : MonoBehaviour
         f.gameObject.GetComponent<Renderer>().material = visibleMaterial;
         f.Location = t;
         f.Health = 0.0001f;
-        f.Spilled = false;
+        f.Spill = false;
         f.Lerp = true;
         t.FogUnit = f;
 
@@ -226,14 +227,14 @@ public class Fog : MonoBehaviour
         {
             if (t.FogUnit != null)
             {
-                t.FogUnit.Spilled = false;
+                t.FogUnit.Spill = false;
             }
         }
 
         f.gameObject.SetActive(false);
         f.Location.FogUnit = null;
         f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
-        f.Spilled = true;
+        f.Spill = true;
 
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f);
@@ -263,7 +264,7 @@ public class Fog : MonoBehaviour
         {
             foreach (FogUnit f in fogUnitsInPlay)
             {
-                if (f.Health >= fogHealthLimit)
+                if (f.Health >= fogSpillThreshold)
                 {
                     int count = f.Location.AdjacentTiles.Count;
 
@@ -271,7 +272,14 @@ public class Fog : MonoBehaviour
                     {
                         if (t.FogUnit != null)
                         {
-                            t.FogUnit.Health += Time.deltaTime * fogGrowth / count;
+                            if (t.FogUnit.Health + (Time.deltaTime * fogGrowth / count) <= f.Health)
+                            {
+                                t.FogUnit.Health += Time.deltaTime * fogGrowth / count;
+                            }
+                            else if (t.FogUnit.Health < f.Health)
+                            {
+                                t.FogUnit.Health += (f.Health - t.FogUnit.Health);
+                            }
                         }
                     }
                 }
@@ -325,9 +333,9 @@ public class Fog : MonoBehaviour
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
-            if (f.Health >= fogHealthLimit && f.Spilled == false)
+            if (f.Health >= fogSpillThreshold && f.Spill == false)
             {
-                f.Spilled = true;
+                f.Spill = true;
 
                 foreach (Tile a in f.Location.AdjacentTiles)
                 {
