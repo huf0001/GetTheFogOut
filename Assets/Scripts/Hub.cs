@@ -13,12 +13,12 @@ public class Hub : PowerSource
     [SerializeField] private int storedMineral = 0;
     [SerializeField] private int storedOrganic = 0;
     [SerializeField] private int storedFuel = 0;
-    /*
+    
     [SerializeField] private int powerChange = 0;
     [SerializeField] private int mineralChange = 0;
     [SerializeField] private int organicChange = 0;
     [SerializeField] private int fuelChange = 0;
-    */
+    
     [Header("Building Costs")]
     [SerializeField] private int batteryPowerCost = 30;
     [SerializeField] private int batteryMineralCost = 0;
@@ -60,15 +60,17 @@ public class Hub : PowerSource
     public int StoredMineral { get => storedMineral; set => storedMineral = value; }
     public int StoredOrganic { get => storedOrganic; set => storedOrganic = value; }
     public int StoredFuel { get => storedFuel; set => storedFuel = value; }
-    /*
+    
     public int PowerChange { get => powerChange; set => powerChange = value; }
     public int MineralChange { get => mineralChange; set => mineralChange = value; }
     public int OrganicChange { get => organicChange; set => organicChange = value; }
     public int FuelChange { get => fuelChange; set => fuelChange = value; }
-    */
+    
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<Battery> Batteries { get => batteries; set => batteries = value; }
+
     public Dictionary<BuildingType, Dictionary<string, int>> BuildingsCosts { get => buildingsCosts; }
+
 
     // private Dictionary<Element, int> harvest = new Dictionary<Element, int>();
 
@@ -126,11 +128,11 @@ public class Hub : PowerSource
     {
         // Change the power based on each connect building
         // TODO: Make buildings stop working if no power
-        int totalUpkeep = 5;
+        int powerUpkeep = 5;
         foreach (Building building in suppliedBuildings)
         {
-            totalUpkeep += building.Upkeep;
-            if (totalUpkeep >= 0 || storedPower > 0)
+            powerUpkeep += building.Upkeep;
+            if (powerUpkeep >= 0 || storedPower > 0)
             {
                 building.PowerUp();
             }
@@ -138,36 +140,72 @@ public class Hub : PowerSource
             {
                 building.PowerDown();
             }
+
+            if (building.BuildingType == BuildingType.Relay)
+            {
+                PowerSource relay = (PowerSource)building;
+                if (relay != null)
+                {
+                    foreach (Building b in relay.SuppliedBuildings)
+                    {
+                        powerUpkeep += b.Upkeep;
+                        if (powerUpkeep >= 0 || storedPower > 0)
+                        {
+                            b.PowerUp();
+                        }
+                        else
+                        {
+                            b.PowerDown();
+                        }
+                    }
+                }
+            }
+
         }
 
         // Process batteries
         maxPower = (batteries.Count * 10) + 100;
+        int mChange = 0;
+        int fChange = 0;
+        int oChange = 0;
+        int pChange = 0;
 
         if (harvesters.Count != 0)
         {
             foreach (Harvester harvester in harvesters)
             {
                 ResourceOn = harvester.Location.Resource.ResourceType;
+                
 
                 switch (ResourceOn)
                 {
                     case Resource.Power:                   
-                        storedPower += harvester.HarvestAmt;
+                        pChange += harvester.HarvestAmt;
                         break;
                     case Resource.Organic:
-                        storedOrganic += harvester.HarvestAmt;
+                        oChange += harvester.HarvestAmt;
                         break;
                     case Resource.Mineral:
-                        storedMineral += harvester.HarvestAmt;
+                        mChange += harvester.HarvestAmt;
                         break;
                     case Resource.Fuel:
-                        storedFuel += harvester.HarvestAmt;
+                        fChange += harvester.HarvestAmt;
                         break;
                 }
             }
-            CheckLimit();
         }
-        storedPower += 5;
+        fuelChange = fChange;
+        organicChange = oChange;
+        mineralChange = mChange;
+        powerChange = pChange + powerUpkeep;
+
+        storedFuel += fuelChange;
+        storedOrganic += organicChange;
+        StoredMineral += mineralChange;
+        StoredPower += powerChange;
+
+        //storedPower += 5;
+        CheckLimit();
     }
 
     public override bool SupplyingPower()

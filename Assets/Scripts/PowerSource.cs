@@ -7,7 +7,9 @@ public abstract class PowerSource : Building
     [SerializeField] protected float powerRange;
 
     [SerializeField] protected List<Building> suppliedBuildings = new List<Building>();
-    
+    public List<Building> SuppliedBuildings { get => suppliedBuildings; }
+
+
     protected override void Awake()
     {
         base.Awake();
