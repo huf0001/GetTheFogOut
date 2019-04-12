@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Defence : Building
 {
-    public Defence(PowerSource power)
-    {
-        powerSource = power;
-    }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -16,8 +12,8 @@ public class Defence : Building
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        
+        base.Update();
     }
 }

@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class FogUnit : Entity
 {
+    //Serialized Fields
+    [SerializeField] private float damage = 1f;
+
     //Fields
     private Fog fog;
     private float healthLimit;
-    private bool spilled = false;
+    private bool spill = false;
 
     private bool lerp = false;
     private float start = 0f;
@@ -17,7 +20,7 @@ public class FogUnit : Entity
     public Fog Fog { get => fog; set => fog = value; }
     public float HealthLimit { get => healthLimit; set => healthLimit = value; }
     public bool Lerp { get => lerp; set => lerp = value; }
-    public bool Spilled { get => spilled; set => spilled = value; }
+    public bool Spill { get => spill; set => spill = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +39,14 @@ public class FogUnit : Entity
             {
                 lerp = false;
             }
+        }
+    }
+
+    public void DamageBuilding()
+    {
+        if (Location.Building != null)
+        {
+            Location.Building.Health -= damage * (Health / HealthLimit);
         }
     }
 

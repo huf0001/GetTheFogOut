@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 4333624062785192286}
   - component: {fileID: 5434846841914986776}
   - component: {fileID: 4739728822711218263}
-  - component: {fileID: 4623332885329799104}
+  - component: {fileID: 2755190966316714532}
   m_Layer: 0
   m_Name: Defence
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,7 +92,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4623332885329799104
+--- !u!114 &2755190966316714532
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,10 +101,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7263953934050848762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f34c8e350a80ef24a9c95332e0710d8e, type: 3}
+  m_Script: {fileID: 11500000, guid: 03a14715ed09368478781018b9d1f10e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
   visibilityRange: 5
   upkeep: 0
+  powerSource: {fileID: 0}
+  powered: 0
   buildingType: 1

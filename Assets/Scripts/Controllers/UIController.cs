@@ -67,7 +67,21 @@ public class UIController : MonoBehaviour
             organicSlider.value = Mathf.Lerp(organicSlider.value, hub.StoredOrganic, 1f * Time.deltaTime);
             mineralSlider.value = Mathf.Lerp(mineralSlider.value, hub.StoredMineral, 1f * Time.deltaTime);
 
-            powerText.text = Mathf.Round(Mathf.Lerp(powerSlider.value, hub.StoredPower, 1f * Time.deltaTime)) + "/" + hub.MaxPower; //+ hub.PowerChange;
+            string colour;
+            if (hub.PowerChange > 0)
+            {
+                colour = "#009900>+";
+            }
+            else if (hub.PowerChange < 0)
+            {
+                colour = "red\">";
+            }
+            else
+            {
+                colour = "black\">";
+            }
+
+            powerText.text = Mathf.Round(Mathf.Lerp(powerSlider.value, hub.StoredPower, 1f * Time.deltaTime)) + "/" + hub.MaxPower + "    <color=" + colour + hub.PowerChange + "</color>";
             //organicText.text = "Organic: " + hub.StoredOrganic;
             //mineralText.text = "Minerals: " + hub.StoredMineral + " Change: " + hub.MineralChange;
             //fuelText.text = "Fuel: " + hub.StoredFuel;

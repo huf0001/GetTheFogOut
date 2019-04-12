@@ -29,11 +29,26 @@ public abstract class Building : Entity
         
     }
 
-
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        
+        CheckHealth();
+    }
+
+    //Checks if it's dead or not, and applies the appropriate actions if it is.
+    private void CheckHealth()
+    {
+        if (Health <= 0)
+        {
+            Debug.Log("*explosions of death for the " + buildingType + "*");
+
+            if (buildingType == BuildingType.Hub)
+            {
+                Debug.Log("GAME OVER!");
+            }
+
+            Destroy(this.gameObject);
+        }
     }
 
     public virtual void Place()
@@ -122,7 +137,7 @@ public abstract class Building : Entity
         {
             powerSource.Unplug(this);
         }
-
+        PowerDown();
         MakeTilesNotVisible();
     }
 

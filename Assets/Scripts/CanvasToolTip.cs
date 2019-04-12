@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class CanvasToolTip : MonoBehaviour
 {
 	public GameObject ToolTip;
-	public Text ToolTipText;
+	public TextMeshProUGUI ToolTipText;
 
     void Start()
     {
@@ -27,29 +28,29 @@ public class CanvasToolTip : MonoBehaviour
         {
             if (message == "Battery")
             {
-                ToolTipText.text = "Battery\nIncrease your Maximum battery storage.\n+10 Storage, Cost: xx";
+                ToolTipText.text = "Battery\nIncrease your Maximum battery storage.\n+10 Storage, Cost: 30";
             }
             if (message == "Defence")
             {
-                ToolTipText.text = "Defence\nDefence description\nXps, Cost: xx";
+                ToolTipText.text = "Defence\nDefence against the incoming fog.\nXps, Cost: ??";
             }
             if (message == "Generator")
             {
-                ToolTipText.text = "Generator\nIncrease the rate of generating power.\n+2 per second, Cost: xx";
+                ToolTipText.text = "Generator\nIncrease the rate of generating power.\n+2 per second, Cost: 30";
             }
             if (message == "Harvester")
             {
-                ToolTipText.text = "Harvester\nHarvester description\nXps, Cost: xx";
+                ToolTipText.text = "Harvester\nHarvest energy from a crystal.\nXps, Cost: 50";
             }
             if (message == "Relay")
             {
-                ToolTipText.text = "Relay\nConnect buildings to send back to base.\nXps, Cost: xx";
+                ToolTipText.text = "Relay\nConnect buildings to send back to base.\nXps, Cost: 10";
             }
             ToolTip.SetActive(true);
         }
         else
         {
-            ToolTipText.text = "Error, unknown message, ZIPPIDEE DOO.";
+            ToolTipText.text = "Error, unknown building message.";
         }
     }
 

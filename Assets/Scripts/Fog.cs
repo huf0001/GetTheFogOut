@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum FogExpansion
+public enum FogExpansionDirection
 {
     Orthogonal,
     OrthogonalAndDiagonal
+}
+
+public enum FogFillType
+{
+    Block,
+    Fluid
 }
 
 public class Fog : MonoBehaviour
@@ -16,22 +22,27 @@ public class Fog : MonoBehaviour
         Corners,
         FourCompassPoints,
         EightCompassPoints,
-        FourSides
+        FourSides,
+        FullBoard
     }
 
     //Serialized Fields
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
-    [SerializeField] private FogExpansion expansion;
+    [SerializeField] private FogExpansionDirection expansionDirection;
+    [SerializeField] private FogFillType fillType;
+    [SerializeField] private bool fogAccelerates = true;
     [SerializeField] private float fogGrowth = 5f;
     [SerializeField] private float fogHealthLimit = 100f;
+    [SerializeField] private float fogSpillThreshold = 50f;
+    [SerializeField] private bool damageOn = false;
 
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
 
     //Container object fields
     private List<Tile> fogCoveredTiles = new List<Tile>();                      //i.e. tiles currently covered by fog
-    private List<GameObject> fogUnitsInPlay = new List<GameObject>();           //i.e. currently active fog units on the board
+    private List<FogUnit> fogUnitsInPlay = new List<FogUnit>();                 //i.e. currently active fog units on the board
     private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                 //i.e. currently inactive fog units waiting for spawning
 
     //Object fields
@@ -43,7 +54,8 @@ public class Fog : MonoBehaviour
     private float tick = 0;
 
     //Public properties
-    public FogExpansion Expansion { get => expansion; }
+    public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
+    public FogFillType FillType { get => fillType; }
 
     //Sets up the fog at the start of the game. Called by WorldController to actually have it work.
     public void SpawnFog()
@@ -131,6 +143,25 @@ public class Fog : MonoBehaviour
             SpawnFogUnit(xMax - 1, 0);
             SpawnFogUnit(xMax - 1, zMax - 1);
         }
+        else if (configuration == StartConfiguration.FullBoard)
+        {
+            //Every space on the board
+            for (int i = 0; i < xMax; i++)
+            {
+                for (int j = 0; j < zMax; j++)
+                {
+                    SpawnFogUnit(i, j);
+                }
+            }
+        }
+
+        if (fillType == FogFillType.Fluid)
+        {
+            foreach(FogUnit f in fogUnitsInPlay)
+            {
+                f.Health = fogHealthLimit;
+            }
+        }
     }
 
     //Takes a fog unit and puts it on the board
@@ -146,11 +177,11 @@ public class Fog : MonoBehaviour
         f.gameObject.GetComponent<Renderer>().material = visibleMaterial;
         f.Location = t;
         f.Health = 0.0001f;
-        f.Spilled = false;
+        f.Spill = false;
         f.Lerp = true;
         t.FogUnit = f;
 
-        fogUnitsInPlay.Add(fGO);
+        fogUnitsInPlay.Add(f);
         fogCoveredTiles.Add(t);
     }
 
@@ -196,17 +227,17 @@ public class Fog : MonoBehaviour
         {
             if (t.FogUnit != null)
             {
-                t.FogUnit.Spilled = false;
+                t.FogUnit.Spill = false;
             }
         }
 
         f.gameObject.SetActive(false);
         f.Location.FogUnit = null;
         f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
-        f.Spilled = true;
+        f.Spill = true;
 
         fogUnitsInPool.Add(f);
-        fogUnitsInPlay.Remove(f.gameObject);
+        fogUnitsInPlay.Remove(f);
         fogCoveredTiles.Remove(f.Location);
     }
 
@@ -217,23 +248,69 @@ public class Fog : MonoBehaviour
     {
         tick += Time.deltaTime;
 
-        if (fogGrowth < 100)
+        if (fogAccelerates && fogGrowth < 100)
         {
             fogGrowth += Time.deltaTime;
         }
 
-        foreach (GameObject f in fogUnitsInPlay)
+        if (fillType == FogFillType.Block)
         {
-            f.GetComponent<FogUnit>().Health += Time.deltaTime * fogGrowth;
+            foreach (FogUnit f in fogUnitsInPlay)
+            {
+                f.Health += Time.deltaTime * fogGrowth;
+            }
+        }
+        else if (fillType == FogFillType.Fluid)
+        {
+            foreach (FogUnit f in fogUnitsInPlay)
+            {
+                if (f.Health >= fogSpillThreshold)
+                {
+                    int count = f.Location.AdjacentTiles.Count;
+
+                    foreach (Tile t in f.Location.AdjacentTiles)
+                    {
+                        if (t.FogUnit != null)
+                        {
+                            if (t.FogUnit.Health + (Time.deltaTime * fogGrowth / count) <= f.Health)
+                            {
+                                t.FogUnit.Health += Time.deltaTime * fogGrowth / count;
+                            }
+                            else if (t.FogUnit.Health < f.Health)
+                            {
+                                t.FogUnit.Health += (f.Health - t.FogUnit.Health);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Invalid / unimplemented fog expansion type selected.");
         }
 
         if (tick >= 1)
         {
             tick -= 1;
 
-            if (fogUnitsInPool.Count > 0)
+            if (damageOn)
             {
-                ExpandFog();
+                if (fogUnitsInPlay.Count > 0)
+                {
+                    foreach (FogUnit f in fogUnitsInPlay)
+                    {
+                        f.DamageBuilding();
+                    }
+                }
+            }
+
+            if (fogUnitsInPool.Count > 0)
+            { 
+                if (configuration != StartConfiguration.FullBoard)
+                {
+                    ExpandFog();
+                }
             }
             else
             {
@@ -252,16 +329,13 @@ public class Fog : MonoBehaviour
     //Fog spills over onto adjacent tiles
     private void ExpandFog()
     {
-        FogUnit f;
         List<Tile> newTiles = new List<Tile>();
 
-        foreach (GameObject g in fogUnitsInPlay)
+        foreach (FogUnit f in fogUnitsInPlay)
         {
-            f = g.GetComponent<FogUnit>();
-
-            if (f.Health >= fogHealthLimit && f.Spilled == false)
+            if (f.Health >= fogSpillThreshold && f.Spill == false)
             {
-                f.Spilled = true;
+                f.Spill = true;
 
                 foreach (Tile a in f.Location.AdjacentTiles)
                 {

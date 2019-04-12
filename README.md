@@ -1,4 +1,4 @@
-# Name TBC
+# <p align="center"><img src="https://github.com/swin-sep/2019GP-Under-Ctrl/blob/master/images/Star%20Jump%20Logo.jpg"></p>
 **Developed by Under Ctrl**
 
 ## Development
@@ -20,3 +20,5 @@ If you are using another git client such as Sourcetree, follow the instructions 
 
 ## Contributions
 Git commit messages are to be written with a preceding present-tense verb, eg. `add ai script`, `update relay model` or `delete unused bear model`.
+
+## For more information go to https://github.com/swin-sep/2019GP-Under-Ctrl/wiki

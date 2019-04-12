@@ -37,6 +37,8 @@ public class Tile : MonoBehaviour
     public GameObject Placedtower { get => placedtower; set => placedtower = value; }
 
     public List<Tile> AdjacentTiles { get => adjacentTiles; }
+    private bool visited = false;
+    public bool Visited { get => visited; set => visited = value; }
 
     //Altered public properties
     public PowerSource PowerSource
@@ -53,6 +55,7 @@ public class Tile : MonoBehaviour
             }
         }
     }
+
 
     public void PowerUp(PowerSource power)
     {
@@ -87,6 +90,24 @@ public class Tile : MonoBehaviour
         if (observers.Count == 0)
         {
             this.gameObject.GetComponent<Renderer>().material = startMaterial;
+        }
+    }
+
+    public void CollectTilesInRange(List<Tile> tiles, int range)
+    {
+        // Adds all tiles in a specified range to a List.
+        // IMPORTANT!!! SET ALL TILES IN THE LIST '.VISITED' TO FALSE AFTER USE!!!
+        if (!visited)
+        {
+            tiles.Add(this);
+            visited = true;
+            foreach (Tile tile in adjacentTiles)
+            {
+                if (range - 1 > 0)
+                { 
+                    tile.CollectTilesInRange(tiles, range - 1);
+                }
+            }
         }
     }
 

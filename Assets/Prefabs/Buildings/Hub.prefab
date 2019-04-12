@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1405241161030514287}
   m_Layer: 0
   m_Name: Hub
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,6 +107,8 @@ MonoBehaviour:
   health: 50
   visibilityRange: 7
   upkeep: 5
+  powerSource: {fileID: 0}
+  powered: 0
   buildingType: 4
   powerRange: 5
   suppliedBuildings: []
@@ -117,4 +119,21 @@ MonoBehaviour:
   storedMineral: 0
   mineralChange: 0
   storedFuel: 0
+  batteryPowerCost: 30
+  batteryMineralCost: 0
+  batteryOrganicCost: 0
+  batteryFuelCost: 0
+  generatorPowerCost: 30
+  generatorMineralCost: 0
+  generatorOrganicCost: 0
+  generatorFuelCost: 0
+  harvesterPowerCost: 50
+  harvesterMineralCost: 0
+  harvesterOrganicCost: 0
+  harvesterFuelCost: 0
+  relayPowerCost: 10
+  relayMineralCost: 0
+  relayOrganicCost: 0
+  relayFuelCost: 0
   harvesters: []
+  batteries: []
