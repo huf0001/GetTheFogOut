@@ -196,6 +196,31 @@ public class WorldController : MonoBehaviour
                 }
             }
         }
+
+        foreach (GameObject o in tiles)
+        {
+            t = o.GetComponent<Tile>();
+
+            for (int i = t.X - 1; i <= t.X + 1; i++)
+            {
+                if (i >= 0 && i < width)
+                {
+                    for (int j = t.Z - 1; j <= t.Z + 1; j++)
+                    {
+                        if (j >= 0 && j < length)
+                        {
+                            a = GetTileAt(i, j).GetComponent<Tile>();
+
+                            if (!t.AllAdjacentTiles.Contains(a))
+                            {
+                                t.AllAdjacentTiles.Add(a);
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void MeshRendererTileChild(bool toggle)

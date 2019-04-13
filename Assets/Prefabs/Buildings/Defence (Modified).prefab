@@ -37,6 +37,9 @@ MonoBehaviour:
   powerSource: {fileID: 0}
   powered: 0
   buildingType: 0
+  directDamage: 50
+  aoeDamage: 25
+  rateOfFire: 0.25
 --- !u!1 &6560907534143759994
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,11 +78,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3318148520141281333}
     m_Modifications:
-    - target: {fileID: 7263953934050848762, guid: adb8aff08276b5248a75eafbbc14ce39,
-        type: 3}
-      propertyPath: m_Name
-      value: Defence
-      objectReference: {fileID: 0}
     - target: {fileID: 4908192924023869541, guid: adb8aff08276b5248a75eafbbc14ce39,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -135,11 +133,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7263953934050848762, guid: adb8aff08276b5248a75eafbbc14ce39,
+        type: 3}
+      propertyPath: m_Name
+      value: Defence
+      objectReference: {fileID: 0}
     - target: {fileID: 5434846841914986776, guid: adb8aff08276b5248a75eafbbc14ce39,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 03f458cc4e0e4d94194b55deafd646a3, type: 2}
+    - target: {fileID: 2755190966316714532, guid: adb8aff08276b5248a75eafbbc14ce39,
+        type: 3}
+      propertyPath: directDamage
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2755190966316714532, guid: adb8aff08276b5248a75eafbbc14ce39,
+        type: 3}
+      propertyPath: aoeDamage
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: adb8aff08276b5248a75eafbbc14ce39, type: 3}
 --- !u!1 &5672911683854334813 stripped

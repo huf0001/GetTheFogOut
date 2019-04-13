@@ -24,6 +24,7 @@ public class Tile : MonoBehaviour
     private FogUnit fogUnit = null;
     private GameObject placedtower;
     private List<Tile> adjacentTiles = new List<Tile>();
+    private List<Tile> allAdjacentTiles = new List<Tile>();
 
     private List<Building> observers = new List<Building>();
 
@@ -37,6 +38,7 @@ public class Tile : MonoBehaviour
     public GameObject Placedtower { get => placedtower; set => placedtower = value; }
 
     public List<Tile> AdjacentTiles { get => adjacentTiles; }
+    public List<Tile> AllAdjacentTiles { get => allAdjacentTiles; }
     private bool visited = false;
     public bool Visited { get => visited; set => visited = value; }
 

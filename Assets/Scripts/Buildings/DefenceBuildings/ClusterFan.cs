@@ -5,8 +5,8 @@ using UnityEngine;
 public class ClusterFan : Defence
 {
 
-    [SerializeField] private int directDamage = 30;
-    [SerializeField] private int aoeDamage = 10;
+    [SerializeField] private int directDamage = 50;
+    [SerializeField] private int aoeDamage = 25;
     [SerializeField] private float rateOfFire = 0.25f;
 
     // Start is called before the first frame update
@@ -39,7 +39,7 @@ public class ClusterFan : Defence
         if (target != null)
         {
             target.FogUnit.Health -= directDamage;
-            foreach (Tile tile in target.AdjacentTiles)
+            foreach (Tile tile in target.AllAdjacentTiles)
             {
                 if (tile.FogUnit != null)
                 {
