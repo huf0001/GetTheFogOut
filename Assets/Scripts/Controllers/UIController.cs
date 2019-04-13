@@ -9,31 +9,24 @@ public class UIController : MonoBehaviour
 
     public static UIController instance = null;
 
-    TextMeshProUGUI powerText;
-    TextMeshProUGUI organicText;
-    TextMeshProUGUI mineralText;
-    TextMeshProUGUI fuelText;
+    TextMeshProUGUI powerText, organicText, mineralText, fuelText;
 
-    Slider powerSlider;
-    Slider fuelSlider;
-    Slider organicSlider;
-    Slider mineralSlider;
+    private Slider powerSlider, fuelSlider, organicSlider, mineralSlider;
 
-    int power = 0;
-    float powerVal = 0;
-    float pTime = 0;
+    private int power = 0;
+    private int organic = 0;
+    private int mineral = 0;
+    private int fuel = 0;
 
-    int organic = 0;
-    float organicVal = 0;
-    float oTime = 0;
+    private float powerVal = 0;
+    private float organicVal = 0;
+    private float mineralVal = 0;
+    private float fuelVal = 0;
 
-    int mineral = 0;
-    float mineralVal = 0;
-    float mTime = 0;
-
-    int fuel = 0;
-    float fuelVal = 0;
-    float fTime = 0;
+    private float powerTime = 0;
+    private float organicTime = 0;
+    private float minerTime = 0;
+    private float fuelTime = 0;
 
     Hub hub = null;
 
@@ -62,10 +55,10 @@ public class UIController : MonoBehaviour
             hub = WorldController.Instance.Hub;
         }
 
-        pTime += Time.deltaTime;
-        oTime += Time.deltaTime;
-        mTime += Time.deltaTime;
-        fTime += Time.deltaTime;
+        powerTime += Time.deltaTime;
+        organicTime += Time.deltaTime;
+        minerTime += Time.deltaTime;
+        fuelTime += Time.deltaTime;
         UpdateResourceText();
     }
 
@@ -86,32 +79,32 @@ public class UIController : MonoBehaviour
             {
                 power = hub.StoredPower;
                 powerVal = powerSlider.value;
-                pTime = 0;
+                powerTime = 0;
             }
             if (hub.StoredOrganic != organic)
             {
                 organic = hub.StoredOrganic;
                 organicVal = organicSlider.value;
-                oTime = 0;
+                organicTime = 0;
             }
             if (hub.StoredMineral != mineral)
             {
                 mineral = hub.StoredMineral;
                 mineralVal = mineralSlider.value;
-                mTime = 0;
+                minerTime = 0;
             }
             if (hub.StoredFuel != fuel)
             {
                 fuel = hub.StoredFuel;
                 fuelVal = fuelSlider.value;
-                fTime = 0;
+                fuelTime = 0;
             }
 
             powerSlider.maxValue = hub.MaxPower;
-            powerSlider.value = Mathf.Lerp(powerVal, power, pTime);
-            fuelSlider.value = Mathf.Lerp(fuelVal, fuel, fTime);
-            organicSlider.value = Mathf.Lerp(organicVal, organic, oTime);
-            mineralSlider.value = Mathf.Lerp(mineralVal, mineral, mTime);
+            powerSlider.value = Mathf.Lerp(powerVal, power, powerTime);
+            fuelSlider.value = Mathf.Lerp(fuelVal, fuel, fuelTime);
+            organicSlider.value = Mathf.Lerp(organicVal, organic, organicTime);
+            mineralSlider.value = Mathf.Lerp(mineralVal, mineral, minerTime);
 
             string colour;
             if (hub.PowerChange > 0)
@@ -127,7 +120,7 @@ public class UIController : MonoBehaviour
                 colour = "black\">";
             }
 
-            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, pTime)) + "/" + hub.MaxPower + "    <color=" + colour + hub.PowerChange + "</color>";
+            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + hub.MaxPower + "    <color=" + colour + hub.PowerChange + "</color>";
             //organicText.text = "Organic: " + hub.StoredOrganic;
             //mineralText.text = "Minerals: " + hub.StoredMineral + " Change: " + hub.MineralChange;
             //fuelText.text = "Fuel: " + hub.StoredFuel;
