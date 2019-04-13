@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 5673079904387280695}
   - component: {fileID: 5673079904387280693}
   - component: {fileID: 5673079904387280692}
+  - component: {fileID: 26979464134943122}
+  - component: {fileID: 1615926507837253115}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -27,8 +29,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5673079904387280694}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.5300007, y: 2.6399999, z: 10.170408}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 17.38, y: -5, z: 17.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -46,17 +48,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16bbb129faf07144293a7a0bab6ea442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 30
   tilePrefab: {fileID: 4687682228001315334, guid: 18bdef06dd148db4d888636bdefa3eab,
-    type: 3}
-  mineralPrefab: {fileID: 762063269852825293, guid: edffadd135d322748ac7f23c8cfefc63,
     type: 3}
   hubPrefab: {fileID: 1405241161030514272, guid: 47e172c828d0ea4428b22c2696684f4c,
     type: 3}
+  mineralPrefab: {fileID: 762063269852825293, guid: edffadd135d322748ac7f23c8cfefc63,
+    type: 3}
+  fuelPrefab: {fileID: 8393472377661496211, guid: 4d4c598dd9bc8cb43a0d126a2b0e2eb8,
+    type: 3}
+  powerPrefab: {fileID: 7908624944112950829, guid: 274cb1791698d614a84ceb3fee36b80b,
+    type: 3}
+  organPrefab: {fileID: 7857378348933392223, guid: 5ab951eea836f594ea15cdb13afd6328,
+    type: 3}
   mineralSpawnChance: 5
-  width: 30
+  fuelSpawnChance: 5
+  powerSpawnChance: 5
+  organSpawnChance: 5
   length: 30
-  InBuildMode: 0
-  planeGridprefab: {fileID: 0}
+  InBuildMode: 1
+  planeGridprefab: {fileID: 6018002286047896067, guid: a9a48ed08e70c5840891481cb21c444d,
+    type: 3}
 --- !u!114 &5673079904387280695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,11 +107,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f7dad379b7b4743bc19767b81a2f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerText: {fileID: 0}
-  organicText: {fileID: 0}
-  mineralText: {fileID: 0}
-  fuelText: {fileID: 0}
-  powerSlider: {fileID: 0}
-  fuelSlider: {fileID: 0}
-  organicSlider: {fileID: 0}
-  mineralSlider: {fileID: 0}
+--- !u!114 &26979464134943122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5673079904387280694}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d3d421faae22e942918259188a52b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obj_prefab: {fileID: 0}
+  _button: {fileID: 0}
+  _key: 0
+  buildingDesc: {fileID: 0}
+--- !u!114 &1615926507837253115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5673079904387280694}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37a928823b9f6a48814cc817e7d13c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fogUnitPrefab: {fileID: 6045479659823427939, guid: f16f94a244adbcf47a2a91498a1edb9a,
+    type: 3}
+  configuration: 1
+  expansionDirection: 0
+  fillType: 1
+  fogAccelerates: 1
+  fogGrowth: 5
+  fogHealthLimit: 100
+  fogSpillThreshold: 50
+  damageOn: 0
+  visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
+  invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}

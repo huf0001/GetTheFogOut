@@ -29,27 +29,27 @@ public class ToolTip : MonoBehaviour
                 rectTransform.gameObject.SetActive(true);
                 if (hit.transform.name == "Hub(Clone)")
             	{
-            		toolTipText.text = "Hub, your only chance off this planet!";
+            		toolTipText.text = "Hub\nYour only chance off this planet!";
             	}
             	else if (hit.transform.name == "Battery")
             	{
-            		toolTipText.text = "Battery, for when you need extra energy!";
+            		toolTipText.text = "Battery\nStore your zaps!";
             	}
             	else if (hit.transform.name == "Defence")
             	{
-            		toolTipText.text = "Defence, demistifies your surroundings!";
+            		toolTipText.text = "Defence\nDemistify your surroundings!";
             	}
             	else if (hit.transform.name == "Generator")
             	{
-            		toolTipText.text = "Generator, store your zaps!";
+            		toolTipText.text = "Generator\nFor when you need extra energy!";
             	}
             	else if (hit.transform.name == "Harvester")
             	{
-            		toolTipText.text = "Harvester, crystals are enlightening!";
+            		toolTipText.text = "Harvester\nCrystals are enlightening!";
             	}
             	else if (hit.transform.name == "Relay")
             	{
-            		toolTipText.text = "Relay, connect your devices!";
+            		toolTipText.text = "Relay\nConnect your devices!";
             	}
                 else
                 {
