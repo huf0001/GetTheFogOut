@@ -42,6 +42,9 @@ public class WorldController : MonoBehaviour
     public bool InBuildMode;
     [SerializeField] private GameObject planeGridprefab;
 
+    //UI Controller
+    UIController uiController;
+
     private bool isGameOver;
 
     private void Start()
@@ -54,6 +57,9 @@ public class WorldController : MonoBehaviour
         InBuildMode = false;
         Instance = this;
         isGameOver = false;
+
+        //Get UIController currently used in scene
+        uiController = FindObjectOfType<UIController>();
 
         InstantiateTileArray();
         ConnectAdjacentTiles();
@@ -335,10 +341,16 @@ public class WorldController : MonoBehaviour
         {
             if(hub.IsWin())
             {
+                //Display win UI
+                uiController.WinDisplay();
+                
                 Debug.Log("You win!");
             }
             else
             {
+                //Display lose UI
+                uiController.LoseDisplay();
+
                 Debug.Log("You lose!");
             }
         }

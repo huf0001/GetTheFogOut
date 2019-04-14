@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour
     public static UIController instance = null;
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
+    public GameObject winText, loseText;
 
     private Slider powerSlider, fuelSlider, organicSlider, mineralSlider;
     private int power = 0, organic = 0, mineral = 0, fuel = 0;
@@ -57,6 +58,22 @@ public class UIController : MonoBehaviour
         organicSlider = GameObject.Find("OrganicSlider").GetComponent<Slider>();
         mineralSlider = GameObject.Find("MineralSlider").GetComponent<Slider>();
         powerText = powerSlider.GetComponentInChildren<TextMeshProUGUI>();
+    }
+
+    /// <summary>
+    /// Displays the premade win screen 
+    /// </summary>
+    public void WinDisplay()
+    {
+        winText.SetActive(true);
+    }
+
+    /// <summary>
+    /// Displays the premade lose screen 
+    /// </summary>
+    public void LoseDisplay()
+    {
+        loseText.SetActive(true);
     }
 
     void UpdateResourceText()
