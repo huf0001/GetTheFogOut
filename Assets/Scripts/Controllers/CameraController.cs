@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
+    [SerializeField] private CinemachineVirtualCamera cam1;
+
     //Handles control of the camera
 
     [SerializeField]
@@ -58,8 +61,8 @@ public class CameraController : MonoBehaviour
 
 
         //Camera zoom
-        Camera.main.orthographicSize -= Camera.main.orthographicSize * Input.GetAxis ("Mouse ScrollWheel");
-		Camera.main.orthographicSize = Mathf.Clamp (Camera.main.orthographicSize, 2f, 6f);
+        cam1.m_Lens.OrthographicSize -= cam1.m_Lens.OrthographicSize * Input.GetAxis("Mouse ScrollWheel");
+        cam1.m_Lens.OrthographicSize = Mathf.Clamp(cam1.m_Lens.OrthographicSize, 2f, 6f);
 
         //Camera keyboard movement
         rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
