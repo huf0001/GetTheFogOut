@@ -40,13 +40,7 @@ public abstract class Building : Entity
     {
         if (Health <= 0)
         {
-            Debug.Log("*explosions of death for the " + buildingType + "*");
-
-            if (buildingType == BuildingType.Hub)
-            {
-                Debug.Log("GAME OVER!");
-            }
-
+            Debug.Log(buildingType + " has been destroyed!");
             Destroy(this.gameObject);
         }
     }

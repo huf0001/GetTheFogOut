@@ -12,21 +12,9 @@ public class UIController : MonoBehaviour
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
 
     private Slider powerSlider, fuelSlider, organicSlider, mineralSlider;
-
-    private int power = 0;
-    private int organic = 0;
-    private int mineral = 0;
-    private int fuel = 0;
-
-    private float powerVal = 0;
-    private float organicVal = 0;
-    private float mineralVal = 0;
-    private float fuelVal = 0;
-
-    private float powerTime = 0;
-    private float organicTime = 0;
-    private float minerTime = 0;
-    private float fuelTime = 0;
+    private int power = 0, organic = 0, mineral = 0, fuel = 0;
+    private float powerVal = 0.0f, organicVal = 0.0f, mineralVal = 0.0f, fuelVal = 0.0f;
+    private float powerTime = 0.0f, organicTime = 0.0f, minerTime = 0.0f, fuelTime = 0.0f;
 
     Hub hub = null;
 

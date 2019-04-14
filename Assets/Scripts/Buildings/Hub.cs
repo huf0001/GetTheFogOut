@@ -4,42 +4,18 @@ using UnityEngine;
 
 public class Hub : PowerSource
 {
-    [SerializeField] private int maxPower = 100;
-    [SerializeField] private int maxMineral = 100;
-    [SerializeField] private int maxOrganic = 100;
-    [SerializeField] private int maxFuel = 100;
+    [SerializeField] private int maxPower = 100, maxMineral = 100, maxOrganic = 100, maxFuel = 100;
+    [SerializeField] private int storedPower = 0, storedMineral = 0, storedOrganic = 0, storedFuel = 0;
+    [SerializeField] private int powerChange = 0, mineralChange = 0, organicChange = 0, fuelChange = 0;
 
-    [SerializeField] private int storedPower = 0;
-    [SerializeField] private int storedMineral = 0;
-    [SerializeField] private int storedOrganic = 0;
-    [SerializeField] private int storedFuel = 0;
-    
-    [SerializeField] private int powerChange = 0;
-    [SerializeField] private int mineralChange = 0;
-    [SerializeField] private int organicChange = 0;
-    [SerializeField] private int fuelChange = 0;
+    private bool powerFull = false, mineralFull = false, organicFull = false, fuelFull = false;
     
     [Header("Building Costs")]
-    [SerializeField] private int batteryPowerCost = 30;
-    [SerializeField] private int batteryMineralCost = 0;
-    [SerializeField] private int batteryOrganicCost = 0;
-    [SerializeField] private int batteryFuelCost = 0;
-    [SerializeField] private int generatorPowerCost = 30;
-    [SerializeField] private int generatorMineralCost = 0;
-    [SerializeField] private int generatorOrganicCost = 0;
-    [SerializeField] private int generatorFuelCost = 0;
-    [SerializeField] private int harvesterPowerCost = 50;
-    [SerializeField] private int harvesterMineralCost = 0;
-    [SerializeField] private int harvesterOrganicCost = 0;
-    [SerializeField] private int harvesterFuelCost = 0;
-    [SerializeField] private int relayPowerCost = 10;
-    [SerializeField] private int relayMineralCost = 0;
-    [SerializeField] private int relayOrganicCost = 0;
-    [SerializeField] private int relayFuelCost = 0;
-    [SerializeField] private int defencePowerCost = 0;
-    [SerializeField] private int defenceMineralCost = 0;
-    [SerializeField] private int defenceOrganicCost = 0;
-    [SerializeField] private int defenceFuelCost = 0;
+    [SerializeField] private int batteryPowerCost = 30, batteryMineralCost = 0, batteryOrganicCost = 0, batteryFuelCost = 0;
+    [SerializeField] private int generatorPowerCost = 30, generatorMineralCost = 0, generatorOrganicCost = 0, generatorFuelCost = 0;
+    [SerializeField] private int harvesterPowerCost = 50, harvesterMineralCost = 0, harvesterOrganicCost = 0, harvesterFuelCost = 0;
+    [SerializeField] private int relayPowerCost = 10, relayMineralCost = 0, relayOrganicCost = 0, relayFuelCost = 0;
+    [SerializeField] private int defencePowerCost = 0, defenceMineralCost = 0, defenceOrganicCost = 0, defenceFuelCost = 0;
 
     private Resource ResourceOn;
 
@@ -225,22 +201,46 @@ public class Hub : PowerSource
 
     public void CheckLimit()
     {
-        if (storedPower > maxPower)
+        if (storedPower >= maxPower)
         {
             storedPower = maxPower;
+            powerFull = true;
         }
-        if (storedFuel > maxFuel)
+        else
+        {
+            powerFull = false;
+        }
+
+        if (storedFuel >= maxFuel)
         {
             storedFuel = maxFuel;
+            fuelFull = true;
         }
-        if (storedMineral > maxMineral)
+        else
+        {
+            fuelFull = false;
+        }
+
+        if (storedMineral >= maxMineral)
         {
             storedMineral = maxMineral;
+            mineralFull = true;
         }
-        if (storedOrganic > maxOrganic)
+        else
+        {
+            mineralFull = false;
+        }
+
+        if (storedOrganic >= maxOrganic)
         {
             storedOrganic = maxOrganic;
+            organicFull = true;
         }
+        else
+        {
+            organicFull = false;
+        }
+
 
         if (storedPower < 0)
         {
@@ -257,6 +257,30 @@ public class Hub : PowerSource
         if (storedOrganic < 0)
         {
             storedOrganic = 0;
+        }
+    }
+
+    public bool IsWin()
+    {
+        if (powerFull && mineralFull && organicFull && fuelFull)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool isDestroyed()
+    {
+        if (Health <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

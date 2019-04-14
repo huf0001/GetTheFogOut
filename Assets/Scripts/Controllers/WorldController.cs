@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -324,6 +324,22 @@ public class WorldController : MonoBehaviour
                 MeshRendererTileChild(true);
                 RenderTower();
                 ShowTile();
+            }
+            
+            if(hub.IsWin() || hub.isDestroyed())
+            {
+                isGameOver = true;
+            }
+        }
+        else
+        {
+            if(hub.IsWin())
+            {
+                Debug.Log("You win!");
+            }
+            else
+            {
+                Debug.Log("You lose!");
             }
         }
     }
