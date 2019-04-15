@@ -16,6 +16,7 @@ public class TowerManager : MonoBehaviour
     public void OnCLickedbtn(btn_tower chooseTower)
     {
          this.SelectedTower = chooseTower;
+         WorldController.Instance.InBuildMode = true;
     }
 
     //DESC: return prefab object *replace with tower 3d later

@@ -24,7 +24,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         if (Input.GetKeyDown(_key))
         {
             _button.onClick.Invoke();
-            WC.InBuildMode = true;
+            //WC.InBuildMode = true;
         }
     }
 
