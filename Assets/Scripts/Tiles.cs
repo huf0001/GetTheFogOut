@@ -37,6 +37,7 @@ public class Tiles : MonoBehaviour
                 Vector3 pos = t.transform.position;
                 if (pos.x < width && pos.z < length)
                 {
+                    //t.gameObject.name = "Tile(" + (int)pos.x + ", " + (int)pos.z + ")";
                     tiles[(int)pos.x, (int)pos.z] = t.gameObject;
                 }
                 else

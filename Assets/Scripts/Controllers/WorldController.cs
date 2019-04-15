@@ -19,7 +19,8 @@ public class WorldController : MonoBehaviour
     public static WorldController Instance { get; protected set; }
     
     [SerializeField] private int width = 31;
-    [SerializeField] private Tiles gameboard;
+    [SerializeField] private Tiles gameboard = null;
+    [SerializeField] private GameObject gameboardPrefab;
 
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
@@ -62,7 +63,16 @@ public class WorldController : MonoBehaviour
         //Get UIController currently used in scene
         uiController = FindObjectOfType<UIController>();
 
+        if (gameboard == null)
+        {
+            GameObject gbo = Instantiate(gameboardPrefab);
+            gameboard = gbo.GetComponent<Tiles>();
+        }
+
         tiles = gameboard.InstantiateTileArray();
+
+        //InstantiateTileArray();
+        SetupTiles();
         ConnectAdjacentTiles();
         GetComponent<Fog>().SpawnFog();
     }
@@ -78,51 +88,63 @@ public class WorldController : MonoBehaviour
                 float y = 0.2f; // TODO: Account for terrain height
                 GameObject tileGo = Instantiate(tilePrefab);
                 Vector3 pos = new Vector3(x, y, z);
-                tileGo.transform.position = pos;
-                tileGo.transform.SetParent(this.transform, true);
-                tileGo.name = "Tile_" + x + "_" + z;
-                tileGo.layer = 8;
-                tileGo.tag = "Tile";
-                tileGo.GetComponent<Tile>().X = x;
-                tileGo.GetComponent<Tile>().Z = z;
+                tileGo.transform.position = pos;                
+                tiles[x, z] = tileGo;
+            }
+        }
+    }
 
+    private void SetupTiles()
+    {
+        GameObject tileGO;
+        Vector3 pos;
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < length; z++)
+            {
+                tileGO = tiles[x, z];
+
+                tileGO.transform.SetParent(this.transform, true);
+                tileGO.name = "Tile_" + x + "_" + z;
+                tileGO.layer = 8;
+                tileGO.tag = "Tile";
+                tileGO.GetComponent<Tile>().X = x;
+                tileGO.GetComponent<Tile>().Z = z;
+                pos = tileGO.transform.position;
 
                 //set to true will render the tile; set to false, and it won't
-                tileGo.GetComponent<MeshRenderer>().enabled = true;
+                tileGO.GetComponent<MeshRenderer>().enabled = true;
                 MeshRendererTileChild(false);
 
                 if (Random.Range(1, 100) < mineralSpawnChance)
-                { 
+                {                    
                     pos.y += 0.2f;
-                    GameObject mineral = Instantiate(mineralPrefab, pos, tileGo.transform.rotation);
-                    tileGo.GetComponent<Tile>().Resource = mineral.GetComponentInChildren<ResourceNode>();
-                    mineral.transform.SetParent(tileGo.transform, true);
+                    GameObject mineral = Instantiate(mineralPrefab, pos, tileGO.transform.rotation);
+                    tileGO.GetComponent<Tile>().Resource = mineral.GetComponentInChildren<ResourceNode>();
+                    mineral.transform.SetParent(tileGO.transform, true);
                 }
-
-                if (Random.Range(1, 100) < fuelSpawnChance)
+                else if (Random.Range(1, 100) < fuelSpawnChance)
                 {
                     pos.y += 0.3f;
-                    GameObject fuel = Instantiate(fuelPrefab, pos, tileGo.transform.rotation);
-                    tileGo.GetComponent<Tile>().Resource = fuel.GetComponentInChildren<ResourceNode>();
-                    fuel.transform.SetParent(tileGo.transform, true);
+                    GameObject fuel = Instantiate(fuelPrefab, pos, tileGO.transform.rotation);
+                    tileGO.GetComponent<Tile>().Resource = fuel.GetComponentInChildren<ResourceNode>();
+                    fuel.transform.SetParent(tileGO.transform, true);
                 }
-
-                if (Random.Range(1, 100) < organSpawnChance)
+                else if (Random.Range(1, 100) < organSpawnChance)
                 {
                     pos.y += 0.3f;
-                    GameObject organ = Instantiate(organPrefab, pos, tileGo.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-                    tileGo.GetComponent<Tile>().Resource = organ.GetComponentInChildren<ResourceNode>();
-                    organ.transform.SetParent(tileGo.transform, true);
+                    GameObject organ = Instantiate(organPrefab, pos, tileGO.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
+                    tileGO.GetComponent<Tile>().Resource = organ.GetComponentInChildren<ResourceNode>();
+                    organ.transform.SetParent(tileGO.transform, true);
                 }
-				
-                if (Random.Range(1, 100) < powerSpawnChance)
+                else if (Random.Range(1, 100) < powerSpawnChance)
                 {
                     pos.y += 0.2f;
-                    GameObject power = Instantiate(powerPrefab, pos, tileGo.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-                    tileGo.GetComponent<Tile>().Resource = power.GetComponentInChildren<ResourceNode>();
-                    power.transform.SetParent(tileGo.transform, true);
+                    GameObject power = Instantiate(powerPrefab, pos, tileGO.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
+                    tileGO.GetComponent<Tile>().Resource = power.GetComponentInChildren<ResourceNode>();
+                    power.transform.SetParent(tileGO.transform, true);
                 }
-                tiles[x, z] = tileGo;
             }
         }
     }
@@ -359,7 +381,9 @@ public class WorldController : MonoBehaviour
     //rotate to 90
     private void InstantiateStartHub()
     {
-        Tile startingTile = tiles[Mathf.FloorToInt(width / 2), Mathf.FloorToInt(length / 2)].GetComponent<Tile>();
+        int x = GetHalf(width);
+        int y = GetHalf(length);
+        Tile startingTile = tiles[x, y].GetComponent<Tile>();
         Vector3 PosToInst = new Vector3(startingTile.transform.position.x, startingTile.transform.position.y + 0.4125f, startingTile.transform.position.z);
         GameObject hubGO = Instantiate(hubPrefab, PosToInst, startingTile.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
         Hub startHub = hubGO.GetComponentInChildren<Hub>();
@@ -368,6 +392,18 @@ public class WorldController : MonoBehaviour
         hubGO.transform.SetParent(startingTile.transform);
         startingTile.Building = startHub;
         hub.Location = startingTile;
+    }
+
+    private int GetHalf(int n)
+    {
+        if (n % 2 == 0)
+        {
+            return Mathf.FloorToInt(n / 2);
+        }
+        else
+        {
+            return Mathf.FloorToInt((n - 1) / 2);
+        }
     }
 
     public GameObject GetTileAt(int x, int y)
