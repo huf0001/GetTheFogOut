@@ -18,7 +18,8 @@ public class WorldController : MonoBehaviour
     // Used to get the instance of the WorldManager from anywhere.
     public static WorldController Instance { get; protected set; }
     
-    [SerializeField] private int width = 30;
+    [SerializeField] private int width = 31;
+    [SerializeField] private Tiles gameboard;
 
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
@@ -61,7 +62,7 @@ public class WorldController : MonoBehaviour
         //Get UIController currently used in scene
         uiController = FindObjectOfType<UIController>();
 
-        InstantiateTileArray();
+        tiles = gameboard.InstantiateTileArray();
         ConnectAdjacentTiles();
         GetComponent<Fog>().SpawnFog();
     }
