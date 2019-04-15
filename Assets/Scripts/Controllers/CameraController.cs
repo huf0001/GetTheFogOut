@@ -24,8 +24,8 @@ public class CameraController : MonoBehaviour
     private Vector3 up;
     private Vector3 right;
 
-    private Vector3 rightMovement;
-    private Vector3 upMovement;
+    private Vector3 xMove;
+    private Vector3 yMove;
 
     // Start is called before the first frame update
     void Start()
@@ -65,8 +65,8 @@ public class CameraController : MonoBehaviour
         cam1.m_Lens.OrthographicSize = Mathf.Clamp(cam1.m_Lens.OrthographicSize, 2f, 6f);
 
         //Camera keyboard movement
-        rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
-        upMovement = up * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
+        xMove = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
+        yMove = up * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
 
         if (enableEdgePan)
         {
@@ -74,22 +74,22 @@ public class CameraController : MonoBehaviour
             if (Input.mousePosition.x >= Screen.width - 20)
             {
                 //scroll right
-                rightMovement = right * moveSpeed * Time.deltaTime * 1;
+                xMove = right * moveSpeed * Time.deltaTime * 1;
             }
             if (Input.mousePosition.x <= 10)
             {
                 //scroll left
-                rightMovement = right * moveSpeed * Time.deltaTime * -1;
+                xMove = right * moveSpeed * Time.deltaTime * -1;
             }
 
             if (Input.mousePosition.y >= Screen.height - 20)
             {
                 //scroll up
-                rightMovement = up * moveSpeed * Time.deltaTime * 1;
+                xMove = up * moveSpeed * Time.deltaTime * 1;
             }
             if (Input.mousePosition.y <= 20)
             {
-                rightMovement = up * moveSpeed * Time.deltaTime * -1;
+                xMove = up * moveSpeed * Time.deltaTime * -1;
             }
 
             if (Input.GetKey("q"))
@@ -104,7 +104,7 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        transform.position += rightMovement;
-        transform.position += upMovement;
+        transform.position += xMove;
+        transform.position += yMove;
     }
 }
