@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -342,16 +342,14 @@ public class WorldController : MonoBehaviour
             if(hub.IsWin())
             {
                 //Display win UI
-                uiController.WinDisplay();
-                
-                Debug.Log("You win!");
+                // uiController.WinDisplay();
+                uiController.EndGameDisplay("You win!");
             }
             else
             {
                 //Display lose UI
-                uiController.LoseDisplay();
-
-                Debug.Log("You lose!");
+                // uiController.LoseDisplay();
+                uiController.EndGameDisplay("You lose!");
             }
         }
     }

@@ -10,7 +10,8 @@ public class UIController : MonoBehaviour
     public static UIController instance = null;
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
-    public GameObject winText, loseText;
+    public GameObject endGame;
+    public TextMeshProUGUI endGameText;
 
     private Slider powerSlider, fuelSlider, organicSlider, mineralSlider;
     private int power = 0, organic = 0, mineral = 0, fuel = 0;
@@ -22,6 +23,7 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        endGame.SetActive(false);
         if (instance == null)
         {
             instance = this;
@@ -63,17 +65,23 @@ public class UIController : MonoBehaviour
     /// <summary>
     /// Displays the premade win screen 
     /// </summary>
-    public void WinDisplay()
-    {
-        winText.SetActive(true);
-    }
+    // public void WinDisplay()
+    // {
+    //     winText.SetActive(true);
+    // }
 
     /// <summary>
     /// Displays the premade lose screen 
     /// </summary>
-    public void LoseDisplay()
+    // public void LoseDisplay()
+    // {
+    //     loseText.SetActive(true);
+    // }
+
+    public void EndGameDisplay(string text)
     {
-        loseText.SetActive(true);
+        endGameText.text = text;
+        endGame.SetActive(true);
     }
 
     void UpdateResourceText()
