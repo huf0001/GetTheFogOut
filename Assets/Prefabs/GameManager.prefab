@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1899903245264256477}
   - component: {fileID: 1899903245264256472}
   - component: {fileID: 1899903245264256473}
+  - component: {fileID: 3646138034780775634}
   - component: {fileID: 1899903245264256486}
   m_Layer: 0
   m_Name: GameManager
@@ -124,6 +125,23 @@ MonoBehaviour:
   _button: {fileID: 0}
   _key: 0
   buildingDesc: {fileID: 0}
+--- !u!114 &3646138034780775634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899903245264256479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695ad5645fddd0441bc1d27750ca298a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolSize: 30
+  projectilePrefab: {fileID: 2058973584694880921, guid: 515bdfe2bba66024db3d86dab9ad9e3d,
+    type: 3}
+  visibleMaterial: {fileID: 2100000, guid: f551b82fe732f0b409ba5fe50e2cf6d1, type: 2}
+  invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
 --- !u!114 &1899903245264256486
 MonoBehaviour:
   m_ObjectHideFlags: 0
