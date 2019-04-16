@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIController : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class UIController : MonoBehaviour
     public static UIController instance = null;
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
-    public GameObject endGame, pauseGame;
+    public GameObject endGame, pauseGame, parentSlider;
     public TextMeshProUGUI endGameText;
 
     private Slider powerSlider, fuelSlider, organicSlider, mineralSlider;
@@ -35,6 +36,10 @@ public class UIController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         FindSliders();
+
+        //Tweens in the UI for a smooth bounce in from outside the canvas
+        parentSlider = GameObject.Find("Sliders");
+        parentSlider.GetComponent<RectTransform>().DOMoveY(200f, 1).From(true).SetEase(Ease.OutBounce);
     }
 
     // Update is called once per frame
