@@ -15,7 +15,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 114873264888500148}
-  m_UIPosition: {x: 2813, y: 117}
+  m_UIPosition: {x: 5258, y: 353}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -46,7 +46,7 @@ MonoBehaviour:
   - {fileID: 114580989189733782}
   - {fileID: 8926484042661614528}
   - {fileID: 114596491906001080}
-  m_UIPosition: {x: 2807, y: 905}
+  m_UIPosition: {x: 5252, y: 1141}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -317,10 +317,10 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: 2259
-    y: -229
-    width: 938
-    height: 1670
+    x: 5260
+    y: 353
+    width: 382
+    height: 1324
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -711,7 +711,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661614530}
-  m_UIPosition: {x: 2809, y: 716}
+  m_UIPosition: {x: 5254, y: 952}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -754,7 +754,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1
+      m_SerializableObject: 0.8
     m_Space: 2147483647
   m_Property:
     name: Min
@@ -907,7 +907,7 @@ MonoBehaviour:
   m_Children:
   - {fileID: 114206037049139666}
   - {fileID: 114131763552434164}
-  m_UIPosition: {x: 2810, y: 364}
+  m_UIPosition: {x: 5255, y: 600}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -947,7 +947,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1.2
+      m_SerializableObject: 1
     m_Space: 2147483647
   m_Property:
     name: Max
@@ -1163,7 +1163,7 @@ VisualEffectResource:
       = WangHash(particleIndex ^ systemSeed);\n#endif\n        \n        {\n            SetAttribute_E6295C0(
       /*inout */velocity,  /*inout */seed, float3(-0.0123,0.01,-0.0123), float3(0.0123,0.05,0.0123));\n
       \       }\n        {\n            SetAttribute_F01429A3( /*inout */lifetime,
-      \ /*inout */seed, (float)1, (float)1.2);\n        }\n        \n\n\n#if VFX_USE_ALIVE_CURRENT\n
+      \ /*inout */seed, (float)0.8, (float)1);\n        }\n        \n\n\n#if VFX_USE_ALIVE_CURRENT\n
       \       if (alive)\n        {\n\t\t\tuint deadIndex = deadListIn.DecrementCounter();\n
       \           uint index = deadListIn[deadIndex];\n            attributeBuffer.Store3((index
       * 0x4 + 0x0) << 2,asuint(velocity));\n            attributeBuffer.Store((index
@@ -1484,9 +1484,9 @@ VisualEffectResource:
         - m_ExpressionIndex: 2
           m_Value: 100
         - m_ExpressionIndex: 7
-          m_Value: 1
+          m_Value: 0.8
         - m_ExpressionIndex: 8
-          m_Value: 1.2
+          m_Value: 1
       m_Vector2f:
         m_Array: []
       m_Vector3f:
@@ -1924,7 +1924,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Parent: {fileID: 114780028408030698}
   m_Children: []
-  m_UIPosition: {x: 0, y: 0}
+  m_UIPosition: {x: 0, y: 2}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
