@@ -10,7 +10,8 @@ public class UIController : MonoBehaviour
     public static UIController instance = null;
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
-    public GameObject winText, loseText;
+    public GameObject endGame, pauseGame;
+    public TextMeshProUGUI endGameText;
 
     private Slider powerSlider, fuelSlider, organicSlider, mineralSlider;
     private int power = 0, organic = 0, mineral = 0, fuel = 0;
@@ -60,20 +61,11 @@ public class UIController : MonoBehaviour
         powerText = powerSlider.GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    /// <summary>
-    /// Displays the premade win screen 
-    /// </summary>
-    public void WinDisplay()
+    // End Game Method
+    public void EndGameDisplay(string text)
     {
-        winText.SetActive(true);
-    }
-
-    /// <summary>
-    /// Displays the premade lose screen 
-    /// </summary>
-    public void LoseDisplay()
-    {
-        loseText.SetActive(true);
+        endGameText.text = text;
+        endGame.SetActive(true);
     }
 
     void UpdateResourceText()
