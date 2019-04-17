@@ -54,8 +54,11 @@ public class WorldController : MonoBehaviour
     private Vector3 pos;
     public bool InBuildMode;
 
-    //UI Controller
+    public GameObject pause;
+
+    //UI & Mouse Controller
     UIController uiController;
+    MouseController mouseController;
 
     private bool isGameOver;
 
@@ -373,23 +376,42 @@ public class WorldController : MonoBehaviour
                 ShowTile();
             }
 
+
+            if (Input.GetKeyDown("p"))
+            {
+                if (Time.timeScale == 1.0f)
+                {
+                    Time.timeScale = 0.0f;
+                    pause.SetActive(true);
+                }
+                else
+                {
+                    Time.timeScale = 1.0f;
+                    pause.SetActive(false);
+                }
+
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+                // TEST CODE: Stopping Mouse from placing/deleting buildings in Game Pause/Over.
+                // mouseController.GamePlayStop();
+            }
+
             if(hub.IsWin() || hub.isDestroyed())
             {
+
+                Time.timeScale = 0.2f;
                 isGameOver = true;
+                InBuildMode = false;
             }
         }
         else
         {
             if(hub.IsWin())
             {
-                //Display win UI
-                // uiController.WinDisplay();
                 uiController.EndGameDisplay("You win!");
             }
             else
             {
-                //Display lose UI
-                // uiController.LoseDisplay();
                 uiController.EndGameDisplay("You lose!");
             }
         }
