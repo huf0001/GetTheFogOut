@@ -14,6 +14,18 @@ public enum FogFillType
     Fluid
 }
 
+public class Point
+{
+    int x;
+    int y;
+
+    Point(int a, int b)
+    {
+        x = a;
+        b = y;
+    }
+}
+
 public class Fog : MonoBehaviour
 {
     private enum StartConfiguration
@@ -23,11 +35,12 @@ public class Fog : MonoBehaviour
         FourCompassPoints,
         EightCompassPoints,
         FourSides,
+        SurroundingHub,
         FullBoard
     }
 
-    //Serialized Fields
-    [SerializeField] private FogUnit fogUnitPrefab;
+//Serialized Fields
+[SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private FogExpansionDirection expansionDirection;
     [SerializeField] private FogFillType fillType;
@@ -36,6 +49,7 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogHealthLimit = 100f;
     [SerializeField] private float fogSpillThreshold = 50f;
     [SerializeField] private bool damageOn = false;
+    [SerializeField] private float surroundingHubRange;
 
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
@@ -142,6 +156,32 @@ public class Fog : MonoBehaviour
             SpawnFogUnit(0, zMax - 1);
             SpawnFogUnit(xMax - 1, 0);
             SpawnFogUnit(xMax - 1, zMax - 1);
+        }
+        else if (configuration == StartConfiguration.SurroundingHub)
+        {
+            Collider[] aroundHub = Physics.OverlapSphere(GameObject.Find("Hub").transform.position, surroundingHubRange);
+
+            //Every space on the board
+            for (int i = 0; i < xMax; i++)
+            {
+                for (int j = 0; j < zMax; j++)
+                {
+                    bool tooClose = false;
+
+                    foreach (Collider c in aroundHub)
+                    {
+                        if (c.transform.position.x == i && c.transform.position.z == j)
+                        {
+                            tooClose = true;
+                        }
+                    }
+
+                    if (!tooClose)
+                    {
+                        SpawnFogUnit(i, j);
+                    }
+                }
+            }
         }
         else if (configuration == StartConfiguration.FullBoard)
         {
