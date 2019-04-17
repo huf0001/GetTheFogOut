@@ -8,11 +8,17 @@ public class ClusterFan : Defence
     [SerializeField] private int directDamage = 50;
     [SerializeField] private int aoeDamage = 25;
     [SerializeField] private float rateOfFire = 0.25f;
+    [SerializeField] private bool placedInEditor = false;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+
+        if (placedInEditor)
+        {
+            InvokeRepeating("Fire", 0.25f, rateOfFire);
+        }
     }
 
     // Update is called once per frame

@@ -1631,6 +1631,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: gameboardPrefab
+      value: 
+      objectReference: {fileID: 4876157676309140051, guid: 43e8f3cdefddbbe44b877a3f4d596bc9,
+        type: 3}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: width
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: winText
@@ -1656,12 +1667,11 @@ PrefabInstance:
       propertyPath: pauseGame
       value: 
       objectReference: {fileID: 1119599034}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: gameboardPrefab
-      value: 
-      objectReference: {fileID: 4876157676309140051, guid: 43e8f3cdefddbbe44b877a3f4d596bc9,
-        type: 3}
+      propertyPath: surroundingHubRange
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
 --- !u!1001 &6899715652641291762
