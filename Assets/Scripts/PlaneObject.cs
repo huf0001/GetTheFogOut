@@ -7,7 +7,7 @@ public class PlaneObject : Entity
     GameObject buildingTooltip;
 
     // Start is called before the first frame update
-    void Awake()
+    protected void FindToolTip()
     {
         buildingTooltip = GameObject.Find("ToolTip");
     }
