@@ -10,7 +10,7 @@ public class ToolTip : MonoBehaviour
 
     void Start()
     {
-        offset = new Vector3(0, 5, 0);
+        offset = new Vector3(-GetComponent<RectTransform>().sizeDelta.x / 2, 5, 0);
         toolTipText = GetComponentInChildren<TextMeshProUGUI>();
         StartCoroutine(DisableToolTip());
     }
@@ -27,7 +27,7 @@ public class ToolTip : MonoBehaviour
 
     public void UpdateText(PlaneObject obj)
     {
-        transform.position = new Vector3(Input.mousePosition.x + offset.x, Input.mousePosition.y + offset.y, 1);
+        transform.position = Camera.main.WorldToScreenPoint(obj.transform.position) + offset;
 
         toolTipText.text = obj.name;
     }
