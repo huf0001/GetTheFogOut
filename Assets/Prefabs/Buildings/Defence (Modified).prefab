@@ -835,13 +835,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 50
   visibilityRange: 5
-  upkeep: 0
+  upkeep: -20
   powerSource: {fileID: 0}
   powered: 0
   buildingType: 1
   directDamage: 50
   aoeDamage: 25
-  rateOfFire: 0.25
+  rateOfFire: 0.05
 --- !u!1 &1510717633977975398
 GameObject:
   m_ObjectHideFlags: 0
@@ -1381,7 +1381,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8326259156458091926}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
   m_Name: 

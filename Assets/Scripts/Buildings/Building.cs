@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class Building : Entity
+public abstract class Building : PlaneObject
 {
     [SerializeField] protected float visibilityRange;
     [SerializeField] protected int upkeep;
@@ -18,6 +20,7 @@ public abstract class Building : Entity
     public Animator Animator { get => animator; set => animator = value; }
     public bool Powered { get => powered; }
 
+
     protected virtual void Awake()
     {
         MakeTilesVisible();
@@ -26,7 +29,6 @@ public abstract class Building : Entity
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -134,5 +136,4 @@ public abstract class Building : Entity
         PowerDown();
         MakeTilesNotVisible();
     }
-
 }

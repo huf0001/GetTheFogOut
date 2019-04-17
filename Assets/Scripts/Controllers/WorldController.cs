@@ -61,7 +61,7 @@ public class WorldController : MonoBehaviour
         isGameOver = false;
 
         //Get UIController currently used in scene
-        uiController = FindObjectOfType<UIController>();
+        uiController = GetComponent<UIController>();
 
         if (gameboard == null)
         {
