@@ -1,6 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+
+[Serializable]
+public class ShipComponentState
+{
+    [SerializeField] private ShipComponentsEnum component;
+    [SerializeField] private bool state;
+
+    public ShipComponentsEnum Component { get => component; set => component = value; }
+    public bool State { get => state; set => state = value; }
+    public ShipComponentState(ShipComponentsEnum e, bool b)
+    {
+        component = e;
+        state = b;
+    }
+}
 
 public class WorldController : MonoBehaviour
 {
@@ -15,9 +31,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    // Used to get the instance of the WorldManager from anywhere.
-    public static WorldController Instance { get; protected set; }
-    
+    //Serialized fields
     [SerializeField] private int width = 31;
     [SerializeField] private int length = 31;
     [SerializeField] private Tiles gameboard = null;
@@ -26,28 +40,32 @@ public class WorldController : MonoBehaviour
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
     [SerializeField] int mineralSpawnChance = 5, fuelSpawnChance = 5, powerSpawnChance = 5, organSpawnChance = 5;
-
-    public int Width { get => width; }
-
-    public int Length { get => length; }
-
-    private GameObject[,] tiles;
-
-    private bool hubBuilt = false;
     [SerializeField] private Hub hub = null;
-    public Hub Hub { get => hub; set => hub = value; }
+    [SerializeField] private GameObject planeGridprefab;
 
+
+    //Non serialized fields
+    [SerializeField] private ShipComponentState[] shipComponents;
+    private GameObject[,] tiles;
+    private bool hubBuilt = false;
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
     public bool InBuildMode;
-    [SerializeField] private GameObject planeGridprefab;
 
     //UI Controller
     UIController uiController;
 
     private bool isGameOver;
+
+    //public properties
+    // public static WorldController used to get the instance of the WorldManager from anywhere.
+    public static WorldController Instance { get; protected set; }
+    public int Width { get => width; }
+    public int Length { get => length; }
+    public Hub Hub { get => hub; set => hub = value; }
+    public ShipComponentState[] ShipComponents { get => shipComponents; }
 
     private void Start()
     {
@@ -88,7 +106,7 @@ public class WorldController : MonoBehaviour
                 float y = 0.2f; // TODO: Account for terrain height
                 GameObject tileGo = Instantiate(tilePrefab);
                 Vector3 pos = new Vector3(x, y, z);
-                tileGo.transform.position = pos;                
+                tileGo.transform.position = pos;
                 tiles[x, z] = tileGo;
             }
         }
@@ -117,28 +135,28 @@ public class WorldController : MonoBehaviour
                 tileGO.GetComponent<MeshRenderer>().enabled = true;
                 MeshRendererTileChild(false);
 
-                if (Random.Range(1, 100) < mineralSpawnChance)
-                {                    
+                if (UnityEngine.Random.Range(1, 100) < mineralSpawnChance)
+                {
                     pos.y += 0.2f;
                     GameObject mineral = Instantiate(mineralPrefab, pos, tileGO.transform.rotation);
                     tileGO.GetComponent<Tile>().Resource = mineral.GetComponentInChildren<ResourceNode>();
                     mineral.transform.SetParent(tileGO.transform, true);
                 }
-                else if (Random.Range(1, 100) < fuelSpawnChance)
+                else if (UnityEngine.Random.Range(1, 100) < fuelSpawnChance)
                 {
                     pos.y += 0.3f;
                     GameObject fuel = Instantiate(fuelPrefab, pos, tileGO.transform.rotation);
                     tileGO.GetComponent<Tile>().Resource = fuel.GetComponentInChildren<ResourceNode>();
                     fuel.transform.SetParent(tileGO.transform, true);
                 }
-                else if (Random.Range(1, 100) < organSpawnChance)
+                else if (UnityEngine.Random.Range(1, 100) < organSpawnChance)
                 {
                     pos.y += 0.3f;
                     GameObject organ = Instantiate(organPrefab, pos, tileGO.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
                     tileGO.GetComponent<Tile>().Resource = organ.GetComponentInChildren<ResourceNode>();
                     organ.transform.SetParent(tileGO.transform, true);
                 }
-                else if (Random.Range(1, 100) < powerSpawnChance)
+                else if (UnityEngine.Random.Range(1, 100) < powerSpawnChance)
                 {
                     pos.y += 0.2f;
                     GameObject power = Instantiate(powerPrefab, pos, tileGO.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
@@ -255,7 +273,7 @@ public class WorldController : MonoBehaviour
     private void MeshRendererTileChild(bool toggle)
     {
         objs = GameObject.FindGameObjectsWithTag("Tile");
-       
+
         //Caution child can be more than 4!!!
         foreach (GameObject obj in objs)
         {
@@ -270,15 +288,15 @@ public class WorldController : MonoBehaviour
     {
         pos = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
         if (temp == null)
-        {   
-            PlaneSpawn = Instantiate(planeGridprefab,pos,tile_obj.transform.rotation);           
+        {
+            PlaneSpawn = Instantiate(planeGridprefab,pos,tile_obj.transform.rotation);
             temp = tile_obj;
         }
         else
         {
             if (temp != tile_obj)
             {
-                Destroy(PlaneSpawn);             
+                Destroy(PlaneSpawn);
                 Destroy(TowerSpawn);
                 temp = null;
             }
@@ -294,17 +312,17 @@ public class WorldController : MonoBehaviour
     }
 
     private void RenderTower()
-    {      
+    {
         TowerToSpawn = tm.GetTower();
 
         if (TowerSpawn == null)
         {
             TowerSpawn = Instantiate(TowerToSpawn, pos, Quaternion.identity);
         }
-        else 
+        else
         {
             if (TowerSpawn != TowerToSpawn)
-            { 
+            {
                 Destroy(TowerSpawn);
                 TowerSpawn = Instantiate(TowerToSpawn, pos, Quaternion.identity);
             }
@@ -354,7 +372,7 @@ public class WorldController : MonoBehaviour
                 RenderTower();
                 ShowTile();
             }
-            
+
             if(hub.IsWin() || hub.isDestroyed())
             {
                 isGameOver = true;
@@ -415,6 +433,18 @@ public class WorldController : MonoBehaviour
 
         //Debug.Log("Getting tile at (" + x + "," + y + "). Width: " + width + ". Length: " + length + ".");
         return tiles[x, y];
+    }
+
+    public ShipComponentState GetShipComponent(ShipComponentsEnum c)
+    {
+        foreach (ShipComponentState s in ShipComponents)
+        {
+            if (s.Component == c)
+            {
+                return s;
+            }
+        }
+        return null;
     }
 
     // OLD CODE, IGNORE. MAY USE LATER

@@ -48,9 +48,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16bbb129faf07144293a7a0bab6ea442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 30
+  width: 31
+  length: 31
   gameboard: {fileID: 0}
-  gameboardPrefab: {fileID: 0}
+  gameboardPrefab: {fileID: 4876157676309140051, guid: 43e8f3cdefddbbe44b877a3f4d596bc9,
+    type: 3}
   tilePrefab: {fileID: 4687682228001315334, guid: 18bdef06dd148db4d888636bdefa3eab,
     type: 3}
   hubPrefab: {fileID: 1405241161030514272, guid: 47e172c828d0ea4428b22c2696684f4c,
@@ -67,10 +69,17 @@ MonoBehaviour:
   fuelSpawnChance: 5
   powerSpawnChance: 5
   organSpawnChance: 5
-  length: 30
-  InBuildMode: 1
+  hub: {fileID: 0}
   planeGridprefab: {fileID: 6018002286047896067, guid: a9a48ed08e70c5840891481cb21c444d,
     type: 3}
+  shipComponents:
+  - component: 0
+    state: 0
+  - component: 1
+    state: 0
+  - component: 2
+    state: 0
+  InBuildMode: 1
 --- !u!114 &1899903245264256476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,6 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695ad5645fddd0441bc1d27750ca298a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilesInPlay: []
+  projectilesInPool: []
   poolSize: 30
   projectilePrefab: {fileID: 2058973584694880921, guid: 515bdfe2bba66024db3d86dab9ad9e3d,
     type: 3}
@@ -151,5 +162,6 @@ MonoBehaviour:
   fogHealthLimit: 100
   fogSpillThreshold: 50
   damageOn: 1
+  surroundingHubRange: 7
   visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
