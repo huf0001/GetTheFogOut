@@ -36,8 +36,12 @@ public class ClusterFan : Defence
     void Fire()
     {
         Tile target = GetTarget();
+
         if (target != null)
         {
+            //Projectile p = ProjectilePool.Instance.GetFromPool();
+            //p.Fire(this.transform.position, target.transform.position);
+
             target.FogUnit.Health -= directDamage;
             foreach (Tile tile in target.AllAdjacentTiles)
             {
@@ -52,7 +56,6 @@ public class ClusterFan : Defence
     Tile GetTarget()
     {
         // Get the tile with the highest fog concentration.
-        //location.CollectTilesInRange(tiles, (int)visibilityRange);
         Collider[] tiles = Physics.OverlapSphere(transform.position, visibilityRange, LayerMask.GetMask("Tiles"));
         List<Tile> fogTiles = new List<Tile>();
 
