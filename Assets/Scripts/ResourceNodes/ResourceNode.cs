@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceNode : Entity
+public class ResourceNode : PlaneObject
 {
 
     protected bool isHarvestable = true;
