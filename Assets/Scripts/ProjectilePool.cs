@@ -6,8 +6,8 @@ public class ProjectilePool : MonoBehaviour
 {
     public static ProjectilePool Instance { get; protected set; }
 
-    List<Projectile> projectilesInPlay = new List<Projectile>();
-    List<Projectile> projectilesInPool = new List<Projectile>();
+    [SerializeField] List<Projectile> projectilesInPlay = new List<Projectile>();
+    [SerializeField] List<Projectile> projectilesInPool = new List<Projectile>();
 
     [SerializeField] private int poolSize = 30;
     [SerializeField] private Projectile projectilePrefab;
@@ -43,6 +43,7 @@ public class ProjectilePool : MonoBehaviour
     Projectile CreateProjectile()
     {
         Projectile p = Instantiate<Projectile>(projectilePrefab);
+        p.gameObject.SetActive(false);
         p.transform.SetParent(this.transform, true);
         return p;
     }
@@ -61,7 +62,10 @@ public class ProjectilePool : MonoBehaviour
         else
         {
             p = CreateProjectile();
+            p.gameObject.SetActive(true);
         }
+
+        projectilesInPlay.Add(p);
 
         return p;
     }
