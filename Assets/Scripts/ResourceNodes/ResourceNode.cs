@@ -11,4 +11,9 @@ public class ResourceNode : PlaneObject
 
     public Resource ResourceType { get => resourceType; }
     public float ResMultiplier { get => resMultiplier; }
+
+    void Awake()
+    {
+        FindToolTip();
+    }
 }
