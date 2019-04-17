@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour
 
         //Tweens in the UI for a smooth bounce in from outside the canvas
         parentSlider = GameObject.Find("Sliders");
-        //parentSlider.GetComponent<RectTransform>().DOMoveY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
+        parentSlider.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
     }
 
     // Update is called once per frame
