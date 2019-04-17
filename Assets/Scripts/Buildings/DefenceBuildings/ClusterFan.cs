@@ -39,17 +39,12 @@ public class ClusterFan : Defence
 
         if (target != null)
         {
-            //Projectile p = ProjectilePool.Instance.GetFromPool();
-            //p.Fire(this.transform.position, target.transform.position);
+            Projectile p = ProjectilePool.Instance.GetFromPool();
 
-            target.FogUnit.Health -= directDamage;
-            foreach (Tile tile in target.AllAdjacentTiles)
-            {
-                if (tile.FogUnit != null)
-                {
-                tile.FogUnit.Health -= aoeDamage;
-                }
-            }
+            Vector3 origin = transform.position;
+            origin.y += 0.4f;
+            p.Fire(origin, target.transform.position, directDamage, aoeDamage);
+
         }
     }
 
