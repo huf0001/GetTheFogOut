@@ -20,6 +20,7 @@ public class Projectile : MonoBehaviour
     }
 
     public void Fire(Vector3 origin, Vector3 target, int dmg, int aoeDmg)
+    // Fires the projectile from the origin to the target, with the given damage
     {
         damage = dmg;
         aoeDamage = aoeDmg;
@@ -31,13 +32,15 @@ public class Projectile : MonoBehaviour
     }
 
     Vector3 CalculateVelocity(Vector3 target, Vector3 origin, float time)
+    // Calculates the velocity for an arching projectile
+    // Taken from: https://www.youtube.com/watch?v=03GHtGyEHas
     {
-        // define the distance x and y first
+        // Define the distance x and y first
         Vector3 distance = target - origin;
         Vector3 distanceXZ = distance;
         distanceXZ.y = 0f;
 
-        // create a float to represent our distance
+        // Create a float to represent our distance
         float Sy = distance.y;
         float Sxz = distanceXZ.magnitude;
 
@@ -55,6 +58,7 @@ public class Projectile : MonoBehaviour
     {
         Tile tileHit = collision.gameObject.GetComponent<Tile>();
 
+        // If the collision is a tile and it has fog, damage the fog
         if (tileHit != null)
         {
             if (tileHit.FogUnit != null)
@@ -70,6 +74,7 @@ public class Projectile : MonoBehaviour
             }
         }
 
+        // Return the projectile to the pool
         ProjectilePool.Instance.ReturnToPool(this);
     }
 }

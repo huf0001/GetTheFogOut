@@ -19,6 +19,7 @@ public class WorldController : MonoBehaviour
     public static WorldController Instance { get; protected set; }
     
     [SerializeField] private int width = 31;
+    [SerializeField] private int length = 31;
     [SerializeField] private Tiles gameboard = null;
     [SerializeField] private GameObject gameboardPrefab;
 
@@ -28,13 +29,12 @@ public class WorldController : MonoBehaviour
 
     public int Width { get => width; }
 
-    [SerializeField] private int length = 30;
     public int Length { get => length; }
 
     private GameObject[,] tiles;
 
     private bool hubBuilt = false;
-    private Hub hub = null;
+    [SerializeField] private Hub hub = null;
     public Hub Hub { get => hub; set => hub = value; }
 
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
@@ -61,7 +61,7 @@ public class WorldController : MonoBehaviour
         isGameOver = false;
 
         //Get UIController currently used in scene
-        uiController = FindObjectOfType<UIController>();
+        uiController = GetComponent<UIController>();
 
         if (gameboard == null)
         {
@@ -343,11 +343,11 @@ public class WorldController : MonoBehaviour
     {
         if (!isGameOver)
         {
-            if (!hubBuilt)
-            {
-                InstantiateStartHub();
-                hubBuilt = true;
-            }
+            //if (!hubBuilt)
+            //{
+            //    InstantiateStartHub();
+            //    hubBuilt = true;
+            //}
             if (InBuildMode)
             {
                 MeshRendererTileChild(true);
@@ -379,17 +379,17 @@ public class WorldController : MonoBehaviour
     //rotate to 90
     private void InstantiateStartHub()
     {
-        int x = GetHalf(width);
-        int y = GetHalf(length);
-        Tile startingTile = tiles[x, y].GetComponent<Tile>();
-        Vector3 PosToInst = new Vector3(startingTile.transform.position.x, startingTile.transform.position.y + 0.4125f, startingTile.transform.position.z);
-        GameObject hubGO = Instantiate(hubPrefab, PosToInst, startingTile.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        Hub startHub = hubGO.GetComponentInChildren<Hub>();
-        hub = startHub;
+        //int x = GetHalf(width);
+        //int y = GetHalf(length);
+        //Tile startingTile = tiles[x, y].GetComponent<Tile>();
+        //Vector3 PosToInst = new Vector3(startingTile.transform.position.x, startingTile.transform.position.y + 0.4125f, startingTile.transform.position.z);
+        //GameObject hubGO = Instantiate(hubPrefab, PosToInst, startingTile.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
+        //Hub startHub = hubGO.GetComponentInChildren<Hub>();
+        //hub = startHub;
 
-        hubGO.transform.SetParent(startingTile.transform);
-        startingTile.Building = startHub;
-        hub.Location = startingTile;
+        //hubGO.transform.SetParent(startingTile.transform);
+        //startingTile.Building = startHub;
+        //hub.Location = startingTile;
     }
 
     private int GetHalf(int n)
