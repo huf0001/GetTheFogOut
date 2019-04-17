@@ -8,15 +8,29 @@ public class MouseController : MonoBehaviour
 {
     List<GameObject> collisionList = new List<GameObject>();
 
+    // Test for game pause/over mouse to not build/destroy buildings
+    // private bool isStopped = false;
+
     // Start is called before the first frame update
     void Start()
     {
     }
 
+    // Test for game pause/over mouse to not build/destroy buildings
+    // public void GamePlayStop()
+    // {
+    //     isStopped = !isStopped;
+    // }
+
     // Update is called once per frame
     void Update()
     {
         UpdatePlacing();
+        
+        // if (!isStopped)
+        // {
+        //     UpdatePlacing();
+        // }
     }
 
     void UpdatePlacing()
