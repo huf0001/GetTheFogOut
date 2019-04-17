@@ -39,6 +39,7 @@ public class ClusterFan : Defence
 
         if (target != null)
         {
+            // Get a projectile from the pool and send it on its way
             Projectile p = ProjectilePool.Instance.GetFromPool();
 
             Vector3 origin = transform.position;

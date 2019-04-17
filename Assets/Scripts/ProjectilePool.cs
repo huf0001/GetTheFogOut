@@ -33,6 +33,7 @@ public class ProjectilePool : MonoBehaviour
     }
 
     void PopulatePool()
+    // Adds an inital amount to populate the pool
     {
         for (int i = 0; i < poolSize; i++)
         {
@@ -49,6 +50,7 @@ public class ProjectilePool : MonoBehaviour
     }
 
     public Projectile GetFromPool()
+    // Returns a projectile from the pool
     {
         Projectile p;
         int lastAvailableIndex = projectilesInPool.Count - 1;
@@ -71,6 +73,7 @@ public class ProjectilePool : MonoBehaviour
     }
 
     public void ReturnToPool(Projectile p)
+    // Returns a projectile to the pool
     {
         p.gameObject.SetActive(false);
         p.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
