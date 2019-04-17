@@ -705,7 +705,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: 6aa6cec0c4c432c4481315d229fff89a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -741,8 +741,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 455663888}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.499054, y: 61.59, z: -2.85}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -9.499054, y: 61.59, z: 5.9}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 674378224}
   m_Father: {fileID: 0}
@@ -1633,6 +1633,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Defence (Modified)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6560907534143759994, guid: 87b1be37aa3b39549aaf450d52a25b2e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318148520141281333, guid: 87b1be37aa3b39549aaf450d52a25b2e,
         type: 3}
@@ -2663,6 +2668,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Battery (Modified)
       objectReference: {fileID: 0}
+    - target: {fileID: 582058880077828689, guid: c93ed7a77f84d704e90149456fc51d3b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5017298340327021469, guid: c93ed7a77f84d704e90149456fc51d3b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2736,6 +2746,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hub (Modified)
       objectReference: {fileID: 0}
+    - target: {fileID: 5294098392378407795, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5401014493568969804, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2804,6 +2819,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Relay (Modified)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410443923382549552, guid: 7caa60be38c227147a0e9eeac02f6913,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6410443923382549553, guid: 7caa60be38c227147a0e9eeac02f6913,
         type: 3}
@@ -3884,12 +3904,12 @@ PrefabInstance:
     - target: {fileID: 5378558204177680688, guid: 7719eef1b15d0df45ab17c79cd8955dd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.04
       objectReference: {fileID: 0}
     - target: {fileID: 5378558204177680688, guid: 7719eef1b15d0df45ab17c79cd8955dd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.6
+      value: -0.28
       objectReference: {fileID: 0}
     - target: {fileID: 5378558204177680688, guid: 7719eef1b15d0df45ab17c79cd8955dd,
         type: 3}
@@ -3944,6 +3964,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Generator (Modified)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3888435897935543363, guid: dbe0ca47040a20a42938fac34a0d4be5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4340564844568296857, guid: dbe0ca47040a20a42938fac34a0d4be5,
         type: 3}
@@ -4197,7 +4222,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &7176238308004585653
 GameObject:
   m_ObjectHideFlags: 0
@@ -4871,6 +4896,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Harvester (Modified)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905697690950743768, guid: 06de7e5065dcf4649bd574a3d09e35a7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4013988052990596032, guid: 06de7e5065dcf4649bd574a3d09e35a7,
         type: 3}
