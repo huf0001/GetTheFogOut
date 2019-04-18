@@ -5,8 +5,7 @@ using UnityEngine;
 public class PlaneObject : Entity
 {
     ToolTip buildingTooltip;
-
-    // Start is called before the first frame update
+    
     protected void FindToolTip()
     {
         buildingTooltip = GameObject.Find("Canvas").GetComponentInChildren<ToolTip>(true);
