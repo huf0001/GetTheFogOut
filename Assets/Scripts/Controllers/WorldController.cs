@@ -369,6 +369,13 @@ public class WorldController : MonoBehaviour
             //    InstantiateStartHub();
             //    hubBuilt = true;
             //}
+
+            // TEMP FIX, SHOULD BE REMOVED LATER
+            if (hub == null)
+            {
+                hub = FindObjectOfType<Hub>();
+            }
+
             if (InBuildMode)
             {
                 MeshRendererTileChild(true);
