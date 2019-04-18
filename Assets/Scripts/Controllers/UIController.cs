@@ -11,7 +11,8 @@ public class UIController : MonoBehaviour
     public static UIController instance = null;
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
-    public GameObject endGame, pauseGame, parentSlider;
+    public GameObject endGame, pauseGame;
+    GameObject parentSlider;
     public TextMeshProUGUI endGameText;
 
     private Slider powerSlider, fuelSlider, organicSlider, mineralSlider;
