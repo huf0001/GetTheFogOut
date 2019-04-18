@@ -29,7 +29,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8244931943907342526}
+  m_Father: {fileID: 2243574747842118582}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -168,7 +168,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8244931943907342526}
+  - component: {fileID: 2243574747842118582}
   - component: {fileID: 2224538830913006596}
   m_Layer: 0
   m_Name: PopupTextParent
@@ -177,21 +177,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8244931943907342526
-Transform:
+--- !u!224 &2243574747842118582
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5836856208599357374}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -263.063, y: -277.91867, z: 43.400806}
+  m_LocalPosition: {x: 0, y: 0, z: 43.400806}
   m_LocalScale: {x: 2.0811129, y: 2.0811129, z: 2.0811129}
   m_Children:
   - {fileID: 2789899102274216403}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -263.063, y: -277.91867}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2224538830913006596
 MonoBehaviour:
   m_ObjectHideFlags: 0

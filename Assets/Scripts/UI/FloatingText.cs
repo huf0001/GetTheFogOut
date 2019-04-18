@@ -16,8 +16,9 @@ public class FloatingText : MonoBehaviour
 
     private IEnumerator DestroyAfterTweens()
     {
-        //GetComponent<RectTransform>().DOAnchorPosY(100, 1);
-        yield return new WaitForSeconds(0.5f);
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.DOAnchorPosY(rectTransform.anchoredPosition.y + 50, 1.3f).SetEase(Ease.OutSine);
+        yield return new WaitForSeconds(0.3f);
         damageText.DOFade(0, 1);
         yield return new WaitForSeconds(1.5f);
         Destroy(gameObject);
