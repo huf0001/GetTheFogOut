@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class MouseController : MonoBehaviour
 {
     List<GameObject> collisionList = new List<GameObject>();
+    FloatingTextController floatingTextController;
 
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
@@ -14,7 +15,7 @@ public class MouseController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FloatingTextController.Initialize();
+        floatingTextController = GetComponent<FloatingTextController>();
     }
 
     // Test for game pause/over mouse to not build/destroy buildings
@@ -111,7 +112,7 @@ public class MouseController : MonoBehaviour
             building.Animator = buildingGo.GetComponentInChildren<Animator>();
             building.Animator.SetBool("Built", true);
             building.Place();
-            //FloatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
         }
         else
         {

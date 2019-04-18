@@ -4,22 +4,25 @@ using UnityEngine;
 
 public class PlaneObject : Entity
 {
-    GameObject buildingTooltip;
+    ToolTip buildingTooltip;
 
     // Start is called before the first frame update
     protected void FindToolTip()
     {
-        buildingTooltip = GameObject.Find("ToolTip");
+        buildingTooltip = GameObject.Find("Canvas").GetComponentInChildren<ToolTip>(true);
     }
 
     public void OnMouseEnter()
     {
-        buildingTooltip.SetActive(true);
-        buildingTooltip.GetComponent<ToolTip>().UpdateText(this);
+        if (!WorldController.Instance.InBuildMode)
+        {
+            buildingTooltip.gameObject.SetActive(true);
+            buildingTooltip.UpdateText(this);
+        }
     }
 
     public void OnMouseExit()
     {
-        buildingTooltip.SetActive(false);
+        buildingTooltip.gameObject.SetActive(false);
     }
 }
