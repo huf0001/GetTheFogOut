@@ -5,13 +5,23 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class MiscInEditorScript : MonoBehaviour
 {
+    [SerializeField] private bool childBuildingToTile = false;
+    [SerializeField] private bool renameTile = false;
+
     private Building b = null;
 
     // Update is called once per frame
     void Update()
     {
-        //ChildBuildingToTile();
-        //RenameTile();
+        if (childBuildingToTile)
+        {
+            ChildBuildingToTile();
+        }
+
+        if (renameTile)
+        {
+            RenameTile();
+        }
     }
     private void RenameTile()
     {
@@ -20,9 +30,9 @@ public class MiscInEditorScript : MonoBehaviour
 
     private void ChildBuildingToTile()
     {
-        if (gameObject.GetComponent<Building>() != null)
+        if (gameObject.GetComponentInChildren<Building>() != null)
         {
-            b = gameObject.GetComponent<Building>();
+            b = gameObject.GetComponentInChildren<Building>();
         }
 
         if (b != null)

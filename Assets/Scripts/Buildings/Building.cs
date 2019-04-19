@@ -24,6 +24,7 @@ public abstract class Building : PlaneObject
     protected virtual void Awake()
     {
         //MakeTilesVisible();
+        FindToolTip();
     }
 
     // Start is called before the first frame update

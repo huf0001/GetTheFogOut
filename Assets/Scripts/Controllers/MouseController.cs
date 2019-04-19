@@ -8,17 +8,33 @@ public class MouseController : MonoBehaviour
 {
     List<GameObject> collisionList = new List<GameObject>();
     TowerManager towerManager;
+    FloatingTextController floatingTextController;
+
+    // Test for game pause/over mouse to not build/destroy buildings
+    // private bool isStopped = false;
 
     // Start is called before the first frame update
     void Start()
     {
         towerManager = FindObjectOfType<TowerManager>();
+        floatingTextController = GetComponent<FloatingTextController>();
     }
+
+    // Test for game pause/over mouse to not build/destroy buildings
+    // public void GamePlayStop()
+    // {
+    //     isStopped = !isStopped;
+    // }
 
     // Update is called once per frame
     void Update()
     {
         UpdatePlacing();
+
+        // if (!isStopped)
+        // {
+        //     UpdatePlacing();
+        // }
     }
 
     void UpdatePlacing()
@@ -26,23 +42,8 @@ public class MouseController : MonoBehaviour
         // code based somewhat off:
         //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
 
-        if (Input.GetMouseButtonDown(0))
+        if (Time.timeScale == 1.0f && Input.GetMouseButtonDown(0))
         {
-            //RaycastHit[] hits;
-            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //hits = Physics.RaycastAll(ray, 100.0f);
-            //for (int i = 0; i < hits.Length; i++)
-            //{
-            //    RaycastHit hit = hits[i];
-            //    if (hit.transform.gameObject.tag == "Tile")
-            //    {
-            //        Debug.Log("hit");
-            //     //   tiletest = hit.transform.gameObject;
-            //     //   WC.MeshRendererTile(tiletest,true);
-
-            //        if (!EventSystem.current.IsPointerOverGameObject())
-            //        {
-            //            //Tile tile = hit.transform.gameObject.GetComponent<Tile>();
             TileData tile;
 
             RaycastHit hit;
@@ -106,12 +107,23 @@ public class MouseController : MonoBehaviour
             building.Animator = buildingGo.GetComponentInChildren<Animator>();
             building.Animator.SetBool("Built", true);
             building.Place();
+            StartCoroutine(FloatText(buildingGo, hub, buildType));
         }
         else
         {
             Debug.Log("Can't build, do not have the required resources.");
         }
 
+    }
+
+    private IEnumerator FloatText(GameObject buildingGo, Hub hub, BuildingType buildType)
+    {
+        floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
+        yield return new WaitForSeconds(0.2f);
+        if (hub.BuildingsCosts[buildType]["mineral"] != 0)
+        {
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{hub.BuildingsCosts[buildType]["mineral"]}", buildingGo.transform);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
