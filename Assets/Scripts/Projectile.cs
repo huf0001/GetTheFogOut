@@ -56,7 +56,9 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Tile tileHit = collision.gameObject.GetComponent<Tile>();
+        ContactPoint hit = collision.GetContact(0);
+        TileData tileHit = WorldController.Instance.GetTileAt(new Vector2(hit.point.x, hit.point.z));
+        //Tile tileHit = collision.gameObject.GetComponent<Tile>();
 
         // If the collision is a tile and it has fog, damage the fog
         if (tileHit != null)
@@ -64,7 +66,7 @@ public class Projectile : MonoBehaviour
             if (tileHit.FogUnit != null)
             {
                 tileHit.FogUnit.Health -= damage;
-                foreach (Tile tile in tileHit.AllAdjacentTiles)
+                foreach (TileData tile in tileHit.AllAdjacentTiles)
                 {
                     if (tile.FogUnit != null)
                     {

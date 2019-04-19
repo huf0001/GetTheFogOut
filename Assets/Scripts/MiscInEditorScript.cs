@@ -29,7 +29,7 @@ public class MiscInEditorScript : MonoBehaviour
         {
             if (b.Location != null)
             {
-                transform.SetParent(b.Location.transform);
+                //transform.SetParent(b.Location.transform);    // Needs to be updated to new tile position stuff
             }
         }
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Entity : MonoBehaviour
 {
     [SerializeField] private float health = 1f;
-    [SerializeField] protected Tile location;
+    [SerializeField] protected TileData location;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +36,7 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
-    public Tile Location
+    public TileData Location
     {
         get
         {

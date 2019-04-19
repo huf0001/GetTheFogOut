@@ -22,7 +22,7 @@ public class Generator : Building
         base.Update();
     }
 
-    private void Upkeep()
+    protected void Upkeep()
     {
         // call Hub.ChangePower(upkeep)
     }

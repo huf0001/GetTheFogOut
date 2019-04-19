@@ -23,7 +23,7 @@ public abstract class Building : PlaneObject
 
     protected virtual void Awake()
     {
-        MakeTilesVisible();
+        //MakeTilesVisible();
     }
 
     // Start is called before the first frame update
@@ -63,9 +63,9 @@ public abstract class Building : PlaneObject
 
         foreach (Collider c in tilesToActivate)
         {
-            if (c.gameObject.GetComponent<Tile>() != null)
+            if (c.gameObject.GetComponent<TileData>() != null)
             {
-                c.gameObject.GetComponent<Tile>().AddObserver(this as Building);
+                c.gameObject.GetComponent<TileData>().AddObserver(this as Building);
             }
         }
     }
@@ -76,9 +76,9 @@ public abstract class Building : PlaneObject
 
         foreach (Collider c in tilesToDeactivate)
         {
-            if (c.gameObject.GetComponent<Tile>() != null)
+            if (c.gameObject.GetComponent<TileData>() != null)
             {
-                c.gameObject.GetComponent<Tile>().RemoveObserver(this as Building);
+                c.gameObject.GetComponent<TileData>().RemoveObserver(this as Building);
             }
         }
     }
@@ -134,6 +134,6 @@ public abstract class Building : PlaneObject
             powerSource.Unplug(this);
         }
         PowerDown();
-        MakeTilesNotVisible();
+        //MakeTilesNotVisible();
     }
 }

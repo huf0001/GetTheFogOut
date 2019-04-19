@@ -7,10 +7,12 @@ using UnityEngine.EventSystems;
 public class MouseController : MonoBehaviour
 {
     List<GameObject> collisionList = new List<GameObject>();
+    TowerManager towerManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        towerManager = FindObjectOfType<TowerManager>();
     }
 
     // Update is called once per frame
@@ -26,50 +28,57 @@ public class MouseController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit[] hits;
+            //RaycastHit[] hits;
+            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //hits = Physics.RaycastAll(ray, 100.0f);
+            //for (int i = 0; i < hits.Length; i++)
+            //{
+            //    RaycastHit hit = hits[i];
+            //    if (hit.transform.gameObject.tag == "Tile")
+            //    {
+            //        Debug.Log("hit");
+            //     //   tiletest = hit.transform.gameObject;
+            //     //   WC.MeshRendererTile(tiletest,true);
+
+            //        if (!EventSystem.current.IsPointerOverGameObject())
+            //        {
+            //            //Tile tile = hit.transform.gameObject.GetComponent<Tile>();
+            TileData tile;
+
+            RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            hits = Physics.RaycastAll(ray, 100.0f);
-            for (int i = 0; i < hits.Length; i++)
+            if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
             {
-                RaycastHit hit = hits[i];
-                if (hit.transform.gameObject.tag == "Tile")
+                tile = WorldController.Instance.GetTileAt(hit.point);
+
+                //If tile has power, place building. Otherwise, don't place building.
+                if (tile.PowerSource != null)
                 {
-                    Debug.Log("hit");
-                 //   tiletest = hit.transform.gameObject;
-                 //   WC.MeshRendererTile(tiletest,true);
-
-                    if (!EventSystem.current.IsPointerOverGameObject())
+                    tile.Placedtower = towerManager.GetTower();
+                    // If there is a building, delete it. If not, place one.
+                    if ((tile.Building != null) && (tile.Building.gameObject.GetComponent<Hub>() == null))
                     {
-                        Tile tile = hit.transform.gameObject.GetComponent<Tile>();
-
-                        //If tile has power, place building. Otherwise, don't place building.
-                        if (tile.PowerSource != null)
-                        {
-                            tile.Placedtower = FindObjectOfType<TowerManager>().GetTower();
-                            // If there is a building, delete it. If not, place one.
-                            if ((tile.Building != null) && (tile.Building.gameObject.GetComponent<Hub>() == null))
-                            {
-                                Destroy(tile.Building.transform.gameObject);
-                            }
-                            else
-                            {
-                                Build(tile.Placedtower, tile, hit.point.y);
- 
-                                //tm.SelectedTower = null;      //If selected tower is reverted to null after the building is created, this will create user problems atm as they won't know that they can't just click
-                                //another space and make another building of the same type there.
-                            }
-
-                            return;
-                        }
+                        Destroy(tile.Building.transform.gameObject);
                     }
-                }
+                    else
+                    {
+                        Build(tile.Placedtower, tile, 0f);
+ 
+                        //tm.SelectedTower = null;      //If selected tower is reverted to null after the building is created, this will create user problems atm as they won't know that they can't just click
+                        //another space and make another building of the same type there.
+                    }
+                }   
+                return;
             }
         }
-
     }
+    //}
+        //}
+
+    //}
 
 
-    private void Build(GameObject toBuild, Tile tile, float height)
+    private void Build(GameObject toBuild, TileData tile, float height)
     {
         Hub hub = WorldController.Instance.Hub;
         BuildingType buildType = toBuild.GetComponentInChildren<Building>().BuildingType;
@@ -87,9 +96,10 @@ public class MouseController : MonoBehaviour
             hub.StoredFuel -= hub.BuildingsCosts[buildType]["fuel"];
 
             // Place new building
-            Vector3 PosToInst = new Vector3(tile.transform.position.x, height, tile.transform.position.z);
-            GameObject buildingGo = Instantiate(toBuild, PosToInst, tile.transform.rotation);
-            buildingGo.transform.SetParent(tile.transform);
+            Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
+            Debug.Log(tile.X + " " + tile.Z);
+            GameObject buildingGo = Instantiate(toBuild, PosToInst, Quaternion.Euler(0f, 0f, 0f));
+            buildingGo.transform.SetParent(WorldController.Instance.Ground.transform);
             Building building = buildingGo.GetComponentInChildren<Building>();
             tile.Building = building;
             building.Location = tile;

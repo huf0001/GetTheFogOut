@@ -55,7 +55,7 @@ public class Fog : MonoBehaviour
     [SerializeField] private Material invisibleMaterial;
 
     //Container object fields
-    private List<Tile> fogCoveredTiles = new List<Tile>();                      //i.e. tiles currently covered by fog
+    private List<TileData> fogCoveredTiles = new List<TileData>();                      //i.e. tiles currently covered by fog
     private List<FogUnit> fogUnitsInPlay = new List<FogUnit>();                 //i.e. currently active fog units on the board
     private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                 //i.e. currently inactive fog units waiting for spawning
 
@@ -209,9 +209,10 @@ public class Fog : MonoBehaviour
     {
         GameObject fGO = GetFogUnit().gameObject;
         FogUnit f = fGO.GetComponent<FogUnit>();
-        Tile t = wc.GetTileAt(x, z).GetComponent<Tile>();
+        Vector2 pos = new Vector2(x, z);
+        TileData t = wc.GetTileAt(pos);
 
-        fGO.transform.position = new Vector3(x, t.transform.position.y + 0.3f, z);
+        fGO.transform.position = new Vector3(x, 0.13f, z);
         fGO.name = "FogUnit(" + x + "," + z + ")";
 
         f.gameObject.GetComponent<Renderer>().material = visibleMaterial;
@@ -263,7 +264,7 @@ public class Fog : MonoBehaviour
     {
         f.gameObject.name = "FogUnitInPool";
 
-        foreach (Tile t in f.Location.AdjacentTiles)
+        foreach (TileData t in f.Location.AdjacentTiles)
         {
             if (t.FogUnit != null)
             {
@@ -308,7 +309,7 @@ public class Fog : MonoBehaviour
                 {
                     int count = f.Location.AdjacentTiles.Count;
 
-                    foreach (Tile t in f.Location.AdjacentTiles)
+                    foreach (TileData t in f.Location.AdjacentTiles)
                     {
                         if (t.FogUnit != null)
                         {
@@ -369,7 +370,7 @@ public class Fog : MonoBehaviour
     //Fog spills over onto adjacent tiles
     private void ExpandFog()
     {
-        List<Tile> newTiles = new List<Tile>();
+        List<TileData> newTiles = new List<TileData>();
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
@@ -377,7 +378,7 @@ public class Fog : MonoBehaviour
             {
                 f.Spill = true;
 
-                foreach (Tile a in f.Location.AdjacentTiles)
+                foreach (TileData a in f.Location.AdjacentTiles)
                 {
                     if ((!fogCoveredTiles.Contains(a)) && (!newTiles.Contains(a)))
                     {
@@ -390,7 +391,7 @@ public class Fog : MonoBehaviour
 
         if (newTiles.Count > 0)
         {
-            foreach (Tile n in newTiles)
+            foreach (TileData n in newTiles)
             {
                 SpawnFogUnit(n.X, n.Z);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
             }

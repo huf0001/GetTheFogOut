@@ -41,7 +41,7 @@ public class ClusterFan : Defence
 
     void Fire()
     {
-        Tile target = GetTarget();
+        TileData target = GetTarget();
 
         if (target != null)
         {
@@ -50,23 +50,26 @@ public class ClusterFan : Defence
 
             Vector3 origin = transform.position;
             origin.y += 0.4f;
-            p.Fire(origin, target.transform.position, directDamage, aoeDamage);
+            Vector3 targetPos = new Vector3(target.X, 0, target.Z);
+            p.Fire(origin, targetPos, directDamage, aoeDamage);
 
         }
     }
 
-    Tile GetTarget()
+    TileData GetTarget()
     {
         // Get the tile with the highest fog concentration.
-        Collider[] tiles = Physics.OverlapSphere(transform.position, visibilityRange, LayerMask.GetMask("Tiles"));
-        List<Tile> fogTiles = new List<Tile>();
+        List<TileData> fogTiles = new List<TileData>();
+        List<TileData> tiles = new List<TileData>();
+        location.CollectTilesInRange(tiles, (int)visibilityRange);
 
-        foreach (Collider tile in tiles)
+        foreach (TileData tile in tiles)
         {
-            if (tile.gameObject.GetComponent<Tile>().FogUnit != null)
+            if (tile.FogUnit != null)
             {
-                fogTiles.Add(tile.gameObject.GetComponent<Tile>());
+                fogTiles.Add(tile);
             }
+            tile.Visited = false;
         }
 
         fogTiles.Sort((t1, t2) => t1.FogUnit.Health.CompareTo(t2.FogUnit.Health));
@@ -74,7 +77,7 @@ public class ClusterFan : Defence
 
         if (fogTiles.Count > 0)
         {
-            Tile target = fogTiles[0];
+            TileData target = fogTiles[0];
             return target;
         } else
         {
