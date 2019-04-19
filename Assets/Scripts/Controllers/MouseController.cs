@@ -28,7 +28,7 @@ public class MouseController : MonoBehaviour
     void Update()
     {
         UpdatePlacing();
-        
+
         // if (!isStopped)
         // {
         //     UpdatePlacing();
@@ -112,13 +112,23 @@ public class MouseController : MonoBehaviour
             building.Animator = buildingGo.GetComponentInChildren<Animator>();
             building.Animator.SetBool("Built", true);
             building.Place();
-            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
+            StartCoroutine(FloatText(buildingGo, hub, buildType));
         }
         else
         {
             Debug.Log("Can't build, do not have the required resources.");
         }
 
+    }
+
+    private IEnumerator FloatText(GameObject buildingGo, Hub hub, BuildingType buildType)
+    {
+        floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
+        yield return new WaitForSeconds(0.2f);
+        if (hub.BuildingsCosts[buildType]["mineral"] != 0)
+        {
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{hub.BuildingsCosts[buildType]["mineral"]}", buildingGo.transform);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
