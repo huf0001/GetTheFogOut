@@ -15,10 +15,10 @@ public class UIController : MonoBehaviour
     GameObject hudBar;
     public TextMeshProUGUI endGameText;
 
-    private Slider powerSlider, mineralSlider;//, organicSlider, fuelSlider;
-    private int power = 0, mineral = 0;//, organic = 0, fuel = 0;
-    private float powerVal = 0.0f, mineralVal = 0.0f;//, organicVal = 0.0f, fuelVal = 0.0f;
-    private float powerTime = 0.0f, mineralTime = 0.0f;//, organicTime = 0.0f, fuelTime = 0.0f;
+    private Slider powerSlider;
+    private int power = 0, mineral = 0;
+    private float powerVal = 0.0f, mineralVal = 0.0f;
+    private float powerTime = 0.0f, mineralTime = 0.0f;
 
     Hub hub = null;
 
@@ -53,19 +53,15 @@ public class UIController : MonoBehaviour
 
         powerTime += Time.deltaTime;
         mineralTime += Time.deltaTime;
-        //organicTime += Time.deltaTime;
-        //fuelTime += Time.deltaTime;
         UpdateResourceText();
     }
 
+    // find sliders and text
     void FindSliders()
     {
         powerSlider = GameObject.Find("PowerSlider").GetComponent<Slider>();
         powerText = powerSlider.GetComponentInChildren<TextMeshProUGUI>();
-        mineralSlider = GameObject.Find("MineralSlider").GetComponent<Slider>();
-        mineralText = mineralSlider.GetComponentInChildren<TextMeshProUGUI>();
-        //fuelSlider = GameObject.Find("FuelSlider").GetComponent<Slider>();
-        //organicSlider = GameObject.Find("OrganicSlider").GetComponent<Slider>();
+        mineralText = GameObject.Find("MineralSlider").GetComponent<Slider>().GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // End Game Method
@@ -79,37 +75,15 @@ public class UIController : MonoBehaviour
     {
         if (hub != null)
         {
+            // if the stored power is different, change values used for lerping
             if (hub.StoredPower != power)
             {
                 power = hub.StoredPower;
                 powerVal = powerSlider.value;
                 powerTime = 0;
             }
-            //if (hub.StoredMineral != mineral)
-            //{
-            //    mineral = hub.StoredMineral;
-            //    mineralVal = mineralSlider.value;
-            //    mineralTime = 0;
-            //}
-            //if (hub.StoredOrganic != organic)
-            //{
-            //    organic = hub.StoredOrganic;
-            //    organicVal = organicSlider.value;
-            //    organicTime = 0;
-            //}
-            //if (hub.StoredFuel != fuel)
-            //{
-            //    fuel = hub.StoredFuel;
-            //    fuelVal = fuelSlider.value;
-            //    fuelTime = 0;
-            //}
 
-            powerSlider.maxValue = hub.MaxPower;
-            powerSlider.value = Mathf.Lerp(powerVal, power, powerTime);
-            //mineralSlider.value = Mathf.Lerp(mineralVal, mineral, mineralTime);
-            //fuelSlider.value = Mathf.Lerp(fuelVal, fuel, fuelTime);
-            //organicSlider.value = Mathf.Lerp(organicVal, organic, organicTime);
-
+            // change colour of power change text depending on +, - or ±
             string colour;
             if (hub.PowerChange > 0)
             {
@@ -121,13 +95,22 @@ public class UIController : MonoBehaviour
             }
             else
             {
-                colour = "black\">";
+                colour = "black\">±";
             }
 
+            // update slider and text values
+            powerSlider.maxValue = hub.MaxPower;
+            powerSlider.value = Mathf.Lerp(powerVal, power, powerTime);
             powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + hub.MaxPower + "    <color=" + colour + hub.PowerChange + "</color>";
             mineralText.text = hub.StoredMineral + " units";
-            //organicText.text = "Organic: " + hub.StoredOrganic;
-            //fuelText.text = "Fuel: " + hub.StoredFuel;
+
+            // old code that probably should be adapted to tween mineral stock number
+            //if (hub.StoredMineral != mineral)
+            //{
+            //    mineral = hub.StoredMineral;
+            //    mineralVal = mineralSlider.value;
+            //    mineralTime = 0;
+            //}
         }
     }
 }

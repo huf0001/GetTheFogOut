@@ -116,6 +116,12 @@ public class MouseController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Coroutine to create floating text to display costs of building
+    /// </summary>
+    /// <param name="buildingGo">The building being built</param>
+    /// <param name="hub">Instance of the hub</param>
+    /// <param name="buildType">Enum of the building type to reference for costs</param>
     private IEnumerator FloatText(GameObject buildingGo, Hub hub, BuildingType buildType)
     {
         floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
