@@ -14,7 +14,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     [SerializeField]
     private Button _button;
-    private WorldController WC;
+ //   private WorldController WC;
     public KeyCode _key;
 
     [SerializeField] TextMeshProUGUI buildingDesc;
@@ -62,6 +62,9 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     "Running Cost: 0\n" +
                     "Effect: Extends range from Hub";
                 break;
+            case "btn_remove":
+                buildingDesc.text = "<b>Destroy Building</b>\n";
+                break;
             default:
                 buildingDesc.text = "";
                 break;
@@ -76,7 +79,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private void Awake()
     {
         _button = GetComponent<Button>();
-        WC = FindObjectOfType<WorldController>();
+     //   WC = FindObjectOfType<WorldController>();
     }
 
 }

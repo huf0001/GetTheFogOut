@@ -27,6 +27,12 @@ public class CameraController : MonoBehaviour
     private Vector3 xMove;
     private Vector3 yMove;
 
+    private Vector3 centerPoint;
+    private Vector3 defaultRotation;
+    private Vector3 defaultPosition;
+    private Vector3 rotateCam;
+    private int counter;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +40,10 @@ public class CameraController : MonoBehaviour
         //up = Vector3.Normalize(up);
         //right = Quaternion.Euler(new Vector3(0, 90, 0)) * up;
         right = transform.right;
+
+        defaultRotation = cam1.transform.eulerAngles;
+        defaultPosition = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+        counter = 1;
     }
 
     // Update is called once per frame
@@ -45,8 +55,48 @@ public class CameraController : MonoBehaviour
         UpdateCameraMovement();
 
 		lastFramePostition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
-		//lastFramePostition.z = 0;
+        //lastFramePostition.z = 0;
+        RotateCamera();
     }
+
+    public void RotateCamera()
+    {
+        Vector3 newPos = defaultPosition;
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            switch (counter)
+            {
+                case 0:
+                    break;
+                case 1:
+                    newPos.z += 53.2f;
+                    break;
+                case 2:
+                    newPos.z += 49.5f;
+                    newPos.x += 52.4f;
+                    break;
+                case 3:
+                    newPos.x += 48.7f;
+                    newPos.z -= 0.8f;
+                    break;
+            }
+            counter++;
+            rotateCam.y = 90f;
+
+            if (counter == 5)
+            {
+                counter = 1;
+                rotateCam = Vector3.zero;
+                cam1.transform.eulerAngles = defaultRotation;
+            }
+            cam1.transform.Rotate(rotateCam, 20.0f * Time.deltaTime);
+            cam1.transform.eulerAngles += rotateCam;
+            transform.position = newPos;
+            up = cam1.transform.up;
+            right = cam1.transform.right;
+        }
+    }
+
 
     public void UpdateCameraMovement() {
         //Update camera movement from player input.
@@ -56,7 +106,7 @@ public class CameraController : MonoBehaviour
             //Right or middle mouse
             float h = dragSpeed * Camera.main.orthographicSize * - (Input.GetAxis("Mouse X"));
             float v = dragSpeed * Camera.main.orthographicSize * - (Input.GetAxis("Mouse Y"));
-            transform.Translate(h, v, 0);
+            transform.Translate(h, v, 0,Space.World);
         }
 
 
@@ -107,4 +157,21 @@ public class CameraController : MonoBehaviour
         transform.position += xMove;
         transform.position += yMove;
     }
+    /* //no use for now?
+    public void getCenter()
+    {
+        var ray = Camera.main.ScreenPointToRay(new Vector2(Screen.height / 2, Screen.width / 2));
+        RaycastHit hitPoint;
+
+        if (Physics.Raycast(ray, out hitPoint, 100.0f))
+        {
+            transform.LookAt(hitPoint.point);
+
+            if (centerPoint == Vector3.zero)
+            {
+                centerPoint = hitPoint.point;
+            }
+        }
+    }
+    */
 }
