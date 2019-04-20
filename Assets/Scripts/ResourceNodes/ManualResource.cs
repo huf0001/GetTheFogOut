@@ -29,16 +29,19 @@ public class ManualResource : MonoBehaviour
 
     private void RenderResource()
     {
-        RaycastHit hit;
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         TileData tile;
         if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
         {
             tile = WorldController.Instance.GetTileAt(hit.point);
-            if (Input.GetMouseButtonDown(0))
-            {
-                Vector3 PosToInst = new Vector3(tile.X, 0.25f, tile.Z);
+
+                Vector3 PosToInst = new Vector3(tile.X, 0.2f, tile.Z);
                 GameObject ToSpawn = Instantiate(ResourcePrefab, PosToInst, Quaternion.identity);
+                tile.Resource = ToSpawn.GetComponent<ResourceNode>();
+                ToSpawn.transform.SetParent(WorldController.Instance.Ground.transform);
                 inResource = false;
             }
         }

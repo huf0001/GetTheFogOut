@@ -77,7 +77,8 @@ public class MouseController : MonoBehaviour
                     {
                         if ((tile.Building != null) && (tile.Building.gameObject.GetComponent<Hub>() == null))
                         {
-                            Destroy(tile.Building.transform.gameObject);
+                            //  Destroy(tile.Building.transform.gameObject);
+                            Debug.Log("There already a building that built on this tile, try other empty spot");
                         }
                         else
                         {
