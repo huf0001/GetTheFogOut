@@ -37,6 +37,22 @@ public class MouseController : MonoBehaviour
         // }
     }
 
+    void RemoveBuilding()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.gameObject.tag == "Building")
+                {
+                    Destroy(hit.transform.gameObject);
+                }
+            }
+        }
+    }
+
     void UpdatePlacing()
     {
         // code based somewhat off:
@@ -57,26 +73,28 @@ public class MouseController : MonoBehaviour
                 {
                     tile.Placedtower = towerManager.GetTower();
                     // If there is a building, delete it. If not, place one.
-                    if ((tile.Building != null) && (tile.Building.gameObject.GetComponent<Hub>() == null))
+                    if (tile.Placedtower.name != "Empty")
                     {
-                        Destroy(tile.Building.transform.gameObject);
+                        if ((tile.Building != null) && (tile.Building.gameObject.GetComponent<Hub>() == null))
+                        {
+                            //  Destroy(tile.Building.transform.gameObject);
+                            Debug.Log("There already a building that built on this tile, try other empty spot");
+                        }
+                        else
+                        {
+                            Build(tile.Placedtower, tile, 0f);
+
+                            //tm.SelectedTower = null;      //If selected tower is reverted to null after the building is created, this will create user problems atm as they won't know that they can't just click
+                            //another space and make another building of the same type there.
+                        }
                     }
                     else
-                    {
-                        Build(tile.Placedtower, tile, 0f);
- 
-                        //tm.SelectedTower = null;      //If selected tower is reverted to null after the building is created, this will create user problems atm as they won't know that they can't just click
-                        //another space and make another building of the same type there.
-                    }
-                }   
+                        RemoveBuilding();
+                }
                 return;
             }
         }
     }
-    //}
-        //}
-
-    //}
 
 
     private void Build(GameObject toBuild, TileData tile, float height)
