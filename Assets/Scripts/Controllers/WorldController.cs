@@ -54,8 +54,6 @@ public class WorldController : MonoBehaviour
     [Header("Public variable?")]
     public bool InBuildMode;
 
-    public TileData[,] Tiles { get => tiles; }
-    public Terrain Ground { get => ground; set => ground = value; }
 
     // Non serialized fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
@@ -72,9 +70,11 @@ public class WorldController : MonoBehaviour
     private bool hubBuilt = false;
     private bool isGameOver;
 
-    //public properties
+    // Public properties
     // public static WorldController used to get the instance of the WorldManager from anywhere.
     public static WorldController Instance { get; protected set; }
+    public TileData[,] Tiles { get => tiles; }
+    public Terrain Ground { get => ground; set => ground = value; }
     public int Width { get => width; }
     public int Length { get => length; }
     public Hub Hub { get => hub; set => hub = value; }
@@ -319,17 +319,35 @@ public class WorldController : MonoBehaviour
     {
         TowerToSpawn = tm.GetTower();
 
-        if (TowerSpawn == null)
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
         {
-            TowerSpawn = Instantiate(TowerToSpawn, pos, Quaternion.identity);
-        }
-        else
-        {
-            if (TowerSpawn != TowerToSpawn)
+            TileData tile = GetTileAt(hit.point);
+            int x = Mathf.RoundToInt(hit.point.x);
+            int y = Mathf.RoundToInt(hit.point.z);
+            Vector3 spawnPos = new Vector3(x, 0, y);
+
+            if (TowerSpawn == null)
             {
-                Destroy(TowerSpawn);
-                TowerSpawn = Instantiate(TowerToSpawn, pos, Quaternion.identity);
+                TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
             }
+            else
+            {
+                if (TowerSpawn != TowerToSpawn)
+                {
+                    Destroy(TowerSpawn);
+                    TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Destroy(PlaneSpawn);
+            Destroy(TowerSpawn);
+            tm.EscToCancel();
+            InBuildMode = false;
         }
     }
 
@@ -365,12 +383,12 @@ public class WorldController : MonoBehaviour
     {
         if (!isGameOver)
         {
-            //if (InBuildMode)
-            //{
+            if (InBuildMode)
+            {
             //    MeshRendererTileChild(true);
-            //    RenderTower();
+                RenderTower();
             //    ShowTile();
-            //}
+            }
 
             // TEMP FIX, SHOULD BE REMOVED LATER
             if (hub == null)
