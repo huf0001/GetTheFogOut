@@ -43,11 +43,15 @@ public class MouseController : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
             if (Physics.Raycast(ray, out hit))
             {
                 if (hit.transform.gameObject.tag == "Building")
                 {
-                    Destroy(hit.transform.gameObject);
+                    if (hit.transform.gameObject.GetComponent<Building>().BuildingType != BuildingType.Hub)
+                    {
+                        Destroy(hit.transform.gameObject);
+                    }
                 }
             }
         }
@@ -64,6 +68,7 @@ public class MouseController : MonoBehaviour
 
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
             if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
             {
                 tile = WorldController.Instance.GetTileAt(hit.point);
@@ -75,21 +80,15 @@ public class MouseController : MonoBehaviour
                     // If there is a building, delete it. If not, place one.
                     if (tile.Placedtower.name != "Empty")
                     {
-                        if ((tile.Building != null) && (tile.Building.gameObject.GetComponent<Hub>() == null))
-                        {
-                            //  Destroy(tile.Building.transform.gameObject);
-                            Debug.Log("There already a building that built on this tile, try other empty spot");
-                        }
-                        else
+                        if (tile.Building == null)
                         {
                             Build(tile.Placedtower, tile, 0f);
-
-                            //tm.SelectedTower = null;      //If selected tower is reverted to null after the building is created, this will create user problems atm as they won't know that they can't just click
-                            //another space and make another building of the same type there.
                         }
                     }
                     else
+                    {
                         RemoveBuilding();
+                    }
                 }
                 return;
             }

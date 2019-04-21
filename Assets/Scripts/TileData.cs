@@ -22,7 +22,7 @@ public class TileData
     private int x = 0;
     private int z = 0;
     private FogUnit fogUnit = null;
-    private GameObject placedtower;
+    private GameObject placedtower = null;
     private List<TileData> adjacentTiles = new List<TileData>();
     private List<TileData> allAdjacentTiles = new List<TileData>();
 
