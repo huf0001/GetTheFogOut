@@ -31,40 +31,45 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    //Serialized fields
+    // Serialized fields
+    [Header("World Spawning Rules")]
     [SerializeField] private int width = 31;
     [SerializeField] private int length = 31;
+    [SerializeField] private bool spawnResources = false;
+    [SerializeField] int mineralSpawnChance = 5, fuelSpawnChance = 5, powerSpawnChance = 5, organSpawnChance = 5;
     //[SerializeField] private Tiles gameboard = null;
+
+    [Header("Prefab/Gameobject assignment")]
     [SerializeField] private GameObject gameboardPrefab;
     [SerializeField] private Terrain ground;
 
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
-    [SerializeField] int mineralSpawnChance = 5, fuelSpawnChance = 5, powerSpawnChance = 5, organSpawnChance = 5;
     [SerializeField] private GameObject planeGridprefab;
-
-
-    [SerializeField] private TileData[,] tiles;
-    public TileData[,] Tiles { get => tiles; }
-
-    private bool hubBuilt = false;
     [SerializeField] private Hub hub = null;
+    [SerializeField] private TileData[,] tiles;
+    [SerializeField] private ShipComponentState[] shipComponents;
+    public GameObject pause;
+
+    [Header("Public variable?")]
+    public bool InBuildMode;
+
+    public TileData[,] Tiles { get => tiles; }
     public Terrain Ground { get => ground; set => ground = value; }
 
-    //Non serialized fields
-    [SerializeField] private ShipComponentState[] shipComponents;
+    // Non serialized fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
-    public bool InBuildMode;
 
-    public GameObject pause;
 
-    //UI & Mouse Controller
+    // UI & Mouse Controller
     UIController uiController;
     MouseController mouseController;
 
+    // Flags
+    private bool hubBuilt = false;
     private bool isGameOver;
 
     //public properties
@@ -89,31 +94,52 @@ public class WorldController : MonoBehaviour
         //Get UIController currently used in scene
         uiController = GetComponent<UIController>();
 
-        //if (gameboard == null)
-        //{
-        //    GameObject gbo = Instantiate(gameboardPrefab);
-        //    gameboard = gbo.GetComponent<Tiles>();
-        //}
-
-        //tiles = gameboard.InstantiateTileArray();
-
         InstantiateTileArray();
         //SetupTiles();
         ConnectAdjacentTiles();
+        SetResourcesToTiles();
         SetBuildingsToTiles();
         GetComponent<Fog>().SpawnFog();
     }
 
+    void SetResourcesToTiles()
+    // Collect all Resources in the scene and assign them to the closest tile
+    {
+        ResourceNode[] resources = FindObjectsOfType<ResourceNode>();
+
+        foreach (ResourceNode resourceNode in resources)
+        {
+            TileData tile = GetTileAt(resourceNode.transform.position);
+            tile.Resource = resourceNode;
+        }
+    }
+
     void SetBuildingsToTiles()
+    // Collect all Buildings in the scene and assign them to the closest tile
     {
         Building[] buildings = FindObjectsOfType<Building>();
         foreach (Building building in buildings)
         {
-            TileData tile = GetTileAt(building.transform.position);
-            building.Location = tile;
-            building.Animator = building.GetComponentInChildren<Animator>();
-            building.Animator.SetBool("Built", true);
-            building.Place();
+            if (building.BuildingType == BuildingType.Hub)
+            {
+                TileData tile = GetTileAt(building.transform.position);
+                building.Location = tile;
+                building.Animator = building.GetComponentInChildren<Animator>();
+                building.Animator.SetBool("Built", true);
+                building.Place();
+            }
+        }
+
+        foreach (Building building in buildings)
+        {
+            if (building.BuildingType != BuildingType.Hub)
+            {
+                TileData tile = GetTileAt(building.transform.position);
+                building.Location = tile;
+                building.Animator = building.GetComponentInChildren<Animator>();
+                building.Animator.SetBool("Built", true);
+                building.Place();
+            }
         }
     }
 
@@ -133,93 +159,40 @@ public class WorldController : MonoBehaviour
                 //tileGO.GetComponent<MeshRenderer>().enabled = true;
                 //MeshRendererTileChild(false);
 
-                if (UnityEngine.Random.Range(1, 100) < mineralSpawnChance)
+                if (spawnResources)
                 {
-                    pos.y += 0.2f;
-                    GameObject mineral = Instantiate(mineralPrefab, pos, Quaternion.Euler(0f, 0f, 0f));
-                    tile.Resource = mineral.GetComponentInChildren<ResourceNode>();
-                    mineral.transform.SetParent(ground.transform, true);
-                }
-                else if (UnityEngine.Random.Range(1, 100) < fuelSpawnChance)
-                {
-                    pos.y += 0.3f;
-                    GameObject fuel = Instantiate(fuelPrefab, pos, Quaternion.Euler(0, 0, 0));
-                    tile.Resource = fuel.GetComponentInChildren<ResourceNode>();
-                    fuel.transform.SetParent(ground.transform, true);
-                }
-                else if (UnityEngine.Random.Range(1, 100) < organSpawnChance)
-                {
-                    pos.y += 0.3f;
-                    GameObject organ = Instantiate(organPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
-                    tile.Resource = organ.GetComponentInChildren<ResourceNode>();
-                    organ.transform.SetParent(ground.transform, true);
-                }
-                else if (UnityEngine.Random.Range(1, 100) < powerSpawnChance)
-                {
-                    pos.y += 0.2f;
-                    GameObject power = Instantiate(powerPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
-                    tile.Resource = power.GetComponentInChildren<ResourceNode>();
-                    power.transform.SetParent(ground.transform, true);
+                    if (UnityEngine.Random.Range(1, 100) < mineralSpawnChance)
+                    {
+                        pos.y += 0.2f;
+                        GameObject mineral = Instantiate(mineralPrefab, pos, Quaternion.Euler(0f, 0f, 0f));
+                        tile.Resource = mineral.GetComponentInChildren<ResourceNode>();
+                        mineral.transform.SetParent(ground.transform, true);
+                    }
+                    else if (UnityEngine.Random.Range(1, 100) < fuelSpawnChance)
+                    {
+                        pos.y += 0.3f;
+                        GameObject fuel = Instantiate(fuelPrefab, pos, Quaternion.Euler(0, 0, 0));
+                        tile.Resource = fuel.GetComponentInChildren<ResourceNode>();
+                        fuel.transform.SetParent(ground.transform, true);
+                    }
+                    else if (UnityEngine.Random.Range(1, 100) < organSpawnChance)
+                    {
+                        pos.y += 0.3f;
+                        GameObject organ = Instantiate(organPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
+                        tile.Resource = organ.GetComponentInChildren<ResourceNode>();
+                        organ.transform.SetParent(ground.transform, true);
+                    }
+                    else if (UnityEngine.Random.Range(1, 100) < powerSpawnChance)
+                    {
+                        pos.y += 0.2f;
+                        GameObject power = Instantiate(powerPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
+                        tile.Resource = power.GetComponentInChildren<ResourceNode>();
+                        power.transform.SetParent(ground.transform, true);
+                    }
                 }
             }
         }
     }
-
-    // OLD WAY OF DOING TILES AS GAME OBJECTS
-    //private void SetupTiles()
-    //{
-    //    GameObject tileGO;
-    //    Vector3 pos;
-
-    //    for (int x = 0; x < width; x++)
-    //    {
-    //        for (int z = 0; z < length; z++)
-    //        {
-    //            tileGO = tiles[x, z];
-
-    //            tileGO.transform.SetParent(this.transform, true);
-    //            tileGO.name = "Tile_" + x + "_" + z;
-    //            tileGO.layer = 8;
-    //            tileGO.tag = "Tile";
-    //            tileGO.GetComponent<Tile>().X = x;
-    //            tileGO.GetComponent<Tile>().Z = z;
-    //            pos = tileGO.transform.position;
-
-    //            //set to true will render the tile; set to false, and it won't
-    //            tileGO.GetComponent<MeshRenderer>().enabled = true;
-    //            MeshRendererTileChild(false);
-
-    //            if (Random.Range(1, 100) < mineralSpawnChance)
-    //            {                    
-    //                pos.y += 0.2f;
-    //                GameObject mineral = Instantiate(mineralPrefab, pos, tileGO.transform.rotation);
-    //                tileGO.GetComponent<Tile>().Resource = mineral.GetComponentInChildren<ResourceNode>();
-    //                mineral.transform.SetParent(tileGO.transform, true);
-    //            }
-    //            else if (Random.Range(1, 100) < fuelSpawnChance)
-    //            {
-    //                pos.y += 0.3f;
-    //                GameObject fuel = Instantiate(fuelPrefab, pos, tileGO.transform.rotation);
-    //                tileGO.GetComponent<Tile>().Resource = fuel.GetComponentInChildren<ResourceNode>();
-    //                fuel.transform.SetParent(tileGO.transform, true);
-    //            }
-    //            else if (Random.Range(1, 100) < organSpawnChance)
-    //            {
-    //                pos.y += 0.3f;
-    //                GameObject organ = Instantiate(organPrefab, pos, tileGO.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-    //                tileGO.GetComponent<Tile>().Resource = organ.GetComponentInChildren<ResourceNode>();
-    //                organ.transform.SetParent(tileGO.transform, true);
-    //            }
-    //            else if (Random.Range(1, 100) < powerSpawnChance)
-    //            {
-    //                pos.y += 0.2f;
-    //                GameObject power = Instantiate(powerPrefab, pos, tileGO.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-    //                tileGO.GetComponent<Tile>().Resource = power.GetComponentInChildren<ResourceNode>();
-    //                power.transform.SetParent(tileGO.transform, true);
-    //            }
-    //        }
-    //    }
-    //}
 
     //Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
     private void ConnectAdjacentTiles()
