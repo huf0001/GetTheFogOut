@@ -159,24 +159,15 @@ public class Fog : MonoBehaviour
         }
         else if (configuration == StartConfiguration.SurroundingHub)
         {
-            Collider[] aroundHub = Physics.OverlapSphere(GameObject.Find("Hub").transform.position, surroundingHubRange);
+            Vector3 hubPosition = GameObject.Find("Hub").transform.position;
 
             //Every space on the board
             for (int i = 0; i < xMax; i++)
             {
                 for (int j = 0; j < zMax; j++)
                 {
-                    bool tooClose = false;
-
-                    foreach (Collider c in aroundHub)
-                    {
-                        if (c.transform.position.x == i && c.transform.position.z == j)
-                        {
-                            tooClose = true;
-                        }
-                    }
-
-                    if (!tooClose)
+                    //Except those within a specified range of the hub
+                    if (Vector3.Distance(hubPosition, new Vector3(i, hubPosition.y, j)) > surroundingHubRange)
                     {
                         SpawnFogUnit(i, j);
                     }
