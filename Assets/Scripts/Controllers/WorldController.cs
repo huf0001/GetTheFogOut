@@ -118,27 +118,32 @@ public class WorldController : MonoBehaviour
     // Collect all Buildings in the scene and assign them to the closest tile
     {
         Building[] buildings = FindObjectsOfType<Building>();
-        foreach (Building building in buildings)
+
+        foreach (Building b in buildings)
         {
-            if (building.BuildingType == BuildingType.Hub)
+            if (b.BuildingType == BuildingType.Hub)
             {
-                TileData tile = GetTileAt(building.transform.position);
-                building.Location = tile;
-                building.Animator = building.GetComponentInChildren<Animator>();
-                building.Animator.SetBool("Built", true);
-                building.Place();
+                //TileData tile = GetTileAt(building.transform.position);
+                TileData tile = GetTileAt(b.transform.parent.position);
+                tile.Building = b;
+                b.Location = tile;
+                b.Animator = b.GetComponentInChildren<Animator>();
+                b.Animator.SetBool("Built", true);
+                b.Place();
+                break;
             }
         }
 
-        foreach (Building building in buildings)
+        foreach (Building b in buildings)
         {
-            if (building.BuildingType != BuildingType.Hub)
+            if (b.BuildingType != BuildingType.Hub)
             {
-                TileData tile = GetTileAt(building.transform.position);
-                building.Location = tile;
-                building.Animator = building.GetComponentInChildren<Animator>();
-                building.Animator.SetBool("Built", true);
-                building.Place();
+                //TileData tile = GetTileAt(b.transform.position);
+                TileData tile = GetTileAt(b.transform.parent.position);
+                b.Location = tile;
+                b.Animator = b.GetComponentInChildren<Animator>();
+                b.Animator.SetBool("Built", true);
+                b.Place();
             }
         }
     }
@@ -439,8 +444,8 @@ public class WorldController : MonoBehaviour
     }
     //rotate to 90
 
-    private void InstantiateStartHub()
-    {
+    //private void InstantiateStartHub()
+    //{
         //int x = GetHalf(width);
         //int y = GetHalf(length);
         //Tile startingTile = tiles[x, y].GetComponent<Tile>();
@@ -452,7 +457,7 @@ public class WorldController : MonoBehaviour
         //hubGO.transform.SetParent(startingTile.transform);
         //startingTile.Building = startHub;
         //hub.Location = startingTile;
-    }
+    //}
 
     private int GetHalf(int n)
     {

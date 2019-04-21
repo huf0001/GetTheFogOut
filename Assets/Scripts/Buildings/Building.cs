@@ -53,8 +53,7 @@ public abstract class Building : PlaneObject
         if (buildingType != BuildingType.Hub)
         {
             powerSource = location.PowerSource;
-            powerSource.PlugIn
-                (this);
+            powerSource.PlugIn(this);
         }
     }
 
