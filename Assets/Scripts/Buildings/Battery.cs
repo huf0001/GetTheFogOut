@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Battery : Building
 {
+
     public Battery()
     {
         // call Hub.AddBattery(); adds 10 to maxStorage
@@ -14,6 +15,7 @@ public class Battery : Building
     protected override void Start()
     {
         base.Start();
+        //audioSource = GetComponent<AudioSource>();
     }
 
     public override void Place()

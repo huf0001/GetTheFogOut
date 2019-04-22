@@ -16,4 +16,9 @@ public class Defence : Building
     {
         base.Update();
     }
+
+    public override void Place()
+    {
+        base.Place();
+    }
 }

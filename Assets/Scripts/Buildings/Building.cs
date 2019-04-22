@@ -22,10 +22,13 @@ public abstract class Building : PlaneObject
     public bool Powered { get => powered; }
     public bool Placed { get => placed; }
 
+    private AudioSource audioSource;
+
     protected virtual void Awake()
     {
         //MakeTilesVisible();
         FindToolTip();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
@@ -55,6 +58,7 @@ public abstract class Building : PlaneObject
         {
             SetPowerSource();
             placed = true;
+            audioSource.Play();
         }
     }
 
