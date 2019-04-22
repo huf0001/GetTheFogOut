@@ -29,6 +29,7 @@ public class Relay : PowerSource
     {
         base.Place();
     }
+    
     public override void PowerUp()
     {
         base.PowerUp();

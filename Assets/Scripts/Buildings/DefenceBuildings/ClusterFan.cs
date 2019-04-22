@@ -10,12 +10,14 @@ public class ClusterFan : Defence
     [SerializeField] private float rateOfFire = 0.25f;
     [SerializeField] private bool placedInEditor = false;
 
-    public AudioSource audioSpawn;
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     // Start is called before the first frame update
     protected override void Start()
     {
-        audioSpawn = GetComponent<AudioSource>();
         base.Start();
         if (placedInEditor)
         {
@@ -48,7 +50,6 @@ public class ClusterFan : Defence
     public override void Place()
     {
         base.Place();
-        audioSpawn.Play();
     }
 
     protected override void OnDestroy()

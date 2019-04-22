@@ -22,7 +22,7 @@ public abstract class Building : PlaneObject
     public bool Powered { get => powered; }
     public bool Placed { get => placed; }
 
-    private AudioSource audioSource;
+    [SerializeField] protected AudioSource audioSource;
 
     protected virtual void Awake()
     {
