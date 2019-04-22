@@ -109,7 +109,7 @@ public class WorldController : MonoBehaviour
 
         foreach (ResourceNode resourceNode in resources)
         {
-            TileData tile = GetTileAt(resourceNode.transform.position);
+            TileData tile = GetTileAt(resourceNode.transform.position);         
             tile.Resource = resourceNode;
         }
     }

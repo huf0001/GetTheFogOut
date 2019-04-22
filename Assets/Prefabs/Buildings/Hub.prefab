@@ -109,16 +109,21 @@ MonoBehaviour:
   upkeep: 5
   powerSource: {fileID: 0}
   powered: 0
-  buildingType: 4
+  buildingType: 5
   powerRange: 5
   suppliedBuildings: []
   maxPower: 100
+  maxMineral: 100
+  maxOrganic: 100
+  maxFuel: 100
   storedPower: 0
-  powerChange: 0
-  storedOrganic: 0
   storedMineral: 0
-  mineralChange: 0
+  storedOrganic: 0
   storedFuel: 0
+  powerChange: 0
+  mineralChange: 0
+  organicChange: 0
+  fuelChange: 0
   batteryPowerCost: 30
   batteryMineralCost: 0
   batteryOrganicCost: 0
@@ -135,5 +140,9 @@ MonoBehaviour:
   relayMineralCost: 0
   relayOrganicCost: 0
   relayFuelCost: 0
+  defencePowerCost: 0
+  defenceMineralCost: 0
+  defenceOrganicCost: 0
+  defenceFuelCost: 0
   harvesters: []
   batteries: []

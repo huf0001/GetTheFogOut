@@ -11,7 +11,7 @@ public class TileData
     //Serialized Fields
     [SerializeField] private List<PowerSource> powerSources = new List<PowerSource>();
 
-    [SerializeField] private ResourceNode resource;
+    [SerializeField] private ResourceNode resource = null;
     [SerializeField] private Building building = null;
 
     [SerializeField] private Material onMaterial;

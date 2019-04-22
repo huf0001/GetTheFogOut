@@ -79,12 +79,23 @@ public class MouseController : MonoBehaviour
                     //If tile has power, place building. Otherwise, don't place building.
                     if (tile.PowerSource != null)
                     {
-                        tile.Placedtower = towerManager.GetTower();
+                        GameObject toBuild = towerManager.GetTower();
+
                         // If there is a building, delete it. If not, place one.
-                        if (tile.Placedtower.name != "Empty")
+                        if (toBuild.name != "Empty")
                         {
-                            if (tile.Building == null)
+                            if (toBuild.GetComponent<Building>() != null)
                             {
+                                Building b = toBuild.GetComponent<Building>();
+                            }
+                            else
+                            {
+                                Debug.Log("toBuild's building component is non-existant");
+                            }
+
+                            if (tile.Building == null && (tile.Resource == null || towerManager.GetBuildingType() == BuildingType.Harvester))
+                            {
+                                tile.Placedtower = toBuild;
                                 Build(tile.Placedtower, tile, 0f);
                             }
                         }
@@ -97,7 +108,6 @@ public class MouseController : MonoBehaviour
             }
         }
     }
-
 
     private void Build(GameObject toBuild, TileData tile, float height)
     {
