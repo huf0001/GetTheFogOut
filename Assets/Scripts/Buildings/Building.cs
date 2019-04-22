@@ -53,9 +53,13 @@ public abstract class Building : PlaneObject
     {
         if (buildingType != BuildingType.Hub)
         {
-            SetPowerSource();
-            placed = true;
+            if (powerSource == null)
+            {
+                SetPowerSource();
+            }
         }
+
+        placed = true;
     }
 
     public void SetPowerSource()
@@ -65,6 +69,7 @@ public abstract class Building : PlaneObject
         if (powerSource != null)
         {
             powerSource.PlugIn(this);
+            PowerUp();
         } else
         {
             PowerDown();

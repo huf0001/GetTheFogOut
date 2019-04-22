@@ -104,7 +104,7 @@ public class Hub : PowerSource
     {
         // Change the power based on each connect building
         // TODO: Make buildings stop working if no power
-        int powerUpkeep = 0;
+        int powerUpkeep = 5;
         foreach (Building building in suppliedBuildings)
         {
             powerUpkeep += building.Upkeep;

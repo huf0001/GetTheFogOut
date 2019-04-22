@@ -22,9 +22,14 @@ public abstract class PowerSource : Building
             DeactivateTiles();
         }
 
-        foreach (Building building in suppliedBuildings)
+        for (int i = 0; i < suppliedBuildings.Count; i++)
         {
-            building.SetPowerSource();
+            suppliedBuildings[i].SetPowerSource();
+            if (i == 20)
+            {
+                Debug.LogError("You are probably adding youself to the list of supplied buildings");
+                break;
+            }
         }
 
         base.OnDestroy();
@@ -80,7 +85,10 @@ public abstract class PowerSource : Building
 
     public void PlugIn(Building newBuilding)
     {
-        suppliedBuildings.Add(newBuilding);
+        if (this != newBuilding)
+        {
+            suppliedBuildings.Add(newBuilding); 
+        }
     }
 
     public void Unplug(Building unplug)
