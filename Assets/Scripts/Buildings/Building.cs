@@ -14,12 +14,13 @@ public abstract class Building : PlaneObject
 
     [SerializeField] protected PowerSource powerSource;
     [SerializeField] protected bool powered = false;
+    [SerializeField] protected bool placed = false;
 
     [SerializeField] protected BuildingType buildingType;
     public BuildingType BuildingType { get => buildingType; }
     public Animator Animator { get => animator; set => animator = value; }
     public bool Powered { get => powered; }
-
+    public bool Placed { get => placed; }
 
     protected virtual void Awake()
     {
@@ -52,8 +53,21 @@ public abstract class Building : PlaneObject
     {
         if (buildingType != BuildingType.Hub)
         {
-            powerSource = location.PowerSource;
+            SetPowerSource();
+            placed = true;
+        }
+    }
+
+    public void SetPowerSource()
+    {
+        powerSource = location.PowerSource;
+
+        if (powerSource != null)
+        {
             powerSource.PlugIn(this);
+        } else
+        {
+            PowerDown();
         }
     }
 
@@ -132,6 +146,7 @@ public abstract class Building : PlaneObject
         if (powerSource != null)
         {
             powerSource.Unplug(this);
+            placed = false;
         }
         PowerDown();
         //MakeTilesNotVisible();

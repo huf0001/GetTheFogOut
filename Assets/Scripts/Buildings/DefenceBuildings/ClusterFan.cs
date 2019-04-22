@@ -30,31 +30,42 @@ public class ClusterFan : Defence
     public override void Place()
     {
         base.Place();
-        InvokeRepeating("Fire", 0.25f, rateOfFire);
+    }
+
+    public override void PowerUp()
+    {
+        base.PowerUp();
+
+        if (!IsInvoking("Fire"))
+        {
+            InvokeRepeating("Fire", 0.25f, rateOfFire);
+        }
+    }
+
+    public override void PowerDown()
+    {
+        base.PowerDown();
+        CancelInvoke();
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        CancelInvoke();
     }
 
     void Fire()
     {
-        if (powered)
+        TileData target = GetTarget();
+
+        if (target != null)
         {
-            TileData target = GetTarget();
+            // Get a projectile from the pool and send it on its way
+            Projectile p = ProjectilePool.Instance.GetFromPool();
 
-            if (target != null)
-            {
-                // Get a projectile from the pool and send it on its way
-                Projectile p = ProjectilePool.Instance.GetFromPool();
-
-                Vector3 origin = transform.position;
-                origin.y += 0.4f;
-                Vector3 targetPos = new Vector3(target.X, 0, target.Z);
-                p.Fire(origin, targetPos, directDamage, aoeDamage);
-            }
+            Vector3 origin = transform.position;
+            origin.y += 0.4f;
+            Vector3 targetPos = new Vector3(target.X, 0, target.Z);
+            p.Fire(origin, targetPos, directDamage, aoeDamage);
         }
     }
 
