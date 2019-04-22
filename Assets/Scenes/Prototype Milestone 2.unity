@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.13506117, a: 1}
+  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.1350612, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2041,7 +2041,7 @@ PrefabInstance:
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 25
+      value: 26.714539
       objectReference: {fileID: 0}
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
@@ -2281,7 +2281,7 @@ PrefabInstance:
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1173.1807
+      value: 1195.4697
       objectReference: {fileID: 0}
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
@@ -4158,6 +4158,56 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hub (Modified)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: storedMineral
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: defencePowerCost
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: defenceMineralCost
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: generatorPowerCost
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: generatorMineralCost
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: harvesterPowerCost
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: relayPowerCost
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: relayMineralCost
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: harvesterMineralCost
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071841716570308277, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c,
+        type: 3}
+      propertyPath: maxMineral
+      value: 99999
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d48d0d50f6411e4dbe7d22aa6200b1c, type: 3}

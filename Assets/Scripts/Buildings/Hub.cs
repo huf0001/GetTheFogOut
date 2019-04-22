@@ -17,7 +17,7 @@ public class Hub : PowerSource
     [SerializeField] private int relayPowerCost = 10, relayMineralCost = 0, relayOrganicCost = 0, relayFuelCost = 0;
     [SerializeField] private int defencePowerCost = 0, defenceMineralCost = 0, defenceOrganicCost = 0, defenceFuelCost = 0;
 
-    private Resource ResourceOn;
+    //private Resource ResourceOn;
 
     private Dictionary<string, int> batteryCosts = new Dictionary<string, int>();
     private Dictionary<string, int> generatorCosts = new Dictionary<string, int>();
@@ -27,7 +27,7 @@ public class Hub : PowerSource
     private Dictionary<BuildingType, Dictionary<string, int>> buildingsCosts = 
         new Dictionary<BuildingType, Dictionary<string, int>>();
 
-    [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
+    //[SerializeField] private List<Harvester> harvesters = new List<Harvester>();
     [SerializeField] private List<Battery> batteries = new List<Battery>();
 
     public int MaxPower { get => maxPower; set => maxPower = value; }
@@ -42,7 +42,7 @@ public class Hub : PowerSource
     public int OrganicChange { get => organicChange; set => organicChange = value; }
     public int FuelChange { get => fuelChange; set => fuelChange = value; }
     
-    public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
+    //public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<Battery> Batteries { get => batteries; set => batteries = value; }
 
     public Dictionary<BuildingType, Dictionary<string, int>> BuildingsCosts { get => buildingsCosts; }
@@ -102,87 +102,245 @@ public class Hub : PowerSource
 
     private void ProcessUpkeep()
     {
-        // Change the power based on each connect building
+        // Change the power based on each connected building
         // TODO: Make buildings stop working if no power
-        int powerUpkeep = 5;
-        foreach (Building building in suppliedBuildings)
-        {
-            powerUpkeep += building.Upkeep;
-            if (powerUpkeep >= 0 || storedPower > 0)
-            {
-                building.PowerUp();
-            }
-            else
-            {
-                building.PowerDown();
-            }
 
-            if (building.BuildingType == BuildingType.Relay)
-            {
-                PowerSource relay = (PowerSource)building;
-                if (relay != null)
-                {
-                    foreach (Building b in relay.SuppliedBuildings)
-                    {
-                        powerUpkeep += b.Upkeep;
-                        if (powerUpkeep >= 0 || storedPower > 0)
-                        {
-                            b.PowerUp();
-                        }
-                        else
-                        {
-                            b.PowerDown();
-                        }
-                    }
-                }
-            }
-
-        }
+        //Reset resource changes
+        powerChange = 0;
+        fuelChange = 0;
+        organicChange = 0;
+        mineralChange = 0;
 
         // Process batteries
         maxPower = (batteries.Count * 10) + 100;
-        int mChange = 0;
-        int fChange = 0;
-        int oChange = 0;
-        int pChange = 0;
 
-        if (harvesters.Count != 0)
+        //Provide hub's power contribution
+        storedPower += upkeep;
+        powerChange += upkeep;
+
+        //Get connected generators, account for the power they supply
+        List<Generator> connectedGenerators = base.GetGenerators();
+
+        if (connectedGenerators.Count > 0)
         {
-            foreach (Harvester harvester in harvesters)
-            {
-                ResourceOn = harvester.Location.Resource.ResourceType;
-                
+            storedPower += connectedGenerators[0].Upkeep * connectedGenerators.Count;
+            powerChange += connectedGenerators[0].Upkeep * connectedGenerators.Count;
 
-                switch (ResourceOn)
+            foreach (Generator g in FindObjectsOfType<Generator>())
+            {
+                if (connectedGenerators.Contains(g))
                 {
-                    case Resource.Power:                   
-                        pChange += Mathf.RoundToInt(harvester.HarvestAmt * harvester.Location.Resource.ResMultiplier);
-                        break;
-                    case Resource.Organic:
-                        oChange += Mathf.RoundToInt(harvester.HarvestAmt * harvester.Location.Resource.ResMultiplier);
-                        break;
-                    case Resource.Mineral:
-                        mChange += Mathf.RoundToInt(harvester.HarvestAmt * harvester.Location.Resource.ResMultiplier);
-                        break;
-                    case Resource.Fuel:
-                        fChange += Mathf.RoundToInt(harvester.HarvestAmt * harvester.Location.Resource.ResMultiplier);
-                        break;
+                    g.PowerUp();
+                }
+                else
+                {
+                    g.PowerDown();
                 }
             }
         }
-        fuelChange = fChange;
-        organicChange = oChange;
-        mineralChange = mChange;
-        powerChange = pChange + powerUpkeep;
+
+        //Get connected relays, account for the power they consume
+        List<Relay> connectedRelays= base.GetRelays();
+
+        if (connectedRelays.Count > 0)
+        {
+            foreach (Relay r in FindObjectsOfType<Relay>())
+            {
+                if (connectedRelays.Contains(r))
+                {
+                    storedPower += r.Upkeep;
+                    powerChange += r.Upkeep;
+
+                    if (storedPower >= 0)
+                    {
+                        r.PowerUp();
+                    }
+                    else
+                    {
+                        r.PowerDown();
+                    }
+                }
+                else
+                {
+                    r.PowerDown();
+                }
+            }
+        }
+
+        //Get connected defences, account for the power they consume
+        List<Defence> connectedDefences = base.GetDefences();
+
+        if (connectedDefences.Count > 0)
+        {
+            foreach (Defence d in FindObjectsOfType<Defence>())
+            {
+                if (connectedDefences.Contains(d))
+                {
+                    storedPower += d.Upkeep;
+                    powerChange += d.Upkeep;
+
+                    if (storedPower >= 0)
+                    {
+                        d.PowerUp();
+                    }
+                    else
+                    {
+                        d.PowerDown();
+                    }
+                }
+                else
+                {
+                    d.PowerDown();
+                }
+            }
+        }
+
+        //Get connected harvesters, account for power they consume, store the resources they collect
+        List<Harvester> connectedHarvesters = GetHarvesters();
+
+        if (connectedHarvesters.Count > 0)
+        {
+            Debug.Log("connected harvesters count: " + connectedHarvesters.Count);
+
+            foreach (Harvester h in FindObjectsOfType<Harvester>())
+            {
+                if (connectedHarvesters.Contains(h))
+                {
+                    Debug.Log("Pre application of Harvester upkeep: Harvester upkeep: " + h.Upkeep + ". storedPower: " + storedPower + ". powerChange: " + powerChange);
+                    storedPower += h.Upkeep;
+                    powerChange += h.Upkeep;
+                    Debug.Log("Post application of Harvester upkeep: Harvester upkeep: " + h.Upkeep + ". storedPower: " + storedPower + ". powerChange: " + powerChange);
+
+                    if (storedPower >= 0)
+                    {
+                        h.PowerUp();
+
+                        switch (h.Location.Resource.ResourceType)
+                        {
+                            case Resource.Power:
+                                storedPower += h.HarvestAmt;
+                                powerChange += h.HarvestAmt;
+                                break;
+                            case Resource.Organic:
+                                organicChange += h.HarvestAmt;
+                                break;
+                            case Resource.Mineral:
+                                mineralChange += h.HarvestAmt;
+                                break;
+                            case Resource.Fuel:
+                                fuelChange += h.HarvestAmt;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        h.PowerDown();
+                    }
+                }
+                else
+                {
+                    h.PowerDown();
+                }
+            }
+        }
 
         storedFuel += fuelChange;
         storedOrganic += organicChange;
         StoredMineral += mineralChange;
-        StoredPower += powerChange;
 
-        //storedPower += 5;
         CheckLimit();
     }
+
+    //private void ProcessUpkeep()
+    //{
+    //    // Change the power based on each connect building
+    //    // TODO: Make buildings stop working if no power
+    //    int powerUpkeep = 5;
+
+    //    foreach (Building building in suppliedBuildings)
+    //    {
+    //        powerUpkeep += building.Upkeep;
+
+    //        if (powerUpkeep >= 0 || storedPower > 0)
+    //        {
+    //            building.PowerUp();
+    //        }
+    //        else
+    //        {
+    //            building.PowerDown();
+    //        }
+
+    //        if (building.BuildingType == BuildingType.Relay)
+    //        {
+    //            PowerSource relay = (PowerSource)building;
+
+    //            if (relay != null)
+    //            {
+    //                foreach (Building b in relay.SuppliedBuildings)
+    //                {
+    //                    powerUpkeep += b.Upkeep;
+
+    //                    if (powerUpkeep >= 0 || storedPower > 0)
+    //                    {
+    //                        b.PowerUp();
+    //                    }
+    //                    else
+    //                    {
+    //                        b.PowerDown();
+    //                    }
+    //                }
+    //            }
+    //        }
+
+    //    }
+
+    //    // Process batteries
+    //    maxPower = (batteries.Count * 10) + 100;
+    //    int mChange = 0;
+    //    int fChange = 0;
+    //    int oChange = 0;
+    //    int pChange = 0;
+
+    //    if (harvesters.Count != 0)
+    //    {
+    //        foreach (Harvester harvester in harvesters)
+    //        {
+    //            if (harvester.Powered)
+    //            {
+    //                ResourceOn = harvester.Location.Resource.ResourceType;
+
+    //                switch (ResourceOn)
+    //                {
+    //                    case Resource.Power:
+    //                        pChange += harvester.HarvestAmt;
+    //                        break;
+    //                    case Resource.Organic:
+    //                        oChange += harvester.HarvestAmt;
+    //                        break;
+    //                    case Resource.Mineral:
+    //                        mChange += harvester.HarvestAmt;
+    //                        break;
+    //                    case Resource.Fuel:
+    //                        fChange += harvester.HarvestAmt;
+    //                        break;
+    //                }
+    //            }
+    //        }
+    //    }
+
+    //    fuelChange = fChange;
+    //    organicChange = oChange;
+    //    mineralChange = mChange;
+    //    powerChange = pChange + powerUpkeep;
+
+    //    storedFuel += fuelChange;
+    //    storedOrganic += organicChange;
+    //    StoredMineral += mineralChange;
+    //    StoredPower += powerChange;
+
+    //    //storedPower += 5;
+    //    CheckLimit();
+    //}
 
     public override bool SupplyingPower()
     {
@@ -241,19 +399,21 @@ public class Hub : PowerSource
             organicFull = false;
         }
 
-
         if (storedPower < 0)
         {
             storedPower = 0;
         }
+
         if (storedFuel < 0)
         {
             storedFuel = 0;
         }
+
         if (storedMineral < 0)
         {
             storedMineral = 0;
         }
+
         if (storedOrganic < 0)
         {
             storedOrganic = 0;

@@ -21,9 +21,4 @@ public class Generator : Building
     {
         base.Update();
     }
-
-    protected void Upkeep()
-    {
-        // call Hub.ChangePower(upkeep)
-    }
 }
