@@ -11,7 +11,7 @@ public class TileData
     //Serialized Fields
     [SerializeField] private List<PowerSource> powerSources = new List<PowerSource>();
 
-    [SerializeField] private ResourceNode resource;
+    [SerializeField] private ResourceNode resource = null;
     [SerializeField] private Building building = null;
 
     [SerializeField] private Material onMaterial;
@@ -27,6 +27,7 @@ public class TileData
     private List<TileData> allAdjacentTiles = new List<TileData>();
 
     private List<Building> observers = new List<Building>();
+    private bool visited = false;
 
     //Simple public properties
     public int X { get => x; set => x = value; }
@@ -39,7 +40,6 @@ public class TileData
 
     public List<TileData> AdjacentTiles { get => adjacentTiles; }
     public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
-    private bool visited = false;
     public bool Visited { get => visited; set => visited = value; }
 
     //Altered public properties
@@ -68,6 +68,13 @@ public class TileData
     {
         //this.gameObject.GetComponent<Renderer>().material = onMaterial;
         powerSources.Add(power);
+        if (building != null)
+        {
+            if (!building.Powered)
+            {
+                building.SetPowerSource();
+            }
+        }
     }
 
     public void PowerDown(PowerSource power)
@@ -117,29 +124,4 @@ public class TileData
             }
         }
     }
-
-    // ALL THIS FUCTIONALLITY WAS MOVED TO MOUSE CONTROLLER
-    //void OnMouseUp()
-    //{
-    //    //TODO: check the condition if the player has enough currency to build on this tile
-    //        if (!EventSystem.current.IsPointerOverGameObject())
-    //        {
-    //            TowerManager tm = FindObjectOfType<TowerManager>();
-    //            placedtower = tm.GetTower();
-    //            placebuilding();
-    //    //DESC: reset the button, so you can't spam/accidentally building
-    //            //tm.SelectedTower = null;
-    //        }
-    //}
-
-    //void placebuilding()
-    //{ 
-    //    //TODO: try to fix the position if replaced by 3d game object
-    //    //DESC: will replace a prefab on top of the tile(parent) position/rotation.
-    //    Instantiate(placedtower, transform.position, transform.rotation);
-
-    //    //DESC: destroy tile upon replacing new object
-    //    //Destroy(transform.parent.gameObject);
-
-    //}
 }

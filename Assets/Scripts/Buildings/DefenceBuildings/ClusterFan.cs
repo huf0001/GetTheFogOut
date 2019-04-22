@@ -30,13 +30,26 @@ public class ClusterFan : Defence
     public override void Place()
     {
         base.Place();
-        InvokeRepeating("Fire", 0.25f, rateOfFire);
+    }
+
+    public override void PowerUp()
+    {
+        base.PowerUp();
+        if (!IsInvoking("Fire"))
+        {
+            InvokeRepeating("Fire", 0.25f, rateOfFire);
+        }
+    }
+
+    public override void PowerDown()
+    {
+        base.PowerDown();
+        CancelInvoke();
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        CancelInvoke();
     }
 
     void Fire()

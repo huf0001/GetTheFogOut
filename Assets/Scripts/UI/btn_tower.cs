@@ -8,16 +8,16 @@ using UnityEngine.UI;
 
 public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField]
-    private GameObject obj_prefab;
-    public GameObject Obj_prefab { get => obj_prefab; }
+    [SerializeField] private GameObject obj_prefab;
+    [SerializeField] private Button _button;
+    [SerializeField] private BuildingType towerType = BuildingType.None;
+    [SerializeField] TextMeshProUGUI buildingDesc;
 
-    [SerializeField]
-    private Button _button;
- //   private WorldController WC;
+    //private WorldController WC;
     public KeyCode _key;
 
-    [SerializeField] TextMeshProUGUI buildingDesc;
+    public GameObject Obj_prefab { get => obj_prefab; }
+    public BuildingType TowerType { get => towerType; }
 
     void Update()
     {

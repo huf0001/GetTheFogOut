@@ -71,30 +71,43 @@ public class MouseController : MonoBehaviour
 
             if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
             {
-                tile = WorldController.Instance.GetTileAt(hit.point);
-
-                //If tile has power, place building. Otherwise, don't place building.
-                if (tile.PowerSource != null)
+                //Check if a valid tile was clicked
+                if (WorldController.Instance.TileExistsAt(hit.point))
                 {
-                    tile.Placedtower = towerManager.GetTower();
-                    // If there is a building, delete it. If not, place one.
-                    if (tile.Placedtower.name != "Empty")
+                    tile = WorldController.Instance.GetTileAt(hit.point);
+                
+                    //If tile has power, place building. Otherwise, don't place building.
+                    if (tile.PowerSource != null)
                     {
-                        if (tile.Building == null)
+                        GameObject toBuild = towerManager.GetTower();
+
+                        // If there is a building, delete it. If not, place one.
+                        if (toBuild.name != "Empty")
                         {
-                            Build(tile.Placedtower, tile, 0f);
+                            if (toBuild.GetComponent<Building>() != null)
+                            {
+                                Building b = toBuild.GetComponent<Building>();
+                            }
+                            else
+                            {
+                                Debug.Log("toBuild's building component is non-existant");
+                            }
+
+                            if (tile.Building == null && (tile.Resource == null || towerManager.GetBuildingType() == BuildingType.Harvester))
+                            {
+                                tile.Placedtower = toBuild;
+                                Build(tile.Placedtower, tile, 0f);
+                            }
+                        }
+                        else
+                        {
+                            RemoveBuilding();
                         }
                     }
-                    else
-                    {
-                        RemoveBuilding();
-                    }
                 }
-                return;
             }
         }
     }
-
 
     private void Build(GameObject toBuild, TileData tile, float height)
     {

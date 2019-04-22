@@ -1,5 +1,6 @@
 ﻿public enum BuildingType
 {
+    None,
     Battery,
     Defence,
     Generator,

@@ -6,17 +6,21 @@ using UnityEngine.EventSystems;
 public class TowerManager : MonoBehaviour
 {
     
-    [SerializeField]
-    private btn_tower selectedTower;
-    public btn_tower SelectedTower { get => selectedTower; set => selectedTower = value; }
+    [SerializeField] private btn_tower selectedTower;
+    [SerializeField] private BuildingType buildingType = BuildingType.None;
     [SerializeField] private GameObject emptyprefab;
+
+
+    public btn_tower SelectedTower { get => selectedTower; set => selectedTower = value; }
+    public BuildingType TowerBuildingType { get => buildingType; set => buildingType = value; }
+
 
     //TODO: TOGGLE ?
     //DESC: click on the button will get the value of the assigned value(button) ? xD
     public void OnCLickedbtn(btn_tower chooseTower)
     {
-         this.SelectedTower = chooseTower;
-         WorldController.Instance.InBuildMode = true;
+        this.SelectedTower = chooseTower;
+        WorldController.Instance.InBuildMode = true;
     }
 
     //DESC: return prefab object *replace with tower 3d later
@@ -30,6 +34,10 @@ public class TowerManager : MonoBehaviour
             return emptyprefab;
     }
 
+    public BuildingType GetBuildingType()
+    {
+        return SelectedTower.TowerType;
+    }
 
     public void EscToCancel()
     {

@@ -17,10 +17,16 @@ public abstract class PowerSource : Building
 
     protected override void OnDestroy()
     {
-        DeactivateTiles();
-        //TODO: go through all objects being supplied power, and unplug from them; note that they
-        //have to have their power sources replaced if there is one available, or be switched off if
-        //there isn't one available
+        if (placed)
+        {
+            DeactivateTiles();
+        }
+
+        foreach (Building building in suppliedBuildings)
+        {
+            building.SetPowerSource();
+        }
+
         base.OnDestroy();
     }
 
@@ -44,17 +50,6 @@ public abstract class PowerSource : Building
 
     private void ActivateTiles()
     {
-        // NEEDS TO BE UPDATES TO NEW TILES
-        //Collider[] tilesToActivate = Physics.OverlapSphere(transform.position, powerRange);
-
-        //foreach (Collider c in tilesToActivate)
-        //{
-        //    if (c.gameObject.GetComponent<Tile>() != null)
-        //    {
-        //        c.gameObject.GetComponent<Tile>().PowerUp(this as PowerSource);
-        //    }
-        //}
-
         List<TileData> tiles = new List<TileData>();
         location.CollectTilesInRange(tiles, (int)powerRange);
         foreach (TileData tile in tiles)
@@ -65,18 +60,7 @@ public abstract class PowerSource : Building
     }
 
     private void DeactivateTiles()
-    {
-        // NEEDS TO BE UPDATES TO NEW TILES
-        //Collider[] tilesToDeactivate = Physics.OverlapSphere(transform.position, powerRange);
-
-        //foreach (Collider c in tilesToDeactivate)
-        //{
-        //    if (c.gameObject.GetComponent<Tile>() != null)
-        //    {
-        //        c.gameObject.GetComponent<Tile>().PowerDown(this as PowerSource);
-        //    }
-        //}
-
+    { 
         List<TileData> tiles = new List<TileData>();
         location.CollectTilesInRange(tiles, (int)powerRange);
         foreach (TileData tile in tiles)
