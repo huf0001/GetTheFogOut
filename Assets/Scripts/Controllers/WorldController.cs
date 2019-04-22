@@ -326,23 +326,27 @@ public class WorldController : MonoBehaviour
 
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
         if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
         {
-            TileData tile = GetTileAt(hit.point);
-            int x = Mathf.RoundToInt(hit.point.x);
-            int y = Mathf.RoundToInt(hit.point.z);
-            Vector3 spawnPos = new Vector3(x, 0, y);
+            if (TileExistsAt(hit.point))
+            {
+                TileData tile = GetTileAt(hit.point);
+                int x = Mathf.RoundToInt(hit.point.x);
+                int y = Mathf.RoundToInt(hit.point.z);
+                Vector3 spawnPos = new Vector3(x, 0, y);
 
-            if (TowerSpawn == null)
-            {
-                TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
-            }
-            else
-            {
-                if (TowerSpawn != TowerToSpawn)
+                if (TowerSpawn == null)
                 {
-                    Destroy(TowerSpawn);
                     TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
+                }
+                else
+                {
+                    if (TowerSpawn != TowerToSpawn)
+                    {
+                        Destroy(TowerSpawn);
+                        TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
+                    }
                 }
             }
         }
@@ -476,11 +480,12 @@ public class WorldController : MonoBehaviour
         int x = Mathf.RoundToInt(pos.x);
         int y = Mathf.RoundToInt(pos.y);
 
-        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
+        if (x >= width || x < 0 || y >= length || y < 0)    //width by length array, the last value will be at position (width - 1, length - 1) 'cause arrays love 0s.
         {
             Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
             return null;
         }
+
         return tiles[x, y];
     }
 
@@ -496,6 +501,22 @@ public class WorldController : MonoBehaviour
         return null;
     }
 
+    public bool TileExistsAt(Vector3 pos)
+    {
+        int x = Mathf.RoundToInt(pos.x);
+        int y = Mathf.RoundToInt(pos.z);
+
+        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
+        {
+            Debug.Log("Tile (" + x + "," + y + ") doesn't exist. Probably want to double check that it isn't supposed to exist and you haven't fucked up the code somewhere.");
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     public TileData GetTileAt(Vector3 pos)
     {
         int x = Mathf.RoundToInt(pos.x);
@@ -506,6 +527,7 @@ public class WorldController : MonoBehaviour
             Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
             return null;
         }
+
         return tiles[x, y];
     }
 }
