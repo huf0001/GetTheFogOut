@@ -74,30 +74,30 @@ public class TileData
     {
         powerSources.Remove(power);
 
-        if (powerSources.Count == 0)
-        {
-            //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
-        }
+        //if (powerSources.Count == 0)
+        //{
+        //    //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
+        //}
     }
 
     public void AddObserver(Building observer)
     {
         observers.Add(observer);
 
-        if (powerSources.Count == 0)
-        {
-            //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
-        }
+        //if (powerSources.Count == 0)
+        //{
+        //    //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
+        //}
     }
 
     public void RemoveObserver(Building observer)
     {
         observers.Remove(observer);
 
-        if (observers.Count == 0)
-        {
-            //this.gameObject.GetComponent<Renderer>().material = startMaterial;
-        }
+        //if (observers.Count == 0)
+        //{
+        //    //this.gameObject.GetComponent<Renderer>().material = startMaterial;
+        //}
     }
 
     public void CollectTilesInRange(List<TileData> tiles, int range)

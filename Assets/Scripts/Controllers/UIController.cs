@@ -16,7 +16,7 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI endGameText;
 
     private Slider powerSlider;
-    private int power = 0, mineral = 0;
+    private int power = 0, powerChange = 0, mineral = 0;
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
 
@@ -83,13 +83,15 @@ public class UIController : MonoBehaviour
                 powerTime = 0;
             }
 
+            powerChange = hub.PowerChange;
+
             // change colour of power change text depending on +, - or ±
             string colour;
-            if (hub.PowerChange > 0)
+            if (powerChange > 0)
             {
                 colour = "#009900>+";
             }
-            else if (hub.PowerChange < 0)
+            else if (powerChange < 0)
             {
                 colour = "red\">";
             }
@@ -101,7 +103,7 @@ public class UIController : MonoBehaviour
             // update slider and text values
             powerSlider.maxValue = hub.MaxPower;
             powerSlider.value = Mathf.Lerp(powerVal, power, powerTime);
-            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + hub.MaxPower + "    <color=" + colour + hub.PowerChange + "</color>";
+            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + hub.MaxPower + "    <color=" + colour + powerChange + "</color>";
             mineralText.text = hub.StoredMineral + " units";
 
             // old code that probably should be adapted to tween mineral stock number

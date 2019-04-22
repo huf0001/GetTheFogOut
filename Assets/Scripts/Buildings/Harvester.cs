@@ -14,7 +14,6 @@ public class Harvester : Building
     protected override void Start()
     {
         base.Start();
-        upkeep = -5;
     }
 
     // Update is called once per frame
@@ -25,50 +24,54 @@ public class Harvester : Building
 
     public override void PowerUp()
     {
-        if (location.Resource.ResourceType == Resource.Mineral)
-        { 
-            base.PowerUp();
-            if (!WorldController.Instance.Hub.Harvesters.Contains(this))
-            {
-                WorldController.Instance.Hub.Harvesters.Add(this);
-            }
-        }
+        //if (location.Resource.ResourceType == Resource.Mineral)
+        //{ 
+        base.PowerUp();
 
-        if (location.Resource.ResourceType == Resource.Fuel)
-        {
-            base.PowerUp();
-            if (!WorldController.Instance.Hub.Harvesters.Contains(this))
-            {
-                WorldController.Instance.Hub.Harvesters.Add(this);
-            }
-        }
+        //if (!WorldController.Instance.Hub.Harvesters.Contains(this))
+        //{
+        //    WorldController.Instance.Hub.Harvesters.Add(this);
+        //}
+        //}
 
-        if (location.Resource.ResourceType == Resource.Organic)
-        {
-            base.PowerUp();
-            if (!WorldController.Instance.Hub.Harvesters.Contains(this))
-            {
-                WorldController.Instance.Hub.Harvesters.Add(this);
-            }
-        }
+        //if (location.Resource.ResourceType == Resource.Fuel)
+        //{
+        //    base.PowerUp();
 
-        if (location.Resource.ResourceType == Resource.Power)
-        {
-            base.PowerUp();
-            if (!WorldController.Instance.Hub.Harvesters.Contains(this))
-            {
-                WorldController.Instance.Hub.Harvesters.Add(this);
-            }
-        }
+        //    if (!WorldController.Instance.Hub.Harvesters.Contains(this))
+        //    {
+        //        WorldController.Instance.Hub.Harvesters.Add(this);
+        //    }
+        //}
+
+        //if (location.Resource.ResourceType == Resource.Organic)
+        //{
+        //    base.PowerUp();
+
+        //    if (!WorldController.Instance.Hub.Harvesters.Contains(this))
+        //    {
+        //        WorldController.Instance.Hub.Harvesters.Add(this);
+        //    }
+        //}
+
+        //if (location.Resource.ResourceType == Resource.Power)
+        //{
+        //    base.PowerUp();
+
+        //    if (!WorldController.Instance.Hub.Harvesters.Contains(this))
+        //    {
+        //        WorldController.Instance.Hub.Harvesters.Add(this);
+        //    }
+        //}
     }
 
     public override void PowerDown()
     {
         base.PowerDown();
 
-        if (WorldController.Instance.Hub.Harvesters.Contains(this))
-        {
-            WorldController.Instance.Hub.Harvesters.Remove(this);
-        }
+        //if (WorldController.Instance.Hub.Harvesters.Contains(this))
+        //{
+        //    WorldController.Instance.Hub.Harvesters.Remove(this);
+        //}
     }
 }
