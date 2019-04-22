@@ -32,6 +32,7 @@ public class ClusterFan : Defence
     public override void PowerUp()
     {
         base.PowerUp();
+
         if (!IsInvoking("Fire"))
         {
             InvokeRepeating("Fire", 0.25f, rateOfFire);
@@ -68,7 +69,6 @@ public class ClusterFan : Defence
             origin.y += 0.4f;
             Vector3 targetPos = new Vector3(target.X, 0, target.Z);
             p.Fire(origin, targetPos, directDamage, aoeDamage);
-
         }
     }
 

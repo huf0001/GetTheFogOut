@@ -22,9 +22,14 @@ public abstract class PowerSource : Building
             DeactivateTiles();
         }
 
-        foreach (Building building in suppliedBuildings)
+        for (int i = 0; i < suppliedBuildings.Count; i++)
         {
-            building.SetPowerSource();
+            suppliedBuildings[i].SetPowerSource();
+            if (i == 20)
+            {
+                Debug.LogError("You are probably adding youself to the list of supplied buildings");
+                break;
+            }
         }
 
         base.OnDestroy();
@@ -46,6 +51,83 @@ public abstract class PowerSource : Building
     {
         base.Place();
         ActivateTiles();
+    }
+
+    public List<Generator> GetGenerators()
+    {
+        List<Generator> generators = new List<Generator>();
+
+        foreach (Building b in suppliedBuildings)
+        {
+            if (b.BuildingType == BuildingType.Generator)
+            {
+                generators.Add(b as Generator);
+            }
+            else if (b.BuildingType == BuildingType.Relay)
+            {
+                Relay r = b as Relay;
+                generators.AddRange(r.GetGenerators());
+            }
+        }
+
+        return generators;
+    }
+
+    public List<Relay> GetRelays()
+    {
+        List<Relay> relays = new List<Relay>();
+
+        foreach (Building b in suppliedBuildings)
+        {
+            if (b.BuildingType == BuildingType.Relay)
+            {
+                Relay r = b as Relay;
+                relays.Add(r);
+                relays.AddRange(r.GetRelays());
+            }
+        }
+
+        return relays;
+    }
+
+    public List<Defence> GetDefences()
+    {
+        List<Defence> defences = new List<Defence>();
+
+        foreach (Building b in suppliedBuildings)
+        {
+            if (b.BuildingType == BuildingType.Defence)
+            {
+                defences.Add(b as Defence);
+            }
+            else if (b.BuildingType == BuildingType.Relay)
+            {
+                Relay r = b as Relay;
+                defences.AddRange(r.GetDefences());
+            }
+        }
+
+        return defences;
+    }
+
+    public List<Harvester> GetHarvesters()
+    {
+        List<Harvester> harvesters = new List<Harvester>();
+
+        foreach (Building b in suppliedBuildings)
+        {
+            if (b.BuildingType == BuildingType.Harvester)
+            {
+                harvesters.Add(b as Harvester);
+            }
+            else if (b.BuildingType == BuildingType.Relay)
+            {
+                Relay r = b as Relay;
+                harvesters.AddRange(r.GetHarvesters());
+            }
+        }
+
+        return harvesters;
     }
 
     private void ActivateTiles()
@@ -80,7 +162,10 @@ public abstract class PowerSource : Building
 
     public void PlugIn(Building newBuilding)
     {
-        suppliedBuildings.Add(newBuilding);
+        if (this != newBuilding)
+        {
+            suppliedBuildings.Add(newBuilding); 
+        }
     }
 
     public void Unplug(Building unplug)
