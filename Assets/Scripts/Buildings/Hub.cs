@@ -104,7 +104,7 @@ public class Hub : PowerSource
     {
         // Change the power based on each connect building
         // TODO: Make buildings stop working if no power
-        int powerUpkeep = 5;
+        int powerUpkeep = 0;
         foreach (Building building in suppliedBuildings)
         {
             powerUpkeep += building.Upkeep;
@@ -156,16 +156,16 @@ public class Hub : PowerSource
                 switch (ResourceOn)
                 {
                     case Resource.Power:                   
-                        pChange += harvester.HarvestAmt;
+                        pChange += Mathf.RoundToInt(harvester.HarvestAmt * harvester.Location.Resource.ResMultiplier);
                         break;
                     case Resource.Organic:
-                        oChange += harvester.HarvestAmt;
+                        oChange += Mathf.RoundToInt(harvester.HarvestAmt * harvester.Location.Resource.ResMultiplier);
                         break;
                     case Resource.Mineral:
-                        mChange += harvester.HarvestAmt;
+                        mChange += Mathf.RoundToInt(harvester.HarvestAmt * harvester.Location.Resource.ResMultiplier);
                         break;
                     case Resource.Fuel:
-                        fChange += harvester.HarvestAmt;
+                        fChange += Mathf.RoundToInt(harvester.HarvestAmt * harvester.Location.Resource.ResMultiplier);
                         break;
                 }
             }
