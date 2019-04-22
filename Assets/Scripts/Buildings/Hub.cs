@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class Hub : PowerSource
 {
+    //Serialized Fields
     [SerializeField] private int maxPower = 100, maxMineral = 100, maxOrganic = 100, maxFuel = 100;
     [SerializeField] private int storedPower = 0, storedMineral = 0, storedOrganic = 0, storedFuel = 0;
     [SerializeField] private int powerChange = 0, mineralChange = 0, organicChange = 0, fuelChange = 0;
-
-    private bool powerFull = false, mineralFull = false, organicFull = false, fuelFull = false;
     
-    [Header("Building Costs")]
+    //[Header("Building Costs")]
     [SerializeField] private int batteryPowerCost = 30, batteryMineralCost = 0, batteryOrganicCost = 0, batteryFuelCost = 0;
     [SerializeField] private int generatorPowerCost = 30, generatorMineralCost = 0, generatorOrganicCost = 0, generatorFuelCost = 0;
     [SerializeField] private int harvesterPowerCost = 50, harvesterMineralCost = 0, harvesterOrganicCost = 0, harvesterFuelCost = 0;
     [SerializeField] private int relayPowerCost = 10, relayMineralCost = 0, relayOrganicCost = 0, relayFuelCost = 0;
-    [SerializeField] private int defencePowerCost = 0, defenceMineralCost = 0, defenceOrganicCost = 0, defenceFuelCost = 0;
+    [SerializeField] private int defencePowerCost = 50, defenceMineralCost = 0, defenceOrganicCost = 0, defenceFuelCost = 0;
 
+    //[SerializeField] private List<Harvester> harvesters = new List<Harvester>();
+    [SerializeField] private List<Battery> batteries = new List<Battery>();
+    
+    //Non-serialized fields
     //private Resource ResourceOn;
+    private bool powerFull = false, mineralFull = false, organicFull = false, fuelFull = false;
 
     private Dictionary<string, int> batteryCosts = new Dictionary<string, int>();
     private Dictionary<string, int> generatorCosts = new Dictionary<string, int>();
@@ -27,9 +31,7 @@ public class Hub : PowerSource
     private Dictionary<BuildingType, Dictionary<string, int>> buildingsCosts = 
         new Dictionary<BuildingType, Dictionary<string, int>>();
 
-    //[SerializeField] private List<Harvester> harvesters = new List<Harvester>();
-    [SerializeField] private List<Battery> batteries = new List<Battery>();
-
+    //Public peroperties
     public int MaxPower { get => maxPower; set => maxPower = value; }
 
     public int StoredPower { get => storedPower; set => storedPower = value; }
@@ -44,11 +46,7 @@ public class Hub : PowerSource
     
     //public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<Battery> Batteries { get => batteries; set => batteries = value; }
-
     public Dictionary<BuildingType, Dictionary<string, int>> BuildingsCosts { get => buildingsCosts; }
-
-
-    // private Dictionary<Element, int> harvest = new Dictionary<Element, int>();
 
     // Start is called before the first frame update
     protected override void Start()
@@ -56,8 +54,6 @@ public class Hub : PowerSource
         base.Start();
         
         powerSource = null;
-
-        // costs 0 to build
 
         // Set all building costs
         batteryCosts.Add("power", batteryPowerCost);
@@ -103,7 +99,6 @@ public class Hub : PowerSource
     private void ProcessUpkeep()
     {
         // Change the power based on each connected building
-        // TODO: Make buildings stop working if no power
 
         //Reset resource changes
         powerChange = 0;
@@ -200,36 +195,35 @@ public class Hub : PowerSource
 
         if (connectedHarvesters.Count > 0)
         {
-            Debug.Log("connected harvesters count: " + connectedHarvesters.Count);
-
             foreach (Harvester h in FindObjectsOfType<Harvester>())
             {
                 if (connectedHarvesters.Contains(h))
                 {
-                    Debug.Log("Pre application of Harvester upkeep: Harvester upkeep: " + h.Upkeep + ". storedPower: " + storedPower + ". powerChange: " + powerChange);
                     storedPower += h.Upkeep;
                     powerChange += h.Upkeep;
-                    Debug.Log("Post application of Harvester upkeep: Harvester upkeep: " + h.Upkeep + ". storedPower: " + storedPower + ". powerChange: " + powerChange);
 
                     if (storedPower >= 0)
                     {
                         h.PowerUp();
 
-                        switch (h.Location.Resource.ResourceType)
+                        if (h.Location.Resource != null)
                         {
-                            case Resource.Power:
-                                storedPower += h.HarvestAmt;
-                                powerChange += h.HarvestAmt;
-                                break;
-                            case Resource.Organic:
-                                organicChange += h.HarvestAmt;
-                                break;
-                            case Resource.Mineral:
-                                mineralChange += h.HarvestAmt;
-                                break;
-                            case Resource.Fuel:
-                                fuelChange += h.HarvestAmt;
-                                break;
+                            switch (h.Location.Resource.ResourceType)
+                            {
+                                case Resource.Power:
+                                    storedPower += h.HarvestAmt;
+                                    powerChange += h.HarvestAmt;
+                                    break;
+                                case Resource.Organic:
+                                    organicChange += h.HarvestAmt;
+                                    break;
+                                case Resource.Mineral:
+                                    mineralChange += h.HarvestAmt;
+                                    break;
+                                case Resource.Fuel:
+                                    fuelChange += h.HarvestAmt;
+                                    break;
+                            }
                         }
                     }
                     else

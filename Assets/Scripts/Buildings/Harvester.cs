@@ -8,8 +8,6 @@ public class Harvester : Building
 
     public int HarvestAmt { get => harvestAmt; }
 
-    // [SerializeField]? private Element element;
-
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -31,37 +29,6 @@ public class Harvester : Building
         //if (!WorldController.Instance.Hub.Harvesters.Contains(this))
         //{
         //    WorldController.Instance.Hub.Harvesters.Add(this);
-        //}
-        //}
-
-        //if (location.Resource.ResourceType == Resource.Fuel)
-        //{
-        //    base.PowerUp();
-
-        //    if (!WorldController.Instance.Hub.Harvesters.Contains(this))
-        //    {
-        //        WorldController.Instance.Hub.Harvesters.Add(this);
-        //    }
-        //}
-
-        //if (location.Resource.ResourceType == Resource.Organic)
-        //{
-        //    base.PowerUp();
-
-        //    if (!WorldController.Instance.Hub.Harvesters.Contains(this))
-        //    {
-        //        WorldController.Instance.Hub.Harvesters.Add(this);
-        //    }
-        //}
-
-        //if (location.Resource.ResourceType == Resource.Power)
-        //{
-        //    base.PowerUp();
-
-        //    if (!WorldController.Instance.Hub.Harvesters.Contains(this))
-        //    {
-        //        WorldController.Instance.Hub.Harvesters.Add(this);
-        //    }
         //}
     }
 

@@ -81,7 +81,7 @@ public class MouseController : MonoBehaviour
                     {
                         GameObject toBuild = towerManager.GetTower();
 
-                        // If there is a building, delete it. If not, place one.
+                        // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
                         if (toBuild.name != "Empty")
                         {
                             if (toBuild.GetComponent<Building>() != null)
