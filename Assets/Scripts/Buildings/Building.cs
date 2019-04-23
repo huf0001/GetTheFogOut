@@ -26,10 +26,13 @@ public abstract class Building : PlaneObject
     public bool Powered { get => powered; }
     public bool Placed { get => placed; }
 
+    private AudioSource audioSource;
+
     protected virtual void Awake()
     {
         //MakeTilesVisible();
         FindToolTip();
+        audioSource = GetComponent<AudioSource>();
 
         //if (placed)
         //{
@@ -73,6 +76,7 @@ public abstract class Building : PlaneObject
         }
 
         placed = true;
+        audioSource.Play();
         //GetComponent<Renderer>().material.shader = buildingShader;
     }
 
