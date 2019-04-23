@@ -535,7 +535,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_A
-    descriptiveName: 
+    descriptiveName: Xbox A Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 0
@@ -551,7 +551,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_B
-    descriptiveName: 
+    descriptiveName: Xbox B Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 1
@@ -567,7 +567,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_X
-    descriptiveName: 
+    descriptiveName: Xbox X Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 2
@@ -583,7 +583,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_Y
-    descriptiveName: 
+    descriptiveName: Xbox Y Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 3
@@ -599,7 +599,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_LB
-    descriptiveName: 
+    descriptiveName: Xbox LeftBumper Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 4
@@ -615,7 +615,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_RB
-    descriptiveName: 
+    descriptiveName: Xbox RightBumper Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 5
@@ -630,8 +630,8 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Xbox_Back
-    descriptiveName: 
+    m_Name: Xbox_View
+    descriptiveName: Xbox View(Back) Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 6
@@ -646,8 +646,8 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Xbox_Start
-    descriptiveName: 
+    m_Name: Xbox_Menu
+    descriptiveName: Xbox Menu(Start) Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 7
@@ -663,7 +663,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_LS_B
-    descriptiveName: 
+    descriptiveName: Xbox LeftStick Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 8
@@ -679,7 +679,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_RS_B
-    descriptiveName: 
+    descriptiveName: Xbox RightStick Button
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 9
@@ -695,15 +695,15 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_LT_Axis
-    descriptiveName: 
+    descriptiveName: Xbox LeftTrigger Axis
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
+    dead: 0.04
+    sensitivity: 1
     snap: 0
     invert: 0
     type: 2
@@ -711,15 +711,15 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_RT_Axis
-    descriptiveName: 
+    descriptiveName: Xbox RightTrigger Axis
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
+    dead: 0.04
+    sensitivity: 1
     snap: 0
     invert: 0
     type: 2
@@ -727,39 +727,39 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_RS_H
-    descriptiveName: 
+    descriptiveName: Xbox RightStick Horizontal
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
+    dead: 0.04
+    sensitivity: 1
+    snap: 1
     invert: 0
     type: 2
     axis: 3
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_RS_V
-    descriptiveName: 
+    descriptiveName: Xbox RightStick Vertical
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
+    dead: 0.04
+    sensitivity: 1
+    snap: 1
     invert: 0
     type: 2
     axis: 4
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_DPAD_H
-    descriptiveName: 
+    descriptiveName: Xbox DPad Horizontal
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -775,7 +775,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_DPAD_V
-    descriptiveName: 
+    descriptiveName: Xbox Dpad Vertical
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -791,7 +791,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_LT
-    descriptiveName: 
+    descriptiveName: Xbox LeftTrigger
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -807,7 +807,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Xbox_RT
-    descriptiveName: 
+    descriptiveName: Xbox RightTrigger
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: 
@@ -820,4 +820,36 @@ InputManager:
     invert: 0
     type: 2
     axis: 9
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Xbox_LS_H
+    descriptiveName: Xbox LeftStick Horizontal
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.04
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Xbox_LS_V
+    descriptiveName: Xbox LeftStick Vertical
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.04
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 1
     joyNum: 0
