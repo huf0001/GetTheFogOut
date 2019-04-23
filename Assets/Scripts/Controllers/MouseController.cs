@@ -193,12 +193,12 @@ public class MouseController : MonoBehaviour
     /// <param name="buildType">Enum of the building type to reference for costs</param>
     private IEnumerator FloatText(GameObject buildingGo, Hub hub, BuildingType buildType)
     {
-        floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
-        yield return new WaitForSeconds(0.2f);
+        //floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
         if (hub.BuildingsCosts[buildType]["mineral"] != 0)
         {
             floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{hub.BuildingsCosts[buildType]["mineral"]}", buildingGo.transform);
         }
+        yield return new WaitForSeconds(0.2f);
     }
 
     private void OnTriggerEnter(Collider other)
