@@ -61,7 +61,6 @@ public class MouseController : MonoBehaviour
                     if (hit.transform.gameObject.GetComponent<Building>().BuildingType != BuildingType.Hub)
                     {
                         PointAtObj = hit.transform.gameObject;
-                        Debug.Log(PointAtObj);
                         Destroy(hit.transform.gameObject);
                     }
                 }
@@ -126,7 +125,10 @@ public class MouseController : MonoBehaviour
                         else
                         {
                             RemoveBuilding();
-                            ReturnCost(PointAtObj);
+                            if(PointAtObj != null)
+                            {
+                                ReturnCost(PointAtObj);
+                            }
                         }
                     }
                 }
@@ -138,19 +140,12 @@ public class MouseController : MonoBehaviour
     {
         Hub hub = WorldController.Instance.Hub;
         BuildingType buildType = buildtodestroy.GetComponentInChildren<Building>().BuildingType;
-
-        // Check if required resources are avaliable
-        if (hub.BuildingsCosts[buildType]["power"] <= hub.StoredPower &&
-            hub.BuildingsCosts[buildType]["mineral"] <= hub.StoredMineral &&
-            hub.BuildingsCosts[buildType]["organic"] <= hub.StoredOrganic &&
-            hub.BuildingsCosts[buildType]["fuel"] <= hub.StoredFuel)
-        {
-            // Remove required resources
+            // add required resources
             hub.StoredPower += hub.BuildingsCosts[buildType]["power"];
             hub.StoredMineral += hub.BuildingsCosts[buildType]["mineral"];
             hub.StoredOrganic += hub.BuildingsCosts[buildType]["organic"];
             hub.StoredFuel += hub.BuildingsCosts[buildType]["fuel"];
-        }
+        
     }
 
         private void Build(GameObject toBuild, TileData tile, float height)
