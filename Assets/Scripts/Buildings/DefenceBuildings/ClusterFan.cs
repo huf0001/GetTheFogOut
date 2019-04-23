@@ -47,11 +47,6 @@ public class ClusterFan : Defence
         CancelInvoke();
     }
 
-    public override void Place()
-    {
-        base.Place();
-    }
-
     protected override void OnDestroy()
     {
         base.OnDestroy();

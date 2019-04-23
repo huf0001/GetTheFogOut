@@ -28,12 +28,12 @@ public abstract class Building : PlaneObject
     {
         //MakeTilesVisible();
         FindToolTip();
-        audioSource = GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
