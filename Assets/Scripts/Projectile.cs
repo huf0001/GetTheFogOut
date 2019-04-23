@@ -65,12 +65,13 @@ public class Projectile : MonoBehaviour
         {
             if (tileHit.FogUnit != null)
             {
-                tileHit.FogUnit.Health -= damage;
+                tileHit.FogUnit.DealDamage(damage);
+
                 foreach (TileData tile in tileHit.AllAdjacentTiles)
                 {
                     if (tile.FogUnit != null)
                     {
-                        tile.FogUnit.Health -= aoeDamage;
+                        tile.FogUnit.DealDamage(aoeDamage);
                     }
                 }  
             }

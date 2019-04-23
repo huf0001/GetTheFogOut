@@ -7,14 +7,15 @@ using UnityEngine;
 public class ShipComponentState
 {
     [SerializeField] private ShipComponentsEnum component;
-    [SerializeField] private bool state;
+    [SerializeField] private bool collected;
 
     public ShipComponentsEnum Component { get => component; set => component = value; }
-    public bool State { get => state; set => state = value; }
+    public bool Collected { get => collected; set => collected = value; }
+
     public ShipComponentState(ShipComponentsEnum e, bool b)
     {
         component = e;
-        state = b;
+        collected = b;
     }
 }
 
@@ -40,7 +41,6 @@ public class WorldController : MonoBehaviour
     //[SerializeField] private Tiles gameboard = null;
 
     [Header("Prefab/Gameobject assignment")]
-    [SerializeField] private GameObject gameboardPrefab;
     [SerializeField] private Terrain ground;
 
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
@@ -322,7 +322,7 @@ public class WorldController : MonoBehaviour
 
     private void RenderTower()
     {
-        TowerToSpawn = tm.GetTower();
+        TowerToSpawn = tm.GetTower("holo");
 
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -499,6 +499,21 @@ public class WorldController : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public int GetRecoveredComponentCount()
+    {
+        int count = 0;
+
+        foreach (ShipComponentState s in ShipComponents)
+        {
+            if (s.Collected)
+            {
+                count += 1;
+            }
+        }
+
+        return count;
     }
 
     public bool TileExistsAt(Vector3 pos)

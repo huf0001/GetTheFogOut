@@ -25,14 +25,20 @@ public class TowerManager : MonoBehaviour
     }
 
     //DESC: return prefab object *replace with tower 3d later
-    public GameObject GetTower()
+    public GameObject GetTower(string version)
     {
         if (selectedTower != null)
         {
-            return this.SelectedTower.Obj_prefab;
+            switch(version)
+            {
+                case "holo":
+                    return this.SelectedTower.Holo_prefab;
+                case "build":
+                    return this.SelectedTower.Build_prefab;
+            }
         }
-        else
-            return emptyprefab;
+
+        return emptyprefab;
     }
 
     public bool IsinBuild()

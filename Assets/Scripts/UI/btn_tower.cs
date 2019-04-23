@@ -8,7 +8,8 @@ using UnityEngine.UI;
 
 public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private GameObject obj_prefab;
+    [SerializeField] private GameObject holo_prefab;
+    [SerializeField] private GameObject build_prefab;
     [SerializeField] private Button _button;
     [SerializeField] private BuildingType towerType = BuildingType.None;
     [SerializeField] TextMeshProUGUI buildingDesc;
@@ -16,7 +17,8 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     //private WorldController WC;
     public KeyCode _key;
 
-    public GameObject Obj_prefab { get => obj_prefab; }
+    public GameObject Holo_prefab { get => holo_prefab; }
+    public GameObject Build_prefab { get => build_prefab; }
     public BuildingType TowerType { get => towerType; }
 
     void Update()

@@ -39,8 +39,8 @@ public class Fog : MonoBehaviour
         FullBoard
     }
 
-//Serialized Fields
-[SerializeField] private FogUnit fogUnitPrefab;
+    //Serialized Fields
+    [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private FogExpansionDirection expansionDirection;
     [SerializeField] private FogFillType fillType;
@@ -289,14 +289,14 @@ public class Fog : MonoBehaviour
         {
             foreach (FogUnit f in fogUnitsInPlay)
             {
-                f.Health += Time.deltaTime * fogGrowth;
+                f.FUHealth += Time.deltaTime * fogGrowth;
             }
         }
         else if (fillType == FogFillType.Fluid)
         {
             foreach (FogUnit f in fogUnitsInPlay)
             {
-                if (f.Health >= fogSpillThreshold)
+                if (f.FUHealth >= fogSpillThreshold)
                 {
                     int count = f.Location.AdjacentTiles.Count;
 
@@ -304,13 +304,13 @@ public class Fog : MonoBehaviour
                     {
                         if (t.FogUnit != null)
                         {
-                            if (t.FogUnit.Health + (Time.deltaTime * fogGrowth / count) <= f.Health)
+                            if (t.FogUnit.FUHealth + (Time.deltaTime * fogGrowth / count) <= f.FUHealth)
                             {
-                                t.FogUnit.Health += Time.deltaTime * fogGrowth / count;
+                                t.FogUnit.FUHealth += Time.deltaTime * fogGrowth / count;
                             }
-                            else if (t.FogUnit.Health < f.Health)
+                            else if (t.FogUnit.FUHealth < f.FUHealth)
                             {
-                                t.FogUnit.Health += (f.Health - t.FogUnit.Health);
+                                t.FogUnit.FUHealth += (f.FUHealth - t.FogUnit.FUHealth);
                             }
                         }
                     }
@@ -365,7 +365,7 @@ public class Fog : MonoBehaviour
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
-            if (f.Health >= fogSpillThreshold && f.Spill == false)
+            if (f.FUHealth >= fogSpillThreshold && f.Spill == false)
             {
                 f.Spill = true;
 

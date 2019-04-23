@@ -6,29 +6,42 @@ using UnityEngine.EventSystems;
 
 public abstract class Building : PlaneObject
 {
+    //Serialized fields
     [SerializeField] protected float visibilityRange;
     [SerializeField] protected int upkeep;
-    public int Upkeep { get => upkeep; }
-
-    private Animator animator;
-
     [SerializeField] protected PowerSource powerSource;
     [SerializeField] protected bool powered = false;
     [SerializeField] protected bool placed = false;
-
     [SerializeField] protected BuildingType buildingType;
+    //[SerializeField] private Shader hologramShader;
+    //[SerializeField] private Shader buildingShader;
+
+    //Non-serialized fields
+    private Animator animator;
+
+    //Public properties
+    public int Upkeep { get => upkeep; }
     public BuildingType BuildingType { get => buildingType; }
     public Animator Animator { get => animator; set => animator = value; }
     public bool Powered { get => powered; }
     public bool Placed { get => placed; }
 
-    [SerializeField] protected AudioSource audioSource;
+    private AudioSource audioSource;
 
     protected virtual void Awake()
     {
         //MakeTilesVisible();
         FindToolTip();
         audioSource = GetComponent<AudioSource>();
+
+        //if (placed)
+        //{
+        //    GetComponent<Renderer>().material.shader = buildingShader;
+        //}
+        //else
+        //{
+        //    GetComponent<Renderer>().material.shader = hologramShader;
+        //}
     }
 
     // Start is called before the first frame update
@@ -56,9 +69,6 @@ public abstract class Building : PlaneObject
     {
         if (buildingType != BuildingType.Hub)
         {
-            SetPowerSource();
-            placed = true;
-            audioSource.Play();
             if (powerSource == null)
             {
                 SetPowerSource();
@@ -66,6 +76,8 @@ public abstract class Building : PlaneObject
         }
 
         placed = true;
+        audioSource.Play();
+        //GetComponent<Renderer>().material.shader = buildingShader;
     }
 
     public void SetPowerSource()

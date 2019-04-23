@@ -6,11 +6,16 @@ using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour
 {
-    List<GameObject> collisionList = new List<GameObject>();
+    //Serialized fields
+    [SerializeField] private int generatorCount = 0;
+    [SerializeField] private int generatorInterval = 5;
+
+    //Non-serialized fields
     TowerManager towerManager;
     FloatingTextController floatingTextController;
 
     private GameObject PointAtObj;
+    List<GameObject> collisionList = new List<GameObject>();
 
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
@@ -86,7 +91,7 @@ public class MouseController : MonoBehaviour
                     //If tile has power, place building. Otherwise, don't place building.
                     if (tile.PowerSource != null)
                     {
-                        GameObject toBuild = towerManager.GetTower();
+                        GameObject toBuild = towerManager.GetTower("build");
 
                         // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
                         if (toBuild.name != "Empty")
@@ -103,8 +108,19 @@ public class MouseController : MonoBehaviour
 
                             if (tile.Building == null && (tile.Resource == null || towerManager.GetBuildingType() == BuildingType.Harvester))
                             {
+
+                                if (towerManager.GetBuildingType() == BuildingType.Generator)
+                                {
+                                    if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * generatorInterval + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
+                                    {
+                                        Debug.Log("If you want to build more generators, collect more ship components first.");
+                                        return;
+                                    }
+                                }
+                                    
                                 tile.Placedtower = toBuild;
                                 Build(tile.Placedtower, tile, 0f);
+                                
                             }
                         }
                         else
