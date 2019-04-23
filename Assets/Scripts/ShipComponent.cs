@@ -43,7 +43,7 @@ public class ShipComponent : Entity
     {
         if (Location.FogUnit == null)
         {
-            controller.GetShipComponent(id).State = true;
+            controller.GetShipComponent(id).Collected = true;
         }
     }
 
