@@ -79,7 +79,7 @@ public class MouseController : MonoBehaviour
                     //If tile has power, place building. Otherwise, don't place building.
                     if (tile.PowerSource != null)
                     {
-                        GameObject toBuild = towerManager.GetTower();
+                        GameObject toBuild = towerManager.GetTower("build");
 
                         // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
                         if (toBuild.name != "Empty")

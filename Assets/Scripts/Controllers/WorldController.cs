@@ -322,7 +322,7 @@ public class WorldController : MonoBehaviour
 
     private void RenderTower()
     {
-        TowerToSpawn = tm.GetTower();
+        TowerToSpawn = tm.GetTower("holo");
 
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
