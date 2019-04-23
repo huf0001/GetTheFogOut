@@ -13,7 +13,7 @@ public class TowerManager : MonoBehaviour
 
     public btn_tower SelectedTower { get => selectedTower; set => selectedTower = value; }
     public BuildingType TowerBuildingType { get => buildingType; set => buildingType = value; }
-
+    private bool InbuildMode = false;
 
     //TODO: TOGGLE ?
     //DESC: click on the button will get the value of the assigned value(button) ? xD
@@ -21,6 +21,7 @@ public class TowerManager : MonoBehaviour
     {
         this.SelectedTower = chooseTower;
         WorldController.Instance.InBuildMode = true;
+        InbuildMode = true;
     }
 
     //DESC: return prefab object *replace with tower 3d later
@@ -34,6 +35,16 @@ public class TowerManager : MonoBehaviour
             return emptyprefab;
     }
 
+    public bool IsinBuild()
+    {
+        if (selectedTower != null)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
     public BuildingType GetBuildingType()
     {
         return SelectedTower.TowerType;
@@ -44,6 +55,7 @@ public class TowerManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             selectedTower = null;
+            InbuildMode = false;
         }
     }
 

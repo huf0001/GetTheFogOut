@@ -10,6 +10,8 @@ public class MouseController : MonoBehaviour
     TowerManager towerManager;
     FloatingTextController floatingTextController;
 
+    private GameObject PointAtObj;
+
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -29,7 +31,10 @@ public class MouseController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdatePlacing();
+        if (towerManager.IsinBuild())
+        {
+            UpdatePlacing();
+        }
 
         // if (!isStopped)
         // {
@@ -50,6 +55,8 @@ public class MouseController : MonoBehaviour
                 {
                     if (hit.transform.gameObject.GetComponent<Building>().BuildingType != BuildingType.Hub)
                     {
+                        PointAtObj = hit.transform.gameObject;
+                        Debug.Log(PointAtObj);
                         Destroy(hit.transform.gameObject);
                     }
                 }
@@ -84,6 +91,7 @@ public class MouseController : MonoBehaviour
                         // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
                         if (toBuild.name != "Empty")
                         {
+                            Debug.Log(toBuild.name);
                             if (toBuild.GetComponent<Building>() != null)
                             {
                                 Building b = toBuild.GetComponent<Building>();
@@ -102,6 +110,7 @@ public class MouseController : MonoBehaviour
                         else
                         {
                             RemoveBuilding();
+                            ReturnCost(PointAtObj);
                         }
                     }
                 }
@@ -109,7 +118,26 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    private void Build(GameObject toBuild, TileData tile, float height)
+    private void ReturnCost(GameObject buildtodestroy)
+    {
+        Hub hub = WorldController.Instance.Hub;
+        BuildingType buildType = buildtodestroy.GetComponentInChildren<Building>().BuildingType;
+
+        // Check if required resources are avaliable
+        if (hub.BuildingsCosts[buildType]["power"] <= hub.StoredPower &&
+            hub.BuildingsCosts[buildType]["mineral"] <= hub.StoredMineral &&
+            hub.BuildingsCosts[buildType]["organic"] <= hub.StoredOrganic &&
+            hub.BuildingsCosts[buildType]["fuel"] <= hub.StoredFuel)
+        {
+            // Remove required resources
+            hub.StoredPower += hub.BuildingsCosts[buildType]["power"];
+            hub.StoredMineral += hub.BuildingsCosts[buildType]["mineral"];
+            hub.StoredOrganic += hub.BuildingsCosts[buildType]["organic"];
+            hub.StoredFuel += hub.BuildingsCosts[buildType]["fuel"];
+        }
+    }
+
+        private void Build(GameObject toBuild, TileData tile, float height)
     {
         Hub hub = WorldController.Instance.Hub;
         BuildingType buildType = toBuild.GetComponentInChildren<Building>().BuildingType;
