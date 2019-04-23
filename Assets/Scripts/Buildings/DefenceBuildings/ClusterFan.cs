@@ -77,14 +77,15 @@ public class ClusterFan : Defence
 
         foreach (TileData tile in tiles)
         {
-            if (tile.FogUnit != null)
+            if (tile.FogUnit != null && !tile.FogUnit.TakingDamage)
             {
                 fogTiles.Add(tile);
             }
+
             tile.Visited = false;
         }
 
-        fogTiles.Sort((t1, t2) => t1.FogUnit.Health.CompareTo(t2.FogUnit.Health));
+        fogTiles.Sort((t1, t2) => t1.FogUnit.FUHealth.CompareTo(t2.FogUnit.FUHealth));
         fogTiles.Reverse();
 
         if (fogTiles.Count > 0)

@@ -12,20 +12,28 @@ public class FogUnit : Entity
     private float healthLimit;
     private bool spill = false;
 
+    [SerializeField] private float healthProgress = 0;
+    [SerializeField] private float startHealth;
+    [SerializeField] private float targetHealth;
+    [SerializeField] private bool takingDamage = false;
+
     private bool lerp = false;
     private float start = 0f;
     private float end = 0.45f;
+
 
     //Properties
     public Fog Fog { get => fog; set => fog = value; }
     public float HealthLimit { get => healthLimit; set => healthLimit = value; }
     public bool Lerp { get => lerp; set => lerp = value; }
+    public bool TakingDamage { get => takingDamage; }
     public bool Spill { get => spill; set => spill = value; }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        startHealth = base.Health;
+        targetHealth = base.Health;
     }
 
     // Update is called once per frame
@@ -33,11 +41,27 @@ public class FogUnit : Entity
     {
         if (lerp)
         {
-            gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, Health / HealthLimit));
+            if (takingDamage)
+            {
+                base.Health = Mathf.Lerp(startHealth, targetHealth, healthProgress);
+                healthProgress += Time.deltaTime;
 
-            if (Health == HealthLimit)
+                if (base.Health <= targetHealth)
+                {
+                    base.Health = targetHealth;
+                    takingDamage = false;
+                }
+            }
+
+            gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, base.Health / HealthLimit));
+
+            if (base.Health == HealthLimit)
             {
                 lerp = false;
+            }
+            else if (base.Health <= 0)
+            {
+                ReturnToFogPool();
             }
         }
     }
@@ -46,11 +70,26 @@ public class FogUnit : Entity
     {
         if (Location.Building != null)
         {
-            Location.Building.Health -= damage * (Health / HealthLimit);
+            Location.Building.Health -= damage * (base.Health / HealthLimit);
         }
     }
 
-    public override float Health
+    public void DealDamage(float damage)
+    {
+        takingDamage = true;
+        lerp = true;
+
+        startHealth = base.Health;
+        targetHealth -= damage;
+        healthProgress = 0;
+
+        if (targetHealth < 0)
+        {
+            targetHealth = 0;
+        }
+    }
+
+    public float FUHealth
     {
         get
         {
@@ -59,15 +98,20 @@ public class FogUnit : Entity
 
         set
         {
-            base.Health = value;
+            if (!takingDamage)
+            {
+                base.Health = value;
 
-            if (base.Health > healthLimit)
-            {
-                base.Health = healthLimit;
-            }
-            else if (base.Health <= 0)
-            {
-                ReturnToFogPool();
+                if (base.Health > healthLimit)
+                {
+                    base.Health = healthLimit;
+                }
+                else if (base.Health < 0)
+                {
+                    base.Health = 0;
+                }
+
+                targetHealth = base.Health;
             }
         }
     }
