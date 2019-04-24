@@ -126,8 +126,9 @@ public class WorldController : MonoBehaviour
 
         foreach (ResourceNode resourceNode in resources)
         {
-            TileData tile = GetTileAt(resourceNode.transform.position);         
+            TileData tile = GetTileAt(resourceNode.transform.position);
             tile.Resource = resourceNode;
+            resourceNode.Location = tile;
         }
     }
 
@@ -188,6 +189,7 @@ public class WorldController : MonoBehaviour
                         pos.y += 0.2f;
                         GameObject mineral = Instantiate(mineralPrefab, pos, Quaternion.Euler(0f, 0f, 0f));
                         tile.Resource = mineral.GetComponentInChildren<ResourceNode>();
+                        mineral.GetComponentInChildren<ResourceNode>().Location = tile;
                         mineral.transform.SetParent(ground.transform, true);
                     }
                     else if (UnityEngine.Random.Range(1, 100) < fuelSpawnChance)
@@ -195,6 +197,7 @@ public class WorldController : MonoBehaviour
                         pos.y += 0.3f;
                         GameObject fuel = Instantiate(fuelPrefab, pos, Quaternion.Euler(0, 0, 0));
                         tile.Resource = fuel.GetComponentInChildren<ResourceNode>();
+                        fuel.GetComponentInChildren<ResourceNode>().Location = tile;
                         fuel.transform.SetParent(ground.transform, true);
                     }
                     else if (UnityEngine.Random.Range(1, 100) < organSpawnChance)
@@ -202,6 +205,7 @@ public class WorldController : MonoBehaviour
                         pos.y += 0.3f;
                         GameObject organ = Instantiate(organPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
                         tile.Resource = organ.GetComponentInChildren<ResourceNode>();
+                        organ.GetComponentInChildren<ResourceNode>().Location = tile;
                         organ.transform.SetParent(ground.transform, true);
                     }
                     else if (UnityEngine.Random.Range(1, 100) < powerSpawnChance)
@@ -209,6 +213,7 @@ public class WorldController : MonoBehaviour
                         pos.y += 0.2f;
                         GameObject power = Instantiate(powerPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
                         tile.Resource = power.GetComponentInChildren<ResourceNode>();
+                        power.GetComponentInChildren<ResourceNode>().Location = tile;
                         power.transform.SetParent(ground.transform, true);
                     }
                 }
@@ -407,8 +412,6 @@ public class WorldController : MonoBehaviour
 
     private void Update()
     {
-        TutorialUpdate();
-
         if (!isGameOver)
         {
             GameUpdate();
@@ -417,50 +420,6 @@ public class WorldController : MonoBehaviour
         {
             GameOverUpdate();
         }
-    }
-
-    private void TutorialUpdate()
-    {
-            //    public enum TutorialStage
-            //{
-            //    None,
-            //    CrashLanding,
-            //    ShipPartsCrashing,
-            //    ZoomBackToShip,
-            //    ExplainSituation,
-            //    BuildHarvester,
-            //    BuildGenerator,
-            //    BuildRelay,
-            //    FogIsHazard,
-            //    BuildClusterFan,
-            //    Finished
-            //}
-
-
-        //Tutorial Stage 1: Start Scene Animation
-        //Ship crash lands, intro scene
-
-        //Ship parts crash, x3 different scenes
-
-        //Zoom back to ship
-
-        //Tutorial Stage 2: AI Explains Basic Building Placement
-        //AI explains player's situation
-
-        //AI begins tutorial of placing buildings
-
-        //AI explains how to build a harvester and how they work
-
-        //AI helps player build a power generator and explains how they work
-
-        //AI helps player build a relay and explains how they work
-
-        //Tutorial Stage 3: AI Explains The Fog
-        //AI realises the fog is a hazard
-
-        //AI tells player to build a cluster fan and explains how they work
-
-        //End tutorial, game is fully responsive to player's input.
     }
 
     private void GameUpdate()

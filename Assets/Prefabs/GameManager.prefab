@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1899903245264256476}
   - component: {fileID: 1899903245264256477}
   - component: {fileID: 1899903245264256472}
+  - component: {fileID: 334475222590731063}
   - component: {fileID: 3646138034780775634}
   - component: {fileID: 1899903245264256486}
   - component: {fileID: 7305178377255849301}
@@ -57,8 +58,6 @@ MonoBehaviour:
   fuelSpawnChance: 5
   powerSpawnChance: 5
   organSpawnChance: 5
-  gameboardPrefab: {fileID: 4876157676309140051, guid: 43e8f3cdefddbbe44b877a3f4d596bc9,
-    type: 3}
   ground: {fileID: 0}
   tilePrefab: {fileID: 4687682228001315334, guid: 18bdef06dd148db4d888636bdefa3eab,
     type: 3}
@@ -77,11 +76,11 @@ MonoBehaviour:
   hub: {fileID: 0}
   shipComponents:
   - component: 0
-    state: 0
+    collected: 0
   - component: 1
-    state: 0
+    collected: 0
   - component: 2
-    state: 0
+    collected: 0
   pause: {fileID: 0}
   InBuildMode: 1
 --- !u!114 &1899903245264256476
@@ -98,7 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedTower: {fileID: 0}
   buildingType: 0
-  emptyprefab: {fileID: 0}
+  emptyprefab: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
+    type: 3}
 --- !u!114 &1899903245264256477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,6 +111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1692cc51973ab7c4bb849fb4c44e3bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generatorCount: 0
+  generatorInterval: 5
 --- !u!114 &1899903245264256472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +128,18 @@ MonoBehaviour:
   endGame: {fileID: 0}
   pauseGame: {fileID: 0}
   endGameText: {fileID: 0}
+--- !u!114 &334475222590731063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899903245264256479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6e49c22bc42cb04890ed435db975f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3646138034780775634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,14 +166,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899903245264256479}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d37a928823b9f6a48814cc817e7d13c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fogUnitPrefab: {fileID: 6045479659823427939, guid: f16f94a244adbcf47a2a91498a1edb9a,
     type: 3}
-  configuration: 1
+  configuration: 5
   expansionDirection: 0
   fillType: 1
   fogAccelerates: 1
