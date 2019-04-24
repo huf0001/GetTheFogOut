@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class WarningScript : MonoBehaviour
@@ -13,6 +14,10 @@ public class WarningScript : MonoBehaviour
     };
     Hub hub;
     object[] powerState;
+    
+    int pChangeValue = 0;
+
+    [SerializeField] GameObject warningBox;
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +76,15 @@ public class WarningScript : MonoBehaviour
 
     private void CheckStates()
     {
+        if (hub.PowerChange != pChangeValue)
+        {
+            CheckPower();
+            pChangeValue = hub.PowerChange;
+        }
+    }
+
+    private void CheckPower()
+    {
         if (hub.PowerChange > 0)
         {
             powerState[0] = "Power is stable";
@@ -87,19 +101,4 @@ public class WarningScript : MonoBehaviour
             powerState[1] = WarningLevel.Warning;
         }
     }
-
-    //public void AddWarning(string message, WarningLevel warningLevel)
-    //{
-    //    bool added = false;
-    //    foreach (string key in warnings.Keys)
-    //    {
-    //        if (key == message) { added = true; break; }
-    //    }
-    //    if (!added) { warnings.Add(message, warningLevel); }
-    //}
-
-    //public void RemoveWarning()
-    //{
-
-    //}
 }

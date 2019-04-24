@@ -8,13 +8,6 @@ public class Hub : PowerSource
     [SerializeField] private int maxPower = 100, maxMineral = 100, maxOrganic = 100, maxFuel = 100;
     [SerializeField] private int storedPower = 0, storedMineral = 0, storedOrganic = 0, storedFuel = 0;
     [SerializeField] private int powerChange = 0, mineralChange = 0, organicChange = 0, fuelChange = 0;
-    
-    //[Header("Building Costs")]
-    [SerializeField] private int batteryPowerCost = 30, batteryMineralCost = 0, batteryOrganicCost = 0, batteryFuelCost = 0;
-    [SerializeField] private int generatorPowerCost = 30, generatorMineralCost = 0, generatorOrganicCost = 0, generatorFuelCost = 0;
-    [SerializeField] private int harvesterPowerCost = 50, harvesterMineralCost = 0, harvesterOrganicCost = 0, harvesterFuelCost = 0;
-    [SerializeField] private int relayPowerCost = 10, relayMineralCost = 0, relayOrganicCost = 0, relayFuelCost = 0;
-    [SerializeField] private int defencePowerCost = 50, defenceMineralCost = 0, defenceOrganicCost = 0, defenceFuelCost = 0;
 
     //[SerializeField] private List<Harvester> harvesters = new List<Harvester>();
     [SerializeField] private List<Battery> batteries = new List<Battery>();
@@ -22,14 +15,6 @@ public class Hub : PowerSource
     //Non-serialized fields
     //private Resource ResourceOn;
     private bool powerFull = false, mineralFull = false, organicFull = false, fuelFull = false;
-
-    private Dictionary<string, int> batteryCosts = new Dictionary<string, int>();
-    private Dictionary<string, int> generatorCosts = new Dictionary<string, int>();
-    private Dictionary<string, int> harvesterCosts = new Dictionary<string, int>();
-    private Dictionary<string, int> relayCosts = new Dictionary<string, int>();
-    private Dictionary<string, int> defenceCosts = new Dictionary<string, int>();
-    private Dictionary<BuildingType, Dictionary<string, int>> buildingsCosts = 
-        new Dictionary<BuildingType, Dictionary<string, int>>();
 
     //Public peroperties
     public int MaxPower { get => maxPower; set => maxPower = value; }
@@ -46,7 +31,6 @@ public class Hub : PowerSource
     
     //public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<Battery> Batteries { get => batteries; set => batteries = value; }
-    public Dictionary<BuildingType, Dictionary<string, int>> BuildingsCosts { get => buildingsCosts; }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -54,38 +38,6 @@ public class Hub : PowerSource
         base.Start();
         
         powerSource = null;
-
-        // Set all building costs
-        batteryCosts.Add("power", batteryPowerCost);
-        batteryCosts.Add("mineral", batteryMineralCost);
-        batteryCosts.Add("organic", batteryOrganicCost);
-        batteryCosts.Add("fuel", batteryFuelCost);
-
-        generatorCosts.Add("power", generatorPowerCost);
-        generatorCosts.Add("mineral", generatorMineralCost);
-        generatorCosts.Add("organic", generatorOrganicCost);
-        generatorCosts.Add("fuel", generatorFuelCost);
-
-        harvesterCosts.Add("power", harvesterPowerCost);
-        harvesterCosts.Add("mineral", harvesterMineralCost);
-        harvesterCosts.Add("organic", harvesterOrganicCost);
-        harvesterCosts.Add("fuel", harvesterFuelCost);
-
-        relayCosts.Add("power", relayPowerCost);
-        relayCosts.Add("mineral", relayMineralCost);
-        relayCosts.Add("organic", relayOrganicCost);
-        relayCosts.Add("fuel", relayFuelCost);
-
-        defenceCosts.Add("power", defencePowerCost);
-        defenceCosts.Add("mineral", defenceMineralCost);
-        defenceCosts.Add("organic", defenceOrganicCost);
-        defenceCosts.Add("fuel", defenceFuelCost);
-
-        buildingsCosts.Add(BuildingType.Battery, batteryCosts);
-        buildingsCosts.Add(BuildingType.Generator, generatorCosts);
-        buildingsCosts.Add(BuildingType.Harvester, harvesterCosts);
-        buildingsCosts.Add(BuildingType.Relay, relayCosts);
-        buildingsCosts.Add(BuildingType.Defence, defenceCosts);
 
         InvokeRepeating("ProcessUpkeep", 1f, 1f);
     }
