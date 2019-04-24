@@ -14,6 +14,8 @@ public class MouseController : MonoBehaviour
     TowerManager towerManager;
     FloatingTextController floatingTextController;
 
+    private TutorialController tutorialController;
+
     private GameObject PointAtObj;
     List<GameObject> collisionList = new List<GameObject>();
 
@@ -25,6 +27,9 @@ public class MouseController : MonoBehaviour
     {
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
+        tutorialController = FindObjectOfType<TutorialController>();
+
+        Debug.Log(tutorialController.name);
     }
 
     // Test for game pause/over mouse to not build/destroy buildings
@@ -86,48 +91,51 @@ public class MouseController : MonoBehaviour
                 if (WorldController.Instance.TileExistsAt(hit.point))
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
-                
-                    //If tile has power, place building. Otherwise, don't place building.
-                    if (tile.PowerSource != null)
-                    {
-                        GameObject toBuild = towerManager.GetTower("build");
 
-                        // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
-                        if (toBuild.name != "Empty")
+                    if (CheckIfTileOkay(tile))
+                    {
+                        //If tile has power, place building. Otherwise, don't place building.
+                        if (tile.PowerSource != null)
                         {
-                            Debug.Log(toBuild.name);
-                            if (toBuild.GetComponent<Building>() != null)
+                            GameObject toBuild = towerManager.GetTower("build");
+
+                            // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
+                            if (toBuild.name != "Empty")
                             {
-                                Building b = toBuild.GetComponent<Building>();
+                                Debug.Log(toBuild.name);
+                                if (toBuild.GetComponent<Building>() != null)
+                                {
+                                    Building b = toBuild.GetComponent<Building>();
+                                }
+                                else
+                                {
+                                    Debug.Log("toBuild's building component is non-existant");
+                                }
+
+                                if (tile.Building == null && (tile.Resource == null || towerManager.GetBuildingType() == BuildingType.Harvester))
+                                {
+
+                                    if (towerManager.GetBuildingType() == BuildingType.Generator)
+                                    {
+                                        if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * generatorInterval + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
+                                        {
+                                            Debug.Log("If you want to build more generators, collect more ship components first.");
+                                            return;
+                                        }
+                                    }
+
+                                    tile.Placedtower = toBuild;
+                                    Build(tile.Placedtower, tile, 0f);
+                                }
                             }
                             else
                             {
-                                Debug.Log("toBuild's building component is non-existant");
-                            }
+                                RemoveBuilding();
 
-                            if (tile.Building == null && (tile.Resource == null || towerManager.GetBuildingType() == BuildingType.Harvester))
-                            {
-
-                                if (towerManager.GetBuildingType() == BuildingType.Generator)
+                                if(PointAtObj != null)
                                 {
-                                    if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * generatorInterval + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
-                                    {
-                                        Debug.Log("If you want to build more generators, collect more ship components first.");
-                                        return;
-                                    }
+                                    ReturnCost(PointAtObj);
                                 }
-                                    
-                                tile.Placedtower = toBuild;
-                                Build(tile.Placedtower, tile, 0f);
-                                
-                            }
-                        }
-                        else
-                        {
-                            RemoveBuilding();
-                            if(PointAtObj != null)
-                            {
-                                ReturnCost(PointAtObj);
                             }
                         }
                     }
@@ -146,10 +154,23 @@ public class MouseController : MonoBehaviour
         hub.StoredMineral += building.MineralCost;
         hub.StoredOrganic += building.OrganicCost;
         hub.StoredFuel += building.FuelCost;
-        
     }
 
-        private void Build(GameObject toBuild, TileData tile, float height)
+    private bool CheckIfTileOkay(TileData tile)
+    {
+        return true;
+
+        // Debug.Log("Tile attempting to build on: (" + tile.X + "," + tile.Z + ").");
+
+        // if (tutorialController.TutorialStage == TutorialStage.Finished || tile == tutorialController.CurrentTile)
+        // {
+        //     return true;
+        // }
+
+        // return false;
+    }
+
+    private void Build(GameObject toBuild, TileData tile, float height)
     {
         Hub hub = WorldController.Instance.Hub;
         Building building = toBuild.GetComponentInChildren<Building>();
@@ -166,7 +187,7 @@ public class MouseController : MonoBehaviour
             if (pcost <= hub.StoredPower &&
                 mcost <= hub.StoredMineral &&
                 ocost <= hub.StoredOrganic &&
-                fcost <= hub.StoredFuel) 
+                fcost <= hub.StoredFuel)
             {
                 // Remove required resources
                 hub.StoredPower -= pcost;

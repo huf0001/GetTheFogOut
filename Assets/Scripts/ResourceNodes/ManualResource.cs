@@ -41,6 +41,7 @@ public class ManualResource : MonoBehaviour
                 GameObject ToSpawn = Instantiate(ResourcePrefab, PosToInst, Quaternion.identity);
 
                 tile.Resource = ToSpawn.GetComponent<ResourceNode>();
+                ToSpawn.GetComponent<ResourceNode>().Location = tile;
                 ToSpawn.transform.SetParent(WorldController.Instance.Ground.transform);
                 inResource = false;
             }
