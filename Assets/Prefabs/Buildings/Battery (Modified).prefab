@@ -109,11 +109,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5017298340327021469}
     m_Modifications:
-    - target: {fileID: 8843800731424289401, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
-        type: 3}
-      propertyPath: m_Name
-      value: Battery
-      objectReference: {fileID: 0}
     - target: {fileID: 8555355797511122423, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -169,6 +164,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8843800731424289401, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
+        type: 3}
+      propertyPath: m_Name
+      value: Battery
+      objectReference: {fileID: 0}
     - target: {fileID: 3514751619613008131, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -178,6 +178,16 @@ PrefabInstance:
         type: 3}
       propertyPath: buildingType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349966923451510019, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
+        type: 3}
+      propertyPath: powerCost
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349966923451510019, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
+        type: 3}
+      propertyPath: mineralCost
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: deab0fe8a4e311b4ba54dd3dc5d73113, type: 3}
