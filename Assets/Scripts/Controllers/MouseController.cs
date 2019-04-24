@@ -139,48 +139,57 @@ public class MouseController : MonoBehaviour
     private void ReturnCost(GameObject buildtodestroy)
     {
         Hub hub = WorldController.Instance.Hub;
-        BuildingType buildType = buildtodestroy.GetComponentInChildren<Building>().BuildingType;
-            // add required resources
-            hub.StoredPower += hub.BuildingsCosts[buildType]["power"];
-            hub.StoredMineral += hub.BuildingsCosts[buildType]["mineral"];
-            hub.StoredOrganic += hub.BuildingsCosts[buildType]["organic"];
-            hub.StoredFuel += hub.BuildingsCosts[buildType]["fuel"];
+        Building building = buildtodestroy.GetComponentInChildren<Building>();
+
+        // add required resources
+        hub.StoredPower += building.PowerCost;
+        hub.StoredMineral += building.MineralCost;
+        hub.StoredOrganic += building.OrganicCost;
+        hub.StoredFuel += building.FuelCost;
         
     }
 
         private void Build(GameObject toBuild, TileData tile, float height)
     {
         Hub hub = WorldController.Instance.Hub;
+        Building building = toBuild.GetComponentInChildren<Building>();
         BuildingType buildType = toBuild.GetComponentInChildren<Building>().BuildingType;
 
         // Check if required resources are avaliable
-        if (hub.BuildingsCosts[buildType]["power"] <= hub.StoredPower &&
-            hub.BuildingsCosts[buildType]["mineral"] <= hub.StoredMineral &&
-            hub.BuildingsCosts[buildType]["organic"] <= hub.StoredOrganic &&
-            hub.BuildingsCosts[buildType]["fuel"] <= hub.StoredFuel)
+        if (building != null)
         {
-            // Remove required resources
-            hub.StoredPower -= hub.BuildingsCosts[buildType]["power"];
-            hub.StoredMineral -= hub.BuildingsCosts[buildType]["mineral"];
-            hub.StoredOrganic -= hub.BuildingsCosts[buildType]["organic"];
-            hub.StoredFuel -= hub.BuildingsCosts[buildType]["fuel"];
+            int pcost = building.PowerCost;
+            int mcost = building.MineralCost;
+            int ocost = building.OrganicCost;
+            int fcost = building.FuelCost;
 
-            // Place new building
-            Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
-            Debug.Log(tile.X + " " + tile.Z);
-            GameObject buildingGo = Instantiate(toBuild, PosToInst, Quaternion.Euler(0f, 0f, 0f));
-            buildingGo.transform.SetParent(WorldController.Instance.Ground.transform);
-            Building building = buildingGo.GetComponentInChildren<Building>();
-            tile.Building = building;
-            building.Location = tile;
-            building.Animator = buildingGo.GetComponentInChildren<Animator>();
-            building.Animator.SetBool("Built", true);
-            building.Place();
-            StartCoroutine(FloatText(buildingGo, hub, buildType));
-        }
-        else
-        {
-            Debug.Log("Can't build, do not have the required resources.");
+            if (pcost <= hub.StoredPower &&
+                mcost <= hub.StoredMineral &&
+                ocost <= hub.StoredOrganic &&
+                fcost <= hub.StoredFuel) 
+            {
+                // Remove required resources
+                hub.StoredPower -= pcost;
+                hub.StoredMineral -= mcost;
+                hub.StoredOrganic -= ocost;
+                hub.StoredFuel -= fcost;
+
+                // Place new building
+                Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
+                Debug.Log(tile.X + " " + tile.Z);
+                GameObject buildingGo = Instantiate(toBuild, PosToInst, Quaternion.Euler(0f, 0f, 0f));
+                buildingGo.transform.SetParent(WorldController.Instance.Ground.transform);
+                tile.Building = building;
+                building.Location = tile;
+                building.Animator = buildingGo.GetComponentInChildren<Animator>();
+                building.Animator.SetBool("Built", true);
+                building.Place();
+                StartCoroutine(FloatText(buildingGo, hub, buildType));
+            }
+            else
+            {
+                Debug.Log("Can't build, do not have the required resources.");
+            }
         }
 
     }

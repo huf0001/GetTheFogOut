@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Battery : Building
 {
-
     public Battery()
     {
         // call Hub.AddBattery(); adds 10 to maxStorage
         // costs 30 to build
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
     }
 
     // Start is called before the first frame update
