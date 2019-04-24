@@ -30,29 +30,19 @@ using TMPro;
 //  Left Trigger                       9th Axis              0 to 1
 //  Right Trigger                      10th Axis             0 to 1
 // 
+// 
+//  Settings for both Left and Right Sticks' Horizontal and Vertical
+//  
+//  Gravity:      1000
+//  Dead:         0.04
+//  Sensitivity:  1
+//  
 //////////////////////////////////////////////////////////////////////////////
 
 public class XBoxOneController : MonoBehaviour
 {
-	private float XboxLSH;
-	private float XboxLSV;
-	private float XboxRSH;
-	private float XboxRSV;
-	private float xboxLTAxis;
-    private float xboxRTAxis;
-    private float xboxDpadHAxis;
-    private float xboxDpadVAxis;
- 
-    private bool xboxA;
-    private bool xboxB;
-    private bool xboxX;
-    private bool xboxY;
-    private bool xboxLB;
-    private bool xboxRB;
-    private bool xboxLS;
-    private bool xboxRS;
-    private bool xboxView;
-    private bool xboxMenu;
+	private float XboxLSH, XboxLSV, XboxRSH, XboxRSV, xboxLTAxis, xboxRTAxis, xboxDpadHAxis, xboxDpadVAxis;
+    private bool xboxA, xboxB, xboxX, xboxY, xboxLB, xboxRB, xboxLS, xboxRS, xboxView, xboxMenu;
 
     [SerializeField] protected TextMeshProUGUI xboxText;
 
@@ -91,10 +81,10 @@ public class XBoxOneController : MonoBehaviour
     	controllerCheck();
 
         xboxText.text = string.Format(
-            "Horizontal: {14:0.000}\n" +
-            "Vertical: {15:0.000}\n" +
-            "HorizontalTurn: {16:0.000}\n" +
-            "VerticalTurn: {17:0.000}\n" +
+            "L Stick H: {14:0.000}\n" +
+            "L Stick V: {15:0.000}\n" +
+            "R Stick H: {16:0.000}\n" +
+            "R Stick V: {17:0.000}\n" +
             "LTrigger: {0:0.000}\n" +
             "RTrigger: {1:0.000}\n" +
             "A: {2}\n" +
