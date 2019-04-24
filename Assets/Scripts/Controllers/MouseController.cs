@@ -203,9 +203,9 @@ public class MouseController : MonoBehaviour
     private IEnumerator FloatText(GameObject buildingGo, Hub hub, BuildingType buildType)
     {
         //floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
-        if (hub.BuildingsCosts[buildType]["mineral"] != 0)
+        if (buildingGo.GetComponent<Building>().MineralCost != 0)
         {
-            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{hub.BuildingsCosts[buildType]["mineral"]}", buildingGo.transform);
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{buildingGo.GetComponent<Building>().MineralCost}", buildingGo.transform);
         }
         yield return new WaitForSeconds(0.2f);
     }
