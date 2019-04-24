@@ -210,7 +210,6 @@ public class Fog : MonoBehaviour
         f.Location = t;
         f.Health = 0.0001f;
         f.Spill = false;
-        f.Lerp = true;
         t.FogUnit = f;
 
         fogUnitsInPlay.Add(f);

@@ -523,7 +523,7 @@ public class WorldController : MonoBehaviour
 
         if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
         {
-            Debug.Log("Tile (" + x + "," + y + ") doesn't exist. Probably want to double check that it isn't supposed to exist and you haven't fucked up the code somewhere.");
+            //Debug.Log("Tile (" + x + "," + y + ") doesn't exist. Probably want to double check that it isn't supposed to exist and you haven't fucked up the code somewhere.");
             return false;
         }
         else
