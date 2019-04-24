@@ -92,10 +92,30 @@ ModelImporter:
     2300000: pCylinder6
     3300000: pCylinder6
     4300000: pCylinder6
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Base
+    second: {fileID: 2100000, guid: 784f7ef2bf7361f44b38e2d518e50b0a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blades
+    second: {fileID: 2100000, guid: 332df47f20ce06c4faaea386f7311e4a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Case
+    second: {fileID: 2100000, guid: fae071b04cf761c48bec2cd6e32ed980, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cover
+    second: {fileID: 2100000, guid: d8ae09641ae5a724b9aef737f83a7a6e, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 2
     materialSearch: 1
     materialLocation: 0
   animations:
