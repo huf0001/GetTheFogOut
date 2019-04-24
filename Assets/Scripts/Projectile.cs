@@ -65,12 +65,14 @@ public class Projectile : MonoBehaviour
         {
             if (tileHit.FogUnit != null)
             {
+                //Debug.Log("Dealing damage to " + tileHit.FogUnit);
                 tileHit.FogUnit.DealDamage(damage);
 
                 foreach (TileData tile in tileHit.AllAdjacentTiles)
                 {
                     if (tile.FogUnit != null)
                     {
+                        //Debug.Log("Dealing damage to " + tile.FogUnit);
                         tile.FogUnit.DealDamage(aoeDamage);
                     }
                 }  
