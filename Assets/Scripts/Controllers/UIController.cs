@@ -22,6 +22,8 @@ public class UIController : MonoBehaviour
 
     Hub hub = null;
 
+    //WarningScript warningScript;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -41,6 +43,8 @@ public class UIController : MonoBehaviour
         //Tweens in the UI for a smooth bounce in from outside the canvas
         hudBar = GameObject.Find("HudBar");
         hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
+
+        //warningScript = hudBar.GetComponentInChildren<WarningScript>();
     }
 
     // Update is called once per frame
@@ -94,10 +98,12 @@ public class UIController : MonoBehaviour
             else if (powerChange < 0)
             {
                 colour = "red\">";
+                //warningScript.AddWarning("Power grid is overloaded!", WarningScript.WarningLevel.Danger);
             }
             else
             {
                 colour = "black\">±";
+                //warningScript.AddWarning("Power grid is at maximum capacity!", WarningScript.WarningLevel.Warning);
             }
 
             // update slider and text values
