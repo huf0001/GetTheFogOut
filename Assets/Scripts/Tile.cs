@@ -112,7 +112,7 @@ public class Tile : MonoBehaviour
             {
                 if (range - 1 > 0)
                 { 
-                    tile.CollectTilesInRange(tiles, range - 1);
+                    tile.CollectTilesInRangeAlt(tiles, range - 1);
                 }
             }
         }

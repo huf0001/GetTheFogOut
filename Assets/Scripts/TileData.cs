@@ -107,7 +107,59 @@ public class TileData
         //}
     }
 
-    public void CollectTilesInRange(List<TileData> tiles, int range)
+
+    public List<TileData> CollectTilesInRange(int xc, int yc, int r)
+    {
+        if (r < 1) return null;
+
+        List<TileData> tiles = new List<TileData>();
+        TileData[,] worldTiles = WorldController.Instance.Tiles;
+        int width = WorldController.Instance.Width;
+        int height = WorldController.Instance.Length;
+        int x, yoff = r;
+        int y, cd, xoff = 0;
+        int b = -r;
+        int p0, p1, w0, w1;
+
+        while (xoff <= yoff)
+        {
+            p0 = xc - xoff;
+            p1 = xc - yoff;
+            w0 = xoff + xoff;
+            w1 = yoff + yoff;
+
+            hl(p0, yc - yoff, yc + yoff, w0);
+            hl(p1, yc - xoff, yc + xoff, w1);
+
+            if ((b += xoff+++xoff) >= 0)
+            {
+                b -= --yoff + yoff;
+            }
+        }
+
+        return tiles;
+
+        void hl(int x0, int y1, int y2, int w)
+        {
+            w++;
+            int xw = 0;
+            while (w-- > 0)
+            {
+                xw = x0 + w;
+                AddPoint(xw, y1);
+                AddPoint(xw, y2);
+            }
+        }
+
+        void AddPoint(int x1, int y1)
+        {
+            if (x1 < width && y1 < height && x1 >= 0 && y1 >= 0)
+            {
+                tiles.Add(worldTiles[x1, y1]);
+            }
+        }
+    }
+    public void CollectTilesInRangeAlt(List<TileData> tiles, int range)
     {
         // Adds all tiles in a specified range to a List.
         // IMPORTANT!!! SET ALL TILES IN THE LIST '.VISITED' TO FALSE AFTER USE!!!
@@ -119,9 +171,11 @@ public class TileData
             {
                 if (range - 1 > 0)
                 {
-                    tile.CollectTilesInRange(tiles, range - 1);
+                    tile.CollectTilesInRangeAlt(tiles, range - 1);
                 }
             }
         }
+
     }
+
 }
