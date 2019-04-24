@@ -19,6 +19,21 @@ public class ShipComponentState
     }
 }
 
+public enum TutorialStage
+{
+    None,
+    CrashLanding,
+    ShipPartsCrashing,
+    ZoomBackToShip,
+    ExplainSituation,
+    BuildHarvester,
+    BuildGenerator,
+    BuildRelay,
+    FogIsHazard,
+    BuildClusterFan,
+    Finished
+}
+
 public class WorldController : MonoBehaviour
 {
     private class Point2D
@@ -60,6 +75,7 @@ public class WorldController : MonoBehaviour
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
+    private TutorialStage tutorialStage = TutorialStage.CrashLanding;
 
 
     // UI & Mouse Controller
@@ -79,6 +95,7 @@ public class WorldController : MonoBehaviour
     public int Length { get => length; }
     public Hub Hub { get => hub; set => hub = value; }
     public ShipComponentState[] ShipComponents { get => shipComponents; }
+    public TutorialStage TutorialStage { get => tutorialStage;  }
 
     private void Start()
     {
@@ -390,60 +407,116 @@ public class WorldController : MonoBehaviour
 
     private void Update()
     {
+        TutorialUpdate();
+
         if (!isGameOver)
         {
-            if (InBuildMode)
-            {
-            //    MeshRendererTileChild(true);
-                RenderTower();
-            //    ShowTile();
-            }
-
-            // TEMP FIX, SHOULD BE REMOVED LATER
-            if (hub == null)
-            {
-                hub = FindObjectOfType<Hub>();
-            }
-
-            if (Input.GetKeyDown("p"))
-            {
-                if (Time.timeScale == 1.0f)
-                {
-                    Time.timeScale = 0.0f;
-                    pause.SetActive(true);
-                }
-                else
-                {
-                    Time.timeScale = 1.0f;
-                    pause.SetActive(false);
-                }
-
-                Time.fixedDeltaTime = 0.02f * Time.timeScale;
-
-                // TEST CODE: Stopping Mouse from placing/deleting buildings in Game Pause/Over.
-                // mouseController.GamePlayStop();
-            }
-
-            if(hub.IsWin() || hub.isDestroyed())
-            {
-
-                Time.timeScale = 0.2f;
-                isGameOver = true;
-                InBuildMode = false;
-            }
+            GameUpdate();
         }
         else
         {
-            if(hub.IsWin())
+            GameOverUpdate();
+        }
+    }
+
+    private void TutorialUpdate()
+    {
+            //    public enum TutorialStage
+            //{
+            //    None,
+            //    CrashLanding,
+            //    ShipPartsCrashing,
+            //    ZoomBackToShip,
+            //    ExplainSituation,
+            //    BuildHarvester,
+            //    BuildGenerator,
+            //    BuildRelay,
+            //    FogIsHazard,
+            //    BuildClusterFan,
+            //    Finished
+            //}
+
+
+        //Tutorial Stage 1: Start Scene Animation
+        //Ship crash lands, intro scene
+
+        //Ship parts crash, x3 different scenes
+
+        //Zoom back to ship
+
+        //Tutorial Stage 2: AI Explains Basic Building Placement
+        //AI explains player's situation
+
+        //AI begins tutorial of placing buildings
+
+        //AI explains how to build a harvester and how they work
+
+        //AI helps player build a power generator and explains how they work
+
+        //AI helps player build a relay and explains how they work
+
+        //Tutorial Stage 3: AI Explains The Fog
+        //AI realises the fog is a hazard
+
+        //AI tells player to build a cluster fan and explains how they work
+
+        //End tutorial, game is fully responsive to player's input.
+    }
+
+    private void GameUpdate()
+    {
+        if (InBuildMode)
+        {
+            //    MeshRendererTileChild(true);
+            RenderTower();
+            //    ShowTile();
+        }
+
+        // TEMP FIX, SHOULD BE REMOVED LATER
+        if (hub == null)
+        {
+            hub = FindObjectOfType<Hub>();
+        }
+
+        if (Input.GetKeyDown("p"))
+        {
+            if (Time.timeScale == 1.0f)
             {
-                //Display win UI
-                uiController.EndGameDisplay("You win!");
+                Time.timeScale = 0.0f;
+                pause.SetActive(true);
             }
             else
             {
-                //Display lose UI
-                uiController.EndGameDisplay("You lose!");
+                Time.timeScale = 1.0f;
+                pause.SetActive(false);
             }
+
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+            // TEST CODE: Stopping Mouse from placing/deleting buildings in Game Pause/Over.
+            // mouseController.GamePlayStop();
+        }
+
+        if (hub.IsWin() || hub.isDestroyed())
+        {
+
+            Time.timeScale = 0.2f;
+            isGameOver = true;
+            InBuildMode = false;
+        }
+    }
+
+    private void GameOverUpdate()
+    {
+        if (hub.IsWin())
+        {
+            //Display win UI
+            uiController.EndGameDisplay("You win!");
+        }
+        else
+        {
+            //Display lose UI
+            uiController.EndGameDisplay("You lose!");
         }
     }
     //rotate to 90

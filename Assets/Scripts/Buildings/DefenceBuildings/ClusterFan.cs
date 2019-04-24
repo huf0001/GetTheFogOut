@@ -72,8 +72,7 @@ public class ClusterFan : Defence
     {
         // Get the tile with the highest fog concentration.
         List<TileData> fogTiles = new List<TileData>();
-        List<TileData> tiles = new List<TileData>();
-        location.CollectTilesInRange(tiles, (int)visibilityRange);
+        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)visibilityRange);
 
         foreach (TileData tile in tiles)
         {
@@ -81,8 +80,6 @@ public class ClusterFan : Defence
             {
                 fogTiles.Add(tile);
             }
-
-            tile.Visited = false;
         }
 
         fogTiles.Sort((t1, t2) => t1.FogUnit.FUHealth.CompareTo(t2.FogUnit.FUHealth));
@@ -92,7 +89,8 @@ public class ClusterFan : Defence
         {
             TileData target = fogTiles[0];
             return target;
-        } else
+        }
+        else
         {
             return null;
         }
