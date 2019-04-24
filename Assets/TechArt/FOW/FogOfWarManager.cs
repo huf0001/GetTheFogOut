@@ -37,11 +37,6 @@ public class FogOfWarManager : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
-    {
-        
-    }
-
     void Update()
     {
         UpdatePosition(testobj.transform.position);
