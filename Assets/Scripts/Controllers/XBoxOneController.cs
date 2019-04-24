@@ -90,11 +90,11 @@ public class XBoxOneController : MonoBehaviour
             "A: {2}\n" +
             "B: {3}\n" +
             "X: {4}\n" +
-            "Y:{5}\n" +
+            "Y: {5}\n" +
             "LB: {6}\n" +
             "RB: {7}\n" +
             "LS: {8}\n" +
-            "RS:{9}\n" +
+            "RS: {9}\n" +
             "View: {10}\n" +
             "Menu: {11}\n" +
             "Dpad-H: {12:0.000}\n" +

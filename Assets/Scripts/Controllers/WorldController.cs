@@ -82,6 +82,9 @@ public class WorldController : MonoBehaviour
     UIController uiController;
     MouseController mouseController;
 
+    // Cursor Locking to centre
+    private CursorLockMode wantedMode;
+
     // Flags
     private bool hubBuilt = false;
     private bool isGameOver;
@@ -327,7 +330,7 @@ public class WorldController : MonoBehaviour
                 temp = null;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -368,7 +371,7 @@ public class WorldController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -400,8 +403,25 @@ public class WorldController : MonoBehaviour
         InBuildMode = true;
     }
 
+    private void ChangeCursorState()
+    {
+        switch (Cursor.lockState)
+        {
+            case CursorLockMode.None:
+                wantedMode = CursorLockMode.Locked;
+                Debug.Log("Cursor Locked");
+                break;
+            case CursorLockMode.Locked:
+                wantedMode = CursorLockMode.None;
+                Debug.Log("Cursor Unlocked");
+                break;
+        }
+    }
+
     private void Awake()
     {
+        Cursor.lockState = wantedMode;
+        Cursor.visible = (CursorLockMode.Locked != wantedMode);
         tm = FindObjectOfType<TowerManager>();
     }
 
@@ -478,7 +498,7 @@ public class WorldController : MonoBehaviour
             hub = FindObjectOfType<Hub>();
         }
 
-        if (Input.GetKeyDown("p"))
+        if (Input.GetKeyDown("p") || Input.GetButtonDown("Xbox_Menu"))
         {
             if (Time.timeScale == 1.0f)
             {
@@ -495,6 +515,12 @@ public class WorldController : MonoBehaviour
 
             // TEST CODE: Stopping Mouse from placing/deleting buildings in Game Pause/Over.
             // mouseController.GamePlayStop();
+        }
+
+        if (Input.GetKeyDown("c"))
+        {
+            Cursor.lockState = wantedMode = CursorLockMode.None;
+            ChangeCursorState();
         }
 
         if (hub.IsWin() || hub.isDestroyed())
