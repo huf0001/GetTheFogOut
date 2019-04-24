@@ -211,17 +211,17 @@ public class Hub : PowerSource
                             switch (h.Location.Resource.ResourceType)
                             {
                                 case Resource.Power:
-                                    storedPower += h.HarvestAmt;
-                                    powerChange += h.HarvestAmt;
+                                    storedPower += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
+                                    powerChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
                                     break;
                                 case Resource.Organic:
-                                    organicChange += h.HarvestAmt;
+                                    organicChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
                                     break;
                                 case Resource.Mineral:
-                                    mineralChange += h.HarvestAmt;
+                                    mineralChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
                                     break;
                                 case Resource.Fuel:
-                                    fuelChange += h.HarvestAmt;
+                                    fuelChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
                                     break;
                             }
                         }
