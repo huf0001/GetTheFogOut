@@ -17,6 +17,8 @@ public class WarningScript : MonoBehaviour
     
     int pChangeValue = 0;
 
+    [SerializeField] GameObject warningBox;
+
     // Start is called before the first frame update
     void Start()
     {
