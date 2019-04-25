@@ -25,10 +25,10 @@ public class Battery : Building
     public override void Place()
     {
         base.Place();
-        if (!WorldController.Instance.Hub.Batteries.Contains(this))
-        {
-            WorldController.Instance.Hub.Batteries.Add(this);
-        }
+        //if (!WorldController.Instance.Hub.Batteries.Contains(this))
+        //{
+        //    WorldController.Instance.Hub.Batteries.Add(this);
+        //}
     }
 
     // Update is called once per frame
@@ -40,10 +40,10 @@ public class Battery : Building
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        if (WorldController.Instance.Hub.Batteries.Contains(this))
-        {
-            WorldController.Instance.Hub.Batteries.Remove(this);
-        }
+        //if (WorldController.Instance.Hub.Batteries.Contains(this))
+        //{
+        //    WorldController.Instance.Hub.Batteries.Remove(this);
+        //}
     }
     
 }

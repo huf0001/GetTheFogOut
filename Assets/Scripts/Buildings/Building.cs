@@ -80,6 +80,7 @@ public abstract class Building : PlaneObject
             }
         }
 
+        FindObjectOfType<Hub>().AddBuilding(this);
         placed = true;
         audioSource.Play();
         //GetComponent<Renderer>().material.shader = buildingShader;
@@ -87,16 +88,44 @@ public abstract class Building : PlaneObject
 
     public void SetPowerSource()
     {
+        Debug.Log("Setting Power Source");
+
+        if (location == null)
+        {
+            Debug.Log("Location of " + this.name + " is null");
+        }
+
+        if (location.PowerSource == null)
+        {
+            Debug.Log("Power Source is null");
+        }
+
         powerSource = location.PowerSource;
 
         if (powerSource != null)
         {
+            Debug.Log("Plugging In and Powering Up " + this.name);
             powerSource.PlugIn(this);
             PowerUp();
-        } else
+        }
+        else
         {
+            Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
             PowerDown();
         }
+
+        Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);
+    }
+
+    public virtual void PowerUp()
+    {
+        powered = true;
+    }
+
+    public virtual void PowerDown()
+    {
+        Debug.Log("Powering down " + this.name);
+        powered = false;
     }
 
     private void MakeTilesVisible()
@@ -125,15 +154,7 @@ public abstract class Building : PlaneObject
         }
     }
 
-    public virtual void PowerUp()
-    {
-        powered = true;
-    }
 
-    public virtual void PowerDown()
-    {
-        powered = false;
-    }
 
     public Component GetData()
     {
@@ -177,6 +198,7 @@ public abstract class Building : PlaneObject
             placed = false;
         }
         PowerDown();
+        FindObjectOfType<Hub>().RemoveBuilding(this);
         //MakeTilesNotVisible();
     }
 }

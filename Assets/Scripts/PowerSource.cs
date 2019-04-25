@@ -25,6 +25,7 @@ public abstract class PowerSource : Building
         for (int i = 0; i < suppliedBuildings.Count; i++)
         {
             suppliedBuildings[i].SetPowerSource();
+
             if (i == 20)
             {
                 Debug.LogError("You are probably adding youself to the list of supplied buildings");
@@ -51,6 +52,26 @@ public abstract class PowerSource : Building
     {
         base.Place();
         ActivateTiles();
+    }
+
+    public List<Battery> GetBatteries()
+    {
+        List<Battery> batteries = new List<Battery>();
+
+        foreach (Building b in suppliedBuildings)
+        {
+            if (b.BuildingType == BuildingType.Battery)
+            {
+                batteries.Add(b as Battery);
+            }
+            else if (b.BuildingType == BuildingType.Relay)
+            {
+                Relay r = b as Relay;
+                batteries.AddRange(r.GetBatteries());
+            }
+        }
+
+        return batteries;
     }
 
     public List<Generator> GetGenerators()
@@ -162,7 +183,13 @@ public abstract class PowerSource : Building
     {
         if (this != newBuilding)
         {
+            Debug.Log("Plugging " + newBuilding.name + " into " + this.name);
             suppliedBuildings.Add(newBuilding); 
+        }
+
+        if (suppliedBuildings.Contains(newBuilding))
+        {
+            Debug.Log("plugged in successfully");
         }
     }
 
@@ -170,6 +197,7 @@ public abstract class PowerSource : Building
     {
         if (suppliedBuildings.Contains(unplug))
         {
+            Debug.Log("Unplugging " + unplug.name + " from " + this.name);
             suppliedBuildings.Remove(unplug);
         }
     }

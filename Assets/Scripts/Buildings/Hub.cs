@@ -9,11 +9,13 @@ public class Hub : PowerSource
     [SerializeField] private int storedPower = 0, storedMineral = 0, storedOrganic = 0, storedFuel = 0;
     [SerializeField] private int powerChange = 0, mineralChange = 0, organicChange = 0, fuelChange = 0;
 
-    //[SerializeField] private List<Harvester> harvesters = new List<Harvester>();
     [SerializeField] private List<Battery> batteries = new List<Battery>();
+    [SerializeField] private List<Defence> defences = new List<Defence>();
+    [SerializeField] private List<Generator> generators = new List<Generator>();
+    [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
+    [SerializeField] private List<Relay> relays = new List<Relay>();    
     
     //Non-serialized fields
-    //private Resource ResourceOn;
     private bool powerFull = false, mineralFull = false, organicFull = false, fuelFull = false;
 
     //Public peroperties
@@ -29,8 +31,11 @@ public class Hub : PowerSource
     public int OrganicChange { get => organicChange; set => organicChange = value; }
     public int FuelChange { get => fuelChange; set => fuelChange = value; }
     
-    //public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<Battery> Batteries { get => batteries; set => batteries = value; }
+    public List<Defence> Defences { get => defences; set => defences = value; }
+    public List<Generator> Generators { get => generators; set => generators = value; }
+    public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
+    public List<Relay> Relays { get => relays; set => relays = value; }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -50,8 +55,6 @@ public class Hub : PowerSource
 
     private void ProcessUpkeep()
     {
-        // Change the power based on each connected building
-
         //Reset resource changes
         powerChange = 0;
         fuelChange = 0;
@@ -59,21 +62,22 @@ public class Hub : PowerSource
         mineralChange = 0;
 
         // Process batteries
-        maxPower = (batteries.Count * 10) + 100;
+        maxPower = (base.GetBatteries().Count * 10) + 100;
 
         //Provide hub's power contribution
         storedPower += upkeep;
         powerChange += upkeep;
 
         //Get connected generators, account for the power they supply
-        List<Generator> connectedGenerators = base.GetGenerators();
+        List<Generator> connectedGenerators = base.GetGenerators();     
+        Debug.Log("ConnectedGenerators.Count is " + connectedGenerators.Count);
 
         if (connectedGenerators.Count > 0)
         {
             storedPower += connectedGenerators[0].Upkeep * connectedGenerators.Count;
             powerChange += connectedGenerators[0].Upkeep * connectedGenerators.Count;
 
-            foreach (Generator g in FindObjectsOfType<Generator>())
+            foreach (Generator g in generators)
             {
                 if (connectedGenerators.Contains(g))
                 {
@@ -81,6 +85,7 @@ public class Hub : PowerSource
                 }
                 else
                 {
+                    Debug.Log("Powering Down Generator from Hub.ProcessUpkeep");
                     g.PowerDown();
                 }
             }
@@ -91,7 +96,7 @@ public class Hub : PowerSource
 
         if (connectedRelays.Count > 0)
         {
-            foreach (Relay r in FindObjectsOfType<Relay>())
+            foreach (Relay r in relays)
             {
                 if (connectedRelays.Contains(r))
                 {
@@ -119,7 +124,7 @@ public class Hub : PowerSource
 
         if (connectedDefences.Count > 0)
         {
-            foreach (Defence d in FindObjectsOfType<Defence>())
+            foreach (Defence d in defences)
             {
                 if (connectedDefences.Contains(d))
                 {
@@ -147,7 +152,7 @@ public class Hub : PowerSource
 
         if (connectedHarvesters.Count > 0)
         {
-            foreach (Harvester h in FindObjectsOfType<Harvester>())
+            foreach (Harvester h in harvesters)
             {
                 if (connectedHarvesters.Contains(h))
                 {
@@ -194,116 +199,71 @@ public class Hub : PowerSource
         storedOrganic += organicChange;
         StoredMineral += mineralChange;
 
-        CheckLimit();
+        CheckLimits();
     }
-
-    //private void ProcessUpkeep()
-    //{
-    //    // Change the power based on each connect building
-    //    // TODO: Make buildings stop working if no power
-    //    int powerUpkeep = 5;
-
-    //    foreach (Building building in suppliedBuildings)
-    //    {
-    //        powerUpkeep += building.Upkeep;
-
-    //        if (powerUpkeep >= 0 || storedPower > 0)
-    //        {
-    //            building.PowerUp();
-    //        }
-    //        else
-    //        {
-    //            building.PowerDown();
-    //        }
-
-    //        if (building.BuildingType == BuildingType.Relay)
-    //        {
-    //            PowerSource relay = (PowerSource)building;
-
-    //            if (relay != null)
-    //            {
-    //                foreach (Building b in relay.SuppliedBuildings)
-    //                {
-    //                    powerUpkeep += b.Upkeep;
-
-    //                    if (powerUpkeep >= 0 || storedPower > 0)
-    //                    {
-    //                        b.PowerUp();
-    //                    }
-    //                    else
-    //                    {
-    //                        b.PowerDown();
-    //                    }
-    //                }
-    //            }
-    //        }
-
-    //    }
-
-    //    // Process batteries
-    //    maxPower = (batteries.Count * 10) + 100;
-    //    int mChange = 0;
-    //    int fChange = 0;
-    //    int oChange = 0;
-    //    int pChange = 0;
-
-    //    if (harvesters.Count != 0)
-    //    {
-    //        foreach (Harvester harvester in harvesters)
-    //        {
-    //            if (harvester.Powered)
-    //            {
-    //                ResourceOn = harvester.Location.Resource.ResourceType;
-
-    //                switch (ResourceOn)
-    //                {
-    //                    case Resource.Power:
-    //                        pChange += harvester.HarvestAmt;
-    //                        break;
-    //                    case Resource.Organic:
-    //                        oChange += harvester.HarvestAmt;
-    //                        break;
-    //                    case Resource.Mineral:
-    //                        mChange += harvester.HarvestAmt;
-    //                        break;
-    //                    case Resource.Fuel:
-    //                        fChange += harvester.HarvestAmt;
-    //                        break;
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    fuelChange = fChange;
-    //    organicChange = oChange;
-    //    mineralChange = mChange;
-    //    powerChange = pChange + powerUpkeep;
-
-    //    storedFuel += fuelChange;
-    //    storedOrganic += organicChange;
-    //    StoredMineral += mineralChange;
-    //    StoredPower += powerChange;
-
-    //    //storedPower += 5;
-    //    CheckLimit();
-    //}
 
     public override bool SupplyingPower()
     {
         return true;
     }
 
-    public void AddBattery()
+    public void AddBuilding(Building b)
     {
-        maxPower += 10;
+        switch (b.BuildingType)
+        {
+            case BuildingType.Battery:
+                batteries.Add(b as Battery);
+                //maxPower += 10;
+                break;
+            case BuildingType.Defence:
+                defences.Add(b as Defence);
+                break;
+            case BuildingType.Generator:
+                generators.Add(b as Generator);
+                break;
+            case BuildingType.Harvester:
+                harvesters.Add(b as Harvester);
+                break;
+            case BuildingType.Relay:
+                relays.Add(b as Relay);
+                break;
+        }
     }
 
-    public void RemoveBattery()
+    public void RemoveBuilding(Building b)
     {
-        maxPower -= 10;
+        switch (b.BuildingType)
+        {
+            case BuildingType.Battery:
+                batteries.Remove(b as Battery);
+                //maxPower -= 10;
+                break;
+            case BuildingType.Defence:
+                defences.Remove(b as Defence);
+                break;
+            case BuildingType.Generator:
+                generators.Remove(b as Generator);
+                break;
+            case BuildingType.Harvester:
+                harvesters.Remove(b as Harvester);
+                break;
+            case BuildingType.Relay:
+                relays.Remove(b as Relay);
+                break;
+        }
     }
 
-    public void CheckLimit()
+    //public void AddBattery()
+    //{
+    //    maxPower += 10;
+    //}
+
+    //public void RemoveBattery()
+    //{
+    //    maxPower -= 10;
+    //}
+
+    public void CheckLimits()
     {
         if (storedPower >= maxPower)
         {

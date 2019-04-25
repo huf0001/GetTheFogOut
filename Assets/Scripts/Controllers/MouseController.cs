@@ -27,9 +27,7 @@ public class MouseController : MonoBehaviour
     {
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
-        tutorialController = FindObjectOfType<TutorialController>();
-
-        Debug.Log(tutorialController.name);
+        tutorialController = GetComponent<TutorialController>();
     }
 
     // Test for game pause/over mouse to not build/destroy buildings
@@ -102,7 +100,7 @@ public class MouseController : MonoBehaviour
                             // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
                             if (toBuild.name != "Empty")
                             {
-                                Debug.Log(toBuild.name);
+                                //Debug.Log(toBuild.name);
                                 if (toBuild.GetComponent<Building>() != null)
                                 {
                                     Building b = toBuild.GetComponent<Building>();
