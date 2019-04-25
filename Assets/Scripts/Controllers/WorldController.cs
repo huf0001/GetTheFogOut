@@ -19,33 +19,9 @@ public class ShipComponentState
     }
 }
 
-public enum TutorialStage
-{
-    None,
-    CrashLanding,
-    ShipPartsCrashing,
-    ZoomBackToShip,
-    ExplainSituation,
-    BuildHarvester,
-    BuildGenerator,
-    BuildRelay,
-    FogIsHazard,
-    BuildClusterFan,
-    Finished
-}
-
 public class WorldController : MonoBehaviour
 {
-    private class Point2D
-    {
-        public int x, y;
-
-        public Point2D(int a, int b)
-        {
-            x = a;
-            y = b;
-        }
-    }
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     // Serialized fields
     [Header("World Spawning Rules")]
@@ -69,14 +45,12 @@ public class WorldController : MonoBehaviour
     [Header("Public variable?")]
     public bool InBuildMode;
 
-
     // Non serialized fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
     private TutorialStage tutorialStage = TutorialStage.CrashLanding;
-
 
     // UI & Mouse Controller
     UIController uiController;
@@ -99,6 +73,15 @@ public class WorldController : MonoBehaviour
     public Hub Hub { get => hub; set => hub = value; }
     public ShipComponentState[] ShipComponents { get => shipComponents; }
     public TutorialStage TutorialStage { get => tutorialStage;  }
+
+    //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+
+    private void Awake()
+    {
+        Cursor.lockState = wantedMode;
+        Cursor.visible = (CursorLockMode.Locked != wantedMode);
+        tm = FindObjectOfType<TowerManager>();
+    }
 
     private void Start()
     {
@@ -234,13 +217,13 @@ public class WorldController : MonoBehaviour
             foreach (TileData t in tiles)
             {
 
-                Point2D[] pts = { new Point2D(t.X, t.Z - 1), new Point2D(t.X, t.Z + 1), new Point2D(t.X - 1, t.Z), new Point2D(t.X + 1, t.Z) };
+                Vector2[] pts = { new Vector2(t.X, t.Z - 1), new Vector2(t.X, t.Z + 1), new Vector2(t.X - 1, t.Z), new Vector2(t.X + 1, t.Z) };
 
-                foreach (Point2D p in pts)
+                foreach (Vector2 p in pts)
                 {
                     if (p.x >= 0 && p.x < width && p.y >= 0 && p.y < length)
                     {
-                        Vector2 pos = new Vector2(p.x, p.y);
+                        UnityEngine.Vector2 pos = new UnityEngine.Vector2(p.x, p.y);
                         a = GetTileAt(pos);
 
                         if (!t.AdjacentTiles.Contains(a))
@@ -264,7 +247,7 @@ public class WorldController : MonoBehaviour
                         {
                             if (j >= 0 && j < length)
                             {
-                                Vector2 pos = new Vector2(i, j);
+                                UnityEngine.Vector2 pos = new UnityEngine.Vector2(i, j);
                                 a = GetTileAt(pos);
 
                                 if (!t.AdjacentTiles.Contains(a))
@@ -289,7 +272,7 @@ public class WorldController : MonoBehaviour
                     {
                         if (j >= 0 && j < length)
                         {
-                            Vector2 pos = new Vector2(i, j);
+                            UnityEngine.Vector2 pos = new UnityEngine.Vector2(i, j);
                             a = GetTileAt(pos);
 
                             if (!t.AllAdjacentTiles.Contains(a))
@@ -304,131 +287,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    private void MeshRendererTileChild(bool toggle)
-    {
-        objs = GameObject.FindGameObjectsWithTag("Tile");
-
-        //Caution child can be more than 4!!!
-        foreach (GameObject obj in objs)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                obj.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = toggle;
-            }
-        }
-    }
-
-    private void EnableMeshRendTile(GameObject tile_obj)
-    {
-        pos = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
-        if (temp == null)
-        {
-            PlaneSpawn = Instantiate(planeGridprefab,pos,tile_obj.transform.rotation);
-            temp = tile_obj;
-        }
-        else
-        {
-            if (temp != tile_obj)
-            {
-                Destroy(PlaneSpawn);
-                Destroy(TowerSpawn);
-                temp = null;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
-        {
-            Destroy(PlaneSpawn);
-            Destroy(TowerSpawn);
-            tm.EscToCancel();
-            MeshRendererTileChild(false);
-            InBuildMode = false;
-        }
-    }
-
-    private void RenderTower()
-    {
-        TowerToSpawn = tm.GetTower("holo");
-
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
-        {
-            if (TileExistsAt(hit.point))
-            {
-                TileData tile = GetTileAt(hit.point);
-                int x = Mathf.RoundToInt(hit.point.x);
-                int y = Mathf.RoundToInt(hit.point.z);
-                Vector3 spawnPos = new Vector3(x, 0, y);
-
-                if (TowerSpawn == null)
-                {
-                    TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
-                }
-                else
-                {
-                    if (TowerSpawn != TowerToSpawn)
-                    {
-                        Destroy(TowerSpawn);
-                        TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
-                    }
-                }
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
-        {
-            Destroy(PlaneSpawn);
-            Destroy(TowerSpawn);
-            tm.EscToCancel();
-            InBuildMode = false;
-        }
-    }
-
-    private void ShowTile()
-    {
-        RaycastHit[] hits;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        hits = Physics.RaycastAll(ray, 100.0f);
-        for (int i = 0; i < hits.Length; i++)
-        {
-            RaycastHit hit = hits[i];
-            if (hit.transform.gameObject.tag == "Tile")
-            {
-                tiletest = hit.transform.gameObject;
-
-                EnableMeshRendTile(tiletest);
-
-            }
-        }
-    }
-
-    public void SetToBuildMode()
-    {
-        InBuildMode = true;
-    }
-
-    private void ChangeCursorState()
-    {
-        switch (Cursor.lockState)
-        {
-            case CursorLockMode.None:
-                wantedMode = CursorLockMode.Locked;
-                Debug.Log("Cursor Locked");
-                break;
-            case CursorLockMode.Locked:
-                wantedMode = CursorLockMode.None;
-                Debug.Log("Cursor Unlocked");
-                break;
-        }
-    }
-
-    private void Awake()
-    {
-        Cursor.lockState = wantedMode;
-        Cursor.visible = (CursorLockMode.Locked != wantedMode);
-        tm = FindObjectOfType<TowerManager>();
-    }
+    //Core In-Gameplay Methods-----------------------------------------------------------------------------------------------------------------------
 
     private void Update()
     {
@@ -491,6 +350,21 @@ public class WorldController : MonoBehaviour
         }
     }
 
+    private void ChangeCursorState()
+    {
+        switch (Cursor.lockState)
+        {
+            case CursorLockMode.None:
+                wantedMode = CursorLockMode.Locked;
+                Debug.Log("Cursor Locked");
+                break;
+            case CursorLockMode.Locked:
+                wantedMode = CursorLockMode.None;
+                Debug.Log("Cursor Unlocked");
+                break;
+        }
+    }
+
     private void GameOverUpdate()
     {
         if (hub.IsWin())
@@ -504,33 +378,71 @@ public class WorldController : MonoBehaviour
             uiController.EndGameDisplay("You lose!");
         }
     }
-    //rotate to 90
 
-    //private void InstantiateStartHub()
-    //{
-        //int x = GetHalf(width);
-        //int y = GetHalf(length);
-        //Tile startingTile = tiles[x, y].GetComponent<Tile>();
-        //Vector3 PosToInst = new Vector3(startingTile.transform.position.x, startingTile.transform.position.y + 0.4125f, startingTile.transform.position.z);
-        //GameObject hubGO = Instantiate(hubPrefab, PosToInst, startingTile.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        //Hub startHub = hubGO.GetComponentInChildren<Hub>();
-        //hub = startHub;
-
-        //hubGO.transform.SetParent(startingTile.transform);
-        //startingTile.Building = startHub;
-        //hub.Location = startingTile;
-    //}
-
-    private int GetHalf(int n)
+    private void RenderTower()
     {
-        if (n % 2 == 0)
+        TowerToSpawn = tm.GetTower("holo");
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
         {
-            return Mathf.FloorToInt(n / 2);
+            if (TileExistsAt(hit.point))
+            {
+                TileData tile = GetTileAt(hit.point);
+                int x = Mathf.RoundToInt(hit.point.x);
+                int y = Mathf.RoundToInt(hit.point.z);
+                Vector3 spawnPos = new Vector3(x, 0, y);
+
+                if (TowerSpawn == null)
+                {
+                    TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
+                }
+                else
+                {
+                    if (TowerSpawn != TowerToSpawn)
+                    {
+                        Destroy(TowerSpawn);
+                        TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
+                    }
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
+        {
+            Destroy(PlaneSpawn);
+            Destroy(TowerSpawn);
+            tm.EscToCancel();
+            InBuildMode = false;
+        }
+    }
+
+    public bool TileExistsAt(Vector3 pos)
+    {
+        return TileExistsAt(new Vector2(pos.x, pos.z));
+    }
+
+    public bool TileExistsAt(Vector2 pos)
+    {
+        int x = Mathf.RoundToInt(pos.x);
+        int y = Mathf.RoundToInt(pos.y);
+
+        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
+        {
+            //Debug.Log("Tile (" + x + "," + y + ") doesn't exist. Probably want to double check that it isn't supposed to exist and you haven't fucked up the code somewhere.");
+            return false;
         }
         else
         {
-            return Mathf.FloorToInt((n - 1) / 2);
+            return true;
         }
+    }
+
+    public TileData GetTileAt(Vector3 pos)
+    {
+        return GetTileAt(new Vector2(pos.x, pos.z));
     }
 
     public TileData GetTileAt(Vector2 pos)
@@ -574,33 +486,81 @@ public class WorldController : MonoBehaviour
         return count;
     }
 
-    public bool TileExistsAt(Vector3 pos)
-    {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.z);
+    //Apparently Currently Unused Methods------------------------------------------------------------------------------------------------------------
 
-        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
-        {
-            //Debug.Log("Tile (" + x + "," + y + ") doesn't exist. Probably want to double check that it isn't supposed to exist and you haven't fucked up the code somewhere.");
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
+    //private void ShowTile()
+    //{
+    //    RaycastHit[] hits;
+    //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //    hits = Physics.RaycastAll(ray, 100.0f);
+    //    for (int i = 0; i < hits.Length; i++)
+    //    {
+    //        RaycastHit hit = hits[i];
+    //        if (hit.transform.gameObject.tag == "Tile")
+    //        {
+    //            tiletest = hit.transform.gameObject;
 
-    public TileData GetTileAt(Vector3 pos)
-    {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.z);
+    //            EnableMeshRendTile(tiletest);
 
-        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
-        {
-            Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
-            return null;
-        }
+    //        }
+    //    }
+    //}
 
-        return tiles[x, y];
-    }
+    //private void EnableMeshRendTile(GameObject tile_obj)
+    //{
+    //    pos = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
+    //    if (temp == null)
+    //    {
+    //        PlaneSpawn = Instantiate(planeGridprefab, pos, tile_obj.transform.rotation);
+    //        temp = tile_obj;
+    //    }
+    //    else
+    //    {
+    //        if (temp != tile_obj)
+    //        {
+    //            Destroy(PlaneSpawn);
+    //            Destroy(TowerSpawn);
+    //            temp = null;
+    //        }
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
+    //    {
+    //        Destroy(PlaneSpawn);
+    //        Destroy(TowerSpawn);
+    //        tm.EscToCancel();
+    //        MeshRendererTileChild(false);
+    //        InBuildMode = false;
+    //    }
+    //}
+
+    //private void MeshRendererTileChild(bool toggle)
+    //{
+    //    objs = GameObject.FindGameObjectsWithTag("Tile");
+
+    //    //Caution child can be more than 4!!!
+    //    foreach (GameObject obj in objs)
+    //    {
+    //        for (int i = 0; i < 4; i++)
+    //        {
+    //            obj.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = toggle;
+    //        }
+    //    }
+    //}
+
+    //private int GetHalf(int n)
+    //{
+    //    if (n % 2 == 0)
+    //    {
+    //        return Mathf.FloorToInt(n / 2);
+    //    }
+    //    else
+    //    {
+    //        return Mathf.FloorToInt((n - 1) / 2);
+    //    }
+    //}
+
+    //public void SetToBuildMode()
+    //{
+    //    InBuildMode = true;
+    //}
 }

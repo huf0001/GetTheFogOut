@@ -32,7 +32,6 @@ public abstract class Building : PlaneObject
     public int FuelCost { get => fuelCost; }
     public int OrganicCost { get => organicCost; }
 
-
     protected virtual void Awake()
     {
         //MakeTilesVisible();
@@ -203,9 +202,16 @@ public abstract class Building : PlaneObject
             powerSource.Unplug(this);
         }
 
+        if (Location != null)
+        {
+            Location.Building = null;
+        }
+
+        PowerDown();
         FindObjectOfType<Hub>().RemoveBuilding(this);
         MakeTilesNotVisible();
         Destroy(this.gameObject);
+        Destroy(this);
     }
 
     //protected virtual void OnDestroy()

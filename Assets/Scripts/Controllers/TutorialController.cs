@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TutoralStage
+public enum TutorialStage
 {
     None,
     CrashLanding,
