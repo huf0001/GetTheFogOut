@@ -102,6 +102,7 @@ public class WorldController : MonoBehaviour
         ConnectAdjacentTiles();
         SetResourcesToTiles();
         SetBuildingsToTiles();
+        SetLandmarksToTiles();
         GetComponent<Fog>().SpawnFog();
     }
 
@@ -149,6 +150,16 @@ public class WorldController : MonoBehaviour
                 b.Animator.SetBool("Built", true);
                 b.Place();
             }
+        }
+    }
+
+    void SetLandmarksToTiles()
+    {
+        Landmark[] landmarks = FindObjectsOfType<Landmark>();
+
+        foreach (Landmark l in landmarks)
+        {
+            l.Location = GetTileAt(l.transform.position);
         }
     }
 

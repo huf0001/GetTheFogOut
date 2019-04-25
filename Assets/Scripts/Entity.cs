@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Entity : MonoBehaviour
+public abstract class Entity : Locatable
 {
     [SerializeField] private float health = 1f;
-    [SerializeField] protected TileData location;
+
+    public float Health { get => health; set => health = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -21,31 +22,5 @@ public abstract class Entity : MonoBehaviour
         //    Debug.Log("This entity has been destroyed. Called from Entity.Update()");
         //    Destroy(this.gameObject);
         //}
-    }
-
-    public virtual float Health
-    {
-        get
-        {
-            return health;
-        }
-
-        set
-        {
-            health = value;
-        }
-    }
-
-    public TileData Location
-    {
-        get
-        {
-            return location;
-        }
-
-        set
-        {
-            location = value;
-        }
     }
 }

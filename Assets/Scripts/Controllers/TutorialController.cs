@@ -22,6 +22,9 @@ public class TutorialController : MonoBehaviour
     //Serialized Fields
     [SerializeField] private bool skipTutorial = true;
     [SerializeField] private ResourceNode harvesterResource;
+    [SerializeField] private Landmark generatorLandmark;
+    [SerializeField] private Landmark relayLandmark;
+    [SerializeField] private Landmark clusterFanLandmark;
 
     //Non-Serialized Fields
     [SerializeField] private TutorialStage tutorialStage = TutorialStage.CrashLanding;
@@ -155,17 +158,7 @@ public class TutorialController : MonoBehaviour
         {
             //Get location of resource node
             //currentTile = GetClosestResourceNode(Resource.Mineral);
-            currentTile = harvesterResource.Location;
-
-            if (currentTile == null)
-            {
-                Debug.Log("TutorialController.CurrentTile is null");
-            }
-            else
-            {
-                currentTileX = currentTile.X;
-                currentTileZ = currentTile.Z;
-            }
+            GetLocationOf(harvesterResource);
 
             //Display UI element prompting player to build a harvester on this resource node
 
@@ -174,57 +167,15 @@ public class TutorialController : MonoBehaviour
         else if (subStage == 5)
         {
             //Check if the player has built the harvester
-            if (currentTile != null)
-            {
-                if (currentTile.Building != null)
-                {
-                    if (currentTile.Building.BuildingType == BuildingType.Harvester)
-                    {
-                        //Turn off UI element prompting player to build a harvester on the resource node
-                        tutorialStage = TutorialStage.BuildGenerator;
-                        currentlyBuilding = BuildingType.Generator;
-                        subStage = 1;
-                    }
-                }
+            if (BuiltCurrentlyBuilding())
+            { 
+                //Turn off UI element prompting player to build a harvester on the resource node
+                tutorialStage = TutorialStage.BuildGenerator;
+                currentlyBuilding = BuildingType.Generator;
+                subStage = 1;
             }
         }
     }
-
-    // private TileData GetClosestResourceNode(Resource requiredResource)
-    // {
-    //     Hub hub = FindObjectOfType<Hub>();
-    //     float distance = 99999999;
-    //     float newDistance = 0;
-    //     Vector3 hubPos = hub.transform.parent.position;
-    //     TileData t = null;
-
-    //     foreach (Building b in hub.SuppliedBuildings)
-    //     {
-    //         if (b.Location.Resource != null)
-    //         {
-    //             if (b.Location.Resource.ResourceType == requiredResource)
-    //             {
-    //                 if (t == null)
-    //                 {
-    //                     t = b.Location;
-    //                     distance = Vector3.Distance(new Vector3(b.Location.X, hubPos.y, b.Location.Z), hubPos);
-    //                 }
-    //                 else
-    //                 {
-    //                     newDistance = Vector3.Distance(new Vector3(b.Location.X, hubPos.y, b.Location.Z), hubPos);
-
-    //                     if (newDistance < distance)
-    //                     {
-    //                         t = b.Location;
-    //                         distance = newDistance;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     return t;
-    // }
 
     //AI helps player build a power generator and explains how they work
     private void BuildGenerator()
@@ -235,6 +186,7 @@ public class TutorialController : MonoBehaviour
         //Display UI element
 
         //Get tile
+
         //Display UI element prompting player to build a generator on this tile
 
         //if (tile.Building.BuildingType == BuildingType.Generator)
@@ -292,5 +244,36 @@ public class TutorialController : MonoBehaviour
         tutorialStage = TutorialStage.Finished;
         currentlyBuilding = BuildingType.None;
         //}
+    }
+
+    private void GetLocationOf(Locatable l)
+    {
+        currentTile = l.Location;
+
+        if (currentTile == null)
+        {
+            Debug.Log("TutorialController.CurrentTile is null");
+        }
+        else
+        {
+            currentTileX = currentTile.X;
+            currentTileZ = currentTile.Z;
+        }
+    }
+
+    private bool BuiltCurrentlyBuilding()
+    {
+        if (currentTile != null)
+        {
+            if (currentTile.Building != null)
+            {
+                if (currentTile.Building.BuildingType == BuildingType.Harvester)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
