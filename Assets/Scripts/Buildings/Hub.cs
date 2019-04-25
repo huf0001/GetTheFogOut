@@ -70,7 +70,7 @@ public class Hub : PowerSource
 
         //Get connected generators, account for the power they supply
         List<Generator> connectedGenerators = base.GetGenerators();     
-        Debug.Log("ConnectedGenerators.Count is " + connectedGenerators.Count);
+        //Debug.Log("ConnectedGenerators.Count is " + connectedGenerators.Count);
 
         if (connectedGenerators.Count > 0)
         {
@@ -85,7 +85,7 @@ public class Hub : PowerSource
                 }
                 else
                 {
-                    Debug.Log("Powering Down Generator from Hub.ProcessUpkeep");
+                    //Debug.Log("Powering Down Generator from Hub.ProcessUpkeep");
                     g.PowerDown();
                 }
             }
@@ -149,6 +149,7 @@ public class Hub : PowerSource
 
         //Get connected harvesters, account for power they consume, store the resources they collect
         List<Harvester> connectedHarvesters = GetHarvesters();
+        //Debug.Log("ConnectedHarvesters.Count is " + connectedHarvesters.Count);
 
         if (connectedHarvesters.Count > 0)
         {

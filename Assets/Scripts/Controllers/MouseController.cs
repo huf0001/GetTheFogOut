@@ -64,7 +64,7 @@ public class MouseController : MonoBehaviour
                     if (hit.transform.gameObject.GetComponent<Building>().BuildingType != BuildingType.Hub)
                     {
                         PointAtObj = hit.transform.gameObject;
-                        Destroy(hit.transform.gameObject);
+                        hit.transform.gameObject.GetComponent<Building>().DismantleBuilding();
                     }
                 }
             }

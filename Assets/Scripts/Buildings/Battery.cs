@@ -37,13 +37,13 @@ public class Battery : Building
         base.Update();
     }
 
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        //if (WorldController.Instance.Hub.Batteries.Contains(this))
-        //{
-        //    WorldController.Instance.Hub.Batteries.Remove(this);
-        //}
-    }
+    //protected override void OnDestroy()
+    //{
+    //    base.OnDestroy();
+    //    //if (WorldController.Instance.Hub.Batteries.Contains(this))
+    //    //{
+    //    //    WorldController.Instance.Hub.Batteries.Remove(this);
+    //    //}
+    //}
     
 }

@@ -15,27 +15,6 @@ public abstract class PowerSource : Building
         base.Awake();
     }
 
-    protected override void OnDestroy()
-    {
-        if (placed)
-        {
-            DeactivateTiles();
-        }
-
-        for (int i = 0; i < suppliedBuildings.Count; i++)
-        {
-            suppliedBuildings[i].SetPowerSource();
-
-            if (i == 20)
-            {
-                Debug.LogError("You are probably adding youself to the list of supplied buildings");
-                break;
-            }
-        }
-
-        base.OnDestroy();
-    }
-
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -183,13 +162,13 @@ public abstract class PowerSource : Building
     {
         if (this != newBuilding)
         {
-            Debug.Log("Plugging " + newBuilding.name + " into " + this.name);
+            //Debug.Log("Plugging " + newBuilding.name + " into " + this.name);
             suppliedBuildings.Add(newBuilding); 
         }
 
         if (suppliedBuildings.Contains(newBuilding))
         {
-            Debug.Log("plugged in successfully");
+            //Debug.Log("plugged in successfully");
         }
     }
 
@@ -197,10 +176,29 @@ public abstract class PowerSource : Building
     {
         if (suppliedBuildings.Contains(unplug))
         {
-            Debug.Log("Unplugging " + unplug.name + " from " + this.name);
+            //Debug.Log("Unplugging " + unplug.name + " from " + this.name);
             suppliedBuildings.Remove(unplug);
         }
     }
 
     public abstract bool SupplyingPower();
+
+    public void DismantlePowerSource()
+    {
+        if (placed)
+        {
+            DeactivateTiles();
+        }
+
+        for (int i = 0; i < suppliedBuildings.Count; i++)
+        {
+            suppliedBuildings[i].SetPowerSource();
+
+            if (i == 20)
+            {
+                Debug.LogError("You are probably adding youself to the list of supplied buildings");
+                break;
+            }
+        }
+    }
 }

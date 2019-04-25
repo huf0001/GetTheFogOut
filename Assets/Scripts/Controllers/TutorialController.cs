@@ -159,7 +159,7 @@ public class TutorialController : MonoBehaviour
 
             if (currentTile == null)
             {
-                Debug.Log("Current tile is null");
+                Debug.Log("TutorialController.CurrentTile is null");
             }
             else
             {

@@ -16,11 +16,11 @@ public abstract class Entity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (health == 0)
-        {
-            Destroy(this.gameObject);
-        }
+        //if (health == 0)
+        //{
+        //    Debug.Log("This entity has been destroyed. Called from Entity.Update()");
+        //    Destroy(this.gameObject);
+        //}
     }
 
     public virtual float Health

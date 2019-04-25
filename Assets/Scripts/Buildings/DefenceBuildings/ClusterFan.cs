@@ -47,10 +47,10 @@ public class ClusterFan : Defence
         CancelInvoke();
     }
 
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-    }
+    //protected override void OnDestroy()
+    //{
+    //    base.OnDestroy();
+    //}
 
     void Fire()
     {

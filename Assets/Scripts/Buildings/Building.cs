@@ -65,8 +65,8 @@ public abstract class Building : PlaneObject
     {
         if (Health <= 0)
         {
-            Debug.Log(buildingType + " has been destroyed!");
-            Destroy(this.gameObject);
+            //Debug.Log(buildingType + " has been destroyed! Called from Building.CheckHealth()");
+            DismantleBuilding();
         }
     }
 
@@ -88,33 +88,33 @@ public abstract class Building : PlaneObject
 
     public void SetPowerSource()
     {
-        Debug.Log("Setting Power Source");
+        //Debug.Log("Setting Power Source");
 
-        if (location == null)
-        {
-            Debug.Log("Location of " + this.name + " is null");
-        }
+        //if (location == null)
+        //{
+        //    Debug.Log("Location of " + this.name + " is null");
+        //}
 
-        if (location.PowerSource == null)
-        {
-            Debug.Log("Power Source is null");
-        }
+        //if (location.PowerSource == null)
+        //{
+        //    Debug.Log("Power Source is null");
+        //}
 
         powerSource = location.PowerSource;
 
         if (powerSource != null)
         {
-            Debug.Log("Plugging In and Powering Up " + this.name);
+            //Debug.Log("Plugging In and Powering Up " + this.name);
             powerSource.PlugIn(this);
             PowerUp();
         }
         else
         {
-            Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
+            //Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
             PowerDown();
         }
 
-        Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);
+        //Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);
     }
 
     public virtual void PowerUp()
@@ -124,7 +124,7 @@ public abstract class Building : PlaneObject
 
     public virtual void PowerDown()
     {
-        Debug.Log("Powering down " + this.name);
+        //Debug.Log("Powering down " + this.name);
         powered = false;
     }
 
@@ -153,8 +153,6 @@ public abstract class Building : PlaneObject
             }
         }
     }
-
-
 
     public Component GetData()
     {
@@ -190,15 +188,28 @@ public abstract class Building : PlaneObject
         return script;
     }
 
-    protected virtual void OnDestroy()
+    public void DismantleBuilding()
     {
+        //Debug.Log("Dismantling " + this.name);
+
+        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Relay)
+        {
+            PowerSource p = this as PowerSource;
+            p.DismantlePowerSource();
+        }
+
         if (powerSource != null)
         {
             powerSource.Unplug(this);
-            placed = false;
         }
-        PowerDown();
+
         FindObjectOfType<Hub>().RemoveBuilding(this);
-        //MakeTilesNotVisible();
+        MakeTilesNotVisible();
+        Destroy(this.gameObject);
     }
+
+    //protected virtual void OnDestroy()
+    //{
+    //    //Debug.Log("Building.OnDestroy() called, attempting to destroy " + this.name);
+    //}
 }
