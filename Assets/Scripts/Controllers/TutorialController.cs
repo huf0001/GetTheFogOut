@@ -20,6 +20,7 @@ public enum TutoralStage
 public class TutorialController : MonoBehaviour
 {
     //Serialized Fields
+    [SerializeField] private bool skipTutorial = true;
     [SerializeField] private ResourceNode harvesterResource;
 
     //Non-Serialized Fields
@@ -39,39 +40,11 @@ public class TutorialController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        if (skipTutorial)
+        {
+            tutorialStage = TutorialStage.Finished;
+        }
     }
-
-    // public string StageString(TutorialStage stage)
-    // {
-    //     string result = "";
-
-    //     switch(stage)
-    //     {
-    //         case TutorialStage.CrashLanding:
-    //             return "CrashLanding";
-    //         case TutorialStage.ShipPartsCrashing:
-    //             return "ShipPartsCrashing";
-    //         case TutorialStage.ZoomBackToShip:
-    //             return "ZoomBackToShip";
-    //         case TutorialStage.ExplainSituation:
-    //             return "ExplainSituation";
-    //         case TutorialStage.BuildHarvester:
-    //             return "BuildHarvester";
-    //         case TutorialStage.BuildGenerator:
-    //             return "BuildGenerator";
-    //         case TutorialStage.BuildRelay:
-    //             return "BuildRelay";
-    //         case TutorialStage.FogIsHazard:
-    //             return "FogIsHazard";
-    //         case TutorialStage.BuildClusterFan:
-    //             return "BuildClusterFan";
-    //         case TutorialStage.Finished:
-    //             return "Finished";
-    //     }
-
-    //     return result;
-    // }
 
     // Update is called once per frame
     void Update()

@@ -158,16 +158,12 @@ public class MouseController : MonoBehaviour
 
     private bool CheckIfTileOkay(TileData tile)
     {
-        return true;
+        if (tutorialController.TutorialStage == TutorialStage.Finished || tile == tutorialController.CurrentTile)
+        {
+            return true;
+        }
 
-        // Debug.Log("Tile attempting to build on: (" + tile.X + "," + tile.Z + ").");
-
-        // if (tutorialController.TutorialStage == TutorialStage.Finished || tile == tutorialController.CurrentTile)
-        // {
-        //     return true;
-        // }
-
-        // return false;
+        return false;
     }
 
     private void Build(GameObject toBuild, TileData tile, float height)
@@ -224,9 +220,9 @@ public class MouseController : MonoBehaviour
     private IEnumerator FloatText(GameObject buildingGo, Hub hub, BuildingType buildType)
     {
         //floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
-        if (buildingGo.GetComponent<Building>().MineralCost != 0)
+        if (buildingGo.GetComponentInChildren<Building>().MineralCost != 0)
         {
-            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{buildingGo.GetComponent<Building>().MineralCost}", buildingGo.transform);
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{buildingGo.GetComponentInChildren<Building>().MineralCost}", buildingGo.transform);
         }
         yield return new WaitForSeconds(0.2f);
     }
