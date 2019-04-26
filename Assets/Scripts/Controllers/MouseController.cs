@@ -14,6 +14,8 @@ public class MouseController : MonoBehaviour
     TowerManager towerManager;
     FloatingTextController floatingTextController;
 
+    private TutorialController tutorialController;
+
     private GameObject PointAtObj;
     List<GameObject> collisionList = new List<GameObject>();
 
@@ -25,6 +27,7 @@ public class MouseController : MonoBehaviour
     {
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
+        tutorialController = GetComponent<TutorialController>();
     }
 
     // Test for game pause/over mouse to not build/destroy buildings
@@ -61,7 +64,7 @@ public class MouseController : MonoBehaviour
                     if (hit.transform.gameObject.GetComponent<Building>().BuildingType != BuildingType.Hub)
                     {
                         PointAtObj = hit.transform.gameObject;
-                        Destroy(hit.transform.gameObject);
+                        hit.transform.gameObject.GetComponent<Building>().DismantleBuilding();
                     }
                 }
             }
@@ -73,7 +76,7 @@ public class MouseController : MonoBehaviour
         // code based somewhat off:
         //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
 
-        if (Time.timeScale == 1.0f && Input.GetMouseButtonDown(0))
+        if (Time.timeScale == 1.0f && (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A")) )
         {
             TileData tile;
 
@@ -86,48 +89,51 @@ public class MouseController : MonoBehaviour
                 if (WorldController.Instance.TileExistsAt(hit.point))
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
-                
-                    //If tile has power, place building. Otherwise, don't place building.
-                    if (tile.PowerSource != null)
-                    {
-                        GameObject toBuild = towerManager.GetTower("build");
 
-                        // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
-                        if (toBuild.name != "Empty")
+                    if (CheckIfTileOkay(tile))
+                    {
+                        //If tile has power, place building. Otherwise, don't place building.
+                        if (tile.PowerSource != null)
                         {
-                            Debug.Log(toBuild.name);
-                            if (toBuild.GetComponent<Building>() != null)
+                            GameObject toBuild = towerManager.GetTower("build");
+
+                            // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
+                            if (toBuild.name != "Empty")
                             {
-                                Building b = toBuild.GetComponent<Building>();
+                                //Debug.Log(toBuild.name);
+                                if (toBuild.GetComponent<Building>() != null)
+                                {
+                                    Building b = toBuild.GetComponent<Building>();
+                                }
+                                else
+                                {
+                                    Debug.Log("toBuild's building component is non-existant");
+                                }
+
+                                if (tile.Building == null && (tile.Resource == null || towerManager.GetBuildingType() == BuildingType.Harvester))
+                                {
+
+                                    if (towerManager.GetBuildingType() == BuildingType.Generator)
+                                    {
+                                        if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * generatorInterval + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
+                                        {
+                                            Debug.Log("If you want to build more generators, collect more ship components first.");
+                                            return;
+                                        }
+                                    }
+
+                                    tile.Placedtower = toBuild;
+                                    Build(tile.Placedtower, tile, 0f);
+                                }
                             }
                             else
                             {
-                                Debug.Log("toBuild's building component is non-existant");
-                            }
+                                RemoveBuilding();
 
-                            if (tile.Building == null && (tile.Resource == null || towerManager.GetBuildingType() == BuildingType.Harvester))
-                            {
-
-                                if (towerManager.GetBuildingType() == BuildingType.Generator)
+                                if(PointAtObj != null)
                                 {
-                                    if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * generatorInterval + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
-                                    {
-                                        Debug.Log("If you want to build more generators, collect more ship components first.");
-                                        return;
-                                    }
+                                    ReturnCost(PointAtObj);
                                 }
-                                    
-                                tile.Placedtower = toBuild;
-                                Build(tile.Placedtower, tile, 0f);
-                                
-                            }
-                        }
-                        else
-                        {
-                            RemoveBuilding();
-                            if(PointAtObj != null)
-                            {
-                                ReturnCost(PointAtObj);
                             }
                         }
                     }
@@ -139,48 +145,66 @@ public class MouseController : MonoBehaviour
     private void ReturnCost(GameObject buildtodestroy)
     {
         Hub hub = WorldController.Instance.Hub;
-        BuildingType buildType = buildtodestroy.GetComponentInChildren<Building>().BuildingType;
-            // add required resources
-            hub.StoredPower += hub.BuildingsCosts[buildType]["power"];
-            hub.StoredMineral += hub.BuildingsCosts[buildType]["mineral"];
-            hub.StoredOrganic += hub.BuildingsCosts[buildType]["organic"];
-            hub.StoredFuel += hub.BuildingsCosts[buildType]["fuel"];
-        
+        Building building = buildtodestroy.GetComponentInChildren<Building>();
+
+        // add required resources
+        hub.StoredPower += building.PowerCost;
+        hub.StoredMineral += building.MineralCost;
+        hub.StoredOrganic += building.OrganicCost;
+        hub.StoredFuel += building.FuelCost;
     }
 
-        private void Build(GameObject toBuild, TileData tile, float height)
+    private bool CheckIfTileOkay(TileData tile)
+    {
+        if (tutorialController.TutorialStage == TutorialStage.Finished || tile == tutorialController.CurrentTile)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void Build(GameObject toBuild, TileData tile, float height)
     {
         Hub hub = WorldController.Instance.Hub;
+        Building building = toBuild.GetComponentInChildren<Building>();
         BuildingType buildType = toBuild.GetComponentInChildren<Building>().BuildingType;
 
         // Check if required resources are avaliable
-        if (hub.BuildingsCosts[buildType]["power"] <= hub.StoredPower &&
-            hub.BuildingsCosts[buildType]["mineral"] <= hub.StoredMineral &&
-            hub.BuildingsCosts[buildType]["organic"] <= hub.StoredOrganic &&
-            hub.BuildingsCosts[buildType]["fuel"] <= hub.StoredFuel)
+        if (building != null)
         {
-            // Remove required resources
-            hub.StoredPower -= hub.BuildingsCosts[buildType]["power"];
-            hub.StoredMineral -= hub.BuildingsCosts[buildType]["mineral"];
-            hub.StoredOrganic -= hub.BuildingsCosts[buildType]["organic"];
-            hub.StoredFuel -= hub.BuildingsCosts[buildType]["fuel"];
+            int pcost = building.PowerCost;
+            int mcost = building.MineralCost;
+            int ocost = building.OrganicCost;
+            int fcost = building.FuelCost;
 
-            // Place new building
-            Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
-            Debug.Log(tile.X + " " + tile.Z);
-            GameObject buildingGo = Instantiate(toBuild, PosToInst, Quaternion.Euler(0f, 0f, 0f));
-            buildingGo.transform.SetParent(WorldController.Instance.Ground.transform);
-            Building building = buildingGo.GetComponentInChildren<Building>();
-            tile.Building = building;
-            building.Location = tile;
-            building.Animator = buildingGo.GetComponentInChildren<Animator>();
-            building.Animator.SetBool("Built", true);
-            building.Place();
-            StartCoroutine(FloatText(buildingGo, hub, buildType));
-        }
-        else
-        {
-            Debug.Log("Can't build, do not have the required resources.");
+            if (pcost <= hub.StoredPower &&
+                mcost <= hub.StoredMineral &&
+                ocost <= hub.StoredOrganic &&
+                fcost <= hub.StoredFuel)
+            {
+                // Remove required resources
+                hub.StoredPower -= pcost;
+                hub.StoredMineral -= mcost;
+                hub.StoredOrganic -= ocost;
+                hub.StoredFuel -= fcost;
+
+                // Place new building
+                Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
+                Debug.Log(tile.X + " " + tile.Z);
+                GameObject buildingGo = Instantiate(toBuild, PosToInst, Quaternion.Euler(0f, 0f, 0f));
+                buildingGo.transform.SetParent(WorldController.Instance.Ground.transform);
+                tile.Building = building;
+                building.Location = tile;
+                building.Animator = buildingGo.GetComponentInChildren<Animator>();
+                building.Animator.SetBool("Built", true);
+                building.Place();
+                StartCoroutine(FloatText(buildingGo, hub, buildType));
+            }
+            else
+            {
+                Debug.Log("Can't build, do not have the required resources.");
+            }
         }
 
     }
@@ -194,9 +218,9 @@ public class MouseController : MonoBehaviour
     private IEnumerator FloatText(GameObject buildingGo, Hub hub, BuildingType buildType)
     {
         //floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
-        if (hub.BuildingsCosts[buildType]["mineral"] != 0)
+        if (buildingGo.GetComponentInChildren<Building>().MineralCost != 0)
         {
-            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{hub.BuildingsCosts[buildType]["mineral"]}", buildingGo.transform);
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{buildingGo.GetComponentInChildren<Building>().MineralCost}", buildingGo.transform);
         }
         yield return new WaitForSeconds(0.2f);
     }

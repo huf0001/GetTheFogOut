@@ -41,6 +41,7 @@ public class TileData
     public List<TileData> AdjacentTiles { get => adjacentTiles; }
     public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
     public bool Visited { get => visited; set => visited = value; }
+    public string Name { get => "Tile (" + x + "," + z + ")"; }
 
     //Altered public properties
     public PowerSource PowerSource
@@ -68,6 +69,7 @@ public class TileData
     {
         //this.gameObject.GetComponent<Renderer>().material = onMaterial;
         powerSources.Add(power);
+
         if (building != null)
         {
             if (!building.Powered)

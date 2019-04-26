@@ -15,26 +15,6 @@ public abstract class PowerSource : Building
         base.Awake();
     }
 
-    protected override void OnDestroy()
-    {
-        if (placed)
-        {
-            DeactivateTiles();
-        }
-
-        for (int i = 0; i < suppliedBuildings.Count; i++)
-        {
-            suppliedBuildings[i].SetPowerSource();
-            if (i == 20)
-            {
-                Debug.LogError("You are probably adding youself to the list of supplied buildings");
-                break;
-            }
-        }
-
-        base.OnDestroy();
-    }
-
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -51,6 +31,26 @@ public abstract class PowerSource : Building
     {
         base.Place();
         ActivateTiles();
+    }
+
+    public List<Battery> GetBatteries()
+    {
+        List<Battery> batteries = new List<Battery>();
+
+        foreach (Building b in suppliedBuildings)
+        {
+            if (b.BuildingType == BuildingType.Battery)
+            {
+                batteries.Add(b as Battery);
+            }
+            else if (b.BuildingType == BuildingType.Relay)
+            {
+                Relay r = b as Relay;
+                batteries.AddRange(r.GetBatteries());
+            }
+        }
+
+        return batteries;
     }
 
     public List<Generator> GetGenerators()
@@ -143,6 +143,7 @@ public abstract class PowerSource : Building
     private void DeactivateTiles()
     {
         List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)powerRange);
+
         foreach (TileData tile in tiles)
         {
             tile.PowerDown(this as PowerSource);
@@ -162,17 +163,42 @@ public abstract class PowerSource : Building
     {
         if (this != newBuilding)
         {
+            Debug.Log("Plugging " + newBuilding.name + " into " + this.name);
             suppliedBuildings.Add(newBuilding); 
+        }
+
+        if (suppliedBuildings.Contains(newBuilding))
+        {
+            Debug.Log("plugged in successfully");
         }
     }
 
     public void Unplug(Building unplug)
     {
-        if (suppliedBuildings.Contains(unplug))
+        if (this != unplug)
         {
+            //if (suppliedBuildings.Contains(unplug))
+            //{
+            Debug.Log("Unplugging " + unplug.name + " from " + this.name);
             suppliedBuildings.Remove(unplug);
+            //}
+
+            if (!suppliedBuildings.Contains(unplug))
+            {
+                Debug.Log("Unplugged successfully");
+            }
         }
     }
 
     public abstract bool SupplyingPower();
+
+    public void DismantlePowerSource()
+    {
+        DeactivateTiles();
+
+        foreach(Building b in suppliedBuildings)
+        {
+            b.SetPowerSource();
+        }
+    }
 }

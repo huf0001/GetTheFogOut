@@ -19,33 +19,9 @@ public class ShipComponentState
     }
 }
 
-public enum TutorialStage
-{
-    None,
-    CrashLanding,
-    ShipPartsCrashing,
-    ZoomBackToShip,
-    ExplainSituation,
-    BuildHarvester,
-    BuildGenerator,
-    BuildRelay,
-    FogIsHazard,
-    BuildClusterFan,
-    Finished
-}
-
 public class WorldController : MonoBehaviour
 {
-    private class Point2D
-    {
-        public int x, y;
-
-        public Point2D(int a, int b)
-        {
-            x = a;
-            y = b;
-        }
-    }
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     // Serialized fields
     [Header("World Spawning Rules")]
@@ -69,7 +45,6 @@ public class WorldController : MonoBehaviour
     [Header("Public variable?")]
     public bool InBuildMode;
 
-
     // Non serialized fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
     private GameObject[] objs;
@@ -77,10 +52,12 @@ public class WorldController : MonoBehaviour
     private Vector3 pos;
     private TutorialStage tutorialStage = TutorialStage.CrashLanding;
 
-
     // UI & Mouse Controller
     UIController uiController;
     MouseController mouseController;
+
+    // Cursor Locking to centre
+    private CursorLockMode wantedMode;
 
     // Flags
     private bool hubBuilt = false;
@@ -96,6 +73,15 @@ public class WorldController : MonoBehaviour
     public Hub Hub { get => hub; set => hub = value; }
     public ShipComponentState[] ShipComponents { get => shipComponents; }
     public TutorialStage TutorialStage { get => tutorialStage;  }
+
+    //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+
+    private void Awake()
+    {
+        Cursor.lockState = wantedMode;
+        Cursor.visible = (CursorLockMode.Locked != wantedMode);
+        tm = FindObjectOfType<TowerManager>();
+    }
 
     private void Start()
     {
@@ -116,6 +102,7 @@ public class WorldController : MonoBehaviour
         ConnectAdjacentTiles();
         SetResourcesToTiles();
         SetBuildingsToTiles();
+        SetLandmarksToTiles();
         GetComponent<Fog>().SpawnFog();
     }
 
@@ -126,8 +113,9 @@ public class WorldController : MonoBehaviour
 
         foreach (ResourceNode resourceNode in resources)
         {
-            TileData tile = GetTileAt(resourceNode.transform.position);         
+            TileData tile = GetTileAt(resourceNode.transform.position);
             tile.Resource = resourceNode;
+            resourceNode.Location = tile;
         }
     }
 
@@ -165,6 +153,16 @@ public class WorldController : MonoBehaviour
         }
     }
 
+    void SetLandmarksToTiles()
+    {
+        Landmark[] landmarks = FindObjectsOfType<Landmark>();
+
+        foreach (Landmark l in landmarks)
+        {
+            l.Location = GetTileAt(l.transform.position);
+        }
+    }
+
     private void InstantiateTileArray()
     {
         tiles = new TileData[width, length];
@@ -188,6 +186,7 @@ public class WorldController : MonoBehaviour
                         pos.y += 0.2f;
                         GameObject mineral = Instantiate(mineralPrefab, pos, Quaternion.Euler(0f, 0f, 0f));
                         tile.Resource = mineral.GetComponentInChildren<ResourceNode>();
+                        mineral.GetComponentInChildren<ResourceNode>().Location = tile;
                         mineral.transform.SetParent(ground.transform, true);
                     }
                     else if (UnityEngine.Random.Range(1, 100) < fuelSpawnChance)
@@ -195,6 +194,7 @@ public class WorldController : MonoBehaviour
                         pos.y += 0.3f;
                         GameObject fuel = Instantiate(fuelPrefab, pos, Quaternion.Euler(0, 0, 0));
                         tile.Resource = fuel.GetComponentInChildren<ResourceNode>();
+                        fuel.GetComponentInChildren<ResourceNode>().Location = tile;
                         fuel.transform.SetParent(ground.transform, true);
                     }
                     else if (UnityEngine.Random.Range(1, 100) < organSpawnChance)
@@ -202,6 +202,7 @@ public class WorldController : MonoBehaviour
                         pos.y += 0.3f;
                         GameObject organ = Instantiate(organPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
                         tile.Resource = organ.GetComponentInChildren<ResourceNode>();
+                        organ.GetComponentInChildren<ResourceNode>().Location = tile;
                         organ.transform.SetParent(ground.transform, true);
                     }
                     else if (UnityEngine.Random.Range(1, 100) < powerSpawnChance)
@@ -209,6 +210,7 @@ public class WorldController : MonoBehaviour
                         pos.y += 0.2f;
                         GameObject power = Instantiate(powerPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
                         tile.Resource = power.GetComponentInChildren<ResourceNode>();
+                        power.GetComponentInChildren<ResourceNode>().Location = tile;
                         power.transform.SetParent(ground.transform, true);
                     }
                 }
@@ -225,15 +227,13 @@ public class WorldController : MonoBehaviour
         {
             foreach (TileData t in tiles)
             {
+                Vector2[] pts = { new Vector2(t.X, t.Z - 1), new Vector2(t.X, t.Z + 1), new Vector2(t.X - 1, t.Z), new Vector2(t.X + 1, t.Z) };
 
-                Point2D[] pts = { new Point2D(t.X, t.Z - 1), new Point2D(t.X, t.Z + 1), new Point2D(t.X - 1, t.Z), new Point2D(t.X + 1, t.Z) };
-
-                foreach (Point2D p in pts)
+                foreach (Vector2 p in pts)
                 {
                     if (p.x >= 0 && p.x < width && p.y >= 0 && p.y < length)
                     {
-                        Vector2 pos = new Vector2(p.x, p.y);
-                        a = GetTileAt(pos);
+                        a = GetTileAt(p);
 
                         if (!t.AdjacentTiles.Contains(a))
                         {
@@ -256,8 +256,7 @@ public class WorldController : MonoBehaviour
                         {
                             if (j >= 0 && j < length)
                             {
-                                Vector2 pos = new Vector2(i, j);
-                                a = GetTileAt(pos);
+                                a = GetTileAt(new Vector2(i, j));
 
                                 if (!t.AdjacentTiles.Contains(a))
                                 {
@@ -281,8 +280,7 @@ public class WorldController : MonoBehaviour
                     {
                         if (j >= 0 && j < length)
                         {
-                            Vector2 pos = new Vector2(i, j);
-                            a = GetTileAt(pos);
+                            a = GetTileAt(new Vector2(i, j));
 
                             if (!t.AllAdjacentTiles.Contains(a))
                             {
@@ -296,44 +294,107 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    private void MeshRendererTileChild(bool toggle)
-    {
-        objs = GameObject.FindGameObjectsWithTag("Tile");
+    //Core In-Gameplay Methods-----------------------------------------------------------------------------------------------------------------------
 
-        //Caution child can be more than 4!!!
-        foreach (GameObject obj in objs)
+    private void Update()
+    {
+        int tileCount = 0;
+
+        foreach (TileData t in tiles)
         {
-            for (int i = 0; i < 4; i++)
+            if (t != null)
             {
-                obj.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = toggle;
+                tileCount += 1;
             }
         }
-    }
 
-    private void EnableMeshRendTile(GameObject tile_obj)
-    {
-        pos = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
-        if (temp == null)
+        Debug.Log("Tiles.Length is " + tiles.Length + ". TileCount (where tile is not null) is " + tileCount);
+
+        if (!isGameOver)
         {
-            PlaneSpawn = Instantiate(planeGridprefab,pos,tile_obj.transform.rotation);
-            temp = tile_obj;
+            GameUpdate();
         }
         else
         {
-            if (temp != tile_obj)
-            {
-                Destroy(PlaneSpawn);
-                Destroy(TowerSpawn);
-                temp = null;
-            }
+            GameOverUpdate();
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+    }
+
+    private void GameUpdate()
+    {
+        if (InBuildMode)
         {
-            Destroy(PlaneSpawn);
-            Destroy(TowerSpawn);
-            tm.EscToCancel();
-            MeshRendererTileChild(false);
+            //    MeshRendererTileChild(true);
+            RenderTower();
+            //    ShowTile();
+        }
+
+        // TEMP FIX, SHOULD BE REMOVED LATER
+        if (hub == null)
+        {
+            hub = FindObjectOfType<Hub>();
+        }
+
+        if (Input.GetKeyDown("p") || Input.GetButtonDown("Xbox_Menu"))
+        {
+            if (Time.timeScale == 1.0f)
+            {
+                Time.timeScale = 0.0f;
+                pause.SetActive(true);
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                pause.SetActive(false);
+            }
+
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+            // TEST CODE: Stopping Mouse from placing/deleting buildings in Game Pause/Over.
+            // mouseController.GamePlayStop();
+        }
+
+        if (Input.GetKeyDown("c"))
+        {
+            Cursor.lockState = wantedMode = CursorLockMode.None;
+            ChangeCursorState();
+        }
+
+        if (hub.IsWin() || hub.isDestroyed())
+        {
+
+            Time.timeScale = 0.2f;
+            isGameOver = true;
             InBuildMode = false;
+        }
+    }
+
+    private void ChangeCursorState()
+    {
+        switch (Cursor.lockState)
+        {
+            case CursorLockMode.None:
+                wantedMode = CursorLockMode.Locked;
+                Debug.Log("Cursor Locked");
+                break;
+            case CursorLockMode.Locked:
+                wantedMode = CursorLockMode.None;
+                Debug.Log("Cursor Unlocked");
+                break;
+        }
+    }
+
+    private void GameOverUpdate()
+    {
+        if (hub.IsWin())
+        {
+            //Display win UI
+            uiController.EndGameDisplay("You win!");
+        }
+        else
+        {
+            //Display lose UI
+            uiController.EndGameDisplay("You lose!");
         }
     }
 
@@ -368,7 +429,7 @@ public class WorldController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -377,175 +438,30 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    private void ShowTile()
+    public bool TileExistsAt(Vector3 pos)
     {
-        RaycastHit[] hits;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        hits = Physics.RaycastAll(ray, 100.0f);
-        for (int i = 0; i < hits.Length; i++)
+        return TileExistsAt(new Vector2(pos.x, pos.z));
+    }
+
+    public bool TileExistsAt(Vector2 pos)
+    {
+        int x = Mathf.RoundToInt(pos.x);
+        int y = Mathf.RoundToInt(pos.y);
+
+        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
         {
-            RaycastHit hit = hits[i];
-            if (hit.transform.gameObject.tag == "Tile")
-            {
-                tiletest = hit.transform.gameObject;
-
-                EnableMeshRendTile(tiletest);
-
-            }
-        }
-    }
-
-    public void SetToBuildMode()
-    {
-        InBuildMode = true;
-    }
-
-    private void Awake()
-    {
-        tm = FindObjectOfType<TowerManager>();
-    }
-
-    private void Update()
-    {
-        TutorialUpdate();
-
-        if (!isGameOver)
-        {
-            GameUpdate();
+            //Debug.Log("Tile (" + x + "," + y + ") doesn't exist. Probably want to double check that it isn't supposed to exist and you haven't fucked up the code somewhere.");
+            return false;
         }
         else
         {
-            GameOverUpdate();
+            return true;
         }
     }
 
-    private void TutorialUpdate()
+    public TileData GetTileAt(Vector3 pos)
     {
-            //    public enum TutorialStage
-            //{
-            //    None,
-            //    CrashLanding,
-            //    ShipPartsCrashing,
-            //    ZoomBackToShip,
-            //    ExplainSituation,
-            //    BuildHarvester,
-            //    BuildGenerator,
-            //    BuildRelay,
-            //    FogIsHazard,
-            //    BuildClusterFan,
-            //    Finished
-            //}
-
-
-        //Tutorial Stage 1: Start Scene Animation
-        //Ship crash lands, intro scene
-
-        //Ship parts crash, x3 different scenes
-
-        //Zoom back to ship
-
-        //Tutorial Stage 2: AI Explains Basic Building Placement
-        //AI explains player's situation
-
-        //AI begins tutorial of placing buildings
-
-        //AI explains how to build a harvester and how they work
-
-        //AI helps player build a power generator and explains how they work
-
-        //AI helps player build a relay and explains how they work
-
-        //Tutorial Stage 3: AI Explains The Fog
-        //AI realises the fog is a hazard
-
-        //AI tells player to build a cluster fan and explains how they work
-
-        //End tutorial, game is fully responsive to player's input.
-    }
-
-    private void GameUpdate()
-    {
-        if (InBuildMode)
-        {
-            //    MeshRendererTileChild(true);
-            RenderTower();
-            //    ShowTile();
-        }
-
-        // TEMP FIX, SHOULD BE REMOVED LATER
-        if (hub == null)
-        {
-            hub = FindObjectOfType<Hub>();
-        }
-
-        if (Input.GetKeyDown("p"))
-        {
-            if (Time.timeScale == 1.0f)
-            {
-                Time.timeScale = 0.0f;
-                pause.SetActive(true);
-            }
-            else
-            {
-                Time.timeScale = 1.0f;
-                pause.SetActive(false);
-            }
-
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-
-            // TEST CODE: Stopping Mouse from placing/deleting buildings in Game Pause/Over.
-            // mouseController.GamePlayStop();
-        }
-
-        if (hub.IsWin() || hub.isDestroyed())
-        {
-
-            Time.timeScale = 0.2f;
-            isGameOver = true;
-            InBuildMode = false;
-        }
-    }
-
-    private void GameOverUpdate()
-    {
-        if (hub.IsWin())
-        {
-            //Display win UI
-            uiController.EndGameDisplay("You win!");
-        }
-        else
-        {
-            //Display lose UI
-            uiController.EndGameDisplay("You lose!");
-        }
-    }
-    //rotate to 90
-
-    //private void InstantiateStartHub()
-    //{
-        //int x = GetHalf(width);
-        //int y = GetHalf(length);
-        //Tile startingTile = tiles[x, y].GetComponent<Tile>();
-        //Vector3 PosToInst = new Vector3(startingTile.transform.position.x, startingTile.transform.position.y + 0.4125f, startingTile.transform.position.z);
-        //GameObject hubGO = Instantiate(hubPrefab, PosToInst, startingTile.transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        //Hub startHub = hubGO.GetComponentInChildren<Hub>();
-        //hub = startHub;
-
-        //hubGO.transform.SetParent(startingTile.transform);
-        //startingTile.Building = startHub;
-        //hub.Location = startingTile;
-    //}
-
-    private int GetHalf(int n)
-    {
-        if (n % 2 == 0)
-        {
-            return Mathf.FloorToInt(n / 2);
-        }
-        else
-        {
-            return Mathf.FloorToInt((n - 1) / 2);
-        }
+        return GetTileAt(new Vector2(pos.x, pos.z));
     }
 
     public TileData GetTileAt(Vector2 pos)
@@ -589,33 +505,81 @@ public class WorldController : MonoBehaviour
         return count;
     }
 
-    public bool TileExistsAt(Vector3 pos)
-    {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.z);
+    //Apparently Currently Unused Methods------------------------------------------------------------------------------------------------------------
 
-        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
-        {
-            //Debug.Log("Tile (" + x + "," + y + ") doesn't exist. Probably want to double check that it isn't supposed to exist and you haven't fucked up the code somewhere.");
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
+    //private void ShowTile()
+    //{
+    //    RaycastHit[] hits;
+    //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //    hits = Physics.RaycastAll(ray, 100.0f);
+    //    for (int i = 0; i < hits.Length; i++)
+    //    {
+    //        RaycastHit hit = hits[i];
+    //        if (hit.transform.gameObject.tag == "Tile")
+    //        {
+    //            tiletest = hit.transform.gameObject;
 
-    public TileData GetTileAt(Vector3 pos)
-    {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.z);
+    //            EnableMeshRendTile(tiletest);
 
-        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
-        {
-            Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
-            return null;
-        }
+    //        }
+    //    }
+    //}
 
-        return tiles[x, y];
-    }
+    //private void EnableMeshRendTile(GameObject tile_obj)
+    //{
+    //    pos = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
+    //    if (temp == null)
+    //    {
+    //        PlaneSpawn = Instantiate(planeGridprefab, pos, tile_obj.transform.rotation);
+    //        temp = tile_obj;
+    //    }
+    //    else
+    //    {
+    //        if (temp != tile_obj)
+    //        {
+    //            Destroy(PlaneSpawn);
+    //            Destroy(TowerSpawn);
+    //            temp = null;
+    //        }
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
+    //    {
+    //        Destroy(PlaneSpawn);
+    //        Destroy(TowerSpawn);
+    //        tm.EscToCancel();
+    //        MeshRendererTileChild(false);
+    //        InBuildMode = false;
+    //    }
+    //}
+
+    //private void MeshRendererTileChild(bool toggle)
+    //{
+    //    objs = GameObject.FindGameObjectsWithTag("Tile");
+
+    //    //Caution child can be more than 4!!!
+    //    foreach (GameObject obj in objs)
+    //    {
+    //        for (int i = 0; i < 4; i++)
+    //        {
+    //            obj.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = toggle;
+    //        }
+    //    }
+    //}
+
+    //private int GetHalf(int n)
+    //{
+    //    if (n % 2 == 0)
+    //    {
+    //        return Mathf.FloorToInt(n / 2);
+    //    }
+    //    else
+    //    {
+    //        return Mathf.FloorToInt((n - 1) / 2);
+    //    }
+    //}
+
+    //public void SetToBuildMode()
+    //{
+    //    InBuildMode = true;
+    //}
 }

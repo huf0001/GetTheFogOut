@@ -179,6 +179,21 @@ PrefabInstance:
       propertyPath: buildingType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7349966923451510019, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
+        type: 3}
+      propertyPath: powerCost
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349966923451510019, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
+        type: 3}
+      propertyPath: mineralCost
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349966923451510019, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
+        type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 2600023349171385151}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: deab0fe8a4e311b4ba54dd3dc5d73113, type: 3}
 --- !u!1 &6106921662106282386 stripped
@@ -190,6 +205,12 @@ GameObject:
 --- !u!4 &6395643398096909852 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8555355797511122423, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
+    type: 3}
+  m_PrefabInstance: {fileID: 3349368664277769195}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &2600023349171385151 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 751672844018854100, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
     type: 3}
   m_PrefabInstance: {fileID: 3349368664277769195}
   m_PrefabAsset: {fileID: 0}

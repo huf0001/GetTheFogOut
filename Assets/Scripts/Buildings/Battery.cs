@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Battery : Building
 {
-
     public Battery()
     {
         // call Hub.AddBattery(); adds 10 to maxStorage
         // costs 30 to build
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
     }
 
     // Start is called before the first frame update
@@ -21,10 +25,10 @@ public class Battery : Building
     public override void Place()
     {
         base.Place();
-        if (!WorldController.Instance.Hub.Batteries.Contains(this))
-        {
-            WorldController.Instance.Hub.Batteries.Add(this);
-        }
+        //if (!WorldController.Instance.Hub.Batteries.Contains(this))
+        //{
+        //    WorldController.Instance.Hub.Batteries.Add(this);
+        //}
     }
 
     // Update is called once per frame
@@ -33,13 +37,13 @@ public class Battery : Building
         base.Update();
     }
 
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        if (WorldController.Instance.Hub.Batteries.Contains(this))
-        {
-            WorldController.Instance.Hub.Batteries.Remove(this);
-        }
-    }
+    //protected override void OnDestroy()
+    //{
+    //    base.OnDestroy();
+    //    //if (WorldController.Instance.Hub.Batteries.Contains(this))
+    //    //{
+    //    //    WorldController.Instance.Hub.Batteries.Remove(this);
+    //    //}
+    //}
     
 }
