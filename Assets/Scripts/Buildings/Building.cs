@@ -87,7 +87,7 @@ public abstract class Building : PlaneObject
             }
         }
 
-        FindObjectOfType<ResourceController>().AddBuilding(this);
+        resourceController.AddBuilding(this);
         placed = true;
         audioSource.Play();
         //GetComponent<Renderer>().material.shader = buildingShader;
@@ -238,16 +238,7 @@ public abstract class Building : PlaneObject
 
         resourceController.RemoveBuilding(this);
 
-        //if (buildingType == BuildingType.Battery)
-        //{
-        //    hub.Batteries.Remove(this as Battery);
-        //}
-        //else if (buildingType == BuildingType.Defence)
-        //{
-        //    hub.Defences.Remove(this as Defence);
-        //}
-
-        Debug.Log("Should be removed from hub's list of my building type");
+        Debug.Log("Should be removed from ResourceController's list of my building type");
 
         Destroy(this.transform.parent.gameObject);
         Destroy(this);

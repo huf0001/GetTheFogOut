@@ -310,18 +310,6 @@ public class WorldController : MonoBehaviour
 
     private void Update()
     {
-        //int tileCount = 0;
-
-        //foreach (TileData t in tiles)
-        //{
-        //    if (t != null)
-        //    {
-        //        tileCount += 1;
-        //    }
-        //}
-
-        //Debug.Log("Tiles.Length is " + tiles.Length + ". TileCount (where tile is not null) is " + tileCount);
-
         if (!isGameOver)
         {
             GameUpdate();
