@@ -11,6 +11,8 @@ public class MouseController : MonoBehaviour
     [SerializeField] private int generatorInterval = 5;
 
     //Non-serialized fields
+    private Hub hub = null;
+    private ResourceController resourceController = null;
     TowerManager towerManager;
     FloatingTextController floatingTextController;
 
@@ -19,12 +21,16 @@ public class MouseController : MonoBehaviour
     private GameObject PointAtObj;
     List<GameObject> collisionList = new List<GameObject>();
 
+    public Hub Hub { get => hub; set => hub = value; }
+
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        resourceController = WorldController.Instance.ResourceController;
+        hub = WorldController.Instance.Hub;
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
         tutorialController = GetComponent<TutorialController>();
@@ -144,14 +150,14 @@ public class MouseController : MonoBehaviour
 
     private void ReturnCost(GameObject buildtodestroy)
     {
-        Hub hub = WorldController.Instance.Hub;
+        //Hub hub = WorldController.Instance.Hub;
         Building building = buildtodestroy.GetComponentInChildren<Building>();
 
         // add required resources
-        hub.StoredPower += building.PowerCost;
-        hub.StoredMineral += building.MineralCost;
-        hub.StoredOrganic += building.OrganicCost;
-        hub.StoredFuel += building.FuelCost;
+        resourceController.StoredPower += building.PowerCost;
+        resourceController.StoredMineral += building.MineralCost;
+        resourceController.StoredOrganic += building.OrganicCost;
+        resourceController.StoredFuel += building.FuelCost;
     }
 
     private bool CheckIfTileOkay(TileData tile)
@@ -178,16 +184,16 @@ public class MouseController : MonoBehaviour
             int ocost = building.OrganicCost;
             int fcost = building.FuelCost;
 
-            if (pcost <= hub.StoredPower &&
-                mcost <= hub.StoredMineral &&
-                ocost <= hub.StoredOrganic &&
-                fcost <= hub.StoredFuel)
+            if (pcost <= resourceController.StoredPower &&
+                mcost <= resourceController.StoredMineral &&
+                ocost <= resourceController.StoredOrganic &&
+                fcost <= resourceController.StoredFuel)
             {
                 // Remove required resources
-                hub.StoredPower -= pcost;
-                hub.StoredMineral -= mcost;
-                hub.StoredOrganic -= ocost;
-                hub.StoredFuel -= fcost;
+                resourceController.StoredPower -= pcost;
+                resourceController.StoredMineral -= mcost;
+                resourceController.StoredOrganic -= ocost;
+                resourceController.StoredFuel -= fcost;
 
                 // Place new building
                 Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
@@ -196,6 +202,16 @@ public class MouseController : MonoBehaviour
                 buildingGo.transform.SetParent(WorldController.Instance.Ground.transform);
                 tile.Building = building;
                 building.Location = tile;
+
+                if (resourceController == null)
+                {
+                    Debug.Log("resourceController is null in MouseController");
+                }
+                else
+                {
+                    building.ResourceController = resourceController;
+                }
+
                 building.Animator = buildingGo.GetComponentInChildren<Animator>();
                 building.Animator.SetBool("Built", true);
                 building.Place();
@@ -206,7 +222,6 @@ public class MouseController : MonoBehaviour
                 Debug.Log("Can't build, do not have the required resources.");
             }
         }
-
     }
 
     /// <summary>

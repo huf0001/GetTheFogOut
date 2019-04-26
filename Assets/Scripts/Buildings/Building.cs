@@ -20,8 +20,10 @@ public abstract class Building : PlaneObject
 
     //Non-serialized fields
     private Animator animator;
+    private ResourceController resourceController = null;
 
     //Public properties
+    //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
     public int Upkeep { get => upkeep; }
     public BuildingType BuildingType { get => buildingType; }
     public Animator Animator { get => animator; set => animator = value; }
@@ -31,12 +33,24 @@ public abstract class Building : PlaneObject
     public int PowerCost { get => powerCost; }
     public int FuelCost { get => fuelCost; }
     public int OrganicCost { get => organicCost; }
+    public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
+
+    //public Hub Hub
+    //{
+    //    get => resourceController;
+    //    set
+    //    {
+    //        Debug.Log("Building.Hub changed");
+    //        hub = value;
+    //    }
+    //}
 
     protected virtual void Awake()
     {
         //MakeTilesVisible();
         FindToolTip();
         audioSource = GetComponent<AudioSource>();
+        resourceController = WorldController.Instance.ResourceController;
 
         //if (placed)
         //{
@@ -73,7 +87,7 @@ public abstract class Building : PlaneObject
             }
         }
 
-        FindObjectOfType<Hub>().AddBuilding(this);
+        FindObjectOfType<ResourceController>().AddBuilding(this);
         placed = true;
         audioSource.Play();
         //GetComponent<Renderer>().material.shader = buildingShader;
@@ -208,7 +222,7 @@ public abstract class Building : PlaneObject
         if (powerSource != null)
         {
             Debug.Log("Unplugging from " + powerSource.name);
-            powerSource.Unplug(this);
+            powerSource.SuppliedBuildings.Remove(this);
         }
 
         //MakeTilesNotVisible();
@@ -221,8 +235,17 @@ public abstract class Building : PlaneObject
         }
 
         PowerDown();
-        FindObjectOfType<Hub>().RemoveBuilding(this);
-        
+
+        resourceController.RemoveBuilding(this);
+
+        //if (buildingType == BuildingType.Battery)
+        //{
+        //    hub.Batteries.Remove(this as Battery);
+        //}
+        //else if (buildingType == BuildingType.Defence)
+        //{
+        //    hub.Defences.Remove(this as Defence);
+        //}
 
         Debug.Log("Should be removed from hub's list of my building type");
 

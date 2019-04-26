@@ -33,6 +33,7 @@ public class WorldController : MonoBehaviour
 
     [Header("Prefab/Gameobject assignment")]
     [SerializeField] private Terrain ground;
+    [SerializeField] private ResourceController resourceController;
 
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
@@ -71,19 +72,13 @@ public class WorldController : MonoBehaviour
     public int Width { get => width; }
     public int Length { get => length; }
     public Hub Hub { get => hub; set => hub = value; }
+    public ResourceController ResourceController { get => resourceController; }
     public ShipComponentState[] ShipComponents { get => shipComponents; }
     public TutorialStage TutorialStage { get => tutorialStage;  }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
     private void Awake()
-    {
-        Cursor.lockState = wantedMode;
-        Cursor.visible = (CursorLockMode.Locked != wantedMode);
-        tm = FindObjectOfType<TowerManager>();
-    }
-
-    private void Start()
     {
         if (Instance != null)
         {
@@ -94,6 +89,13 @@ public class WorldController : MonoBehaviour
         Instance = this;
         isGameOver = false;
 
+        Cursor.lockState = wantedMode;
+        Cursor.visible = (CursorLockMode.Locked != wantedMode);
+        tm = FindObjectOfType<TowerManager>();
+    }
+
+    private void Start()
+    {     
         //Get UIController currently used in scene
         uiController = GetComponent<UIController>();
 
@@ -146,6 +148,16 @@ public class WorldController : MonoBehaviour
                 //TileData tile = GetTileAt(b.transform.position);
                 TileData tile = GetTileAt(b.transform.parent.position);
                 b.Location = tile;
+
+                if (resourceController == null)
+                {
+                    Debug.Log("Hub is null in WorldController");
+                }
+                else
+                {
+                    b.ResourceController = resourceController;
+                }
+
                 b.Animator = b.GetComponentInChildren<Animator>();
                 b.Animator.SetBool("Built", true);
                 b.Place();
@@ -298,17 +310,17 @@ public class WorldController : MonoBehaviour
 
     private void Update()
     {
-        int tileCount = 0;
+        //int tileCount = 0;
 
-        foreach (TileData t in tiles)
-        {
-            if (t != null)
-            {
-                tileCount += 1;
-            }
-        }
+        //foreach (TileData t in tiles)
+        //{
+        //    if (t != null)
+        //    {
+        //        tileCount += 1;
+        //    }
+        //}
 
-        Debug.Log("Tiles.Length is " + tiles.Length + ". TileCount (where tile is not null) is " + tileCount);
+        //Debug.Log("Tiles.Length is " + tiles.Length + ". TileCount (where tile is not null) is " + tileCount);
 
         if (!isGameOver)
         {
@@ -360,7 +372,7 @@ public class WorldController : MonoBehaviour
             ChangeCursorState();
         }
 
-        if (hub.IsWin() || hub.isDestroyed())
+        if (resourceController.IsWin() || hub.isDestroyed())
         {
 
             Time.timeScale = 0.2f;
@@ -386,7 +398,7 @@ public class WorldController : MonoBehaviour
 
     private void GameOverUpdate()
     {
-        if (hub.IsWin())
+        if (resourceController.IsWin())
         {
             //Display win UI
             uiController.EndGameDisplay("You win!");

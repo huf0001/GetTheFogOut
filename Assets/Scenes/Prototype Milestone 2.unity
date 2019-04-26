@@ -2744,40 +2744,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: winText
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: loseText
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: endGame
       value: 
       objectReference: {fileID: 1748379645}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: endGameText
-      value: 
-      objectReference: {fileID: 1080923187}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: pauseGame
       value: 
       objectReference: {fileID: 1316122150}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: gameboardPrefab
+      propertyPath: endGameText
       value: 
-      objectReference: {fileID: 4876157676309140051, guid: 43e8f3cdefddbbe44b877a3f4d596bc9,
-        type: 3}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: hub
-      value: 
-      objectReference: {fileID: 2086632604}
+      objectReference: {fileID: 1080923187}
     - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: ground
@@ -2785,41 +2764,19 @@ PrefabInstance:
       objectReference: {fileID: 592350498}
     - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
+      propertyPath: hub
+      value: 
+      objectReference: {fileID: 2086632604}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
       propertyPath: pause
       value: 
       objectReference: {fileID: 1316122150}
-    - target: {fileID: 1899903245264256476, guid: c327127a5d1d641479ca91d40ce5c9e5,
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: emptyprefab
+      propertyPath: resourceController
       value: 
-      objectReference: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
-        type: 3}
-    - target: {fileID: 1899903245264256477, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: test
-      value: 
-      objectReference: {fileID: 582058880077828689, guid: c93ed7a77f84d704e90149456fc51d3b,
-        type: 3}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: configuration
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1794963871152971053, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 5b197f79cec46be42b4e008b99ee23a1, type: 3}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1210913968312047254}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: harvesterResource
@@ -2840,6 +2797,16 @@ PrefabInstance:
       propertyPath: clusterFanLandmark
       value: 
       objectReference: {fileID: 866083255}
+    - target: {fileID: 1210913968312047254, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: storedMineral
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210913968312047254, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: maxMineral
+      value: 99999
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
 --- !u!114 &1714465888 stripped
@@ -3356,6 +3323,18 @@ MonoBehaviour:
   cam1: {fileID: 970662340}
   moveSpeed: 20
   enableEdgePan: 0
+--- !u!114 &1210913968312047254 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1210913968312047254, guid: c327127a5d1d641479ca91d40ce5c9e5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1714465887}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bca1a935627dc246b13c4db45c55b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4624800829874131964
 PrefabInstance:
   m_ObjectHideFlags: 0

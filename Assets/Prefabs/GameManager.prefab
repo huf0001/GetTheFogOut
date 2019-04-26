@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1899903245264256475}
   - component: {fileID: 1899903245264256474}
+  - component: {fileID: 1210913968312047254}
   - component: {fileID: 1899903245264256476}
   - component: {fileID: 1899903245264256477}
   - component: {fileID: 1899903245264256472}
@@ -59,6 +60,7 @@ MonoBehaviour:
   powerSpawnChance: 5
   organSpawnChance: 5
   ground: {fileID: 0}
+  resourceController: {fileID: 0}
   tilePrefab: {fileID: 4687682228001315334, guid: 18bdef06dd148db4d888636bdefa3eab,
     type: 3}
   hubPrefab: {fileID: 1405241161030514272, guid: 47e172c828d0ea4428b22c2696684f4c,
@@ -83,6 +85,35 @@ MonoBehaviour:
     collected: 0
   pause: {fileID: 0}
   InBuildMode: 1
+--- !u!114 &1210913968312047254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899903245264256479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bca1a935627dc246b13c4db45c55b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPower: 100
+  maxMineral: 100
+  maxOrganic: 100
+  maxFuel: 100
+  storedPower: 0
+  storedMineral: 0
+  storedOrganic: 0
+  storedFuel: 0
+  powerChange: 0
+  mineralChange: 0
+  organicChange: 0
+  fuelChange: 0
+  batteries: []
+  defences: []
+  generators: []
+  harvesters: []
+  relays: []
 --- !u!114 &1899903245264256476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,6 +171,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6e49c22bc42cb04890ed435db975f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skipTutorial: 1
+  harvesterResource: {fileID: 0}
+  generatorLandmark: {fileID: 0}
+  relayLandmark: {fileID: 0}
+  clusterFanLandmark: {fileID: 0}
+  tutorialStage: 1
+  currentlyBuilding: 0
+  currentTileX: 0
+  currentTileZ: 0
+  subStage: 1
 --- !u!114 &3646138034780775634
 MonoBehaviour:
   m_ObjectHideFlags: 0

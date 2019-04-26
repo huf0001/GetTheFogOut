@@ -20,7 +20,7 @@ public class UIController : MonoBehaviour
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
 
-    Hub hub = null;
+    ResourceController resourceController = null;
 
     //WarningScript warningScript;
 
@@ -50,9 +50,9 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hub == null)
+        if (resourceController == null)
         {
-            hub = WorldController.Instance.Hub;
+            resourceController = WorldController.Instance.ResourceController;
         }
 
         powerTime += Time.deltaTime;
@@ -77,17 +77,17 @@ public class UIController : MonoBehaviour
 
     void UpdateResourceText()
     {
-        if (hub != null)
+        if (resourceController != null)
         {
             // if the stored power is different, change values used for lerping
-            if (hub.StoredPower != power)
+            if (resourceController.StoredPower != power)
             {
-                power = hub.StoredPower;
+                power = resourceController.StoredPower;
                 powerVal = powerSlider.value;
                 powerTime = 0;
             }
 
-            powerChange = hub.PowerChange;
+            powerChange = resourceController.PowerChange;
 
             // change colour of power change text depending on +, - or ±
             string colour;
@@ -107,10 +107,10 @@ public class UIController : MonoBehaviour
             }
 
             // update slider and text values
-            powerSlider.maxValue = hub.MaxPower;
+            powerSlider.maxValue = resourceController.MaxPower;
             powerSlider.value = Mathf.Lerp(powerVal, power, powerTime);
-            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + hub.MaxPower + "    <color=" + colour + powerChange + "</color>";
-            mineralText.text = hub.StoredMineral + " units";
+            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + resourceController.MaxPower + "    <color=" + colour + powerChange + "</color>";
+            mineralText.text = resourceController.StoredMineral + " units";
 
             // old code that probably should be adapted to tween mineral stock number
             //if (hub.StoredMineral != mineral)

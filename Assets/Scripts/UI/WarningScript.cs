@@ -12,7 +12,7 @@ public class WarningScript : MonoBehaviour
     {
         { "power", new object[] { "Power is stable", WarningLevel.Normal } }
     };
-    Hub hub;
+    ResourceController resourceController;
     object[] powerState;
     
     int pChangeValue = 0;
@@ -23,7 +23,7 @@ public class WarningScript : MonoBehaviour
     void Start()
     {
         tint = GetComponent<Image>();
-        hub = WorldController.Instance.Hub;
+        resourceController = WorldController.Instance.ResourceController;
         powerState = warnings["power"];
     }
 
@@ -76,26 +76,26 @@ public class WarningScript : MonoBehaviour
 
     private void CheckStates()
     {
-        if (hub.PowerChange != pChangeValue)
+        if (resourceController.PowerChange != pChangeValue)
         {
             CheckPower();
-            pChangeValue = hub.PowerChange;
+            pChangeValue = resourceController.PowerChange;
         }
     }
 
     private void CheckPower()
     {
-        if (hub.PowerChange > 0)
+        if (resourceController.PowerChange > 0)
         {
             powerState[0] = "Power is stable";
             powerState[1] = WarningLevel.Normal;
         }
-        else if (hub.PowerChange < 0)
+        else if (resourceController.PowerChange < 0)
         {
             powerState[0] = "Power is overloaded!";
             powerState[1] = WarningLevel.Danger;
         }
-        if (hub.PowerChange == 0)
+        if (resourceController.PowerChange == 0)
         {
             powerState[0] = "Power is at max capacity";
             powerState[1] = WarningLevel.Warning;
