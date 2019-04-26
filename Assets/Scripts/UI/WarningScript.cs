@@ -1,20 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using TMPro;
 
 public class WarningScript : MonoBehaviour
 {
     Image tint;
     WarningLevel state = WarningLevel.Normal;
-    Dictionary<string, object[]> warnings = new Dictionary<string, object[]>
+    Dictionary<string, WarningLevel> warnings = new Dictionary<string, WarningLevel>
     {
-        { "power", new object[] { "Power is stable", WarningLevel.Normal } }
+        { "power", WarningLevel.Normal },
+        { "buildings", WarningLevel.Normal }
     };
     ResourceController resourceController;
-    object[] powerState;
-    
+
+    TextMeshProUGUI[] texts;
+    const string NORMAL = "<sprite=\"all_icons\" index=4 tint=1 color=#3f3f3f> ";
+    const string WARNING = "<sprite=\"all_icons\" index=4 tint=1 color=#f0b040> ";
+    const string DANGER = "<sprite=\"all_icons\" index=4 tint=1 color=#c80000> ";
+    TextMeshProUGUI powerStatus;
+    TextMeshProUGUI buildingStatus;
+
     int pChangeValue = 0;
 
     [SerializeField] GameObject warningBox;
@@ -24,7 +33,11 @@ public class WarningScript : MonoBehaviour
     {
         tint = GetComponent<Image>();
         resourceController = WorldController.Instance.ResourceController;
-        powerState = warnings["power"];
+        texts = GetComponentsInChildren<TextMeshProUGUI>(true);
+        powerStatus = texts[0];
+        powerStatus.text = NORMAL + "Power is stable";
+        buildingStatus = texts[1];
+        buildingStatus.text = NORMAL + "All buildings are healthy";
     }
 
     // Update is called once per frame
@@ -33,15 +46,15 @@ public class WarningScript : MonoBehaviour
         CheckStates();
 
         WarningLevel level = WarningLevel.Normal;
-        foreach (object[] w in warnings.Values)
+        foreach (WarningLevel w in warnings.Values)
         {
-            if ((WarningLevel)w[1] == WarningLevel.Warning && level == WarningLevel.Normal)
+            if (w == WarningLevel.Warning && level == WarningLevel.Normal)
             {
-                level = (WarningLevel)w[1];
+                level = w;
             }
-            if ((WarningLevel)w[1] == WarningLevel.Danger && (level == WarningLevel.Normal || level == WarningLevel.Warning))
+            if (w == WarningLevel.Danger && (level == WarningLevel.Normal || level == WarningLevel.Warning))
             {
-                level = (WarningLevel)w[1];
+                level = w;
                 break;
             }
         }
@@ -54,7 +67,7 @@ public class WarningScript : MonoBehaviour
         Warning,
         Danger
     }
-    
+
     private void ChangeState(WarningLevel w)
     {
         switch (w)
@@ -79,26 +92,32 @@ public class WarningScript : MonoBehaviour
         if (resourceController.PowerChange != pChangeValue)
         {
             CheckPower();
-            pChangeValue = resourceController.PowerChange;
         }
     }
 
     private void CheckPower()
     {
-        if (resourceController.PowerChange > 0)
+        pChangeValue = resourceController.PowerChange;
+
+        if (pChangeValue > 0)
         {
-            powerState[0] = "Power is stable";
-            powerState[1] = WarningLevel.Normal;
+            warnings["power"] = WarningLevel.Normal;
+            powerStatus.text = NORMAL + "Power grid is stable";
         }
-        else if (resourceController.PowerChange < 0)
+        else if (pChangeValue < 0)
         {
-            powerState[0] = "Power is overloaded!";
-            powerState[1] = WarningLevel.Danger;
+            warnings["power"] = WarningLevel.Danger;
+            powerStatus.text = DANGER + "Power grid is overloaded!";
         }
-        if (resourceController.PowerChange == 0)
+        else
         {
-            powerState[0] = "Power is at max capacity";
-            powerState[1] = WarningLevel.Warning;
+            warnings["power"] = WarningLevel.Warning;
+            powerStatus.text = WARNING + "Power grid is at max capacity";
         }
+    }
+
+    public void ToggleVisibility()
+    {
+        warningBox.SetActive(!warningBox.activeSelf);
     }
 }
