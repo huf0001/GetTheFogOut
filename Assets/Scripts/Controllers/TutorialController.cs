@@ -19,8 +19,11 @@ public enum TutorialStage
 
 public class TutorialController : MonoBehaviour
 {
+    //Fields---------------------------------------------------------------------------------------
+
     //Serialized Fields
     [SerializeField] private bool skipTutorial = true;
+    [SerializeField] private DialogueBox aiText;
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private Landmark relayLandmark;
@@ -40,6 +43,8 @@ public class TutorialController : MonoBehaviour
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public TileData CurrentTile { get => currentTile; }
 
+    //Start-Up Methods-----------------------------------------------------------------------------
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +53,8 @@ public class TutorialController : MonoBehaviour
             tutorialStage = TutorialStage.Finished;
         }
     }
+
+    //Tutorial Stage Management Methods------------------------------------------------------------
 
     // Update is called once per frame
     void Update()
@@ -180,38 +187,65 @@ public class TutorialController : MonoBehaviour
     //AI helps player build a power generator and explains how they work
     private void BuildGenerator()
     {
-        //Get AI dialogue
-        //Assign AI dialogue to UI element
-        //Move UI element to appropriate location
-        //Display UI element
+        if (subStage == 1)
+        {
+            //Get AI dialogue
+            //Assign AI dialogue to UI element
+            //Move UI element to appropriate location
+            //Display UI element
 
-        //Get tile
+            subStage += 1;
+        }
+        else if (subStage == 2)
+        {
+            //Get tile
+            GetLocationOf(generatorLandmark);
 
-        //Display UI element prompting player to build a generator on this tile
+            //Display UI element prompting player to build a generator on this tile
 
-        //if (tile.Building.BuildingType == BuildingType.Generator)
-        //{
-        tutorialStage = TutorialStage.BuildRelay;
-        currentlyBuilding = BuildingType.Relay;
-        //}
+            subStage += 1;
+        }
+        else if (subStage == 3)
+        {
+            if (BuiltCurrentlyBuilding())
+            {
+                tutorialStage = TutorialStage.BuildRelay;
+                currentlyBuilding = BuildingType.Relay;
+                subStage = 1;
+            }
+        }
     }
 
     //AI helps player build a relay and explains how they work
     private void BuildRelay()
     {
-        //Get AI dialogue
-        //Assign AI dialogue to UI element
-        //Move UI element to appropriate location
-        //Display UI element
+        if (subStage == 1)
+        {
+            //Get AI dialogue
+            //Assign AI dialogue to UI element
+            //Move UI element to appropriate location
+            //Display UI element
 
-        //Get tile
-        //Display UI element prompting player to build a relay on this tile
+            subStage += 1;
+        }
+        else if (subStage == 2)
+        {
+            //Get tile
+            GetLocationOf(relayLandmark);
 
-        //if (tile.Building.BuildingType == BuildingType.Harvester)
-        //{
-        tutorialStage = TutorialStage.FogIsHazard;
-        currentlyBuilding = BuildingType.None;
-        //}
+            //Display UI element prompting player to build a relay on this tile
+
+            subStage += 1;
+        }
+        else if (subStage == 3)
+        {
+            if (BuiltCurrentlyBuilding())
+            {
+                tutorialStage = TutorialStage.FogIsHazard;
+                currentlyBuilding = BuildingType.None;
+                subStage = 1;
+            }
+        }
     }
 
     //Tutorial Stage 3: AI Explains The Fog
@@ -231,20 +265,36 @@ public class TutorialController : MonoBehaviour
     //AI tells player to build a cluster fan and explains how they work
     private void BuildClusterFan()
     {
-        //Get AI dialogue
-        //Assign AI dialogue to UI element
-        //Move UI element to appropriate location
-        //Display UI element
+        if (subStage == 1)
+        {
+            //Get AI dialogue
+            //Assign AI dialogue to UI element
+            //Move UI element to appropriate location
+            //Display UI element
 
-        //Get tile
-        //Display UI element prompting player to build a cluster fan on this tile
+            subStage += 1;
+        }
+        else if (subStage == 2)
+        {
+            //Get tile
+            GetLocationOf(clusterFanLandmark);
 
-        //if (tile.Building.BuildingType == BuildingType.ClusterFan)
-        //{
-        tutorialStage = TutorialStage.Finished;
-        currentlyBuilding = BuildingType.None;
-        //}
+            //Display UI element prompting player to build a cluster fan on this tile
+
+            subStage += 1;
+        }
+        else if (subStage == 3)
+        {
+            if (BuiltCurrentlyBuilding())
+            {
+                tutorialStage = TutorialStage.Finished;
+                currentlyBuilding = BuildingType.None;
+                subStage = 1;
+            }
+        }
     }
+
+    //Utility Methods------------------------------------------------------------------------------
 
     private void GetLocationOf(Locatable l)
     {
@@ -267,7 +317,7 @@ public class TutorialController : MonoBehaviour
         {
             if (currentTile.Building != null)
             {
-                if (currentTile.Building.BuildingType == BuildingType.Harvester)
+                if (currentTile.Building.BuildingType == currentlyBuilding)
                 {
                     return true;
                 }
