@@ -97,12 +97,12 @@ public class UIController : MonoBehaviour
             }
             else if (powerChange < 0)
             {
-                colour = "red\">";
+                colour = "\"red\">";
                 //warningScript.AddWarning("Power grid is overloaded!", WarningScript.WarningLevel.Danger);
             }
             else
             {
-                colour = "black\">±";
+                colour = "\"black\">±";
                 //warningScript.AddWarning("Power grid is at maximum capacity!", WarningScript.WarningLevel.Warning);
             }
 
