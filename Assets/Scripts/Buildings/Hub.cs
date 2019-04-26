@@ -251,6 +251,9 @@ public class Hub : PowerSource
             case BuildingType.Relay:
                 relays.Remove(b as Relay);
                 break;
+            default:
+                Debug.Log("BuildingType not accepted");
+                break;
         }
     }
 

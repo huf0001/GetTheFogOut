@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 //TODO: replace a TILE object with an invinsible box and only show upon click on the button(tower)
 //TODO: add Null ref / exception :(
-public class TileData : MonoBehaviour
+public class TileData
 {
     //Serialized Fields
     [SerializeField] private List<PowerSource> powerSources = new List<PowerSource>();
@@ -41,6 +41,7 @@ public class TileData : MonoBehaviour
     public List<TileData> AdjacentTiles { get => adjacentTiles; }
     public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
     public bool Visited { get => visited; set => visited = value; }
+    public string Name { get => "Tile (" + x + "," + z + ")"; }
 
     //Altered public properties
     public PowerSource PowerSource
@@ -68,6 +69,7 @@ public class TileData : MonoBehaviour
     {
         //this.gameObject.GetComponent<Renderer>().material = onMaterial;
         powerSources.Add(power);
+
         if (building != null)
         {
             if (!building.Powered)

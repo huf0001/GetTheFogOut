@@ -9,7 +9,7 @@ public abstract class Building : PlaneObject
     //Serialized fields
     [SerializeField] protected float visibilityRange;
     [SerializeField] protected int upkeep;
-    [SerializeField] protected PowerSource powerSource;
+    [SerializeField] protected PowerSource powerSource = null;
     [SerializeField] protected bool powered = false;
     [SerializeField] protected bool placed = false;
     [SerializeField] protected BuildingType buildingType;
@@ -56,15 +56,9 @@ public abstract class Building : PlaneObject
     // Update is called once per frame
     protected virtual void Update()
     {
-        CheckHealth();
-    }
-
-    //Checks if it's dead or not, and applies the appropriate actions if it is.
-    private void CheckHealth()
-    {
-        if (Health <= 0)
+        if (GotNoHealth())
         {
-            //Debug.Log(buildingType + " has been destroyed! Called from Building.CheckHealth()");
+            //Debug.Log(buildingType + " is being dismantled. Called from Building.Update() using Entity.GotNoHealth()");
             DismantleBuilding();
         }
     }
@@ -87,33 +81,33 @@ public abstract class Building : PlaneObject
 
     public void SetPowerSource()
     {
-        //Debug.Log("Setting Power Source");
+        Debug.Log("Setting Power Source");
 
-        //if (location == null)
-        //{
-        //    Debug.Log("Location of " + this.name + " is null");
-        //}
+        if (location == null)
+        {
+            Debug.Log("Location of " + this.name + " is null");
+        }
 
-        //if (location.PowerSource == null)
-        //{
-        //    Debug.Log("Power Source is null");
-        //}
+        if (location.PowerSource == null)
+        {
+            Debug.Log("Power Source is null");
+        }
 
         powerSource = location.PowerSource;
 
         if (powerSource != null)
         {
-            //Debug.Log("Plugging In and Powering Up " + this.name);
+            Debug.Log("Plugging In and Powering Up " + this.name);
             powerSource.PlugIn(this);
             PowerUp();
         }
         else
-        {
-            //Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
+        { 
+            Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
             PowerDown();
         }
 
-        //Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);
+        Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);
     }
 
     public virtual void PowerUp()
@@ -123,33 +117,47 @@ public abstract class Building : PlaneObject
 
     public virtual void PowerDown()
     {
-        //Debug.Log("Powering down " + this.name);
+        Debug.Log("Powering down " + this.name);
         powered = false;
     }
 
     private void MakeTilesVisible()
     {
-        Collider[] tilesToActivate = Physics.OverlapSphere(transform.position, visibilityRange);
+        //Collider[] tilesToActivate = Physics.OverlapSphere(transform.position, visibilityRange);
 
-        foreach (Collider c in tilesToActivate)
+        //foreach (Collider c in tilesToActivate)
+        //{
+        //    if (c.gameObject.GetComponent<TileData>() != null)
+        //    {
+        //        c.gameObject.GetComponent<TileData>().AddObserver(this as Building);
+        //    }
+        //}
+
+        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)visibilityRange);
+
+        foreach (TileData t in tiles)
         {
-            if (c.gameObject.GetComponent<TileData>() != null)
-            {
-                c.gameObject.GetComponent<TileData>().AddObserver(this as Building);
-            }
+            t.AddObserver(this);
         }
     }
 
     private void MakeTilesNotVisible()
     {
-        Collider[] tilesToDeactivate = Physics.OverlapSphere(transform.position, visibilityRange);
+        //Collider[] tilesToDeactivate = Physics.OverlapSphere(transform.position, visibilityRange);
 
-        foreach (Collider c in tilesToDeactivate)
+        //foreach (Collider c in tilesToDeactivate)
+        //{
+        //    if (c.gameObject.GetComponent<TileData>() != null)
+        //    {
+        //        c.gameObject.GetComponent<TileData>().RemoveObserver(this as Building);
+        //    }
+        //}
+
+        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)visibilityRange);
+
+        foreach (TileData t in tiles)
         {
-            if (c.gameObject.GetComponent<TileData>() != null)
-            {
-                c.gameObject.GetComponent<TileData>().RemoveObserver(this as Building);
-            }
+            t.RemoveObserver(this);
         }
     }
 
@@ -189,7 +197,7 @@ public abstract class Building : PlaneObject
 
     public void DismantleBuilding()
     {
-        //Debug.Log("Dismantling " + this.name);
+        Debug.Log("Dismantling " + this.name);
 
         if (buildingType == BuildingType.Hub || buildingType == BuildingType.Relay)
         {
@@ -199,18 +207,26 @@ public abstract class Building : PlaneObject
 
         if (powerSource != null)
         {
+            Debug.Log("Unplugging from " + powerSource.name);
             powerSource.Unplug(this);
         }
 
+        //MakeTilesNotVisible();
+
         if (Location != null)
         {
+            Debug.Log("Removing from tile");
+            Location.RemoveObserver(this);
             Location.Building = null;
         }
 
         PowerDown();
         FindObjectOfType<Hub>().RemoveBuilding(this);
-        MakeTilesNotVisible();
-        Destroy(this.gameObject);
+        
+
+        Debug.Log("Should be removed from hub's list of my building type");
+
+        Destroy(this.transform.parent.gameObject);
         Destroy(this);
     }
 
@@ -218,4 +234,15 @@ public abstract class Building : PlaneObject
     //{
     //    //Debug.Log("Building.OnDestroy() called, attempting to destroy " + this.name);
     //}
+
+    public override TileData Location
+    {
+        get => base.Location;
+
+        set
+        {
+            Debug.Log(this.name + "'s location has been set");
+            base.Location = value;
+        }
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Locatable : MonoBehaviour
 {
-    [SerializeField] protected TileData location;
+    [SerializeField] protected TileData location = null;
 
-    public TileData Location { get => location; set => location = value; }
+    public virtual TileData Location { get => location; set => location = value; }
 }

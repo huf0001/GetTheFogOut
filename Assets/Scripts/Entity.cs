@@ -23,4 +23,14 @@ public abstract class Entity : Locatable
         //    Destroy(this.gameObject);
         //}
     }
+
+    protected bool GotNoHealth()
+    {
+        if (Health <= 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -227,15 +227,13 @@ public class WorldController : MonoBehaviour
         {
             foreach (TileData t in tiles)
             {
-
                 Vector2[] pts = { new Vector2(t.X, t.Z - 1), new Vector2(t.X, t.Z + 1), new Vector2(t.X - 1, t.Z), new Vector2(t.X + 1, t.Z) };
 
                 foreach (Vector2 p in pts)
                 {
                     if (p.x >= 0 && p.x < width && p.y >= 0 && p.y < length)
                     {
-                        UnityEngine.Vector2 pos = new UnityEngine.Vector2(p.x, p.y);
-                        a = GetTileAt(pos);
+                        a = GetTileAt(p);
 
                         if (!t.AdjacentTiles.Contains(a))
                         {
@@ -258,8 +256,7 @@ public class WorldController : MonoBehaviour
                         {
                             if (j >= 0 && j < length)
                             {
-                                UnityEngine.Vector2 pos = new UnityEngine.Vector2(i, j);
-                                a = GetTileAt(pos);
+                                a = GetTileAt(new Vector2(i, j));
 
                                 if (!t.AdjacentTiles.Contains(a))
                                 {
@@ -283,8 +280,7 @@ public class WorldController : MonoBehaviour
                     {
                         if (j >= 0 && j < length)
                         {
-                            UnityEngine.Vector2 pos = new UnityEngine.Vector2(i, j);
-                            a = GetTileAt(pos);
+                            a = GetTileAt(new Vector2(i, j));
 
                             if (!t.AllAdjacentTiles.Contains(a))
                             {
@@ -302,6 +298,18 @@ public class WorldController : MonoBehaviour
 
     private void Update()
     {
+        int tileCount = 0;
+
+        foreach (TileData t in tiles)
+        {
+            if (t != null)
+            {
+                tileCount += 1;
+            }
+        }
+
+        Debug.Log("Tiles.Length is " + tiles.Length + ". TileCount (where tile is not null) is " + tileCount);
+
         if (!isGameOver)
         {
             GameUpdate();
