@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.13506117, a: 1}
+  m_IndirectSpecularColor: {r: 0.067397416, g: 0.08987051, b: 0.13496713, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1248,32 +1248,32 @@ PrefabInstance:
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 53.48066
       objectReference: {fileID: 0}
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7393001871722543828, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
@@ -1378,32 +1378,32 @@ PrefabInstance:
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1543.4292
       objectReference: {fileID: 0}
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2898372089169532452, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
@@ -2070,6 +2070,7 @@ GameObject:
   - component: {fileID: 1385339352}
   - component: {fileID: 1385339351}
   - component: {fileID: 1385339350}
+  - component: {fileID: 1385339355}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -2306,6 +2307,23 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1385339355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385339348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 420eca9a45f270846b703ce7567c75d1, type: 2}
+  isGlobal: 0
+  blendDistance: 0
+  weight: 1
+  priority: 0
 --- !u!4 &1400331315 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2032583418019200272, guid: 5ab951eea836f594ea15cdb13afd6328,
