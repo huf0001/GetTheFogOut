@@ -73,19 +73,19 @@ public class ResourceController : MonoBehaviour
         powerChange += hub.Upkeep;
 
         //Get connected generators, account for the power they supply
-        List<Generator> connectedGenerators = hub.GetGenerators();
+        List<Generator> connectedGenerators = hub.GetGenerators();// hub.GetGenerators();
         //Debug.Log("ConnectedGenerators.Count is " + connectedGenerators.Count);
 
         if (connectedGenerators.Count > 0)
         {
             storedPower += connectedGenerators[0].Upkeep * connectedGenerators.Count;
             powerChange += connectedGenerators[0].Upkeep * connectedGenerators.Count;
-
+        //    Debug.Log(generators.Count + " ge " + connectedGenerators.Count + " conge");
             foreach (Generator g in generators)
             {
                 if (connectedGenerators.Contains(g))
                 {
-                    g.PowerUp();
+                    g.PowerUp();      
                 }
                 else
                 {
