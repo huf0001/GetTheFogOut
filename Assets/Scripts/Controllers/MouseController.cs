@@ -158,6 +158,8 @@ public class MouseController : MonoBehaviour
         resourceController.StoredMineral += building.MineralCost;
         resourceController.StoredOrganic += building.OrganicCost;
         resourceController.StoredFuel += building.FuelCost;
+
+        StartCoroutine(FloatText(building.transform, building.MineralCost));
     }
 
     private bool CheckIfTileOkay(TileData tile)
@@ -215,7 +217,7 @@ public class MouseController : MonoBehaviour
                 building.Animator = buildingGo.GetComponentInChildren<Animator>();
                 building.Animator.SetBool("Built", true);
                 building.Place();
-                StartCoroutine(FloatText(buildingGo, hub, buildType));
+                StartCoroutine(FloatText(buildingGo.transform, -building.MineralCost));
             }
             else
             {
@@ -227,15 +229,18 @@ public class MouseController : MonoBehaviour
     /// <summary>
     /// Coroutine to create floating text to display costs of building
     /// </summary>
-    /// <param name="buildingGo">The building being built</param>
-    /// <param name="hub">Instance of the hub</param>
-    /// <param name="buildType">Enum of the building type to reference for costs</param>
-    private IEnumerator FloatText(GameObject buildingGo, Hub hub, BuildingType buildType)
+    /// <param name="building">The location of the building being built</param>
+    /// <param name="cost">Cost of building or refunding building</param>
+    private IEnumerator FloatText(Transform building, int cost)
     {
         //floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
-        if (buildingGo.GetComponentInChildren<Building>().MineralCost != 0)
+        if (cost < 0)
         {
-            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> -{buildingGo.GetComponentInChildren<Building>().MineralCost}", buildingGo.transform);
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> <color=\"red\">{cost}", building);
+        }
+        else if (cost > 0)
+        {
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> <color=#009900>+{cost}", building);
         }
         yield return new WaitForSeconds(0.2f);
     }
