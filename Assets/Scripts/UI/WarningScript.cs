@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class WarningScript : MonoBehaviour
 {
@@ -23,10 +24,12 @@ public class WarningScript : MonoBehaviour
     const string DANGER = "<sprite=\"all_icons\" index=4 tint=1 color=#c80000> ";
     TextMeshProUGUI powerStatus;
     TextMeshProUGUI buildingStatus;
+    List<GameObject> existingMessages = new List<GameObject>();
 
     int pChangeValue = 0;
 
     [SerializeField] GameObject warningBox;
+    [SerializeField] GameObject popupMessage;
 
     // Start is called before the first frame update
     void Start()
@@ -97,27 +100,54 @@ public class WarningScript : MonoBehaviour
 
     private void CheckPower()
     {
-        pChangeValue = resourceController.PowerChange;
+        int pChange = resourceController.PowerChange;
+        if ((pChange > 0 && pChangeValue > 0) || (pChange < 0 && pChangeValue < 0) || (pChange == 0 && pChangeValue == 0)) { pChangeValue = pChange; return; }
+        pChangeValue = pChange;
 
         if (pChangeValue > 0)
         {
             warnings["power"] = WarningLevel.Normal;
             powerStatus.text = NORMAL + "Power grid is stable";
+            StartCoroutine(ShowMessage(powerStatus.text));
         }
         else if (pChangeValue < 0)
         {
             warnings["power"] = WarningLevel.Danger;
             powerStatus.text = DANGER + "Power grid is overloaded!";
+            StartCoroutine(ShowMessage(powerStatus.text));
         }
         else
         {
             warnings["power"] = WarningLevel.Warning;
             powerStatus.text = WARNING + "Power grid is at max capacity";
+            StartCoroutine(ShowMessage(powerStatus.text));
         }
+    }
+
+    private IEnumerator ShowMessage(string txt)
+    {
+        GameObject message = Instantiate(popupMessage, GameObject.Find("Canvas").transform);
+        if (existingMessages.Count != 0)
+        {
+            message.transform.position = existingMessages[existingMessages.Count - 1].transform.position + new Vector3(335, 0);
+        }
+        message.transform.position -= new Vector3(0, 50);
+        message.GetComponentInChildren<TextMeshProUGUI>().text = txt;
+        existingMessages.Add(message);
+        message.GetComponent<RectTransform>().DOAnchorPosX(-330, 0.5f).SetEase(Ease.OutExpo);
+        yield return new WaitForSeconds(3.5f);
+        message.GetComponent<RectTransform>().DOAnchorPosX(5, 0.5f).SetEase(Ease.InExpo);
+        yield return new WaitForSeconds(0.5f);
+        existingMessages.Remove(message);
+        Destroy(message);
     }
 
     public void ToggleVisibility()
     {
         warningBox.SetActive(!warningBox.activeSelf);
+        foreach (GameObject go in existingMessages)
+        {
+            go.SetActive(!go.activeSelf);
+        }
     }
 }
