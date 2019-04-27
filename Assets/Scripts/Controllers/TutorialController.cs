@@ -18,7 +18,7 @@ public enum TutorialStage
     Finished
 }
 
-public class TutorialController : MonoBehaviour
+public class TutorialController : DialogueBoxController
 {
     //Fields---------------------------------------------------------------------------------------
 
@@ -74,10 +74,19 @@ public class TutorialController : MonoBehaviour
     {
         CheckTutorialStage();
 
-        if (targetDecal.enabled)
+        if (tutorialStage != TutorialStage.Finished)
         {
-            LerpDecal();
-        }
+            if (dialogueRead)
+            {
+                subStage += 1;
+                ResetDialogueRead();
+            }
+
+            if (targetDecal.enabled)
+            {
+                LerpDecal();
+            }
+        }        
     }
 
     private void CheckTutorialStage()
@@ -147,9 +156,7 @@ public class TutorialController : MonoBehaviour
     private void ExplainSituation()
     {
         //Get AI dialogue
-        //Assign AI dialogue to UI element
-        //Move UI element to appropriate location
-        //Display UI element
+        //Activate DialogueBox, passing dialogue to it
 
         tutorialStage = TutorialStage.BuildHarvester;
         currentlyBuilding = BuildingType.Harvester;
@@ -161,33 +168,37 @@ public class TutorialController : MonoBehaviour
         if (subStage == 1)
         {
             //Get AI dialogue
-            //Assign AI dialogue to UI element
-            //Move UI element to appropriate location
-            //Display UI element
+            string text = "Build Harvester (Click to Continue)";
 
-            subStage += 1;
+            //Activate DialogueBox, passing dialogue to it
+            aiText.ActivateDialogueBox(text);
         }
         else if (subStage == 2)
         {
             //Display UI element prompting player to click the building selector button
 
+            //Progress to next SubStage
             subStage += 1;
         }
         else if (subStage == 3)
         {
             //Display UI element prompting player to select the harvester
 
+            //Progress to next SubStage
             subStage += 1;
         }
         else if (subStage == 4)
         {
+            //Turn off DialogueBox
+            aiText.DeactivateDialogueBox();
+
             //Get location of resource node
-            //currentTile = GetClosestResourceNode(Resource.Mineral);
             GetLocationOf(harvesterResource);
 
             //Display UI element prompting player to build a harvester on this resource node
             ActivateTarget(harvesterResource);
 
+            //Progress to next SubStage
             subStage += 1;
         }
         else if (subStage == 5)
@@ -210,20 +221,23 @@ public class TutorialController : MonoBehaviour
         if (subStage == 1)
         {
             //Get AI dialogue
-            //Assign AI dialogue to UI element
-            //Move UI element to appropriate location
-            //Display UI element
+            string text = "Build Generator (Click to Continue)";
 
-            subStage += 1;
+            //Activate DialogueBox, passing dialogue to it
+            aiText.ActivateDialogueBox(text);
         }
         else if (subStage == 2)
         {
+            //Turn off DialogueBox
+            aiText.DeactivateDialogueBox();
+
             //Get tile
             GetLocationOf(generatorLandmark);
 
             //Display UI element prompting player to build a generator on this tile
             ActivateTarget(generatorLandmark);
 
+            //Progress to next SubStage
             subStage += 1;
         }
         else if (subStage == 3)
@@ -244,20 +258,23 @@ public class TutorialController : MonoBehaviour
         if (subStage == 1)
         {
             //Get AI dialogue
-            //Assign AI dialogue to UI element
-            //Move UI element to appropriate location
-            //Display UI element
+            string text = "Build Relay (Click to Continue)";
 
-            subStage += 1;
+            //Activate DialogueBox, passing dialogue to it
+            aiText.ActivateDialogueBox(text);
         }
         else if (subStage == 2)
         {
+            //Turn off DialogueBox
+            aiText.DeactivateDialogueBox();
+
             //Get tile
             GetLocationOf(relayLandmark);
 
             //Display UI element prompting player to build a relay on this tile
             ActivateTarget(relayLandmark);
 
+            //Progress to next SubStage
             subStage += 1;
         }
         else if (subStage == 3)
@@ -277,10 +294,9 @@ public class TutorialController : MonoBehaviour
     private void FogIsHazard()
     {
         //Spawn fog units around hub
+
         //Get AI dialogue
-        //Assign AI dialogue to UI element
-        //Move UI element to appropriate location
-        //Display UI element
+        //Activate DialogueBox, passing dialogue to it
 
         tutorialStage = TutorialStage.BuildClusterFan;
         currentlyBuilding = BuildingType.Defence;
@@ -292,20 +308,23 @@ public class TutorialController : MonoBehaviour
         if (subStage == 1)
         {
             //Get AI dialogue
-            //Assign AI dialogue to UI element
-            //Move UI element to appropriate location
-            //Display UI element
+            string text = "Build Cluster Fan (Click to Continue)";
 
-            subStage += 1;
+            //Activate DialogueBox, passing dialogue to it
+            aiText.ActivateDialogueBox(text);
         }
         else if (subStage == 2)
         {
+            //Turn off DialogueBox
+            aiText.DeactivateDialogueBox();
+
             //Get tile
             GetLocationOf(clusterFanLandmark);
 
             //Display UI element prompting player to build a cluster fan on this tile
             ActivateTarget(clusterFanLandmark);
 
+            //Progress to next SubStage
             subStage += 1;
         }
         else if (subStage == 3)
