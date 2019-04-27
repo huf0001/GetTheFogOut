@@ -31,25 +31,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &2135585134970471488
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6602967514373268114}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 860614e7e8be268468ce14dd882a1556, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8236332693628014449
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,11 +90,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4340564844568296857}
     m_Modifications:
-    - target: {fileID: 8713354623523227611, guid: bba4ec408c5c2074ba14fcf34778cda3,
-        type: 3}
-      propertyPath: m_Name
-      value: Generator
-      objectReference: {fileID: 0}
     - target: {fileID: 7851274327185971535, guid: bba4ec408c5c2074ba14fcf34778cda3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -169,6 +145,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8713354623523227611, guid: bba4ec408c5c2074ba14fcf34778cda3,
+        type: 3}
+      propertyPath: m_Name
+      value: Generator
+      objectReference: {fileID: 0}
     - target: {fileID: 5024304208883161559, guid: bba4ec408c5c2074ba14fcf34778cda3,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -186,12 +167,6 @@ PrefabInstance:
       objectReference: {fileID: 4800000, guid: e44889f5c156e4f41af9a3a7846f501b, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bba4ec408c5c2074ba14fcf34778cda3, type: 3}
---- !u!1 &6602967514373268114 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8713354623523227611, guid: bba4ec408c5c2074ba14fcf34778cda3,
-    type: 3}
-  m_PrefabInstance: {fileID: 2544109536968811849}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5745232213111602182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7851274327185971535, guid: bba4ec408c5c2074ba14fcf34778cda3,
