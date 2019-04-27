@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.HDPipeline;
 
 public enum TutorialStage
 {
@@ -28,15 +29,23 @@ public class TutorialController : MonoBehaviour
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private Landmark relayLandmark;
     [SerializeField] private Landmark clusterFanLandmark;
+    [SerializeField] private Locatable buildingTarget;
 
     //Non-Serialized Fields
     [SerializeField] private TutorialStage tutorialStage = TutorialStage.CrashLanding;
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
-    private TileData currentTile = null;
 
+    private TileData currentTile = null;
     [SerializeField] private int currentTileX = 0;
     [SerializeField] private int currentTileZ = 0;
     [SerializeField] private int subStage = 1;
+
+    private DecalProjectorComponent targetDecal = null;
+    private bool expandDecal = true;
+    private float decalProgress = 0f;
+    private float decalMin = 1.5f;
+    private float decalMax = 3f;
+    private float lerpMultiplier = 1f;
 
     //Public Properties
     public TutorialStage TutorialStage { get => tutorialStage; }
@@ -52,6 +61,10 @@ public class TutorialController : MonoBehaviour
         {
             tutorialStage = TutorialStage.Finished;
         }
+        else
+        {
+            targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
+        }
     }
 
     //Tutorial Stage Management Methods------------------------------------------------------------
@@ -60,6 +73,11 @@ public class TutorialController : MonoBehaviour
     void Update()
     {
         CheckTutorialStage();
+
+        if (targetDecal.enabled)
+        {
+            LerpDecal();
+        }
     }
 
     private void CheckTutorialStage()
@@ -168,6 +186,7 @@ public class TutorialController : MonoBehaviour
             GetLocationOf(harvesterResource);
 
             //Display UI element prompting player to build a harvester on this resource node
+            ActivateTarget(harvesterResource);
 
             subStage += 1;
         }
@@ -180,6 +199,7 @@ public class TutorialController : MonoBehaviour
                 tutorialStage = TutorialStage.BuildGenerator;
                 currentlyBuilding = BuildingType.Generator;
                 subStage = 1;
+                DeactivateTarget();
             }
         }
     }
@@ -202,6 +222,7 @@ public class TutorialController : MonoBehaviour
             GetLocationOf(generatorLandmark);
 
             //Display UI element prompting player to build a generator on this tile
+            ActivateTarget(generatorLandmark);
 
             subStage += 1;
         }
@@ -212,6 +233,7 @@ public class TutorialController : MonoBehaviour
                 tutorialStage = TutorialStage.BuildRelay;
                 currentlyBuilding = BuildingType.Relay;
                 subStage = 1;
+                DeactivateTarget();
             }
         }
     }
@@ -234,6 +256,7 @@ public class TutorialController : MonoBehaviour
             GetLocationOf(relayLandmark);
 
             //Display UI element prompting player to build a relay on this tile
+            ActivateTarget(relayLandmark);
 
             subStage += 1;
         }
@@ -244,6 +267,7 @@ public class TutorialController : MonoBehaviour
                 tutorialStage = TutorialStage.FogIsHazard;
                 currentlyBuilding = BuildingType.None;
                 subStage = 1;
+                DeactivateTarget();
             }
         }
     }
@@ -280,6 +304,7 @@ public class TutorialController : MonoBehaviour
             GetLocationOf(clusterFanLandmark);
 
             //Display UI element prompting player to build a cluster fan on this tile
+            ActivateTarget(clusterFanLandmark);
 
             subStage += 1;
         }
@@ -290,6 +315,7 @@ public class TutorialController : MonoBehaviour
                 tutorialStage = TutorialStage.Finished;
                 currentlyBuilding = BuildingType.None;
                 subStage = 1;
+                DeactivateTarget();
             }
         }
     }
@@ -311,6 +337,47 @@ public class TutorialController : MonoBehaviour
         }
     }
 
+    private void ActivateTarget(Locatable l)
+    {
+        buildingTarget.Location = currentTile;
+        buildingTarget.transform.position = l.transform.position;
+        targetDecal.enabled = true;
+
+        decalProgress = 0f;
+        expandDecal = true;
+    }
+
+    private void LerpDecal()
+    {
+        float lerped = Mathf.Lerp(decalMin, decalMax, decalProgress);
+        //buildingTarget.transform.lossyScale.Set(lerped, 1, lerped);
+        targetDecal.m_Size.Set(lerped, 1, lerped);
+
+        if (expandDecal)
+        {
+            decalProgress += Time.deltaTime * lerpMultiplier;
+        }
+        else
+        {
+            decalProgress -= Time.deltaTime * lerpMultiplier;
+        }
+
+        if (decalProgress > 1)
+        {
+            decalProgress = 1;
+            expandDecal = false;
+        }
+        else if (decalProgress < 0)
+        {
+            decalProgress = 0;
+            expandDecal = true;
+        }
+
+        //Forces the decal to show the lerping
+        targetDecal.enabled = false;
+        targetDecal.enabled = true;
+    }
+
     private bool BuiltCurrentlyBuilding()
     {
         if (currentTile != null)
@@ -325,5 +392,10 @@ public class TutorialController : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void DeactivateTarget()
+    {
+        targetDecal.enabled = false;
     }
 }
