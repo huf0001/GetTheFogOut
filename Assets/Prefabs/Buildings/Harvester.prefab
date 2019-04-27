@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3440073046995562118}
   - component: {fileID: 3145714416834069577}
   - component: {fileID: 3424712413614385763}
+  - component: {fileID: 2247305574861707500}
   - component: {fileID: 4141601402069922083}
   m_Layer: 0
   m_Name: Harvester
@@ -112,7 +113,30 @@ MonoBehaviour:
   powered: 0
   placed: 0
   buildingType: 4
-  audioSource: {fileID: 4141601402069922083}
+  mineralCost: 0
+  powerCost: 0
+  fuelCost: 0
+  organicCost: 0
+  audioSource: {fileID: 0}
+--- !u!95 &2247305574861707500
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11744634854273343}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 96fa4ef11b945994091a96408fb9f271, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!82 &4141601402069922083
 AudioSource:
   m_ObjectHideFlags: 0
@@ -120,11 +144,11 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11744634854273343}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f6cf88f896cf0d34b8cb7c76d3f5ef36, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

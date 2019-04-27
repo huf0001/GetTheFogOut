@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.13506117, a: 1}
+  m_IndirectSpecularColor: {r: 0.056233324, g: 0.079379186, b: 0.12584744, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1122,7 +1122,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &779545744
 Light:
   m_ObjectHideFlags: 0
@@ -4841,6 +4841,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Smoke
       objectReference: {fileID: 0}
+    - target: {fileID: 5204246789153491087, guid: 4f2b6dfa10a75214f98a0252f375ce25,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 855070210459355771, guid: 4f2b6dfa10a75214f98a0252f375ce25,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4896,11 +4901,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5204246789153491087, guid: 4f2b6dfa10a75214f98a0252f375ce25,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f2b6dfa10a75214f98a0252f375ce25, type: 3}
 --- !u!1001 &5378558204583360704
@@ -4910,6 +4910,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 455663892}
     m_Modifications:
+    - target: {fileID: 5378558204177680685, guid: 7719eef1b15d0df45ab17c79cd8955dd,
+        type: 3}
+      propertyPath: m_Name
+      value: Particle System
+      objectReference: {fileID: 0}
     - target: {fileID: 5378558204177680688, guid: 7719eef1b15d0df45ab17c79cd8955dd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4980,11 +4985,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5378558204177680685, guid: 7719eef1b15d0df45ab17c79cd8955dd,
-        type: 3}
-      propertyPath: m_Name
-      value: Particle System
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7719eef1b15d0df45ab17c79cd8955dd, type: 3}
 --- !u!23 &7176238308002594417
@@ -5004,7 +5004,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3f1f036d58d88cc428e77a45178febc8, type: 2}
+  - {fileID: 2100000, guid: 03f458cc4e0e4d94194b55deafd646a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

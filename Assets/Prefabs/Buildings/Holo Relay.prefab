@@ -83,25 +83,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &3883660280590362584
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6791281856648154196}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 41c3ab08b868bf143b1bf0e1c900015e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &6410443922444133134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109,11 +90,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6410443923382549553}
     m_Modifications:
-    - target: {fileID: 488924325824016218, guid: 6e620744d388dbb45a0380adbb5c03c5,
-        type: 3}
-      propertyPath: m_Name
-      value: Relay
-      objectReference: {fileID: 0}
     - target: {fileID: 7847548565872838944, guid: 6e620744d388dbb45a0380adbb5c03c5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -169,6 +145,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 488924325824016218, guid: 6e620744d388dbb45a0380adbb5c03c5,
+        type: 3}
+      propertyPath: m_Name
+      value: Relay
+      objectReference: {fileID: 0}
     - target: {fileID: 7427385203175356854, guid: 6e620744d388dbb45a0380adbb5c03c5,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -176,12 +157,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0e85d487b089f034aa334a5ad6bcc6e3, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e620744d388dbb45a0380adbb5c03c5, type: 3}
---- !u!1 &6791281856648154196 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 488924325824016218, guid: 6e620744d388dbb45a0380adbb5c03c5,
-    type: 3}
-  m_PrefabInstance: {fileID: 6410443922444133134}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3755561318806071854 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7847548565872838944, guid: 6e620744d388dbb45a0380adbb5c03c5,
