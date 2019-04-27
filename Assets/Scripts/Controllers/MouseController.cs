@@ -58,7 +58,7 @@ public class MouseController : MonoBehaviour
 
     void RemoveBuilding()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A") )
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
