@@ -96,8 +96,8 @@ public class MouseController : MonoBehaviour
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
 
-                //    if (CheckIfTileOkay(tile))
-                 //   {
+                    if (CheckIfTileOkay(tile, towerManager.GetBuildingType()))
+                    {
                         //If tile has power, place building. Otherwise, don't place building.
                         if (tile.PowerSource != null)
                         {
@@ -142,7 +142,7 @@ public class MouseController : MonoBehaviour
                                 }
                             }
                         }
-                   // }
+                    }
                 }
             }
         }
@@ -162,9 +162,9 @@ public class MouseController : MonoBehaviour
         StartCoroutine(FloatText(building.transform, building.MineralCost));
     }
 
-    private bool CheckIfTileOkay(TileData tile)
+    private bool CheckIfTileOkay(TileData tile, BuildingType building)
     {
-        if (tutorialController.TutorialStage == TutorialStage.Finished || tile == tutorialController.CurrentTile)
+        if (tutorialController.TutorialStage == TutorialStage.Finished || (tile == tutorialController.CurrentTile && building == tutorialController.CurrentlyBuilding))
         {
             return true;
         }

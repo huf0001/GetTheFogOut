@@ -23,7 +23,7 @@ public class WorldController : MonoBehaviour
 {
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
-    // Serialized fields
+    //Serialized Fields
     [Header("World Spawning Rules")]
     [SerializeField] private int width = 31;
     [SerializeField] private int length = 31;
@@ -33,7 +33,6 @@ public class WorldController : MonoBehaviour
 
     [Header("Prefab/Gameobject assignment")]
     [SerializeField] private Terrain ground;
-    [SerializeField] private ResourceController resourceController;
 
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
@@ -46,25 +45,26 @@ public class WorldController : MonoBehaviour
     [Header("Public variable?")]
     public bool InBuildMode;
 
-    // Non serialized fields
+    //Non-Serialized Fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
-    private TutorialStage tutorialStage = TutorialStage.CrashLanding;
 
-    // UI & Mouse Controller
-    UIController uiController;
-    MouseController mouseController;
+    //Other Controllers
+    //private MouseController mouseController
+    private ResourceController resourceController;
+    private TutorialController tutorialController;
+    private UIController uiController;
 
-    // Cursor Locking to centre
+    //Cursor Locking to centre
     private CursorLockMode wantedMode;
 
-    // Flags
+    //Flags
     private bool hubBuilt = false;
     private bool isGameOver;
 
-    // Public properties
+    //Public Properties
     // public static WorldController used to get the instance of the WorldManager from anywhere.
     public static WorldController Instance { get; protected set; }
     public TileData[,] Tiles { get => tiles; }
@@ -73,8 +73,9 @@ public class WorldController : MonoBehaviour
     public int Length { get => length; }
     public Hub Hub { get => hub; set => hub = value; }
     public ResourceController ResourceController { get => resourceController; }
+    public TutorialController TutorialController { get => tutorialController; }
     public ShipComponentState[] ShipComponents { get => shipComponents; }
-    public TutorialStage TutorialStage { get => tutorialStage;  }
+    //public TutorialStage TutorialStage { get => tutorialStage;  }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -93,13 +94,14 @@ public class WorldController : MonoBehaviour
 
         Cursor.lockState = wantedMode;
         Cursor.visible = (CursorLockMode.Locked != wantedMode);
+
+        resourceController = GetComponent<ResourceController>();
+        tutorialController = GetComponent<TutorialController>();
+        uiController = GetComponent<UIController>();
     }
 
     private void Start()
-    {     
-        //Get UIController currently used in scene
-        uiController = GetComponent<UIController>();
-
+    {
         InstantiateTileArray();
         //SetupTiles();
         ConnectAdjacentTiles();

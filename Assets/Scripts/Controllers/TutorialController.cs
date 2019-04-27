@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.HDPipeline;
+using UnityEngine.UI;
 
 public enum TutorialStage
 {
@@ -24,6 +25,7 @@ public class TutorialController : DialogueBoxController
 
     //Serialized Fields
     [SerializeField] private bool skipTutorial = true;
+
     [SerializeField] private DialogueBox aiText;
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark generatorLandmark;
@@ -31,21 +33,40 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark clusterFanLandmark;
     [SerializeField] private Locatable buildingTarget;
 
-    //Non-Serialized Fields
+    [SerializeField] private Color uiNormalColour;
+    [SerializeField] private Color uiHighlightColour;
+    [SerializeField] private Button btnBuildSelect;
+    [SerializeField] private Button btnBuildHarvester;
+    [SerializeField] private Button btnBuildGenerator;
+    [SerializeField] private Button btnBuildRelay;
+    [SerializeField] private Button btnBuildClusterFan;
+
     [SerializeField] private TutorialStage tutorialStage = TutorialStage.CrashLanding;
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
-
-    private TileData currentTile = null;
     [SerializeField] private int currentTileX = 0;
     [SerializeField] private int currentTileZ = 0;
     [SerializeField] private int subStage = 1;
 
+    //Non-Serialized Fields
+    private bool buttonClicked = false;
+    private Button btnCurrentButton;
+    private btnTutorial btnTutCurrentButton;
+    private btnTutorial btnTutBuildSelect;
+    private btnTutorial btnTutBuildHarvester;
+    private btnTutorial btnTutBuildGenerator;
+    private btnTutorial btnTutBuildRelay;
+    private btnTutorial btnTutBuildClusterFan;
+
+    private TileData currentTile = null;
     private DecalProjectorComponent targetDecal = null;
-    private bool expandDecal = true;
-    private float decalProgress = 0f;
     private float decalMin = 1.5f;
     private float decalMax = 3f;
+
+    private bool lerpUI = false;
+
     private float lerpMultiplier = 1f;
+    private float lerpProgress = 0f;
+    private bool lerpForward = true;
 
     //Public Properties
     public TutorialStage TutorialStage { get => tutorialStage; }
@@ -64,6 +85,15 @@ public class TutorialController : DialogueBoxController
         else
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
+
+            btnTutBuildSelect = btnBuildSelect.GetComponent<btnTutorial>();
+            btnTutBuildHarvester = btnBuildHarvester.GetComponent<btnTutorial>();
+            btnTutBuildGenerator = btnBuildGenerator.GetComponent<btnTutorial>();
+            btnTutBuildRelay = btnBuildRelay.GetComponent<btnTutorial>();
+            btnTutBuildClusterFan = btnBuildClusterFan.GetComponent<btnTutorial>();
+
+            //lerpUI = true;
+            //btnCurrentButton = btnBuildHarvester;
         }
     }
 
@@ -72,8 +102,6 @@ public class TutorialController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        CheckTutorialStage();
-
         if (tutorialStage != TutorialStage.Finished)
         {
             if (dialogueRead)
@@ -82,11 +110,25 @@ public class TutorialController : DialogueBoxController
                 ResetDialogueRead();
             }
 
+            if (buttonClicked)
+            {
+                buttonClicked = false;
+                btnTutCurrentButton.ReportClick = false;
+                subStage += 1;
+            }
+
+            if (lerpUI)
+            {
+                LerpUIColour();
+            }
+
             if (targetDecal.enabled)
             {
                 LerpDecal();
             }
-        }        
+        }
+
+        CheckTutorialStage();        
     }
 
     private void CheckTutorialStage()
@@ -175,22 +217,34 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 2)
         {
-            //Display UI element prompting player to click the building selector button
+            //Turn off DialogueBox
+            aiText.DeactivateDialogueBox();
 
-            //Progress to next SubStage
-            subStage += 1;
+            //Display UI element prompting player to click the building selector button
+            btnCurrentButton = btnBuildSelect;
+            btnTutCurrentButton = btnTutBuildSelect;
+            btnTutCurrentButton.ReportClick = true;
+            lerpUI = true;
         }
         else if (subStage == 3)
         {
-            //Display UI element prompting player to select the harvester
+            //Reset UI lerping
+            btnTutCurrentButton.ReportClick = false;
+            ResetColourOf(btnCurrentButton);
+            lerpProgress = 0;
+            lerpForward = true;
 
-            //Progress to next SubStage
-            subStage += 1;
+            //Display UI element prompting player to select the harvester
+            btnCurrentButton = btnBuildHarvester;
+            btnTutCurrentButton = btnTutBuildHarvester;
+            btnTutCurrentButton.ReportClick = true;
         }
         else if (subStage == 4)
         {
-            //Turn off DialogueBox
-            aiText.DeactivateDialogueBox();
+            //Turn off UI lerping
+            lerpUI = false;
+            ResetColourOf(btnCurrentButton);
+            btnTutCurrentButton.ReportClick = false;
 
             //Get location of resource node
             GetLocationOf(harvesterResource);
@@ -341,6 +395,28 @@ public class TutorialController : DialogueBoxController
 
     //Utility Methods------------------------------------------------------------------------------
 
+    private void LerpUIColour()
+    {
+        //lerp currentButton's NormalColor's values
+        ColorBlock cb = btnCurrentButton.colors;
+        cb.normalColor = Color.Lerp(uiNormalColour, uiHighlightColour, lerpProgress);
+        btnCurrentButton.colors = cb;
+
+        UpdateLerpValues();
+    }
+
+    private void ResetColourOf(Button b)
+    {
+        ColorBlock cb = btnCurrentButton.colors;
+        cb.normalColor = uiNormalColour;
+        btnCurrentButton.colors = cb;
+    }
+
+    public void RegisterButtonClicked()
+    {
+        buttonClicked = true;
+    }
+
     private void GetLocationOf(Locatable l)
     {
         currentTile = l.Location;
@@ -362,35 +438,17 @@ public class TutorialController : DialogueBoxController
         buildingTarget.transform.position = l.transform.position;
         targetDecal.enabled = true;
 
-        decalProgress = 0f;
-        expandDecal = true;
+        lerpProgress = 0f;
+        lerpForward = true;
     }
 
     private void LerpDecal()
     {
-        float lerped = Mathf.Lerp(decalMin, decalMax, decalProgress);
+        float lerped = Mathf.Lerp(decalMin, decalMax, lerpProgress);
         //buildingTarget.transform.lossyScale.Set(lerped, 1, lerped);
         targetDecal.m_Size.Set(lerped, 1, lerped);
 
-        if (expandDecal)
-        {
-            decalProgress += Time.deltaTime * lerpMultiplier;
-        }
-        else
-        {
-            decalProgress -= Time.deltaTime * lerpMultiplier;
-        }
-
-        if (decalProgress > 1)
-        {
-            decalProgress = 1;
-            expandDecal = false;
-        }
-        else if (decalProgress < 0)
-        {
-            decalProgress = 0;
-            expandDecal = true;
-        }
+        UpdateLerpValues();
 
         //Forces the decal to show the lerping
         targetDecal.enabled = false;
@@ -416,5 +474,28 @@ public class TutorialController : DialogueBoxController
     private void DeactivateTarget()
     {
         targetDecal.enabled = false;
+    }
+
+    private void UpdateLerpValues()
+    {
+        if (lerpForward)
+        {
+            lerpProgress += Time.deltaTime * lerpMultiplier;
+        }
+        else
+        {
+            lerpProgress -= Time.deltaTime * lerpMultiplier;
+        }
+
+        if (lerpProgress > 1)
+        {
+            lerpProgress = 1;
+            lerpForward = false;
+        }
+        else if (lerpProgress < 0)
+        {
+            lerpProgress = 0;
+            lerpForward = true;
+        }
     }
 }

@@ -17,7 +17,7 @@ public class TowerManager : MonoBehaviour
 
     //TODO: TOGGLE ?
     //DESC: click on the button will get the value of the assigned value(button) ? xD
-    public void OnCLickedbtn(btn_tower chooseTower)
+    public void OnButtonClicked(btn_tower chooseTower)
     {
         this.SelectedTower = chooseTower;
         WorldController.Instance.InBuildMode = true;
