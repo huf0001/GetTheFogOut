@@ -51,7 +51,6 @@ public abstract class Building : PlaneObject
         FindToolTip();
         audioSource = GetComponent<AudioSource>();
         resourceController = WorldController.Instance.ResourceController;
-
         //if (placed)
         //{
         //    GetComponent<Renderer>().material.shader = buildingShader;
@@ -81,10 +80,11 @@ public abstract class Building : PlaneObject
     {
         if (buildingType != BuildingType.Hub)
         {
-            if (powerSource == null)
-            {
-                SetPowerSource();
-            }
+                 if (powerSource == null)
+                  {
+                      SetPowerSource();
+                  }
+       //     SetPowerSource();
         }
 
         resourceController.AddBuilding(this);
@@ -212,7 +212,6 @@ public abstract class Building : PlaneObject
     public void DismantleBuilding()
     {
         Debug.Log("Dismantling " + this.name);
-
         if (buildingType == BuildingType.Hub || buildingType == BuildingType.Relay)
         {
             PowerSource p = this as PowerSource;
@@ -222,7 +221,8 @@ public abstract class Building : PlaneObject
         if (powerSource != null)
         {
             Debug.Log("Unplugging from " + powerSource.name);
-            powerSource.SuppliedBuildings.Remove(this);
+            //  powerSource.SuppliedBuildings.Remove(this);
+            powerSource.Unplug(this);
         }
 
         //MakeTilesNotVisible();
@@ -235,7 +235,7 @@ public abstract class Building : PlaneObject
         }
 
         PowerDown();
-
+        
         resourceController.RemoveBuilding(this);
 
         Debug.Log("Should be removed from ResourceController's list of my building type");

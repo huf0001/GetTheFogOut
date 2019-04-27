@@ -58,7 +58,7 @@ public class MouseController : MonoBehaviour
 
     void RemoveBuilding()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A") )
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -96,8 +96,8 @@ public class MouseController : MonoBehaviour
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
 
-                    if (CheckIfTileOkay(tile))
-                    {
+                //    if (CheckIfTileOkay(tile))
+                 //   {
                         //If tile has power, place building. Otherwise, don't place building.
                         if (tile.PowerSource != null)
                         {
@@ -142,7 +142,7 @@ public class MouseController : MonoBehaviour
                                 }
                             }
                         }
-                    }
+                   // }
                 }
             }
         }

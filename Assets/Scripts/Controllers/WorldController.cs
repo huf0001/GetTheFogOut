@@ -89,9 +89,10 @@ public class WorldController : MonoBehaviour
         Instance = this;
         isGameOver = false;
 
+        tm = FindObjectOfType<TowerManager>();
+
         Cursor.lockState = wantedMode;
         Cursor.visible = (CursorLockMode.Locked != wantedMode);
-        tm = FindObjectOfType<TowerManager>();
     }
 
     private void Start()
@@ -145,7 +146,7 @@ public class WorldController : MonoBehaviour
         {
             if (b.BuildingType != BuildingType.Hub)
             {
-                //TileData tile = GetTileAt(b.transform.position);
+               // TileData tile = GetTileAt(b.transform.position);
                 TileData tile = GetTileAt(b.transform.parent.position);
                 b.Location = tile;
 
@@ -356,8 +357,9 @@ public class WorldController : MonoBehaviour
 
         if (Input.GetKeyDown("c"))
         {
-            Cursor.lockState = wantedMode = CursorLockMode.None;
+            // Debug.Log("Cursor State Before: " + Cursor.lockState + ", wantedMode = " + wantedMode);
             ChangeCursorState();
+            // Debug.Log("Cursor State After: " + Cursor.lockState + ", wantedMode = " + wantedMode);
         }
 
         if (resourceController.IsWin() || hub.isDestroyed())
@@ -374,14 +376,13 @@ public class WorldController : MonoBehaviour
         switch (Cursor.lockState)
         {
             case CursorLockMode.None:
-                wantedMode = CursorLockMode.Locked;
-                Debug.Log("Cursor Locked");
+                wantedMode = CursorLockMode.Locked; // Debug.Log("Cursor has been locked");
                 break;
             case CursorLockMode.Locked:
-                wantedMode = CursorLockMode.None;
-                Debug.Log("Cursor Unlocked");
+                wantedMode = CursorLockMode.None;   // Debug.Log("Cursor has been unlocked");
                 break;
         }
+        Cursor.lockState = wantedMode;
     }
 
     private void GameOverUpdate()

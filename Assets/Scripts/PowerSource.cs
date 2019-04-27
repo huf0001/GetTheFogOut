@@ -175,6 +175,10 @@ public abstract class PowerSource : Building
 
     public void Unplug(Building unplug)
     {
+        if (suppliedBuildings.Contains(unplug))
+        {
+            Debug.Log("fff");
+        }
         if (this != unplug)
         {
             //if (suppliedBuildings.Contains(unplug))

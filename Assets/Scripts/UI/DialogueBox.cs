@@ -6,6 +6,7 @@ using TMPro;
 public class DialogueBox : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textBox;
+    [SerializeField] DialogueBoxController dialogueBoxController;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,11 @@ public class DialogueBox : MonoBehaviour
     {
         textBox.text = text;
         gameObject.SetActive(true);
+    }
+
+    public void RegisterDialogueRead()
+    {
+        dialogueBoxController.RegisterDialogueRead();
     }
 
     public void DeactivateDialogueBox()
