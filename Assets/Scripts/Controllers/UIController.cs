@@ -13,6 +13,7 @@ public class UIController : MonoBehaviour
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
     public GameObject endGame, pauseGame;
     GameObject hudBar;
+    public BuildingSelector buildingSelector;
     public TextMeshProUGUI endGameText;
 
     private Slider powerSlider;
@@ -57,6 +58,10 @@ public class UIController : MonoBehaviour
 
         powerTime += Time.deltaTime;
         mineralTime += Time.deltaTime;
+        if (Input.GetButtonDown("Xbox_LB"))
+        {
+            buildingSelector.ToggleVisibility();
+        }
         UpdateResourceText();
     }
 
