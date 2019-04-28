@@ -7,11 +7,6 @@ public class BuildingSelector : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI buildingDesc;
 
-    //private void Start()
-    //{
-    //    ToggleVisibility();
-    //}
-
     public void ToggleVisibility()
     {
         if (gameObject.activeSelf)

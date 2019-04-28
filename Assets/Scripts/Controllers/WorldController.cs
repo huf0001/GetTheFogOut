@@ -56,6 +56,8 @@ public class WorldController : MonoBehaviour
     private ResourceController resourceController;
     private TutorialController tutorialController;
     private UIController uiController;
+    
+    [SerializeField] protected CameraController cameraController;
 
     //Cursor Locking to centre
     private CursorLockMode wantedMode;
@@ -95,6 +97,7 @@ public class WorldController : MonoBehaviour
         Cursor.lockState = wantedMode;
         Cursor.visible = (CursorLockMode.Locked != wantedMode);
 
+        cameraController =  GetComponent<CameraController>();
         resourceController = GetComponent<ResourceController>();
         tutorialController = GetComponent<TutorialController>();
         uiController = GetComponent<UIController>();
@@ -330,6 +333,11 @@ public class WorldController : MonoBehaviour
             //    MeshRendererTileChild(true);
             RenderTower();
             //    ShowTile();
+        }
+
+        if (Input.GetButtonDown("Xbox_LB"))
+        {
+            cameraController.ToggleCameraMovement();
         }
 
         // TEMP FIX, SHOULD BE REMOVED LATER
