@@ -112,41 +112,13 @@ MonoBehaviour:
   powered: 0
   placed: 0
   buildingType: 5
+  mineralCost: 0
+  powerCost: 0
+  fuelCost: 0
+  organicCost: 0
+  audioSource: {fileID: 0}
   powerRange: 5
   suppliedBuildings: []
-  maxPower: 100
-  maxMineral: 100
-  maxOrganic: 100
-  maxFuel: 100
-  storedPower: 0
-  storedMineral: 0
-  storedOrganic: 0
-  storedFuel: 0
-  powerChange: 0
-  mineralChange: 0
-  organicChange: 0
-  fuelChange: 0
-  batteryPowerCost: 30
-  batteryMineralCost: 0
-  batteryOrganicCost: 0
-  batteryFuelCost: 0
-  generatorPowerCost: 30
-  generatorMineralCost: 0
-  generatorOrganicCost: 0
-  generatorFuelCost: 0
-  harvesterPowerCost: 50
-  harvesterMineralCost: 0
-  harvesterOrganicCost: 0
-  harvesterFuelCost: 0
-  relayPowerCost: 10
-  relayMineralCost: 0
-  relayOrganicCost: 0
-  relayFuelCost: 0
-  defencePowerCost: 0
-  defenceMineralCost: 0
-  defenceOrganicCost: 0
-  defenceFuelCost: 0
-  batteries: []
 --- !u!82 &424653388149132180
 AudioSource:
   m_ObjectHideFlags: 0
@@ -158,7 +130,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0db611dac5c227a48a276880bb3e54ea, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

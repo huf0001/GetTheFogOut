@@ -90,7 +90,7 @@ public abstract class Building : PlaneObject
 
         resourceController.AddBuilding(this);
         placed = true;
-        audioSource.Play();
+        //audioSource.Play();
         //GetComponent<Renderer>().material.shader = buildingShader;
     }
 
