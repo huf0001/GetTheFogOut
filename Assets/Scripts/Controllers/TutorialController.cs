@@ -19,6 +19,18 @@ public enum TutorialStage
     Finished
 }
 
+public enum ButtonType
+{
+    None,
+    BuildSelect,
+    Battery,
+    ClusterFan,
+    Generator,
+    Harvester,
+    Relay,
+    Destroy
+}
+
 public class TutorialController : DialogueBoxController
 {
     //Fields---------------------------------------------------------------------------------------
@@ -35,11 +47,11 @@ public class TutorialController : DialogueBoxController
 
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
-    [SerializeField] private Button btnBuildSelect;
-    [SerializeField] private Button btnBuildHarvester;
-    [SerializeField] private Button btnBuildGenerator;
-    [SerializeField] private Button btnBuildRelay;
-    [SerializeField] private Button btnBuildClusterFan;
+    [SerializeField] private btnTutorial btnBuildSelect;
+    [SerializeField] private btnTutorial btnBuildHarvester;
+    [SerializeField] private btnTutorial btnBuildGenerator;
+    [SerializeField] private btnTutorial btnBuildRelay;
+    [SerializeField] private btnTutorial btnBuildClusterFan;
 
     [SerializeField] private TutorialStage tutorialStage = TutorialStage.CrashLanding;
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
@@ -49,20 +61,15 @@ public class TutorialController : DialogueBoxController
 
     //Non-Serialized Fields
     private bool buttonClicked = false;
-    private Button btnCurrentButton;
-    private btnTutorial btnTutCurrentButton;
-    private btnTutorial btnTutBuildSelect;
-    private btnTutorial btnTutBuildHarvester;
-    private btnTutorial btnTutBuildGenerator;
-    private btnTutorial btnTutBuildRelay;
-    private btnTutorial btnTutBuildClusterFan;
+    private btnTutorial btnCurrent;
+    private ButtonType currentlyLerping;
 
     private TileData currentTile = null;
     private DecalProjectorComponent targetDecal = null;
     private float decalMin = 1.5f;
     private float decalMax = 3f;
 
-    private bool lerpUI = false;
+    //private bool lerpUI = false;
 
     private float lerpMultiplier = 1f;
     private float lerpProgress = 0f;
@@ -71,7 +78,10 @@ public class TutorialController : DialogueBoxController
     //Public Properties
     public TutorialStage TutorialStage { get => tutorialStage; }
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
+    public ButtonType CurrentlyLerping { get => currentlyLerping; }
     public TileData CurrentTile { get => currentTile; }
+    public Color UINormalColour { get => uiNormalColour; }
+    public Color UIHighlightColour { get => uiHighlightColour; }
 
     //Start-Up Methods-----------------------------------------------------------------------------
 
@@ -85,12 +95,6 @@ public class TutorialController : DialogueBoxController
         else
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
-
-            btnTutBuildSelect = btnBuildSelect.GetComponent<btnTutorial>();
-            btnTutBuildHarvester = btnBuildHarvester.GetComponent<btnTutorial>();
-            btnTutBuildGenerator = btnBuildGenerator.GetComponent<btnTutorial>();
-            btnTutBuildRelay = btnBuildRelay.GetComponent<btnTutorial>();
-            btnTutBuildClusterFan = btnBuildClusterFan.GetComponent<btnTutorial>();
 
             //lerpUI = true;
             //btnCurrentButton = btnBuildHarvester;
@@ -113,14 +117,14 @@ public class TutorialController : DialogueBoxController
             if (buttonClicked)
             {
                 buttonClicked = false;
-                btnTutCurrentButton.ReportClick = false;
+                btnCurrent.ReportClick = false;
                 subStage += 1;
             }
 
-            if (lerpUI)
-            {
-                LerpUIColour();
-            }
+            //if (lerpUI)
+            //{
+            //    btnCurrent.LerpButtonColour();
+            //}
 
             if (targetDecal.enabled)
             {
@@ -221,30 +225,26 @@ public class TutorialController : DialogueBoxController
             aiText.DeactivateDialogueBox();
 
             //Display UI element prompting player to click the building selector button
-            btnCurrentButton = btnBuildSelect;
-            btnTutCurrentButton = btnTutBuildSelect;
-            btnTutCurrentButton.ReportClick = true;
-            lerpUI = true;
+            //lerpUI = true;
+            btnCurrent = btnBuildSelect;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.BuildSelect;
         }
         else if (subStage == 3)
         {
             //Reset UI lerping
-            btnTutCurrentButton.ReportClick = false;
-            ResetColourOf(btnCurrentButton);
-            lerpProgress = 0;
-            lerpForward = true;
+            btnCurrent.ReportClick = false;
 
             //Display UI element prompting player to select the harvester
-            btnCurrentButton = btnBuildHarvester;
-            btnTutCurrentButton = btnTutBuildHarvester;
-            btnTutCurrentButton.ReportClick = true;
+            btnCurrent = btnBuildHarvester;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.Harvester;
         }
         else if (subStage == 4)
         {
             //Turn off UI lerping
-            lerpUI = false;
-            ResetColourOf(btnCurrentButton);
-            btnTutCurrentButton.ReportClick = false;
+            btnCurrent.ReportClick = false;
+            currentlyLerping = ButtonType.None;
 
             //Get location of resource node
             GetLocationOf(harvesterResource);
@@ -395,22 +395,22 @@ public class TutorialController : DialogueBoxController
 
     //Utility Methods------------------------------------------------------------------------------
 
-    private void LerpUIColour()
-    {
-        //lerp currentButton's NormalColor's values
-        ColorBlock cb = btnCurrentButton.colors;
-        cb.normalColor = Color.Lerp(uiNormalColour, uiHighlightColour, lerpProgress);
-        btnCurrentButton.colors = cb;
+    //private void LerpUIColour()
+    //{
+    //    //lerp currentButton's NormalColor's values
+    //    ColorBlock cb = btnCurrent.Button.colors;
+    //    cb.normalColor = Color.Lerp(uiNormalColour, uiHighlightColour, lerpProgress);
+    //    btnCurrent.Button.colors = cb;
 
-        UpdateLerpValues();
-    }
+    //    UpdateLerpValues();
+    //}
 
-    private void ResetColourOf(Button b)
-    {
-        ColorBlock cb = btnCurrentButton.colors;
-        cb.normalColor = uiNormalColour;
-        btnCurrentButton.colors = cb;
-    }
+    //private void ResetColourOf(Button b)
+    //{
+    //    ColorBlock cb = btnCurrent.Button.colors;
+    //    cb.normalColor = uiNormalColour;
+    //    btnCurrent.Button.colors = cb;
+    //}
 
     public void RegisterButtonClicked()
     {

@@ -7,8 +7,26 @@ public class BuildingSelector : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI buildingDesc;
 
+    //private void Start()
+    //{
+    //    ToggleVisibility();
+    //}
+
     public void ToggleVisibility()
     {
+        if (gameObject.activeSelf)
+        {
+            btnTutorial[] buttons = GetComponentsInChildren<btnTutorial>();
+
+            foreach (btnTutorial b in buttons)
+            {
+                if (b.Lerping)
+                {
+                    b.DeactivateLerping();
+                }
+            }
+        }
+
         gameObject.SetActive(!gameObject.activeSelf);
         buildingDesc.gameObject.SetActive(!buildingDesc.gameObject.activeSelf);
     }
