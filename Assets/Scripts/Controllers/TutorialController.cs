@@ -69,11 +69,12 @@ public class TutorialController : DialogueBoxController
     private float decalMin = 1.5f;
     private float decalMax = 3f;
 
-    //private bool lerpUI = false;
-
     private float lerpMultiplier = 1f;
     private float lerpProgress = 0f;
     private bool lerpForward = true;
+
+    private Dictionary<string, List<string>> dialogue = new Dictionary<string, List<string>>();
+    private bool dialogueSent = false;
 
     //Public Properties
     public TutorialStage TutorialStage { get => tutorialStage; }
@@ -95,10 +96,23 @@ public class TutorialController : DialogueBoxController
         else
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
-
-            //lerpUI = true;
-            //btnCurrentButton = btnBuildHarvester;
+            SetupDialogue();
         }
+    }
+
+    private void SetupDialogue()
+    {
+        dialogue["build cluster fan"] = new List<string>();
+        dialogue["build cluster fan"].Add("Build Cluster Fan (Click to Continue)");
+        
+        dialogue["build generator"] = new List<string>();
+        dialogue["build generator"].Add("Build Generator (Click to Continue)");
+
+        dialogue["build harvester"] = new List<string>();
+        dialogue["build harvester"].Add("Build Harvester (Click to Continue)");
+
+        dialogue["build relay"] = new List<string>();
+        dialogue["build relay"].Add("Build Relay (Click to Continue)");
     }
 
     //Tutorial Stage Management Methods------------------------------------------------------------
@@ -110,6 +124,7 @@ public class TutorialController : DialogueBoxController
         {
             if (dialogueRead)
             {
+                dialogueSent = false;
                 subStage += 1;
                 ResetDialogueRead();
             }
@@ -213,17 +228,10 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            //Get AI dialogue
-            string text = "Build Harvester (Click to Continue)";
-
-            //Activate DialogueBox, passing dialogue to it
-            aiText.ActivateDialogueBox(text);
+            SendDialogue("build harvester");
         }
         else if (subStage == 2)
         {
-            //Turn off DialogueBox
-            aiText.DeactivateDialogueBox();
-
             //Display UI element prompting player to click the building selector button
             //lerpUI = true;
             btnCurrent = btnBuildSelect;
@@ -274,17 +282,10 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            //Get AI dialogue
-            string text = "Build Generator (Click to Continue)";
-
-            //Activate DialogueBox, passing dialogue to it
-            aiText.ActivateDialogueBox(text);
+            SendDialogue("build generator");
         }
         else if (subStage == 2)
         {
-            //Turn off DialogueBox
-            aiText.DeactivateDialogueBox();
-
             //Get tile
             GetLocationOf(generatorLandmark);
 
@@ -311,17 +312,10 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            //Get AI dialogue
-            string text = "Build Relay (Click to Continue)";
-
-            //Activate DialogueBox, passing dialogue to it
-            aiText.ActivateDialogueBox(text);
+            SendDialogue("build relay");
         }
         else if (subStage == 2)
         {
-            //Turn off DialogueBox
-            aiText.DeactivateDialogueBox();
-
             //Get tile
             GetLocationOf(relayLandmark);
 
@@ -361,17 +355,10 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            //Get AI dialogue
-            string text = "Build Cluster Fan (Click to Continue)";
-
-            //Activate DialogueBox, passing dialogue to it
-            aiText.ActivateDialogueBox(text);
+            SendDialogue("build cluster fan");
         }
         else if (subStage == 2)
         {
-            //Turn off DialogueBox
-            aiText.DeactivateDialogueBox();
-
             //Get tile
             GetLocationOf(clusterFanLandmark);
 
@@ -395,22 +382,17 @@ public class TutorialController : DialogueBoxController
 
     //Utility Methods------------------------------------------------------------------------------
 
-    //private void LerpUIColour()
-    //{
-    //    //lerp currentButton's NormalColor's values
-    //    ColorBlock cb = btnCurrent.Button.colors;
-    //    cb.normalColor = Color.Lerp(uiNormalColour, uiHighlightColour, lerpProgress);
-    //    btnCurrent.Button.colors = cb;
+    private void SendDialogue(string dialogueKey)
+    {
+        if (!dialogueSent)
+        {
+            //Activate DialogueBox, passing dialogue to it
+            aiText.ActivateDialogueBox(dialogue[dialogueKey]);
 
-    //    UpdateLerpValues();
-    //}
-
-    //private void ResetColourOf(Button b)
-    //{
-    //    ColorBlock cb = btnCurrent.Button.colors;
-    //    cb.normalColor = uiNormalColour;
-    //    btnCurrent.Button.colors = cb;
-    //}
+            //Set dialogueSent to true so that the dialogue box isn't being repeatedly activated
+            dialogueSent = true;
+        }
+    }
 
     public void RegisterButtonClicked()
     {
@@ -445,7 +427,6 @@ public class TutorialController : DialogueBoxController
     private void LerpDecal()
     {
         float lerped = Mathf.Lerp(decalMin, decalMax, lerpProgress);
-        //buildingTarget.transform.lossyScale.Set(lerped, 1, lerped);
         targetDecal.m_Size.Set(lerped, 1, lerped);
 
         UpdateLerpValues();

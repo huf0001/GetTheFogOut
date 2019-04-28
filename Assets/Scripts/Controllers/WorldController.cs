@@ -340,18 +340,8 @@ public class WorldController : MonoBehaviour
 
         if (Input.GetKeyDown("p") || Input.GetButtonDown("Xbox_Menu"))
         {
-            if (Time.timeScale == 1.0f)
-            {
-                Time.timeScale = 0.0f;
-                pause.SetActive(true);
-            }
-            else
-            {
-                Time.timeScale = 1.0f;
-                pause.SetActive(false);
-            }
-
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            pause.SetActive(!pause.activeSelf);
+            SetPause(pause.activeSelf);
 
             // TEST CODE: Stopping Mouse from placing/deleting buildings in Game Pause/Over.
             // mouseController.GamePlayStop();
@@ -366,12 +356,26 @@ public class WorldController : MonoBehaviour
 
         if (resourceController.IsWin() || hub.isDestroyed())
         {
-
             Time.timeScale = 0.2f;
             isGameOver = true;
             InBuildMode = false;
         }
     }
+
+    public void SetPause(bool pause)
+    {
+        if (pause)
+        {
+            Time.timeScale = 0.0f;
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+        }
+
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    }
+    
 
     private void ChangeCursorState()
     {
