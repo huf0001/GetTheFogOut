@@ -17,6 +17,7 @@ public class ResourceController : MonoBehaviour
     [SerializeField] private List<Generator> generators = new List<Generator>();
     [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
     [SerializeField] private List<Relay> relays = new List<Relay>();
+    private List<Building> buildings = new List<Building>();
 
     //Non-serialized fields
     private Hub hub = null;
@@ -40,6 +41,7 @@ public class ResourceController : MonoBehaviour
     public List<Generator> Generators { get => generators; set => generators = value; }
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<Relay> Relays { get => relays; set => relays = value; }
+    public List<Building> Buildings { get => buildings; set => buildings = value; }
 
     // Start is called before the first frame update
     private void Start()
@@ -209,6 +211,7 @@ public class ResourceController : MonoBehaviour
 
     public void AddBuilding(Building b)
     {
+        buildings.Add(b);
         switch (b.BuildingType)
         {
             case BuildingType.Battery:
@@ -233,6 +236,7 @@ public class ResourceController : MonoBehaviour
     public void RemoveBuilding(Building b)
     {
         Debug.Log("Removing building");
+        Buildings.Remove(b);
         switch (b.BuildingType)
         {
             case BuildingType.Battery:

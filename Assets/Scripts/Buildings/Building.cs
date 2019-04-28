@@ -34,6 +34,7 @@ public abstract class Building : PlaneObject
     public int FuelCost { get => fuelCost; }
     public int OrganicCost { get => organicCost; }
     public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
+    public bool TakingDamage { get; private set; }
 
     //public Hub Hub
     //{
@@ -257,6 +258,19 @@ public abstract class Building : PlaneObject
         {
             Debug.Log(this.name + "'s location has been set");
             base.Location = value;
+        }
+    }
+
+    public IEnumerator DamageBuilding(float damageVal)
+    {
+        Health -= damageVal;
+        float buildHealth = Health;
+        TakingDamage = true;
+        yield return new WaitForSeconds(1);
+
+        if (buildHealth == Health)
+        {
+            TakingDamage = false;
         }
     }
 }
