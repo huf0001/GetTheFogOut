@@ -67,9 +67,7 @@ public class CameraController : MonoBehaviour
 
     public void ToggleCameraMovement()
     {
-        Debug.Log("ToggleCameraMovement Start: " + isBuildingSelect);
         isBuildingSelect = !isBuildingSelect;
-        Debug.Log("ToggleCameraMovement End: " + isBuildingSelect);
     }
 
     public void RotateCamera()
