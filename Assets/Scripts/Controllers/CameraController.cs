@@ -33,6 +33,8 @@ public class CameraController : MonoBehaviour
     private Vector3 rotateCam;
     private int counter;
 
+    private bool isBuildingSelect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,19 +46,28 @@ public class CameraController : MonoBehaviour
         defaultRotation = cam1.transform.eulerAngles;
         defaultPosition = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
         counter = 1;
+        isBuildingSelect = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        currFramePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
-		//currFramePosition.z = 0;
+        if (!isBuildingSelect)
+        {
+            currFramePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+		    //currFramePosition.z = 0;
 
-        UpdateCameraMovement();
+            UpdateCameraMovement();
 
-		lastFramePostition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
-        //lastFramePostition.z = 0;
-        RotateCamera();
+            lastFramePostition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+            //lastFramePostition.z = 0;
+            RotateCamera();
+        }
+    }
+
+    public void ToggleCameraMovement()
+    {
+        isBuildingSelect = !isBuildingSelect;
     }
 
     public void RotateCamera()

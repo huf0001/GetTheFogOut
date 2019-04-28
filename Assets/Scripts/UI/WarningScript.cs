@@ -96,6 +96,30 @@ public class WarningScript : MonoBehaviour
         {
             CheckPower();
         }
+        CheckBuildings();
+    }
+
+    private void CheckBuildings()
+    {
+        List<Building> buildings = resourceController.Buildings;
+
+        if (warnings["buildings"] != WarningLevel.Danger)
+        {
+            foreach (Building b in buildings)
+            {
+                if (b.TakingDamage)
+                {
+                    warnings["buildings"] = WarningLevel.Danger;
+                    buildingStatus.text = DANGER + "Buildings are taking damage!";
+                    StartCoroutine(ShowMessage(buildingStatus.text));
+                    return;
+                }
+                //if (b.Health < b.)
+            }
+            warnings["buildings"] = WarningLevel.Normal;
+            buildingStatus.text = NORMAL + "All buildings are healthy";
+        }
+
     }
 
     private void CheckPower()
