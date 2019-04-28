@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Generator : Building
 {
-    public Generator()
-    {
+    //public Generator()
+    //{
         // costs 30 to build
-    }
+    //}
 
     // Start is called before the first frame update
     protected override void Start()

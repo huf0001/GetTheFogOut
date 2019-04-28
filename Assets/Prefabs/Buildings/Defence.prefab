@@ -112,6 +112,10 @@ MonoBehaviour:
   powered: 0
   placed: 0
   buildingType: 2
+  mineralCost: 0
+  powerCost: 0
+  fuelCost: 0
+  organicCost: 0
   audioSource: {fileID: 6785053910657603206}
   directDamage: 50
   aoeDamage: 25
@@ -128,7 +132,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f6cf88f896cf0d34b8cb7c76d3f5ef36, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
