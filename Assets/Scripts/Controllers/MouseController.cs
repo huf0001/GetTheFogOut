@@ -56,25 +56,13 @@ public class MouseController : MonoBehaviour
         // }
     }
 
-    void RemoveBuilding()
+    void RemoveBulding(Building building)
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A") )
+        if (building.BuildingType != BuildingType.Hub)
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.transform.gameObject.tag == "Building")
-                {
-                    if (hit.transform.gameObject.GetComponent<Building>().BuildingType != BuildingType.Hub)
-                    {
-                        PointAtObj = hit.transform.gameObject;
-                        hit.transform.gameObject.GetComponent<Building>().DismantleBuilding();
-                    }
-                }
-            }
-        }
+            //PointAtObj = hit.transform.gameObject;
+            building.DismantleBuilding();
+        }  
     }
 
     void UpdatePlacing()
@@ -134,12 +122,9 @@ public class MouseController : MonoBehaviour
                             }
                             else
                             {
-                                RemoveBuilding();
+                                Building removeBuilding = ReturnCost();
+                                RemoveBulding(removeBuilding);
 
-                                if(PointAtObj != null)
-                                {
-                                    ReturnCost(PointAtObj);
-                                }
                             }
                         }
                     }
@@ -148,18 +133,33 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    private void ReturnCost(GameObject buildtodestroy)
+    private Building ReturnCost()
     {
-        //Hub hub = WorldController.Instance.Hub;
-        Building building = buildtodestroy.GetComponentInChildren<Building>();
+        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A"))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        // add required resources
-        resourceController.StoredPower += building.PowerCost;
-        resourceController.StoredMineral += building.MineralCost;
-        resourceController.StoredOrganic += building.OrganicCost;
-        resourceController.StoredFuel += building.FuelCost;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.gameObject.tag == "Building")
+                {
+                    Building building = hit.transform.gameObject.GetComponent<Building>();
+                    if (building.BuildingType != BuildingType.Hub)
+                    {
+                        // add required resources
+                        resourceController.StoredPower += building.PowerCost;
+                        resourceController.StoredMineral += building.MineralCost;
+                        resourceController.StoredOrganic += building.OrganicCost;
+                        resourceController.StoredFuel += building.FuelCost;
 
-        StartCoroutine(FloatText(building.transform, building.MineralCost));
+                        StartCoroutine(FloatText(building.transform, building.MineralCost));
+                        return building;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     private bool CheckIfTileOkay(TileData tile, BuildingType building)
@@ -201,6 +201,7 @@ public class MouseController : MonoBehaviour
                 Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
                 Debug.Log(tile.X + " " + tile.Z);
                 GameObject buildingGo = Instantiate(toBuild, PosToInst, Quaternion.Euler(0f, 0f, 0f));
+                building = buildingGo.GetComponentInChildren<Building>();
                 buildingGo.transform.SetParent(WorldController.Instance.Ground.transform);
                 tile.Building = building;
                 building.Location = tile;
