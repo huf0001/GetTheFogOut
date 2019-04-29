@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class DialogueBox : MonoBehaviour
 {
     //Serialized Fields
     [SerializeField] TextMeshProUGUI textBox;
     [SerializeField] DialogueBoxController dialogueBoxController;
+    [SerializeField] float popUpSpeed = 0.5f;
 
     //Non-Serialized Fields
     private List<string> textToDisplay = new List<string>();
+    private Vector2 originalRectTransformPosition;
+    private RectTransform dialogueRectTransform;
 
     public void ActivateDialogueBox(string text, float invokeDelay)
     {
@@ -21,6 +25,10 @@ public class DialogueBox : MonoBehaviour
 
     public void ActivateDialogueBox(List<string> texts, float invokeDelay)
     {
+        //Caches required tweening information for performance saving
+        dialogueRectTransform = GetComponent<RectTransform>();
+        originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
+
         //Debug.Log("DialogueBoxActivated");
         textToDisplay.AddRange(texts);
         DisplayNext();
@@ -37,6 +45,7 @@ public class DialogueBox : MonoBehaviour
     private void Pause()
     {
         WorldController.Instance.SetPause(true);
+        dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).From(true).SetEase(Ease.OutBack).SetUpdate(true);
         gameObject.SetActive(true);
     }
 
@@ -48,15 +57,20 @@ public class DialogueBox : MonoBehaviour
         }
         else
         {
-            dialogueBoxController.RegisterDialogueRead();
             DeactivateDialogueBox();
         }
     }
 
     private void DeactivateDialogueBox()
     {
-        gameObject.SetActive(false);
-        textBox.text = "";
-        WorldController.Instance.SetPause(false);
+        dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
+            delegate {
+                //Reset position after tweening
+                dialogueRectTransform.anchoredPosition = originalRectTransformPosition;
+                gameObject.SetActive(false);
+                textBox.text = "";
+                dialogueBoxController.RegisterDialogueRead();
+                WorldController.Instance.SetPause(false);
+                });
     }
 }
