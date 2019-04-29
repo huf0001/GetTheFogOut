@@ -60,7 +60,6 @@ MonoBehaviour:
   powerSpawnChance: 5
   organSpawnChance: 5
   ground: {fileID: 0}
-  resourceController: {fileID: 0}
   tilePrefab: {fileID: 4687682228001315334, guid: 18bdef06dd148db4d888636bdefa3eab,
     type: 3}
   hubPrefab: {fileID: 1405241161030514272, guid: 47e172c828d0ea4428b22c2696684f4c,
@@ -85,6 +84,7 @@ MonoBehaviour:
     collected: 0
   pause: {fileID: 0}
   InBuildMode: 1
+  camera: {fileID: 0}
 --- !u!114 &1210913968312047254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,11 +98,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxPower: 100
-  maxMineral: 100
+  maxMineral: 99999
   maxOrganic: 100
   maxFuel: 100
   storedPower: 0
-  storedMineral: 0
+  storedMineral: 100
   storedOrganic: 0
   storedFuel: 0
   powerChange: 0
@@ -158,6 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   endGame: {fileID: 0}
   pauseGame: {fileID: 0}
+  buildingSelector: {fileID: 0}
   endGameText: {fileID: 0}
 --- !u!114 &334475222590731063
 MonoBehaviour:
@@ -171,16 +172,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6e49c22bc42cb04890ed435db975f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipTutorial: 1
+  skipTutorial: 0
+  aiText: {fileID: 0}
   harvesterResource: {fileID: 0}
   generatorLandmark: {fileID: 0}
   relayLandmark: {fileID: 0}
   clusterFanLandmark: {fileID: 0}
-  tutorialStage: 1
-  currentlyBuilding: 0
-  currentTileX: 0
-  currentTileZ: 0
-  subStage: 1
+  buildingTarget: {fileID: 0}
+  btnBuildSelect: {fileID: 0}
+  btnBuildHarvester: {fileID: 0}
+  btnBuildGenerator: {fileID: 0}
+  btnBuildRelay: {fileID: 0}
+  btnBuildClusterFan: {fileID: 0}
+  uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
+  uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
+  dialogue:
+  - key: explain situation
+    dialogue:
+    - Well then! That landing was a bit rougher than I had hoped. I will scan the
+      ship and our current surroundings. (Click to Continue)
+    - Scanning . . .
+    - Scan complete.
+    - Bad news. The ship has sustained substantial damaged and three core components
+      are missing.
+    - Good news, the planet is only inhabited by flora. Fauna is not present. You
+      are currently the only living animal to set foot on this planet.
+  - key: explain building placement
+    dialogue:
+    - You are going to need to find those pieces off your ship if we are going to
+      get home. Let me start the back-up generator.
+    - Done. But, it does not look like that will be enough to get us by. You are going
+      to need to build your way out of here.
+    - You see that shiny lump of minerals over there? It is a common resource in our
+      universe, and it is used in most buildings back home.
+  - key: build harvester 1
+    dialogue:
+    - To help you in your journey, I am going to download important building blueprints.
+    - Downloading . . .
+    - Download complete.
+    - The blueprints have been implemented. Click on the icon to open the building
+      menu.
+  - key: build harvester 2
+    dialogue:
+    - The first blueprint to be used will be the harvester.
+    - Use the mouse to select the harvester. Other buildings will become available
+      to you once you have enough materials.
+  - key: build harvester 3
+    dialogue:
+    - Now, place the harvester on top of the mineral by clicking it.
+  - key: build generator
+    dialogue:
+    - Great! Seems the bump on your head from the landing did not do as much damage
+      as I thought. Now that you have some minerals, you can build another power generator.
+  - key: build relay
+    dialogue:
+    - Build Relay (Click to Continue)
+  - key: build cluster fan
+    dialogue:
+    - Build Cluster Fan (Click to Continue)
 --- !u!114 &3646138034780775634
 MonoBehaviour:
   m_ObjectHideFlags: 0
