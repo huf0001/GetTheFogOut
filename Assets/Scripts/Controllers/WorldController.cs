@@ -26,14 +26,16 @@ public class WorldController : MonoBehaviour
 
     //Serialized Fields
     [Header("World Spawning Rules")]
-    [SerializeField] private int width = 31;
+    [SerializeField]
+    private int width = 31;
     [SerializeField] private int length = 31;
     [SerializeField] private bool spawnResources = false;
     [SerializeField] int mineralSpawnChance = 5, fuelSpawnChance = 5, powerSpawnChance = 5, organSpawnChance = 5;
     //[SerializeField] private Tiles gameboard = null;
 
     [Header("Prefab/Gameobject assignment")]
-    [SerializeField] private Terrain ground;
+    [SerializeField]
+    private Terrain ground;
 
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
@@ -57,7 +59,7 @@ public class WorldController : MonoBehaviour
     private ResourceController resourceController;
     private TutorialController tutorialController;
     private UIController uiController;
-    
+
     private CameraController cameraController;
     [SerializeField] protected GameObject camera;
 
@@ -100,7 +102,7 @@ public class WorldController : MonoBehaviour
         Cursor.visible = (CursorLockMode.Locked != wantedMode);
 
         camera = GameObject.Find("CameraTarget");
-        cameraController =  GameObject.Find("CameraTarget").GetComponent<CameraController>();
+        cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
         resourceController = GetComponent<ResourceController>();
         tutorialController = GetComponent<TutorialController>();
         uiController = GetComponent<UIController>();
@@ -154,7 +156,7 @@ public class WorldController : MonoBehaviour
         {
             if (b.BuildingType != BuildingType.Hub)
             {
-               // TileData tile = GetTileAt(b.transform.position);
+                // TileData tile = GetTileAt(b.transform.position);
                 TileData tile = GetTileAt(b.transform.parent.position);
                 b.Location = tile;
 
@@ -386,7 +388,7 @@ public class WorldController : MonoBehaviour
 
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
     }
-    
+
 
     private void ChangeCursorState()
     {
@@ -423,7 +425,7 @@ public class WorldController : MonoBehaviour
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && !EventSystem.current.IsPointerOverGameObject())
+        if (Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && !EventSystem.current.IsPointerOverGameObject())
         {
             if (TileExistsAt(hit.point))
             {
@@ -436,15 +438,19 @@ public class WorldController : MonoBehaviour
                 {
                     TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
                 }
-                else
+                else if (TowerSpawn != TowerToSpawn)
                 {
-                    if (TowerSpawn != TowerToSpawn)
-                    {
-                        Destroy(TowerSpawn);
-                        TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
-                    }
+                    Destroy(TowerSpawn);
+                    TowerSpawn = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
                 }
             }
+        }
+        else if (TowerSpawn != null)
+        {
+            Destroy(PlaneSpawn);
+            Destroy(TowerSpawn);
+            //tm.EscToCancel();
+            //InBuildMode = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
