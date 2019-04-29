@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4333624062785192286}
   - component: {fileID: 5434846841914986776}
   - component: {fileID: 4739728822711218263}
+  - component: {fileID: 7069307296970788146}
   - component: {fileID: 6785053910657603206}
-  - component: {fileID: 5749660945512826857}
   m_Layer: 0
   m_Name: Repel Fan
   m_TagString: Building
@@ -93,6 +93,34 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.08, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7069307296970788146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7263953934050848762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23687b0cb6f0c07448f21443a29c63ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  visibilityRange: 0
+  upkeep: 0
+  powerSource: {fileID: 0}
+  powered: 0
+  placed: 0
+  buildingType: 7
+  mineralCost: 0
+  powerCost: 0
+  fuelCost: 0
+  organicCost: 0
+  audioSource: {fileID: 6785053910657603206}
+  directDamage: 50
+  aoeDamage: 25
+  rateOfFire: 1
+  placedInEditor: 0
 --- !u!82 &6785053910657603206
 AudioSource:
   m_ObjectHideFlags: 0
@@ -189,31 +217,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5749660945512826857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7263953934050848762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9c41bbcd4a79a345afaf18988cfda90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 1
-  visibilityRange: 0
-  upkeep: 0
-  powerSource: {fileID: 0}
-  powered: 0
-  placed: 0
-  buildingType: 8
-  mineralCost: 0
-  powerCost: 0
-  fuelCost: 0
-  organicCost: 0
-  audioSource: {fileID: 0}
-  directDamage: 50
-  aoeDamage: 25
-  rateOfFire: 0.25
-  placedInEditor: 0
