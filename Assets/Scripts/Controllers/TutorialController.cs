@@ -305,17 +305,25 @@ public class TutorialController : DialogueBoxController
             //Reset UI lerping
             btnCurrent.ReportClick = false;
 
+            SendDialogue("build harvester 2", 0);
+        }
+        else if (subStage == 4)
+        {
             //Display UI element prompting player to select the harvester
             btnCurrent = btnBuildHarvester;
             btnCurrent.ReportClick = true;
             currentlyLerping = ButtonType.Harvester;
         }
-        else if (subStage == 4)
+        else if (subStage == 5)
         {
             //Turn off UI lerping
             btnCurrent.ReportClick = false;
             currentlyLerping = ButtonType.None;
 
+            SendDialogue("build harvester 3", 0);
+        }
+        else if (subStage == 6)
+        { 
             //Get location of resource node
             GetLocationOf(harvesterResource);
 
@@ -325,7 +333,7 @@ public class TutorialController : DialogueBoxController
             //Progress to next SubStage
             subStage += 1;
         }
-        else if (subStage == 5)
+        else if (subStage == 7)
         {
             //Check if the player has built the harvester
             if (BuiltCurrentlyBuilding())
