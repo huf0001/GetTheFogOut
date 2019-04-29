@@ -163,14 +163,14 @@ public abstract class PowerSource : Building
     {
         if (this != newBuilding)
         {
-            Debug.Log("Plugging " + newBuilding.name + " into " + this.name);
+            //Debug.Log("Plugging " + newBuilding.name + " into " + this.name);
             suppliedBuildings.Add(newBuilding); 
         }
 
-        if (suppliedBuildings.Contains(newBuilding))
-        {
-            Debug.Log("plugged in successfully");
-        }
+        //if (suppliedBuildings.Contains(newBuilding))
+        //{
+        //    Debug.Log("plugged in successfully");
+        //}
     }
 
     public void Unplug(Building unplug)
@@ -183,14 +183,14 @@ public abstract class PowerSource : Building
         {
             //if (suppliedBuildings.Contains(unplug))
             //{
-            Debug.Log("Unplugging " + unplug.name + " from " + this.name);
+            //Debug.Log("Unplugging " + unplug.name + " from " + this.name);
             suppliedBuildings.Remove(unplug);
             //}
 
-            if (!suppliedBuildings.Contains(unplug))
-            {
-                Debug.Log("Unplugged successfully");
-            }
+            //if (!suppliedBuildings.Contains(unplug))
+            //{
+            //    Debug.Log("Unplugged successfully");
+            //}
         }
     }
 

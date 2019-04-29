@@ -103,6 +103,8 @@ public class TutorialController : DialogueBoxController
     private Dictionary<string, List<string>> dialogueDictionary = new Dictionary<string, List<string>>();
     private bool dialogueSent = false;
 
+    private bool fogSpawned = false;
+
     //Public Properties
     public TutorialStage TutorialStage { get => tutorialStage; }
     public TileData CurrentTile { get => currentTile; }
@@ -118,6 +120,7 @@ public class TutorialController : DialogueBoxController
     {
         if (skipTutorial)
         {
+            GetComponent<Fog>().SpawnStartingFog();
             tutorialStage = TutorialStage.Finished;
         }
         else
@@ -136,7 +139,7 @@ public class TutorialController : DialogueBoxController
             if (dialogueRead)
             {
                 dialogueSent = false;
-                subStage += 1;
+                IncrementSubStage();
                 ResetDialogueRead();
             }
 
@@ -144,7 +147,7 @@ public class TutorialController : DialogueBoxController
             {
                 buttonClicked = false;
                 btnCurrent.ReportClick = false;
-                subStage += 1;
+                IncrementSubStage();
             }
 
             if (targetDecal.enabled)
@@ -236,10 +239,11 @@ public class TutorialController : DialogueBoxController
         {
             tutorialStage = TutorialStage.BuildHarvester;
             currentlyBuilding = BuildingType.Harvester;
-            subStage = 1;
+            ResetSubStage();
         }
     }
 
+    //AI explains how to place buildings
     private void ExplainBuildingPlacement()
     {
         if (subStage == 1)
@@ -250,7 +254,7 @@ public class TutorialController : DialogueBoxController
         {
             tutorialStage = TutorialStage.BuildHarvester;
             currentlyBuilding = BuildingType.Harvester;
-            subStage = 1;
+            ResetSubStage();
         }
     }
 
@@ -300,7 +304,7 @@ public class TutorialController : DialogueBoxController
             ActivateTarget(harvesterResource);
 
             //Progress to next SubStage
-            subStage += 1;
+            IncrementSubStage();
         }
         else if (subStage == 7)
         {
@@ -310,7 +314,7 @@ public class TutorialController : DialogueBoxController
                 //Turn off UI element prompting player to build a harvester on the resource node
                 tutorialStage = TutorialStage.BuildGenerator;
                 currentlyBuilding = BuildingType.Generator;
-                subStage = 1;
+                ResetSubStage();
                 DeactivateTarget();
             }
         }
@@ -332,7 +336,7 @@ public class TutorialController : DialogueBoxController
             ActivateTarget(generatorLandmark);
 
             //Progress to next SubStage
-            subStage += 1;
+            IncrementSubStage();
         }
         else if (subStage == 3)
         {
@@ -340,7 +344,7 @@ public class TutorialController : DialogueBoxController
             {
                 tutorialStage = TutorialStage.BuildRelay;
                 currentlyBuilding = BuildingType.Relay;
-                subStage = 1;
+                ResetSubStage();
                 DeactivateTarget();
             }
         }
@@ -362,7 +366,7 @@ public class TutorialController : DialogueBoxController
             ActivateTarget(relayLandmark);
 
             //Progress to next SubStage
-            subStage += 1;
+            IncrementSubStage();
         }
         else if (subStage == 3)
         {
@@ -370,7 +374,7 @@ public class TutorialController : DialogueBoxController
             {
                 tutorialStage = TutorialStage.FogIsHazard;
                 currentlyBuilding = BuildingType.None;
-                subStage = 1;
+                ResetSubStage();
                 DeactivateTarget();
             }
         }
@@ -380,13 +384,30 @@ public class TutorialController : DialogueBoxController
     //AI realises the fog is a hazard
     private void FogIsHazard()
     {
-        //Spawn fog units around hub
-
-        //Get AI dialogue
-        //Activate DialogueBox, passing dialogue to it
-
-        tutorialStage = TutorialStage.BuildArcDefence;
-        currentlyBuilding = BuildingType.ArcDefence;
+        if (subStage == 1)
+        {
+            SendDialogue("fog hazard 1", 2);
+        }
+        else if (subStage == 2)
+        {
+            if (!fogSpawned)
+            {
+                //Spawn fog units around hub
+                GetComponent<Fog>().SpawnStartingFog();
+                Invoke("IncrementSubStage", 2);
+                fogSpawned = true;
+            }
+        }
+        else if (subStage == 3)
+        {
+            SendDialogue("fog hazard 2", 1);
+        }
+        else if (subStage == 4)
+        {
+            tutorialStage = TutorialStage.BuildArcDefence;
+            currentlyBuilding = BuildingType.ArcDefence;
+            ResetSubStage();
+        }
     }
 
     //AI tells player to build an arc defence and explains how they work
@@ -405,7 +426,7 @@ public class TutorialController : DialogueBoxController
             ActivateTarget(arcDefenceLandmark);
 
             //Progress to next SubStage
-            subStage += 1;
+            IncrementSubStage();
         }
         else if (subStage == 3)
         {
@@ -413,7 +434,7 @@ public class TutorialController : DialogueBoxController
             {
                 tutorialStage = TutorialStage.BuildRepelFan;
                 currentlyBuilding = BuildingType.RepelFan;
-                subStage = 1;
+                ResetSubStage();
                 DeactivateTarget();
             }
         }
@@ -424,7 +445,7 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            SendDialogue("build repel fan 1", 1);
+            SendDialogue("build repel fan 1", 5);
         }
         else if (subStage == 2)
         {
@@ -435,7 +456,7 @@ public class TutorialController : DialogueBoxController
             ActivateTarget(repelFanLandmark);
 
             //Progress to next SubStage
-            subStage += 1;
+            IncrementSubStage();
         }
         else if (subStage == 3)
         {
@@ -443,7 +464,7 @@ public class TutorialController : DialogueBoxController
             {
                 tutorialStage = TutorialStage.Finished;
                 currentlyBuilding = BuildingType.None;
-                subStage = 1;
+                ResetSubStage();
                 DeactivateTarget();
                 SendDialogue("build repel fan 2", 5);
             }
@@ -451,6 +472,16 @@ public class TutorialController : DialogueBoxController
     }
 
     //Utility Methods------------------------------------------------------------------------------
+
+    private void IncrementSubStage()
+    {
+        subStage++;
+    }
+
+    private void ResetSubStage()
+    {
+        subStage = 1;
+    }
 
     private void SendDialogue(string dialogueKey, float invokeDelay)
     {
@@ -520,27 +551,6 @@ public class TutorialController : DialogueBoxController
         targetDecal.enabled = true;
     }
 
-    private bool BuiltCurrentlyBuilding()
-    {
-        if (currentTile != null)
-        {
-            if (currentTile.Building != null)
-            {
-                if (currentTile.Building.BuildingType == currentlyBuilding)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private void DeactivateTarget()
-    {
-        targetDecal.enabled = false;
-    }
-
     private void UpdateLerpValues()
     {
         if (lerpForward)
@@ -562,6 +572,27 @@ public class TutorialController : DialogueBoxController
             lerpProgress = 0;
             lerpForward = true;
         }
+    }
+
+    private bool BuiltCurrentlyBuilding()
+    {
+        if (currentTile != null)
+        {
+            if (currentTile.Building != null)
+            {
+                if (currentTile.Building.BuildingType == currentlyBuilding)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void DeactivateTarget()
+    {
+        targetDecal.enabled = false;
     }
 }
 

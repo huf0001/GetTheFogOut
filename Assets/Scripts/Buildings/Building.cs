@@ -96,33 +96,33 @@ public abstract class Building : PlaneObject
 
     public void SetPowerSource()
     {
-        Debug.Log("Setting Power Source");
+        //Debug.Log("Setting Power Source");
 
-        if (location == null)
-        {
-            Debug.Log("Location of " + this.name + " is null");
-        }
+        //if (location == null)
+        //{
+        //    Debug.Log("Location of " + this.name + " is null");
+        //}
 
-        if (location.PowerSource == null)
-        {
-            Debug.Log("Power Source is null");
-        }
+        //if (location.PowerSource == null)
+        //{
+        //    Debug.Log("Power Source is null");
+        //}
 
         powerSource = location.PowerSource;
 
         if (powerSource != null)
         {
-            Debug.Log("Plugging In and Powering Up " + this.name);
+            //Debug.Log("Plugging In and Powering Up " + this.name);
             powerSource.PlugIn(this);
             PowerUp();
         }
         else
         { 
-            Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
+            //Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
             PowerDown();
         }
 
-        Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);
+        //Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);
     }
 
     public virtual void PowerUp()
@@ -132,7 +132,7 @@ public abstract class Building : PlaneObject
 
     public virtual void PowerDown()
     {
-        Debug.Log("Powering down " + this.name);
+        //Debug.Log("Powering down " + this.name);
         powered = false;
     }
 
@@ -224,7 +224,7 @@ public abstract class Building : PlaneObject
 
         if (powerSource != null)
         {
-            Debug.Log("Unplugging from " + powerSource.name);
+            //Debug.Log("Unplugging from " + powerSource.name);
             //  powerSource.SuppliedBuildings.Remove(this);
             powerSource.Unplug(this);
         }
@@ -233,7 +233,7 @@ public abstract class Building : PlaneObject
 
         if (Location != null)
         {
-            Debug.Log("Removing from tile");
+            //Debug.Log("Removing from tile");
             Location.RemoveObserver(this);
             Location.Building = null;
         }
@@ -242,7 +242,7 @@ public abstract class Building : PlaneObject
         
         resourceController.RemoveBuilding(this);
 
-        Debug.Log("Should be removed from ResourceController's list of my building type");
+        //Debug.Log("Should be removed from ResourceController's list of my building type");
 
         Destroy(this.transform.parent.gameObject);
         Destroy(this);
@@ -259,7 +259,7 @@ public abstract class Building : PlaneObject
 
         set
         {
-            Debug.Log(this.name + "'s location has been set");
+            //Debug.Log(this.name + "'s location has been set");
             base.Location = value;
         }
     }

@@ -103,7 +103,6 @@ public class btnTutorial : MonoBehaviour
     {
         if (reportClick)
         {
-            Debug.Log(tutorialController);
             tutorialController.RegisterButtonClicked();
         }
     }

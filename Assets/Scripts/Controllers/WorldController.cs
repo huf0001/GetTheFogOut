@@ -111,12 +111,11 @@ public class WorldController : MonoBehaviour
     private void Start()
     {
         InstantiateTileArray();
-        //SetupTiles();
         ConnectAdjacentTiles();
         SetResourcesToTiles();
         SetBuildingsToTiles();
         SetLandmarksToTiles();
-        GetComponent<Fog>().SpawnFog();
+        GetComponent<Fog>().PopulateFogPool();
     }
 
     void SetResourcesToTiles()

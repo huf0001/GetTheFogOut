@@ -71,32 +71,24 @@ public class Fog : MonoBehaviour
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public FogFillType FillType { get => fillType; }
 
-    //Sets up the fog at the start of the game. Called by WorldController to actually have it work.
-    public void SpawnFog()
+    //Create the max no. of fog units the game should need
+    public void PopulateFogPool()
     {
-        wc = GameObject.Find("GameManager").GetComponent<WorldController>();
+        wc = WorldController.Instance;
         xMax = wc.Width;
         zMax = wc.Length;
 
         if (fogUnitsInPool.Count == 0)
         {
-            PopulateFogPool();
-        }
-
-        SpawnStartingFog();
-    }
-
-    //Create the max no. of fog units the game should need
-    private void PopulateFogPool()
-    {
-        for (int i = 0; i < xMax * zMax; i++)
-        {
-            fogUnitsInPool.Add(CreateFogUnit());
+            for (int i = 0; i < xMax * zMax; i++)
+            {
+                fogUnitsInPool.Add(CreateFogUnit());
+            }
         }
     }
 
     //Spawns the starting fog on the board
-    private void SpawnStartingFog()
+    public void SpawnStartingFog()
     {
         if (configuration == StartConfiguration.OneSide)
         {
