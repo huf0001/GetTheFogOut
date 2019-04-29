@@ -17,19 +17,21 @@ public enum TutorialStage
     BuildGenerator,
     BuildRelay,
     FogIsHazard,
-    BuildClusterFan,
+    BuildArcDefence,
+    BuildRepelFan,
     Finished
 }
 
 public enum ButtonType
 {
     None,
+    ArcDefence,
     BuildSelect,
     Battery,
-    ClusterFan,
     Generator,
     Harvester,
     Relay,
+    RepelFan,
     Destroy
 }
 
@@ -62,7 +64,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private Landmark relayLandmark;
-    [SerializeField] private Landmark clusterFanLandmark;
+    [SerializeField] private Landmark arcDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [SerializeField] private btnTutorial btnBuildSelect;
@@ -221,8 +223,11 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.FogIsHazard:
                 FogIsHazard();
                 break;
-            case TutorialStage.BuildClusterFan:
-                BuildClusterFan();
+            case TutorialStage.BuildArcDefence:
+                BuildArcDefence();
+                break;
+            case TutorialStage.BuildRepelFan:
+                BuildRepelFan();
                 break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
@@ -416,24 +421,54 @@ public class TutorialController : DialogueBoxController
         //Get AI dialogue
         //Activate DialogueBox, passing dialogue to it
 
-        tutorialStage = TutorialStage.BuildClusterFan;
-        currentlyBuilding = BuildingType.Defence;
+        tutorialStage = TutorialStage.BuildArcDefence;
+        currentlyBuilding = BuildingType.ArcDefence;
     }
 
-    //AI tells player to build a cluster fan and explains how they work
-    private void BuildClusterFan()
+    //AI tells player to build an arc defence and explains how they work
+    private void BuildArcDefence()
     {
         if (subStage == 1)
         {
-            SendDialogue("build cluster fan 1", 1);
+            SendDialogue("build arc defence", 1);
         }
         else if (subStage == 2)
         {
             //Get tile
-            GetLocationOf(clusterFanLandmark);
+            GetLocationOf(arcDefenceLandmark);
 
             //Display UI element prompting player to build a cluster fan on this tile
-            ActivateTarget(clusterFanLandmark);
+            ActivateTarget(arcDefenceLandmark);
+
+            //Progress to next SubStage
+            subStage += 1;
+        }
+        else if (subStage == 3)
+        {
+            if (BuiltCurrentlyBuilding())
+            {
+                tutorialStage = TutorialStage.BuildRepelFan;
+                currentlyBuilding = BuildingType.RepelFan;
+                subStage = 1;
+                DeactivateTarget();
+            }
+        }
+    }
+
+    //AI tells player to build a repel fan and explains how they work
+    private void BuildRepelFan()
+    {
+        if (subStage == 1)
+        {
+            SendDialogue("build repel fan 1", 1);
+        }
+        else if (subStage == 2)
+        {
+            //Get tile
+            GetLocationOf(arcDefenceLandmark);
+
+            //Display UI element prompting player to build a cluster fan on this tile
+            ActivateTarget(arcDefenceLandmark);
 
             //Progress to next SubStage
             subStage += 1;
@@ -446,6 +481,7 @@ public class TutorialController : DialogueBoxController
                 currentlyBuilding = BuildingType.None;
                 subStage = 1;
                 DeactivateTarget();
+                SendDialogue("build repel fan 2", 5);
             }
         }
     }
