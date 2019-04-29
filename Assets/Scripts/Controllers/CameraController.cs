@@ -123,7 +123,22 @@ public class CameraController : MonoBehaviour
 
         //Camera zoom
         cam1.m_Lens.OrthographicSize -= cam1.m_Lens.OrthographicSize * Input.GetAxis("Mouse ScrollWheel");
+
+        // Xbox One LT and RT Zooming code, LT for out, RT for in!
+        float zoomXboxTriggers = 0f;
+        if (Input.GetAxis("Xbox_LT") > 0f)
+        {
+            zoomXboxTriggers -= Input.GetAxis("Xbox_LT") / 4;
+        }
+
+        if (Input.GetAxis("Xbox_RT") > 0f)
+        {
+            zoomXboxTriggers += Input.GetAxis("Xbox_RT") / 4;
+        }
+
+        cam1.m_Lens.OrthographicSize -= cam1.m_Lens.OrthographicSize * zoomXboxTriggers;
         cam1.m_Lens.OrthographicSize = Mathf.Clamp(cam1.m_Lens.OrthographicSize, 2f, 6f);
+
 
         //Camera keyboard movement
         xMove = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
