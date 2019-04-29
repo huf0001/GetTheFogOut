@@ -6,7 +6,7 @@ public abstract class Entity : Locatable
 {
     [SerializeField] private float health = 1f;
 
-    public float Health { get => health; set => health = value; }
+    public virtual float Health { get => health; set => health = value; }
 
     // Start is called before the first frame update
     void Start()

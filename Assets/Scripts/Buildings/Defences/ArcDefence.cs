@@ -82,7 +82,7 @@ public class ArcDefence : Defence
             }
         }
 
-        fogTiles.Sort((t1, t2) => t1.FogUnit.FUHealth.CompareTo(t2.FogUnit.FUHealth));
+        fogTiles.Sort((t1, t2) => t1.FogUnit.Health.CompareTo(t2.FogUnit.Health));
         fogTiles.Reverse();
 
         if (fogTiles.Count > 0)

@@ -14,18 +14,6 @@ public enum FogFillType
     Fluid
 }
 
-public class Point
-{
-    int x;
-    int y;
-
-    Point(int a, int b)
-    {
-        x = a;
-        b = y;
-    }
-}
-
 public class Fog : MonoBehaviour
 {
     private enum StartConfiguration
@@ -280,14 +268,14 @@ public class Fog : MonoBehaviour
         {
             foreach (FogUnit f in fogUnitsInPlay)
             {
-                f.FUHealth += Time.deltaTime * fogGrowth;
+                f.Health += Time.deltaTime * fogGrowth;
             }
         }
         else if (fillType == FogFillType.Fluid)
         {
             foreach (FogUnit f in fogUnitsInPlay)
             {
-                if (f.FUHealth >= fogSpillThreshold)
+                if (f.Health >= fogSpillThreshold)
                 {
                     int count = f.Location.AdjacentTiles.Count;
 
@@ -295,13 +283,13 @@ public class Fog : MonoBehaviour
                     {
                         if (t.FogUnit != null)
                         {
-                            if (t.FogUnit.FUHealth + (Time.deltaTime * fogGrowth / count) <= f.FUHealth)
+                            if (t.FogUnit.Health + (Time.deltaTime * fogGrowth / count) <= f.Health)
                             {
-                                t.FogUnit.FUHealth += Time.deltaTime * fogGrowth / count;
+                                t.FogUnit.Health += Time.deltaTime * fogGrowth / count;
                             }
-                            else if (t.FogUnit.FUHealth < f.FUHealth)
+                            else if (t.FogUnit.Health < f.Health)
                             {
-                                t.FogUnit.FUHealth += (f.FUHealth - t.FogUnit.FUHealth);
+                                t.FogUnit.Health += (f.Health - t.FogUnit.Health);
                             }
                         }
                     }
@@ -356,7 +344,7 @@ public class Fog : MonoBehaviour
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
-            if (f.FUHealth >= fogSpillThreshold && f.Spill == false)
+            if (f.Health >= fogSpillThreshold && f.Spill == false)
             {
                 f.Spill = true;
 

@@ -12,10 +12,10 @@ public class FogUnit : Entity
     private float healthLimit;
     private bool spill = false;
 
-    private float healthProgress = 0;
-    private float startHealth;
-    private float targetHealth;
-    private bool takingDamage = false;
+    [SerializeField] private float healthProgress = 0;
+    [SerializeField] private float startHealth;
+    [SerializeField] private float targetHealth;
+    [SerializeField] private bool takingDamage = false;
     
     private float start = 0f;
     private float end = 0.45f;
@@ -70,7 +70,7 @@ public class FogUnit : Entity
 
     public void DealDamage(float damage)
     {
-        //Debug.Log(this.name + " took damage");
+        Debug.Log(this.name + " took " + damage + " damage");
         takingDamage = true;
 
         startHealth = base.Health;
@@ -83,7 +83,7 @@ public class FogUnit : Entity
         }
     }
 
-    public float FUHealth
+    public override float Health
     {
         get
         {

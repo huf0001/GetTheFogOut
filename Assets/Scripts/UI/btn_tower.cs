@@ -55,15 +55,15 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     $"Running Cost: {build_prefab.GetComponentInChildren<Harvester>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
                     "Effect: +5 <sprite=\"all_icons\" index=0>/<sprite=\"all_icons\" index=1>/<sprite=\"all_icons\" index=2>/<sprite=\"all_icons\" index=3> /s";
                 break;
-            case "btn_defence":
+            case "btn_arc_defence":
                 buildingDesc.text = "<b>Arc Defence</b>\n" +
                     "<line-height=125% size=60%>" + descText + "\n" +
-                    $"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<ClusterFan>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
-                    $"Running Cost: {build_prefab.GetComponentInChildren<ClusterFan>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
+                    $"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<ArcDefence>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
+                    $"Running Cost: {build_prefab.GetComponentInChildren<ArcDefence>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
                     "Effect: Damages fog\n" +
                     "Damage: 50 centre, 25 adjacent";
                 break;
-            case "btn_defence1":
+            case "btn_repel_fan":
                 buildingDesc.text = "<b>Repel Fan</b>\n" +
                     "<line-height=125% size=60%>" + descText + "\n" +
                     $"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<RepelFan>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
