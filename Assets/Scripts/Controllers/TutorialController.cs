@@ -65,13 +65,15 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private Landmark relayLandmark;
     [SerializeField] private Landmark arcDefenceLandmark;
+    [SerializeField] private Landmark repelFanLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [SerializeField] private btnTutorial btnBuildSelect;
     [SerializeField] private btnTutorial btnBuildHarvester;
     [SerializeField] private btnTutorial btnBuildGenerator;
     [SerializeField] private btnTutorial btnBuildRelay;
-    [SerializeField] private btnTutorial btnBuildClusterFan;
+    [SerializeField] private btnTutorial btnBuildArcDefence;
+    [SerializeField] private btnTutorial btnBuildRepelFan;
 
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
@@ -121,46 +123,8 @@ public class TutorialController : DialogueBoxController
         else
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
-            //SetupDialogue();
         }
     }
-
-    //private void SetupDialogue()
-    //{
-    //    dialogueDictionary["explain situation"] = new List<string>();
-    //    dialogueDictionary["explain situation"].Add("Well then! That landing was a bit rougher than I had hoped. I will scan the ship and our current surroundings. (Click to Continue)");
-    //    dialogueDictionary["explain situation"].Add("Scanning . . .");
-    //    dialogueDictionary["explain situation"].Add("Scan complete.");
-    //    dialogueDictionary["explain situation"].Add("Bad news. The ship has sustained substantial damaged and three core components are missing.");
-    //    dialogueDictionary["explain situation"].Add("Good news, the planet is only inhabited by flora. Fauna is not present. You are currently the only living animal to set foot on this planet.");
-
-    //    dialogueDictionary["explain building placement"] = new List<string>();
-    //    dialogueDictionary["explain building placement"].Add("You are going to need to find those pieces off your ship if we are going to get home. Let me start the back-up generator.");
-    //    dialogueDictionary["explain building placement"].Add("Done. But, it does not look like that will be enough to get us by. You are going to need to build your way out of here.");
-    //    dialogueDictionary["explain building placement"].Add("You see that shiny lump of minerals over there? It is a common resource in our universe, and it is used in most buildings back home.");
-
-    //    dialogueDictionary["build cluster fan 1"] = new List<string>();
-    //    dialogueDictionary["build cluster fan 1"].Add("To help you in your journey, I am going to download important building blueprints.");
-    //    dialogueDictionary["build cluster fan 1"].Add("Downloading . . .");
-    //    dialogueDictionary["build cluster fan 1"].Add("Download complete.");
-    //    dialogueDictionary["build cluster fan 1"].Add("The blueprints have been implemented. Click on the icon to open the building menu.");
-
-    //    dialogueDictionary["build cluster fan 2"] = new List<string>();
-    //    dialogueDictionary["build cluster fan 2"].Add("The first blueprint to be used will be the harvester.");
-    //    dialogueDictionary["build cluster fan 2"].Add("Use the mouse to select the harvester. Other buildings will become available to you once you have enough materials.");
-
-    //    dialogueDictionary["build cluster fan 3"] = new List<string>();
-    //    dialogueDictionary["build cluster fan 3"].Add("Now, place the harvester on top of the mineral by clicking it.");
-
-    //    dialogueDictionary["build generator"] = new List<string>();
-    //    dialogueDictionary["build generator"].Add("Great! Seems the bump on your head from the landing did not do as much damage as I thought. Now that you have some minerals, you can build another power generator.");
-
-    //    dialogueDictionary["build harvester"] = new List<string>();
-    //    dialogueDictionary["build harvester"].Add("Build Harvester (Click to Continue)");
-
-    //    dialogueDictionary["build relay"] = new List<string>();
-    //    dialogueDictionary["build relay"].Add("Build Relay (Click to Continue)");
-    //}
 
     //Tutorial Stage Management Methods------------------------------------------------------------
 
@@ -465,10 +429,10 @@ public class TutorialController : DialogueBoxController
         else if (subStage == 2)
         {
             //Get tile
-            GetLocationOf(arcDefenceLandmark);
+            GetLocationOf(repelFanLandmark);
 
             //Display UI element prompting player to build a cluster fan on this tile
-            ActivateTarget(arcDefenceLandmark);
+            ActivateTarget(repelFanLandmark);
 
             //Progress to next SubStage
             subStage += 1;
