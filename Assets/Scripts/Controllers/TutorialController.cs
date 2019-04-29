@@ -425,7 +425,7 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            SendDialogue("build cluster fan", 1);
+            SendDialogue("build cluster fan 1", 1);
         }
         else if (subStage == 2)
         {
