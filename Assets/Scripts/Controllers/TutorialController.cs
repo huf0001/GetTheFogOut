@@ -38,7 +38,7 @@ public class KeyDialoguePair
 {
     //Serialized Fields
     [SerializeField] private string key;
-    [SerializeField] private List<string> dialogue;
+    [SerializeField,TextArea] private List<string> dialogue;
 
     //Public Properties
     public string Key { get => key; }
@@ -119,7 +119,7 @@ public class TutorialController : DialogueBoxController
         else
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
-            SetupDialogue();
+            //SetupDialogue();
         }
     }
 
