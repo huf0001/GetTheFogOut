@@ -70,7 +70,6 @@ public class FogUnit : Entity
 
     public void DealDamage(float damage)
     {
-        Debug.Log(this.name + " took " + damage + " damage");
         takingDamage = true;
 
         startHealth = base.Health;
