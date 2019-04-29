@@ -90,6 +90,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5017298340327021469}
     m_Modifications:
+    - target: {fileID: 8843800731424289401, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
+        type: 3}
+      propertyPath: m_Name
+      value: Battery
+      objectReference: {fileID: 0}
     - target: {fileID: 8555355797511122423, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -145,16 +150,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8843800731424289401, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
-        type: 3}
-      propertyPath: m_Name
-      value: Battery
-      objectReference: {fileID: 0}
     - target: {fileID: 3514751619613008131, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0e85d487b089f034aa334a5ad6bcc6e3, type: 2}
+    - target: {fileID: 7349966923451510019, guid: deab0fe8a4e311b4ba54dd3dc5d73113,
+        type: 3}
+      propertyPath: buildingType
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: deab0fe8a4e311b4ba54dd3dc5d73113, type: 3}
 --- !u!4 &6395643398096909852 stripped

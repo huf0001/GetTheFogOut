@@ -218,7 +218,7 @@ public class ResourceController : MonoBehaviour
                 batteries.Add(b as Battery);
                 //maxPower += 10;
                 break;
-            case BuildingType.Defence:
+            case BuildingType.ArcDefence:
                 defences.Add(b as Defence);
                 break;
             case BuildingType.Generator:
@@ -229,6 +229,9 @@ public class ResourceController : MonoBehaviour
                 break;
             case BuildingType.Relay:
                 relays.Add(b as Relay);
+                break;
+            case BuildingType.RepelFan:
+                defences.Add(b as Defence);
                 break;
         }
     }
@@ -247,7 +250,7 @@ public class ResourceController : MonoBehaviour
                 }
                 //maxPower -= 10;
                 break;
-            case BuildingType.Defence:
+            case BuildingType.ArcDefence:
                 defences.Remove(b as Defence);
                 if (defences.Contains(b as Defence))
                 {
@@ -273,6 +276,13 @@ public class ResourceController : MonoBehaviour
                 if (relays.Contains(b as Relay))
                 {
                     Debug.Log("Relay removal failed");
+                }
+                break;
+            case BuildingType.RepelFan:
+                defences.Remove(b as Defence);
+                if (defences.Contains(b as Defence))
+                {
+                    Debug.Log("Defence removal failed");
                 }
                 break;
             default:

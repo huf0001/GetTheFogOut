@@ -1,10 +1,11 @@
 ﻿public enum BuildingType
 {
     None,
+    ArcDefence,
     Battery,
-    Defence,
     Generator,
     Harvester,
     Hub,
-    Relay
+    Relay,
+    RepelFan
 }
