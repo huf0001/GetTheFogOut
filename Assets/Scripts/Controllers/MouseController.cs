@@ -6,25 +6,27 @@ using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour
 {
-    //Serialized fields
+    // Fields -------------------------------------------------------------------
+
+    // Serialized fields
     [SerializeField] private int generatorCount = 0;
     [SerializeField] private int generatorInterval = 5;
 
-    //Non-serialized fields
+    // Non-serialized fields
     private Hub hub = null;
     private ResourceController resourceController = null;
-    TowerManager towerManager;
-    FloatingTextController floatingTextController;
-
+    private TowerManager towerManager;
+    private FloatingTextController floatingTextController;
     private TutorialController tutorialController;
-
     private GameObject PointAtObj;
     List<GameObject> collisionList = new List<GameObject>();
-
-    public Hub Hub { get => hub; set => hub = value; }
-
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
+
+    // Public Properties
+    public Hub Hub { get => hub; set => hub = value; }
+
+    // Start / Update Unity Methods ------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
@@ -36,11 +38,6 @@ public class MouseController : MonoBehaviour
         tutorialController = GetComponent<TutorialController>();
     }
 
-    // Test for game pause/over mouse to not build/destroy buildings
-    // public void GamePlayStop()
-    // {
-    //     isStopped = !isStopped;
-    // }
 
     // Update is called once per frame
     void Update()
@@ -56,15 +53,9 @@ public class MouseController : MonoBehaviour
         // }
     }
 
-    void RemoveBulding(Building building)
-    {
-        if (building.BuildingType != BuildingType.Hub)
-        {
-            //PointAtObj = hit.transform.gameObject;
-            building.DismantleBuilding();
-        }  
-    }
+    // Mouse Building Placement -----------------------------------------------------------------
 
+    // Place a building based on mouse / controller input
     void UpdatePlacing()
     {
         // code based somewhat off:
@@ -133,6 +124,8 @@ public class MouseController : MonoBehaviour
         }
     }
 
+    // Refunds the cost for a building that is going to be destroyed. 
+    // Returns the building that should be destroyed.
     private Building ReturnCost()
     {
         if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A"))
@@ -162,16 +155,17 @@ public class MouseController : MonoBehaviour
         return null;
     }
 
-    private bool CheckIfTileOkay(TileData tile, BuildingType building)
+    // Remove the passed building, should be called with the building returned from ReturnCost()
+    void RemoveBulding(Building building)
     {
-        if (tutorialController.TutorialStage == TutorialStage.Finished || (tile == tutorialController.CurrentTile && building == tutorialController.CurrentlyBuilding))
+        if (building.BuildingType != BuildingType.Hub)
         {
-            return true;
-        }
-
-        return false;
+            //PointAtObj = hit.transform.gameObject;
+            building.DismantleBuilding();
+        }  
     }
 
+    // Builds the building given on the tile given.
     private void Build(GameObject toBuild, TileData tile, float height)
     {
         Hub hub = WorldController.Instance.Hub;
@@ -206,6 +200,7 @@ public class MouseController : MonoBehaviour
                 tile.Building = building;
                 building.Location = tile;
 
+                // Give the building a copy of RecourceController
                 if (resourceController == null)
                 {
                     Debug.Log("resourceController is null in MouseController");
@@ -215,9 +210,13 @@ public class MouseController : MonoBehaviour
                     building.ResourceController = resourceController;
                 }
 
+                // Set and play animation
                 building.Animator = buildingGo.GetComponentInChildren<Animator>();
                 building.Animator.SetBool("Built", true);
+
+                //Tell the building to do things it should do when placed
                 building.Place();
+
                 StartCoroutine(FloatText(buildingGo.transform, -building.MineralCost));
             }
             else
@@ -226,6 +225,8 @@ public class MouseController : MonoBehaviour
             }
         }
     }
+
+    // Floating text functions -----------------------------------------------------------------
 
     /// <summary>
     /// Coroutine to create floating text to display costs of building
@@ -256,4 +257,24 @@ public class MouseController : MonoBehaviour
         collisionList.Remove(other.gameObject);
     }
 
+    // Utility Functions -----------------------------------------------------------------
+
+    // Returns if a tile is OK to be built on.
+    private bool CheckIfTileOkay(TileData tile, BuildingType building)
+    {
+        if (tutorialController.TutorialStage == TutorialStage.Finished || (tile == tutorialController.CurrentTile && building == tutorialController.CurrentlyBuilding))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Disabled functions -----------------------------------------------------------------
+
+    // Test for game pause/over mouse to not build/destroy buildings
+    // public void GamePlayStop()
+    // {
+    //     isStopped = !isStopped;
+    // }
 }
