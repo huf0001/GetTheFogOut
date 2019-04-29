@@ -96,7 +96,7 @@ public abstract class PowerSource : Building
 
         foreach (Building b in suppliedBuildings)
         {
-            if (b.BuildingType == BuildingType.Defence)
+            if (b.BuildingType == BuildingType.ArcDefence || b.BuildingType == BuildingType.RepelFan )
             {
                 defences.Add(b as Defence);
             }

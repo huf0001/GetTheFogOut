@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.067397416, g: 0.08987052, b: 0.13496715, a: 1}
+  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.13506117, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -374,18 +374,6 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3937144064170020782, guid: 96bff486ac9ca384a894669da2068243,
     type: 3}
   m_PrefabInstance: {fileID: 4624800829874131964}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 611883204a730864eb3d38513ded6c5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &401974392 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3937144064170020782, guid: 96bff486ac9ca384a894669da2068243,
-    type: 3}
-  m_PrefabInstance: {fileID: 1960561548}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -2360,12 +2348,17 @@ PrefabInstance:
     - target: {fileID: 7393001872067232575, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: towerType
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7393001872071741210, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: towerType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790125687859144, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
+        type: 3}
+      propertyPath: towerType
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5380064ae2fe7ef4d9b2ecad05f46be5, type: 3}
@@ -3524,46 +3517,6 @@ PrefabInstance:
       objectReference: {fileID: 1316122150}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: dialogue.Array.data[5].dialogue.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].dialogue.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].dialogue.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].dialogue.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[11].dialogue.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: aiText
       value: 
       objectReference: {fileID: 1575936130}
@@ -3582,11 +3535,6 @@ PrefabInstance:
       propertyPath: relayLandmark
       value: 
       objectReference: {fileID: 1655635319}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: clusterFanLandmark
-      value: 
-      objectReference: {fileID: 401974392}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: buildingTarget
@@ -3619,256 +3567,8 @@ PrefabInstance:
       objectReference: {fileID: 1131662781}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: dialogue.Array.data[5].dialogue.Array.data[0]
-      value: Great! Seems the bump on your head from the landing did not do as much
-        damage as I thought.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].dialogue.Array.data[1]
-      value: Now that you have some minerals, you can build another power generator.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].key
-      value: build relay
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].dialogue.Array.data[0]
-      value: Great. The more generators you have, the quicker your power gauge replenishes.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].dialogue.Array.data[1]
-      value: 'You can place another building called power relays. These are important. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].key
-      value: fog hazard 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.data[0]
-      value: Perfect! Now you can . . . hold on, my sensors are picking up something.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].key
-      value: fog hazard 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.data[0]
-      value: "Oh golly\u2026 you see that nice, thick fog that is currently seeping
-        its way towards us? "
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].dialogue.Array.data[2]
-      value: See this gauge? It shows you how much power you currently have.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].dialogue.Array.data[3]
-      value: Do not be fooled, though. Each building you place will chew into your
-        power reserve.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].dialogue.Array.data[4]
-      value: 'Hovering over the harvester will show you its power consumption. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].dialogue.Array.data[5]
-      value: Do not forget this will be the same for every building. Now, build a
-        power generator.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].key
-      value: build generator
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.data[1]
-      value: "Perfect! Now you can-\u2026 hold on, my sensors are picking up something."
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].key
-      value: build arc defence
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].dialogue.Array.data[0]
-      value: WAIT! Before you go, I have a plan!
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.data[2]
-      value: Oh boy, it wants to nibble your giblets. Well, more accurately, it wants
-        to suck the oxygen from your lungs . . .
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.data[3]
-      value: '. . . and replace it with some deadly toxins that have a 98.12% chance
-        of killing you instantly, and if you died . . . '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.data[4]
-      value: '. . . I would be left here all alone, with no one but me, sitting here
-        talking to myself . . . '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.data[5]
-      value: . . . and goodness knows how long . . . sorry, I ramble when I am nervous.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.data[6]
-      value: "It seems to only want us dead, it hasn\u2019t touched the ship pieces. "
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.data[7]
-      value: For all that you can worship in this universe, find those pieces and
-        get us home alive!
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].dialogue.Array.data[1]
-      value: Have you heard of an arc defence or a repel fan? No? Well, you have now.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].dialogue.Array.data[2]
-      value: And luckily for us I was smart enough to download their blueprints along
-        with the other buildings.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].dialogue.Array.data[3]
-      value: 'Now that you know how to place buildings, try placing an arc defence. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].dialogue.Array.data[4]
-      value: Build Cluster Fan (Click to Continue)
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].key
-      value: build repel fan 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].dialogue.Array.data[0]
-      value: See how it pushes the fog away for a moment?
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].dialogue.Array.data[1]
-      value: That should be enough time to let you decide if that is the way you want
-        to venture.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].dialogue.Array.data[2]
-      value: Now place a repel fan.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].dialogue.Array.data[3]
-      value: Now that you know how to place buildings, try placing a cluster fan from
-        the building menu.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].dialogue.Array.data[2]
-      value: 'When you place them, they increase your power range from your hub. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].dialogue.Array.data[3]
-      value: Place one now, you will see what I mean.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].dialogue.Array.data[4]
-      value: 'Hovering over the harvester will show you its power consumption. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].dialogue.Array.data[5]
-      value: Do not forget this will be the same for every building. Now, build a
-        power generator.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.data[1]
-      value: It is sentient, and not happy that we are here.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.data[2]
-      value: Oh boy, it wants to nibble your giblets. Well, more accurately, it wants
-        to suck the oxygen from your lungs . . .
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.data[3]
-      value: '. . . and replace it with some deadly toxins that have a 98.12% chance
-        of killing you instantly, and if you died . . . '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.data[4]
-      value: '. . . I would be left here all alone, with no one but me, sitting here
-        talking to myself . . . '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.data[5]
-      value: . . . and goodness knows how long . . . sorry, I ramble when I am nervous.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.data[6]
-      value: "It seems to only want us dead, it hasn\u2019t touched the ship pieces. "
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.data[7]
-      value: For all that you can worship in this universe, find those pieces and
-        get us home alive!
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[11].key
-      value: build repel fan 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[11].dialogue.Array.data[0]
-      value: It worked? HAH! Take that you degenerate fog! . . . Wait, it cannot hear
-        me can it?
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[11].dialogue.Array.data[1]
-      value: That should be enough time to let you decide if that is the way you want
-        to venture.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[11].dialogue.Array.data[2]
-      value: Now place a repel fan.
+      propertyPath: skipTutorial
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}

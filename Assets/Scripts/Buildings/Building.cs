@@ -184,11 +184,11 @@ public abstract class Building : PlaneObject
 
         switch (buildingType)
         {
+            case BuildingType.ArcDefence:
+                script = transform.GetComponentInChildren<ArcDefence>();
+                break;
             case BuildingType.Battery:
                 script = transform.GetComponentInChildren<Battery>();
-                break;
-            case BuildingType.Defence:
-                script = transform.GetComponentInChildren<Defence>();
                 break;
             case BuildingType.Generator:
                 script = transform.GetComponentInChildren<Generator>();
@@ -201,6 +201,9 @@ public abstract class Building : PlaneObject
                 break;
             case BuildingType.Relay:
                 script = transform.GetComponentInChildren<Relay>();
+                break;
+            case BuildingType.RepelFan:
+                script = transform.GetComponentInChildren<RepelFan>();
                 break;
             default:
                 Debug.Log("No matching script found");

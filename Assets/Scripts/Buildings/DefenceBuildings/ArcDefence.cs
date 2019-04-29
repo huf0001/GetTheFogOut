@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClusterFan : Defence
+public class ArcDefence : Defence
 {
 
     [SerializeField] private int directDamage = 50;

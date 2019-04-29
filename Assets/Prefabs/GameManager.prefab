@@ -177,7 +177,7 @@ MonoBehaviour:
   harvesterResource: {fileID: 0}
   generatorLandmark: {fileID: 0}
   relayLandmark: {fileID: 0}
-  clusterFanLandmark: {fileID: 0}
+  arcDefenceLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
   btnBuildSelect: {fileID: 0}
   btnBuildHarvester: {fileID: 0}
@@ -223,13 +223,54 @@ MonoBehaviour:
   - key: build generator
     dialogue:
     - Great! Seems the bump on your head from the landing did not do as much damage
-      as I thought. Now that you have some minerals, you can build another power generator.
+      as I thought.
+    - Now that you have some minerals, you can build another power generator.
+    - See this gauge? It shows you how much power you currently have.
+    - Do not be fooled, though. Each building you place will chew into your power
+      reserve.
+    - 'Hovering over the harvester will show you its power consumption. '
+    - Do not forget this will be the same for every building. Now, build a power generator.
   - key: build relay
     dialogue:
-    - Build Relay (Click to Continue)
-  - key: build cluster fan
+    - Great. The more generators you have, the quicker your power gauge replenishes.
+    - 'You can place another building called power relays. These are important. '
+    - 'When you place them, they increase your power range from your hub. '
+    - Place one now, you will see what I mean.
+  - key: fog hazard 1
     dialogue:
-    - Build Cluster Fan (Click to Continue)
+    - Perfect! Now you can . . . hold on, my sensors are picking up something.
+  - key: fog hazard 2
+    dialogue:
+    - "Oh golly\u2026 you see that nice, thick fog that is currently seeping its way
+      towards us? "
+    - It is sentient, and not happy that we are here.
+    - Oh boy, it wants to nibble your giblets. Well, more accurately, it wants to
+      suck the oxygen from your lungs . . .
+    - '. . . and replace it with some deadly toxins that have a 98.12% chance of killing
+      you instantly, and if you died . . . '
+    - '. . . I would be left here all alone, with no one but me, sitting here talking
+      to myself . . . '
+    - . . . and goodness knows how long . . . sorry, I ramble when I am nervous.
+    - "It seems to only want us dead, it hasn\u2019t touched the ship pieces. "
+    - For all that you can worship in this universe, find those pieces and get us
+      home alive!
+  - key: build arc defence
+    dialogue:
+    - WAIT! Before you go, I have a plan!
+    - Have you heard of an arc defence or a repel fan? No? Well, you have now.
+    - And luckily for us I was smart enough to download their blueprints along with
+      the other buildings.
+    - 'Now that you know how to place buildings, try placing an arc defence. '
+  - key: build repel fan 1
+    dialogue:
+    - See how it pushes the fog away for a moment?
+    - That should be enough time to let you decide if that is the way you want to
+      venture.
+    - Now place a repel fan.
+  - key: build repel fan 2
+    dialogue:
+    - It worked? HAH! Take that you degenerate fog! . . . Wait, it cannot hear me
+      can it?
 --- !u!114 &3646138034780775634
 MonoBehaviour:
   m_ObjectHideFlags: 0
