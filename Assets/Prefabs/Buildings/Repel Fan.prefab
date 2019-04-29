@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 821ad6fa54c629d47a4adaf5bcacf263, type: 2}
+  - {fileID: 2100000, guid: 03f458cc4e0e4d94194b55deafd646a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -217,3 +217,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5749660945512826857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7263953934050848762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23687b0cb6f0c07448f21443a29c63ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  visibilityRange: 0
+  upkeep: 0
+  powerSource: {fileID: 0}
+  powered: 0
+  placed: 0
+  buildingType: 0
+  mineralCost: 0
+  powerCost: 0
+  fuelCost: 0
+  organicCost: 0
+  audioSource: {fileID: 0}
+  directDamage: 50
+  aoeDamage: 25
+  rateOfFire: 1
+  placedInEditor: 0
