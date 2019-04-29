@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlaneObject : Entity
 {
@@ -13,7 +14,7 @@ public class PlaneObject : Entity
 
     public void OnMouseEnter()
     {
-        if (!WorldController.Instance.InBuildMode)
+        if (!WorldController.Instance.InBuildMode && !EventSystem.current.IsPointerOverGameObject())
         {
             buildingTooltip.gameObject.SetActive(true);
             buildingTooltip.UpdateText(this);
