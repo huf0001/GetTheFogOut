@@ -119,7 +119,7 @@ public class TutorialController : DialogueBoxController
         else
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
-            SetupDialogue();
+            //SetupDialogue();
         }
     }
 
