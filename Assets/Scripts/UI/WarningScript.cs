@@ -35,7 +35,7 @@ public class WarningScript : MonoBehaviour
     void Start()
     {
         tint = GetComponent<Image>();
-        resourceController = WorldController.Instance.ResourceController;
+        resourceController = ResourceController.Instance;
         texts = GetComponentsInChildren<TextMeshProUGUI>(true);
         powerStatus = texts[0];
         powerStatus.text = NORMAL + "Power is stable";

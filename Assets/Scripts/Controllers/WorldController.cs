@@ -55,10 +55,10 @@ public class WorldController : MonoBehaviour
     private Vector3 pos;
 
     //Other Controllers
-    //private MouseController mouseController
     private ResourceController resourceController;
-    private TutorialController tutorialController;
     private UIController uiController;
+    //private TutorialController tutorialController;
+    //private MouseController mouseController
 
     private CameraController cameraController;
     [SerializeField] protected GameObject camera;
@@ -78,12 +78,12 @@ public class WorldController : MonoBehaviour
     public int Width { get => width; }
     public int Length { get => length; }
     public Hub Hub { get => hub; set => hub = value; }
-    public ResourceController ResourceController { get => resourceController; }
-    public TutorialController TutorialController { get => tutorialController; }
     public ShipComponentState[] ShipComponents { get => shipComponents; }
     //public TutorialStage TutorialStage { get => tutorialStage;  }
+    //public ResourceController ResourceController { get => resourceController; }
+    //public TutorialController TutorialController { get => tutorialController; }
 
-    //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+    //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
 
     private void Awake()
     {
@@ -103,9 +103,9 @@ public class WorldController : MonoBehaviour
 
         camera = GameObject.Find("CameraTarget");
         cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
-        resourceController = GetComponent<ResourceController>();
-        tutorialController = GetComponent<TutorialController>();
         uiController = GetComponent<UIController>();
+        resourceController = ResourceController.Instance;
+        //tutorialController = TutorialController.Instance;
     }
 
     private void Start()
@@ -159,14 +159,15 @@ public class WorldController : MonoBehaviour
                 TileData tile = GetTileAt(b.transform.parent.position);
                 b.Location = tile;
 
-                if (resourceController == null)
-                {
-                    Debug.Log("Hub is null in WorldController");
-                }
-                else
-                {
-                    b.ResourceController = resourceController;
-                }
+                //ResourceController is now a public static class; Building calls it directly to assign it to a field.
+                //if (resourceController == null)
+                //{
+                //    Debug.Log("Hub is null in WorldController");
+                //}
+                //else
+                //{
+                //    b.ResourceController = resourceController;
+                //}
 
                 b.Animator = b.GetComponentInChildren<Animator>();
                 b.Animator.SetBool("Built", true);

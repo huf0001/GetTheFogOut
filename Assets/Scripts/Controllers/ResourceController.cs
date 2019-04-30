@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ResourceController : MonoBehaviour
 {
-    //Static Fields
-    public static ResourceController Instance = null;
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
     [SerializeField] private int maxPower = 100, maxMineral = 100, maxOrganic = 100, maxFuel = 100;
@@ -24,6 +23,7 @@ public class ResourceController : MonoBehaviour
     private bool powerFull = false, mineralFull = false, organicFull = false, fuelFull = false;
 
     //Public peroperties
+    public static ResourceController Instance { get; protected set; }
     public int MaxPower { get => maxPower; set => maxPower = value; }
 
     public int StoredPower { get => storedPower; set => storedPower = value; }
@@ -43,21 +43,26 @@ public class ResourceController : MonoBehaviour
     public List<Relay> Relays { get => relays; set => relays = value; }
     public List<Building> Buildings { get => buildings; set => buildings = value; }
 
+    //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("There should never be 2 or more resource managers.");
+        }
+
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
-
         hub = WorldController.Instance.Hub;
         InvokeRepeating("ProcessUpkeep", 1f, 1f);
     }
+
+    //Primary Logic of ResourceController------------------------------------------------------------------------------------------------------------
 
     private void ProcessUpkeep()
     {

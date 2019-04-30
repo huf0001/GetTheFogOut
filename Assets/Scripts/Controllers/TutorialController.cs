@@ -106,6 +106,8 @@ public class TutorialController : DialogueBoxController
     private bool fogSpawned = false;
 
     //Public Properties
+    // public static WorldController used to get the instance of the WorldManager from anywhere.
+    public static TutorialController Instance { get; protected set; }
     public TutorialStage TutorialStage { get => tutorialStage; }
     public TileData CurrentTile { get => currentTile; }
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
@@ -114,6 +116,16 @@ public class TutorialController : DialogueBoxController
     public Color UIHighlightColour { get => uiHighlightColour; }
 
     //Start-Up Methods-----------------------------------------------------------------------------
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("There should never be 2 or more tutorial managers.");
+        }
+
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
