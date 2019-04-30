@@ -3542,16 +3542,6 @@ PrefabInstance:
       propertyPath: pause
       value: 
       objectReference: {fileID: 1316122150}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: width
-      value: 51
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: length
-      value: 51
-      objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: aiText
@@ -3572,6 +3562,16 @@ PrefabInstance:
       propertyPath: relayLandmark
       value: 
       objectReference: {fileID: 1655635319}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: arcDefenceLandmark
+      value: 
+      objectReference: {fileID: 1041046693}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: repelFanLandmark
+      value: 
+      objectReference: {fileID: 1015231317}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: buildingTarget
@@ -3599,26 +3599,6 @@ PrefabInstance:
       objectReference: {fileID: 970670537}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: btnBuildClusterFan
-      value: 
-      objectReference: {fileID: 1131662781}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: arcDefenceLandmark
-      value: 
-      objectReference: {fileID: 1041046693}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: repelFanLandmark
-      value: 
-      objectReference: {fileID: 1015231317}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: btnBuildArcDefence
       value: 
       objectReference: {fileID: 1131662781}
@@ -3627,21 +3607,6 @@ PrefabInstance:
       propertyPath: btnBuildRepelFan
       value: 
       objectReference: {fileID: 1955337351}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: configuration
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
 --- !u!114 &1714465888 stripped
