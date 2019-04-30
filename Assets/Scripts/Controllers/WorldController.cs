@@ -35,7 +35,7 @@ public class WorldController : MonoBehaviour
 
     [Header("Prefab/Gameobject assignment")]
     [SerializeField]
-    private Terrain ground;
+    private GameObject ground;
 
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
@@ -74,7 +74,7 @@ public class WorldController : MonoBehaviour
     // public static WorldController used to get the instance of the WorldManager from anywhere.
     public static WorldController Instance { get; protected set; }
     public TileData[,] Tiles { get => tiles; }
-    public Terrain Ground { get => ground; set => ground = value; }
+    public GameObject Ground { get => ground; set => ground = value; }
     public int Width { get => width; }
     public int Length { get => length; }
     public Hub Hub { get => hub; set => hub = value; }
