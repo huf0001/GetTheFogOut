@@ -35,6 +35,7 @@ public class btnTutorial : MonoBehaviour
 
     private void Update()
     {
+        //if (tutorialController.ButtonAllowed(buildingType))
         if (buildingType == tutorialController.CurrentlyLerping)
         {
             if (!lerping)
@@ -44,7 +45,8 @@ public class btnTutorial : MonoBehaviour
 
             LerpButtonColour();
         }
-        else if (lerping)
+
+        if (lerping)
         {
             DeactivateLerping();
         }

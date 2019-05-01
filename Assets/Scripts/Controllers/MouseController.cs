@@ -204,7 +204,7 @@ public class MouseController : MonoBehaviour
 
                 // Place new building
                 Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
-                Debug.Log(tile.X + " " + tile.Z);
+                //Debug.Log(tile.X + " " + tile.Z);
                 GameObject buildingGo = Instantiate(toBuild, PosToInst, Quaternion.Euler(0f, 0f, 0f));
                 building = buildingGo.GetComponentInChildren<Building>();
                 buildingGo.transform.SetParent(WorldController.Instance.Ground.transform);
