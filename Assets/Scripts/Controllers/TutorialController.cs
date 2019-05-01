@@ -35,24 +35,6 @@ public enum ButtonType
     Destroy
 }
 
-[Serializable]
-public class KeyDialoguePair
-{
-    //Serialized Fields
-    [SerializeField] private string key;
-    [SerializeField,TextArea] private List<string> dialogue;
-
-    //Public Properties
-    public string Key { get => key; }
-    public List<string> Dialogue { get => dialogue; }
-
-    public KeyDialoguePair(string k, List<string> d)
-    {
-        key = k;
-        dialogue = d;
-    }
-}
-
 public class TutorialController : DialogueBoxController
 {
     //Fields---------------------------------------------------------------------------------------
@@ -60,7 +42,6 @@ public class TutorialController : DialogueBoxController
     //Serialized Fields
     [SerializeField] private bool skipTutorial = true;
 
-    [SerializeField] private DialogueBox aiText;
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private Landmark relayLandmark;
@@ -78,8 +59,6 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
 
-    [SerializeField] private List<KeyDialoguePair> dialogue;
-
     //Non-Serialized Fields
     private TutorialStage tutorialStage = TutorialStage.CrashLanding;
     private int subStage = 1;
@@ -89,7 +68,6 @@ public class TutorialController : DialogueBoxController
     private int currentTileX = 0;
     private int currentTileZ = 0;
 
-    private bool buttonClicked = false;
     private btnTutorial btnCurrent;
     private ButtonType currentlyLerping;
 
@@ -99,9 +77,6 @@ public class TutorialController : DialogueBoxController
     private float lerpMultiplier = 1f;
     private float lerpProgress = 0f;
     private bool lerpForward = true;
-
-    private Dictionary<string, List<string>> dialogueDictionary = new Dictionary<string, List<string>>();
-    private bool dialogueSent = false;
 
     private bool fogSpawned = false;
 
@@ -493,37 +468,6 @@ public class TutorialController : DialogueBoxController
     private void ResetSubStage()
     {
         subStage = 1;
-    }
-
-    private void SendDialogue(string dialogueKey, float invokeDelay)
-    {
-        if (!dialogueSent)
-        {
-            //Activate DialogueBox, passing dialogue to it
-            aiText.ActivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
-
-            //Set dialogueSent to true so that the dialogue box isn't being repeatedly activated
-            dialogueSent = true;
-        }
-    }
-
-    private List<string> GetDialogue(string key)
-    {
-        foreach (KeyDialoguePair p in dialogue)
-        {
-            if (p.Key == key)
-            {
-                return p.Dialogue;
-            }
-        }
-
-        Debug.Log("Dialogue key '" + key + "' is invalid.");
-        return null;
-    }
-
-    public void RegisterButtonClicked()
-    {
-        buttonClicked = true;
     }
 
     private void GetLocationOf(Locatable l)

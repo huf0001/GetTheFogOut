@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 334475222590731063}
   - component: {fileID: 3646138034780775634}
   - component: {fileID: 1899903245264256486}
+  - component: {fileID: 1963843383001614104}
   - component: {fileID: 7305178377255849301}
   - component: {fileID: 1794963871152971053}
   m_Layer: 0
@@ -317,6 +318,19 @@ MonoBehaviour:
   surroundingHubRange: 7
   visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
+--- !u!114 &1963843383001614104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899903245264256479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f732e2dd7226e8949b2f44c4715c63d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FogTexture: {fileID: 2800000, guid: 46d526b21522be64ca6f38c477e29a41, type: 3}
 --- !u!114 &7305178377255849301
 MonoBehaviour:
   m_ObjectHideFlags: 0
