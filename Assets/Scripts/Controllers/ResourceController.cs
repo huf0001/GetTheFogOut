@@ -73,7 +73,7 @@ public class ResourceController : MonoBehaviour
         mineralChange = 0;
 
         // Process batteries
-        maxPower = (hub.GetBatteries().Count * 10) + 100;
+        maxPower = (hub.GetBatteries().Count * 50) + 100;
 
         //Provide hub's power contribution
         storedPower += hub.Upkeep;
