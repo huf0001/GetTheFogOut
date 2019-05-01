@@ -58,7 +58,7 @@ public class TowerManager : MonoBehaviour
 
     public void EscToCancel()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
         {
             selectedTower = null;
             InbuildMode = false;
