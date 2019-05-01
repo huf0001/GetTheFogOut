@@ -28,7 +28,7 @@ public class btnTutorial : MonoBehaviour
     private void Start()
     {
         button = GetComponent<Button>();
-        tutorialController = WorldController.Instance.TutorialController;
+        tutorialController = TutorialController.Instance;
         uiNormalColour = tutorialController.UINormalColour;
         uiHighlightColour = tutorialController.UIHighlightColour;
     }

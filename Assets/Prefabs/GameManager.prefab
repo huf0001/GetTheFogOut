@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16bbb129faf07144293a7a0bab6ea442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 31
-  length: 31
+  width: 51
+  length: 51
   spawnResources: 0
   mineralSpawnChance: 5
   fuelSpawnChance: 5
@@ -178,12 +178,14 @@ MonoBehaviour:
   generatorLandmark: {fileID: 0}
   relayLandmark: {fileID: 0}
   arcDefenceLandmark: {fileID: 0}
+  repelFanLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
   btnBuildSelect: {fileID: 0}
   btnBuildHarvester: {fileID: 0}
   btnBuildGenerator: {fileID: 0}
   btnBuildRelay: {fileID: 0}
-  btnBuildClusterFan: {fileID: 0}
+  btnBuildArcDefence: {fileID: 0}
+  btnBuildRepelFan: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
   dialogue:
@@ -205,19 +207,19 @@ MonoBehaviour:
       to need to build your way out of here.
     - You see that shiny lump of minerals over there? It is a common resource in our
       universe, and it is used in most buildings back home.
-  - key: build harvester 1
+  - key: build harvester menu icon
     dialogue:
     - To help you in your journey, I am going to download important building blueprints.
     - Downloading . . .
     - Download complete.
     - The blueprints have been implemented. Click on the icon to open the building
       menu.
-  - key: build harvester 2
+  - key: build harvester harvester icon
     dialogue:
     - The first blueprint to be used will be the harvester.
     - Use the mouse to select the harvester. Other buildings will become available
       to you once you have enough materials.
-  - key: build harvester 3
+  - key: build harvester place harvester
     dialogue:
     - Now, place the harvester on top of the mineral by clicking it.
   - key: build generator
@@ -236,10 +238,10 @@ MonoBehaviour:
     - 'You can place another building called power relays. These are important. '
     - 'When you place them, they increase your power range from your hub. '
     - Place one now, you will see what I mean.
-  - key: fog hazard 1
+  - key: fog hazard detect
     dialogue:
     - Perfect! Now you can . . . hold on, my sensors are picking up something.
-  - key: fog hazard 2
+  - key: fog hazard will kill you
     dialogue:
     - "Oh golly\u2026 you see that nice, thick fog that is currently seeping its way
       towards us? "
@@ -261,13 +263,13 @@ MonoBehaviour:
     - And luckily for us I was smart enough to download their blueprints along with
       the other buildings.
     - 'Now that you know how to place buildings, try placing an arc defence. '
-  - key: build repel fan 1
+  - key: build repel fan
     dialogue:
     - See how it pushes the fog away for a moment?
     - That should be enough time to let you decide if that is the way you want to
       venture.
     - Now place a repel fan.
-  - key: build repel fan 2
+  - key: gloat
     dialogue:
     - It worked? HAH! Take that you degenerate fog! . . . Wait, it cannot hear me
       can it?

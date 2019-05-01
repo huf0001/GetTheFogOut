@@ -24,14 +24,25 @@ public class MouseController : MonoBehaviour
     // private bool isStopped = false;
 
     // Public Properties
+    public static MouseController Instance { get; protected set; }
     public Hub Hub { get => hub; set => hub = value; }
 
     // Start / Update Unity Methods ------------------------------------------------------
 
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("There should not be more than one MouseController");
+        }
+
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        resourceController = WorldController.Instance.ResourceController;
+        resourceController = ResourceController.Instance;
         hub = WorldController.Instance.Hub;
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
@@ -200,15 +211,15 @@ public class MouseController : MonoBehaviour
                 tile.Building = building;
                 building.Location = tile;
 
-                // Give the building a copy of RecourceController
-                if (resourceController == null)
-                {
-                    Debug.Log("resourceController is null in MouseController");
-                }
-                else
-                {
-                    building.ResourceController = resourceController;
-                }
+                // Give the building a copy of RecourceController   //ResourceController is now a public static class; Building calls it directly to get a reference to it.
+                //if (resourceController == null)
+                //{
+                //    Debug.Log("resourceController is null in MouseController");
+                //}
+                //else
+                //{
+                //    building.ResourceController = resourceController;
+                //}
 
                 // Set and play animation
                 building.Animator = buildingGo.GetComponentInChildren<Animator>();

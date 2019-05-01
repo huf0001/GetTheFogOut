@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class Hub : PowerSource
 { 
+    public static Hub Instance { get; protected set; }
+
+    protected override void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.Log("There should only be one hub in the scene, right?");
+        }
+
+        Instance = this;
+
+        base.Awake();
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {

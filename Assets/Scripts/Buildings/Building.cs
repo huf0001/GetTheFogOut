@@ -33,7 +33,6 @@ public abstract class Building : PlaneObject
     public int PowerCost { get => powerCost; }
     public int FuelCost { get => fuelCost; }
     public int OrganicCost { get => organicCost; }
-    public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
     public bool TakingDamage { get; private set; }
 
     //public Hub Hub
@@ -51,7 +50,7 @@ public abstract class Building : PlaneObject
         //MakeTilesVisible();
         FindToolTip();
         audioSource = GetComponent<AudioSource>();
-        resourceController = WorldController.Instance.ResourceController;
+        resourceController = ResourceController.Instance;
         //if (placed)
         //{
         //    GetComponent<Renderer>().material.shader = buildingShader;

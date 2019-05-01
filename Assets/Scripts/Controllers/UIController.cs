@@ -53,7 +53,7 @@ public class UIController : MonoBehaviour
     {
         if (resourceController == null)
         {
-            resourceController = WorldController.Instance.ResourceController;
+            resourceController = ResourceController.Instance;
         }
 
         powerTime += Time.deltaTime;
