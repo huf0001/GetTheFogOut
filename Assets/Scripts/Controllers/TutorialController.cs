@@ -111,6 +111,7 @@ public class TutorialController : DialogueBoxController
         {
             GetComponent<Fog>().SpawnStartingFog();
             tutorialStage = TutorialStage.Finished;
+            ObjectiveController.Instance.IncrementStage();
         }
         else
         {
@@ -536,12 +537,16 @@ public class TutorialController : DialogueBoxController
         {
             if (BuiltCurrentlyBuilding())
             {
-                tutorialStage = TutorialStage.Finished;
-                currentlyBuilding = BuildingType.None;
-                ResetSubStage();
                 DeactivateTarget();
                 SendDialogue("gloat", 5);
             }
+        }
+        else if (subStage == 6)
+        {
+            tutorialStage = TutorialStage.Finished;
+            currentlyBuilding = BuildingType.None;
+            ResetSubStage();
+            ObjectiveController.Instance.IncrementStage();
         }
     }
 
