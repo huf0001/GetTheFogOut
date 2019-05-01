@@ -335,6 +335,11 @@ public class Fog : MonoBehaviour
                 }
             }
         }
+
+        //foreach (FogUnit f in fogUnitsInPlay)
+        //{
+        //    FogOfWarManager.UpdatePosition(f.transform.position, 5);
+        //}
     }
 
     //Fog spills over onto adjacent tiles
