@@ -229,8 +229,7 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 2)
         {
-            tutorialStage = TutorialStage.BuildHarvester;
-            currentlyBuilding = BuildingType.Harvester;
+            tutorialStage = TutorialStage.ExplainBuildingPlacement;
             ResetSubStage();
         }
     }

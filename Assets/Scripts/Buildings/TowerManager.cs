@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class TowerManager : MonoBehaviour
 {
-    
+
     [SerializeField] private btn_tower selectedTower;
     [SerializeField] private BuildingType buildingType = BuildingType.None;
     [SerializeField] private GameObject emptyprefab;
@@ -20,6 +20,7 @@ public class TowerManager : MonoBehaviour
     public void OnButtonClicked(btn_tower chooseTower)
     {
         this.SelectedTower = chooseTower;
+        buildingType = SelectedTower.TowerType;
         WorldController.Instance.InBuildMode = true;
         InbuildMode = true;
     }
@@ -53,16 +54,16 @@ public class TowerManager : MonoBehaviour
 
     public BuildingType GetBuildingType()
     {
-        return SelectedTower.TowerType;
+        return buildingType;
     }
 
     public void EscToCancel()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
+        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) && buildingType != TutorialController.Instance.CurrentlyBuilding)
         {
             selectedTower = null;
             InbuildMode = false;
+            buildingType = BuildingType.None;
         }
     }
-
 }
