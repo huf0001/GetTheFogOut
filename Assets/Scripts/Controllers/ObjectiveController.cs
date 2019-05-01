@@ -15,7 +15,7 @@ public class ObjectiveController : DialogueBoxController
     // Fields -------------------------------------------------------------------------------------
 
     // Serialized Fields
-    [SerializeField] bool objectivesOn = true; 
+    [SerializeField] bool objectivesOn = true;
     [SerializeField] ObjectiveStage currStage = ObjectiveStage.None;
     [SerializeField] int subStage = 0;
 
@@ -42,7 +42,7 @@ public class ObjectiveController : DialogueBoxController
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ public class ObjectiveController : DialogueBoxController
         switch (currStage)
         {
             case ObjectiveStage.None:
-                IncrementStage();
+
                 break;
             case ObjectiveStage.HarvestMinerals:
                 HarvestMineralStage();
@@ -172,7 +172,7 @@ public class ObjectiveController : DialogueBoxController
 
     // Utility Functions ------------------------------------------------------------------------------------------
 
-    void IncrementStage()
+    public void IncrementStage()
     {
         stageComplete = false;
         currStage++;
