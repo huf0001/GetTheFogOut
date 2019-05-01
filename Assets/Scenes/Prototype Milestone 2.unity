@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: NaN, g: NaN, b: NaN, a: 1}
+  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.13506117, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1299,12 +1299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 611883204a730864eb3d38513ded6c5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1023931242 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3873393150995124438, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
-    type: 3}
-  m_PrefabInstance: {fileID: 1080923185}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1030528574 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 460997011532178967, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
@@ -3004,7 +2998,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1080923185}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1023931242}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98447747448e7d44388b83123746aeae, type: 3}
@@ -3971,7 +3965,17 @@ PrefabInstance:
     - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: configuration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1963843383001614104, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: xAndYRange
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -4720,7 +4724,7 @@ MonoBehaviour:
   cam1: {fileID: 970662340}
   moveSpeed: 20
   enableEdgePan: 0
-  buildingSelector: {fileID: 1023931242}
+  buildingSelector: {fileID: 0}
 --- !u!1001 &4624800829874131964
 PrefabInstance:
   m_ObjectHideFlags: 0
