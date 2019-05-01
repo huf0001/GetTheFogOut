@@ -117,7 +117,7 @@ public class TutorialController : DialogueBoxController
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
 
-            btnBuildSelect.Button.interactable = false;
+            //btnBuildSelect.Button.interactable = false;
         }
     }
 
