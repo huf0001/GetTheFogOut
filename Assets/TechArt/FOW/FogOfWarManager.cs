@@ -5,19 +5,19 @@ using UnityEngine;
 public class FogOfWarManager : MonoBehaviour
 {
     public Texture2D FogTexture;
-    public GameObject testobj;
-    private Color[] _colors;
-    public int circleSizes = 4;
+    //public GameObject testobj;
+    private static Color[] _colors;
+    //public int circleSizes = 4;
     void Start ()
     {
         _colors = FogTexture.GetPixels();
         for (int i = 0; i < 32 * 32; i++)
         {
-            _colors[i] = Color.black;
+            _colors[i] = Color.white;
         }
     }
 
-    public void UpdatePosition(Vector3 position, int circleSize)
+    public static void UpdatePosition(Vector3 position, int circleSize)
     {
         Vector2 hole = new Vector2Int((int)position.x, (int)position.z);
         hole.x = (int) Mathf.Clamp(hole.x, 0f, 31f);
@@ -30,7 +30,7 @@ public class FogOfWarManager : MonoBehaviour
                 {
                     int xPos = (int)Mathf.Clamp(hole.x + x, 0f, 31f);
                     int yPos = (int)Mathf.Clamp(hole.y + y, 0f, 31f);
-                    _colors[xPos + yPos * 32] = Color.white;
+                    _colors[xPos + yPos * 32] = Color.black;
                 }
             }
         }
@@ -38,7 +38,7 @@ public class FogOfWarManager : MonoBehaviour
 
     void Update()
     {
-        UpdatePosition(testobj.transform.position, circleSizes);
+        //UpdatePosition(testobj.transform.position, circleSizes);
         for (int i = 0; i < 32 * 32; i++)
         {
             Color c = _colors[i];
