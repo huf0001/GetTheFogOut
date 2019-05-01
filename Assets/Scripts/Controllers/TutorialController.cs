@@ -49,24 +49,26 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark repelFanLandmark;
     [SerializeField] private Locatable buildingTarget;
 
+    //Note: if new UI buttons will be used, they need to have btnTutorial added
+    //and have the ReportClick method added to their list of OnClick methods
     [SerializeField] private btnTutorial btnBuildSelect;
-    [SerializeField] private btnTutorial btnBuildHarvester;
-    [SerializeField] private btnTutorial btnBuildGenerator;
-    [SerializeField] private btnTutorial btnBuildRelay;
     [SerializeField] private btnTutorial btnBuildArcDefence;
+    [SerializeField] private btnTutorial btnBuildGenerator;
+    [SerializeField] private btnTutorial btnBuildHarvester;
+    [SerializeField] private btnTutorial btnBuildRelay;
     [SerializeField] private btnTutorial btnBuildRepelFan;
 
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
 
     //Non-Serialized Fields
-    private TutorialStage tutorialStage = TutorialStage.CrashLanding;
-    private int subStage = 1;
-    private BuildingType currentlyBuilding = BuildingType.None;
+    [SerializeField] private TutorialStage tutorialStage = TutorialStage.CrashLanding;
+    [SerializeField] private int subStage = 1;
+    [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
 
     private TileData currentTile = null;
-    private int currentTileX = 0;
-    private int currentTileZ = 0;
+    [SerializeField] private int currentTileX = 0;
+    [SerializeField] private int currentTileZ = 0;
 
     private btnTutorial btnCurrent;
     private ButtonType currentlyLerping;
@@ -113,6 +115,8 @@ public class TutorialController : DialogueBoxController
         else
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
+
+            btnBuildSelect.Button.interactable = false;
         }
     }
 
@@ -255,7 +259,6 @@ public class TutorialController : DialogueBoxController
         else if (subStage == 2)
         {
             //Display UI element prompting player to click the building selector button
-            //lerpUI = true;
             btnCurrent = btnBuildSelect;
             btnCurrent.ReportClick = true;
             currentlyLerping = ButtonType.BuildSelect;
@@ -283,7 +286,7 @@ public class TutorialController : DialogueBoxController
             SendDialogue("build harvester place harvester", 0);
         }
         else if (subStage == 6)
-        { 
+        {
             //Get location of resource node
             GetLocationOf(harvesterResource);
 
@@ -316,6 +319,27 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 2)
         {
+            //Display UI element prompting player to click the building selector button
+            btnCurrent = btnBuildSelect;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.BuildSelect;
+        }
+        else if (subStage == 3)
+        {
+            //Reset UI lerping
+            btnCurrent.ReportClick = false;
+
+            //Display UI element prompting player to click the building selector button
+            btnCurrent = btnBuildGenerator;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.Generator;
+        }
+        else if (subStage == 4)
+        {
+            //Turn off UI lerping
+            btnCurrent.ReportClick = false;
+            currentlyLerping = ButtonType.None;
+
             //Get tile
             GetLocationOf(generatorLandmark);
 
@@ -325,7 +349,7 @@ public class TutorialController : DialogueBoxController
             //Progress to next SubStage
             IncrementSubStage();
         }
-        else if (subStage == 3)
+        else if (subStage == 5)
         {
             if (BuiltCurrentlyBuilding())
             {
@@ -346,6 +370,27 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 2)
         {
+            //Display UI element prompting player to click the building selector button
+            btnCurrent = btnBuildSelect;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.BuildSelect;
+        }
+        else if (subStage == 3)
+        {
+            //Reset UI lerping
+            btnCurrent.ReportClick = false;
+
+            //Display UI element prompting player to click the building selector button
+            btnCurrent = btnBuildRelay;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.Relay;
+        }
+        else if (subStage == 4)
+        {
+            //Turn off UI lerping
+            btnCurrent.ReportClick = false;
+            currentlyLerping = ButtonType.None;
+
             //Get tile
             GetLocationOf(relayLandmark);
 
@@ -355,7 +400,7 @@ public class TutorialController : DialogueBoxController
             //Progress to next SubStage
             IncrementSubStage();
         }
-        else if (subStage == 3)
+        else if (subStage == 5)
         {
             if (BuiltCurrentlyBuilding())
             {
@@ -406,6 +451,27 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 2)
         {
+            //Display UI element prompting player to click the building selector button
+            btnCurrent = btnBuildSelect;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.BuildSelect;
+        }
+        else if (subStage == 3)
+        {
+            //Reset UI lerping
+            btnCurrent.ReportClick = false;
+
+            //Display UI element prompting player to click the building selector button
+            btnCurrent = btnBuildArcDefence;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.ArcDefence;
+        }
+        else if (subStage == 4)
+        {
+            //Turn off UI lerping
+            btnCurrent.ReportClick = false;
+            currentlyLerping = ButtonType.None;
+
             //Get tile
             GetLocationOf(arcDefenceLandmark);
 
@@ -415,7 +481,7 @@ public class TutorialController : DialogueBoxController
             //Progress to next SubStage
             IncrementSubStage();
         }
-        else if (subStage == 3)
+        else if (subStage == 5)
         {
             if (BuiltCurrentlyBuilding())
             {
@@ -436,6 +502,27 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 2)
         {
+            //Display UI element prompting player to click the building selector button
+            btnCurrent = btnBuildSelect;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.BuildSelect;
+        }
+        else if (subStage == 3)
+        {
+            //Reset UI lerping
+            btnCurrent.ReportClick = false;
+
+            //Display UI element prompting player to click the building selector button
+            btnCurrent = btnBuildRepelFan;
+            btnCurrent.ReportClick = true;
+            currentlyLerping = ButtonType.RepelFan;
+        }
+        else if (subStage == 4)
+        {
+            //Turn off UI lerping
+            btnCurrent.ReportClick = false;
+            currentlyLerping = ButtonType.None;
+
             //Get tile
             GetLocationOf(repelFanLandmark);
 
@@ -445,7 +532,7 @@ public class TutorialController : DialogueBoxController
             //Progress to next SubStage
             IncrementSubStage();
         }
-        else if (subStage == 3)
+        else if (subStage == 5)
         {
             if (BuiltCurrentlyBuilding())
             {
@@ -459,6 +546,19 @@ public class TutorialController : DialogueBoxController
     }
 
     //Utility Methods------------------------------------------------------------------------------
+
+    public bool ButtonAllowed(ButtonType button)
+    {
+        if (
+            tutorialStage == TutorialStage.Finished
+            || button == currentlyLerping
+            )
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     private void IncrementSubStage()
     {
