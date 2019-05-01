@@ -33,6 +33,7 @@ public class CameraController : MonoBehaviour
     private Vector3 rotateCam;
     private int counter;
 
+    public GameObject buildingSelector;
     private bool isBuildingSelect;
 
     // Start is called before the first frame update
@@ -67,7 +68,14 @@ public class CameraController : MonoBehaviour
 
     public void ToggleCameraMovement()
     {
-        isBuildingSelect = !isBuildingSelect;
+        if (buildingSelector.activeSelf)
+        {
+            isBuildingSelect = false;
+        }
+        else
+        {
+            isBuildingSelect = !isBuildingSelect;
+        }
     }
 
     public void RotateCamera()
