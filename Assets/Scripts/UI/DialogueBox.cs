@@ -25,15 +25,21 @@ public class DialogueBox : MonoBehaviour
 
     public void ActivateDialogueBox(List<string> texts, float invokeDelay)
     {
-        //Caches required tweening information for performance saving
-        dialogueRectTransform = GetComponent<RectTransform>();
-        originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
+        if (texts.Count > 0)
+        {
+            //Caches required tweening information for performance saving
+            dialogueRectTransform = GetComponent<RectTransform>();
+            originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
 
-        //Debug.Log("DialogueBoxActivated");
-        textToDisplay.AddRange(texts);
-        DisplayNext();
+            //Debug.Log("DialogueBoxActivated");
+            textToDisplay.AddRange(texts);
+            DisplayNext();
 
-        Invoke("Pause", invokeDelay);
+            Invoke("Pause", invokeDelay);
+        } else
+        {
+            Debug.LogError("No text to display in dialogue box");
+        }
     }
 
     private void DisplayNext()
