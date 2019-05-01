@@ -53,10 +53,10 @@ public class MouseController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (towerManager.IsinBuild())
-        {
-            UpdatePlacing();
-        }
+        //if (towerManager.IsinBuild())
+        //{
+            UpdatePlacingAlt();
+        //}
 
         // if (!isStopped)
         // {
@@ -124,7 +124,7 @@ public class MouseController : MonoBehaviour
                             }
                             else
                             {
-                                Building removeBuilding = ReturnCost();
+                                Building removeBuilding = ReturnCost(tile);
                                 RemoveBulding(removeBuilding);
 
                             }
@@ -135,39 +135,59 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    // Refunds the cost for a building that is going to be destroyed. 
-    // Returns the building that should be destroyed.
-    private Building ReturnCost()
+    void UpdatePlacingAlt()
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A"))
+        // code based somewhat off:
+        //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
+
+        if (Time.timeScale == 1.0f && (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A")) && !EventSystem.current.IsPointerOverGameObject())
         {
+            TileData tile;
+
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit))
+            if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
             {
-                if (hit.transform.gameObject.tag == "Building")
+                //Check if a valid tile was clicked
+                if (WorldController.Instance.TileExistsAt(hit.point))
                 {
-                    Building building = hit.transform.gameObject.GetComponent<Building>();
-                    if (building.BuildingType != BuildingType.Hub)
-                    {
-                        // add required resources
-                        resourceController.StoredPower += building.PowerCost;
-                        resourceController.StoredMineral += building.MineralCost;
-                        resourceController.StoredOrganic += building.OrganicCost;
-                        resourceController.StoredFuel += building.FuelCost;
+                    tile = WorldController.Instance.GetTileAt(hit.point);
 
-                        StartCoroutine(FloatText(building.transform, building.MineralCost));
-                        return building;
+                    if (tile.PowerSource != null)
+                    {
+                        if (!UIController.instance.buildingSelector.Visable)
+                        {
+                            UIController.instance.buildingSelector.ToggleVisibility();
+                        }
+                        towerManager.CurrentTile = tile;
                     }
                 }
             }
+        }
+    }
+
+    // Refunds the cost for a building that is going to be destroyed. 
+    // Returns the building that should be destroyed.
+    public Building ReturnCost(TileData tile)
+    {
+        Building building = tile.Building;
+        if (building.BuildingType != BuildingType.Hub)
+        {
+            // add required resources
+            resourceController.StoredPower += building.PowerCost;
+            resourceController.StoredMineral += building.MineralCost;
+            resourceController.StoredOrganic += building.OrganicCost;
+            resourceController.StoredFuel += building.FuelCost;
+
+            StartCoroutine(FloatText(building.transform, building.MineralCost));
+            return building;
         }
         return null;
     }
 
     // Remove the passed building, should be called with the building returned from ReturnCost()
-    void RemoveBulding(Building building)
+    public void RemoveBulding(Building building)
     {
         if (building.BuildingType != BuildingType.Hub)
         {
@@ -177,7 +197,7 @@ public class MouseController : MonoBehaviour
     }
 
     // Builds the building given on the tile given.
-    private void Build(GameObject toBuild, TileData tile, float height)
+    public void Build(GameObject toBuild, TileData tile, float height)
     {
         Hub hub = WorldController.Instance.Hub;
         Building building = toBuild.GetComponentInChildren<Building>();

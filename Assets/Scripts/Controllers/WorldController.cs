@@ -345,6 +345,14 @@ public class WorldController : MonoBehaviour
             cameraController.ToggleCameraMovement();
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
+        {
+            Destroy(PlaneSpawn);
+            Destroy(TowerSpawn);
+            tm.EscToCancel();
+            InBuildMode = false;
+        }
+
         // TEMP FIX, SHOULD BE REMOVED LATER
         if (hub == null)
         {
@@ -451,14 +459,6 @@ public class WorldController : MonoBehaviour
             Destroy(TowerSpawn);
             //tm.EscToCancel();
             //InBuildMode = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
-        {
-            Destroy(PlaneSpawn);
-            Destroy(TowerSpawn);
-            tm.EscToCancel();
-            InBuildMode = false;
         }
     }
 

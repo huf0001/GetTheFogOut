@@ -9,19 +9,88 @@ public class TowerManager : MonoBehaviour
     [SerializeField] private btn_tower selectedTower;
     [SerializeField] private BuildingType buildingType = BuildingType.None;
     [SerializeField] private GameObject emptyprefab;
+    [SerializeField] private TileData currentTile;
+    [SerializeField] private GameObject hologramTower;
 
 
     public btn_tower SelectedTower { get => selectedTower; set => selectedTower = value; }
     public BuildingType TowerBuildingType { get => buildingType; set => buildingType = value; }
+    public TileData CurrentTile { get => currentTile; set => currentTile = value; }
+
     private bool InbuildMode = false;
 
     //TODO: TOGGLE ?
     //DESC: click on the button will get the value of the assigned value(button) ? xD
     public void OnButtonClicked(btn_tower chooseTower)
     {
-        this.SelectedTower = chooseTower;
-        WorldController.Instance.InBuildMode = true;
-        InbuildMode = true;
+        selectedTower = chooseTower;
+
+        if (currentTile != null)
+        {
+            GameObject toBuild = GetTower("build");
+
+            // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
+            if (toBuild.name != "Empty")
+            {
+                //Debug.Log(toBuild.name);
+                if (toBuild.GetComponent<Building>() != null)
+                {
+                    Building b = toBuild.GetComponent<Building>();
+                }
+                else
+                {
+                    Debug.Log("toBuild's building component is non-existant");
+                }
+
+                if (currentTile.Building == null && (currentTile.Resource == null || GetBuildingType() == BuildingType.Harvester))
+                {
+
+                    if (GetBuildingType() == BuildingType.Generator)
+                    {
+                        if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * 5 + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
+                        {
+                            Debug.Log("If you want to build more generators, collect more ship components first.");
+                            return;
+                        }
+                    }
+
+                    currentTile.Placedtower = toBuild;
+                    selectedTower = null;
+                    Destroy(hologramTower);
+                    MouseController.Instance.Build(currentTile.Placedtower, currentTile, 0f);
+                }
+            }
+            else
+            {
+                Building removeBuilding = MouseController.Instance.ReturnCost(currentTile);
+                MouseController.Instance.RemoveBulding(removeBuilding);
+
+            }
+        }
+        //WorldController.Instance.InBuildMode = true;
+        //InbuildMode = true;
+    }
+
+    public void OnHoverEnter(btn_tower tower)
+    {
+        GameObject TowerToSpawn;
+
+        if (currentTile != null)
+        {
+            int x = Mathf.RoundToInt(currentTile.X);
+            int y = Mathf.RoundToInt(currentTile.Z);
+            Vector3 spawnPos = new Vector3(x, 0, y);
+
+            selectedTower = tower;
+            TowerToSpawn = GetTower("holo");
+            hologramTower = Instantiate(TowerToSpawn, spawnPos, Quaternion.identity);
+        }
+    }
+
+    public void OnHoverExit(btn_tower tower)
+    {
+        selectedTower = null;
+        Destroy(hologramTower);
     }
 
     //DESC: return prefab object *replace with tower 3d later
@@ -61,6 +130,12 @@ public class TowerManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             selectedTower = null;
+            currentTile = null;
+            Destroy(hologramTower);
+            if (UIController.instance.buildingSelector.Visable)
+            {
+                UIController.instance.buildingSelector.ToggleVisibility(); 
+            }
             InbuildMode = false;
         }
     }
