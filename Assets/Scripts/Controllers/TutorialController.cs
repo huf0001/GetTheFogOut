@@ -106,6 +106,8 @@ public class TutorialController : DialogueBoxController
     private bool fogSpawned = false;
 
     //Public Properties
+    // public static WorldController used to get the instance of the WorldManager from anywhere.
+    public static TutorialController Instance { get; protected set; }
     public TutorialStage TutorialStage { get => tutorialStage; }
     public TileData CurrentTile { get => currentTile; }
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
@@ -114,6 +116,16 @@ public class TutorialController : DialogueBoxController
     public Color UIHighlightColour { get => uiHighlightColour; }
 
     //Start-Up Methods-----------------------------------------------------------------------------
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("There should never be 2 or more tutorial managers.");
+        }
+
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -263,7 +275,7 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            SendDialogue("build harvester 1", 1);
+            SendDialogue("build harvester menu icon", 1);
         }
         else if (subStage == 2)
         {
@@ -278,7 +290,7 @@ public class TutorialController : DialogueBoxController
             //Reset UI lerping
             btnCurrent.ReportClick = false;
 
-            SendDialogue("build harvester 2", 0);
+            SendDialogue("build harvester harvester icon", 0);
         }
         else if (subStage == 4)
         {
@@ -293,7 +305,7 @@ public class TutorialController : DialogueBoxController
             btnCurrent.ReportClick = false;
             currentlyLerping = ButtonType.None;
 
-            SendDialogue("build harvester 3", 0);
+            SendDialogue("build harvester place harvester", 0);
         }
         else if (subStage == 6)
         { 
@@ -386,7 +398,7 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            SendDialogue("fog hazard 1", 2);
+            SendDialogue("fog hazard detect", 2);
         }
         else if (subStage == 2)
         {
@@ -400,7 +412,7 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 3)
         {
-            SendDialogue("fog hazard 2", 1);
+            SendDialogue("fog hazard will kill you", 1);
         }
         else if (subStage == 4)
         {
@@ -445,7 +457,7 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            SendDialogue("build repel fan 1", 5);
+            SendDialogue("build repel fan", 5);
         }
         else if (subStage == 2)
         {
@@ -466,7 +478,7 @@ public class TutorialController : DialogueBoxController
                 currentlyBuilding = BuildingType.None;
                 ResetSubStage();
                 DeactivateTarget();
-                SendDialogue("build repel fan 2", 5);
+                SendDialogue("gloat", 5);
             }
         }
     }
