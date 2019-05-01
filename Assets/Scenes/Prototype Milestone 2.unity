@@ -1140,6 +1140,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 611883204a730864eb3d38513ded6c5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1023931242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3873393150995124438, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1080923185}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1030528574 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 460997011532178967, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
@@ -1458,7 +1464,7 @@ PrefabInstance:
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3873393151118691527, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
@@ -1683,7 +1689,7 @@ PrefabInstance:
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3873393149065079259, guid: 5380064ae2fe7ef4d9b2ecad05f46be5,
         type: 3}
@@ -2665,7 +2671,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1080923185}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1023931242}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98447747448e7d44388b83123746aeae, type: 3}
@@ -4237,6 +4243,7 @@ MonoBehaviour:
   cam1: {fileID: 970662340}
   moveSpeed: 20
   enableEdgePan: 0
+  buildingSelector: {fileID: 1023931242}
 --- !u!1001 &4624800829874131964
 PrefabInstance:
   m_ObjectHideFlags: 0
