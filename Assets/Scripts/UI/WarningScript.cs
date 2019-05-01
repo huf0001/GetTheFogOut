@@ -19,7 +19,7 @@ public class WarningScript : MonoBehaviour
     ResourceController resourceController;
 
     TextMeshProUGUI[] texts;
-    const string NORMAL = "<sprite=\"all_icons\" index=4 tint=1 color=#3f3f3f> ";
+    const string NORMAL = "<sprite=\"all_icons\" index=4 tint=1 color=#006273> ";
     const string WARNING = "<sprite=\"all_icons\" index=4 tint=1 color=#f0b040> ";
     const string DANGER = "<sprite=\"all_icons\" index=4 tint=1 color=#c80000> ";
     TextMeshProUGUI powerStatus;
@@ -76,7 +76,7 @@ public class WarningScript : MonoBehaviour
         switch (w)
         {
             case WarningLevel.Normal:
-                tint.color = new Color32(63, 63, 63, 255);
+                tint.color = new Color32(0, 153, 0, 255);
                 state = w;
                 break;
             case WarningLevel.Warning:
