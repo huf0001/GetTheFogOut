@@ -43,6 +43,8 @@ public class TileData
     public bool Visited { get => visited; set => visited = value; }
     public string Name { get => "Tile (" + x + "," + z + ")"; }
 
+    public GameObject plane;
+
     //Altered public properties
     public PowerSource PowerSource
     {
@@ -69,7 +71,13 @@ public class TileData
     {
         //this.gameObject.GetComponent<Renderer>().material = onMaterial;
         powerSources.Add(power);
-
+        /*
+        if (!WorldController.Instance.ActiveTiles.Contains(this))
+            {
+                WorldController.Instance.ActiveTiles.Add(this);
+                WorldController.Instance.showActiveTiles(this, true);
+            }
+            */
         if (building != null)
         {
             if (!building.Powered)
@@ -82,7 +90,13 @@ public class TileData
     public void PowerDown(PowerSource power)
     {
         powerSources.Remove(power);
-
+        /*
+            if (WorldController.Instance.ActiveTiles.Contains(this))
+            {
+                WorldController.Instance.ActiveTiles.Remove(this);
+                WorldController.Instance.showActiveTiles(this, false);
+            }
+            */
         //if (powerSources.Count == 0)
         //{
         //    //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
