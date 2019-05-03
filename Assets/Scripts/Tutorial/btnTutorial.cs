@@ -35,20 +35,32 @@ public class btnTutorial : MonoBehaviour
 
     private void Update()
     {
-        //if (tutorialController.ButtonAllowed(buildingType))
-        if (buildingType == tutorialController.CurrentlyLerping)
+        if (tutorialController.ButtonAllowed(buildingType))
         {
-            if (!lerping)
+            button.interactable = true;
+
+            if (buildingType == tutorialController.CurrentlyLerping)
             {
-                ActivateLerping();
+                if (!lerping)
+                {
+                    ActivateLerping();
+                }
+
+                LerpButtonColour();
             }
-
-            LerpButtonColour();
+            else if (lerping)
+            {
+                DeactivateLerping();
+            }
         }
-
-        if (lerping)
+        else
         {
-            DeactivateLerping();
+            button.interactable = false;
+
+            if (lerping)
+            {
+                DeactivateLerping();
+            }
         }
     }
 

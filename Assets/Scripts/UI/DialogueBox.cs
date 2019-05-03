@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
@@ -15,6 +16,7 @@ public class DialogueBox : MonoBehaviour
     private List<string> textToDisplay = new List<string>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
+    private bool deactivated = true;
 
     public void ActivateDialogueBox(string text, float invokeDelay)
     {
@@ -27,6 +29,8 @@ public class DialogueBox : MonoBehaviour
     {
         if (texts.Count > 0)
         {
+            deactivated = false;
+
             //Caches required tweening information for performance saving
             dialogueRectTransform = GetComponent<RectTransform>();
             originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
@@ -61,8 +65,9 @@ public class DialogueBox : MonoBehaviour
         {
             DisplayNext();
         }
-        else
+        else if (!deactivated)
         {
+            deactivated = true;
             DeactivateDialogueBox();
         }
     }
