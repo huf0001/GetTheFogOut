@@ -66,9 +66,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private int subStage = 1;
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
 
-    private TileData currentTile = null;
-    [SerializeField] private int currentTileX = 0;
-    [SerializeField] private int currentTileZ = 0;
+    [SerializeField] private TileData currentTile = null;
+    //[SerializeField] private int currentTileX = 0;
+    //[SerializeField] private int currentTileZ = 0;
 
     private btnTutorial btnCurrent;
     private ButtonType currentlyLerping;
@@ -576,17 +576,24 @@ public class TutorialController : DialogueBoxController
 
     private void GetLocationOf(Locatable l)
     {
-        currentTile = l.Location;
+        if (l != null)
+        {
+            currentTile = l.Location;
+        }
+        else
+        {
+            Debug.Log("Locatable l in TutorialController.GetLocationOf(Locatable l) is null");
+        }
 
         if (currentTile == null)
         {
             Debug.Log("TutorialController.CurrentTile is null");
         }
-        else
-        {
-            currentTileX = currentTile.X;
-            currentTileZ = currentTile.Z;
-        }
+        //else
+        //{
+        //    currentTileX = currentTile.X;
+        //    currentTileZ = currentTile.Z;
+        //}
     }
 
     private void ActivateTarget(Locatable l)

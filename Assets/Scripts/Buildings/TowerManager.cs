@@ -57,13 +57,10 @@ public class TowerManager : MonoBehaviour
         return buildingType;
     }
 
-    public void EscToCancel()
+    public void CancelBuild()
     {
-        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) && buildingType != TutorialController.Instance.CurrentlyBuilding)
-        {
-            selectedTower = null;
-            InbuildMode = false;
-            buildingType = BuildingType.None;
-        }
+        selectedTower = null;
+        InbuildMode = false;
+        buildingType = BuildingType.None;
     }
 }
