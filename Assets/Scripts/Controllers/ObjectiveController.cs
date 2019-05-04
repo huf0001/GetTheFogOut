@@ -60,9 +60,9 @@ public class ObjectiveController : DialogueBoxController
     {
         switch (currStage)
         {
-            case ObjectiveStage.None:
+            // case ObjectiveStage.None:
 
-                break;
+            //     break;
             case ObjectiveStage.HarvestMinerals:
                 HarvestMineralStage();
                 break;

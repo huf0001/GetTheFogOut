@@ -117,7 +117,7 @@ public class TutorialController : DialogueBoxController
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
 
-            btnBuildSelect.Button.interactable = false;
+            //btnBuildSelect.Button.interactable = false;
         }
     }
 
@@ -229,8 +229,7 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 2)
         {
-            tutorialStage = TutorialStage.BuildHarvester;
-            currentlyBuilding = BuildingType.Harvester;
+            tutorialStage = TutorialStage.ExplainBuildingPlacement;
             ResetSubStage();
         }
     }

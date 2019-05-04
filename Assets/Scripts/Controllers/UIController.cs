@@ -42,7 +42,7 @@ public class UIController : MonoBehaviour
         FindSliders();
 
         //Tweens in the UI for a smooth bounce in from outside the canvas
-        hudBar = GameObject.Find("HudBar");
+        hudBar = GameObject.Find("HUD");// "HudBar");
         hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
 
         //warningScript = hudBar.GetComponentInChildren<WarningScript>();
@@ -68,9 +68,9 @@ public class UIController : MonoBehaviour
     // find sliders and text
     void FindSliders()
     {
-        powerSlider = GameObject.Find("PowerSlider").GetComponent<Slider>();
-        powerText = powerSlider.GetComponentInChildren<TextMeshProUGUI>();
-        mineralText = GameObject.Find("MineralSlider").GetComponent<Slider>().GetComponentInChildren<TextMeshProUGUI>();
+        //powerSlider = GameObject.Find("PowerSlider").GetComponent<Slider>();
+        powerText = GameObject.Find("PowerLevel").GetComponent<TextMeshProUGUI>();
+        mineralText = GameObject.Find("MineralLevel").GetComponent<TextMeshProUGUI>();
     }
 
     // End Game Method
@@ -87,8 +87,9 @@ public class UIController : MonoBehaviour
             // if the stored power is different, change values used for lerping
             if (resourceController.StoredPower != power)
             {
+                powerVal = power;
                 power = resourceController.StoredPower;
-                powerVal = powerSlider.value;
+                //powerVal = float.Parse(powerText.text.Split('/')[0]);//powerSlider.value;
                 powerTime = 0;
             }
 
@@ -102,7 +103,7 @@ public class UIController : MonoBehaviour
             }
             else if (powerChange < 0)
             {
-                colour = "\"red\">";
+                colour = "#006273>";
                 //warningScript.AddWarning("Power grid is overloaded!", WarningScript.WarningLevel.Danger);
             }
             else
@@ -112,9 +113,9 @@ public class UIController : MonoBehaviour
             }
 
             // update slider and text values
-            powerSlider.maxValue = resourceController.MaxPower;
-            powerSlider.value = Mathf.Lerp(powerVal, power, powerTime);
-            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + resourceController.MaxPower + "    <color=" + colour + powerChange + "</color>";
+            //powerSlider.maxValue = resourceController.MaxPower;
+            //powerSlider.value = Mathf.Lerp(powerVal, power, powerTime);
+            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + resourceController.MaxPower + "\n<color=" + colour + powerChange + "</color>";
             mineralText.text = resourceController.StoredMineral + " units";
 
             // old code that probably should be adapted to tween mineral stock number

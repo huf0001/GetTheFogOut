@@ -63,6 +63,9 @@ public class WorldController : MonoBehaviour
     private CameraController cameraController;
     [SerializeField] protected GameObject camera;
 
+    private List<TileData> activeTiles = new List<TileData>();
+    public List<TileData> ActiveTiles { get => activeTiles; }
+
     //Cursor Locking to centre
     private CursorLockMode wantedMode;
 
@@ -527,6 +530,20 @@ public class WorldController : MonoBehaviour
         }
 
         return count;
+    }
+	
+	public void showActiveTiles(TileData tile, bool show)
+    {
+        if (show)
+        {
+            Vector3 pos = Vector3.zero;
+            pos.x += tile.X;
+            pos.y = 0.005f;
+            pos.z += tile.Z;
+            tile.plane = Instantiate(WorldController.Instance.planeGridprefab, pos, Quaternion.identity);
+        }
+        else
+            Destroy(tile.plane);
     }
 
     //Apparently Currently Unused Methods------------------------------------------------------------------------------------------------------------

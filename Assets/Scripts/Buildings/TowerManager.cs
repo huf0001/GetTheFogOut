@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class TowerManager : MonoBehaviour
 {
-    
+
     [SerializeField] private btn_tower selectedTower;
     [SerializeField] private BuildingType buildingType = BuildingType.None;
     [SerializeField] private GameObject emptyprefab;
@@ -91,6 +91,10 @@ public class TowerManager : MonoBehaviour
     {
         selectedTower = null;
         Destroy(hologramTower);
+        //this.SelectedTower = chooseTower;
+        //buildingType = SelectedTower.TowerType;
+        //WorldController.Instance.InBuildMode = true;
+        //InbuildMode = true;
     }
 
     //DESC: return prefab object *replace with tower 3d later
@@ -122,12 +126,12 @@ public class TowerManager : MonoBehaviour
 
     public BuildingType GetBuildingType()
     {
-        return SelectedTower.TowerType;
+        return buildingType;
     }
 
     public void EscToCancel()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
+        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) && buildingType != TutorialController.Instance.CurrentlyBuilding)
         {
             selectedTower = null;
             currentTile = null;
@@ -137,7 +141,7 @@ public class TowerManager : MonoBehaviour
                 UIController.instance.buildingSelector.ToggleVisibility(); 
             }
             InbuildMode = false;
+            buildingType = BuildingType.None;
         }
     }
-
 }
