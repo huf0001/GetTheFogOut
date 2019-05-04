@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.1350612, a: 1}
+  m_IndirectSpecularColor: {r: 0.067397416, g: 0.08987052, b: 0.13496715, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -378,6 +378,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 611883204a730864eb3d38513ded6c5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &501069190 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9118112184725691006, guid: b73f147f6fafb3242895252f4e5718fb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1409251835}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed6d37a806b280498c454644f3bf924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &517189014 stripped
@@ -3994,7 +4006,7 @@ PrefabInstance:
         type: 3}
       propertyPath: harvesterResource
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 501069190}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: generatorLandmark
@@ -4053,7 +4065,7 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: skipTutorial
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -4971,6 +4983,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e3a4254109bae4c93336cad9171069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  location:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
 --- !u!114 &6911059837006908089 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6764014614264324026, guid: 953f533b66fe46f49894a852998c0b9f,

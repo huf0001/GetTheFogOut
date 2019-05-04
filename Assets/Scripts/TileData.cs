@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-
 //TODO: replace a TILE object with an invinsible box and only show upon click on the button(tower)
 //TODO: add Null ref / exception :(
+[Serializable]
 public class TileData
 {
     //Serialized Fields
@@ -19,8 +20,8 @@ public class TileData
     [SerializeField] private Material startMaterial;
 
     //Private fields
-    private int x = 0;
-    private int z = 0;
+    [SerializeField] private int x = 0;
+    [SerializeField] private int z = 0;
     private FogUnit fogUnit = null;
     private GameObject placedtower = null;
     private List<TileData> adjacentTiles = new List<TileData>();

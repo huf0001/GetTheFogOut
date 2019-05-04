@@ -31,7 +31,6 @@ public class WorldController : MonoBehaviour
     [SerializeField] private int length = 31;
     [SerializeField] private bool spawnResources = false;
     [SerializeField] int mineralSpawnChance = 5, fuelSpawnChance = 5, powerSpawnChance = 5, organSpawnChance = 5;
-    //[SerializeField] private Tiles gameboard = null;
 
     [Header("Prefab/Gameobject assignment")]
     [SerializeField]
@@ -186,6 +185,7 @@ public class WorldController : MonoBehaviour
         foreach (Landmark l in landmarks)
         {
             l.Location = GetTileAt(l.transform.position);
+            Debug.Log("Landmark " + l.name + "'s location has been set to " + l.Location.Name);
         }
     }
 
@@ -456,11 +456,12 @@ public class WorldController : MonoBehaviour
             //InBuildMode = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
+        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) 
+            && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.TutorialStage == TutorialStage.Finished))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
-            tm.EscToCancel();
+            tm.CancelBuild();
             InBuildMode = false;
         }
     }
