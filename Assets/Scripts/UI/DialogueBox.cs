@@ -18,6 +18,9 @@ public class DialogueBox : MonoBehaviour
     private RectTransform dialogueRectTransform;
     private bool deactivated = true;
 
+    //Public Properties
+    public int DialogueCount { get => textToDisplay.Count; }
+
     public void ActivateDialogueBox(string text, float invokeDelay)
     {
         List<string> texts = new List<string>();
@@ -36,10 +39,10 @@ public class DialogueBox : MonoBehaviour
             originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
 
             //Debug.Log("DialogueBoxActivated");
-            textToDisplay.AddRange(texts);
+            textToDisplay = new List<string>(texts);
             DisplayNext();
 
-            Invoke("Pause", invokeDelay);
+            Invoke("ShowDialogueBox", invokeDelay);
         } else
         {
             Debug.LogError("No text to display in dialogue box");
@@ -52,9 +55,9 @@ public class DialogueBox : MonoBehaviour
         textToDisplay.Remove(textToDisplay[0]);
     }
 
-    private void Pause()
+    private void ShowDialogueBox()
     {
-        WorldController.Instance.SetPause(true);
+        //WorldController.Instance.SetPause(true);
         dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).From(true).SetEase(Ease.OutBack).SetUpdate(true);
         gameObject.SetActive(true);
     }
@@ -81,7 +84,7 @@ public class DialogueBox : MonoBehaviour
                 gameObject.SetActive(false);
                 textBox.text = "";
                 dialogueBoxController.RegisterDialogueRead();
-                WorldController.Instance.SetPause(false);
+                //WorldController.Instance.SetPause(false);
                 });
     }
 }
