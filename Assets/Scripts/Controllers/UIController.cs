@@ -20,6 +20,9 @@ public class UIController : MonoBehaviour
     private int power = 0, powerChange = 0, mineral = 0;
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
+    [SerializeField] Image powerImg;
+
+    [SerializeField] Sprite[] powerLevelSprites;
 
     ResourceController resourceController = null;
 
@@ -89,7 +92,6 @@ public class UIController : MonoBehaviour
             {
                 powerVal = power;
                 power = resourceController.StoredPower;
-                //powerVal = float.Parse(powerText.text.Split('/')[0]);//powerSlider.value;
                 powerTime = 0;
             }
 
@@ -104,18 +106,38 @@ public class UIController : MonoBehaviour
             else if (powerChange < 0)
             {
                 colour = "\"red\">";
-                //warningScript.AddWarning("Power grid is overloaded!", WarningScript.WarningLevel.Danger);
             }
             else
             {
                 colour = "#006273>±";
-                //warningScript.AddWarning("Power grid is at maximum capacity!", WarningScript.WarningLevel.Warning);
             }
 
-            // update slider and text values
-            //powerSlider.maxValue = resourceController.MaxPower;
-            //powerSlider.value = Mathf.Lerp(powerVal, power, powerTime);
+            // update text values
             powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + resourceController.MaxPower + "\n<color=" + colour + powerChange + "</color>";
+
+            int powerCheck = int.Parse(powerText.text.Split('/')[0]);
+
+            if (powerCheck > 0 && powerCheck <= 25)
+            {
+                powerImg.sprite = powerLevelSprites[1];
+            }
+            else if (powerCheck > 25 && powerCheck <= 50)
+            {
+                powerImg.sprite = powerLevelSprites[2];
+            }
+            else if (powerCheck > 50 && powerCheck <= 75)
+            {
+                powerImg.sprite = powerLevelSprites[3];
+            }
+            else if (powerCheck > 75)
+            {
+                powerImg.sprite = powerLevelSprites[4];
+            }
+            else
+            {
+                powerImg.sprite = powerLevelSprites[0];
+            }
+
             mineralText.text = resourceController.StoredMineral + " units";
 
             // old code that probably should be adapted to tween mineral stock number
