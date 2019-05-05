@@ -31,7 +31,6 @@ public class WorldController : MonoBehaviour
     [SerializeField] private int length = 31;
     [SerializeField] private bool spawnResources = false;
     [SerializeField] int mineralSpawnChance = 5, fuelSpawnChance = 5, powerSpawnChance = 5, organSpawnChance = 5;
-    //[SerializeField] private Tiles gameboard = null;
 
     [Header("Prefab/Gameobject assignment")]
     [SerializeField]
@@ -39,7 +38,7 @@ public class WorldController : MonoBehaviour
 
     [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
-    [SerializeField] private GameObject planeGridprefab;
+    [SerializeField] public GameObject planeGridprefab;
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private ShipComponentState[] shipComponents;
@@ -72,6 +71,9 @@ public class WorldController : MonoBehaviour
     //Flags
     private bool hubBuilt = false;
     private bool isGameOver;
+    private bool ison;
+
+    private int index;
 
     //Public Properties
     // public static WorldController used to get the instance of the WorldManager from anywhere.
@@ -98,6 +100,7 @@ public class WorldController : MonoBehaviour
         InBuildMode = false;
         Instance = this;
         isGameOver = false;
+        ison = false;
 
         tm = FindObjectOfType<TowerManager>();
 
@@ -113,6 +116,7 @@ public class WorldController : MonoBehaviour
 
     private void Start()
     {
+        index = 0;
         InstantiateTileArray();
         ConnectAdjacentTiles();
         SetResourcesToTiles();
@@ -186,6 +190,7 @@ public class WorldController : MonoBehaviour
         foreach (Landmark l in landmarks)
         {
             l.Location = GetTileAt(l.transform.position);
+            Debug.Log("Landmark " + l.name + "'s location has been set to " + l.Location.Name);
         }
     }
 
@@ -343,6 +348,22 @@ public class WorldController : MonoBehaviour
             //    ShowTile();
         }
 
+        if (Input.GetKeyDown("z") || Input.GetButtonDown("Xbox_RB"))
+        {
+            ison = !ison;
+        }
+        if (ison)
+        {
+            showActiveTiles();
+        }
+        else
+        {
+            hideActiveTiles();
+            index = 0;
+        }
+
+
+
         if (Input.GetButtonDown("Xbox_LB"))
         {
             cameraController.ToggleCameraMovement();
@@ -352,7 +373,7 @@ public class WorldController : MonoBehaviour
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
-            tm.EscToCancel();
+            tm.CancelBuild();
             InBuildMode = false;
         }
 
@@ -463,6 +484,15 @@ public class WorldController : MonoBehaviour
             //tm.EscToCancel();
             //InBuildMode = false;
         }
+
+        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) 
+            && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.TutorialStage == TutorialStage.Finished))
+        {
+            Destroy(PlaneSpawn);
+            Destroy(TowerSpawn);
+            tm.CancelBuild();
+            InBuildMode = false;
+        }
     }
 
     public bool TileExistsAt(Vector3 pos)
@@ -528,24 +558,34 @@ public class WorldController : MonoBehaviour
                 count += 1;
             }
         }
-
         return count;
     }
-	
-	public void showActiveTiles(TileData tile, bool show)
+
+    public void hideActiveTiles()
     {
-        if (show)
-        {
-            Vector3 pos = Vector3.zero;
-            pos.x += tile.X;
-            pos.y = 0.005f;
-            pos.z += tile.Z;
-            tile.plane = Instantiate(WorldController.Instance.planeGridprefab, pos, Quaternion.identity);
-        }
-        else
-            Destroy(tile.plane);
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
+
+        for (var i = 0; i < gameObjects.Length; i++)
+            Destroy(gameObjects[i]);
     }
 
+    public void showActiveTiles()
+    {
+        if (index != activeTiles.Count)
+        {
+            hideActiveTiles();
+            foreach (TileData tile in activeTiles)
+            {
+                Vector3 pos = Vector3.zero;
+                pos.x += tile.X;
+                pos.y = 0.033f;
+                pos.z += tile.Z;
+                tile.plane = Instantiate(WorldController.Instance.planeGridprefab, pos, Quaternion.identity);
+            }
+            index = activeTiles.Count;
+        }
+
+    }
     //Apparently Currently Unused Methods------------------------------------------------------------------------------------------------------------
 
     //private void ShowTile()

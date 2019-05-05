@@ -9,22 +9,27 @@ public abstract class PowerSource : Building
     [SerializeField] protected List<Building> suppliedBuildings = new List<Building>();
     public List<Building> SuppliedBuildings { get => suppliedBuildings; set => suppliedBuildings = value; }
 
+    public bool showRange;
+    private List<TileData> powerTiles = new List<TileData>();
 
     protected override void Awake()
     {
         base.Awake();
+        
     }
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+    //    showRange = false;
     }
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+        ActivateTiles();
     }
 
     public override void Place()
@@ -126,21 +131,25 @@ public abstract class PowerSource : Building
                 harvesters.AddRange(r.GetHarvesters());
             }
         }
-
         return harvesters;
     }
 
-    private void ActivateTiles()
+    public void ActivateTiles()
     {
         List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)powerRange);
         foreach (TileData tile in tiles)
         {
             tile.PowerUp(this as PowerSource);
             tile.Visited = false;
+            if (!WorldController.Instance.ActiveTiles.Contains(tile))
+            {
+                WorldController.Instance.ActiveTiles.Add(tile);
+            }
         }
+
     }
 
-    private void DeactivateTiles()
+    public void DeactivateTiles()
     {
         List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)powerRange);
 
@@ -148,6 +157,7 @@ public abstract class PowerSource : Building
         {
             tile.PowerDown(this as PowerSource);
             tile.Visited = false;
+            WorldController.Instance.ActiveTiles.Remove(tile);
         }
     }
 
@@ -175,10 +185,6 @@ public abstract class PowerSource : Building
 
     public void Unplug(Building unplug)
     {
-        if (suppliedBuildings.Contains(unplug))
-        {
-            Debug.Log("fff");
-        }
         if (this != unplug)
         {
             //if (suppliedBuildings.Contains(unplug))

@@ -33,32 +33,32 @@ public class TowerManager : MonoBehaviour
             if (toBuild.name != "Empty")
             {
                 //Debug.Log(toBuild.name);
-                if (toBuild.GetComponent<Building>() != null)
+                if (toBuild.GetComponentInChildren<Building>() != null)
                 {
-                    Building b = toBuild.GetComponent<Building>();
+                    Building b = toBuild.GetComponentInChildren<Building>();
+                    if (currentTile.Building == null && (currentTile.Resource == null || b.BuildingType == BuildingType.Harvester))
+                    {
+
+                        if (b.BuildingType == BuildingType.Generator)
+                        {
+                            if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * 5 + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
+                            {
+                                Debug.Log("If you want to build more generators, collect more ship components first.");
+                                return;
+                            }
+                        }
+
+                        currentTile.Placedtower = toBuild;
+                        selectedTower = null;
+                        Destroy(hologramTower);
+                        MouseController.Instance.Build(currentTile.Placedtower, currentTile, 0f);
+                    }
                 }
                 else
                 {
                     Debug.Log("toBuild's building component is non-existant");
                 }
 
-                if (currentTile.Building == null && (currentTile.Resource == null || GetBuildingType() == BuildingType.Harvester))
-                {
-
-                    if (GetBuildingType() == BuildingType.Generator)
-                    {
-                        if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * 5 + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
-                        {
-                            Debug.Log("If you want to build more generators, collect more ship components first.");
-                            return;
-                        }
-                    }
-
-                    currentTile.Placedtower = toBuild;
-                    selectedTower = null;
-                    Destroy(hologramTower);
-                    MouseController.Instance.Build(currentTile.Placedtower, currentTile, 0f);
-                }
             }
             else
             {
@@ -129,7 +129,7 @@ public class TowerManager : MonoBehaviour
         return buildingType;
     }
 
-    public void EscToCancel()
+    public void CancelBuild()
     {
         if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) && buildingType != TutorialController.Instance.CurrentlyBuilding)
         {
@@ -143,5 +143,8 @@ public class TowerManager : MonoBehaviour
             InbuildMode = false;
             buildingType = BuildingType.None;
         }
+        //selectedTower = null;
+        //InbuildMode = false;
+        //buildingType = BuildingType.None;
     }
 }
