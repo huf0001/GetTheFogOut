@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4739728822711218263}
   - component: {fileID: 7069307296970788146}
   - component: {fileID: 6785053910657603206}
+  - component: {fileID: 5749660945512826857}
   m_Layer: 0
   m_Name: Repel Fan
   m_TagString: Building
@@ -105,6 +106,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23687b0cb6f0c07448f21443a29c63ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  location:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
   health: 1
   visibilityRange: 0
   upkeep: 0
@@ -132,7 +143,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f6cf88f896cf0d34b8cb7c76d3f5ef36, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -229,6 +240,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23687b0cb6f0c07448f21443a29c63ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  location:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
   health: 1
   visibilityRange: 0
   upkeep: 0
