@@ -20,12 +20,14 @@ public class MouseController : MonoBehaviour
     private TutorialController tutorialController;
     private GameObject PointAtObj;
     List<GameObject> collisionList = new List<GameObject>();
+    private bool reportTutorialClick = false;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
     // Public Properties
     public static MouseController Instance { get; protected set; }
     public Hub Hub { get => hub; set => hub = value; }
+    public bool ReportTutorialClick { get => reportTutorialClick; set => reportTutorialClick = value; }
 
     // Start / Update Unity Methods ------------------------------------------------------
 
@@ -154,12 +156,18 @@ public class MouseController : MonoBehaviour
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
 
-                    if (tile.PowerSource != null)
+                    if (tile.PowerSource != null && TutorialController.Instance.TileAllowed(tile))
                     {
-                        if (!UIController.instance.buildingSelector.Visable)
+                        if (!UIController.instance.buildingSelector.Visible)
                         {
                             UIController.instance.buildingSelector.ToggleVisibility();
                         }
+
+                        if (reportTutorialClick)
+                        {
+                            TutorialController.Instance.RegisterButtonClicked();
+                        }
+
                         towerManager.CurrentTile = tile;
                     }
                 }

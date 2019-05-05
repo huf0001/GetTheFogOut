@@ -190,7 +190,6 @@ public class WorldController : MonoBehaviour
         foreach (Landmark l in landmarks)
         {
             l.Location = GetTileAt(l.transform.position);
-            Debug.Log("Landmark " + l.name + "'s location has been set to " + l.Location.Name);
         }
     }
 

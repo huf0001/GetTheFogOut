@@ -136,7 +136,7 @@ public class TowerManager : MonoBehaviour
             selectedTower = null;
             currentTile = null;
             Destroy(hologramTower);
-            if (UIController.instance.buildingSelector.Visable)
+            if (UIController.instance.buildingSelector.Visible)
             {
                 UIController.instance.buildingSelector.ToggleVisibility(); 
             }
