@@ -68,8 +68,6 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
 
     [SerializeField] private TileData currentTile = null;
-    //[SerializeField] private int currentTileX = 0;
-    //[SerializeField] private int currentTileZ = 0;
 
     private btnTutorial btnCurrent;
     private ButtonType currentlyLerping;
@@ -86,7 +84,7 @@ public class TutorialController : DialogueBoxController
     private bool atReworkLimit = false;
 
     //Public Properties
-    // public static WorldController used to get the instance of the WorldManager from anywhere.
+    // public static TutorialController used to get the instance of the WorldManager from anywhere.
     public static TutorialController Instance { get; protected set; }
     public TutorialStage TutorialStage { get => tutorialStage; }
     public TileData CurrentTile { get => currentTile; }
@@ -119,8 +117,6 @@ public class TutorialController : DialogueBoxController
         else
         {
             targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
-
-            //btnBuildSelect.Button.interactable = false;
         }
     }
 
@@ -129,20 +125,19 @@ public class TutorialController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (tutorialStage != TutorialStage.Finished && atReworkLimit)
+        if (tutorialStage != TutorialStage.Finished)
         {
-            if (dialogueRead)
+            if (atReworkLimit)
             {
-                dialogueSent = false;
-                IncrementSubStage();
-                ResetDialogueRead();
-            }
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
 
-            if (buttonClicked)
-            {
-                buttonClicked = false;
-                btnCurrent.ReportClick = false;
-                IncrementSubStage();
+                if (buttonClicked)
+                {
+                    DismissButton();
+                }
             }
 
             if (targetDecal.enabled)
@@ -270,11 +265,11 @@ public class TutorialController : DialogueBoxController
             }
             else if (dialogueRead)
             {
-                FinishDialogue();
+                DismissDialogue();
             }
             else if (buttonClicked)
             {
-                SkipDialogueAhead(5);
+                SkipTutorialAhead(5);
             }
         }
         else if (subStage == 2)
@@ -286,11 +281,11 @@ public class TutorialController : DialogueBoxController
             }
             else if (dialogueRead)
             {
-                FinishDialogue();
+                DismissDialogue();
             }
             else if (buttonClicked)
             {
-                SkipDialogueAhead(5);
+                SkipTutorialAhead(5);
             }
         }
         else if (subStage == 3)
@@ -302,70 +297,60 @@ public class TutorialController : DialogueBoxController
             }
             else if (dialogueRead)
             {
-                FinishDialogue();
+                DismissDialogue();
             }
             else if (buttonClicked)
             {
-                SkipDialogueAhead(5);
+                SkipTutorialAhead(5);
             }
         }
         else if (subStage == 4 && buttonClicked)
         {
-            IncrementSubStage();
+            DismissButton();
         }
         else if (subStage == 5)
         {
             if (!dialogueSent)
             {
-                //Reset UI lerping
-                btnCurrent.ReportClick = false;
-
                 //Display UI element prompting player to select the harvester
+                currentlyLerping = ButtonType.Harvester;
                 btnCurrent = btnBuildHarvester;
                 btnCurrent.ReportClick = true;
-                currentlyLerping = ButtonType.Harvester;
 
                 SendDialogue("build harvester harvester icon", 0);
             }
             else if (dialogueRead)
             {
-                FinishDialogue();
+                DismissDialogue();
             }
             else if (buttonClicked)
             {
-                SkipDialogueAhead(7);
+                SkipTutorialAhead(7);
             }
         }
         else if (subStage == 6 && buttonClicked)
         {
-            IncrementSubStage();
+            DismissButton();
         }
         else if (subStage == 7)
         {
             if (!dialogueSent)
             {
-                //Turn off UI lerping
-                btnCurrent.ReportClick = false;
-                currentlyLerping = ButtonType.None;
-
                 //Get location of resource node
                 GetLocationOf(harvesterResource);
 
                 //Display UI element prompting player to build a harvester on this resource node
                 ActivateTarget(harvesterResource);
 
-                //Progress to next SubStage
-                //IncrementSubStage();
-
                 SendDialogue("build harvester place harvester", 0);
             }
             else if (dialogueRead)
             {
-                FinishDialogue();
+                DismissDialogue();
             }
             else if (BuiltCurrentlyBuilding())
             {
-                SkipDialogueAhead(9);
+                SkipTutorialAhead(9);
             }
         }
         else if (subStage == 8 && BuiltCurrentlyBuilding())
@@ -379,7 +364,6 @@ public class TutorialController : DialogueBoxController
             currentlyBuilding = BuildingType.Generator;
             ResetSubStage();
             DeactivateTarget();
-            atReworkLimit = true;
         }
     }
 
@@ -388,31 +372,48 @@ public class TutorialController : DialogueBoxController
     {
         if (subStage == 1)
         {
-            SendDialogue("build generator", 2);
+            if (!dialogueSent)
+            {
+                //Display UI element prompting player to click the building selector button
+                btnCurrent = btnBuildSelect;
+                btnCurrent.ReportClick = true;
+                currentlyLerping = ButtonType.BuildSelect;
+
+                SendDialogue("build generator", 2);
+            }
+            else if (dialogueRead)
+            {
+                DismissDialogue();
+            }
+            else if (buttonClicked)
+            {
+                SkipTutorialAhead(3);
+            }
         }
-        else if (subStage == 2)
+        else if (subStage == 2 && buttonClicked)
         {
-            //Display UI element prompting player to click the building selector button
-            btnCurrent = btnBuildSelect;
-            btnCurrent.ReportClick = true;
-            currentlyLerping = ButtonType.BuildSelect;
+            DismissButton();
         }
         else if (subStage == 3)
         {
-            //Reset UI lerping
-            btnCurrent.ReportClick = false;
+            if (!dialogueSent)
+            {
+                //Display UI element prompting player to click the building selector button
+                btnCurrent = btnBuildGenerator;
+                btnCurrent.ReportClick = true;
+                currentlyLerping = ButtonType.Generator;
 
-            //Display UI element prompting player to click the building selector button
-            btnCurrent = btnBuildGenerator;
-            btnCurrent.ReportClick = true;
-            currentlyLerping = ButtonType.Generator;
+                dialogueSent = true;
+            }
+            else if (buttonClicked)
+            {
+                DismissButton();
+
+                dialogueSent = false;
+            }
         }
         else if (subStage == 4)
         {
-            //Turn off UI lerping
-            btnCurrent.ReportClick = false;
-            currentlyLerping = ButtonType.None;
-
             //Get tile
             GetLocationOf(generatorLandmark);
 
@@ -422,15 +423,13 @@ public class TutorialController : DialogueBoxController
             //Progress to next SubStage
             IncrementSubStage();
         }
-        else if (subStage == 5)
+        else if (subStage == 5 && BuiltCurrentlyBuilding())
         {
-            if (BuiltCurrentlyBuilding())
-            {
-                tutorialStage = TutorialStage.BuildRelay;
-                currentlyBuilding = BuildingType.Relay;
-                ResetSubStage();
-                DeactivateTarget();
-            }
+            tutorialStage = TutorialStage.BuildRelay;
+            currentlyBuilding = BuildingType.Relay;
+            ResetSubStage();
+            DeactivateTarget();
+            atReworkLimit = true;
         }
     }
 
@@ -455,7 +454,7 @@ public class TutorialController : DialogueBoxController
 
             //Display UI element prompting player to click the building selector button
             btnCurrent = btnBuildRelay;
-            btnCurrent.ReportClick = true;
+            btnCurrent.ReportClick = true; 
             currentlyLerping = ButtonType.Relay;
         }
         else if (subStage == 4)
@@ -647,18 +646,25 @@ public class TutorialController : DialogueBoxController
         subStage = 1;
     }
 
-    private void SkipDialogueAhead(TutorialStage stage)
+    private void DismissButton()
     {
         buttonClicked = false;
         btnCurrent.ReportClick = false;
-        tutorialStage = stage;
-        ResetSubStage();
+        btnCurrent = null;
+        currentlyLerping = ButtonType.None;
 
-        dialogueSent = false;
-        ResetDialogueRead();
+        IncrementSubStage();
     }
 
-    private void SkipDialogueAhead(int nextSubStage)
+    private void DismissDialogue()
+    {
+        dialogueSent = false;
+        ResetDialogueRead();
+
+        IncrementSubStage();
+    }
+
+    private void SkipTutorialAhead(int nextSubStage)
     {
         buttonClicked = false;
         btnCurrent.ReportClick = false;
@@ -666,13 +672,6 @@ public class TutorialController : DialogueBoxController
 
         dialogueSent = false;
         ResetDialogueRead();
-    }
-
-    private void FinishDialogue()
-    {
-        dialogueSent = false;
-        ResetDialogueRead();
-        IncrementSubStage();
     }
 
     private void GetLocationOf(Locatable l)
@@ -690,11 +689,6 @@ public class TutorialController : DialogueBoxController
         {
             Debug.Log("TutorialController.CurrentTile is null");
         }
-        //else
-        //{
-        //    currentTileX = currentTile.X;
-        //    currentTileZ = currentTile.Z;
-        //}
     }
 
     private void ActivateTarget(Locatable l)
