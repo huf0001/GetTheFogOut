@@ -57,7 +57,7 @@ public class MouseController : MonoBehaviour
     {
         //if (towerManager.IsinBuild())
         //{
-            UpdatePlacingAlt();
+        UpdatePlacingAlt();
         //}
 
         // if (!isStopped)
@@ -167,7 +167,8 @@ public class MouseController : MonoBehaviour
                         {
                             TutorialController.Instance.RegisterButtonClicked();
                         }
-
+                        
+                        UIController.instance.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(Screen.width / 13, 0);
                         towerManager.CurrentTile = tile;
                     }
                 }
@@ -201,7 +202,7 @@ public class MouseController : MonoBehaviour
         {
             //PointAtObj = hit.transform.gameObject;
             building.DismantleBuilding();
-        }  
+        }
     }
 
     // Builds the building given on the tile given.

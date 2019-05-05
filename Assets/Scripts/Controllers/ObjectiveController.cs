@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using TMPro;
+using UnityEngine.UI;
 
 public enum ObjectiveStage
 {
@@ -18,9 +21,12 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] bool objectivesOn = true;
     [SerializeField] ObjectiveStage currStage = ObjectiveStage.None;
     [SerializeField] int subStage = 0;
+    [SerializeField] GameObject objectiveWindow;
+    [SerializeField] GameObject objectiveCompletePrefab;
 
     // Non-Serialized Fields
     bool stageComplete = false;
+    bool objWindowVisibilty = false;
 
 
     // Public Properties -------------------------------------------------------------------------------------
@@ -186,5 +192,33 @@ public class ObjectiveController : DialogueBoxController
     void ResetSubstage()
     {
         subStage = 0;
+    }
+
+    public void ToggleObjWindow()
+    {
+        if (!objWindowVisibilty)
+        {
+            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-5, 0.3f).SetEase(Ease.OutCubic);
+            objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(true);
+            objWindowVisibilty = true;
+        }
+        else
+        {
+            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(227, 0.3f).SetEase(Ease.InCubic);
+            objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(false);
+            objWindowVisibilty = false;
+        }
+    }
+
+    // run as coroutine
+    IEnumerator CompleteObjective()
+    {
+        GameObject objComp = Instantiate(objectiveCompletePrefab, GameObject.Find("Canvas").transform);
+        GameObject completeText = objComp.GetComponentInChildren<Image>().gameObject;
+        completeText.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(5f);
+        completeText.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad);
+        yield return new WaitForSeconds(0.3f);
+        Destroy(objComp);
     }
 }

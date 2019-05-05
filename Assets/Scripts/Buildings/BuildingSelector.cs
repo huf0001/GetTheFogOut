@@ -5,7 +5,7 @@ using TMPro;
 
 public class BuildingSelector : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI buildingDesc;
+    //[SerializeField] TextMeshProUGUI buildingDesc;
     [SerializeField] bool visible = false;
 
     public bool Visible { get => visible; set => visible = value; }
@@ -26,7 +26,7 @@ public class BuildingSelector : MonoBehaviour
         }
 
         gameObject.SetActive(!gameObject.activeSelf);
-        buildingDesc.gameObject.SetActive(!buildingDesc.gameObject.activeSelf);
         visible = !visible;
+        //buildingDesc.gameObject.SetActive(!buildingDesc.gameObject.activeSelf);
     }
 }

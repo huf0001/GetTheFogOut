@@ -19,7 +19,7 @@ public class WarningScript : MonoBehaviour
     ResourceController resourceController;
 
     TextMeshProUGUI[] texts;
-    const string NORMAL = "<sprite=\"all_icons\" index=4 tint=1 color=#006273> ";
+    const string NORMAL = "<sprite=\"all_icons\" index=4 tint=1 color=#009900> ";
     const string WARNING = "<sprite=\"all_icons\" index=4 tint=1 color=#f0b040> ";
     const string DANGER = "<sprite=\"all_icons\" index=4 tint=1 color=#c80000> ";
     TextMeshProUGUI powerStatus;
@@ -150,12 +150,12 @@ public class WarningScript : MonoBehaviour
 
     private IEnumerator ShowMessage(string txt)
     {
-        GameObject message = Instantiate(popupMessage, GameObject.Find("Canvas").transform);
+        GameObject message = Instantiate(popupMessage, GameObject.Find("Warnings").transform);
         if (existingMessages.Count != 0)
         {
             message.transform.position = existingMessages[existingMessages.Count - 1].transform.position + new Vector3(335, 0);
         }
-        message.transform.position -= new Vector3(0, 50);
+        message.transform.position -= new Vector3(0, Screen.height / 20);
         message.GetComponentInChildren<TextMeshProUGUI>().text = txt;
         existingMessages.Add(message);
         message.GetComponent<RectTransform>().DOAnchorPosX(-330, 0.5f).SetEase(Ease.OutExpo);

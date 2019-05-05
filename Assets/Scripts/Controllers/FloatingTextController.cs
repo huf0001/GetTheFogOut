@@ -9,7 +9,7 @@ public class FloatingTextController : MonoBehaviour
 
     private void Start()
     {
-        canvas = GameObject.Find("Canvas");
+        canvas = GameObject.Find("TooltipCanvas");
     }
 
     public void CreateFloatingText(string text, Transform location)
