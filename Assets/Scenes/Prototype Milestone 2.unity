@@ -297,6 +297,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4767305868293070533, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740164289018539305, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8199897511905502610, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_isInputParsingRequired
@@ -317,11 +327,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2740164289018539305, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6153769857162608600, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -336,11 +341,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_inputSource
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4767305868293070533, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 4767305868293070532, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
@@ -1204,6 +1204,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ab951eea836f594ea15cdb13afd6328, type: 3}
+--- !u!1 &706139407 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4767305868616740741, guid: f0d96ef103d08e4429542615f2b52508,
+    type: 3}
+  m_PrefabInstance: {fileID: 326070610}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &712338036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2838850399371568609, guid: 4d4c598dd9bc8cb43a0d126a2b0e2eb8,
@@ -3006,6 +3012,157 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[0].dialogue.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: aiText
+      value: 
+      objectReference: {fileID: 326070611}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[0].key
+      value: start harvest stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[1].key
+      value: end harvest stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].key
+      value: start part stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[3].key
+      value: end part stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].key
+      value: start power stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].key
+      value: end power stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[0].dialogue.Array.data[0]
+      value: This
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[0].dialogue.Array.data[1]
+      value: is
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[0].dialogue.Array.data[2]
+      value: a test
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: objectivesOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: objectiveWindow
+      value: 
+      objectReference: {fileID: 326070618}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: objectiveCompletePrefab
+      value: 
+      objectReference: {fileID: 2273471419132843575, guid: 53f4928f807d9b64bbacc1c4655740f2,
+        type: 3}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: aiText
+      value: 
+      objectReference: {fileID: 326070611}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: harvesterResource
+      value: 
+      objectReference: {fileID: 501069190}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: generatorLandmark
+      value: 
+      objectReference: {fileID: 390134775}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: relayLandmark
+      value: 
+      objectReference: {fileID: 1655635319}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: arcDefenceLandmark
+      value: 
+      objectReference: {fileID: 1041046693}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: repelFanLandmark
+      value: 
+      objectReference: {fileID: 1015231317}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: buildingTarget
+      value: 
+      objectReference: {fileID: 6911059837006908089}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: btnBuildSelect
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: btnBuildHarvester
+      value: 
+      objectReference: {fileID: 326070615}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: btnBuildGenerator
+      value: 
+      objectReference: {fileID: 326070616}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: btnBuildRelay
+      value: 
+      objectReference: {fileID: 326070614}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: btnBuildArcDefence
+      value: 
+      objectReference: {fileID: 326070617}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: btnBuildRepelFan
+      value: 
+      objectReference: {fileID: 326070612}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: skipTutorial
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3177,81 +3334,6 @@ PrefabInstance:
       propertyPath: configuration
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: aiText
-      value: 
-      objectReference: {fileID: 326070611}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: harvesterResource
-      value: 
-      objectReference: {fileID: 501069190}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: generatorLandmark
-      value: 
-      objectReference: {fileID: 390134775}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: relayLandmark
-      value: 
-      objectReference: {fileID: 1655635319}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: arcDefenceLandmark
-      value: 
-      objectReference: {fileID: 1041046693}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: repelFanLandmark
-      value: 
-      objectReference: {fileID: 1015231317}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: buildingTarget
-      value: 
-      objectReference: {fileID: 6911059837006908089}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: btnBuildSelect
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: btnBuildHarvester
-      value: 
-      objectReference: {fileID: 326070615}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: btnBuildGenerator
-      value: 
-      objectReference: {fileID: 326070616}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: btnBuildRelay
-      value: 
-      objectReference: {fileID: 326070614}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: btnBuildArcDefence
-      value: 
-      objectReference: {fileID: 326070617}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: btnBuildRepelFan
-      value: 
-      objectReference: {fileID: 326070612}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1963843383001614104, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: xAndYRange
@@ -3262,82 +3344,6 @@ PrefabInstance:
       propertyPath: xAndYRange
       value: 52
       objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].dialogue.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: aiText
-      value: 
-      objectReference: {fileID: 326070611}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].key
-      value: start harvest stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].key
-      value: end harvest stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].key
-      value: start part stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].key
-      value: end part stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].key
-      value: start power stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].key
-      value: end power stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].dialogue.Array.data[0]
-      value: This
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].dialogue.Array.data[1]
-      value: is
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].dialogue.Array.data[2]
-      value: a test
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: objectivesOn
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: objectiveWindow
-      value: 
-      objectReference: {fileID: 326070618}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: objectiveCompletePrefab
-      value: 
-      objectReference: {fileID: 2273471419132843575, guid: 53f4928f807d9b64bbacc1c4655740f2,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
 --- !u!1 &1809846334
@@ -4020,7 +4026,7 @@ MonoBehaviour:
   cam1: {fileID: 970662340}
   moveSpeed: 20
   enableEdgePan: 0
-  buildingSelector: {fileID: 0}
+  buildingSelector: {fileID: 706139407}
 --- !u!1001 &4624800829874131964
 PrefabInstance:
   m_ObjectHideFlags: 0
