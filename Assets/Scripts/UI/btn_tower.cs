@@ -13,6 +13,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private Button _button;
     [SerializeField] private BuildingType towerType = BuildingType.None;
     [SerializeField] TextMeshProUGUI buildingDesc;
+    [SerializeField] TextMeshProUGUI buildingCost;
     [SerializeField, Tooltip("Building flavour text"), TextArea] string descText;
 
     //private WorldController WC;
@@ -35,48 +36,54 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         switch (gameObject.name)
         {
             case "btn_battery":
-                buildingDesc.text = "<b>Battery</b>\n" +
-                    "<line-height=125% size=60%>" + descText + "\n";
-                    //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<Battery>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
-                    //$"Running Cost: {build_prefab.GetComponentInChildren<Battery>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
-                    //"Effect: +10 max storage <sprite=\"all_icons\" index=0>";
+                buildingDesc.text = $"<b>Battery</b>\n" +
+                    "<line-height=80% size=60%>" + descText;
+                //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<Battery>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
+                //$"Running Cost: {build_prefab.GetComponentInChildren<Battery>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
+                //"Effect: +10 max storage <sprite=\"all_icons\" index=0>";
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<Battery>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_generator":
-                buildingDesc.text = "<b>Power Generator</b>\n" +
-                    "<line-height=125% size=60%>" + descText + "\n";
-                    //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<Generator>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
-                    //$"Running Cost: +{build_prefab.GetComponentInChildren<Generator>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
-                    //"Effect: +2 <sprite=\"all_icons\" index=0> /s";
+                buildingDesc.text = $"<b>Power Generator</b>\n" +
+                    "<line-height=80% size=60%>" + descText;
+                //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<Generator>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
+                //$"Running Cost: +{build_prefab.GetComponentInChildren<Generator>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
+                //"Effect: +2 <sprite=\"all_icons\" index=0> /s";
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<Generator>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_harvester":
-                buildingDesc.text = "<b>Elemental Harvester</b>\n" +
-                    "<line-height=125% size=60%>" + descText + "\n";
-                    //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<Harvester>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
-                    //$"Running Cost: {build_prefab.GetComponentInChildren<Harvester>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
-                    //"Effect: +5 <sprite=\"all_icons\" index=0>/<sprite=\"all_icons\" index=1>/<sprite=\"all_icons\" index=2>/<sprite=\"all_icons\" index=3> /s";
+                buildingDesc.text = $"<b>Elemental Harvester</b>\n" +
+                    "<line-height=80% size=60%>" + descText;
+                //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<Harvester>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
+                //$"Running Cost: {build_prefab.GetComponentInChildren<Harvester>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
+                //"Effect: +5 <sprite=\"all_icons\" index=0>/<sprite=\"all_icons\" index=1>/<sprite=\"all_icons\" index=2>/<sprite=\"all_icons\" index=3> /s";
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<Harvester>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_arc_defence":
-                buildingDesc.text = "<b>Arc Defence</b>\n" +
-                    "<line-height=125% size=60%>" + descText + "\n";
-                    //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<ArcDefence>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
-                    //$"Running Cost: {build_prefab.GetComponentInChildren<ArcDefence>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
-                    //"Effect: Damages fog\n" +
-                    //"Damage: 50 centre, 25 adjacent";
+                buildingDesc.text = $"<b>Arc Defence</b>\n" +
+                    "<line-height=80% size=60%>" + descText;
+                //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<ArcDefence>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
+                //$"Running Cost: {build_prefab.GetComponentInChildren<ArcDefence>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
+                //"Effect: Damages fog\n" +
+                //"Damage: 50 centre, 25 adjacent";
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<ArcDefence>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_repel_fan":
-                buildingDesc.text = "<b>Repel Fan</b>\n" +
-                    "<line-height=125% size=60%>" + descText + "\n";
-                    //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<RepelFan>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
-                    //$"Running Cost: {build_prefab.GetComponentInChildren<RepelFan>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
-                    //"Effect: Damages fog\n" +
-                    //"Damage: 50 centre, 25 adjacent";
+                buildingDesc.text = $"<b>Repel Fan</b>\n" +
+                    "<line-height=80% size=60%>" + descText;
+                //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<RepelFan>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
+                //$"Running Cost: {build_prefab.GetComponentInChildren<RepelFan>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
+                //"Effect: Damages fog\n" +
+                //"Damage: 50 centre, 25 adjacent";
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<RepelFan>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_relay":
-                buildingDesc.text = "<b>Power Relay</b>\n" +
-                    "<line-height=125% size=60%>" + descText + "\n";
-                    //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<Relay>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
-                    //$"Running Cost: {build_prefab.GetComponentInChildren<Relay>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
-                    //"Effect: Extends range from Hub";
+                buildingDesc.text = $"<b>Power Relay</b>\n" +
+                    "<line-height=80% size=60%>" + descText;
+                //$"<line-height=100%>Build Cost: {build_prefab.GetComponentInChildren<Relay>().MineralCost} <sprite=\"all_icons\" index=3>\n" +
+                //$"Running Cost: {build_prefab.GetComponentInChildren<Relay>().Upkeep} <sprite=\"all_icons\" index=0> /s\n" +
+                //"Effect: Extends range from Hub";
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<Relay>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_remove":
                 buildingDesc.text = "<b>Destroy Building</b>\n";
@@ -90,6 +97,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerExit(PointerEventData eventData)
     {
         buildingDesc.text = "";
+        buildingCost.text = "";
     }
 
     private void Awake()

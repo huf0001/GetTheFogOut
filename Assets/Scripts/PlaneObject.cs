@@ -12,17 +12,17 @@ public class PlaneObject : Entity
         buildingTooltip = GameObject.Find("Canvas").GetComponentInChildren<ToolTip>(true);
     }
 
-    public void OnMouseEnter()
-    {
-        if (!WorldController.Instance.InBuildMode && !EventSystem.current.IsPointerOverGameObject())
-        {
-            buildingTooltip.gameObject.SetActive(true);
-            buildingTooltip.UpdateText(this);
-        }
-    }
+    //public void OnMouseEnter()
+    //{
+    //    if (!WorldController.Instance.InBuildMode && !EventSystem.current.IsPointerOverGameObject())
+    //    {
+    //        buildingTooltip.gameObject.SetActive(true);
+    //        buildingTooltip.UpdateText(this);
+    //    }
+    //}
 
-    public void OnMouseExit()
-    {
-        buildingTooltip.gameObject.SetActive(false);
-    }
+    //public void OnMouseExit()
+    //{
+    //    buildingTooltip.gameObject.SetActive(false);
+    //}
 }
