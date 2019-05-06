@@ -199,13 +199,13 @@ public class ObjectiveController : DialogueBoxController
         if (!objWindowVisibilty)
         {
             objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-5, 0.3f).SetEase(Ease.OutCubic);
-            objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(true);
+            //objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(true);
             objWindowVisibilty = true;
         }
         else
         {
             objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(227, 0.3f).SetEase(Ease.InCubic);
-            objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(false);
+            //objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(false);
             objWindowVisibilty = false;
         }
     }
