@@ -14,7 +14,9 @@ public abstract class Building : PlaneObject
     [SerializeField] protected bool placed = false;
     [SerializeField] protected BuildingType buildingType;
     [SerializeField] protected int mineralCost, powerCost, fuelCost, organicCost;
-    [SerializeField] protected AudioSource audioSource;
+    [SerializeField] protected AudioSource audioSpawn;
+    [SerializeField] protected AudioSource audioDamage;
+    [SerializeField] protected AudioSource audioDestroy;
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
@@ -49,7 +51,9 @@ public abstract class Building : PlaneObject
     {
         //MakeTilesVisible();
         FindToolTip();
-        audioSource = GetComponent<AudioSource>();
+        audioSpawn = GetComponent<AudioSource>();
+        audioDamage = GetComponent<AudioSource>();
+        audioDestroy = GetComponent<AudioSource>();
         resourceController = ResourceController.Instance;
         //if (placed)
         //{
@@ -89,7 +93,7 @@ public abstract class Building : PlaneObject
 
         resourceController.AddBuilding(this);
         placed = true;
-        //audioSource.Play();
+        //audioSpawn.Play();
         //GetComponent<Renderer>().material.shader = buildingShader;
     }
 
@@ -243,6 +247,7 @@ public abstract class Building : PlaneObject
 
         //Debug.Log("Should be removed from ResourceController's list of my building type");
 
+        audioDestroy.Play();
         Destroy(this.transform.parent.gameObject);
         Destroy(this);
     }
@@ -265,6 +270,7 @@ public abstract class Building : PlaneObject
 
     public IEnumerator DamageBuilding(float damageVal)
     {
+        audioDamage.Play();
         Health -= damageVal;
         float buildHealth = Health;
         TakingDamage = true;

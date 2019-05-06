@@ -131,8 +131,8 @@ public class TowerManager : MonoBehaviour
 
     public void CancelBuild()
     {
-        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) && buildingType != TutorialController.Instance.CurrentlyBuilding)
-        {
+        //if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) // && buildingType != TutorialController.Instance.CurrentlyBuilding <--- this breaks closing the building menu when not in the tutorial
+        //{
             selectedTower = null;
             currentTile = null;
             Destroy(hologramTower);
@@ -142,7 +142,7 @@ public class TowerManager : MonoBehaviour
             }
             InbuildMode = false;
             buildingType = BuildingType.None;
-        }
+        //}
         //selectedTower = null;
         //InbuildMode = false;
         //buildingType = BuildingType.None;

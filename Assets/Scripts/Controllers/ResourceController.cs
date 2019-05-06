@@ -43,6 +43,11 @@ public class ResourceController : MonoBehaviour
     public List<Relay> Relays { get => relays; set => relays = value; }
     public List<Building> Buildings { get => buildings; set => buildings = value; }
 
+    [SerializeField] protected AudioSource audioMaxPower;
+    [SerializeField] protected AudioSource audioMaxMineral;
+    [SerializeField] protected AudioSource audioOverload;
+    private bool maxPowPlayed = false, maxMinPlayed = false, overloadPlayed = false;
+
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
 
     private void Awake()
@@ -211,6 +216,18 @@ public class ResourceController : MonoBehaviour
         storedOrganic += organicChange;
         StoredMineral += mineralChange;
 
+        if (powerChange < 0)
+        {
+            if (!overloadPlayed)
+            {
+                audioOverload.Play();
+                overloadPlayed = true;
+            }
+        }
+        else
+        {
+            overloadPlayed = false;
+        }
         CheckLimits();
     }
 
@@ -302,10 +319,16 @@ public class ResourceController : MonoBehaviour
         {
             storedPower = maxPower;
             powerFull = true;
+            if (!maxPowPlayed)
+            {
+                audioMaxPower.Play();
+                maxPowPlayed = true;
+            }
         }
         else
         {
             powerFull = false;
+            maxPowPlayed = false;
         }
 
         if (storedFuel >= maxFuel)
@@ -322,10 +345,16 @@ public class ResourceController : MonoBehaviour
         {
             storedMineral = maxMineral;
             mineralFull = true;
+            if (!maxMinPlayed)
+            {
+                audioMaxMineral.Play();
+                maxMinPlayed = true;
+            }
         }
         else
         {
             mineralFull = false;
+            maxMinPlayed = false;
         }
 
         if (storedOrganic >= maxOrganic)

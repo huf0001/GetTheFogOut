@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 160027157380340929}
   - component: {fileID: 668649802407659463}
   m_Layer: 0
-  m_Name: Relay
+  m_Name: Relay (Old)
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,6 +106,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdab7d0ec7e790e4193934deeedbe67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  location:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
   health: 35
   visibilityRange: 7
   upkeep: 0
@@ -120,6 +130,7 @@ MonoBehaviour:
   audioSource: {fileID: 160027157380340929}
   powerRange: 5
   suppliedBuildings: []
+  showRange: 0
 --- !u!82 &160027157380340929
 AudioSource:
   m_ObjectHideFlags: 0
@@ -130,7 +141,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f6cf88f896cf0d34b8cb7c76d3f5ef36, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 69e39830e6c6380468422bdef4ee3a7f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

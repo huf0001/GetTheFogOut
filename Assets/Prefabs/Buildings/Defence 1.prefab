@@ -31,6 +31,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23687b0cb6f0c07448f21443a29c63ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  location:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
   health: 50
   visibilityRange: 2
   upkeep: -5
@@ -42,7 +52,9 @@ MonoBehaviour:
   powerCost: 0
   fuelCost: 0
   organicCost: 0
-  audioSource: {fileID: 3047970280466725029}
+  audioSpawn: {fileID: 0}
+  audioDamage: {fileID: 0}
+  audioDestroy: {fileID: 0}
   directDamage: 50
   aoeDamage: 25
   rateOfFire: 1
@@ -150,6 +162,11 @@ PrefabInstance:
       propertyPath: mineralCost
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 7069307296970788146, guid: 3a9b3ad17f27f634990521c92e105de0,
+        type: 3}
+      propertyPath: audioSpawn
+      value: 
+      objectReference: {fileID: 3047970280466725029}
     m_RemovedComponents:
     - {fileID: 5749660945512826857, guid: 3a9b3ad17f27f634990521c92e105de0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3a9b3ad17f27f634990521c92e105de0, type: 3}
