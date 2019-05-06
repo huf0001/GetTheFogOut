@@ -14,19 +14,19 @@ public enum FogFillType
     Fluid
 }
 
+public enum StartConfiguration
+{
+    OneSide,
+    Corners,
+    FourCompassPoints,
+    EightCompassPoints,
+    FourSides,
+    SurroundingHub,
+    FullBoard
+}
+
 public class Fog : MonoBehaviour
 {
-    private enum StartConfiguration
-    {
-        OneSide,
-        Corners,
-        FourCompassPoints,
-        EightCompassPoints,
-        FourSides,
-        SurroundingHub,
-        FullBoard
-    }
-
     //Serialized Fields
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
@@ -75,10 +75,15 @@ public class Fog : MonoBehaviour
         }
     }
 
-    //Spawns the starting fog on the board
     public void SpawnStartingFog()
     {
-        if (configuration == StartConfiguration.OneSide)
+        SpawnStartingFog(configuration);
+    }
+
+    //Spawns the starting fog on the board
+    public void SpawnStartingFog(StartConfiguration startConfiguration)
+    {
+        if (startConfiguration == StartConfiguration.OneSide)
         {
             //Spawns fog on one side of the board.
             for (int i = 0; i < xMax; i++)
@@ -86,7 +91,7 @@ public class Fog : MonoBehaviour
                 SpawnFogUnit(i, zMax - 1);
             }
         }
-        else if (configuration == StartConfiguration.Corners)
+        else if (startConfiguration == StartConfiguration.Corners)
         {
             //Corner spaces
             SpawnFogUnit(0, 0);
@@ -94,7 +99,7 @@ public class Fog : MonoBehaviour
             SpawnFogUnit(xMax - 1, 0);
             SpawnFogUnit(xMax - 1, zMax - 1);
         }
-        else if (configuration == StartConfiguration.FourCompassPoints)
+        else if (startConfiguration == StartConfiguration.FourCompassPoints)
         {
             //Four compass points
             SpawnFogUnit(Mathf.RoundToInt(xMax / 2), 0);
@@ -102,7 +107,7 @@ public class Fog : MonoBehaviour
             SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2));
             SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2));
         }
-        else if (configuration == StartConfiguration.EightCompassPoints)
+        else if (startConfiguration == StartConfiguration.EightCompassPoints)
         {
             //Corner spaces
             SpawnFogUnit(0, 0);
@@ -116,7 +121,7 @@ public class Fog : MonoBehaviour
             SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2));
             SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2));
         }
-        else if (configuration == StartConfiguration.FourSides)
+        else if (startConfiguration == StartConfiguration.FourSides)
         {
             //Each side
             for (int i = 1; i < xMax - 1; i++)
@@ -137,7 +142,7 @@ public class Fog : MonoBehaviour
             SpawnFogUnit(xMax - 1, 0);
             SpawnFogUnit(xMax - 1, zMax - 1);
         }
-        else if (configuration == StartConfiguration.SurroundingHub)
+        else if (startConfiguration == StartConfiguration.SurroundingHub)
         {
             Vector3 hubPosition = GameObject.Find("Hub").transform.position;
 
@@ -154,7 +159,7 @@ public class Fog : MonoBehaviour
                 }
             }
         }
-        else if (configuration == StartConfiguration.FullBoard)
+        else if (startConfiguration == StartConfiguration.FullBoard)
         {
             //Every space on the board
             for (int i = 0; i < xMax; i++)
@@ -305,34 +310,25 @@ public class Fog : MonoBehaviour
         {
             tick -= 1;
 
-            if (damageOn)
+            if (damageOn && fogUnitsInPlay.Count > 0)
             {
-                if (fogUnitsInPlay.Count > 0)
+                foreach (FogUnit f in fogUnitsInPlay)
                 {
-                    foreach (FogUnit f in fogUnitsInPlay)
-                    {
-                        f.DamageBuilding();
-                    }
+                    f.DamageBuilding();
                 }
             }
 
-            if (fogUnitsInPool.Count > 0)
-            { 
-                if (configuration != StartConfiguration.FullBoard)
-                {
-                    ExpandFog();
-                }
-            }
-            else
+            if (fogUnitsInPool.Count > 0 && configuration != StartConfiguration.FullBoard)
             {
-                if (fogUnitsInPlay.Count < xMax * zMax)
-                {
-                    Debug.Log("Ran out of fog units. If the board isn't full, there must be some overlapping.");
-                }
-                else if (fogUnitsInPlay.Count > xMax * zMax)
-                {
-                    Debug.Log("More fog units than board tiles. There must be some overlapping.");
-                }
+                ExpandFog();
+            }
+            else if (fogUnitsInPlay.Count < xMax * zMax)
+            {
+                Debug.Log("Ran out of fog units. If the board isn't full, there must be some overlapping.");
+            }
+            else if (fogUnitsInPlay.Count > xMax * zMax)
+            {
+                Debug.Log("More fog units than board tiles. There must be some overlapping.");
             }
         }
 
