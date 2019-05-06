@@ -23,6 +23,7 @@ public class UIController : MonoBehaviour
     [SerializeField] Image powerImg;
 
     [SerializeField] Sprite[] powerLevelSprites;
+    [SerializeField] TextMeshProUGUI objWindowText;
 
     ResourceController resourceController = null;
 
@@ -137,6 +138,10 @@ public class UIController : MonoBehaviour
             {
                 powerImg.sprite = powerLevelSprites[0];
             }
+
+            objWindowText.text = "<b>Repair the Hull</b>\n\n" +
+                "<size=75%> Gather enough mineral resources to repair your ship's hull.\n\n" +
+                $"Target: {resourceController.StoredMineral} / 500 <sprite=\"all_icons\" index=3>";
 
             mineralText.text = resourceController.StoredMineral + " units";
 
