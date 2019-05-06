@@ -585,103 +585,8 @@ public class TutorialController : DialogueBoxController
             currentlyBuilding = BuildingType.RepelFan;
             ResetSubStage();
         }
-
-
-        //else if (subStage == 5)
-        //{
-        //    if (!instructionsSent)
-        //    {
-        //        //Display UI element prompting player to select the harvester
-        //        currentlyLerping = ButtonType.Harvester;
-        //        btnCurrent = btnBuildHarvester;
-        //        btnCurrent.ReportClick = true;
-
-        //        SendDialogue("build harvester harvester icon", 0);
-        //    }
-        //    else if (dialogueRead)
-        //    {
-        //        DismissDialogue();
-        //    }
-        //    else if (buttonClicked)
-        //    {
-        //        SkipTutorialAhead(7);
-        //    }
-        //}
-        //else if (subStage == 6 && buttonClicked)
-        //{
-        //    DismissButton();
-        //}
-        //else if (subStage == 7)
-        //{
-        //    if (BuiltCurrentlyBuilding())
-        //    {
-        //        //Turn off UI element prompting player to build a harvester on the resource node
-        //        tutorialStage = TutorialStage.BuildGenerator;
-        //        currentlyBuilding = BuildingType.Generator;
-        //        //tutorialStage = TutorialStage.Finished;
-        //        //currentlyBuilding = BuildingType.None;
-        //        ResetSubStage();
-        //        //DeactivateTarget();
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("You built a thing. You built the wrong thing. Something is broken in the scene or TutorialController.");
-        //    }
-        //}
     }
-
-    //private void BuildArcDefence()
-    //{
-    //    if (subStage == 1)
-    //    {
-    //        SendDialogue("build arc defence", 1);
-    //    }
-    //    else if (subStage == 2)
-    //    {
-    //        //Display UI element prompting player to click the building selector button
-    //        btnCurrent = btnBuildSelect;
-    //        btnCurrent.ReportClick = true;
-    //        currentlyLerping = ButtonType.BuildSelect;
-    //    }
-    //    else if (subStage == 3)
-    //    {
-    //        //Reset UI lerping
-    //        btnCurrent.ReportClick = false;
-
-    //        //Display UI element prompting player to click the building selector button
-    //        btnCurrent = btnBuildArcDefence;
-    //        btnCurrent.ReportClick = true;
-    //        currentlyLerping = ButtonType.ArcDefence;
-    //    }
-    //    else if (subStage == 4)
-    //    {
-    //        //Turn off UI lerping
-    //        btnCurrent.ReportClick = false;
-    //        currentlyLerping = ButtonType.None;
-
-    //        //Get tile
-    //        GetLocationOf(arcDefenceLandmark);
-
-    //        //Display UI element prompting player to build a cluster fan on this tile
-    //        ActivateTarget(arcDefenceLandmark);
-
-    //        //Progress to next SubStage
-    //        IncrementSubStage();
-    //    }
-    //    else if (subStage == 5)
-    //    {
-    //        if (BuiltCurrentlyBuilding())
-    //        {
-    //            tutorialStage = TutorialStage.BuildRepelFan;
-    //            currentlyBuilding = BuildingType.RepelFan;
-    //            ResetSubStage();
-    //            DeactivateTarget();
-    //        }
-    //    }
-    //}
-
-    //AI tells player to build a repel fan and explains how they work
-
+       
     // AI tells player to build a repel fan and explains how they work ...
     private void BuildRepelFan()
     {
@@ -735,67 +640,25 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 4 && BuiltCurrentlyBuilding())
         {
+            if (!instructionsSent)
+            {
+                DeactivateTarget();
+                SendDialogue("gloat", 5);
+            }
+            else if (dialogueRead)
+            {
+                DismissDialogue();
+            }
+        }
+        else if (subStage == 5)
+        {
             tutorialStage = TutorialStage.Finished;
             currentlyBuilding = BuildingType.None;
             ResetSubStage();
             ObjectiveController.Instance.IncrementStage();
+            GetComponent<Fog>().enabled = true;
         }
     }
-
-    //private void BuildRepelFan()
-    //{
-    //    if (subStage == 1)
-    //    {
-    //        SendDialogue("build repel fan", 5);
-    //    }
-    //    else if (subStage == 2)
-    //    {
-    //        //Display UI element prompting player to click the building selector button
-    //        btnCurrent = btnBuildSelect;
-    //        btnCurrent.ReportClick = true;
-    //        currentlyLerping = ButtonType.BuildSelect;
-    //    }
-    //    else if (subStage == 3)
-    //    {
-    //        //Reset UI lerping
-    //        btnCurrent.ReportClick = false;
-
-    //        //Display UI element prompting player to click the building selector button
-    //        btnCurrent = btnBuildRepelFan;
-    //        btnCurrent.ReportClick = true;
-    //        currentlyLerping = ButtonType.RepelFan;
-    //    }
-    //    else if (subStage == 4)
-    //    {
-    //        //Turn off UI lerping
-    //        btnCurrent.ReportClick = false;
-    //        currentlyLerping = ButtonType.None;
-
-    //        //Get tile
-    //        GetLocationOf(repelFanLandmark);
-
-    //        //Display UI element prompting player to build a cluster fan on this tile
-    //        ActivateTarget(repelFanLandmark);
-
-    //        //Progress to next SubStage
-    //        IncrementSubStage();
-    //    }
-    //    else if (subStage == 5)
-    //    {
-    //        if (BuiltCurrentlyBuilding())
-    //        {
-    //            DeactivateTarget();
-    //            SendDialogue("gloat", 5);
-    //        }
-    //    }
-    //    else if (subStage == 6)
-    //    {
-    //        tutorialStage = TutorialStage.Finished;
-    //        currentlyBuilding = BuildingType.None;
-    //        ResetSubStage();
-    //        ObjectiveController.Instance.IncrementStage();
-    //    }
-    //}
 
     //Utility Methods------------------------------------------------------------------------------
 
