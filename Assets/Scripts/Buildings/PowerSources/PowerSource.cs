@@ -9,9 +9,6 @@ public abstract class PowerSource : Building
     [SerializeField] protected List<Building> suppliedBuildings = new List<Building>();
     public List<Building> SuppliedBuildings { get => suppliedBuildings; set => suppliedBuildings = value; }
 
-    public bool showRange;
-    private List<TileData> powerTiles = new List<TileData>();
-
     protected override void Awake()
     {
         base.Awake();
