@@ -164,8 +164,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8293534179026107392}
   - component: {fileID: 1607047198970007840}
-  - component: {fileID: 597317116215502299}
   - component: {fileID: 6841765573628459828}
+  - component: {fileID: 597317116215502299}
   - component: {fileID: 5390339707230004132}
   m_Layer: 0
   m_Name: Generator
@@ -213,6 +213,40 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.18, y: 0.07, z: 0.14}
   m_Center: {x: 0, y: 0.04, z: 0}
+--- !u!114 &6841765573628459828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652274519361984196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 028881307e3526e49a4b62484d4f7f1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
+  health: 50
+  visibilityRange: 3
+  upkeep: 2
+  powerSource: {fileID: 0}
+  powered: 0
+  placed: 0
+  buildingType: 3
+  mineralCost: 50
+  powerCost: 0
+  fuelCost: 0
+  organicCost: 0
+  audioSource: {fileID: 597317116215502299}
 --- !u!82 &597317116215502299
 AudioSource:
   m_ObjectHideFlags: 0
@@ -223,7 +257,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f6cf88f896cf0d34b8cb7c76d3f5ef36, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 69e39830e6c6380468422bdef4ee3a7f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -309,30 +343,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6841765573628459828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652274519361984196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 028881307e3526e49a4b62484d4f7f1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 50
-  visibilityRange: 3
-  upkeep: 2
-  powerSource: {fileID: 0}
-  powered: 0
-  placed: 0
-  buildingType: 3
-  mineralCost: 50
-  powerCost: 0
-  fuelCost: 0
-  organicCost: 0
-  audioSource: {fileID: 0}
 --- !u!95 &5390339707230004132
 Animator:
   serializedVersion: 3

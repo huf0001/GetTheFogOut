@@ -105,6 +105,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a14715ed09368478781018b9d1f10e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  location:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
   health: 50
   visibilityRange: 5
   upkeep: -5
@@ -116,7 +126,7 @@ MonoBehaviour:
   powerCost: 0
   fuelCost: 0
   organicCost: 0
-  audioSource: {fileID: 6785053910657603206}
+  audioSource: {fileID: 0}
   directDamage: 50
   aoeDamage: 25
   rateOfFire: 0.25
@@ -131,7 +141,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f6cf88f896cf0d34b8cb7c76d3f5ef36, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 69e39830e6c6380468422bdef4ee3a7f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -147,7 +157,7 @@ AudioSource:
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
