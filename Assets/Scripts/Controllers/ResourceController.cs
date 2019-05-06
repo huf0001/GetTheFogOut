@@ -45,7 +45,8 @@ public class ResourceController : MonoBehaviour
 
     [SerializeField] protected AudioSource audioMaxPower;
     [SerializeField] protected AudioSource audioMaxMineral;
-    private bool maxPowPlayed = false, maxMinPlayed = false;
+    [SerializeField] protected AudioSource audioOverload;
+    private bool maxPowPlayed = false, maxMinPlayed = false, overloadPlayed = false;
 
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
 
@@ -215,6 +216,18 @@ public class ResourceController : MonoBehaviour
         storedOrganic += organicChange;
         StoredMineral += mineralChange;
 
+        if (powerChange < 0)
+        {
+            if (!overloadPlayed)
+            {
+                audioOverload.Play();
+                overloadPlayed = true;
+            }
+        }
+        else
+        {
+            overloadPlayed = false;
+        }
         CheckLimits();
     }
 
