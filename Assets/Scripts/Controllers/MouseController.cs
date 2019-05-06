@@ -152,22 +152,29 @@ public class MouseController : MonoBehaviour
             //Check if a valid tile was clicked
             if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && WorldController.Instance.TileExistsAt(hit.point))
             {
-                tile = WorldController.Instance.GetTileAt(hit.point);
-
-                if (tile.PowerSource != null && TutorialController.Instance.TileAllowed(tile))
+                if (UIController.instance.buildingSelector.Visible)
                 {
-                    if (!UIController.instance.buildingSelector.Visible)
-                    {
-                        UIController.instance.buildingSelector.ToggleVisibility();
-                    }
+                    towerManager.CancelBuild();
+                }
+                else
+                {
+                    tile = WorldController.Instance.GetTileAt(hit.point);
 
-                    if (reportTutorialClick)
+                    if (tile.PowerSource != null && TutorialController.Instance.TileAllowed(tile))
                     {
-                        TutorialController.Instance.RegisterButtonClicked();
-                    }
+                        if (!UIController.instance.buildingSelector.Visible)
+                        {
+                            UIController.instance.buildingSelector.ToggleVisibility();
+                        }
 
-                    UIController.instance.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(Screen.width / 13, 0);
-                    towerManager.CurrentTile = tile;
+                        if (reportTutorialClick)
+                        {
+                            TutorialController.Instance.RegisterButtonClicked();
+                        }
+
+                        UIController.instance.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(Screen.width / 13, 0);
+                        towerManager.CurrentTile = tile;
+                    }
                 }
             }
         }
