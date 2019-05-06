@@ -205,7 +205,13 @@ public class TutorialController : DialogueBoxController
     private void ShipPartsCrashing()
     {
         //Run animation / camera movement for showing the different ship parts crashing
+        // change stage to get top down view
+        tutorialStage = TutorialStage.ZoomBackToShip;
+    }
 
+    private void DroneLeavesShipToGetTopDownView()
+    {
+        //Run animation / camera movement for watching a drone leavig the ship
         tutorialStage = TutorialStage.ZoomBackToShip;
     }
 
