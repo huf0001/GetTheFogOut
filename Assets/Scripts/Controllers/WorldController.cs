@@ -36,9 +36,8 @@ public class WorldController : MonoBehaviour
     [SerializeField]
     private GameObject ground;
 
-    [SerializeField] GameObject tilePrefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
+    [SerializeField] GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
 
-    [SerializeField] public GameObject planeGridprefab;
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private ShipComponentState[] shipComponents;
@@ -570,6 +569,7 @@ public class WorldController : MonoBehaviour
 
     public void showActiveTiles()
     {
+        GameObject grids = GameObject.Find("Grids");
         if (index != activeTiles.Count)
         {
             hideActiveTiles();
@@ -580,6 +580,7 @@ public class WorldController : MonoBehaviour
                 pos.y = 0.033f;
                 pos.z += tile.Z;
                 tile.plane = Instantiate(WorldController.Instance.planeGridprefab, pos, Quaternion.identity);
+                tile.plane.transform.SetParent(grids.transform);
             }
             index = activeTiles.Count;
         }
