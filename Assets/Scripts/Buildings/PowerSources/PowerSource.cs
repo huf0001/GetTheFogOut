@@ -26,7 +26,7 @@ public abstract class PowerSource : Building
     protected override void Update()
     {
         base.Update();
-        ActivateTiles();
+        //ActivateTiles();
     }
 
     public override void Place()
@@ -137,7 +137,6 @@ public abstract class PowerSource : Building
         foreach (TileData tile in tiles)
         {
             tile.PowerUp(this as PowerSource);
-            tile.Visited = false;
             if (!WorldController.Instance.ActiveTiles.Contains(tile))
             {
                 WorldController.Instance.ActiveTiles.Add(tile);
@@ -153,8 +152,10 @@ public abstract class PowerSource : Building
         foreach (TileData tile in tiles)
         {
             tile.PowerDown(this as PowerSource);
-            tile.Visited = false;
-            WorldController.Instance.ActiveTiles.Remove(tile);
+            if (tile.PowerSource == null)
+            {
+                WorldController.Instance.ActiveTiles.Remove(tile);
+            }
         }
     }
 

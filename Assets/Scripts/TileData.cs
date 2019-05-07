@@ -71,7 +71,10 @@ public class TileData
     public void PowerUp(PowerSource power)
     {
         //this.gameObject.GetComponent<Renderer>().material = onMaterial;
-        powerSources.Add(power);
+        if (!powerSources.Contains(power))
+        {
+            powerSources.Add(power);
+        }
 
         if (building != null)
         {
@@ -84,7 +87,16 @@ public class TileData
 
     public void PowerDown(PowerSource power)
     {
-        powerSources.Remove(power);
+        if (powerSources.Contains(power))
+        {
+            powerSources.Remove(power);
+        }
+
+        if (building != null)
+        {
+             building.SetPowerSource();
+        }
+
         //if (powerSources.Count == 0)
         //{
         //    //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
