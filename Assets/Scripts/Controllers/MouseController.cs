@@ -289,11 +289,11 @@ public class MouseController : MonoBehaviour
         //floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
         if (cost < 0)
         {
-            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> <color=\"red\">{cost}", building);
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=2> <color=\"red\">{cost}", building);
         }
         else if (cost > 0)
         {
-            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> <color=#009900>+{cost}", building);
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=2> <color=#009900>+{cost}", building);
         }
         yield return new WaitForSeconds(0.2f);
     }

@@ -141,7 +141,7 @@ public class UIController : MonoBehaviour
 
             objWindowText.text = "<b>Repair the Hull</b>\n\n" +
                 "<size=75%> Gather enough mineral resources to repair your ship's hull.\n\n" +
-                $"Target: {resourceController.StoredMineral} / 500 <sprite=\"all_icons\" index=3>";
+                $"Target: {resourceController.StoredMineral} / 500 <sprite=\"all_icons\" index=2>";
 
             mineralText.text = resourceController.StoredMineral + " units";
 
