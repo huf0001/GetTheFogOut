@@ -28,6 +28,10 @@ public class WarningScript : MonoBehaviour
 
     int pChangeValue = 0;
 
+    public string Normal { get => NORMAL; }
+    public string Warning { get => WARNING; }
+    public string Danger { get => DANGER; }
+
     [SerializeField] GameObject warningBox;
     [SerializeField] GameObject popupMessage;
 
@@ -148,7 +152,7 @@ public class WarningScript : MonoBehaviour
         }
     }
 
-    private IEnumerator ShowMessage(string txt)
+    public IEnumerator ShowMessage(string txt)
     {
         GameObject message = Instantiate(popupMessage, GameObject.Find("Warnings").transform);
         if (existingMessages.Count != 0)

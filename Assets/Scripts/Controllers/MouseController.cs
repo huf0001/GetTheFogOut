@@ -11,6 +11,7 @@ public class MouseController : MonoBehaviour
     // Serialized fields
     [SerializeField] private int generatorCount = 0;
     [SerializeField] private int generatorInterval = 5;
+    [SerializeField] private WarningScript warningScript;
 
     // Non-serialized fields
     private Hub hub = null;
@@ -272,6 +273,7 @@ public class MouseController : MonoBehaviour
             }
             else
             {
+                StartCoroutine(warningScript.ShowMessage(warningScript.Warning + "Not enough minerals to build!"));
                 Debug.Log("Can't build, do not have the required resources.");
             }
         }
