@@ -184,17 +184,20 @@ public class MouseController : MonoBehaviour
     // Returns the building that should be destroyed.
     public Building ReturnCost(TileData tile)
     {
-        Building building = tile.Building;
-        if (building.BuildingType != BuildingType.Hub)
+        if (tile.Building != null)
         {
-            // add required resources
-            resourceController.StoredPower += building.PowerCost;
-            resourceController.StoredMineral += building.MineralCost;
-            resourceController.StoredOrganic += building.OrganicCost;
-            resourceController.StoredFuel += building.FuelCost;
+            Building building = tile.Building;
+            if (building.BuildingType != BuildingType.Hub)
+            {
+                // add required resources
+                resourceController.StoredPower += building.PowerCost;
+                resourceController.StoredMineral += building.MineralCost;
+                resourceController.StoredOrganic += building.OrganicCost;
+                resourceController.StoredFuel += building.FuelCost;
 
-            StartCoroutine(FloatText(building.transform, building.MineralCost));
-            return building;
+                StartCoroutine(FloatText(building.transform, building.MineralCost));
+                return building;
+            }
         }
         return null;
     }
@@ -202,7 +205,11 @@ public class MouseController : MonoBehaviour
     // Remove the passed building, should be called with the building returned from ReturnCost()
     public void RemoveBulding(Building building)
     {
-        if (building.BuildingType != BuildingType.Hub)
+        if (building == null)
+        {
+            return;
+        }
+        else if (building.BuildingType != BuildingType.Hub)
         {
             //PointAtObj = hit.transform.gameObject;
             building.DismantleBuilding();
