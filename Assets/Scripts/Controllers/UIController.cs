@@ -139,19 +139,20 @@ public class UIController : MonoBehaviour
                 powerImg.sprite = powerLevelSprites[0];
             }
 
-            objWindowText.text = "<b>Repair the Hull</b>\n\n" +
-                "<size=75%> Gather enough mineral resources to repair your ship's hull.\n\n" +
-                $"Target: {resourceController.StoredMineral} / 500 <sprite=\"all_icons\" index=2>";
-
-            mineralText.text = resourceController.StoredMineral + " units";
-
             // old code that probably should be adapted to tween mineral stock number
-            //if (hub.StoredMineral != mineral)
-            //{
-            //    mineral = hub.StoredMineral;
-            //    mineralVal = mineralSlider.value;
-            //    mineralTime = 0;
-            //}
+            if (resourceController.StoredMineral != mineral)
+            {
+                mineralVal = mineral;
+                mineral = resourceController.StoredMineral;
+                mineralTime = 0;
+            }
+
+            objWindowText.text = "<b>Repair the Hull</b>\n\n" +
+                "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
+                $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / 500 <size=90%><sprite=\"all_icons\" index=2>";
+
+            mineralText.text = Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime)) + " units";
+
         }
     }
 }
