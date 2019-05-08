@@ -205,6 +205,7 @@ public class WorldController : MonoBehaviour
                 pos = new Vector3(tile.X, 0, tile.Z);
                 GameObject tileObject = Instantiate(tilePrefab);
                 tileObject.transform.position = new Vector3(tile.X, 0.1f, tile.Z);
+                tileObject.transform.SetParent(ground.transform);
 
                 //set to true will render the tile; set to false, and it won't
                 //tileGO.GetComponent<MeshRenderer>().enabled = true;

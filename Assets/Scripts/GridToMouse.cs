@@ -14,7 +14,7 @@ public class GridToMouse : MonoBehaviour
 
     void visibleGrid()
     {
-         Collider[] hitColliders = Physics.OverlapSphere(Camera.main.ScreenToWorldPoint(Input.mousePosition), radius);
+        Collider[] hitColliders = Physics.OverlapSphere(Camera.main.ScreenToWorldPoint(Input.mousePosition), radius);
         foreach(Collider hit in hitColliders)
         {
             gameObject.GetComponent<MeshRenderer>().enabled = true;
