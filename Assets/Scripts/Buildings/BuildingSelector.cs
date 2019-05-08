@@ -11,7 +11,7 @@ public class BuildingSelector : MonoBehaviour
 
     public bool Visible { get => visible; set => visible = value; }
 
-    public void ToggleVisibility(TileData tile = null)
+    public void ToggleVisibility()
     {
         if (gameObject.activeSelf)
         {
@@ -25,47 +25,9 @@ public class BuildingSelector : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            CheckTile(tile);
-        }
 
         gameObject.SetActive(!gameObject.activeSelf);
         visible = !visible;
         //buildingDesc.gameObject.SetActive(!buildingDesc.gameObject.activeSelf);
-    }
-
-    public void CheckTile(TileData tile)
-    {
-        Button[] buttons = GetComponentsInChildren<Button>();
-
-        if (tile.Resource != null)
-        {
-            foreach (Button b in buttons)
-            {
-                if (b.gameObject.name != "btn_harvester")
-                {
-                    b.interactable = false;
-                }
-                else
-                {
-                    b.interactable = true;
-                }
-            }
-        }
-        else
-        {
-            foreach (Button b in buttons)
-            {
-                if (b.gameObject.name == "btn_harvester")
-                {
-                    b.interactable = false;
-                }
-                else
-                {
-                    b.interactable = true;
-                }
-            }
-        }
     }
 }

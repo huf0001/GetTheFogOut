@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [Serializable]
 public class ShipComponentState
@@ -531,6 +532,42 @@ public class WorldController : MonoBehaviour
         }
 
         return tiles[x, y];
+    }
+
+    public void CheckTileContents(TileData tile)
+    {
+        Button[] buttons = uiController.buildingSelector.GetComponentsInChildren<Button>();
+
+        if (tile.Resource != null)
+        {
+            foreach (Button b in buttons)
+            {
+                if (b.gameObject.name != "btn_harvester" && b.gameObject.name != "btn_remove")
+                {
+                    b.interactable = false;
+                }
+                else
+                {
+                    b.interactable = true;
+                }
+            }
+            uiController.buildingSelector.ToggleVisibility();
+        }
+        else
+        {
+            foreach (Button b in buttons)
+            {
+                if (b.gameObject.name == "btn_harvester")
+                {
+                    b.interactable = false;
+                }
+                else
+                {
+                    b.interactable = true;
+                }
+            }
+            uiController.buildingSelector.ToggleVisibility();
+        }
     }
 
     public ShipComponentState GetShipComponent(ShipComponentsEnum c)

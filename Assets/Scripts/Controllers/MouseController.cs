@@ -206,7 +206,7 @@ public class MouseController : MonoBehaviour
                     {
                         if (!UIController.instance.buildingSelector.Visible)
                         {
-                            UIController.instance.buildingSelector.ToggleVisibility(tile);
+                            WorldController.Instance.CheckTileContents(tile);
                         }
 
                         if (reportTutorialClick)
