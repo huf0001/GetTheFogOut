@@ -360,6 +360,11 @@ public class WorldController : MonoBehaviour
             index = 0;
         }
 
+        if (Input.GetButtonDown("Xbox_A") && cameraController.buildingSelector.activeSelf)
+        {
+            cameraController.ToggleCameraMovement();
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
         {
             Destroy(PlaneSpawn);

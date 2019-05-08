@@ -62,10 +62,10 @@ public class UIController : MonoBehaviour
 
         powerTime += Time.deltaTime;
         mineralTime += Time.deltaTime;
-        if (Input.GetButtonDown("Xbox_LB"))
-        {
-            buildingSelector.ToggleVisibility();
-        }
+        // if (Input.GetButtonDown("Xbox_A"))
+        // {
+        //     buildingSelector.ToggleVisibility();
+        // }
         UpdateResourceText();
     }
 

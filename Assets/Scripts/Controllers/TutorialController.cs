@@ -134,7 +134,7 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                 }
 
-                if (buttonClicked || Input.GetButtonDown("Xbox_A"))
+                if (buttonClicked) // || Input.GetButtonDown("Xbox_A")
                 {
                     DismissButton();
                 }

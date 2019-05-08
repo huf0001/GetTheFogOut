@@ -53,12 +53,6 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetButtonDown("Xbox_A") && buildingSelector.activeSelf)
-        {
-            ToggleCameraMovement();
-        }
-
         if (!isBuildingSelect)
         {
             currFramePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
