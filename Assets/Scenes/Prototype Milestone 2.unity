@@ -3291,6 +3291,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1541682272 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2670434220178909845, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1294884149}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541682265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d5b797b6fbb6f246b32948d4b8b71ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1587790728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3893,8 +3905,7 @@ PrefabInstance:
         type: 3}
       propertyPath: hub
       value: 
-      objectReference: {fileID: 2670434220178909845, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
-        type: 3}
+      objectReference: {fileID: 1541682272}
     - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: pause
@@ -3921,6 +3932,12 @@ PrefabInstance:
       propertyPath: hubPrefab
       value: 
       objectReference: {fileID: 2071841716570308282, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: tilePrefab
+      value: 
+      objectReference: {fileID: 1230523831537891005, guid: ae3c8c22e37954d42892aa77c874a272,
         type: 3}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
