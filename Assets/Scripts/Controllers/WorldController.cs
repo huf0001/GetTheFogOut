@@ -146,8 +146,8 @@ public class WorldController : MonoBehaviour
         {
             if (b.BuildingType == BuildingType.Hub)
             {
-                //TileData tile = GetTileAt(building.transform.position);
-                TileData tile = GetTileAt(b.transform.parent.position);
+                TileData tile = GetTileAt(b.transform.position);
+             //   TileData tile = GetTileAt(b.transform.parent.position);
                 tile.Building = b;
                 b.Location = tile;
                 b.Animator = b.GetComponentInChildren<Animator>();

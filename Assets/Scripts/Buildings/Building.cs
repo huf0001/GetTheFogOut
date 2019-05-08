@@ -54,7 +54,7 @@ public abstract class Building : PlaneObject
         audioSpawn = GetComponent<AudioSource>();
         audioDamage = GetComponent<AudioSource>();
         audioDestroy = GetComponent<AudioSource>();
-        resourceController = ResourceController.Instance;
+        
         //if (placed)
         //{
         //    GetComponent<Renderer>().material.shader = buildingShader;
@@ -68,6 +68,7 @@ public abstract class Building : PlaneObject
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        resourceController = ResourceController.Instance;
     }
 
     // Update is called once per frame
