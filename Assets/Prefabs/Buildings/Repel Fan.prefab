@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!95 &2927896999021975116
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3609547607595331090}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cabe98f36a33ed642af66df9ae848fd3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7263953934050848762
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,7 +31,6 @@ GameObject:
   - component: {fileID: 4333624062785192286}
   - component: {fileID: 5434846841914986776}
   - component: {fileID: 4739728822711218263}
-  - component: {fileID: 7069307296970788146}
   - component: {fileID: 6785053910657603206}
   - component: {fileID: 5749660945512826857}
   m_Layer: 0
@@ -95,46 +113,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.08, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7069307296970788146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7263953934050848762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23687b0cb6f0c07448f21443a29c63ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  location:
-    powerSources: []
-    resource: {fileID: 0}
-    building: {fileID: 0}
-    onMaterial: {fileID: 0}
-    visibleMaterial: {fileID: 0}
-    startMaterial: {fileID: 0}
-    x: 0
-    z: 0
-    plane: {fileID: 0}
-  health: 1
-  visibilityRange: 0
-  upkeep: 0
-  powerSource: {fileID: 0}
-  powered: 0
-  placed: 0
-  buildingType: 7
-  mineralCost: 0
-  powerCost: 0
-  fuelCost: 0
-  organicCost: 0
-  audioSpawn: {fileID: 0}
-  audioDamage: {fileID: 0}
-  audioDestroy: {fileID: 0}
-  directDamage: 50
-  aoeDamage: 25
-  rateOfFire: 1
-  placedInEditor: 0
 --- !u!82 &6785053910657603206
 AudioSource:
   m_ObjectHideFlags: 0
@@ -259,7 +237,7 @@ MonoBehaviour:
   powerSource: {fileID: 0}
   powered: 0
   placed: 0
-  buildingType: 0
+  buildingType: 7
   mineralCost: 0
   powerCost: 0
   fuelCost: 0
@@ -485,6 +463,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bc22714766dfe840a8deb2149023016, type: 3}
+--- !u!1 &3609547607595331090 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8774386420045624304, guid: 0bc22714766dfe840a8deb2149023016,
+    type: 3}
+  m_PrefabInstance: {fileID: 5463800491009908194}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3609547607595331091 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8774386420045624305, guid: 0bc22714766dfe840a8deb2149023016,

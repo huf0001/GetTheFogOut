@@ -226,34 +226,6 @@ public class TutorialController : DialogueBoxController
     }
 
     //Tutorial Stage 2: AI Explains Basic Building Placement
-    //AI explains player's situation
-    //private void ExplainSituation()
-    //{
-    //    if (subStage == 1)
-    //    {
-    //        SendDialogue("explain situation", 2);
-    //    }
-    //    else if (subStage == 2)
-    //    {
-    //        tutorialStage = TutorialStage.ExplainBuildingPlacement;
-    //        ResetSubStage();
-    //    }
-    //}
-
-    //AI explains how to place buildings
-    //private void ExplainBuildingPlacement()
-    //{
-    //    if (subStage == 1)
-    //    {
-    //    }
-    //    else if (subStage == 2)
-    //    {
-    //        tutorialStage = TutorialStage.BuildHarvester;
-    //        currentlyBuilding = BuildingType.Harvester;
-    //        ResetSubStage();
-    //    }
-    //}
-
     private void BuildHarvester()
     {
         if (subStage == 1)
@@ -329,7 +301,7 @@ public class TutorialController : DialogueBoxController
                 btnCurrent = btnBuildHarvester;
                 btnCurrent.ReportClick = true;
 
-                SendDialogue("build harvester harvester icon", 0);
+                SendDialogue("build harvester harvester icon", 1);
             }
             else if (dialogueRead)
             {

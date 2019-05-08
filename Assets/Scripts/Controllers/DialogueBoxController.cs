@@ -47,7 +47,15 @@ public class DialogueBoxController : MonoBehaviour
         if (!instructionsSent)
         {
             //Activate DialogueBox, passing dialogue to it
-            aiText.ActivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
+            if (aiText.Activated)
+            {
+                //aiText.ReactivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
+                aiText.ChangeDialogue(GetDialogue(dialogueKey));
+            }
+            else
+            {
+                aiText.ActivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
+            }
 
             //Set dialogueSent to true so that the dialogue box isn't being repeatedly activated
             instructionsSent = true;

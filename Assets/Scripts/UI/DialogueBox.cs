@@ -16,10 +16,48 @@ public class DialogueBox : MonoBehaviour
     private List<string> textToDisplay = new List<string>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
-    private bool deactivated = true;
+    private bool activated = false;
+    private bool lerpTextRight = false;
+    private string currentText = "";
+    private int lerpTextIndex = 0;
+    private int lerpTextInterval = 3;
 
     //Public Properties
+    public bool Activated { get => activated; }
     public int DialogueCount { get => textToDisplay.Count; }
+
+    private void Update()
+    {
+        if (textBox.text != currentText)
+        {
+            if (!lerpTextRight)
+            {
+                if (textBox.text.Length - lerpTextInterval < 0)
+                {
+                    textBox.text = "";
+                }
+                else
+                {
+                    textBox.text = textBox.text.Substring(0, textBox.text.Length - lerpTextInterval);
+                }
+
+                if (textBox.text.Length == 0)
+                {
+                    lerpTextRight = true;
+                }
+            }
+            else
+            {
+                textBox.text = currentText.Substring(0, lerpTextIndex);
+                lerpTextIndex += lerpTextInterval;
+
+                if (lerpTextIndex > currentText.Length)
+                {
+                    lerpTextIndex = currentText.Length;
+                }
+            }
+        }
+    }
 
     public void ActivateDialogueBox(string text, float invokeDelay)
     {
@@ -32,7 +70,7 @@ public class DialogueBox : MonoBehaviour
     {
         if (texts.Count > 0)
         {
-            deactivated = false;
+            activated = true;
 
             //Caches required tweening information for performance saving
             dialogueRectTransform = GetComponent<RectTransform>();
@@ -40,7 +78,6 @@ public class DialogueBox : MonoBehaviour
 
             //Debug.Log("DialogueBoxActivated");
             textToDisplay = new List<string>(texts);
-            DisplayNext();
 
             Invoke("ShowDialogueBox", invokeDelay);
         } else
@@ -52,12 +89,21 @@ public class DialogueBox : MonoBehaviour
     private void DisplayNext()
     {
         textBox.text = textToDisplay[0];
+        currentText = textToDisplay[0];
+        textToDisplay.Remove(textToDisplay[0]);
+    }
+
+    private void LerpNext()
+    {
+        lerpTextRight = false;
+        lerpTextIndex = 0;
+        currentText = textToDisplay[0];
         textToDisplay.Remove(textToDisplay[0]);
     }
 
     private void ShowDialogueBox()
     {
-        //WorldController.Instance.SetPause(true);
+        DisplayNext();
         dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).From(true).SetEase(Ease.OutBack).SetUpdate(true);
         gameObject.SetActive(true);
     }
@@ -66,11 +112,10 @@ public class DialogueBox : MonoBehaviour
     {
         if (textToDisplay.Count > 0)
         {
-            DisplayNext();
+            LerpNext();
         }
-        else if (!deactivated)
+        else if (activated)
         {
-            deactivated = true;
             DeactivateDialogueBox();
         }
     }
@@ -78,13 +123,51 @@ public class DialogueBox : MonoBehaviour
     private void DeactivateDialogueBox()
     {
         dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
-            delegate {
+            delegate 
+            {
                 //Reset position after tweening
                 dialogueRectTransform.anchoredPosition = originalRectTransformPosition;
                 gameObject.SetActive(false);
                 textBox.text = "";
                 dialogueBoxController.RegisterDialogueRead();
-                //WorldController.Instance.SetPause(false);
-                });
+                activated = false;
+            });
+    }
+
+    //public void ReactivateDialogueBox(string text, float invokeDelay)
+    //{
+    //    List<string> texts = new List<string>();
+    //    texts.Add(text);
+    //    ReactivateDialogueBox(texts, invokeDelay);
+    //}
+
+    //public void ReactivateDialogueBox(List<string> texts, float invokeDelay)
+    //{
+    //    Debug.Log("Reactivating DialogueBox");
+    //    DeactivateDialogueBox();
+
+    //    if (texts.Count > 0)
+    //    {
+    //        activated = true;
+
+    //        //Caches required tweening information for performance saving
+    //        dialogueRectTransform = GetComponent<RectTransform>();
+    //        originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
+
+    //        //Debug.Log("DialogueBoxActivated");
+    //        textToDisplay = new List<string>(texts);
+
+    //        Invoke("ShowDialogueBox", invokeDelay);
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("No text to display in dialogue box");
+    //    }
+    //}
+
+    public void ChangeDialogue(List<string> texts)
+    {
+        textToDisplay = new List<string>(texts);
+        LerpNext();
     }
 }
