@@ -180,8 +180,13 @@ public class Fog : MonoBehaviour
         }
     }
 
-    //Takes a fog unit and puts it on the board
     private void SpawnFogUnit(int x, int z)
+    {
+        SpawnFogUnit(x, z, 0.0001f);
+    }
+
+    //Takes a fog unit and puts it on the board
+    private void SpawnFogUnit(int x, int z, float health)
     {
         GameObject fGO = GetFogUnit().gameObject;
         FogUnit f = fGO.GetComponent<FogUnit>();
@@ -193,7 +198,7 @@ public class Fog : MonoBehaviour
 
         f.gameObject.GetComponent<Renderer>().material = visibleMaterial;
         f.Location = t;
-        f.Health = 0.0001f;
+        f.Health = health;
         f.Spill = false;
         t.FogUnit = f;
 
@@ -262,6 +267,20 @@ public class Fog : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateFogFill();
+
+        UpdateFogExpansion();
+
+        UpdateFogUnitBatching();
+
+        //foreach (FogUnit f in fogUnitsInPlay)
+        //{
+        //    FogOfWarManager.UpdatePosition(f.transform.position, 5);
+        //}
+    }
+
+    private void UpdateFogFill()
+    {
         tick += Time.deltaTime;
 
         if (fogAccelerates && fogGrowth < 100)
@@ -305,7 +324,10 @@ public class Fog : MonoBehaviour
         {
             Debug.Log("Invalid / unimplemented fog expansion type selected.");
         }
+    }
 
+    private void UpdateFogExpansion()
+    {
         if (tick >= 1)
         {
             tick -= 1;
@@ -331,11 +353,6 @@ public class Fog : MonoBehaviour
                 Debug.Log("More fog units than board tiles. There must be some overlapping.");
             }
         }
-
-        //foreach (FogUnit f in fogUnitsInPlay)
-        //{
-        //    FogOfWarManager.UpdatePosition(f.transform.position, 5);
-        //}
     }
 
     //Fog spills over onto adjacent tiles
@@ -366,6 +383,50 @@ public class Fog : MonoBehaviour
             {
                 SpawnFogUnit(n.X, n.Z);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
             }
+        }
+    }
+
+    private void UpdateFogUnitBatching()
+    {
+        int interval = 5;
+
+        for (int i = 0; i < xMax; i += interval)
+        {
+            for (int j = 0; i < zMax; j += interval)
+            {
+                UpdateFogUnitBatch(i, i + interval, j, j + interval);
+            }
+        }
+    }
+
+    private void UpdateFogUnitBatch(int minX, int maxX, int minY, int maxY)
+    {
+        bool valid = true;
+        int i = minX;
+        int j = minY;
+
+        while (valid && i < maxX)
+        {
+            while (valid && j < maxY)
+            {
+                if (WorldController.Instance.TileExistsAt(new Vector2(i, j)) && WorldController.Instance.GetTileAt(new Vector2(i,j)).FogUnit == null)
+                {
+                    valid = false;
+                }
+
+                j++;
+            }
+
+            i++;
+        }
+
+        if (valid)
+        {
+            Debug.Log("Fog units (" + minX + "," + minY + ") to (" + minX + "," + minY + ") can be batched. If they're already batched, do nothing.");
+        }
+        else
+        {
+            Debug.Log("Fog units (" + minX + "," + minY + ") to (" + minX + "," + minY + ") can't be batched. If they are, they need to be un-batched");
         }
     }
 }
