@@ -70,7 +70,7 @@ public class WorldController : MonoBehaviour
     //Flags
     private bool hubBuilt = false;
     private bool isGameOver;
-    private bool ison;
+    private bool isOn;
 
     private int index;
 
@@ -99,7 +99,7 @@ public class WorldController : MonoBehaviour
         InBuildMode = false;
         Instance = this;
         isGameOver = false;
-        ison = false;
+        isOn = false;
 
         tm = FindObjectOfType<TowerManager>();
 
@@ -348,9 +348,9 @@ public class WorldController : MonoBehaviour
 
         if (Input.GetKeyDown("z") || Input.GetButtonDown("Xbox_RB"))
         {
-            ison = !ison;
+            isOn = !isOn;
         }
-        if (ison)
+        if (isOn)
         {
             showActiveTiles();
         }
@@ -360,9 +360,7 @@ public class WorldController : MonoBehaviour
             index = 0;
         }
 
-
-
-        if (Input.GetButtonDown("Xbox_LB"))
+        if (Input.GetButtonDown("Xbox_A") && cameraController.buildingSelector.activeSelf)
         {
             cameraController.ToggleCameraMovement();
         }
