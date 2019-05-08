@@ -31,6 +31,43 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         }
     }
 
+    public void OnSelect(BaseEventData eventData)
+    {
+        switch (gameObject.name)
+        {
+            case "btn_battery":
+                buildingDesc.text = $"<b>Battery</b>\n" + "<line-height=80% size=60%>" + descText;
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<Battery>().MineralCost} <sprite=\"all_icons\" index=3>";
+                break;
+            case "btn_generator":
+                buildingDesc.text = $"<b>Power Generator</b>\n" + "<line-height=80% size=60%>" + descText;
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<Generator>().MineralCost} <sprite=\"all_icons\" index=3>";
+                break;
+            case "btn_harvester":
+                buildingDesc.text = $"<b>Elemental Harvester</b>\n" + "<line-height=80% size=60%>" + descText;
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<Harvester>().MineralCost} <sprite=\"all_icons\" index=3>";
+                break;
+            case "btn_arc_defence":
+                buildingDesc.text = $"<b>Arc Defence</b>\n" + "<line-height=80% size=60%>" + descText;
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<ArcDefence>().MineralCost} <sprite=\"all_icons\" index=3>";
+                break;
+            case "btn_repel_fan":
+                buildingDesc.text = $"<b>Repel Fan</b>\n" + "<line-height=80% size=60%>" + descText;
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<RepelFan>().MineralCost} <sprite=\"all_icons\" index=3>";
+                break;
+            case "btn_relay":
+                buildingDesc.text = $"<b>Power Relay</b>\n" + "<line-height=80% size=60%>" + descText;
+                buildingCost.text = $"{build_prefab.GetComponentInChildren<Relay>().MineralCost} <sprite=\"all_icons\" index=3>";
+                break;
+            case "btn_remove":
+                buildingDesc.text = "<b>Destroy Building</b>\n";
+                break;
+            default:
+                buildingDesc.text = "";
+                break;
+        }
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         switch (gameObject.name)
