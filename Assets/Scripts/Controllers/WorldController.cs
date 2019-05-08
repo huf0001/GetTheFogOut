@@ -146,8 +146,8 @@ public class WorldController : MonoBehaviour
         {
             if (b.BuildingType == BuildingType.Hub)
             {
-                //TileData tile = GetTileAt(building.transform.position);
-                TileData tile = GetTileAt(b.transform.parent.position);
+                TileData tile = GetTileAt(b.transform.position);
+             //   TileData tile = GetTileAt(b.transform.parent.position);
                 tile.Building = b;
                 b.Location = tile;
                 b.Animator = b.GetComponentInChildren<Animator>();
@@ -195,7 +195,7 @@ public class WorldController : MonoBehaviour
     private void InstantiateTileArray()
     {
         tiles = new TileData[width, length];
-
+        GameObject quad = GameObject.Find("Quads");
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < length; z++)
@@ -205,8 +205,7 @@ public class WorldController : MonoBehaviour
                 pos = new Vector3(tile.X, 0, tile.Z);
                 GameObject tileObject = Instantiate(tilePrefab);
                 tileObject.transform.position = new Vector3(tile.X, 0.1f, tile.Z);
-                tileObject.transform.SetParent(ground.transform);
-
+                tileObject.transform.SetParent(quad.transform);
                 //set to true will render the tile; set to false, and it won't
                 //tileGO.GetComponent<MeshRenderer>().enabled = true;
                 //MeshRendererTileChild(false);
