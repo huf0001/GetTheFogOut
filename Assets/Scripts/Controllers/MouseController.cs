@@ -22,6 +22,7 @@ public class MouseController : MonoBehaviour
     private GameObject PointAtObj;
     List<GameObject> collisionList = new List<GameObject>();
     private bool reportTutorialClick = false;
+    private TileData hoveredTile;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -50,21 +51,61 @@ public class MouseController : MonoBehaviour
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
         tutorialController = GetComponent<TutorialController>();
+        InvokeRepeating("UpdateQuadVisability", 0.1f, 0.1f);
     }
-
 
     // Update is called once per frame
     void Update()
     {
-        //if (towerManager.IsinBuild())
-        //{
         UpdatePlacingAlt();
-        //}
+        //UpdateQuadVisability();
+    }
 
-        // if (!isStopped)
-        // {
-        //     UpdatePlacing();
-        // }
+    void UpdateTileAppearance()
+    {
+        List<TileData> innerTiles = new List<TileData>();
+        List<TileData> middleTiles = new List<TileData>();
+        List<TileData> outerTiles = new List<TileData>();
+
+        Vector3 pos = new Vector3(hoveredTile.X, 0f, hoveredTile.Z);
+
+        Collider[] hits = Physics.OverlapSphere(pos, 3, LayerMask.GetMask("Quads"));
+        foreach (Collider hit in hits)
+        {
+            innerTiles.Add(WorldController.Instance.GetTileAt(hit.transform.position));
+        }
+
+        hits = Physics.OverlapSphere(pos, 4, LayerMask.GetMask("Quads"));
+        foreach (Collider hit in hits)
+        {
+            if (!innerTiles.Contains(WorldController.Instance.GetTileAt(hit.transform.position)))
+            {
+                middleTiles.Add(WorldController.Instance.GetTileAt(hit.transform.position));
+            }
+        }
+
+        hits = Physics.OverlapSphere(pos, 5, LayerMask.GetMask("Quads"));
+        foreach (Collider hit in hits)
+        {
+            if (!middleTiles.Contains(WorldController.Instance.GetTileAt(hit.transform.position)))
+            {
+                outerTiles.Add(WorldController.Instance.GetTileAt(hit.transform.position));
+            }
+        }
+    }
+
+    void UpdateQuadVisability()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
+        {
+            if (WorldController.Instance.TileExistsAt(hit.point))
+            {
+                hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+            }
+        }
     }
 
     // Mouse Building Placement -----------------------------------------------------------------
@@ -165,7 +206,7 @@ public class MouseController : MonoBehaviour
                     {
                         if (!UIController.instance.buildingSelector.Visible)
                         {
-                            UIController.instance.buildingSelector.ToggleVisibility();
+                            WorldController.Instance.CheckTileContents(tile);
                         }
 
                         if (reportTutorialClick)

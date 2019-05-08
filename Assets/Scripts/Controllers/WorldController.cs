@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [Serializable]
 public class ShipComponentState
@@ -36,7 +37,7 @@ public class WorldController : MonoBehaviour
     [SerializeField]
     private GameObject ground;
 
-    [SerializeField] GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab;
+    [SerializeField] GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
@@ -146,8 +147,8 @@ public class WorldController : MonoBehaviour
         {
             if (b.BuildingType == BuildingType.Hub)
             {
-                //TileData tile = GetTileAt(building.transform.position);
-                TileData tile = GetTileAt(b.transform.parent.position);
+                TileData tile = GetTileAt(b.transform.position);
+             //   TileData tile = GetTileAt(b.transform.parent.position);
                 tile.Building = b;
                 b.Location = tile;
                 b.Animator = b.GetComponentInChildren<Animator>();
@@ -195,7 +196,7 @@ public class WorldController : MonoBehaviour
     private void InstantiateTileArray()
     {
         tiles = new TileData[width, length];
-
+        GameObject quad = GameObject.Find("Quads");
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < length; z++)
@@ -203,7 +204,9 @@ public class WorldController : MonoBehaviour
                 TileData tile = new TileData(x, z);
                 tiles[x, z] = tile;
                 pos = new Vector3(tile.X, 0, tile.Z);
-
+                GameObject tileObject = Instantiate(tilePrefab);
+                tileObject.transform.position = new Vector3(tile.X, 0.1f, tile.Z);
+                tileObject.transform.SetParent(quad.transform);
                 //set to true will render the tile; set to false, and it won't
                 //tileGO.GetComponent<MeshRenderer>().enabled = true;
                 //MeshRendererTileChild(false);
@@ -529,6 +532,42 @@ public class WorldController : MonoBehaviour
         }
 
         return tiles[x, y];
+    }
+
+    public void CheckTileContents(TileData tile)
+    {
+        Button[] buttons = uiController.buildingSelector.GetComponentsInChildren<Button>();
+
+        if (tile.Resource != null)
+        {
+            foreach (Button b in buttons)
+            {
+                if (b.gameObject.name != "btn_harvester" && b.gameObject.name != "btn_remove")
+                {
+                    b.interactable = false;
+                }
+                else
+                {
+                    b.interactable = true;
+                }
+            }
+            uiController.buildingSelector.ToggleVisibility();
+        }
+        else
+        {
+            foreach (Button b in buttons)
+            {
+                if (b.gameObject.name == "btn_harvester")
+                {
+                    b.interactable = false;
+                }
+                else
+                {
+                    b.interactable = true;
+                }
+            }
+            uiController.buildingSelector.ToggleVisibility();
+        }
     }
 
     public ShipComponentState GetShipComponent(ShipComponentsEnum c)
