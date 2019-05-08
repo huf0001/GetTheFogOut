@@ -11,6 +11,7 @@ public class MouseController : MonoBehaviour
     // Serialized fields
     [SerializeField] private int generatorCount = 0;
     [SerializeField] private int generatorInterval = 5;
+    [SerializeField] private WarningScript warningScript;
 
     // Non-serialized fields
     private Hub hub = null;
@@ -272,6 +273,7 @@ public class MouseController : MonoBehaviour
             }
             else
             {
+                StartCoroutine(warningScript.ShowMessage(warningScript.Warning + "Not enough minerals to build!"));
                 Debug.Log("Can't build, do not have the required resources.");
             }
         }
@@ -289,11 +291,11 @@ public class MouseController : MonoBehaviour
         //floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
         if (cost < 0)
         {
-            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> <color=\"red\">{cost}", building);
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=2> <color=\"red\">{cost}", building);
         }
         else if (cost > 0)
         {
-            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=3> <color=#009900>+{cost}", building);
+            floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=2> <color=#009900>+{cost}", building);
         }
         yield return new WaitForSeconds(0.2f);
     }

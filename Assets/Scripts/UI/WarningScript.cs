@@ -19,14 +19,18 @@ public class WarningScript : MonoBehaviour
     ResourceController resourceController;
 
     TextMeshProUGUI[] texts;
-    const string NORMAL = "<sprite=\"all_icons\" index=4 tint=1 color=#009900> ";
-    const string WARNING = "<sprite=\"all_icons\" index=4 tint=1 color=#f0b040> ";
-    const string DANGER = "<sprite=\"all_icons\" index=4 tint=1 color=#c80000> ";
+    const string NORMAL = "<sprite=\"all_icons\" index=1 tint=1 color=#009900> ";
+    const string WARNING = "<sprite=\"all_icons\" index=1 tint=1 color=#f0b040> ";
+    const string DANGER = "<sprite=\"all_icons\" index=1 tint=1 color=#c80000> ";
     TextMeshProUGUI powerStatus;
     TextMeshProUGUI buildingStatus;
     List<GameObject> existingMessages = new List<GameObject>();
 
     int pChangeValue = 0;
+
+    public string Normal { get => NORMAL; }
+    public string Warning { get => WARNING; }
+    public string Danger { get => DANGER; }
 
     [SerializeField] GameObject warningBox;
     [SerializeField] GameObject popupMessage;
@@ -148,7 +152,7 @@ public class WarningScript : MonoBehaviour
         }
     }
 
-    private IEnumerator ShowMessage(string txt)
+    public IEnumerator ShowMessage(string txt)
     {
         GameObject message = Instantiate(popupMessage, GameObject.Find("Warnings").transform);
         if (existingMessages.Count != 0)
