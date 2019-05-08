@@ -23,6 +23,7 @@ public class TileData
     [SerializeField] private int x = 0;
     [SerializeField] private int z = 0;
     private FogUnit fogUnit = null;
+    private FogBatch fogBatch = null;
     private GameObject placedtower = null;
     private List<TileData> adjacentTiles = new List<TileData>();
     private List<TileData> allAdjacentTiles = new List<TileData>();
@@ -36,6 +37,7 @@ public class TileData
 
     public ResourceNode Resource { get => resource; set => resource = value; }
     public FogUnit FogUnit { get => fogUnit; set => fogUnit = value; }
+    public FogBatch FogBatch { get => fogBatch; set => fogBatch = value; }
     public Building Building { get => building; set => building = value; }
     public GameObject Placedtower { get => placedtower; set => placedtower = value; }
 

@@ -65,19 +65,17 @@ MonoBehaviour:
   powerSpawnChance: 5
   organSpawnChance: 5
   ground: {fileID: 0}
-  tilePrefab: {fileID: 4687682228001315334, guid: 18bdef06dd148db4d888636bdefa3eab,
+  planeGridprefab: {fileID: 6018002286047896067, guid: a9a48ed08e70c5840891481cb21c444d,
     type: 3}
   hubPrefab: {fileID: 1405241161030514272, guid: 47e172c828d0ea4428b22c2696684f4c,
     type: 3}
-  mineralPrefab: {fileID: 762063269852825293, guid: edffadd135d322748ac7f23c8cfefc63,
+  mineralPrefab: {fileID: 8502067115120478638, guid: b73f147f6fafb3242895252f4e5718fb,
     type: 3}
   fuelPrefab: {fileID: 8393472377661496211, guid: 4d4c598dd9bc8cb43a0d126a2b0e2eb8,
     type: 3}
   powerPrefab: {fileID: 7908624944112950829, guid: 274cb1791698d614a84ceb3fee36b80b,
     type: 3}
   organPrefab: {fileID: 7857378348933392223, guid: 5ab951eea836f594ea15cdb13afd6328,
-    type: 3}
-  planeGridprefab: {fileID: 6018002286047896067, guid: a9a48ed08e70c5840891481cb21c444d,
     type: 3}
   hub: {fileID: 0}
   shipComponents:
@@ -547,6 +545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   generatorCount: 0
   generatorInterval: 5
+  warningScript: {fileID: 0}
 --- !u!114 &1899903245264256472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,7 +563,13 @@ MonoBehaviour:
   buildingSelector: {fileID: 0}
   endGameText: {fileID: 0}
   powerImg: {fileID: 0}
-  powerLevelSprites: []
+  powerLevelSprites:
+  - {fileID: 21300000, guid: 88d41290badea9d49a808952d37fc94c, type: 3}
+  - {fileID: 21300000, guid: a0e640b3a7fcd8142a9e7045eeb77d34, type: 3}
+  - {fileID: 21300000, guid: 1d7b93855cfd8b74e8efcfe95c262f1c, type: 3}
+  - {fileID: 21300000, guid: c9b306912d4733348a3a569ebab51f72, type: 3}
+  - {fileID: 21300000, guid: dbcded0b72a66044bbab44d79f074e0a, type: 3}
+  objWindowText: {fileID: 0}
 --- !u!114 &334475222590731063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -704,12 +709,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiText: {fileID: 0}
-  dialogue: []
+  dialogue:
+  - key: start harvest stage
+    dialogue:
+    - Time to repair your hull. You will need collect minerals to repair the hull.
+    - There is likely to be more minerals further out. You will need to venture into
+      the fog to find them.
+  - key: end harvest stage
+    dialogue:
+    - "Great, you\u2019ve repaired your hull. Do not relax just yet. Next step, finding
+      the ships thrusters.\r\n"
+    - My sensors are struggling to pick up their location, but I can at least confirm
+      they are out there somewhere. I wonder why the fog has not consumed them yet?
+  - key: start part stage
+    dialogue:
+    - Good job, you found the ships thrusters. Thankfully they are not in too much
+      disrepair. Next, you will need to store enough power to get out of here.
+  - key: end part stage
+    dialogue:
+    - "Oh\u2026 I thought I should let you know, that fog you\u2019ve been fighting
+      through is showing extreme signs of aggression. Better save power fast!"
+  - key: start power stage
+    dialogue: []
+  - key: end power stage
+    dialogue:
+    - "Finally, enough power! Quick, push the launch button and let\u2019s get out
+      of here!"
   objectivesOn: 1
   currStage: 0
   subStage: 0
   objectiveWindow: {fileID: 0}
-  objectiveCompletePrefab: {fileID: 0}
+  objectiveCompletePrefab: {fileID: 2273471419132843575, guid: 53f4928f807d9b64bbacc1c4655740f2,
+    type: 3}
 --- !u!114 &3646138034780775634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -736,12 +767,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899903245264256479}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d37a928823b9f6a48814cc817e7d13c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fogUnitPrefab: {fileID: 6045479659823427939, guid: f16f94a244adbcf47a2a91498a1edb9a,
+    type: 3}
+  fogBatchPrefab: {fileID: 4163588316064861936, guid: 4091b1b1772201842b2b7b6b872c225b,
     type: 3}
   configuration: 5
   expansionDirection: 0
@@ -751,7 +784,7 @@ MonoBehaviour:
   fogHealthLimit: 100
   fogSpillThreshold: 50
   damageOn: 1
-  surroundingHubRange: 7
+  surroundingHubRange: 9
   visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
 --- !u!114 &1963843383001614104
@@ -766,7 +799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f732e2dd7226e8949b2f44c4715c63d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xAndYRange: 0
+  xAndYRange: 52
   FogTexture: {fileID: 2800000, guid: 46d526b21522be64ca6f38c477e29a41, type: 3}
 --- !u!114 &7305178377255849301
 MonoBehaviour:

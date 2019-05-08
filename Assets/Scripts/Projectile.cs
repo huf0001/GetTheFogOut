@@ -75,7 +75,12 @@ public class Projectile : MonoBehaviour
                         //Debug.Log("Dealing damage to " + tile.FogUnit);
                         tile.FogUnit.DealDamage(aoeDamage);
                     }
-                }  
+                }
+            }
+            else if (tileHit.FogBatch.Batched)
+            {
+                //Debug.Log("Dealing damage to " + tileHit.FogUnit);
+                tileHit.FogBatch.DealDamage(damage, transform.position);
             }
         }
 
