@@ -180,7 +180,10 @@ public class ObjectiveController : DialogueBoxController
 
     public void IncrementStage()
     {
-        StartCoroutine(CompleteObjective());
+        if (currStage != 0)
+        {
+            StartCoroutine(CompleteObjective());
+        }
         stageComplete = false;
         currStage++;
     }
