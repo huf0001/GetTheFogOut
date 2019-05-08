@@ -35,7 +35,7 @@ public class btnTutorial : MonoBehaviour
 
     private void Update()
     {
-        if (tutorialController.ButtonAllowed(buildingType))
+        if (tutorialController.ButtonAllowed(buildingType) && tutorialController.TutorialStage != TutorialStage.Finished)
         {
             button.interactable = true;
 
@@ -53,7 +53,7 @@ public class btnTutorial : MonoBehaviour
                 DeactivateLerping();
             }
         }
-        else
+        else if (tutorialController.TutorialStage != TutorialStage.Finished)
         {
             button.interactable = false;
 
