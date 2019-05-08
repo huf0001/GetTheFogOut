@@ -17,7 +17,6 @@ public class DialogueBox : MonoBehaviour
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
     private bool activated = false;
-    private bool lerpTextRight = false;
     private string currentText = "";
     private int lerpTextIndex = 0;
     private int lerpTextInterval = 3;
@@ -30,31 +29,12 @@ public class DialogueBox : MonoBehaviour
     {
         if (textBox.text != currentText)
         {
-            if (!lerpTextRight)
-            {
-                if (textBox.text.Length - lerpTextInterval < 0)
-                {
-                    textBox.text = "";
-                }
-                else
-                {
-                    textBox.text = textBox.text.Substring(0, textBox.text.Length - lerpTextInterval);
-                }
+            textBox.text = currentText.Substring(0, lerpTextIndex);
+            lerpTextIndex += lerpTextInterval;
 
-                if (textBox.text.Length == 0)
-                {
-                    lerpTextRight = true;
-                }
-            }
-            else
+            if (lerpTextIndex > currentText.Length)
             {
-                textBox.text = currentText.Substring(0, lerpTextIndex);
-                lerpTextIndex += lerpTextInterval;
-
-                if (lerpTextIndex > currentText.Length)
-                {
-                    lerpTextIndex = currentText.Length;
-                }
+                lerpTextIndex = currentText.Length;
             }
         }
     }
@@ -95,8 +75,8 @@ public class DialogueBox : MonoBehaviour
 
     private void LerpNext()
     {
-        lerpTextRight = false;
         lerpTextIndex = 0;
+        textBox.text = "";
         currentText = textToDisplay[0];
         textToDisplay.Remove(textToDisplay[0]);
     }
