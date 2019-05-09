@@ -573,7 +573,8 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(Screen.width / 13, 0);
+        uiController.buildingSelector.GetComponentInParent<RectTransform>().position = new Vector3(tile.X, 0, tile.Z) + new Vector3(0.5f, 0, -1.5f);// + new Vector3(Screen.width / 13, 0);
+        uiController.buildingSelector.GetComponentInParent<RectTransform>().LookAt(Camera.main.transform);
     }
 
     public ShipComponentState GetShipComponent(ShipComponentsEnum c)

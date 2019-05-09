@@ -23,7 +23,8 @@ public class BuildingInfo : MonoBehaviour
         building = b;
         mainText.text = $"<b>{b.BuildingType}</b>\n" +
             $"HP";
-        transform.position = Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
+        GetComponentInParent<RectTransform>().position = new Vector3(b.transform.position.x, 0, b.transform.position.z) + new Vector3(0.5f, 1, -1.5f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
+        transform.LookAt(Camera.main.transform);
         gameObject.SetActive(true);
         Visible = true;
     }
