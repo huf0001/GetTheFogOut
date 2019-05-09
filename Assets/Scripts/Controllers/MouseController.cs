@@ -194,7 +194,7 @@ public class MouseController : MonoBehaviour
             //Check if a valid tile was clicked
             if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && WorldController.Instance.TileExistsAt(hit.point))
             {
-                if (UIController.instance.buildingSelector.Visible)
+                if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
                     towerManager.CancelBuild();
                 }
@@ -214,7 +214,6 @@ public class MouseController : MonoBehaviour
                             TutorialController.Instance.RegisterButtonClicked();
                         }
 
-                        UIController.instance.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(Screen.width / 13, 0);
                         towerManager.CurrentTile = tile;
                     }
                 }

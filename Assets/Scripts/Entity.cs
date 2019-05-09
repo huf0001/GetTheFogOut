@@ -7,11 +7,11 @@ public abstract class Entity : Locatable
     [SerializeField] private float health = 1f;
 
     public virtual float Health { get => health; set => health = value; }
+    public float MaxHealth { get; protected set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame

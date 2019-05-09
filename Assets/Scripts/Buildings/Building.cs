@@ -68,7 +68,7 @@ public abstract class Building : PlaneObject
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        
+        MaxHealth = Health;
     }
 
     // Update is called once per frame
@@ -243,6 +243,11 @@ public abstract class Building : PlaneObject
         }
 
         PowerDown();
+
+        if (UIController.instance.buildingInfo.building == this)
+        {
+            UIController.instance.buildingInfo.HideInfo();
+        }
         
         resourceController.RemoveBuilding(this);
 

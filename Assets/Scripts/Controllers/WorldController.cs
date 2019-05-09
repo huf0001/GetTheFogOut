@@ -538,7 +538,12 @@ public class WorldController : MonoBehaviour
     {
         Button[] buttons = uiController.buildingSelector.GetComponentsInChildren<Button>();
 
-        if (tile.Resource != null)
+        if (tile.Building != null)
+        {
+            uiController.buildingInfo.ShowInfo(tile.Building);
+            return;
+        }
+        else if (tile.Resource != null)
         {
             foreach (Button b in buttons)
             {
@@ -568,6 +573,7 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
+        uiController.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(Screen.width / 13, 0);
     }
 
     public ShipComponentState GetShipComponent(ShipComponentsEnum c)

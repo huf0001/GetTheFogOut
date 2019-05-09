@@ -102,7 +102,7 @@ public class TowerManager : MonoBehaviour
     {
         if (selectedTower != null)
         {
-            switch(version)
+            switch (version)
             {
                 case "holo":
                     return this.SelectedTower.Holo_prefab;
@@ -133,15 +133,16 @@ public class TowerManager : MonoBehaviour
     {
         //if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) // && buildingType != TutorialController.Instance.CurrentlyBuilding <--- this breaks closing the building menu when not in the tutorial
         //{
-            selectedTower = null;
-            currentTile = null;
-            Destroy(hologramTower);
-            if (UIController.instance.buildingSelector.Visible)
-            {
-                UIController.instance.buildingSelector.ToggleVisibility(); 
-            }
-            InbuildMode = false;
-            buildingType = BuildingType.None;
+        selectedTower = null;
+        currentTile = null;
+        Destroy(hologramTower);
+        if (UIController.instance.buildingSelector.Visible)
+        {
+            UIController.instance.buildingSelector.ToggleVisibility();
+        }
+        UIController.instance.buildingInfo.HideInfo();
+        InbuildMode = false;
+        buildingType = BuildingType.None;
         //}
         //selectedTower = null;
         //InbuildMode = false;
