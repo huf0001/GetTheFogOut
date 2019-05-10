@@ -24,6 +24,7 @@ public abstract class Building : PlaneObject
     private Animator animator;
     private ResourceController resourceController = null;
     protected AudioSource audioSource;
+    private bool notified = false;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -289,6 +290,12 @@ public abstract class Building : PlaneObject
         if (buildHealth == Health)
         {
             TakingDamage = false;
+            notified = false;
+        }
+        else
+        {
+            StartCoroutine(MouseController.Instance.WarningScript.ShowMessage($"A {BuildingType} is being damaged!"));
+            notified = true;
         }
     }
 }

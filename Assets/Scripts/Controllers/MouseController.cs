@@ -30,6 +30,7 @@ public class MouseController : MonoBehaviour
     public static MouseController Instance { get; protected set; }
     public Hub Hub { get => hub; set => hub = value; }
     public bool ReportTutorialClick { get => reportTutorialClick; set => reportTutorialClick = value; }
+    public WarningScript WarningScript { get; }
 
     // Start / Update Unity Methods ------------------------------------------------------
 

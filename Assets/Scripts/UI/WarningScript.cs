@@ -122,7 +122,7 @@ public class WarningScript : MonoBehaviour
                     warnings["buildings"] = WarningLevel.Danger;
                     buildingStatus.text = DANGER + "Buildings are taking damage!";
                     audioSource.PlayOneShot(audioDamageAlert);
-                    StartCoroutine(ShowMessage(buildingStatus.text));
+                    //StartCoroutine(ShowMessage(buildingStatus.text));
                     return;
                 }
                 //if (b.Health < b.)
