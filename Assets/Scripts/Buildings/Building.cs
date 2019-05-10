@@ -292,9 +292,9 @@ public abstract class Building : PlaneObject
             TakingDamage = false;
             notified = false;
         }
-        else
+        else if (!notified)
         {
-            StartCoroutine(MouseController.Instance.WarningScript.ShowMessage($"A {BuildingType} is being damaged!"));
+            StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"A {BuildingType} is being damaged!"));
             notified = true;
         }
     }

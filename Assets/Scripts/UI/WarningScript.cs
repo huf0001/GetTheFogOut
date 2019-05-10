@@ -113,24 +113,20 @@ public class WarningScript : MonoBehaviour
     {
         List<Building> buildings = resourceController.Buildings;
 
-        if (warnings["buildings"] != WarningLevel.Danger)
+        foreach (Building b in buildings)
         {
-            foreach (Building b in buildings)
+            if (b.TakingDamage)
             {
-                if (b.TakingDamage)
-                {
-                    warnings["buildings"] = WarningLevel.Danger;
-                    buildingStatus.text = DANGER + "Buildings are taking damage!";
-                    audioSource.PlayOneShot(audioDamageAlert);
-                    //StartCoroutine(ShowMessage(buildingStatus.text));
-                    return;
-                }
-                //if (b.Health < b.)
+                warnings["buildings"] = WarningLevel.Danger;
+                buildingStatus.text = DANGER + "Buildings are taking damage!";
+                audioSource.PlayOneShot(audioDamageAlert);
+                //StartCoroutine(ShowMessage(buildingStatus.text));
+                return;
             }
-            warnings["buildings"] = WarningLevel.Normal;
-            buildingStatus.text = NORMAL + "All buildings are healthy";
+            //if (b.Health < b.)
         }
-
+        warnings["buildings"] = WarningLevel.Normal;
+        buildingStatus.text = NORMAL + "All buildings are healthy";
     }
 
     private void CheckPower()
