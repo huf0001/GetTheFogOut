@@ -14,7 +14,7 @@ public class FogUnit : FogEntity
     [SerializeField] private bool takingDamage = false;
     
     private float start = 0f;
-    private float end = 0.45f;
+    private float end = 0.90f;
 
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
