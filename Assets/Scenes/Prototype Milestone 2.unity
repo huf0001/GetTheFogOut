@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06744319, g: 0.08993444, b: 0.13506025, a: 1}
+  m_IndirectSpecularColor: {r: 0.0673975, g: 0.08987059, b: 0.1349672, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3798,6 +3798,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
+      propertyPath: dialogue.Array.data[4].dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
       propertyPath: aiText
       value: 
       objectReference: {fileID: 326070611}
@@ -3834,14 +3839,13 @@ PrefabInstance:
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[0].dialogue.Array.data[0]
-      value: Time to repair your hull. You will need collect minerals to repair the
-        hull.
+      value: Time to repair your hull. You will need collect minerals to repair it.
       objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[0].dialogue.Array.data[1]
-      value: There is likely to be more minerals further out. You will need to venture
-        into the fog to find them.
+      value: There it likely to be minerals scattered around the planet. You will
+        need to venture out to find them.
       objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -3868,7 +3872,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogue.Array.data[1].dialogue.Array.data[0]
       value: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next step,
-        finding the ships thrusters.\r\n"
+        finding the ship's missing thruster.\r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -3880,8 +3884,8 @@ PrefabInstance:
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[2].dialogue.Array.data[0]
-      value: Good job, you found the ships thrusters. Thankfully they are not in too
-        much disrepair. Next, you will need to store enough power to get out of here.
+      value: You found the ship's missing thruster! Thankfully it is not in too much
+        disrepair.
       objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -3891,15 +3895,23 @@ PrefabInstance:
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[3].dialogue.Array.data[0]
-      value: "Oh\u2026 I thought I should let you know, that fog you\u2019ve been
-        fighting through is showing extreme signs of aggression. Better save power
-        fast!"
+      value: "Oh\u2026 I thought I should let you know that fog you\u2019ve been fighting
+        through is showing extreme signs of aggression. "
       objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[5].dialogue.Array.data[0]
-      value: "Finally, enough power! Quick, push the launch button and let\u2019s
-        get out of here!"
+      value: Finally, enough power! Quick, push the launch button and get out of here!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].dialogue.Array.data[0]
+      value: Quick, if you save some power there should be enough to get out of here!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[3].dialogue.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
