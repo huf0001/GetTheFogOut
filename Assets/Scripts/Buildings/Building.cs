@@ -14,15 +14,16 @@ public abstract class Building : PlaneObject
     [SerializeField] protected bool placed = false;
     [SerializeField] protected BuildingType buildingType;
     [SerializeField] protected int mineralCost, powerCost, fuelCost, organicCost;
-    [SerializeField] protected AudioSource audioSpawn;
-    [SerializeField] protected AudioSource audioDamage;
-    [SerializeField] protected AudioSource audioDestroy;
+    [SerializeField] protected AudioClip audioSpawn;
+    [SerializeField] protected AudioClip audioDamage;
+    [SerializeField] protected AudioClip audioDestroy;
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
     //Non-serialized fields
     private Animator animator;
     private ResourceController resourceController = null;
+    protected AudioSource audioSource;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -51,9 +52,9 @@ public abstract class Building : PlaneObject
     {
         //MakeTilesVisible();
         FindToolTip();
-        audioSpawn = GetComponent<AudioSource>();
-        audioDamage = GetComponent<AudioSource>();
-        audioDestroy = GetComponent<AudioSource>();
+
+        audioSource = GetComponent<AudioSource>();
+
         resourceController = ResourceController.Instance;
         //if (placed)
         //{
@@ -94,7 +95,11 @@ public abstract class Building : PlaneObject
 
         resourceController.AddBuilding(this);
         placed = true;
-        //audioSpawn.Play();
+        /*
+        if (this.buildingType != BuildingType.Hub)
+        {
+            audioSource.PlayOneShot(audioSpawn);
+        }*/
         //GetComponent<Renderer>().material.shader = buildingShader;
     }
 
@@ -253,7 +258,7 @@ public abstract class Building : PlaneObject
 
         //Debug.Log("Should be removed from ResourceController's list of my building type");
 
-        audioDestroy.Play();
+        AudioSource.PlayClipAtPoint(audioDestroy, this.transform.position, 1f);
         Destroy(this.transform.parent.gameObject);
         Destroy(this);
     }
@@ -276,7 +281,6 @@ public abstract class Building : PlaneObject
 
     public IEnumerator DamageBuilding(float damageVal)
     {
-        audioDamage.Play();
         Health -= damageVal;
         float buildHealth = Health;
         TakingDamage = true;

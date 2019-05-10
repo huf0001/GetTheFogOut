@@ -23,10 +23,12 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveCompletePrefab;
+    [SerializeField] AudioClip audioCompleteObjective;
 
     // Non-Serialized Fields
     bool stageComplete = false;
     bool objWindowVisibilty = false;
+    private AudioSource audioSource;
 
 
     // Public Properties -------------------------------------------------------------------------------------
@@ -48,7 +50,7 @@ public class ObjectiveController : DialogueBoxController
     // Start is called before the first frame update
     void Start()
     {
-
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -220,6 +222,7 @@ public class ObjectiveController : DialogueBoxController
         GameObject objComp = Instantiate(objectiveCompletePrefab, GameObject.Find("Canvas").transform);
         GameObject completeText = objComp.GetComponentInChildren<Image>().gameObject;
         completeText.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad);
+        audioSource.PlayOneShot(audioCompleteObjective);
         yield return new WaitForSeconds(5f);
         completeText.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad);
         yield return new WaitForSeconds(0.3f);

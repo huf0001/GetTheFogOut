@@ -35,12 +35,18 @@ public class WarningScript : MonoBehaviour
     [SerializeField] GameObject warningBox;
     [SerializeField] GameObject popupMessage;
 
+    private AudioSource audioSource;
+    [SerializeField] AudioClip audioDamageAlert;
+    [SerializeField] AudioClip audioPowerGridOverloadedAlert;
+
+
     // Start is called before the first frame update
     void Start()
     {
         tint = GetComponent<Image>();
         resourceController = ResourceController.Instance;
         texts = GetComponentsInChildren<TextMeshProUGUI>(true);
+        audioSource = GetComponent<AudioSource>();
         powerStatus = texts[0];
         powerStatus.text = NORMAL + "Power is stable";
         buildingStatus = texts[1];
@@ -115,6 +121,7 @@ public class WarningScript : MonoBehaviour
                 {
                     warnings["buildings"] = WarningLevel.Danger;
                     buildingStatus.text = DANGER + "Buildings are taking damage!";
+                    audioSource.PlayOneShot(audioDamageAlert);
                     StartCoroutine(ShowMessage(buildingStatus.text));
                     return;
                 }
@@ -142,6 +149,7 @@ public class WarningScript : MonoBehaviour
         {
             warnings["power"] = WarningLevel.Danger;
             powerStatus.text = DANGER + "Power grid is overloaded!";
+            audioSource.PlayOneShot(audioPowerGridOverloadedAlert);
             StartCoroutine(ShowMessage(powerStatus.text));
         }
         else
