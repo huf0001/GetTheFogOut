@@ -5,8 +5,8 @@ using UnityEngine;
 public class FogUnit : FogEntity
 {
     //Non-Serialized Fields
-    private bool spill = false;
-    private bool neighboursFull = false;
+    [SerializeField] private bool spill = false;
+    [SerializeField] private bool neighboursFull = false;
 
     [SerializeField] private float healthProgress = 0;
     [SerializeField] private float startHealth;
@@ -59,7 +59,9 @@ public class FogUnit : FogEntity
     {
         if (Location.Building != null)
         {
+            //Why is it a coroutine? Wouldn't doing that cause the coroutines to pile up?
             StartCoroutine(Location.Building.DamageBuilding(damage * (base.Health / HealthLimit)));
+            //Location.Building.DamageBuilding(damage * (base.Health / HealthLimit));
         }
     }
 
@@ -87,6 +89,10 @@ public class FogUnit : FogEntity
             {
                 t.FogUnit.NeighboursFull = false;
             }
+            //else if (t.FogBatch != Location.FogBatch && t.FogBatch.Batched)
+            //{
+            //    t.FogBatch.NeighboursFull = false;
+            //}
         }
     }
 

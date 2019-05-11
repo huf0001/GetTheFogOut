@@ -110,8 +110,9 @@ public class TutorialController : DialogueBoxController
     {
         if (skipTutorial)
         {
-            GetComponent<Fog>().SpawnStartingFog();
             tutorialStage = TutorialStage.Finished;
+            GetComponent<Fog>().enabled = true;
+            GetComponent<Fog>().SpawnStartingFog();
             ObjectiveController.Instance.IncrementStage();
         }
         else

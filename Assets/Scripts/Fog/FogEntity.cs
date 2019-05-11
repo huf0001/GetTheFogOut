@@ -8,7 +8,7 @@ public abstract class FogEntity : Entity
     [SerializeField] protected float damage = 1f;
 
     //Private Fields
-    protected float healthLimit;
+    [SerializeField] protected float healthLimit;
     protected Fog fog;
 
     //Public Properties

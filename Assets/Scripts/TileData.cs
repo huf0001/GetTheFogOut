@@ -38,7 +38,6 @@ public class TileData
     public ResourceNode Resource { get => resource; set => resource = value; }
     public FogUnit FogUnit { get => fogUnit; set => fogUnit = value; }
     public FogBatch FogBatch { get => fogBatch; set => fogBatch = value; }
-    public Building Building { get => building; set => building = value; }
     public GameObject Placedtower { get => placedtower; set => placedtower = value; }
 
     public List<TileData> AdjacentTiles { get => adjacentTiles; }
@@ -62,6 +61,34 @@ public class TileData
                 return powerSources[0];
             }
         }
+    }
+
+
+    public Building Building
+    {
+        get => building;
+
+        set
+        {
+            if (fogBatch != null)
+            {
+                if (value == null)
+                {
+                    fogBatch.Buildings.Remove(building);
+                }
+                else
+                {
+                    if (building != null)
+                    {
+                        fogBatch.Buildings.Remove(building);
+                    }
+
+                    fogBatch.Buildings.Add(value);
+                }
+            }
+
+            building = value;
+        } 
     }
 
     public TileData(int x, int z)
