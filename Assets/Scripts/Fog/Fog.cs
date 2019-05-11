@@ -120,7 +120,7 @@ public class Fog : MonoBehaviour
                     FogBatch f = Instantiate<FogBatch>(fogBatchPrefab);
                     f.transform.SetParent(this.transform, true);
                     fogBatches.Add(f);
-                    f.transform.position = new Vector3(i, 0.13f, j);
+                    f.transform.position = new Vector3(i + 2, 0.13f, j + 2);    // adding +2 to positions so that the batch is centred on the centre tile that it is a batch for.
                     f.gameObject.name = "FogBatch(" + i + "," + j + ")";
                     f.Tiles = tilesForBatch;
 
