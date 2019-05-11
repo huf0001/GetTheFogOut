@@ -137,9 +137,31 @@ public abstract class PowerSource : Building
         foreach (TileData tile in tiles)
         {
             tile.PowerUp(this as PowerSource);
+
+            if ((tile.X == 28) || (tile.X == 29) || (tile.X == 30))
+            {
+                if ((tile.Z == 20) || (tile.Z == 21) || (tile.Z == 22))
+                {
+                    tile.PowerDown(this as PowerSource);
+                    WorldController.Instance.DisableTiles.Add(tile);
+                     if (tile.X == 29 && tile.Z == 21) //this block is to re-enable the hub tile , removed this if you don't want the player to see the hub
+                     {
+                        WorldController.Instance.DisableTiles.Remove(tile);
+                        tile.PowerUp(this as PowerSource);
+                    }
+                }
+            }
+
             if (!WorldController.Instance.ActiveTiles.Contains(tile))
             {
-                WorldController.Instance.ActiveTiles.Add(tile);
+                if(!WorldController.Instance.DisableTiles.Contains(tile))
+                {
+                    WorldController.Instance.ActiveTiles.Add(tile);
+                    if (tile.X == 29 && tile.Z == 21) // hide green tile in the middle of the hub.
+                    {
+                        WorldController.Instance.ActiveTiles.Remove(tile);
+                    }
+                }
             }
         }
 

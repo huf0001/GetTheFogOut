@@ -65,6 +65,9 @@ public class WorldController : MonoBehaviour
     private List<TileData> activeTiles = new List<TileData>();
     public List<TileData> ActiveTiles { get => activeTiles; }
 
+    private List<TileData> disableTiles = new List<TileData>();
+    public List<TileData> DisableTiles { get => disableTiles; }
+
     //Cursor Locking to centre
     private CursorLockMode wantedMode;
 
@@ -204,14 +207,16 @@ public class WorldController : MonoBehaviour
                 TileData tile = new TileData(x, z);
                 tiles[x, z] = tile;
                 pos = new Vector3(tile.X, 0, tile.Z);
+
                 GameObject tileObject = Instantiate(tilePrefab);
                 tileObject.transform.position = new Vector3(tile.X, 0.1f, tile.Z);
                 tileObject.transform.SetParent(quad.transform);
-                //set to true will render the tile; set to false, and it won't
-                //tileGO.GetComponent<MeshRenderer>().enabled = true;
-                //MeshRendererTileChild(false);
 
-                if (spawnResources)
+                    //set to true will render the tile; set to false, and it won't
+                    //tileGO.GetComponent<MeshRenderer>().enabled = true;
+                    //MeshRendererTileChild(false);
+
+                    if (spawnResources)
                 {
                     if (UnityEngine.Random.Range(1, 100) < mineralSpawnChance)
                     {
@@ -251,7 +256,7 @@ public class WorldController : MonoBehaviour
     }
 
     //Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
-    private void ConnectAdjacentTiles()
+    public void ConnectAdjacentTiles()
     {
         TileData a;
 

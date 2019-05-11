@@ -225,7 +225,7 @@ public class Fog : MonoBehaviour
             }
         }
 
-        Debug.Log(f.name + ".Neighbours.Count is " + f.Neighbours.Count);
+    //    Debug.Log(f.name + ".Neighbours.Count is " + f.Neighbours.Count);
     }
 
     //Spawns the starting fog on the board
@@ -423,7 +423,7 @@ public class Fog : MonoBehaviour
 
     private void UpdateFogFill()
     {
-        Debug.Log("Updating Fog Fill");
+     //   Debug.Log("Updating Fog Fill");
         if (fogAccelerates && fogGrowth < 100)
         {
             fogGrowth += Time.deltaTime;
@@ -506,23 +506,23 @@ public class Fog : MonoBehaviour
     //Fog spills over onto adjacent tiles
     private void ExpandFog()
     {
-        Debug.Log("ExpandFog()");
+      //  Debug.Log("ExpandFog()");
         List<TileData> newTiles = new List<TileData>();
 
-        Debug.Log("FogUnitsInPlay: " + fogUnitsInPlay.Count);
+      //  Debug.Log("FogUnitsInPlay: " + fogUnitsInPlay.Count);
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
-            Debug.Log(f.name + " Spill: " + f.Spill + ". Threshold: " + fogSpillThreshold + ". Health: " + f.Health + ".");
+          //  Debug.Log(f.name + " Spill: " + f.Spill + ". Threshold: " + fogSpillThreshold + ". Health: " + f.Health + ".");
             if (f.Spill == false && f.Health >= fogSpillThreshold)
             {
                 f.Spill = true;
 
-                Debug.Log(f.name + " adjacent tiles: " + f.Location.AdjacentTiles.Count);
+           //     Debug.Log(f.name + " adjacent tiles: " + f.Location.AdjacentTiles.Count);
 
                 foreach (TileData a in f.Location.AdjacentTiles)
                 {
-                    Debug.Log(a.Name + ". fogCoveredTiles.Contains(a): " + fogCoveredTiles.Contains(a) + ". newTiles.Contains(a): " + newTiles.Contains(a) + ".");
+              //      Debug.Log(a.Name + ". fogCoveredTiles.Contains(a): " + fogCoveredTiles.Contains(a) + ". newTiles.Contains(a): " + newTiles.Contains(a) + ".");
                     if ((!fogCoveredTiles.Contains(a)) && (!newTiles.Contains(a)) && (a.FogBatch == null || !a.FogBatch.Batched))
                     {
                         newTiles.Add(a);
@@ -548,7 +548,7 @@ public class Fog : MonoBehaviour
         //    }
         //}
 
-        Debug.Log("New Tiles Count: " + newTiles.Count);
+     //   Debug.Log("New Tiles Count: " + newTiles.Count);
 
         if (newTiles.Count > 0)
         {
