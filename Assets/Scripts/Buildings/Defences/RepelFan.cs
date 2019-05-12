@@ -57,7 +57,7 @@ public class RepelFan : Defence
             {
                 if ((dir.FogUnit != null && !dir.FogUnit.TakingDamage))
                 {
-                    dir.FogUnit.DealDamage(directDamage);
+                    dir.FogUnit.DealDamageToFogUnit(directDamage);
                 }
                 //else if (dir.FogBatch.Batched)
                 //{
@@ -69,7 +69,7 @@ public class RepelFan : Defence
             {
                 if (ndir.FogUnit != null && !ndir.FogUnit.TakingDamage)
                 {
-                    ndir.FogUnit.DealDamage(aoeDamage);
+                    ndir.FogUnit.DealDamageToFogUnit(aoeDamage);
                 }
                 //else if (ndir.FogBatch.Batched)
                 //{

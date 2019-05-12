@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class FogEntity : Entity
 {
     //Serialized Fields
-    [SerializeField] protected float damage = 1f;
+    [SerializeField] protected float damage = 0.1f;
 
     //Private Fields
     [SerializeField] protected float healthLimit;
@@ -15,7 +15,7 @@ public abstract class FogEntity : Entity
     public float HealthLimit { get => healthLimit; set => healthLimit = value; }
 
     //Abstract Methods
-    public abstract void DealDamage(float damage, Vector3 location);
+    public abstract void DealDamageToFogUnit(float damage, Vector3 location);
 
-    public abstract void DamageBuilding();
+    public abstract void UpdateDamageToBuilding();
 }

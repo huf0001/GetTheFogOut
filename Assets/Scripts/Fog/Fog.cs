@@ -8,12 +8,6 @@ public enum FogExpansionDirection
     OrthogonalAndDiagonal
 }
 
-public enum FogFillType
-{
-    Block,
-    Fluid
-}
-
 public enum StartConfiguration
 {
     OneSide,
@@ -28,12 +22,10 @@ public enum StartConfiguration
 public class Fog : MonoBehaviour
 {
     //Serialized Fields
-    [SerializeField] private bool batching = false;
+    //[SerializeField] private bool batching = false;
     [SerializeField] private FogUnit fogUnitPrefab;
-    //[SerializeField] private FogBatch fogBatchPrefab;
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private FogExpansionDirection expansionDirection;
-    [SerializeField] private FogFillType fillType;
     [SerializeField] private bool fogAccelerates = true;
     [SerializeField] private float fogGrowth = 5f;
     [SerializeField] private float fogHealthLimit = 100f;
@@ -44,11 +36,19 @@ public class Fog : MonoBehaviour
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
 
+    [SerializeField] private float fogFillInterval = 0.2f;
+    [SerializeField] private float fogExpansionInterval = 0.5f;
+
     //Container object fields
-    private List<TileData> fogCoveredTiles = new List<TileData>();                      //i.e. tiles currently covered by fog
+    private List<TileData> fogCoveredTiles = new List<TileData>();                                   //i.e. tiles currently covered by fog
     [SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
-    private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                 //i.e. currently inactive fog units waiting for spawning
-    //private List<FogBatch> fogBatches = new List<FogBatch>();                   //i.e. FogBatch objects in the scene
+    //[SerializeField] private List<FogEntity> fogUnitsTakingDamage = new List<FogEntity>();                 //i.e. currently active fog units on the board
+    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
+    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
+    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
+    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
+    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
+    private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                                      //i.e. currently inactive fog units waiting for spawning
 
     //Object fields
     private WorldController wc;
@@ -58,9 +58,9 @@ public class Fog : MonoBehaviour
     private int zMax;
 
     //Public properties
-    public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
-    public FogFillType FillType { get => fillType; }
     public static Fog Instance { get; protected set; }
+    public bool DamageOn { get => damageOn; set => damageOn = value; }
+    public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public float FogHealthLimit { get => fogHealthLimit; }
 
     private void Awake()
@@ -76,6 +76,7 @@ public class Fog : MonoBehaviour
     //Create the max no. of fog units the game should need
     public void PopulateFogPool()
     {
+        Debug.Log("Populating Fog Pool");
         wc = WorldController.Instance;
         xMax = wc.Width;
         zMax = wc.Length;
@@ -91,142 +92,16 @@ public class Fog : MonoBehaviour
 
     public void SpawnStartingFog()
     {
-        //if (batching)
-        //{
-        //    SpawnFogBatches();
-        //}
-
+        Debug.Log("Spawning Starting Fog");
         SpawnStartingFog(configuration);
-
-        //if (batching)
-        //{            
-        //    foreach (FogBatch f in fogBatches)
-        //    { 
-        //        f.CheckBatching();
-        //        //if (!f.Batched)
-        //        //{
-        //        //}
-        //    }
-        //}
     }
 
-    //private void SpawnFogBatches()
-    //{
-    //    for (int i = 0; i <= xMax - 5; i += 5)
-    //    {
-    //        for (int j = 0; j <= zMax - 5; j += 5)
-    //        {
-    //            List<TileData> tilesForBatch = GetAllTilesInSquareAt(i, j);
-
-    //            if (tilesForBatch != null)
-    //            {
-    //                FogBatch f = Instantiate<FogBatch>(fogBatchPrefab);
-    //                f.XMin = i;
-    //                f.XMax = i + 4;
-    //                f.ZMin = j;
-    //                f.ZMax = j + 4;
-    //                f.HealthLimit = fogHealthLimit;
-    //                f.transform.SetParent(this.transform, true);
-    //                fogBatches.Add(f);
-    //                f.transform.position = new Vector3(i + 2, 0.13f, j + 2);    // adding +2 to positions so that the batch is centred on the centre tile that it is a batch for.
-    //                f.gameObject.name = "FogBatch(" + i + "," + j + ")";
-    //                f.Tiles = tilesForBatch;
-
-    //                foreach (TileData t in f.Tiles)
-    //                {
-    //                    t.FogBatch = f;
-
-    //                    //if (t.X == f.XMin || t.X == f.XMax || t.Z == f.ZMin || t.Z == f.ZMax)
-    //                    //{
-    //                    //    f.EdgeTiles.Add(t);
-    //                    //}
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    foreach (FogBatch f in fogBatches)
-    //    {
-    //        GetNeighboursOfFogBatch(f);
-    //    }
-    //}
-
-    ////Tries to get all tiles that would be covered by the fog batch, returns null if the fog batch would spill over the edge of the board.
-    //private List<TileData> GetAllTilesInSquareAt(int x, int z)
-    //{
-    //    List<TileData> tiles = new List<TileData>();
-
-    //    for (int i = x; i < x + 5; i++)
-    //    {
-    //        for (int j = z; j < z + 5; j++)
-    //        {
-    //            if (WorldController.Instance.TileExistsAt(new Vector2(i, j)))
-    //            {
-    //                tiles.Add(WorldController.Instance.GetTileAt(new Vector2(i, j)));
-    //            }
-    //            else
-    //            {
-    //                return null;
-    //            }
-    //        }
-    //    }
-
-    //    return tiles;
-    //}
-
-    //private void GetNeighboursOfFogBatch(FogBatch f)
-    //{
-    //    Vector2 pos = new Vector2(f.XMin - 1, f.ZMin);
-    //    TileData t;
-
-    //    if (WorldController.Instance.TileExistsAt(pos))
-    //    {
-    //        t = WorldController.Instance.GetTileAt(pos);
-
-    //        if (t.FogBatch != null)
-    //        {
-    //            f.Neighbours.Add(WorldController.Instance.GetTileAt(pos).FogBatch);
-    //        }
-    //    }
-
-    //    pos = new Vector2(f.XMin, f.ZMin - 1);
-
-    //    if (WorldController.Instance.TileExistsAt(pos))
-    //    {
-    //        t = WorldController.Instance.GetTileAt(pos);
-
-    //        if (t.FogBatch != null)
-    //        {
-    //            f.Neighbours.Add(WorldController.Instance.GetTileAt(pos).FogBatch);
-    //        }
-    //    }
-
-    //    pos = new Vector2(f.XMax + 1, f.ZMax);
-
-    //    if (WorldController.Instance.TileExistsAt(pos))
-    //    {
-    //        t = WorldController.Instance.GetTileAt(pos);
-
-    //        if (t.FogBatch != null)
-    //        {
-    //            f.Neighbours.Add(WorldController.Instance.GetTileAt(pos).FogBatch);
-    //        }
-    //    }
-
-    //    pos = new Vector2(f.XMax, f.ZMax + 1);
-
-    //    if (WorldController.Instance.TileExistsAt(pos))
-    //    {
-    //        t = WorldController.Instance.GetTileAt(pos);
-
-    //        if (t.FogBatch != null)
-    //        {
-    //            f.Neighbours.Add(WorldController.Instance.GetTileAt(pos).FogBatch);
-    //        }
-    //    }
-
-    ////    Debug.Log(f.name + ".Neighbours.Count is " + f.Neighbours.Count);
-    //}
+    public void ActivateFog()
+    {
+        Debug.Log("Activating Fog Filling and Expansion");
+        InvokeRepeating("DoUpdate", 0.1f, fogFillInterval);
+        InvokeRepeating("UpdateFogExpansion", 0.1f, fogExpansionInterval);
+    }
 
     //Spawns the starting fog on the board
     public void SpawnStartingFog(StartConfiguration startConfiguration)
@@ -319,16 +194,11 @@ public class Fog : MonoBehaviour
                 }
             }
         }
-
-        if (fillType == FogFillType.Fluid)
+        
+        foreach(FogUnit f in fogUnitsInPlay)
         {
-            foreach(FogUnit f in fogUnitsInPlay)
-            {
-                f.Health = fogHealthLimit;
-            }
+            f.Health = fogHealthLimit;
         }
-
-        InvokeRepeating("UpdateFogExpansion", 0.1f, 0.5f);
     }
 
     private void SpawnFogUnit(int x, int z)
@@ -418,33 +288,40 @@ public class Fog : MonoBehaviour
     // Update is called once per frame
     private void DoUpdate()
     {
-        //TODO: call UpdateFogFill() less than once per frame
-        UpdateFogFill();
+        List<FogUnit> toRender = new List<FogUnit>();
+
+        toRender = UpdateDamageToFogUnits(toRender);
+        toRender = UpdateFogFill(toRender);
+        UpdateRender(toRender);        
     }
 
-    private void UpdateFogFill()
+    private List<FogUnit> UpdateDamageToFogUnits(List<FogUnit> toRender)
     {
-     //   Debug.Log("Updating Fog Fill");
-        if (fogAccelerates && fogGrowth < 100)
+        foreach (FogUnit f in fogUnitsInPlay)
         {
-            fogGrowth += Time.deltaTime;
+            if (f.TakingDamage)
+            {
+                f.UpdateDamageToFogUnit();
+                toRender.Add(f);
+            }
         }
 
-        //if (fillType == FogFillType.Block)
-        //{
-        //    foreach (FogUnit f in fogUnitsInPlay)
-        //    {
-        //        f.Health += Time.deltaTime * fogGrowth;
-        //    }
-        //}
-        //else if (fillType == FogFillType.Fluid)
-        //{
+        return toRender;
+    }
+
+    private List<FogUnit> UpdateFogFill(List<FogUnit> toRender)
+    {
+        if (fogAccelerates && fogGrowth < 100)
+        {
+            //fogGrowth += Time.deltaTime;
+            fogGrowth += fogFillInterval;
+        }
+
+        FogUnit af;
 
         //TODO: Change to fogUnitsFillingOthers
         foreach (FogUnit f in fogUnitsInPlay)
         {
-            //Debug.Log(f.name + ". neighbours full " + f.NeighboursFull + ". f.Health " + f.Health + ". Spill Threshold: " + fogSpillThreshold);
-
             if (!f.NeighboursFull && f.Health >= fogSpillThreshold)
             {
                 int count = f.Location.AdjacentTiles.Count;
@@ -452,21 +329,25 @@ public class Fog : MonoBehaviour
 
                 foreach (TileData t in f.Location.AdjacentTiles)
                 {
-                    if (t.FogUnit != null)
+                    af = t.FogUnit;
+
+                    if (af != null)
                     {
-                        if (t.FogUnit.Health < f.Health)
+                        if (af.Health < f.Health)
                         {
-                            t.FogUnit.Health += Time.deltaTime * fogGrowth / count;
+                            //t.FogUnit.Health += Time.deltaTime * fogGrowth / count;
+                            af.Health += fogFillInterval * fogGrowth / count;
+
+                            if (!toRender.Contains(af))
+                            {
+                                toRender.Add(af);
+                            }
                         }
-                        else if (t.FogUnit.Health >= fogHealthLimit)
+                        else if (af.Health >= fogHealthLimit)
                         {
                             fullCount++;
                         }
                     }
-                    //else if (t.FogBatch != null && t.FogBatch.Batched == true)
-                    //{
-                    //    fullCount++;
-                    //}
                 }
 
                 if (count == fullCount)
@@ -475,23 +356,22 @@ public class Fog : MonoBehaviour
                 }
             }
         }
-        //}
-        //else
-        //{
-        //    Debug.Log("Invalid / unimplemented fog expansion type selected.");
-        //}
+
+        return toRender;
+    }
+
+    private void UpdateRender(List<FogUnit> toRender)
+    {
+        foreach (FogUnit f in toRender)
+        {
+            f.UpdateRender();
+        }
     }
 
     private void UpdateFogExpansion()
     {
         //TODO: move handling of damage to the building script so that it only occurs for each building, not for each fog unit.
-        if (damageOn && fogUnitsInPlay.Count > 0)
-        {
-            foreach (FogUnit f in fogUnitsInPlay)
-            {
-                f.DamageBuilding();
-            }
-        }
+
 
         if (fogUnitsInPool.Count > 0 && configuration != StartConfiguration.FullBoard)
         {
@@ -537,104 +417,4 @@ public class Fog : MonoBehaviour
             }
         }
     }
-
-    ////Fog spills over onto adjacent tiles
-    //private void ExpandFog()
-    //{
-    //  //  Debug.Log("ExpandFog()");
-    //    List<TileData> newTiles = new List<TileData>();
-
-    //  //  Debug.Log("FogUnitsInPlay: " + fogUnitsInPlay.Count);
-
-    //    foreach (FogUnit f in fogUnitsInPlay)
-    //    {
-    //      //  Debug.Log(f.name + " Spill: " + f.Spill + ". Threshold: " + fogSpillThreshold + ". Health: " + f.Health + ".");
-    //        if (f.Spill == false && f.Health >= fogSpillThreshold)
-    //        {
-    //            f.Spill = true;
-
-    //       //     Debug.Log(f.name + " adjacent tiles: " + f.Location.AdjacentTiles.Count);
-
-    //            foreach (TileData a in f.Location.AdjacentTiles)
-    //            {
-    //          //      Debug.Log(a.Name + ". fogCoveredTiles.Contains(a): " + fogCoveredTiles.Contains(a) + ". newTiles.Contains(a): " + newTiles.Contains(a) + ".");
-    //                if ((!fogCoveredTiles.Contains(a)) && (!newTiles.Contains(a)))// && (a.FogBatch == null || !a.FogBatch.Batched))
-    //                {
-    //                    newTiles.Add(a);
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    //foreach (FogBatch f in fogBatches)
-    //    //{
-    //    //    if (f.Spill == false)
-    //    //    {
-    //    //        f.Spill = true;
-
-    //    //        foreach (TileData a in f.EdgeTiles)
-    //    //        {
-    //    //            Debug.Log(a.Name + ". fogCoveredTiles.Contains(a): " + fogCoveredTiles.Contains(a) + ". newTiles.Contains(a): " + newTiles.Contains(a) + ".");
-    //    //            if ((!fogCoveredTiles.Contains(a)) && (!newTiles.Contains(a)) && (a.FogBatch == null || !a.FogBatch.Batched))
-    //    //            {
-    //    //                newTiles.Add(a);
-    //    //            }
-    //    //        }
-    //    //    }
-    //    //}
-
-    // //   Debug.Log("New Tiles Count: " + newTiles.Count);
-
-    //    if (newTiles.Count > 0)
-    //    {
-    //        foreach (TileData n in newTiles)
-    //        {
-    //            SpawnFogUnit(n.X, n.Z);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
-    //        }
-    //    }
-    //}
-
-    //private void UpdateFogUnitBatching()
-    //{
-    //    int interval = 5;
-
-    //    for (int i = 0; i < xMax; i += interval)
-    //    {
-    //        for (int j = 0; i < zMax; j += interval)
-    //        {
-    //            UpdateFogUnitBatch(i, i + interval, j, j + interval);
-    //        }
-    //    }
-    //}
-
-    //private void UpdateFogUnitBatch(int minX, int maxX, int minY, int maxY)
-    //{
-    //    bool valid = true;
-    //    int i = minX;
-    //    int j = minY;
-
-    //    while (valid && i < maxX)
-    //    {
-    //        while (valid && j < maxY)
-    //        {
-    //            if (WorldController.Instance.TileExistsAt(new Vector2(i, j)) && WorldController.Instance.GetTileAt(new Vector2(i,j)).FogUnit == null)
-    //            {
-    //                valid = false;
-    //            }
-
-    //            j++;
-    //        }
-
-    //        i++;
-    //    }
-
-    //    if (valid)
-    //    {
-    //        Debug.Log("Fog units (" + minX + "," + minY + ") to (" + minX + "," + minY + ") can be batched. If they're already batched, do nothing.");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Fog units (" + minX + "," + minY + ") to (" + minX + "," + minY + ") can't be batched. If they are, they need to be un-batched");
-    //    }
-    //}
 }

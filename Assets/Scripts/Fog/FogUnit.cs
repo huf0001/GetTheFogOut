@@ -30,7 +30,7 @@ public class FogUnit : FogEntity
     }
 
     // Update is called once per frame
-    void UpdateDamage()
+    public void UpdateDamageToFogUnit()
     {
         //if (takingDamage)
         //{
@@ -58,22 +58,22 @@ public class FogUnit : FogEntity
         gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, base.Health / HealthLimit));
     }
 
-    public override void DamageBuilding()
+    public override void UpdateDamageToBuilding()
     {
         if (Location.Building != null)
         {
             //Why is it a coroutine? Wouldn't doing that cause the coroutines to pile up?
-            StartCoroutine(Location.Building.DamageBuilding(damage * (base.Health / HealthLimit)));
+            StartCoroutine(Location.Building.DealDamageToBuilding(damage * (base.Health / HealthLimit)));
             //Location.Building.DamageBuilding(damage * (base.Health / HealthLimit));
         }
     }
 
-    public override void DealDamage(float damage, Vector3 location)
+    public override void DealDamageToFogUnit(float damage, Vector3 location)
     {
-        DealDamage(damage);
+        DealDamageToFogUnit(damage);
     }
 
-    public void DealDamage(float damage)
+    public void DealDamageToFogUnit(float damage)
     {
         takingDamage = true;
 

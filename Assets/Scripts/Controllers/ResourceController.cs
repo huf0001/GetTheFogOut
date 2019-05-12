@@ -262,7 +262,12 @@ public class ResourceController : MonoBehaviour
     {
         Debug.Log("Removing building");
         Buildings.Remove(b);
-        b.Location.PowerSource.SuppliedBuildings.Remove(b);
+
+        if (b.Location.PowerSource != null)
+        {
+            b.Location.PowerSource.SuppliedBuildings.Remove(b);
+        }
+
         switch (b.BuildingType)
         {
             case BuildingType.Battery:

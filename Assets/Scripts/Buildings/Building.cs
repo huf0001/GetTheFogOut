@@ -71,6 +71,15 @@ public abstract class Building : PlaneObject
     protected virtual void Start()
     {
         MaxHealth = Health;
+        InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
+    }
+
+    private void CheckForDamage()
+    {
+        if (Fog.Instance.DamageOn && Location.FogUnit != null)
+        {
+            Location.FogUnit.UpdateDamageToBuilding();
+        }
     }
 
     // Update is called once per frame
@@ -226,6 +235,11 @@ public abstract class Building : PlaneObject
     public void DismantleBuilding()
     {
         Debug.Log("Dismantling " + this.name);
+        if (buildingType == BuildingType.Hub)
+        {
+            WorldController.Instance.HubDestroyed = true;
+        }
+
         if (buildingType == BuildingType.Hub || buildingType == BuildingType.Relay)
         {
             PowerSource p = this as PowerSource;
@@ -260,7 +274,16 @@ public abstract class Building : PlaneObject
         //Debug.Log("Should be removed from ResourceController's list of my building type");
 
         AudioSource.PlayClipAtPoint(audioDestroy, this.transform.position, 1f);
-        Destroy(this.transform.parent.gameObject);
+
+        if (this.transform.parent != null)
+        {
+            Destroy(this.transform.parent.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
         Destroy(this);
     }
 
@@ -280,7 +303,7 @@ public abstract class Building : PlaneObject
         }
     }
 
-    public IEnumerator DamageBuilding(float damageVal)
+    public IEnumerator DealDamageToBuilding(float damageVal)
     {
         Health -= damageVal;
         float buildHealth = Health;

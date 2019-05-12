@@ -74,6 +74,7 @@ public class WorldController : MonoBehaviour
     //Flags
     private bool hubBuilt = false;
     private bool isGameOver;
+    private bool hubDestroyed = false;
    // private bool isOn;
 
     private int index;
@@ -87,6 +88,7 @@ public class WorldController : MonoBehaviour
     public int Length { get => length; }
     public Hub Hub { get => hub; set => hub = value; }
     public ShipComponentState[] ShipComponents { get => shipComponents; }
+    public bool HubDestroyed { get => hubDestroyed; set => hubDestroyed = value; }
     //public TutorialStage TutorialStage { get => tutorialStage;  }
     //public ResourceController ResourceController { get => resourceController; }
     //public TutorialController TutorialController { get => tutorialController; }
@@ -406,7 +408,7 @@ public class WorldController : MonoBehaviour
             // Debug.Log("Cursor State After: " + Cursor.lockState + ", wantedMode = " + wantedMode);
         }
 
-        if (resourceController.IsWin() || hub.isDestroyed())
+        if (resourceController.IsWin() || hubDestroyed)
         {
             Time.timeScale = 0.2f;
             isGameOver = true;
