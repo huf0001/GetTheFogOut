@@ -77,11 +77,11 @@ public class Projectile : MonoBehaviour
                     }
                 }
             }
-            else if (tileHit.FogBatch.Batched)
-            {
-                //Debug.Log("Dealing damage to " + tileHit.FogUnit);
-                tileHit.FogBatch.DealDamage(damage, transform.position);
-            }
+            //else if (tileHit.FogBatch.Batched)
+            //{
+            //    //Debug.Log("Dealing damage to " + tileHit.FogUnit);
+            //    tileHit.FogBatch.DealDamage(damage, transform.position);
+            //}
         }
 
         // Return the projectile to the pool

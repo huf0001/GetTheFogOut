@@ -30,10 +30,10 @@ public class FogUnit : FogEntity
     }
 
     // Update is called once per frame
-    void Update()
+    void UpdateDamage()
     {
-        if (takingDamage)
-        {
+        //if (takingDamage)
+        //{
             base.Health = Mathf.Lerp(startHealth, targetHealth, healthProgress);
 
             if (base.Health <= targetHealth)
@@ -45,14 +45,17 @@ public class FogUnit : FogEntity
             {
                 healthProgress += Time.deltaTime * 3;
             }
-        }
 
+            if (base.Health <= 0)
+            {
+                ReturnToFogPool();
+            }
+        //}
+    }
+
+    public void UpdateRender()
+    {
         gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, base.Health / HealthLimit));
-         
-        if (base.Health <= 0)
-        {
-            ReturnToFogPool();
-        }
     }
 
     public override void DamageBuilding()

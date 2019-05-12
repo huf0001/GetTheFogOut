@@ -10,23 +10,23 @@ public abstract class Entity : Locatable
     public float MaxHealth { get; protected set; }
 
     // Start is called before the first frame update
-    void Start()
-    {
-    }
+    //void Start()
+    //{
+    //}
 
     // Update is called once per frame
-    void Update()
-    {
-        //if (health == 0)
-        //{
-        //    Debug.Log("This entity has been destroyed. Called from Entity.Update()");
-        //    Destroy(this.gameObject);
-        //}
-    }
+    //void Update()
+    //{
+    //    //if (health == 0)
+    //    //{
+    //    //    Debug.Log("This entity has been destroyed. Called from Entity.Update()");
+    //    //    Destroy(this.gameObject);
+    //    //}
+    //}
 
     protected bool GotNoHealth()
     {
-        if (Health <= 0)
+        if (health <= 0)
         {
             return true;
         }

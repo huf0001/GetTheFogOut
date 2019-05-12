@@ -23,7 +23,7 @@ public class TileData
     [SerializeField] private int x = 0;
     [SerializeField] private int z = 0;
     private FogUnit fogUnit = null;
-    private FogBatch fogBatch = null;
+    //private FogBatch fogBatch = null;
     private GameObject placedtower = null;
     private List<TileData> adjacentTiles = new List<TileData>();
     private List<TileData> allAdjacentTiles = new List<TileData>();
@@ -37,7 +37,7 @@ public class TileData
 
     public ResourceNode Resource { get => resource; set => resource = value; }
     public FogUnit FogUnit { get => fogUnit; set => fogUnit = value; }
-    public FogBatch FogBatch { get => fogBatch; set => fogBatch = value; }
+    //public FogBatch FogBatch { get => fogBatch; set => fogBatch = value; }
     public GameObject Placedtower { get => placedtower; set => placedtower = value; }
 
     public List<TileData> AdjacentTiles { get => adjacentTiles; }
@@ -67,28 +67,28 @@ public class TileData
     public Building Building
     {
         get => building;
+        set => building = value;
+        //set
+        //{
+        //    if (fogBatch != null)
+        //    {
+        //        if (value == null)
+        //        {
+        //            fogBatch.Buildings.Remove(building);
+        //        }
+        //        else
+        //        {
+        //            if (building != null)
+        //            {
+        //                fogBatch.Buildings.Remove(building);
+        //            }
 
-        set
-        {
-            if (fogBatch != null)
-            {
-                if (value == null)
-                {
-                    fogBatch.Buildings.Remove(building);
-                }
-                else
-                {
-                    if (building != null)
-                    {
-                        fogBatch.Buildings.Remove(building);
-                    }
+        //            fogBatch.Buildings.Add(value);
+        //        }
+        //    }
 
-                    fogBatch.Buildings.Add(value);
-                }
-            }
-
-            building = value;
-        } 
+        //    building = value;
+        //} 
     }
 
     public TileData(int x, int z)

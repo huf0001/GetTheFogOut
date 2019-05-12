@@ -59,10 +59,10 @@ public class RepelFan : Defence
                 {
                     dir.FogUnit.DealDamage(directDamage);
                 }
-                else if (dir.FogBatch.Batched)
-                {
-                    dir.FogBatch.DealDamage(directDamage, new Vector3(dir.X, 0, dir.Z));
-                }
+                //else if (dir.FogBatch.Batched)
+                //{
+                //    dir.FogBatch.DealDamage(directDamage, new Vector3(dir.X, 0, dir.Z));
+                //}
             }
 
             foreach (TileData ndir in Notdirecttarget)
@@ -71,10 +71,10 @@ public class RepelFan : Defence
                 {
                     ndir.FogUnit.DealDamage(aoeDamage);
                 }
-                else if (ndir.FogBatch.Batched)
-                {
-                    ndir.FogBatch.DealDamage(directDamage, new Vector3(ndir.X, 0, ndir.Z));
-                }
+                //else if (ndir.FogBatch.Batched)
+                //{
+                //    ndir.FogBatch.DealDamage(directDamage, new Vector3(ndir.X, 0, ndir.Z));
+                //}
             }
 
         }
