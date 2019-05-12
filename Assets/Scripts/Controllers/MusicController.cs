@@ -75,11 +75,6 @@ public class MusicController : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            StartStage2();
-        }
-
         if (changeTrack)
         {
             timeUntilChange += Time.deltaTime;
