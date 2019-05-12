@@ -138,6 +138,12 @@ public class WorldController : MonoBehaviour
             TileData tile = GetTileAt(resourceNode.transform.position);
             tile.Resource = resourceNode;
             resourceNode.Location = tile;
+
+            // Centre on tile
+            Vector3 pos = resourceNode.transform.position;
+            pos.x = Mathf.Round(pos.x);
+            pos.z = Mathf.Round(pos.z);
+            resourceNode.transform.position = pos;
         }
     }
 
@@ -157,6 +163,13 @@ public class WorldController : MonoBehaviour
                 b.Location = tile;
                 b.Animator = b.GetComponentInChildren<Animator>();
                 b.Animator.SetBool("Built", true);
+
+                // Centre on tile
+                Vector3 pos = b.transform.position;
+                pos.x = Mathf.Round(pos.x);
+                pos.z = Mathf.Round(pos.z);
+                b.transform.position = pos;
+
                 b.Place();
                 break;
             }
