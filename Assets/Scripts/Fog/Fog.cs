@@ -42,6 +42,7 @@ public class Fog : MonoBehaviour
     //Container object fields
     private List<TileData> fogCoveredTiles = new List<TileData>();                                   //i.e. tiles currently covered by fog
     [SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
+    [SerializeField] private List<FogUnit> fogUnitsToReturnToPool = new List<FogUnit>();                 //i.e. currently active fog units on the board
     //[SerializeField] private List<FogEntity> fogUnitsTakingDamage = new List<FogEntity>();                 //i.e. currently active fog units on the board
     //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
     //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
@@ -260,6 +261,11 @@ public class Fog : MonoBehaviour
         return f;
     }
 
+    public void QueueFogUnitForPooling(FogUnit f)
+    {
+        fogUnitsToReturnToPool.Add(f);
+    }
+
     //Takes the fog unit off the board and puts it back in the pool
     public void ReturnFogUnitToPool(FogUnit f)
     {
@@ -305,6 +311,14 @@ public class Fog : MonoBehaviour
                 toRender.Add(f);
             }
         }
+
+        foreach (FogUnit f in fogUnitsToReturnToPool)
+        {
+            toRender.Remove(f);
+            ReturnFogUnitToPool(f);
+        }
+
+        fogUnitsToReturnToPool = new List<FogUnit>();
 
         return toRender;
     }
@@ -370,9 +384,6 @@ public class Fog : MonoBehaviour
 
     private void UpdateFogExpansion()
     {
-        //TODO: move handling of damage to the building script so that it only occurs for each building, not for each fog unit.
-
-
         if (fogUnitsInPool.Count > 0 && configuration != StartConfiguration.FullBoard)
         {
             ExpandFog();

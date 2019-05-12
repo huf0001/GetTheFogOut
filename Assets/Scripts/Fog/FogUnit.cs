@@ -130,7 +130,7 @@ public class FogUnit : FogEntity
     {
         if (fog)
         {
-            fog.ReturnFogUnitToPool(this);
+            fog.QueueFogUnitForPooling(this);
         }
         else
         {
