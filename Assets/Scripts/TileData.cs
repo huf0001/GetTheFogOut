@@ -38,7 +38,6 @@ public class TileData
     public int X { get => x; set => x = value; }
     public int Z { get => z; set => z = value; }
 
-    public Building Building { get => building; set => building = value; }
     public FogUnit FogUnit { get => fogUnit; set => fogUnit = value; }
     public GameObject PlacedTower { get => placedTower; set => placedTower = value; }
     public ResourceNode Resource { get => resource; set => resource = value; }
@@ -49,6 +48,21 @@ public class TileData
     public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
 
     //Altered public properties
+    public Building Building
+    {
+        get => building;
+
+        set
+        {
+            building = value;
+
+            if (Resource != null)
+            {
+                UpdateResource();
+            }
+        }
+    }
+
     public PowerSource PowerSource
     {
         get
@@ -63,7 +77,7 @@ public class TileData
             }
         }
     }
-
+    
     public TileData(int x, int z)
     {
         this.x = x;
@@ -72,7 +86,6 @@ public class TileData
 
     public void PowerUp(PowerSource power)
     {
-        //this.gameObject.GetComponent<Renderer>().material = onMaterial;
         if (!powerSources.Contains(power))
         {
             powerSources.Add(power);
@@ -98,33 +111,43 @@ public class TileData
         {
              building.SetPowerSource();
         }
-
-        //if (powerSources.Count == 0)
-        //{
-        //    //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
-        //}
     }
 
     public void AddObserver(Building observer)
     {
         observers.Add(observer);
-
-        //if (powerSources.Count == 0)
-        //{
-        //    //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
-        //}
     }
 
     public void RemoveObserver(Building observer)
     {
         observers.Remove(observer);
-
-        //if (observers.Count == 0)
-        //{
-        //    //this.gameObject.GetComponent<Renderer>().material = startMaterial;
-        //}
     }
 
+    void UpdateResource()
+    {
+        bool visTemp = Resource.Visable;
+
+        if (Building == null)
+        {
+            Resource.Visable = true;
+        }
+        else
+        {
+            if (Building.BuildingType == BuildingType.Harvester)
+            {
+                Resource.Visable = false;
+            }
+        }
+
+        if (visTemp != Resource.Visable)
+        {
+            MeshRenderer[] renderers = Resource.GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer renderer in renderers)
+            {
+                renderer.enabled = !renderer.enabled;
+            }
+        }
+    }
 
     public List<TileData> CollectTilesInRange(int xc, int yc, int r)
     {
@@ -177,6 +200,7 @@ public class TileData
             }
         }
     }
+
     public void CollectTilesInRangeAlt(List<TileData> tiles, int range)
     {
         // Adds all tiles in a specified range to a List.

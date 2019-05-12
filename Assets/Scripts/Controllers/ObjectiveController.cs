@@ -25,6 +25,8 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] GameObject objectiveCompletePrefab;
     [SerializeField] GameObject hub;
     [SerializeField] GameObject ShipComponent;
+    [SerializeField] int mineralTarget = 500;
+    [SerializeField] int powerTarget = 500;
     [SerializeField] AudioClip audioCompleteObjective;
     [SerializeField] AudioClip audioStage1;
     [SerializeField] AudioClip audioTransition1To2;
@@ -41,6 +43,8 @@ public class ObjectiveController : DialogueBoxController
     // Public Properties -------------------------------------------------------------------------------------
 
     public static ObjectiveController Instance { get; protected set; }
+    public int PowerTarget { get => powerTarget; }
+    public int MineralTarget { get => mineralTarget; }
 
     // Start functions -------------------------------------------------------------------------------------
 
@@ -108,6 +112,7 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 1:
                 // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
+                UIController.instance.UpdateObjectiveText((int)currStage);
                 if (ResourceController.Instance.StoredMineral >= 500)
                 {
                     IncrementSubstage();
@@ -142,7 +147,7 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 1:
                 // Update objectives window to 'Recover ship thrusters'
-
+                UIController.instance.UpdateObjectiveText((int)currStage);
                 // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
@@ -178,6 +183,7 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 1:
                 // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
+                UIController.instance.UpdateObjectiveText((int)currStage);
                 if (ResourceController.Instance.StoredPower >= 500)
                 {
                     IncrementSubstage();

@@ -25,6 +25,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] Sprite[] powerLevelSprites;
     [SerializeField] TextMeshProUGUI objWindowText;
+    [SerializeField] TextMeshProUGUI hudObjText;
 
     ResourceController resourceController = null;
 
@@ -139,12 +140,35 @@ public class UIController : MonoBehaviour
                 mineralTime = 0;
             }
 
-            objWindowText.text = "<b>Repair the Hull</b>\n\n" +
-                "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
-                $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / 500 <size=90%><sprite=\"all_icons\" index=2>";
 
             mineralText.text = Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime)) + " units";
+        }
+    }
 
+    public void UpdateObjectiveText(int stageNum)
+    {
+        switch (stageNum)
+        {
+            case 1:
+                hudObjText.text = "Objective: Repair the Hull";
+                objWindowText.text = "<b>Repair the Hull</b>\n\n" +
+                    "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
+                    $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {ObjectiveController.Instance.MineralTarget} <size=90%><sprite=\"all_icons\" index=2>";
+                break;
+            case 2:
+                string nf = "Not Found";
+                string f = "Found";
+                hudObjText.text = "Objective: Recover the Thrusters";
+                objWindowText.text = "<b>Recover the Thrusters</b>\n\n" +
+                    "<size=75%>Push your way through the fog to find the missing thrusters from your ship.\n\n" +
+                    "Thrusters: " + (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected ? f : nf);
+                break;
+            case 3:
+                hudObjText.text = "Objective: Leave the Planet";
+                objWindowText.text = "<b>Leave the Planet</b>\n\n" +
+                    "<size=75%>The fog is out to get you! Hurry and gather enough power to leave this wretched planet behind!\n\n" +
+                    $"Target: {Mathf.Round(Mathf.Lerp(powerVal, power, powerTime))} / {ObjectiveController.Instance.PowerTarget} <size=90%><sprite=\"all_icons\" index=0>";
+                break;
         }
     }
 }
