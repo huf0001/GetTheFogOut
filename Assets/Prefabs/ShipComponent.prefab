@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2760399284073218495}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 18, y: 0.25, z: 15}
-  m_LocalScale: {x: 0.5, y: 0.1, z: 0.58}
+  m_LocalScale: {x: 0.5, y: 0.43, z: 0.58}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -104,6 +104,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46b9d5ac7f10c0b48860a177fa1ef2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  location:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
   health: 1
-  location: {fileID: 0}
   controller: {fileID: 0}
+  id: 0

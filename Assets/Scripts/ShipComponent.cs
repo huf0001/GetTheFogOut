@@ -14,10 +14,12 @@ public class ShipComponent : Entity
     [SerializeField] private WorldController controller;
     [SerializeField] private ShipComponentsEnum id;
 
+    public ShipComponentsEnum Id { get => id; set => id = value; }
+
     // Start is called before the first frame update
     void Start()
     {
-
+        controller = WorldController.Instance;
     }
 
     // Update is called once per frame

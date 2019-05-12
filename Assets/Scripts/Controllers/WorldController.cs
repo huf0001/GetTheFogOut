@@ -41,7 +41,7 @@ public class WorldController : MonoBehaviour
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
-    [SerializeField] private ShipComponentState[] shipComponents;
+    [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
     public GameObject pause;
 
     [Header("Public variable?")]
@@ -86,7 +86,7 @@ public class WorldController : MonoBehaviour
     public int Width { get => width; }
     public int Length { get => length; }
     public Hub Hub { get => hub; set => hub = value; }
-    public ShipComponentState[] ShipComponents { get => shipComponents; }
+    public List<ShipComponentState> ShipComponents { get => shipComponents; }
     //public TutorialStage TutorialStage { get => tutorialStage;  }
     //public ResourceController ResourceController { get => resourceController; }
     //public TutorialController TutorialController { get => tutorialController; }
@@ -145,6 +145,7 @@ public class WorldController : MonoBehaviour
     // Collect all Buildings in the scene and assign them to the closest tile
     {
         Building[] buildings = FindObjectsOfType<Building>();
+        ShipComponent[] shipComponentList = FindObjectsOfType<ShipComponent>();
 
         foreach (Building b in buildings)
         {
@@ -183,6 +184,14 @@ public class WorldController : MonoBehaviour
                 b.Animator.SetBool("Built", true);
                 b.Place();
             }
+        }
+
+        foreach (ShipComponent s in shipComponentList)
+        {
+            TileData tile = GetTileAt(s.transform.position);
+            s.Location = tile;
+            ShipComponents.Add(new ShipComponentState(s.Id, false));
+            s.gameObject.SetActive(false);
         }
     }
 
