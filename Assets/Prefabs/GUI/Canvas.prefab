@@ -2587,7 +2587,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -17.4, y: -17.7}
+  m_AnchoredPosition: {x: -25, y: -17.7}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4767305868102073349
@@ -2647,8 +2647,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 23.3
-  m_fontSizeBase: 23.3
+  m_fontSize: 21
+  m_fontSizeBase: 21
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3133,7 +3133,7 @@ RectTransform:
   m_GameObject: {fileID: 4767305868545777557}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: -0.0135, y: 0.0135, z: 0.0135}
   m_Children:
   - {fileID: 4767305868764482074}
   - {fileID: 6195752891288055357}
@@ -4229,6 +4229,8 @@ MonoBehaviour:
   warningBox: {fileID: 4767305868618472349}
   popupMessage: {fileID: 4028003446810797492, guid: ea2190494a5de574cb30a79980e0c9c6,
     type: 3}
+  audioDamageAlert: {fileID: 0}
+  audioPowerGridOverloadedAlert: {fileID: 0}
 --- !u!114 &4767305868788545468
 MonoBehaviour:
   m_ObjectHideFlags: 0
