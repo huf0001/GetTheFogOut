@@ -23,6 +23,8 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveCompletePrefab;
+    [SerializeField] GameObject hub;
+    [SerializeField] GameObject ShipComponent;
     [SerializeField] AudioClip audioCompleteObjective;
 
     // Non-Serialized Fields
@@ -123,10 +125,14 @@ public class ObjectiveController : DialogueBoxController
         {
             case 0:
                 // Update Hub model to fixed ship without thrusters / Particle effects
+                hub.transform.GetChild(0).gameObject.SetActive(false);
+                hub.transform.GetChild(1).gameObject.SetActive(true);
+                ShipComponent.SetActive(true);
                 // Play music Var 2 soundtrack
                 // Run AI text for stage
                 SendDialogue("start part stage", 1);
                 // Set fog AI to 'Moderate Aggression'
+                IncrementSubstage();
                 break;
             case 1:
                 // Update objectives window to 'Recover ship thrusters'
@@ -134,6 +140,7 @@ public class ObjectiveController : DialogueBoxController
                 // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
+                    ShipComponent.SetActive(false);
                     IncrementSubstage();
                 }
                 break;
@@ -154,6 +161,8 @@ public class ObjectiveController : DialogueBoxController
         {
             case 0:
                 // Update hub model with attached thrusters
+                hub.transform.GetChild(1).gameObject.SetActive(false);
+                hub.transform.GetChild(2).gameObject.SetActive(true);
                 // Play music Var 3 soundtrack
                 // Run AI text for stage
                 SendDialogue("start power stage", 1);

@@ -318,6 +318,7 @@ public abstract class Building : PlaneObject
         else if (!notified)
         {
             StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"A {BuildingType} is being damaged!"));
+            audioSource.PlayOneShot(audioDamage);
             notified = true;
         }
     }
