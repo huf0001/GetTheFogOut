@@ -78,7 +78,7 @@ public abstract class Building : PlaneObject
     {
         if (Fog.Instance.DamageOn && Location.FogUnit != null)
         {
-            Location.FogUnit.UpdateDamageToBuilding();
+            Location.FogUnit.DealDamageToBuilding();
         }
     }
 

@@ -19,33 +19,34 @@ public class TileData
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material startMaterial;
 
-    //Private fields
     [SerializeField] private int x = 0;
     [SerializeField] private int z = 0;
+
+    //Private fields
     private FogUnit fogUnit = null;
-    //private FogBatch fogBatch = null;
-    private GameObject placedtower = null;
+    private GameObject placedTower = null;
     private List<TileData> adjacentTiles = new List<TileData>();
     private List<TileData> allAdjacentTiles = new List<TileData>();
 
     private List<Building> observers = new List<Building>();
     private bool visited = false;
 
-    //Simple public properties
+    //Public Fields
+    public GameObject plane;
+
+    //Public Properties
     public int X { get => x; set => x = value; }
     public int Z { get => z; set => z = value; }
 
-    public ResourceNode Resource { get => resource; set => resource = value; }
+    public Building Building { get => building; set => building = value; }
     public FogUnit FogUnit { get => fogUnit; set => fogUnit = value; }
-    //public FogBatch FogBatch { get => fogBatch; set => fogBatch = value; }
-    public GameObject Placedtower { get => placedtower; set => placedtower = value; }
+    public GameObject PlacedTower { get => placedTower; set => placedTower = value; }
+    public ResourceNode Resource { get => resource; set => resource = value; }
 
+    public string Name { get => "Tile (" + x + "," + z + ")"; }
+    public bool Visited { get => visited; set => visited = value; }
     public List<TileData> AdjacentTiles { get => adjacentTiles; }
     public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
-    public bool Visited { get => visited; set => visited = value; }
-    public string Name { get => "Tile (" + x + "," + z + ")"; }
-
-    public GameObject plane;
 
     //Altered public properties
     public PowerSource PowerSource
@@ -61,34 +62,6 @@ public class TileData
                 return powerSources[0];
             }
         }
-    }
-
-
-    public Building Building
-    {
-        get => building;
-        set => building = value;
-        //set
-        //{
-        //    if (fogBatch != null)
-        //    {
-        //        if (value == null)
-        //        {
-        //            fogBatch.Buildings.Remove(building);
-        //        }
-        //        else
-        //        {
-        //            if (building != null)
-        //            {
-        //                fogBatch.Buildings.Remove(building);
-        //            }
-
-        //            fogBatch.Buildings.Add(value);
-        //        }
-        //    }
-
-        //    building = value;
-        //} 
     }
 
     public TileData(int x, int z)

@@ -4,25 +4,12 @@ using UnityEngine;
 
 public abstract class Entity : Locatable
 {
-    [SerializeField] private float health = 1f;
+    [SerializeField] protected float health = 1f;
+    [SerializeField] protected float maxHealth = 1f;
 
     public virtual float Health { get => health; set => health = value; }
-    public float MaxHealth { get; protected set; }
 
-    // Start is called before the first frame update
-    //void Start()
-    //{
-    //}
-
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    //if (health == 0)
-    //    //{
-    //    //    Debug.Log("This entity has been destroyed. Called from Entity.Update()");
-    //    //    Destroy(this.gameObject);
-    //    //}
-    //}
+    public float MaxHealth { get => maxHealth; set => maxHealth = value; }
 
     protected bool GotNoHealth()
     {

@@ -2,77 +2,77 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FogUnit : FogEntity
+public class FogUnit : Entity
 {
-    //Non-Serialized Fields
-    [SerializeField] private bool spill = false;
-    [SerializeField] private bool neighboursFull = false;
+    //Serialized Fields
+    [SerializeField] private float damage = 0.1f;
 
-    [SerializeField] private float healthProgress = 0;
-    [SerializeField] private float startHealth;
-    [SerializeField] private float targetHealth;
-    [SerializeField] private bool takingDamage = false;
-    
+    //Non-Serialized Fields
+    private Fog fog;
+
     private float start = 0f;
     private float end = 0.90f;
 
+    /*[SerializeField]*/ private float healthProgress = 0;
+    /*[SerializeField]*/ private float startHealth;
+    /*[SerializeField]*/ private float targetHealth;
+
+    /*[SerializeField]*/ private bool takingDamage = false;
+
+    /*[SerializeField]*/ private bool spill = false;
+    /*[SerializeField]*/ private bool neighboursFull = false;
+
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
-    public bool TakingDamage { get => takingDamage; }
-    public bool Spill { get => spill; set => spill = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
+    public bool Spill { get => spill; set => spill = value; }
+    public bool TakingDamage { get => takingDamage; }
 
-    // Start is called before the first frame update
+    //Altered Public Properties
+    public override float Health
+    {
+        get
+        {
+            return base.Health;
+        }
+
+        set
+        {
+            if (!takingDamage)
+            {
+                base.Health = value;
+
+                if (base.Health >= maxHealth)
+                {
+                    base.Health = maxHealth;
+                }
+                else if (base.Health <= 0)
+                {
+                    ReturnToFogPool();
+                }
+
+                targetHealth = base.Health;
+            }
+        }
+    }
+
+    //Sets the starting values for fog damage health variables
     void Start()
     {
         startHealth = base.Health;
         targetHealth = base.Health;
     }
 
-    // Update is called once per frame
-    public void UpdateDamageToFogUnit()
-    {
-        //if (takingDamage)
-        //{
-            base.Health = Mathf.Lerp(startHealth, targetHealth, healthProgress);
-
-            if (base.Health <= targetHealth)
-            {
-                base.Health = targetHealth;
-                takingDamage = false;
-            }
-            else
-            {
-                healthProgress += Time.deltaTime * 3;
-            }
-
-            if (base.Health <= 0)
-            {
-                ReturnToFogPool();
-            }
-        //}
-    }
-
-    public void UpdateRender()
-    {
-        gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, base.Health / HealthLimit));
-    }
-
-    public override void UpdateDamageToBuilding()
+    //Fog unit deals damage to the building on its tile
+    public void DealDamageToBuilding()
     {
         if (Location.Building != null)
         {
-            //Why is it a coroutine? Wouldn't doing that cause the coroutines to pile up?
-            StartCoroutine(Location.Building.DealDamageToBuilding(damage * (base.Health / HealthLimit)));
-            //Location.Building.DamageBuilding(damage * (base.Health / HealthLimit));
+            StartCoroutine(Location.Building.DealDamageToBuilding(damage * (base.Health / MaxHealth)));
         }
     }
 
-    public override void DealDamageToFogUnit(float damage, Vector3 location)
-    {
-        DealDamageToFogUnit(damage);
-    }
-
+    //A defence has dealtt damage to the fog unit
     public void DealDamageToFogUnit(float damage)
     {
         takingDamage = true;
@@ -92,40 +92,37 @@ public class FogUnit : FogEntity
             {
                 t.FogUnit.NeighboursFull = false;
             }
-            //else if (t.FogBatch != Location.FogBatch && t.FogBatch.Batched)
-            //{
-            //    t.FogBatch.NeighboursFull = false;
-            //}
         }
     }
-
-    public override float Health
+ 
+    //Updates the damage dealt to the fog unit
+    public void UpdateDamageToFogUnit()
     {
-        get
+        base.Health = Mathf.Lerp(startHealth, targetHealth, healthProgress);
+
+        if (base.Health <= targetHealth)
         {
-            return base.Health;
+            base.Health = targetHealth;
+            takingDamage = false;
+        }
+        else
+        {
+            healthProgress += Time.deltaTime * 3;
         }
 
-        set
+        if (base.Health <= 0)
         {
-            if (!takingDamage)
-            {
-                base.Health = value;
-
-                if (base.Health >= healthLimit)
-                {
-                    base.Health = healthLimit;
-                }
-                else if (base.Health <= 0)
-                {
-                    ReturnToFogPool();
-                }
-
-                targetHealth = base.Health;
-            }
+            ReturnToFogPool();
         }
     }
 
+    //Updates the fog unit's shader according to its health
+    public void Render()
+    {
+        gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, base.Health / MaxHealth));
+    }
+
+    //Tells Fog to put the fog unit back in the pool
     public void ReturnToFogPool()
     {
         if (fog)

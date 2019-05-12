@@ -48,10 +48,10 @@ public class TowerManager : MonoBehaviour
                             }
                         }
 
-                        currentTile.Placedtower = toBuild;
+                        currentTile.PlacedTower = toBuild;
                         selectedTower = null;
                         Destroy(hologramTower);
-                        MouseController.Instance.Build(currentTile.Placedtower, currentTile, 0f);
+                        MouseController.Instance.Build(currentTile.PlacedTower, currentTile, 0f);
                     }
                 }
                 else

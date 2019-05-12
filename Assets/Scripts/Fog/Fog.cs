@@ -22,13 +22,12 @@ public enum StartConfiguration
 public class Fog : MonoBehaviour
 {
     //Serialized Fields
-    //[SerializeField] private bool batching = false;
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private FogExpansionDirection expansionDirection;
     [SerializeField] private bool fogAccelerates = true;
     [SerializeField] private float fogGrowth = 5f;
-    [SerializeField] private float fogHealthLimit = 100f;
+    [SerializeField] private float fogMaxHealth = 100f;
     [SerializeField] private float fogSpillThreshold = 50f;
     [SerializeField] private bool damageOn = false;
     [SerializeField] private float surroundingHubRange;
@@ -39,31 +38,25 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogFillInterval = 0.2f;
     [SerializeField] private float fogExpansionInterval = 0.5f;
 
-    //Container object fields
-    private List<TileData> fogCoveredTiles = new List<TileData>();                                   //i.e. tiles currently covered by fog
-    [SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
-    [SerializeField] private List<FogUnit> fogUnitsToReturnToPool = new List<FogUnit>();                 //i.e. currently active fog units on the board
-    //[SerializeField] private List<FogEntity> fogUnitsTakingDamage = new List<FogEntity>();                 //i.e. currently active fog units on the board
-    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
-    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
-    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
-    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
-    //[SerializeField] private List<FogEntity> fogUnitsInPlay = new List<FogEntity>();                 //i.e. currently active fog units on the board
-    private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                                      //i.e. currently inactive fog units waiting for spawning
-
-    //Object fields
+    //Private Fields
     private WorldController wc;
 
-    //Value fields
     private int xMax;
     private int zMax;
 
-    //Public properties
+    //Private Container Fields
+    private List<TileData> fogCoveredTiles = new List<TileData>();              //i.e. tiles currently covered by fog
+    private List<FogUnit> fogUnitsInPlay = new List<FogUnit>();                 //i.e. currently active fog units on the board
+    private List<FogUnit> fogUnitsToReturnToPool = new List<FogUnit>();         //i.e. currently waiting to be re-pooled
+    private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                 //i.e. currently inactive fog units waiting for spawning
+
+    //Public Properties
     public static Fog Instance { get; protected set; }
     public bool DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
-    public float FogHealthLimit { get => fogHealthLimit; }
+    public float FogMaxHealth { get => fogMaxHealth; }
 
+    //Fog's awake method sets the static instance of Fog
     private void Awake()
     {
         if (Instance != null)
@@ -77,7 +70,6 @@ public class Fog : MonoBehaviour
     //Create the max no. of fog units the game should need
     public void PopulateFogPool()
     {
-        Debug.Log("Populating Fog Pool");
         wc = WorldController.Instance;
         xMax = wc.Width;
         zMax = wc.Length;
@@ -91,20 +83,13 @@ public class Fog : MonoBehaviour
         }
     }
 
+    //Spawns the starting fog on the board with the configuration set in the inspector
     public void SpawnStartingFog()
     {
-        Debug.Log("Spawning Starting Fog");
         SpawnStartingFog(configuration);
     }
 
-    public void ActivateFog()
-    {
-        Debug.Log("Activating Fog Filling and Expansion");
-        InvokeRepeating("DoUpdate", 0.1f, fogFillInterval);
-        InvokeRepeating("UpdateFogExpansion", 0.1f, fogExpansionInterval);
-    }
-
-    //Spawns the starting fog on the board
+    //Spawns the starting fog on the board with the configuration passed to it
     public void SpawnStartingFog(StartConfiguration startConfiguration)
     {
         if (startConfiguration == StartConfiguration.OneSide)
@@ -178,7 +163,6 @@ public class Fog : MonoBehaviour
                     //Except those within a specified range of the hub
                     if (Vector3.Distance(hubPosition, new Vector3(i, hubPosition.y, j)) > surroundingHubRange)
                     {
-                        //Debug.Log("Spawning Fog Unit at (" + i + "," + j + ").");
                         SpawnFogUnit(i, j);
                     }
                 }
@@ -195,16 +179,12 @@ public class Fog : MonoBehaviour
                 }
             }
         }
-        
-        foreach(FogUnit f in fogUnitsInPlay)
-        {
-            f.Health = fogHealthLimit;
-        }
     }
 
+    //Take a fog unit and puts it on the board with minimum health
     private void SpawnFogUnit(int x, int z)
     {
-        SpawnFogUnit(x, z, 0.0001f);
+        SpawnFogUnit(x, z, fogMaxHealth);
     }
 
     //Takes a fog unit and puts it on the board
@@ -226,6 +206,8 @@ public class Fog : MonoBehaviour
 
         fogUnitsInPlay.Add(f);
         fogCoveredTiles.Add(t);
+
+        f.Render();
     }
 
     ///Start pooling methods borrowed / adapted from example
@@ -236,7 +218,7 @@ public class Fog : MonoBehaviour
     {
         FogUnit f = Instantiate<FogUnit>(fogUnitPrefab);
         f.transform.SetParent(this.transform, true);
-        f.HealthLimit = fogHealthLimit;
+        f.MaxHealth = fogMaxHealth;
         f.Fog = this;
         return f;
     }
@@ -261,6 +243,7 @@ public class Fog : MonoBehaviour
         return f;
     }
 
+    //Puts the fog unit in the list of fog units to be put back in the pool
     public void QueueFogUnitForPooling(FogUnit f)
     {
         fogUnitsToReturnToPool.Add(f);
@@ -291,16 +274,24 @@ public class Fog : MonoBehaviour
 
     ///End pooling methods borrowed / adapted from example
 
-    // Update is called once per frame
-    private void DoUpdate()
+    //Invokes the "update" methods of Fog according to the intervals set in the inspector
+    public void ActivateFog()
+    {
+        InvokeRepeating("UpdateFog", 0.1f, fogFillInterval);
+        InvokeRepeating("CheckExpandFog", 0.1f, fogExpansionInterval);
+    }
+
+    //Handles changes to fog unit health
+    private void UpdateFog()
     {
         List<FogUnit> toRender = new List<FogUnit>();
 
         toRender = UpdateDamageToFogUnits(toRender);
         toRender = UpdateFogFill(toRender);
-        UpdateRender(toRender);        
+        Render(toRender);        
     }
 
+    //Handles the damaging of fog units
     private List<FogUnit> UpdateDamageToFogUnits(List<FogUnit> toRender)
     {
         foreach (FogUnit f in fogUnitsInPlay)
@@ -323,17 +314,16 @@ public class Fog : MonoBehaviour
         return toRender;
     }
 
+    //Fills the health of fog units
     private List<FogUnit> UpdateFogFill(List<FogUnit> toRender)
     {
         if (fogAccelerates && fogGrowth < 100)
         {
-            //fogGrowth += Time.deltaTime;
             fogGrowth += fogFillInterval;
         }
 
         FogUnit af;
 
-        //TODO: Change to fogUnitsFillingOthers
         foreach (FogUnit f in fogUnitsInPlay)
         {
             if (!f.NeighboursFull && f.Health >= fogSpillThreshold)
@@ -349,7 +339,6 @@ public class Fog : MonoBehaviour
                     {
                         if (af.Health < f.Health)
                         {
-                            //t.FogUnit.Health += Time.deltaTime * fogGrowth / count;
                             af.Health += fogFillInterval * fogGrowth / count;
 
                             if (!toRender.Contains(af))
@@ -357,7 +346,7 @@ public class Fog : MonoBehaviour
                                 toRender.Add(af);
                             }
                         }
-                        else if (af.Health >= fogHealthLimit)
+                        else if (af.Health >= fogMaxHealth)
                         {
                             fullCount++;
                         }
@@ -374,15 +363,17 @@ public class Fog : MonoBehaviour
         return toRender;
     }
 
-    private void UpdateRender(List<FogUnit> toRender)
+    //Updates the fog units' shaders once all health changes have been applied.
+    private void Render(List<FogUnit> toRender)
     {
         foreach (FogUnit f in toRender)
         {
-            f.UpdateRender();
+            f.Render();
         }
     }
 
-    private void UpdateFogExpansion()
+    //Checks if the fog is able to spill over into adjacent tiles
+    private void CheckExpandFog()
     {
         if (fogUnitsInPool.Count > 0 && configuration != StartConfiguration.FullBoard)
         {
@@ -403,7 +394,6 @@ public class Fog : MonoBehaviour
     {
         List<TileData> newTiles = new List<TileData>();
 
-        //TODO: change from fogUnitsInPlay to fogUnitsSpillingIntoOthers
         foreach (FogUnit f in fogUnitsInPlay)
         {
             if (f.Spill == false && f.Health >= fogSpillThreshold)
@@ -424,7 +414,7 @@ public class Fog : MonoBehaviour
         {
             foreach (TileData n in newTiles)
             {
-                SpawnFogUnit(n.X, n.Z);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
+                SpawnFogUnit(n.X, n.Z, 0.0001f);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
             }
         }
     }
