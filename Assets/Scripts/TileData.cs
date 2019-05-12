@@ -67,7 +67,14 @@ public class TileData
     public Building Building
     {
         get => building;
-        set => building = value;
+        set
+        {
+            building = value;
+            if (Resource != null)
+            {
+                UpdateResource();
+            }
+        }
         //set
         //{
         //    if (fogBatch != null)
@@ -99,7 +106,6 @@ public class TileData
 
     public void PowerUp(PowerSource power)
     {
-        //this.gameObject.GetComponent<Renderer>().material = onMaterial;
         if (!powerSources.Contains(power))
         {
             powerSources.Add(power);
@@ -125,33 +131,43 @@ public class TileData
         {
              building.SetPowerSource();
         }
-
-        //if (powerSources.Count == 0)
-        //{
-        //    //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
-        //}
     }
 
     public void AddObserver(Building observer)
     {
         observers.Add(observer);
-
-        //if (powerSources.Count == 0)
-        //{
-        //    //this.gameObject.GetComponent<Renderer>().material = visibleMaterial;
-        //}
     }
 
     public void RemoveObserver(Building observer)
     {
         observers.Remove(observer);
-
-        //if (observers.Count == 0)
-        //{
-        //    //this.gameObject.GetComponent<Renderer>().material = startMaterial;
-        //}
     }
 
+    void UpdateResource()
+    {
+        bool visTemp = Resource.Visable;
+
+        if (Building == null)
+        {
+            Resource.Visable = true;
+        }
+        else
+        {
+            if (Building.BuildingType == BuildingType.Harvester)
+            {
+                Resource.Visable = false;
+            }
+        }
+
+        if (visTemp != Resource.Visable)
+        {
+            MeshRenderer[] renderers = Resource.GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer renderer in renderers)
+            {
+                renderer.enabled = !renderer.enabled;
+            }
+        }
+    }
 
     public List<TileData> CollectTilesInRange(int xc, int yc, int r)
     {
@@ -204,6 +220,7 @@ public class TileData
             }
         }
     }
+
     public void CollectTilesInRangeAlt(List<TileData> tiles, int range)
     {
         // Adds all tiles in a specified range to a List.

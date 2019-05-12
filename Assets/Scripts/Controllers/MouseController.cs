@@ -111,6 +111,7 @@ public class MouseController : MonoBehaviour
 
     // Mouse Building Placement -----------------------------------------------------------------
 
+    // THIS FUNCTION NOT BEING USED ANYMORE, CAN PROBABLY BE REMOVED
     // Place a building based on mouse / controller input
     void UpdatePlacing()
     {
