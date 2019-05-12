@@ -26,6 +26,11 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] GameObject hub;
     [SerializeField] GameObject ShipComponent;
     [SerializeField] AudioClip audioCompleteObjective;
+    [SerializeField] AudioClip audioStage1;
+    [SerializeField] AudioClip audioTransition1To2;
+    [SerializeField] AudioClip audioStage2;
+    [SerializeField] AudioClip audioTransition2To3;
+    [SerializeField] AudioClip audioStage3;
 
     // Non-Serialized Fields
     bool stageComplete = false;
@@ -129,6 +134,7 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(1).gameObject.SetActive(true);
                 ShipComponent.SetActive(true);
                 // Play music Var 2 soundtrack
+                MusicController.Instance.StartStage2();
                 // Run AI text for stage
                 SendDialogue("start part stage", 1);
                 // Set fog AI to 'Moderate Aggression'
@@ -164,6 +170,7 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(1).gameObject.SetActive(false);
                 hub.transform.GetChild(2).gameObject.SetActive(true);
                 // Play music Var 3 soundtrack
+                MusicController.Instance.StartStage3();
                 // Run AI text for stage
                 SendDialogue("start power stage", 1);
                 // Set fog AI to 'Overly Aggressive'

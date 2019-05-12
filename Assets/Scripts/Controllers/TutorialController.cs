@@ -110,6 +110,7 @@ public class TutorialController : DialogueBoxController
     {
         if (skipTutorial)
         {
+            MusicController.Instance.SkipTutorial();
             tutorialStage = TutorialStage.Finished;
             GetComponent<Fog>().enabled = true;
             GetComponent<Fog>().SpawnStartingFog();
@@ -638,6 +639,7 @@ public class TutorialController : DialogueBoxController
             ResetSubStage();
             ObjectiveController.Instance.IncrementStage();
             GetComponent<Fog>().enabled = true;
+            MusicController.Instance.StartStage1();
         }
     }
 
