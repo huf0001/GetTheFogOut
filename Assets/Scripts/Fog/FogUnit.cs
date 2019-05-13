@@ -6,6 +6,8 @@ public class FogUnit : Entity
 {
     //Serialized Fields
     [SerializeField] private float damage = 0.1f;
+    [SerializeField] private float lerpToMaxInterval;
+    [SerializeField] private float rapidLerpMultiplier = 3f;
 
     //Non-Serialized Fields
     private Fog fog;
@@ -16,7 +18,6 @@ public class FogUnit : Entity
     /*[SerializeField]*/ private float healthProgress = 0;
     /*[SerializeField]*/ private float startHealth;
     /*[SerializeField]*/ private float targetHealth;
-
     /*[SerializeField]*/ private bool takingDamage = false;
 
     /*[SerializeField]*/ private bool spill = false;
@@ -107,7 +108,7 @@ public class FogUnit : Entity
         }
         else
         {
-            healthProgress += Time.deltaTime * 3;
+            healthProgress += fog.FogFillInterval * rapidLerpMultiplier;
         }
 
         if (base.Health <= 0)

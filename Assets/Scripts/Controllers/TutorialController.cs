@@ -114,7 +114,6 @@ public class TutorialController : DialogueBoxController
             tutorialStage = TutorialStage.Finished;
             GetComponent<Fog>().enabled = true;
             GetComponent<Fog>().SpawnStartingFog();
-            GetComponent<Fog>().ActivateFog();
             ObjectiveController.Instance.IncrementStage();
         }
         else
@@ -480,7 +479,6 @@ public class TutorialController : DialogueBoxController
             {
                 //Spawn fog units around hub
                 GetComponent<Fog>().SpawnStartingFog(StartConfiguration.SurroundingHub);
-                GetComponent<Fog>().ActivateFog();
                 Invoke("IncrementSubStage", 2);
                 fogSpawned = true;
             }
