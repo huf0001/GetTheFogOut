@@ -147,13 +147,13 @@ public class TileData
     {
         bool visTemp = Resource.Visable;
 
-        if (Building == null)
+        if (Building == null && Resource.Health > 0)
         {
             Resource.Visable = true;
         }
         else
         {
-            if (Building.BuildingType == BuildingType.Harvester)
+            if (Building.BuildingType == BuildingType.Harvester || Resource.Health <= 0)
             {
                 Resource.Visable = false;
             }
