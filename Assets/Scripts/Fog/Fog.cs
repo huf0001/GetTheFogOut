@@ -36,7 +36,10 @@ public class Fog : MonoBehaviour
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
 
+    [SerializeField] private float fogLerpInInterval = 0.02f;
+    [SerializeField] private float fogLerpInIncrement = 1f;
     [SerializeField] private float fogFillInterval = 0.2f;
+    [SerializeField] private float fogDamageInterval = 0.02f;
     [SerializeField] private float fogExpansionInterval = 0.5f;
 
     //Private Fields
@@ -56,7 +59,6 @@ public class Fog : MonoBehaviour
     public bool DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public float FogMaxHealth { get => fogMaxHealth; }
-    public float FogFillInterval { get => fogFillInterval; }
 
     //Fog's awake method sets the static instance of Fog
     private void Awake()
@@ -184,7 +186,7 @@ public class Fog : MonoBehaviour
 
         if (lerpStartingFog)
         {
-            InvokeRepeating("LerpStartingFogToMaxHealth", 0.02f, 0.02f);
+            InvokeRepeating("LerpStartingFogToMaxHealth", fogLerpInInterval, fogLerpInInterval);
         }
     }
 
@@ -192,11 +194,10 @@ public class Fog : MonoBehaviour
     private void LerpStartingFogToMaxHealth()
     {
         bool finished = false;
-        float interval = 1f;
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
-            f.Health += interval;
+            f.Health += fogLerpInIncrement;
 
             if (f.Health >= fogMaxHealth)
             {
@@ -310,28 +311,21 @@ public class Fog : MonoBehaviour
     //Invokes the "update" methods of Fog according to the intervals set in the inspector
     public void ActivateFog()
     {
-        InvokeRepeating("UpdateFog", 0.1f, fogFillInterval);
+        InvokeRepeating("UpdateDamageToFogUnits", 0.1f, fogDamageInterval);
+        InvokeRepeating("UpdateFogFill", 0.1f, fogFillInterval);
         InvokeRepeating("CheckExpandFog", 0.1f, fogExpansionInterval);
     }
 
-    //Handles changes to fog unit health
-    private void UpdateFog()
+    //Handles the damaging of fog units
+    private void UpdateDamageToFogUnits()
     {
         List<FogUnit> toRender = new List<FogUnit>();
 
-        toRender = UpdateDamageToFogUnits(toRender);
-        toRender = UpdateFogFill(toRender);
-        Render(toRender);        
-    }
-
-    //Handles the damaging of fog units
-    private List<FogUnit> UpdateDamageToFogUnits(List<FogUnit> toRender)
-    {
         foreach (FogUnit f in fogUnitsInPlay)
         {
             if (f.TakingDamage)
             {
-                f.UpdateDamageToFogUnit();
+                f.UpdateDamageToFogUnit(fogDamageInterval);
                 toRender.Add(f);
             }
         }
@@ -344,12 +338,17 @@ public class Fog : MonoBehaviour
 
         fogUnitsToReturnToPool = new List<FogUnit>();
 
-        return toRender;
+        foreach (FogUnit f in toRender)
+        {
+            f.Render();
+        }
     }
 
     //Fills the health of fog units
-    private List<FogUnit> UpdateFogFill(List<FogUnit> toRender)
+    private void UpdateFogFill()
     {
+        List<FogUnit> toRender = new List<FogUnit>();
+
         if (fogAccelerates && fogGrowth < 100)
         {
             fogGrowth += fogFillInterval;
@@ -393,12 +392,6 @@ public class Fog : MonoBehaviour
             }
         }
 
-        return toRender;
-    }
-
-    //Updates the fog units' shaders once all health changes have been applied.
-    private void Render(List<FogUnit> toRender)
-    {
         foreach (FogUnit f in toRender)
         {
             f.Render();

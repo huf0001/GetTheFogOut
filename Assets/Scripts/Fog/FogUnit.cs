@@ -97,7 +97,7 @@ public class FogUnit : Entity
     }
  
     //Updates the damage dealt to the fog unit
-    public void UpdateDamageToFogUnit()
+    public void UpdateDamageToFogUnit(float damageInterval)
     {
         base.Health = Mathf.Lerp(startHealth, targetHealth, healthProgress);
 
@@ -108,7 +108,7 @@ public class FogUnit : Entity
         }
         else
         {
-            healthProgress += fog.FogFillInterval * rapidLerpMultiplier;
+            healthProgress += damageInterval * rapidLerpMultiplier;
         }
 
         if (base.Health <= 0)
