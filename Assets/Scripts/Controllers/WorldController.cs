@@ -579,7 +579,7 @@ public class WorldController : MonoBehaviour
         {
             foreach (Button b in buttons)
             {
-                if (b.gameObject.name != "btn_harvester" && b.gameObject.name != "btn_remove")
+                if (b.gameObject.name != "btn_harvester")
                 {
                     b.interactable = false;
                 }
@@ -594,7 +594,7 @@ public class WorldController : MonoBehaviour
         {
             foreach (Button b in buttons)
             {
-                if (b.gameObject.name == "btn_harvester")
+                if (b.gameObject.name == "btn_harvester" || (b.gameObject.name == "btn_generator" && resourceController.Generators.Count >= ObjectiveController.Instance.CurrStage * 5))
                 {
                     b.interactable = false;
                 }

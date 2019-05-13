@@ -45,6 +45,7 @@ public class ObjectiveController : DialogueBoxController
     public static ObjectiveController Instance { get; protected set; }
     public int PowerTarget { get => powerTarget; }
     public int MineralTarget { get => mineralTarget; }
+    public int CurrStage { get => (int)currStage; }
 
     // Start functions -------------------------------------------------------------------------------------
 

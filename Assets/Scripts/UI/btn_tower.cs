@@ -85,7 +85,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Battery>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_generator":
-                    buildingDesc.text = $"<b>Power Generator</b>\n" +
+                    buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.CurrStage * 5}\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Generator>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
@@ -117,9 +117,20 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     break;
             }
         }
+        else if (gameObject.name == "btn_generator")
+        {
+            buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.CurrStage * 5 + 1}\n" +
+                $"<line-height=80% size=65%>You have the max number of generators.";
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
+    {
+        buildingDesc.text = "";
+        buildingCost.text = "";
+    }
+
+    public void OnClick()
     {
         buildingDesc.text = "";
         buildingCost.text = "";
