@@ -47,7 +47,6 @@ public class TowerManager : MonoBehaviour
                                 return;
                             }
                         }
-
                         currentTile.PlacedTower = toBuild;
                         selectedTower = null;
                         Destroy(hologramTower);

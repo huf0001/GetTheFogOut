@@ -186,10 +186,9 @@ public class MouseController : MonoBehaviour
         // code based somewhat off:
         //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
 
-        if (Time.timeScale == 1.0f && (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A")) && !EventSystem.current.IsPointerOverGameObject())
+        if (Time.timeScale == 1.0f && (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A")) && !EventSystem.current.currentSelectedGameObject)
         {
             TileData tile;
-
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -339,7 +338,7 @@ public class MouseController : MonoBehaviour
         {
             floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=2> <color=#009900>+{cost}", building);
         }
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.01f);
     }
 
     private void OnTriggerEnter(Collider other)

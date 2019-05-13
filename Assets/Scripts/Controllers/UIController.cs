@@ -42,7 +42,6 @@ public class UIController : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-
         FindSliders();
 
         //Tweens in the UI for a smooth bounce in from outside the canvas
