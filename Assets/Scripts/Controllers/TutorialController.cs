@@ -250,8 +250,7 @@ public class TutorialController : DialogueBoxController
                 DismissDialogue();
             }
             else if (buttonClicked)
-            {
-                DeactivateTarget();
+            {               
                 SkipTutorialAhead(5);
             }
         }
@@ -267,8 +266,7 @@ public class TutorialController : DialogueBoxController
                 DismissDialogue();
             }
             else if (buttonClicked)
-            {
-                DeactivateTarget();
+            {               
                 SkipTutorialAhead(5);
             }
         }
@@ -284,14 +282,12 @@ public class TutorialController : DialogueBoxController
                 DismissDialogue();
             }
             else if (buttonClicked)
-            {
-                DeactivateTarget();
+            {               
                 SkipTutorialAhead(5);
             }
         }
         else if (subStage == 4 && buttonClicked)
-        {
-            DeactivateTarget();
+        {           
             DismissButton();
         }
         else if (subStage == 5)
@@ -318,22 +314,13 @@ public class TutorialController : DialogueBoxController
         {
             DismissButton();
         }
-        else if (subStage == 7)
+        else if (subStage == 7 && BuiltCurrentlyBuilding())
         {
-            if (BuiltCurrentlyBuilding())
-            {
-                //Turn off UI element prompting player to build a harvester on the resource node
-                tutorialStage = TutorialStage.BuildGenerator;
-                currentlyBuilding = BuildingType.Generator;
-                //tutorialStage = TutorialStage.Finished;
-                //currentlyBuilding = BuildingType.None;
-                ResetSubStage();
-                //DeactivateTarget();
-            }
-            else
-            {
-                Debug.Log("You built a thing. You built the wrong thing. Something is broken in the scene or TutorialController.");
-            }
+            //Turn off UI element prompting player to build a harvester on the resource node
+            tutorialStage = TutorialStage.BuildGenerator;
+            currentlyBuilding = BuildingType.Generator;
+            ResetSubStage();
+            DeactivateTarget();
         }
     }
 
@@ -359,14 +346,12 @@ public class TutorialController : DialogueBoxController
                 DismissDialogue();
             }
             else if (buttonClicked)
-            {
-                DeactivateTarget();
+            {               
                 SkipTutorialAhead(3);
             }
         }
         else if (subStage == 2 && buttonClicked)
-        {
-            DeactivateTarget();
+        {           
             DismissButton();
         }
         else if (subStage == 3)
@@ -389,12 +374,10 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 4 && BuiltCurrentlyBuilding())
         {
-            //tutorialStage = TutorialStage.Finished;
-            //currentlyBuilding = BuildingType.None;
             tutorialStage = TutorialStage.BuildRelay;
             currentlyBuilding = BuildingType.Relay;
             ResetSubStage();
-            //DeactivateTarget();
+            DeactivateTarget();
         }
     }
 
@@ -422,13 +405,12 @@ public class TutorialController : DialogueBoxController
             }
             else if (buttonClicked)
             {
-                DeactivateTarget();
+               
                 SkipTutorialAhead(3);
             }
         }
         else if (subStage == 2 && buttonClicked)
-        {
-            DeactivateTarget();
+        {           
             DismissButton();
         }
         else if (subStage == 3)
@@ -451,12 +433,10 @@ public class TutorialController : DialogueBoxController
         }
         else if (subStage == 4 && BuiltCurrentlyBuilding())
         {
-            //tutorialStage = TutorialStage.Finished;
-            //currentlyBuilding = BuildingType.None;
             tutorialStage = TutorialStage.FogIsHazard;
             currentlyBuilding = BuildingType.None;
             ResetSubStage();
-            //DeactivateTarget();
+            DeactivateTarget();
         }
     }
 
@@ -515,7 +495,7 @@ public class TutorialController : DialogueBoxController
             }
             else if (buttonClicked)
             {
-                DeactivateTarget();
+               
                 SkipTutorialAhead(4);
             }
         }
@@ -532,13 +512,12 @@ public class TutorialController : DialogueBoxController
             }
             else if (buttonClicked)
             {
-                DeactivateTarget();
+               
                 SkipTutorialAhead(4);
             }
         }
         else if (subStage == 3 && buttonClicked)
-        {
-            DeactivateTarget();
+        {           
             DismissButton();
         }
         else if (subStage == 4)
@@ -564,6 +543,7 @@ public class TutorialController : DialogueBoxController
             tutorialStage = TutorialStage.BuildRepelFan;
             currentlyBuilding = BuildingType.RepelFan;
             ResetSubStage();
+            DeactivateTarget();
         }
     }
        
@@ -590,14 +570,12 @@ public class TutorialController : DialogueBoxController
                 DismissDialogue();
             }
             else if (buttonClicked)
-            {
-                DeactivateTarget();
+            {               
                 SkipTutorialAhead(3);
             }
         }
         else if (subStage == 2 && buttonClicked)
         {
-            DeactivateTarget();
             DismissButton();
         }
         else if (subStage == 3)
