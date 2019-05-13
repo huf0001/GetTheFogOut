@@ -164,8 +164,8 @@ public class MouseController : MonoBehaviour
                                         }
                                     }
 
-                                    tile.Placedtower = toBuild;
-                                    Build(tile.Placedtower, tile, 0f);
+                                    tile.PlacedTower = toBuild;
+                                    Build(tile.PlacedTower, tile, 0f);
                                 }
                             }
                             else
