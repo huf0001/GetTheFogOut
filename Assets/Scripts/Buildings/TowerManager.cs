@@ -41,7 +41,7 @@ public class TowerManager : MonoBehaviour
 
                         if (b.BuildingType == BuildingType.Generator)
                         {
-                            if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * 5 + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
+                            if (ResourceController.Instance.Generators.Count >= ObjectiveController.Instance.CurrStage * 5 + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators (not needed anymore)
                             {
                                 Debug.Log("If you want to build more generators, collect more ship components first.");
                                 return;

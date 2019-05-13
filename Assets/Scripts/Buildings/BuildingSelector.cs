@@ -8,8 +8,22 @@ public class BuildingSelector : MonoBehaviour
 {
     //[SerializeField] TextMeshProUGUI buildingDesc;
     [SerializeField] bool visible = false;
+    private RectTransform parent;
 
     public bool Visible { get => visible; set => visible = value; }
+
+    void Start()
+    {
+        parent = GetComponentInParent<RectTransform>();
+    }
+
+    void Update()
+    {
+        if (visible)
+        {
+            parent.LookAt(Camera.main.transform);
+        }
+    }
 
     public void ToggleVisibility()
     {
