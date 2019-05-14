@@ -85,7 +85,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Battery>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_generator":
-                    buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.CurrStage * 5}\n" +
+                    buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Generator>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
@@ -119,7 +119,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         }
         else if (gameObject.name == "btn_generator")
         {
-            buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.CurrStage * 5 + 1}\n" +
+            buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}\n" +
                 $"<line-height=80% size=65%>You have the max number of generators.";
         }
     }

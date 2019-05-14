@@ -329,7 +329,6 @@ public class MouseController : MonoBehaviour
     /// <param name="cost">Cost of building or refunding building</param>
     private IEnumerator FloatText(Transform building, int cost)
     {
-        //floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
         if (cost < 0)
         {
             floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=2> <color=\"red\">{cost}", building);

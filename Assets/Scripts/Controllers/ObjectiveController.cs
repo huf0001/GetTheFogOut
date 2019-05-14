@@ -27,6 +27,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] GameObject ShipComponent;
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
+    [SerializeField] int generatorLimit = 1;
     [SerializeField] AudioClip audioCompleteObjective;
     [SerializeField] AudioClip audioStage1;
     [SerializeField] AudioClip audioTransition1To2;
@@ -46,6 +47,7 @@ public class ObjectiveController : DialogueBoxController
     public int PowerTarget { get => powerTarget; }
     public int MineralTarget { get => mineralTarget; }
     public int CurrStage { get => (int)currStage; }
+    public int GeneratorLimit { get => generatorLimit; }
 
     // Start functions -------------------------------------------------------------------------------------
 
@@ -211,6 +213,7 @@ public class ObjectiveController : DialogueBoxController
         }
         stageComplete = false;
         currStage++;
+        generatorLimit += 4;
     }
 
     void IncrementSubstage()
@@ -243,12 +246,18 @@ public class ObjectiveController : DialogueBoxController
     IEnumerator CompleteObjective()
     {
         GameObject objComp = Instantiate(objectiveCompletePrefab, GameObject.Find("Canvas").transform);
-        GameObject completeText = objComp.GetComponentInChildren<Image>().gameObject;
-        completeText.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad);
+        GameObject objCompImage = objComp.GetComponentInChildren<Image>().gameObject;
+        TextMeshProUGUI unlocksText = objCompImage.GetComponentInChildren<TextMeshProUGUI>();
+        unlocksText.text = $"You can build an extra 4 generators now!";
+        objCompImage.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad);
         audioSource.PlayOneShot(audioCompleteObjective);
         yield return new WaitForSeconds(5f);
-        completeText.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad);
+        objCompImage.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad);
         yield return new WaitForSeconds(0.3f);
         Destroy(objComp);
+        if (!objWindowVisibilty)
+        {
+            ToggleObjWindow();
+        }
     }
 }
