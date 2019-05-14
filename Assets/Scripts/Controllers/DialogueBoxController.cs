@@ -42,7 +42,7 @@ public class DialogueBoxController : MonoBehaviour
         dialogueRead = false;
     }
 
-    protected void SendDialogue(string dialogueKey, float invokeDelay)
+    protected virtual void SendDialogue(string dialogueKey, float invokeDelay)
     {
         if (!instructionsSent)
         {

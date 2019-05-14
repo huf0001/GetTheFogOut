@@ -20,7 +20,8 @@ public enum TutorialStage
     FogIsHazard,
     BuildArcDefence,
     BuildRepelFan,
-    Finished
+    Finished,
+    BuildBattery
 }
 
 public enum ButtonType
@@ -164,32 +165,21 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.ZoomBackToShip:
                 ZoomBackToShip();
                 break;
-            //case TutorialStage.ExplainSituation:
-            //    ExplainSituation();
-            //    break;
-            //case TutorialStage.ExplainBuildingPlacement:
-            //    ExplainBuildingPlacement();
-            //    break;
-            case TutorialStage.BuildHarvester:
-                BuildHarvester();
-                break;
             case TutorialStage.BuildGenerator:
                 BuildGenerator();
                 break;
             case TutorialStage.BuildRelay:
                 BuildRelay();
                 break;
-            case TutorialStage.FogIsHazard:
-                FogIsHazard();
-                break;
-            case TutorialStage.BuildArcDefence:
-                BuildArcDefence();
-                break;
-            case TutorialStage.BuildRepelFan:
-                BuildRepelFan();
-                break;
+            //case TutorialStage.BuildBattery:
+            //    BuildBattery();
+            //    break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("Erroneous stage called.");
                 break;
         }
     }
@@ -223,222 +213,203 @@ public class TutorialController : DialogueBoxController
         //Run camera movement to move camera back to the hub
 
         //tutorialStage = TutorialStage.ExplainSituation;
-        tutorialStage = TutorialStage.BuildHarvester;
-        currentlyBuilding = BuildingType.Harvester;
+        tutorialStage = TutorialStage.BuildGenerator;
+        currentlyBuilding = BuildingType.Generator;
     }
 
     //Tutorial Stage 2: AI Explains Basic Building Placement
-    private void BuildHarvester()
-    {
-        if (subStage == 1)
-        {
-            if (!instructionsSent)
-            {
-                //Get location of resource node
-                GetLocationOf(harvesterResource);
-
-                //Display UI element prompting player to build a harvester on this resource node
-                ActivateTarget(harvesterResource);
-
-                MouseController.Instance.ReportTutorialClick = true;
-
-                //AI explains player's situation
-                SendDialogue("explain situation", 2);
-            }
-            else if (dialogueRead)
-            {
-                DismissDialogue();
-            }
-            else if (buttonClicked)
-            {               
-                SkipTutorialAhead(5);
-            }
-        }
-        else if (subStage == 2)
-        {
-            if (!instructionsSent)
-            {
-                //AI explains how to place buildings
-                SendDialogue("explain building placement", 1);
-            }
-            else if (dialogueRead)
-            {
-                DismissDialogue();
-            }
-            else if (buttonClicked)
-            {               
-                SkipTutorialAhead(5);
-            }
-        }
-        else if (subStage == 3)
-        {
-            if (!instructionsSent)
-            {
-                //AI explains how to build a harvester and how they work
-                SendDialogue("build harvester menu icon", 1);
-            }
-            else if (dialogueRead)
-            {
-                DismissDialogue();
-            }
-            else if (buttonClicked)
-            {               
-                SkipTutorialAhead(5);
-            }
-        }
-        else if (subStage == 4 && buttonClicked)
-        {           
-            DismissButton();
-        }
-        else if (subStage == 5)
-        {
-            if (!instructionsSent)
-            {
-                //Display UI element prompting player to select the harvester
-                currentlyLerping = ButtonType.Harvester;
-                btnCurrent = btnBuildHarvester;
-                btnCurrent.ReportClick = true;
-
-                SendDialogue("build harvester harvester icon", 1);
-            }
-            else if (dialogueRead)
-            {
-                DismissDialogue();
-            }
-            else if (buttonClicked)
-            {
-                SkipTutorialAhead(7);
-            }
-        }
-        else if (subStage == 6 && buttonClicked)
-        {
-            DismissButton();
-        }
-        else if (subStage == 7 && BuiltCurrentlyBuilding())
-        {
-            //Turn off UI element prompting player to build a harvester on the resource node
-            tutorialStage = TutorialStage.BuildGenerator;
-            currentlyBuilding = BuildingType.Generator;
-            ResetSubStage();
-            DeactivateTarget();
-        }
-    }
-
     private void BuildGenerator()
     {
-        if (subStage == 1)
+        switch (subStage)
         {
-            if (!instructionsSent)
-            {
-                //Get location of resource node
+            case 1:
+                SendDialogue("explain situation", 2);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 3:
                 GetLocationOf(generatorLandmark);
-
-                //Display UI element prompting player to build a harvester on this resource node
                 ActivateTarget(generatorLandmark);
-
                 MouseController.Instance.ReportTutorialClick = true;
+                SendDialogue("build generator decal", 1);
+                break;
+            case 4:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (buttonClicked)
+                {
+                    SkipTutorialAhead(6);
+                }
 
-                //AI explains player's situation
-                SendDialogue("build generator", 2);
-            }
-            else if (dialogueRead)
-            {
-                DismissDialogue();
-            }
-            else if (buttonClicked)
-            {               
-                SkipTutorialAhead(3);
-            }
-        }
-        else if (subStage == 2 && buttonClicked)
-        {           
-            DismissButton();
-        }
-        else if (subStage == 3)
-        {
-            if (!instructionsSent)
-            {
-                //Display UI element prompting player to click the generator button
+                break;
+            case 5:
+                if (buttonClicked)
+                {
+                    DismissButton();
+                }
+
+                break;
+            case 6:
+                //Display UI element prompting player to select the generator
                 currentlyLerping = ButtonType.Generator;
                 btnCurrent = btnBuildGenerator;
-                btnCurrent.ReportClick = true;
+                //btnCurrent.ReportClick = true;
 
-                instructionsSent = true;
-            }
-            else if (buttonClicked)
-            {
-                DismissButton();
+                SendDialogue("build generator icon", 1);
+                break;
+            case 7:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (BuiltCurrentlyBuilding())
+                {
+                    SkipTutorialAhead(9);
+                }
 
-                instructionsSent = false;
-            }
-        }
-        else if (subStage == 4 && BuiltCurrentlyBuilding())
-        {
-            tutorialStage = TutorialStage.BuildRelay;
-            currentlyBuilding = BuildingType.Relay;
-            ResetSubStage();
-            DeactivateTarget();
+                break;
+            case 8:
+                if (BuiltCurrentlyBuilding())
+                {
+                    DismissButton();
+                }
+
+                break;
+            case 9:
+                tutorialStage = TutorialStage.BuildRelay;
+                currentlyBuilding = BuildingType.Relay;
+                ResetSubStage();
+                DeactivateTarget();
+
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("Inaccurate sub stage");
+                break;
         }
     }
 
-    //AI helps player build a relay and explains how they work
     private void BuildRelay()
     {
-        if (subStage == 1)
+        switch (subStage)
         {
-            if (!instructionsSent)
-            {
-                //Get location of relay landmark
+            case 1:
                 GetLocationOf(relayLandmark);
-
-                //Display UI element prompting player to build a relay at the indicated location
                 ActivateTarget(relayLandmark);
-
                 MouseController.Instance.ReportTutorialClick = true;
+                SendDialogue("build relay decal", 1);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (buttonClicked)
+                {
+                    SkipTutorialAhead(4);
+                }
 
-                //AI prompts player to build a relay
-                SendDialogue("build relay", 2);
-            }
-            else if (dialogueRead)
-            {
-                DismissDialogue();
-            }
-            else if (buttonClicked)
-            {
-               
-                SkipTutorialAhead(3);
-            }
-        }
-        else if (subStage == 2 && buttonClicked)
-        {           
-            DismissButton();
-        }
-        else if (subStage == 3)
-        {
-            if (!instructionsSent)
-            {
-                //Display UI element prompting player to click the relay button
+                break;
+            case 3:
+                if (buttonClicked)
+                {
+                    DismissButton();
+                }
+
+                break;
+            case 4:
                 currentlyLerping = ButtonType.Relay;
                 btnCurrent = btnBuildRelay;
                 btnCurrent.ReportClick = true;
+                IncrementSubStage();
+                break;
+            case 5:
+                if (BuiltCurrentlyBuilding())
+                {
+                    DismissButton();
+                }
 
-                instructionsSent = true;
-            }
-            else if (buttonClicked)
-            {
-                DismissButton();
+                break;
+            case 6:
+                //Turn off UI element prompting player to build a relay on the prompted tile
+                tutorialStage = TutorialStage.Finished;
+                currentlyBuilding = BuildingType.None;
+                ResetSubStage();
+                DeactivateTarget();
 
-                instructionsSent = false;
-            }
-        }
-        else if (subStage == 4 && BuiltCurrentlyBuilding())
-        {
-            tutorialStage = TutorialStage.FogIsHazard;
-            currentlyBuilding = BuildingType.None;
-            ResetSubStage();
-            DeactivateTarget();
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
         }
     }
+
+    //private void BuildBattery()
+    //{
+    //    switch (subStage)
+    //    {
+    //        case 1:
+    //            GetLocationOf(batteryLandmark);
+    //            ActivateTarget(batteryLandmark);
+    //            MouseController.Instance.ReportTutorialClick = true;
+    //            SendDialogue("build relay decal", 1);
+    //            break;
+    //        case 2:
+    //            if (dialogueRead)
+    //            {
+    //                DismissDialogue();
+    //            }
+    //            else if (buttonClicked)
+    //            {
+    //                SkipTutorialAhead(4);
+    //            }
+
+    //            break;
+    //        case 3:
+    //            if (buttonClicked)
+    //            {
+    //                DismissButton();
+    //            }
+
+    //            break;
+    //        case 4:
+    //            currentlyLerping = ButtonType.Battery;
+    //            btnCurrent = btnBuildBattery;
+    //            btnCurrent.ReportClick = true;
+    //            IncrementSubStage();
+    //            break;
+    //        case 5:
+    //            if (buttonClicked)
+    //            {
+    //                DismissButton();
+    //            }
+
+    //            break;
+    //        case 6:
+    //            if (BuiltCurrentlyBuilding())
+    //            {
+    //                //Turn off UI element prompting player to build a relay on the prompted tile
+    //                tutorialStage = TutorialStage.Finished;
+    //                currentlyBuilding = BuildingType.None;
+    //                ResetSubStage();
+    //                DeactivateTarget();
+    //            }
+
+    //            break;
+    //        default:
+    //            SendDialogue("error", 1);
+    //            Debug.Log("inaccurate sub stage");
+    //            break;
+    //    }
+    //}
 
     private void FogIsHazard()
     {
@@ -470,7 +441,7 @@ public class TutorialController : DialogueBoxController
             ResetSubStage();
         }
     }
-    
+
     //AI tells player to build an arc defence and explains how they work
     private void BuildArcDefence()
     {
@@ -495,7 +466,7 @@ public class TutorialController : DialogueBoxController
             }
             else if (buttonClicked)
             {
-               
+
                 SkipTutorialAhead(4);
             }
         }
@@ -512,12 +483,12 @@ public class TutorialController : DialogueBoxController
             }
             else if (buttonClicked)
             {
-               
+
                 SkipTutorialAhead(4);
             }
         }
         else if (subStage == 3 && buttonClicked)
-        {           
+        {
             DismissButton();
         }
         else if (subStage == 4)
@@ -546,7 +517,7 @@ public class TutorialController : DialogueBoxController
             DeactivateTarget();
         }
     }
-       
+
     // AI tells player to build a repel fan and explains how they work ...
     private void BuildRepelFan()
     {
@@ -570,7 +541,7 @@ public class TutorialController : DialogueBoxController
                 DismissDialogue();
             }
             else if (buttonClicked)
-            {               
+            {
                 SkipTutorialAhead(3);
             }
         }
@@ -641,10 +612,16 @@ public class TutorialController : DialogueBoxController
         return false;
     }
 
-    private void IncrementSubStage()
+    protected override void SendDialogue(string dialogueKey, float invokeDelay)
     {
-        subStage++;
+        base.SendDialogue(dialogueKey, invokeDelay);
+        IncrementSubStage();
     }
+
+    private void IncrementSubStage()
+        {
+            subStage++;
+        }
 
     private void ResetSubStage()
     {
