@@ -37,7 +37,7 @@ public class ObjectiveController : DialogueBoxController
 
     // Non-Serialized Fields
     bool stageComplete = false;
-    bool objWindowVisibilty = false;
+    bool objWindowVisibility = false;
     private AudioSource audioSource;
 
 
@@ -80,11 +80,11 @@ public class ObjectiveController : DialogueBoxController
 
     void CheckObjectiveStage()
     {
+        UIController.instance.UpdateObjectiveText(currStage);
         switch (currStage)
         {
-            // case ObjectiveStage.None:
-
-            //     break;
+            //case ObjectiveStage.None:
+            //    break;
             case ObjectiveStage.HarvestMinerals:
                 HarvestMineralStage();
                 break;
@@ -115,7 +115,6 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 1:
                 // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
-                UIController.instance.UpdateObjectiveText((int)currStage);
                 if (ResourceController.Instance.StoredMineral >= 500)
                 {
                     IncrementSubstage();
@@ -150,7 +149,6 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 1:
                 // Update objectives window to 'Recover ship thrusters'
-                UIController.instance.UpdateObjectiveText((int)currStage);
                 // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
@@ -186,7 +184,6 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 1:
                 // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
-                UIController.instance.UpdateObjectiveText((int)currStage);
                 if (ResourceController.Instance.StoredPower >= 500)
                 {
                     IncrementSubstage();
@@ -207,13 +204,17 @@ public class ObjectiveController : DialogueBoxController
 
     public void IncrementStage()
     {
+        generatorLimit += 4;
         if (currStage != 0)
         {
             StartCoroutine(CompleteObjective());
         }
+        else if (!objWindowVisibility)
+        {
+            ToggleObjWindow();
+        }
         stageComplete = false;
         currStage++;
-        generatorLimit += 4;
     }
 
     void IncrementSubstage()
@@ -228,17 +229,17 @@ public class ObjectiveController : DialogueBoxController
 
     public void ToggleObjWindow()
     {
-        if (!objWindowVisibilty)
+        if (!objWindowVisibility)
         {
-            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-5, 0.3f).SetEase(Ease.OutCubic);
+            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(5, 0.3f).SetEase(Ease.OutCubic);
             //objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(true);
-            objWindowVisibilty = true;
+            objWindowVisibility = true;
         }
         else
         {
-            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(227, 0.3f).SetEase(Ease.InCubic);
+            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-227, 0.3f).SetEase(Ease.InCubic);
             //objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(false);
-            objWindowVisibilty = false;
+            objWindowVisibility = false;
         }
     }
 
@@ -248,14 +249,14 @@ public class ObjectiveController : DialogueBoxController
         GameObject objComp = Instantiate(objectiveCompletePrefab, GameObject.Find("Canvas").transform);
         GameObject objCompImage = objComp.GetComponentInChildren<Image>().gameObject;
         TextMeshProUGUI unlocksText = objCompImage.GetComponentInChildren<TextMeshProUGUI>();
-        unlocksText.text = $"You can build an extra 4 generators now!";
+        unlocksText.text = $"You can build a maximum of {generatorLimit} generators now!";
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad);
         audioSource.PlayOneShot(audioCompleteObjective);
         yield return new WaitForSeconds(5f);
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad);
         yield return new WaitForSeconds(0.3f);
         Destroy(objComp);
-        if (!objWindowVisibilty)
+        if (!objWindowVisibility)
         {
             ToggleObjWindow();
         }
