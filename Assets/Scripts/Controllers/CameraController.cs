@@ -6,6 +6,8 @@ using Cinemachine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera camera;
+    [SerializeField] CinemachineVirtualCamera cameraCutscene;
+    [SerializeField] bool runCameraPan;
     CinemachineFollowZoom zoom;
     public GameObject buildingSelector;
 
@@ -23,10 +25,30 @@ public class CameraController : MonoBehaviour
     private Vector3 zMove;
     private float rMove;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         zoom = FindObjectOfType<CinemachineFollowZoom>();
+
+        if (runCameraPan)
+        {
+            cameraCutscene.gameObject.SetActive(true);
+            Invoke("RunCameraPan", 1f);
+        }
+
+    }
+
+    private void Awake()
+    {
+        //zoom = FindObjectOfType<CinemachineFollowZoom>();
+        //cameraCutscene.gameObject.SetActive(true);
+        //camera.gameObject.SetActive(false);
+        //Invoke("RunCameraPan", 1f);
+    }
+
+    void RunCameraPan()
+    {
+        //camera.gameObject.SetActive(true);
+        cameraCutscene.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
