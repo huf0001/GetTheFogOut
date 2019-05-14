@@ -6,11 +6,12 @@ using Cinemachine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera camera;
+    CinemachineFollowZoom zoom;
     public GameObject buildingSelector;
 
     [SerializeField] float moveSpeed = 20f;
     [SerializeField] float rotationSpeed = 40f;
-    [SerializeField] float zoomMulti = 20f;
+    [SerializeField] float zoomMulti = 10f;
     [SerializeField] float dragSpeed;
     [SerializeField] bool enableEdgePan = false;
 
@@ -25,7 +26,7 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        zoom = FindObjectOfType<CinemachineFollowZoom>();
     }
 
     // Update is called once per frame
@@ -63,8 +64,10 @@ public class CameraController : MonoBehaviour
         // Zoom
         if (Input.GetAxis("Zoom") != 0)
         {
-            camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
-            camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
+            //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
+            //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
+
+            zoom.m_Width -= Input.GetAxis("Zoom") * zoomMulti;
         }
 
         Vector3 pos = transform.position;
