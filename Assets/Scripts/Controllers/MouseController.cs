@@ -186,7 +186,7 @@ public class MouseController : MonoBehaviour
         // code based somewhat off:
         //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
 
-        if (Time.timeScale == 1.0f && (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A")) && !EventSystem.current.currentSelectedGameObject)
+        if (Time.timeScale == 1.0f && (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A")) && !EventSystem.current.IsPointerOverGameObject())
         {
             TileData tile;
             RaycastHit hit;
@@ -329,7 +329,6 @@ public class MouseController : MonoBehaviour
     /// <param name="cost">Cost of building or refunding building</param>
     private IEnumerator FloatText(Transform building, int cost)
     {
-        //floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=0> -{hub.BuildingsCosts[buildType]["power"]}", buildingGo.transform);
         if (cost < 0)
         {
             floatingTextController.CreateFloatingText($"<sprite=\"all_icons\" index=2> <color=\"red\">{cost}", building);

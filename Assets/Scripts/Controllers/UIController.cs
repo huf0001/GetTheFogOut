@@ -139,30 +139,49 @@ public class UIController : MonoBehaviour
                 mineralTime = 0;
             }
 
+            int mineralChange = resourceController.MineralChange;
 
-            mineralText.text = Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime)) + " units";
+            if (mineralChange > 0)
+            {
+                colour = "#009900>+";
+            }
+            else if (mineralChange < 0)
+            {
+                colour = "\"red\">";
+            }
+            else
+            {
+                colour = "#006273>±";
+            }
+
+            mineralText.text = Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime)) + " units\n<color=" + colour + mineralChange + "</color>";
         }
     }
 
-    public void UpdateObjectiveText(int stageNum)
+    public void UpdateObjectiveText(ObjectiveStage stageNum)
     {
         switch (stageNum)
         {
-            case 1:
+            case ObjectiveStage.None:
+                hudObjText.text = "Objective: Complete the Tutorial";
+                objWindowText.text = "<b>Complete the Tutorial</b>\n\n" +
+                    "<size=75%>Proceed through the tutorial and learn to play the game!\n\n";
+                break;
+            case ObjectiveStage.HarvestMinerals:
                 hudObjText.text = "Objective: Repair the Hull";
                 objWindowText.text = "<b>Repair the Hull</b>\n\n" +
                     "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
                     $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {ObjectiveController.Instance.MineralTarget} <size=90%><sprite=\"all_icons\" index=2>";
                 break;
-            case 2:
+            case ObjectiveStage.RecoverPart:
                 string nf = "Not Found";
                 string f = "Found";
-                hudObjText.text = "Objective: Recover the Thrusters";
-                objWindowText.text = "<b>Recover the Thrusters</b>\n\n" +
-                    "<size=75%>Push your way through the fog to find the missing thrusters from your ship.\n\n" +
+                hudObjText.text = "Objective: Recover the Thruster";
+                objWindowText.text = "<b>Recover the Thruster</b>\n\n" +
+                    "<size=75%>Push your way through the fog to find the missing thruster from your ship.\n\n" +
                     "Thrusters: " + (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected ? f : nf);
                 break;
-            case 3:
+            case ObjectiveStage.StorePower:
                 hudObjText.text = "Objective: Leave the Planet";
                 objWindowText.text = "<b>Leave the Planet</b>\n\n" +
                     "<size=75%>The fog is out to get you! Hurry and gather enough power to leave this wretched planet behind!\n\n" +
