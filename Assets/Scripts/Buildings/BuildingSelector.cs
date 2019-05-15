@@ -14,6 +14,7 @@ public class BuildingSelector : MonoBehaviour
 
     void Start()
     {
+
         parent = GetComponentInParent<RectTransform>();
     }
 
@@ -43,20 +44,37 @@ public class BuildingSelector : MonoBehaviour
         gameObject.SetActive(!gameObject.activeSelf);
         visible = !visible;
 
-        if (visible)
-        {
-            freezeCam(0f, 0f);
-        }
-        else
-            freezeCam(0.4f, 0.4f);
+    //    if (visible)
+     //   {
+      //      freezeCam(0f, 0f);
+      //  }
+       // else
+       //     freezeCam(0.4f, 0.4f);
 
         //buildingDesc.gameObject.SetActive(!buildingDesc.gameObject.activeSelf);
     }
 
-    public void freezeCam(float freq, float Amp)
+    public void freezeCam()
     {
         CinemachineVirtualCamera CMVcam = GameObject.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>();
-        CMVcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = freq;
-        CMVcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = Amp;
+        float FreqGain = CMVcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain;
+        float AmpGain = CMVcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain;
+        float tparam = 0f;
+        float speed = 1f;
+
+        if (tparam < 1)
+        {
+            tparam += Time.deltaTime * speed;
+        }
+        if (visible)
+        {
+            CMVcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = Mathf.Lerp(FreqGain, 0f, tparam);
+            CMVcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = Mathf.Lerp(AmpGain, 0f, tparam);
+        }
+        else
+        { 
+            CMVcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = Mathf.Lerp(FreqGain, 0.4f, tparam);
+            CMVcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = Mathf.Lerp(AmpGain, 0.4f, tparam);
+        }
     }
 }
