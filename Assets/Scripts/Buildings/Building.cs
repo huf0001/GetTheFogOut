@@ -100,11 +100,27 @@ public abstract class Building : PlaneObject
                   {
                       SetPowerSource();
                   }
-       //     SetPowerSource();
         }
 
         resourceController.AddBuilding(this);
+
+        // Create wires between buidings
+        Wires wire = GetComponentInChildren<Wires>();
+        if (wire)
+        {
+            if (powerSource)
+            {
+                Wires targetWire = powerSource.GetComponentInChildren<Wires>();
+                if (targetWire)
+                {
+                    wire.next = targetWire.gameObject;
+                    wire.CreateWire();
+                }
+            }
+        }
+
         placed = true;
+
         /*
         if (this.buildingType != BuildingType.Hub)
         {
