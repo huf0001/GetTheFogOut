@@ -35,6 +35,7 @@ public class btnTutorial : MonoBehaviour
 
     private void Update()
     {
+        //This also needs to consult Liam's list of building types that are valid for the current tile.
         if (tutorialController.ButtonAllowed(buildingType) && tutorialController.TutorialStage != TutorialStage.Finished)
         {
             button.interactable = true;

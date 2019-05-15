@@ -252,6 +252,7 @@ public class Fog : MonoBehaviour
     private FogUnit CreateFogUnit()
     {
         FogUnit f = Instantiate<FogUnit>(fogUnitPrefab);
+        f.transform.position = this.transform.position;
         f.transform.SetParent(this.transform, true);
         f.MaxHealth = fogMaxHealth;
         f.Fog = this;
@@ -301,6 +302,7 @@ public class Fog : MonoBehaviour
         f.Location.FogUnit = null;
         f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
         f.Spill = true;
+        f.gameObject.transform.position = transform.position;
 
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f);

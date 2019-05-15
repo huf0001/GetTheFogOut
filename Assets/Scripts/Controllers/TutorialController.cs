@@ -16,6 +16,7 @@ public enum TutorialStage
     BuildRelay,
     BuildBattery,
     IncreasePowerGeneration,
+    BuildHarvesters,
 
     Finished
 }
@@ -59,6 +60,9 @@ public class TutorialController : DialogueBoxController
 
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
+
+    [SerializeField] private int powerGainGoal;
+    [SerializeField] private int mineralHarvestingGoal;
 
     //Non-Serialized Fields
     [SerializeField] private TutorialStage tutorialStage = TutorialStage.CrashLanding;
@@ -174,6 +178,9 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.IncreasePowerGeneration:
                 IncreasePowerGeneration();
+                break;
+            case TutorialStage.BuildHarvesters:
+                BuildHarvesters();
                 break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
@@ -442,7 +449,60 @@ public class TutorialController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 5:
-                if (ResourceController.Instance.PowerChange >= 15)
+                if (ResourceController.Instance.PowerChange >= powerGainGoal)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 6:
+                //Turn off UI element prompting player to build a relay on the prompted tile
+                tutorialStage = TutorialStage.BuildHarvesters;
+                currentlyBuilding = BuildingType.Harvester;
+                ResetSubStage();
+                DeactivateTarget();
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
+
+    private void BuildHarvesters()
+    {
+        switch (subStage)
+        {
+            case 1:
+                MouseController.Instance.ReportTutorialClick = true;
+                SendDialogue("build harvesters", 1);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    SkipTutorialAhead(4);
+                }
+
+                break;
+            case 3:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
+
+                break;
+            case 4:
+                currentlyLerping = ButtonType.Harvester;
+                //btnCurrent = btnBuildRelay;
+                //btnCurrent.ReportClick = true;
+                IncrementSubStage();
+                break;
+            case 5:
+                if (ResourceController.Instance.MineralChange >= mineralHarvestingGoal)
                 {
                     IncrementSubStage();
                 }
@@ -655,7 +715,7 @@ public class TutorialController : DialogueBoxController
 
     public bool TileAllowed(TileData tile)
     {
-        if (tutorialStage == TutorialStage.Finished || tutorialStage == TutorialStage.IncreasePowerGeneration || tile == currentTile)
+        if (tutorialStage == TutorialStage.Finished || tutorialStage == TutorialStage.IncreasePowerGeneration || tutorialStage == TutorialStage.BuildHarvesters || tile == currentTile)
         {
             return true;
         }
