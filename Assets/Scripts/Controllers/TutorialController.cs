@@ -113,7 +113,7 @@ public class TutorialController : DialogueBoxController
             tutorialStage = TutorialStage.Finished;
             GetComponent<Fog>().enabled = true;
             GetComponent<Fog>().SpawnStartingFog();
-            //ObjectiveController.Instance.IncrementStage();
+            ObjectiveController.Instance.IncrementStage();
         }
         else
         {
@@ -635,7 +635,7 @@ public class TutorialController : DialogueBoxController
     //        tutorialStage = TutorialStage.Finished;
     //        currentlyBuilding = BuildingType.None;
     //        ResetSubStage();
-    //        //ObjectiveController.Instance.IncrementStage();
+    //        ObjectiveController.Instance.IncrementStage();
     //        GetComponent<Fog>().enabled = true;
     //        MusicController.Instance.StartStage1();
     //    }

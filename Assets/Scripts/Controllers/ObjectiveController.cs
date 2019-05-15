@@ -19,7 +19,7 @@ public class ObjectiveController : DialogueBoxController
 
     // Serialized Fields
     [SerializeField] bool objectivesOn = true;
-    [SerializeField] ObjectiveStage currStage = ObjectiveStage.HarvestMinerals;
+    [SerializeField] ObjectiveStage currStage = ObjectiveStage.None;
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveCompletePrefab;
@@ -27,7 +27,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] GameObject ShipComponent;
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
-    [SerializeField] int generatorLimit = 1;
+    [SerializeField] int generatorLimit = 3;
     [SerializeField] AudioClip audioCompleteObjective;
     [SerializeField] AudioClip audioStage1;
     [SerializeField] AudioClip audioTransition1To2;
@@ -72,7 +72,7 @@ public class ObjectiveController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (objectivesOn && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
+        if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
         }
@@ -160,7 +160,6 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI completion text
                 SendDialogue("end part stage", 1);
                 ResetSubstage();
-                IncrementStage();
                 break;
             default:
                 break;
@@ -193,7 +192,6 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI completetion text
                 SendDialogue("end power stage", 1);
                 ResetSubstage();
-                IncrementStage();
                 break;
             default:
                 break;
@@ -204,15 +202,19 @@ public class ObjectiveController : DialogueBoxController
 
     public void IncrementStage()
     {
-        generatorLimit += 4;
         if (currStage != 0)
         {
             StartCoroutine(CompleteObjective());
+            generatorLimit += 4;
         }
-        else if (!objWindowVisibility)
+        else
         {
-            ToggleObjWindow();
+            if (!objWindowVisibility)
+            {
+                ToggleObjWindow();
+            }
         }
+
         stageComplete = false;
         currStage++;
     }
