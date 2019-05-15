@@ -157,7 +157,6 @@ public class MouseController : MonoBehaviour
 
                                     if (towerManager.GetBuildingType() == BuildingType.Generator)
                                     {
-                                        //if(Hub.Instance.GetGenerators().Length < (WorldController.Instance.GetRecoveredComponentCount() + 1) * generatorInterval)   //Shouldn't count holo prefabs?
                                         if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * generatorInterval + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
                                         {
                                             Debug.Log("If you want to build more generators, collect more ship components first.");

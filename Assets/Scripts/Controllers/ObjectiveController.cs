@@ -19,7 +19,7 @@ public class ObjectiveController : DialogueBoxController
 
     // Serialized Fields
     [SerializeField] bool objectivesOn = true;
-    [SerializeField] ObjectiveStage currStage = ObjectiveStage.None;
+    [SerializeField] ObjectiveStage currStage = ObjectiveStage.HarvestMinerals;
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveCompletePrefab;
@@ -70,7 +70,7 @@ public class ObjectiveController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (objectivesOn)
+        if (objectivesOn && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
         }
