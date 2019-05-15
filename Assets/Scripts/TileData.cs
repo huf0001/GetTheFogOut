@@ -77,7 +77,7 @@ public class TileData
             }
         }
     }
-    
+   
     public TileData(int x, int z)
     {
         this.x = x;
@@ -126,14 +126,15 @@ public class TileData
     void UpdateResource()
     {
         bool visTemp = Resource.Visable;
-
+        Resource.MaxHealth = 200;
+        Resource.Health = Resource.MaxHealth;
         if (Building == null && Resource.Health > 0)
         {
             Resource.Visable = true;
         }
         else
         {
-            if (Building.BuildingType == BuildingType.Harvester || Resource.Health <= 0)
+            if (Building.BuildingType == BuildingType.Harvester) // || Resource.Health <= 0
             {
                 Resource.Visable = false;
             }
