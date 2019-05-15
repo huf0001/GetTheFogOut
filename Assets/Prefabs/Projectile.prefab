@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6383650365482346035}
   - component: {fileID: 2916409545692388292}
   - component: {fileID: 2518474314429858771}
-  - component: {fileID: 2945134308787783548}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -53,10 +52,7 @@ VisualEffect:
     m_Vector3f:
       m_Array: []
     m_Vector4f:
-      m_Array:
-      - m_Value: {x: 0, y: 52.705883, z: 128, w: 0}
-        m_Name: Colour
-        m_Overridden: 0
+      m_Array: []
     m_Uint:
       m_Array: []
     m_Int:
@@ -121,15 +117,3 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.15
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2945134308787783548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4289153280508260366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27a6689423b74f84dbc3614eb87acfb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
