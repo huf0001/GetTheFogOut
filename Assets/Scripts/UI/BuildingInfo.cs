@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class BuildingInfo : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI mainText;
-    [SerializeField] Image healthBar;
+    [SerializeField] GameObject healthBar;
+    [SerializeField] Image healthBarFill;
     [SerializeField] Button destroyButton;
     [HideInInspector] public Building building;
     private RectTransform parent;
@@ -16,7 +17,10 @@ public class BuildingInfo : MonoBehaviour
 
     private void Update()
     {
-        healthBar.fillAmount = building.Health / building.MaxHealth;
+        if (healthBar.activeSelf)
+        {
+            healthBarFill.fillAmount = building.Health / building.MaxHealth;
+        }
         if (Visible)
         {
             parent.LookAt(Camera.main.transform);
@@ -32,15 +36,51 @@ public class BuildingInfo : MonoBehaviour
         building = b;
         if (building.BuildingType == BuildingType.Hub)
         {
-            destroyButton.interactable = false;
+            destroyButton.gameObject.SetActive(false);
         }
         else
         {
-            destroyButton.interactable = true;
+            destroyButton.gameObject.SetActive(true);
         }
+
         mainText.text = $"<b>{b.BuildingType}</b>\n" +
-            $"HP";
+            $"HP\n";
+        if (b.Powered)
+        {
+            mainText.text += "<color=#009900>POWERED</color>\n";
+        }
+        else
+        {
+            mainText.text += "<color=\"red\">NO POWER</color>\n";
+        }
+
+        healthBar.SetActive(true);
         parent.position = new Vector3(b.transform.position.x, 0, b.transform.position.z) + new Vector3(0.5f, 1, -1.5f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
+        parent.LookAt(Camera.main.transform);
+        gameObject.SetActive(true);
+        Visible = true;
+    }
+
+    public void ShowInfo(ShipComponent shipComponent)
+    {
+        if (parent == null)
+        {
+            parent = GetComponentInParent<RectTransform>();
+        }
+        if (shipComponent.Location.FogUnit != null)
+        {
+            mainText.text = "<b>It looks like your missing thruster!\n" +
+                "Try clearing away the fog to collect it</b>";
+        }
+        else
+        {
+            mainText.text = "<b>It's your missing thruster!\n" +
+                "Collect it so we can move on</b>";
+        }
+
+        destroyButton.gameObject.SetActive(false);
+        healthBar.SetActive(false);
+        parent.position = new Vector3(shipComponent.transform.position.x, 0, shipComponent.transform.position.z) + new Vector3(0.5f, 1, -1.5f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
         parent.LookAt(Camera.main.transform);
         gameObject.SetActive(true);
         Visible = true;
