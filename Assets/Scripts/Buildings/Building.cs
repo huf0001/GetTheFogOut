@@ -89,7 +89,10 @@ public abstract class Building : PlaneObject
     // Update is called once per frame
     protected virtual void Update()
     {
-        UpdateHealthBar();
+        if (placed)
+        {
+            UpdateHealthBar();
+        }
         if (GotNoHealth())
         {
             //Debug.Log(buildingType + " is being dismantled. Called from Building.Update() using Entity.GotNoHealth()");
@@ -116,6 +119,7 @@ public abstract class Building : PlaneObject
             }
 
             healthBarImage.fillAmount = Health / MaxHealth;
+            healthBarImage.color = Color.Lerp(new Color32(255, 0, 0, 255), new Color32(0, 153, 0, 255), healthBarImage.fillAmount);
             healthBarCanvas.LookAt(Camera.main.transform);
         }
         else
@@ -144,11 +148,11 @@ public abstract class Building : PlaneObject
     {
         if (buildingType != BuildingType.Hub)
         {
-                 if (powerSource == null)
-                  {
-                      SetPowerSource();
-                  }
-       //     SetPowerSource();
+            if (powerSource == null)
+            {
+                SetPowerSource();
+            }
+            //     SetPowerSource();
         }
 
         resourceController.AddBuilding(this);
@@ -184,7 +188,7 @@ public abstract class Building : PlaneObject
             PowerUp();
         }
         else
-        { 
+        {
             //Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
             PowerDown();
         }
@@ -316,7 +320,7 @@ public abstract class Building : PlaneObject
         {
             UIController.instance.buildingInfo.HideInfo();
         }
-        
+
         resourceController.RemoveBuilding(this);
 
         //Debug.Log("Should be removed from ResourceController's list of my building type");
@@ -359,7 +363,7 @@ public abstract class Building : PlaneObject
         }
         Health -= damageVal;
         TakingDamage = true;
-        
+
         if (!damagingNotified)
         {
             StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"A {BuildingType} is being damaged!"));
