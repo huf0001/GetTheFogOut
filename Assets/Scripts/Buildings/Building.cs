@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public abstract class Building : PlaneObject
@@ -17,6 +18,8 @@ public abstract class Building : PlaneObject
     [SerializeField] protected AudioClip audioSpawn;
     [SerializeField] protected AudioClip audioDamage;
     [SerializeField] protected AudioClip audioDestroy;
+    [SerializeField] protected RectTransform healthBarCanvas;
+    [SerializeField] protected Image healthBarImage;
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
@@ -86,6 +89,7 @@ public abstract class Building : PlaneObject
     // Update is called once per frame
     protected virtual void Update()
     {
+        UpdateHealthBar();
         if (GotNoHealth())
         {
             //Debug.Log(buildingType + " is being dismantled. Called from Building.Update() using Entity.GotNoHealth()");
@@ -99,6 +103,27 @@ public abstract class Building : PlaneObject
         {
             damagedNotified = true;
             StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Warning + $"A building is damaged"));
+        }
+    }
+
+    private void UpdateHealthBar()
+    {
+        if (Health < MaxHealth)
+        {
+            if (!healthBarCanvas.gameObject.activeSelf)
+            {
+                healthBarCanvas.gameObject.SetActive(true);
+            }
+
+            healthBarImage.fillAmount = Health / MaxHealth;
+            healthBarCanvas.LookAt(Camera.main.transform);
+        }
+        else
+        {
+            if (healthBarCanvas.gameObject.activeSelf)
+            {
+                healthBarCanvas.gameObject.SetActive(false);
+            }
         }
     }
 
