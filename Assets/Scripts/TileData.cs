@@ -126,8 +126,7 @@ public class TileData
     void UpdateResource()
     {
         bool visTemp = Resource.Visable;
-        Resource.MaxHealth = 200;
-        Resource.Health = Resource.MaxHealth;
+
         if (Building == null && Resource.Health > 0)
         {
             Resource.Visable = true;
