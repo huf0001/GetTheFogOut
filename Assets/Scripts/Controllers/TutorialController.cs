@@ -65,6 +65,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
 
     [SerializeField] private TileData currentTile = null;
+    private TileData lastTileChecked;
 
     private ButtonType currentlyLerping;
 
@@ -210,7 +211,7 @@ public class TutorialController : DialogueBoxController
         tutorialStage = TutorialStage.CameraControls;
     }
 
-    //Tutorial Stage 2: AI Explains Basic Building Placement
+    //Tutorial Stage 2: AI Walks Player Through How to do Stuff
     private void CameraControls()
     {
         switch (subStage)
@@ -691,10 +692,11 @@ public class TutorialController : DialogueBoxController
         return false;
     }
 
-    //TODO: has to also be in the list of options available for that tile generally
-    public bool ButtonAllowed(ButtonType button)
+    public bool TileAllowed(TileData tile)
     {
-        if (tutorialStage == TutorialStage.Finished || button == currentlyLerping)
+        lastTileChecked = tile;
+
+        if (tutorialStage >= TutorialStage.IncreasePowerGeneration  || tile == currentTile)
         {
             return true;
         }
@@ -702,14 +704,38 @@ public class TutorialController : DialogueBoxController
         return false;
     }
 
-    public bool TileAllowed(TileData tile)
+    public bool ButtonAllowed(ButtonType button)
     {
-        if (tutorialStage >= TutorialStage.IncreasePowerGeneration  || tile == currentTile)
+        if ((tutorialStage == TutorialStage.Finished || button == currentlyLerping) && ButtonsNormallyAllowed(lastTileChecked).Contains(button))
         {
             return true;
         }
 
         return false;
+    }
+
+    private List<ButtonType> ButtonsNormallyAllowed(TileData tile)
+    {
+        List<ButtonType> result = new List<ButtonType>();
+
+        if (tile.Resource != null)
+        {
+            result.Add(ButtonType.Harvester);
+        }
+        else
+        {
+            if (ResourceController.Instance.Generators.Count < ObjectiveController.Instance.GeneratorLimit)
+            {
+                result.Add(ButtonType.Generator);
+            }
+
+            result.Add(ButtonType.ArcDefence);
+            result.Add(ButtonType.Battery);
+            result.Add(ButtonType.Relay);
+            result.Add(ButtonType.RepelFan);
+        }
+
+        return result;
     }
 
     protected override void SendDialogue(string dialogueKey, float invokeDelay)
