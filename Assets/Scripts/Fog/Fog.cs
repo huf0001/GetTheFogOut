@@ -59,6 +59,7 @@ public class Fog : MonoBehaviour
     public bool DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public float FogGrowth { get => fogGrowth; set => fogGrowth = value; }
+    public bool FogAccelerates { get => fogAccelerates; set => fogAccelerates = value; }
     public float FogMaxHealth { get => fogMaxHealth; }
 
     //Fog's awake method sets the static instance of Fog
@@ -212,7 +213,6 @@ public class Fog : MonoBehaviour
         if (finished)
         {
             CancelInvoke("LerpStartingFogToMaxHealth");
-            ActivateFog();
         }
     }
 
