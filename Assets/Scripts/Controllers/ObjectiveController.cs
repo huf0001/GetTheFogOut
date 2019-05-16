@@ -28,7 +28,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] GameObject ShipComponent;
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
-    [SerializeField] int generatorLimit = 1;
+    [SerializeField] int generatorLimit = 3;
     [SerializeField] AudioClip audioCompleteObjective;
     [SerializeField] AudioClip audioStage1;
     [SerializeField] AudioClip audioTransition1To2;
@@ -73,7 +73,7 @@ public class ObjectiveController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (objectivesOn)
+        if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
         }
@@ -161,7 +161,6 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI completion text
                 SendDialogue("end part stage", 1);
                 ResetSubstage();
-                IncrementStage();
                 break;
             default:
                 break;
@@ -194,7 +193,6 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI completetion text
                 SendDialogue("end power stage", 1);
                 ResetSubstage();
-                IncrementStage();
                 break;
             default:
                 break;
@@ -205,15 +203,19 @@ public class ObjectiveController : DialogueBoxController
 
     public void IncrementStage()
     {
-        generatorLimit += 4;
         if (currStage != 0)
         {
             StartCoroutine(CompleteObjective());
+            generatorLimit += 4;
         }
-        else if (!objWindowVisibility)
+        else
         {
-            ToggleObjWindow();
+            if (!objWindowVisibility)
+            {
+                ToggleObjWindow();
+            }
         }
+
         stageComplete = false;
         currStage++;
     }
