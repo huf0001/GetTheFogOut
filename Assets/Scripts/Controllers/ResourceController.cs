@@ -43,6 +43,7 @@ public class ResourceController : MonoBehaviour
     public List<Relay> Relays { get => relays; set => relays = value; }
     public List<Building> Buildings { get => buildings; set => buildings = value; }
 
+
     // [SerializeField] protected AudioSource audioMaxPower;
     // [SerializeField] protected AudioSource audioMaxMineral;
     // [SerializeField] protected AudioSource audioOverload;
@@ -193,6 +194,11 @@ public class ResourceController : MonoBehaviour
                                     break;
                                 case Resource.Mineral:
                                     mineralChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
+                                    h.Location.Resource.Health -= h.HarvestAmt;
+                                    if (h.Location.Resource.Health == 0)
+                                    {
+                                        ResourceNode.Destroy(h.Location.Resource.gameObject);
+                                    }
                                     break;
                                 case Resource.Fuel:
                                     fuelChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;

@@ -30,7 +30,7 @@ public class DialogueBoxController : MonoBehaviour
     //Non-Serialized fields
     protected bool instructionsSent = false;
     protected bool dialogueRead = false;
-    protected bool buttonClicked = false;
+    protected bool tileClicked = false;
 
     public void RegisterDialogueRead()
     {
@@ -42,7 +42,7 @@ public class DialogueBoxController : MonoBehaviour
         dialogueRead = false;
     }
 
-    protected void SendDialogue(string dialogueKey, float invokeDelay)
+    protected virtual void SendDialogue(string dialogueKey, float invokeDelay)
     {
         if (!instructionsSent)
         {
@@ -78,6 +78,6 @@ public class DialogueBoxController : MonoBehaviour
 
     public void RegisterButtonClicked()
     {
-        buttonClicked = true;
+        tileClicked = true;
     }
 }

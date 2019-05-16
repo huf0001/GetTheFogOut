@@ -23,11 +23,12 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveCompletePrefab;
+    [SerializeField] GameObject objectiveWindowOpenArrows;
     [SerializeField] GameObject hub;
     [SerializeField] GameObject ShipComponent;
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
-    [SerializeField] int generatorLimit = 1;
+    [SerializeField] int generatorLimit = 3;
     [SerializeField] AudioClip audioCompleteObjective;
     [SerializeField] AudioClip audioStage1;
     [SerializeField] AudioClip audioTransition1To2;
@@ -72,7 +73,7 @@ public class ObjectiveController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (objectivesOn)
+        if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
         }
@@ -160,7 +161,6 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI completion text
                 SendDialogue("end part stage", 1);
                 ResetSubstage();
-                IncrementStage();
                 break;
             default:
                 break;
@@ -193,7 +193,6 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI completetion text
                 SendDialogue("end power stage", 1);
                 ResetSubstage();
-                IncrementStage();
                 break;
             default:
                 break;
@@ -204,15 +203,19 @@ public class ObjectiveController : DialogueBoxController
 
     public void IncrementStage()
     {
-        generatorLimit += 4;
         if (currStage != 0)
         {
             StartCoroutine(CompleteObjective());
+            generatorLimit += 4;
         }
-        else if (!objWindowVisibility)
+        else
         {
-            ToggleObjWindow();
+            if (!objWindowVisibility)
+            {
+                ToggleObjWindow();
+            }
         }
+
         stageComplete = false;
         currStage++;
     }
@@ -232,13 +235,13 @@ public class ObjectiveController : DialogueBoxController
         if (!objWindowVisibility)
         {
             objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(5, 0.3f).SetEase(Ease.OutCubic);
-            //objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(true);
+            objectiveWindowOpenArrows.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 180), 0.3f);
             objWindowVisibility = true;
         }
         else
         {
-            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-227, 0.3f).SetEase(Ease.InCubic);
-            //objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(false);
+            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-250, 0.3f).SetEase(Ease.InCubic);
+            objectiveWindowOpenArrows.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 0), 0.3f);
             objWindowVisibility = false;
         }
     }

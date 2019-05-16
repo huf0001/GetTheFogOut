@@ -35,10 +35,13 @@ public class ShipComponent : Entity
     private void OnMouseEnter()
     {
         ShaderOnMethod();
+        UIController.instance.buildingInfo.ShowInfo(this);
     }
 
-    private void OnMouseExit() {
+    private void OnMouseExit()
+    {
         ShaderOffMethod();
+        UIController.instance.buildingInfo.HideInfo();
     }
 
     public void Collect()
@@ -46,6 +49,7 @@ public class ShipComponent : Entity
         if (Location.FogUnit == null)
         {
             controller.GetShipComponent(id).Collected = true;
+            UIController.instance.buildingInfo.HideInfo();
         }
     }
 

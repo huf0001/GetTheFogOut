@@ -77,7 +77,7 @@ public class TileData
             }
         }
     }
-    
+   
     public TileData(int x, int z)
     {
         this.x = x;
@@ -133,7 +133,7 @@ public class TileData
         }
         else
         {
-            if (Building.BuildingType == BuildingType.Harvester || Resource.Health <= 0)
+            if (Building.BuildingType == BuildingType.Harvester) // || Resource.Health <= 0
             {
                 Resource.Visable = false;
             }
