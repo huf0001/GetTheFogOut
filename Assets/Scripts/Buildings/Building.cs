@@ -24,7 +24,8 @@ public abstract class Building : PlaneObject
     private Animator animator;
     private ResourceController resourceController = null;
     protected AudioSource audioSource;
-    private bool notified = false;
+    private bool damagingNotified = false;
+    private bool damagedNotified = false;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -89,6 +90,28 @@ public abstract class Building : PlaneObject
         {
             //Debug.Log(buildingType + " is being dismantled. Called from Building.Update() using Entity.GotNoHealth()");
             DismantleBuilding();
+        }
+        if (TakingDamage)
+        {
+            StartCoroutine(CheckStillDamaging());
+        }
+        else if (Health < MaxHealth && !damagedNotified)
+        {
+            damagedNotified = true;
+            StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Warning + $"A building is damaged"));
+        }
+    }
+
+    private IEnumerator CheckStillDamaging()
+    {
+        float buildHealth = Health;
+
+        yield return new WaitForSeconds(1f);
+
+        if (buildHealth == Health)
+        {
+            TakingDamage = false;
+            damagingNotified = false;
         }
     }
 
@@ -305,21 +328,19 @@ public abstract class Building : PlaneObject
 
     public IEnumerator DealDamageToBuilding(float damageVal)
     {
-        Health -= damageVal;
-        float buildHealth = Health;
-        TakingDamage = true;
-        yield return new WaitForSeconds(1);
-
-        if (buildHealth == Health)
+        if (damagedNotified)
         {
-            TakingDamage = false;
-            notified = false;
+            damagedNotified = false;
         }
-        else if (!notified)
+        Health -= damageVal;
+        TakingDamage = true;
+        
+        if (!damagingNotified)
         {
             StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"A {BuildingType} is being damaged!"));
             audioSource.PlayOneShot(audioDamage);
-            notified = true;
+            damagingNotified = true;
         }
+        yield return new WaitForSeconds(0.1f);
     }
 }

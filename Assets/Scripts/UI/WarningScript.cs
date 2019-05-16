@@ -119,13 +119,19 @@ public class WarningScript : MonoBehaviour
             {
                 warnings["buildings"] = WarningLevel.Danger;
                 buildingStatus.text = DANGER + "Buildings are taking damage!";
-                //StartCoroutine(ShowMessage(buildingStatus.text));
                 return;
             }
-            //if (b.Health < b.)
+            else if (b.Health < b.MaxHealth)
+            {
+                warnings["buildings"] = WarningLevel.Warning;
+                buildingStatus.text = WARNING + "Some buildings are damaged";
+            }
+            else
+            {
+                warnings["buildings"] = WarningLevel.Normal;
+                buildingStatus.text = NORMAL + "All buildings are healthy";
+            }
         }
-        warnings["buildings"] = WarningLevel.Normal;
-        buildingStatus.text = NORMAL + "All buildings are healthy";
     }
 
     private void CheckPower()
