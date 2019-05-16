@@ -14,7 +14,7 @@ public class CustomRenderQueue : MonoBehaviour
         if (apply)
         {
             apply = false;
-        //    Debug.Log("Updated material val");
+            //Debug.Log("Updated material val");
             Image image = GetComponent<Image>();
             Material existingGlobalMat = image.materialForRendering;
             Material updatedMaterial = new Material(existingGlobalMat);
