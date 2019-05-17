@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public abstract class Building : PlaneObject
@@ -17,6 +18,8 @@ public abstract class Building : PlaneObject
     [SerializeField] protected AudioClip audioSpawn;
     [SerializeField] protected AudioClip audioDamage;
     [SerializeField] protected AudioClip audioDestroy;
+    [SerializeField] protected RectTransform healthBarCanvas;
+    [SerializeField] protected Image healthBarImage;
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
@@ -24,7 +27,8 @@ public abstract class Building : PlaneObject
     private Animator animator;
     private ResourceController resourceController = null;
     protected AudioSource audioSource;
-    private bool notified = false;
+    private bool damagingNotified = false;
+    private bool damagedNotified = false;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -85,10 +89,58 @@ public abstract class Building : PlaneObject
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (placed)
+        {
+            UpdateHealthBar();
+        }
         if (GotNoHealth())
         {
             //Debug.Log(buildingType + " is being dismantled. Called from Building.Update() using Entity.GotNoHealth()");
             DismantleBuilding();
+        }
+        if (TakingDamage)
+        {
+            StartCoroutine(CheckStillDamaging());
+        }
+        else if (Health < MaxHealth && !damagedNotified)
+        {
+            damagedNotified = true;
+            StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Warning + $"A building is damaged"));
+        }
+    }
+
+    private void UpdateHealthBar()
+    {
+        if (Health < MaxHealth)
+        {
+            if (!healthBarCanvas.gameObject.activeSelf)
+            {
+                healthBarCanvas.gameObject.SetActive(true);
+            }
+
+            healthBarImage.fillAmount = Health / MaxHealth;
+            healthBarImage.color = Color.Lerp(new Color32(255, 0, 0, 255), new Color32(0, 153, 0, 255), healthBarImage.fillAmount);
+            healthBarCanvas.LookAt(Camera.main.transform);
+        }
+        else
+        {
+            if (healthBarCanvas.gameObject.activeSelf)
+            {
+                healthBarCanvas.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private IEnumerator CheckStillDamaging()
+    {
+        float buildHealth = Health;
+
+        yield return new WaitForSeconds(1f);
+
+        if (buildHealth == Health)
+        {
+            TakingDamage = false;
+            damagingNotified = false;
         }
     }
 
@@ -96,11 +148,11 @@ public abstract class Building : PlaneObject
     {
         if (buildingType != BuildingType.Hub)
         {
-                 if (powerSource == null)
-                  {
-                      SetPowerSource();
-                  }
-       //     SetPowerSource();
+            if (powerSource == null)
+            {
+                SetPowerSource();
+            }
+            //     SetPowerSource();
         }
 
         resourceController.AddBuilding(this);
@@ -136,7 +188,7 @@ public abstract class Building : PlaneObject
             PowerUp();
         }
         else
-        { 
+        {
             //Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
             PowerDown();
         }
@@ -268,7 +320,7 @@ public abstract class Building : PlaneObject
         {
             UIController.instance.buildingInfo.HideInfo();
         }
-        
+
         resourceController.RemoveBuilding(this);
 
         //Debug.Log("Should be removed from ResourceController's list of my building type");
@@ -305,21 +357,19 @@ public abstract class Building : PlaneObject
 
     public IEnumerator DealDamageToBuilding(float damageVal)
     {
-        Health -= damageVal;
-        float buildHealth = Health;
-        TakingDamage = true;
-        yield return new WaitForSeconds(1);
-
-        if (buildHealth == Health)
+        if (damagedNotified)
         {
-            TakingDamage = false;
-            notified = false;
+            damagedNotified = false;
         }
-        else if (!notified)
+        Health -= damageVal;
+        TakingDamage = true;
+
+        if (!damagingNotified)
         {
             StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"A {BuildingType} is being damaged!"));
             audioSource.PlayOneShot(audioDamage);
-            notified = true;
+            damagingNotified = true;
         }
+        yield return new WaitForSeconds(0.1f);
     }
 }

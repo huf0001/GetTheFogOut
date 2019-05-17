@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.067397416, g: 0.08987052, b: 0.13496715, a: 1}
+  m_IndirectSpecularColor: {r: 0.0673975, g: 0.08987059, b: 0.1349672, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -258,6 +258,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 9000
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 40f19c52466a0f84ab817a4544b4a247, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8a573f88c7a979e428a51f217ebaaadb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40f19c52466a0f84ab817a4544b4a247, type: 3}
 --- !u!1001 &75121999
@@ -1765,26 +1769,6 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4767305868293355450, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: buildingType
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4767305867445416705, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: buildingType
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4767305868773111522, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: buildingType
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4767305868302778287, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: buildingType
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4767305867335592935, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1794,11 +1778,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -14.400024
-      objectReference: {fileID: 0}
-    - target: {fileID: 4767305867595780570, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -2.5200043
       objectReference: {fileID: 0}
     - target: {fileID: 8522432445796192474, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
@@ -1829,6 +1808,26 @@ PrefabInstance:
         type: 3}
       propertyPath: apply
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305868293355450, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: buildingType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867445416705, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: buildingType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305868773111522, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: buildingType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305868302778287, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: buildingType
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0d96ef103d08e4429542615f2b52508, type: 3}
@@ -1999,6 +1998,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3575913343396146165, guid: b73f147f6fafb3242895252f4e5718fb,
     type: 3}
   m_PrefabInstance: {fileID: 429279991}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &332461609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 992453847411431532, guid: f0d96ef103d08e4429542615f2b52508,
+    type: 3}
+  m_PrefabInstance: {fileID: 326070610}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &390134775 stripped
 MonoBehaviour:
@@ -5131,6 +5136,11 @@ PrefabInstance:
       objectReference: {fileID: 1313111741}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
+      propertyPath: objectiveWindowOpenArrows
+      value: 
+      objectReference: {fileID: 332461609}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
       propertyPath: generatorLimit
       value: 5
       objectReference: {fileID: 0}
@@ -5147,22 +5157,22 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[1].dialogue.Array.size
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[2].dialogue.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[3].dialogue.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[5].dialogue.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5288,12 +5298,14 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[1].dialogue.Array.data[0]
-      value: explain situation
+      value: Hello. I am your very own Nexus Drone. You may call me Nex for short.
+        I am an emergency drone that you can control from your ship.
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[2].dialogue.Array.data[0]
-      value: move camera
+      value: Since the backup generator will not be sufficient, you will have to place
+        power generators.
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5303,7 +5315,7 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[3].dialogue.Array.data[0]
-      value: rotate camera
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5319,7 +5331,8 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[4].dialogue.Array.data[0]
-      value: build generator decal
+      value: Next are power relays. These will extend the power range from your hull
+        and allow you to place buildings away from your hull.
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5334,7 +5347,8 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[5].dialogue.Array.data[0]
-      value: build generator icon
+      value: The final power related building is a battery. When you place it, it
+        will increase your power capacity.
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5344,8 +5358,6 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[6].dialogue.Array.data[0]
-      value: build relay decal
-      objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: powerGainGoal
@@ -5356,25 +5368,65 @@ PrefabInstance:
       propertyPath: mineralHarvestingGoal
       value: 15
       objectReference: {fileID: 0}
+      value: Now that you have these skills, increase your power generation. Do not
+        forget to try more power relays and batteries.
+      objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: dialogue.Array.data[7].key
+      propertyPath: dialogue.Array.data[1].dialogue.Array.data[1]
+      value: Let me run a scan for you to see the extent of the damage.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[1].dialogue.Array.data[2]
+      value: Scanning...
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[1].dialogue.Array.data[3]
+      value: The hull has sustained copious damage and a thruster is missing.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[1].dialogue.Array.data[4]
+      value: "The scan also picked up hostility coming from the surrounding fog. It
+        may be sentient. What are the chances?\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[1].dialogue.Array.data[5]
+      value: Your ship comes equipped with important blueprints, should the need arise
+        to use them.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].dialogue.Array.data[1]
+      value: Click here.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].dialogue.Array.data[2]
+      value: Now, click on the power generator icon.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[3].dialogue.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].dialogue.Array.data[1]
+      value: Place one here.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].dialogue.Array.data[1]
+      value: Place one here.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].dialogue.Array.data[2]
       value: build battery decal
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].dialogue.Array.data[0]
-      value: build battery decal
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].key
-      value: increase power generation
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].dialogue.Array.data[0]
-      value: increase power generation
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -6596,41 +6648,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.1514571
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.36564982
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.35143608
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.1514571
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.36564982
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.35143608
+      objectReference: {fileID: 0}
     - target: {fileID: 4455723524170164334, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: buildingSelector
       value: 
       objectReference: {fileID: 326070622}
-    - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.15145712
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.36564985
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.35143614
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.15145712
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.36564985
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.35143614
-      objectReference: {fileID: 0}
     - target: {fileID: 4455723525889744487, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LookAt

@@ -23,6 +23,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveCompletePrefab;
+    [SerializeField] GameObject objectiveWindowOpenArrows;
     [SerializeField] GameObject hub;
     [SerializeField] GameObject ShipComponent;
     [SerializeField] int mineralTarget = 500;
@@ -234,13 +235,13 @@ public class ObjectiveController : DialogueBoxController
         if (!objWindowVisibility)
         {
             objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(5, 0.3f).SetEase(Ease.OutCubic);
-            //objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(true);
+            objectiveWindowOpenArrows.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 180), 0.3f);
             objWindowVisibility = true;
         }
         else
         {
-            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-227, 0.3f).SetEase(Ease.InCubic);
-            //objectiveWindow.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(false);
+            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-250, 0.3f).SetEase(Ease.InCubic);
+            objectiveWindowOpenArrows.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 0), 0.3f);
             objWindowVisibility = false;
         }
     }

@@ -141,6 +141,9 @@ public class WorldController : MonoBehaviour
             tile.Resource = resourceNode;
             resourceNode.Location = tile;
 
+            resourceNode.MaxHealth = 200;
+            resourceNode.Health = resourceNode.MaxHealth;
+
             // Centre on tile
             Vector3 pos = resourceNode.transform.position;
             pos.x = Mathf.Round(pos.x);
