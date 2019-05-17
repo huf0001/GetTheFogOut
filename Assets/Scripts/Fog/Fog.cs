@@ -59,6 +59,7 @@ public class Fog : MonoBehaviour
     public bool DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public float FogGrowth { get => fogGrowth; set => fogGrowth = value; }
+    public bool FogAccelerates { get => fogAccelerates; set => fogAccelerates = value; }
     public float FogMaxHealth { get => fogMaxHealth; }
 
     //Fog's awake method sets the static instance of Fog
@@ -212,7 +213,6 @@ public class Fog : MonoBehaviour
         if (finished)
         {
             CancelInvoke("LerpStartingFogToMaxHealth");
-            ActivateFog();
         }
     }
 
@@ -252,6 +252,7 @@ public class Fog : MonoBehaviour
     private FogUnit CreateFogUnit()
     {
         FogUnit f = Instantiate<FogUnit>(fogUnitPrefab);
+        f.transform.position = this.transform.position;
         f.transform.SetParent(this.transform, true);
         f.MaxHealth = fogMaxHealth;
         f.Fog = this;
@@ -301,6 +302,7 @@ public class Fog : MonoBehaviour
         f.Location.FogUnit = null;
         f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
         f.Spill = true;
+        f.gameObject.transform.position = transform.position;
 
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f);

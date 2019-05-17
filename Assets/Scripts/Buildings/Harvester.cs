@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Harvester : Building
 {
-    private int harvestAmt = +5;
+    [SerializeField] private int harvestAmt = +5;
 
     public int HarvestAmt { get => harvestAmt; }
 

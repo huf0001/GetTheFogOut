@@ -12,11 +12,14 @@ public enum TutorialStage
     CrashLanding,
     ShipPartsCrashing,
     ZoomBackToShip,
+    CameraControls,
     BuildGenerator,
     BuildRelay,
     BuildBattery,
     IncreasePowerGeneration,
-
+    BuildHarvesters,
+    BuildArcDefence,
+    BuildRepelFan,
     Finished
 }
 
@@ -39,6 +42,7 @@ public class TutorialController : DialogueBoxController
     //Serialized Fields
     [SerializeField] private bool skipTutorial = true;
 
+    [SerializeField] private Transform camera;
     [SerializeField] private Landmark arcDefenceLandmark;
     [SerializeField] private Landmark batteryLandmark;
     [SerializeField] private Landmark generatorLandmark;
@@ -48,17 +52,12 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Locatable buildingTarget;
 
     //Note: if new UI buttons will be used, they need to have btnTutorial added
-    //and have the ReportClick method added to their list of OnClick methods
-    //[SerializeField] private btnTutorial btnBuildSelect;
-    //[SerializeField] private btnTutorial btnBuildArcDefence;
-    //[SerializeField] private btnTutorial btnBuildBattery;
-    //[SerializeField] private btnTutorial btnBuildGenerator;
-    //[SerializeField] private btnTutorial btnBuildHarvester;
-    //[SerializeField] private btnTutorial btnBuildRelay;
-    //[SerializeField] private btnTutorial btnBuildRepelFan;
 
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
+
+    [SerializeField] private int powerGainGoal;
+    [SerializeField] private int mineralHarvestingGoal;
 
     //Non-Serialized Fields
     [SerializeField] private TutorialStage tutorialStage = TutorialStage.CrashLanding;
@@ -66,9 +65,8 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
 
     [SerializeField] private TileData currentTile = null;
+    private TileData lastTileChecked;
 
-    //private bool waitingForMouseClick = false;
-    //private btnTutorial btnCurrent;
     private ButtonType currentlyLerping;
 
     private DecalProjectorComponent targetDecal = null;
@@ -78,9 +76,8 @@ public class TutorialController : DialogueBoxController
     private float lerpProgress = 0f;
     private bool lerpForward = true;
 
-    private bool fogSpawned = false;
-
-    //private bool atReworkLimit = false;
+    private Vector3 cameraStartPosition;
+    private Quaternion cameraStartRotation;
 
     //Public Properties
     // public static TutorialController used to get the instance of the WorldManager from anywhere.
@@ -111,8 +108,9 @@ public class TutorialController : DialogueBoxController
         {
             MusicController.Instance.SkipTutorial();
             tutorialStage = TutorialStage.Finished;
-            GetComponent<Fog>().enabled = true;
-            GetComponent<Fog>().SpawnStartingFog();
+            Fog.Instance.enabled = true;
+            Fog.Instance.SpawnStartingFog();
+            Fog.Instance.ActivateFog();
             ObjectiveController.Instance.IncrementStage();
         }
         else
@@ -126,25 +124,9 @@ public class TutorialController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (tutorialStage != TutorialStage.Finished)
+        if (tutorialStage != TutorialStage.Finished && targetDecal.enabled)
         {
-            //if (atReworkLimit)
-            //{
-            //    if (dialogueRead)
-            //    {
-            //        DismissDialogue();
-            //    }
-
-            //    if (buttonClicked) // || Input.GetButtonDown("Xbox_A")
-            //    {
-            //        DismissButton();
-            //    }
-            //}
-
-            if (targetDecal.enabled)
-            {
-                LerpDecal();
-            }
+            LerpDecal();
         }
 
         CheckTutorialStage();
@@ -163,6 +145,9 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.ZoomBackToShip:
                 ZoomBackToShip();
                 break;
+            case TutorialStage.CameraControls:
+                CameraControls();
+                break;
             case TutorialStage.BuildGenerator:
                 BuildGenerator();
                 break;
@@ -174,6 +159,15 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.IncreasePowerGeneration:
                 IncreasePowerGeneration();
+                break;
+            case TutorialStage.BuildHarvesters:
+                BuildHarvesters();
+                break;
+            case TutorialStage.BuildArcDefence:
+                BuildArcDefence();
+                break;
+            case TutorialStage.BuildRepelFan:
+                BuildRepelFan();
                 break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
@@ -214,16 +208,17 @@ public class TutorialController : DialogueBoxController
         //Run camera movement to move camera back to the hub
 
         //tutorialStage = TutorialStage.ExplainSituation;
-        tutorialStage = TutorialStage.BuildGenerator;
-        currentlyBuilding = BuildingType.Generator;
+        tutorialStage = TutorialStage.CameraControls;
     }
 
-    //Tutorial Stage 2: AI Explains Basic Building Placement
-    private void BuildGenerator()
+    //Tutorial Stage 2: AI Walks Player Through How to do Stuff
+    private void CameraControls()
     {
         switch (subStage)
         {
             case 1:
+                Fog.Instance.enabled = true;
+                Fog.Instance.SpawnStartingFog();
                 SendDialogue("explain situation", 2);
                 break;
             case 2:
@@ -234,56 +229,113 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 3:
-                GetLocationOf(generatorLandmark);
-                ActivateTarget(generatorLandmark);
-                MouseController.Instance.ReportTutorialClick = true;
-                SendDialogue("build generator decal", 1);
+                SendDialogue("move camera", 1);
+                cameraStartPosition = camera.position;
                 break;
             case 4:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
-                else if (tileClicked)
+                else if (CameraMoved(cameraStartPosition, camera.position))
                 {
                     SkipTutorialAhead(6);
                 }
 
                 break;
             case 5:
-                if (tileClicked)
+                if (CameraMoved(cameraStartPosition, camera.position))
                 {
-                    DismissMouse();
+                    IncrementSubStage();
                 }
 
                 break;
             case 6:
-                //Display UI element prompting player to select the generator
-                currentlyLerping = ButtonType.Generator;
-                //btnCurrent = btnBuildGenerator;
-                //btnCurrent.ReportClick = true;
-
-                SendDialogue("build generator icon", 1);
+                SendDialogue("rotate camera", 1);
+                cameraStartRotation = camera.rotation;
                 break;
             case 7:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
-                else if (BuiltCurrentlyBuilding())
+                else if (CameraRotated(cameraStartRotation.eulerAngles, camera.rotation.eulerAngles))
                 {
                     SkipTutorialAhead(9);
                 }
 
                 break;
             case 8:
-                if (BuiltCurrentlyBuilding())
+                if (CameraRotated(cameraStartRotation.eulerAngles, camera.rotation.eulerAngles))
                 {
                     IncrementSubStage();
                 }
 
                 break;
             case 9:
+                tutorialStage = TutorialStage.BuildGenerator;
+                currentlyBuilding = BuildingType.Generator;
+                ResetSubStage();
+
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("Inaccurate sub stage");
+                break;
+        }
+    }
+
+    private void BuildGenerator()
+    {
+        switch (subStage)
+        {
+            case 1:
+                GetLocationOf(generatorLandmark);
+                ActivateTarget(generatorLandmark);
+                MouseController.Instance.ReportTutorialClick = true;
+                SendDialogue("build generator decal", 1);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    SkipTutorialAhead(4);
+                }
+
+                break;
+            case 3:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
+
+                break;
+            case 4:
+                currentlyLerping = ButtonType.Generator;
+                SendDialogue("build generator icon", 1);
+                break;
+            case 5:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (BuiltCurrentlyBuilding())
+                {
+                    SkipTutorialAhead(7);
+                }
+
+                break;
+            case 6:
+                if (BuiltCurrentlyBuilding())
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 7:
                 tutorialStage = TutorialStage.BuildRelay;
                 currentlyBuilding = BuildingType.Relay;
                 currentlyLerping = ButtonType.None;
@@ -384,8 +436,6 @@ public class TutorialController : DialogueBoxController
                 break;
             case 4:
                 currentlyLerping = ButtonType.Battery;
-                //btnCurrent = btnBuildRelay;
-                //btnCurrent.ReportClick = true;
                 IncrementSubStage();
                 break;
             case 5:
@@ -396,7 +446,6 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                //Turn off UI element prompting player to build a relay on the prompted tile
                 tutorialStage = TutorialStage.IncreasePowerGeneration;
                 currentlyBuilding = BuildingType.Generator;
                 ResetSubStage();
@@ -437,23 +486,19 @@ public class TutorialController : DialogueBoxController
                 break;
             case 4:
                 currentlyLerping = ButtonType.Generator;
-                //btnCurrent = btnBuildRelay;
-                //btnCurrent.ReportClick = true;
                 IncrementSubStage();
                 break;
             case 5:
-                if (ResourceController.Instance.PowerChange >= 15)
+                if (ResourceController.Instance.PowerChange >= powerGainGoal)
                 {
                     IncrementSubStage();
                 }
 
                 break;
             case 6:
-                //Turn off UI element prompting player to build a relay on the prompted tile
-                tutorialStage = TutorialStage.Finished;
-                currentlyBuilding = BuildingType.None;
+                tutorialStage = TutorialStage.BuildHarvesters;
+                currentlyBuilding = BuildingType.Harvester;
                 ResetSubStage();
-                DeactivateTarget();
                 break;
             default:
                 SendDialogue("error", 1);
@@ -462,191 +507,185 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //private void FogIsHazard()
-    //{
-    //    if (subStage == 1)
-    //    {
-    //        if (!instructionsSent)
-    //        {
-    //            SendDialogue("fog hazard detect", 2);
-    //        }
-    //        else if (dialogueRead)
-    //        {
-    //            DismissDialogue();
-    //        }
-    //    }
-    //    else if (subStage == 2)
-    //    {
-    //        if (!fogSpawned)
-    //        {
-    //            //Spawn fog units around hub
-    //            GetComponent<Fog>().SpawnStartingFog(StartConfiguration.SurroundingHub);
-    //            Invoke("IncrementSubStage", 2);
-    //            fogSpawned = true;
-    //        }
-    //    }
-    //    else if (subStage == 3)
-    //    {
-    //        tutorialStage = TutorialStage.BuildArcDefence;
-    //        currentlyBuilding = BuildingType.ArcDefence;
-    //        ResetSubStage();
-    //    }
-    //}
+    private void BuildHarvesters()
+    {
+        switch (subStage)
+        {
+            case 1:
+                MouseController.Instance.ReportTutorialClick = true;
+                SendDialogue("build harvesters", 1);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    SkipTutorialAhead(4);
+                }
 
-    //AI tells player to build an arc defence and explains how they work
-    //private void BuildArcDefence()
-    //{
-    //    if (subStage == 1)
-    //    {
-    //        if (!instructionsSent)
-    //        {
-    //            //Get location of the landmark
-    //            GetLocationOf(arcDefenceLandmark);
+                break;
+            case 3:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
 
-    //            //Display UI element prompting player to build an arc defence at this landmark
-    //            ActivateTarget(arcDefenceLandmark);
+                break;
+            case 4:
+                currentlyLerping = ButtonType.Harvester;
+                IncrementSubStage();
+                break;
+            case 5:
+                if (Hub.Instance.GetHarvesters().Count == 3)
+                {
+                    IncrementSubStage();
+                }
 
-    //            MouseController.Instance.ReportTutorialClick = true;
+                break;
+            case 6:
+                tutorialStage = TutorialStage.BuildArcDefence;
+                currentlyBuilding = BuildingType.ArcDefence;
+                ResetSubStage();
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
 
-    //            //AI explains player's situation
-    //            SendDialogue("fog hazard will kill you", 1);
-    //        }
-    //        else if (dialogueRead)
-    //        {
-    //            DismissDialogue();
-    //        }
-    //        else if (tileClicked)
-    //        {
+    private void BuildArcDefence()
+    {
+        switch (subStage)
+        {
+            case 1:
+                Fog.Instance.ActivateFog();
+                MouseController.Instance.ReportTutorialClick = true;
+                SendDialogue("build arc defence", 1);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    SkipTutorialAhead(4);
+                }
 
-    //            SkipTutorialAhead(4);
-    //        }
-    //    }
-    //    else if (subStage == 2)
-    //    {
-    //        if (!instructionsSent)
-    //        {
-    //            //AI explains how to place buildings
-    //            SendDialogue("build arc defence", 1);
-    //        }
-    //        else if (dialogueRead)
-    //        {
-    //            DismissDialogue();
-    //        }
-    //        else if (tileClicked)
-    //        {
+                break;
+            case 3:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
 
-    //            SkipTutorialAhead(4);
-    //        }
-    //    }
-    //    else if (subStage == 3 && tileClicked)
-    //    {
-    //        DismissMouse();
-    //    }
-    //    else if (subStage == 4)
-    //    {
-    //        if (!instructionsSent)
-    //        {
-    //            //Display UI element prompting player to click the generator button
-    //            currentlyLerping = ButtonType.ArcDefence;
-    //            //btnCurrent = btnBuildArcDefence;
-    //            //btnCurrent.ReportClick = true;
+                break;
+            case 4:
+                currentlyLerping = ButtonType.ArcDefence;
+                IncrementSubStage();
+                break;
+            case 5:
+                if (Hub.Instance.GetArcDefences().Count == 1)
+                {
+                    IncrementSubStage();
+                }
 
-    //            instructionsSent = true;
-    //        }
-    //        else if (tileClicked)
-    //        {
-    //            DismissMouse();
+                break;
+            case 6:
+                tutorialStage = TutorialStage.BuildRepelFan;
+                currentlyBuilding = BuildingType.RepelFan;
+                ResetSubStage();
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
 
-    //            instructionsSent = false;
-    //        }
-    //    }
-    //    else if (subStage == 5 && BuiltCurrentlyBuilding())
-    //    {
-    //        tutorialStage = TutorialStage.BuildRepelFan;
-    //        currentlyBuilding = BuildingType.RepelFan;
-    //        ResetSubStage();
-    //        DeactivateTarget();
-    //    }
-    //}
+    private void BuildRepelFan()
+    {
+        switch (subStage)
+        {
+            case 1:
+                MouseController.Instance.ReportTutorialClick = true;
+                SendDialogue("build repel fan", 1);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    SkipTutorialAhead(4);
+                }
 
-    // AI tells player to build a repel fan and explains how they work ...
-    //private void BuildRepelFan()
-    //{
-    //    if (subStage == 1)
-    //    {
-    //        if (!instructionsSent)
-    //        {
-    //            //Get location of resource node
-    //            GetLocationOf(repelFanLandmark);
+                break;
+            case 3:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
 
-    //            //Display UI element prompting player to build a harvester on this resource node
-    //            ActivateTarget(repelFanLandmark);
+                break;
+            case 4:
+                currentlyLerping = ButtonType.RepelFan;
+                IncrementSubStage();
+                break;
+            case 5:
+                if (Hub.Instance.GetRepelFans().Count == 1)
+                {
+                    IncrementSubStage();
+                }
 
-    //            MouseController.Instance.ReportTutorialClick = true;
+                break;
+            case 6:
+                currentlyBuilding = BuildingType.None;
+                SendDialogue("finished", 1);
+                break;
+            case 7:
+                if (dialogueRead)
+                {
+                    tutorialStage = TutorialStage.Finished;
+                    ResetSubStage();
+                    ObjectiveController.Instance.IncrementStage();
+                    MusicController.Instance.StartStage1();
+                }
 
-    //            //AI explains player's situation
-    //            SendDialogue("build repel fan", 2);
-    //        }
-    //        else if (dialogueRead)
-    //        {
-    //            DismissDialogue();
-    //        }
-    //        else if (tileClicked)
-    //        {
-    //            SkipTutorialAhead(3);
-    //        }
-    //    }
-    //    else if (subStage == 2 && tileClicked)
-    //    {
-    //        DismissMouse();
-    //    }
-    //    else if (subStage == 3)
-    //    {
-    //        if (!instructionsSent)
-    //        {
-    //            //Display UI element prompting player to click the generator button
-    //            currentlyLerping = ButtonType.RepelFan;
-    //            //btnCurrent = btnBuildRepelFan;
-    //            //btnCurrent.ReportClick = true;
-
-    //            instructionsSent = true;
-    //        }
-    //        else if (tileClicked)
-    //        {
-    //            DismissMouse();
-
-    //            instructionsSent = false;
-    //        }
-    //    }
-    //    else if (subStage == 4 && BuiltCurrentlyBuilding())
-    //    {
-    //        if (!instructionsSent)
-    //        {
-    //            DeactivateTarget();
-    //            SendDialogue("gloat", 5);
-    //        }
-    //        else if (dialogueRead)
-    //        {
-    //            DismissDialogue();
-    //        }
-    //    }
-    //    else if (subStage == 5)
-    //    {
-    //        tutorialStage = TutorialStage.Finished;
-    //        currentlyBuilding = BuildingType.None;
-    //        ResetSubStage();
-    //        ObjectiveController.Instance.IncrementStage();
-    //        GetComponent<Fog>().enabled = true;
-    //        MusicController.Instance.StartStage1();
-    //    }
-    //}
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
 
     //Utility Methods------------------------------------------------------------------------------
 
-    public bool ButtonAllowed(ButtonType button)
+    private bool CameraMoved(Vector3 startPosition, Vector3 currentPosition)
     {
-        if (tutorialStage == TutorialStage.Finished || button == currentlyLerping)
+        if (currentPosition.x + 5 < startPosition.x ||
+            currentPosition.x - 5 > startPosition.x ||
+            currentPosition.z + 5 < startPosition.z ||
+            currentPosition.z - 5 > startPosition.z)
         {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool CameraRotated(Vector3 startRotation, Vector3 currentRotation)
+    {
+        Debug.Log(currentRotation.x + ", " + currentRotation.y + ", " + currentRotation.z);
+        if (currentRotation.y + 5 < startRotation.y ||
+            currentRotation.y - 5 > startRotation.y)
+        {
+            Debug.Log("Camera Rotated");
             return true;
         }
 
@@ -655,12 +694,48 @@ public class TutorialController : DialogueBoxController
 
     public bool TileAllowed(TileData tile)
     {
-        if (tutorialStage == TutorialStage.Finished || tutorialStage == TutorialStage.IncreasePowerGeneration || tile == currentTile)
+        lastTileChecked = tile;
+
+        if (tutorialStage >= TutorialStage.IncreasePowerGeneration  || tile == currentTile)
         {
             return true;
         }
 
         return false;
+    }
+
+    public bool ButtonAllowed(ButtonType button)
+    {
+        if ((tutorialStage == TutorialStage.Finished || button == currentlyLerping) && ButtonsNormallyAllowed(lastTileChecked).Contains(button))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private List<ButtonType> ButtonsNormallyAllowed(TileData tile)
+    {
+        List<ButtonType> result = new List<ButtonType>();
+
+        if (tile.Resource != null)
+        {
+            result.Add(ButtonType.Harvester);
+        }
+        else
+        {
+            if (ResourceController.Instance.Generators.Count < ObjectiveController.Instance.GeneratorLimit)
+            {
+                result.Add(ButtonType.Generator);
+            }
+
+            result.Add(ButtonType.ArcDefence);
+            result.Add(ButtonType.Battery);
+            result.Add(ButtonType.Relay);
+            result.Add(ButtonType.RepelFan);
+        }
+
+        return result;
     }
 
     protected override void SendDialogue(string dialogueKey, float invokeDelay)
@@ -681,16 +756,7 @@ public class TutorialController : DialogueBoxController
 
     private void DismissMouse()
     {
-        //if (btnCurrent != null)
-        //{
-        //    btnCurrent.ReportClick = false;
-        //    btnCurrent = null;
-        //}
-        //else
-        //if (waitingForMouseClick)
-        //{
         MouseController.Instance.ReportTutorialClick = false;
-        //}
 
         tileClicked = false;
         currentlyLerping = ButtonType.None;
@@ -708,15 +774,7 @@ public class TutorialController : DialogueBoxController
 
     private void SkipTutorialAhead(int nextSubStage)
     {
-        //if (btnCurrent != null)
-        //{
-        //    btnCurrent.ReportClick = false;
-        //    btnCurrent = null;
-        //}
-        //else
-        //{
         MouseController.Instance.ReportTutorialClick = false;
-        //}
 
         tileClicked = false;
         instructionsSent = false;

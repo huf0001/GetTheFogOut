@@ -92,6 +92,46 @@ public abstract class PowerSource : Building
         return relays;
     }
 
+    public List<ArcDefence> GetArcDefences()
+    {
+        List<ArcDefence> arcDefences = new List<ArcDefence>();
+
+        foreach (Building b in suppliedBuildings)
+        {
+            if (b.BuildingType == BuildingType.ArcDefence)
+            {
+                arcDefences.Add(b as ArcDefence);
+            }
+            else if (b.BuildingType == BuildingType.Relay)
+            {
+                Relay r = b as Relay;
+                arcDefences.AddRange(r.GetArcDefences());
+            }
+        }
+
+        return arcDefences;
+    }
+
+    public List<RepelFan> GetRepelFans()
+    {
+        List<RepelFan> repelFans = new List<RepelFan>();
+
+        foreach (Building b in suppliedBuildings)
+        {
+            if (b.BuildingType == BuildingType.RepelFan)
+            {
+                repelFans.Add(b as RepelFan);
+            }
+            else if (b.BuildingType == BuildingType.Relay)
+            {
+                Relay r = b as Relay;
+                repelFans.AddRange(r.GetRepelFans());
+            }
+        }
+
+        return repelFans;
+    }
+
     public List<Defence> GetDefences()
     {
         List<Defence> defences = new List<Defence>();
