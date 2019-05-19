@@ -127,7 +127,8 @@ public abstract class Building : PlaneObject
         //    Debug.Log("Power Source is null");
         //}
 
-        powerSource = location.PowerSource;
+        powerSource = location.GetClosestPowerSource(this.transform);
+        //powerSource = location.PowerSource;
 
         if (powerSource != null)
         {
@@ -142,7 +143,10 @@ public abstract class Building : PlaneObject
                 // Destroy any already existing wires
                 if (wire.transform.childCount > 0)
                 {
-                    Destroy(wire.transform.GetChild(0).gameObject);
+                    for (int i = 0; i < wire.transform.childCount; i++)
+                    {
+                        Destroy(wire.transform.GetChild(i).gameObject);
+                    }
                 }
 
                 Wires targetWire = powerSource.GetComponentInChildren<Wires>();

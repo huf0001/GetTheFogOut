@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -82,6 +83,20 @@ public class TileData
     {
         this.x = x;
         this.z = z;
+    }
+
+    public PowerSource GetClosestPowerSource(Transform buildingTrans)
+    {
+        if (powerSources.Count > 0)
+        {
+            List<PowerSource> powerSourcesOrdered = powerSources.OrderBy(x => Vector2.Distance(buildingTrans.position, x.transform.position)).ToList();
+
+            return powerSourcesOrdered[0];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public void PowerUp(PowerSource power)

@@ -194,7 +194,10 @@ public abstract class PowerSource : Building
         if (this != newBuilding)
         {
             //Debug.Log("Plugging " + newBuilding.name + " into " + this.name);
-            suppliedBuildings.Add(newBuilding); 
+            if (!suppliedBuildings.Contains(newBuilding))
+            {
+                suppliedBuildings.Add(newBuilding); 
+            }
         }
 
         //if (suppliedBuildings.Contains(newBuilding))
