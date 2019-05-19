@@ -152,11 +152,11 @@ public abstract class Building : PlaneObject
             {
                 SetPowerSource();
             }
-            //     SetPowerSource();
         }
 
         resourceController.AddBuilding(this);
         placed = true;
+
         /*
         if (this.buildingType != BuildingType.Hub)
         {
@@ -179,18 +179,51 @@ public abstract class Building : PlaneObject
         //    Debug.Log("Power Source is null");
         //}
 
-        powerSource = location.PowerSource;
+        powerSource = location.GetClosestPowerSource(this.transform);
+        //powerSource = location.PowerSource;
 
         if (powerSource != null)
         {
             //Debug.Log("Plugging In and Powering Up " + this.name);
             powerSource.PlugIn(this);
             PowerUp();
+
+            // Create wires between buidings
+            Wires wire = GetComponentInChildren<Wires>();
+            if (wire)
+            {
+                // Destroy any already existing wires
+                if (wire.transform.childCount > 0)
+                {
+                    for (int i = 0; i < wire.transform.childCount; i++)
+                    {
+                        Destroy(wire.transform.GetChild(i).gameObject);
+                    }
+                }
+
+                Wires targetWire = powerSource.GetComponentInChildren<Wires>();
+                if (targetWire)
+                {
+                    wire.next = targetWire.gameObject;
+                    wire.CreateWire();
+                }
+            }
         }
         else
         {
             //Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
             PowerDown();
+
+            // Destroy wires
+            Wires wire = GetComponentInChildren<Wires>();
+            if (wire)
+            {
+                if (wire.transform.childCount > 0)
+                {
+                    Destroy(wire.transform.GetChild(0).gameObject);
+                }
+            }
+
         }
 
         //Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);

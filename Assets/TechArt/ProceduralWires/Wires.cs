@@ -29,6 +29,10 @@ public class Wires : MonoBehaviour
     void Start()
     {
 
+    }
+
+    public void CreateWire()
+    {
         if (next)
         {
             nextPosition = next.transform.position;
