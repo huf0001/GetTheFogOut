@@ -37,6 +37,11 @@ public class DialogueBox : MonoBehaviour
                 lerpTextIndex = currentText.Length;
             }
         }
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            RegisterDialogueRead();
+        }
     }
 
     public void ActivateDialogueBox(string text, float invokeDelay)
@@ -113,37 +118,6 @@ public class DialogueBox : MonoBehaviour
                 activated = false;
             });
     }
-
-    //public void ReactivateDialogueBox(string text, float invokeDelay)
-    //{
-    //    List<string> texts = new List<string>();
-    //    texts.Add(text);
-    //    ReactivateDialogueBox(texts, invokeDelay);
-    //}
-
-    //public void ReactivateDialogueBox(List<string> texts, float invokeDelay)
-    //{
-    //    Debug.Log("Reactivating DialogueBox");
-    //    DeactivateDialogueBox();
-
-    //    if (texts.Count > 0)
-    //    {
-    //        activated = true;
-
-    //        //Caches required tweening information for performance saving
-    //        dialogueRectTransform = GetComponent<RectTransform>();
-    //        originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
-
-    //        //Debug.Log("DialogueBoxActivated");
-    //        textToDisplay = new List<string>(texts);
-
-    //        Invoke("ShowDialogueBox", invokeDelay);
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("No text to display in dialogue box");
-    //    }
-    //}
 
     public void ChangeDialogue(List<string> texts)
     {
