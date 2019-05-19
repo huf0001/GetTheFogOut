@@ -1741,6 +1741,7 @@ MonoBehaviour:
   textBox: {fileID: 4767305868673010206}
   dialogueBoxController: {fileID: 0}
   popUpSpeed: 0.5
+  lerpTextInterval: 3
 --- !u!1 &4767305867469215120
 GameObject:
   m_ObjectHideFlags: 0
@@ -4623,6 +4624,35 @@ MonoBehaviour:
   healthBar: {fileID: 1671142176916032542}
   healthBarFill: {fileID: 1227474596686091452}
   destroyButton: {fileID: 2505737457742917440}
+  healthGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 0.999694, g: 0.79607844, b: 0, a: 1}
+    key2: {r: 0, g: 0.6, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 16384
+    ctime1: 32768
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
   building: {fileID: 0}
 --- !u!1 &4842999563495811240
 GameObject:
@@ -5424,10 +5454,111 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4767305868616740740}
     m_Modifications:
-    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_Name
-      value: btn_relay
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 6410443923382549552, guid: 6a30e66b4fcbf64449cb05fd21eacd79,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 105762857297268916, guid: e51927b177ff51341870ba83299209c7,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A simple relay that extends the power range from your ship.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 53
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 6410443923382549552, guid: 6a30e66b4fcbf64449cb05fd21eacd79,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 105762857297268916, guid: e51927b177ff51341870ba83299209c7,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A simple relay that extends the power range from your ship.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 53
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274564, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -5549,136 +5680,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6530664
       objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 6410443923382549552, guid: 6a30e66b4fcbf64449cb05fd21eacd79,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 105762857297268916, guid: e51927b177ff51341870ba83299209c7,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A simple relay that extends the power range from your ship.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 53
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 6410443923382549552, guid: 6a30e66b4fcbf64449cb05fd21eacd79,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 105762857297268916, guid: e51927b177ff51341870ba83299209c7,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A simple relay that extends the power range from your ship.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 53
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
+      propertyPath: m_Name
+      value: btn_relay
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274565, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -5790,6 +5795,31 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 4543698018332886323, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -5886,10 +5916,111 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4767305868616740740}
     m_Modifications:
-    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_Name
-      value: btn_arc_defence
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 6560907534143759994, guid: 5c0f631d112334848960e4d5e6bef370,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 1154744975708112631, guid: 46248a4fbeb8391408f4d4b229bfa640,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A powerful air cannon that disperses fog temporarily
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 6560907534143759994, guid: 5c0f631d112334848960e4d5e6bef370,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 1154744975708112631, guid: 46248a4fbeb8391408f4d4b229bfa640,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A powerful air cannon that disperses fog temporarily
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274564, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -6011,136 +6142,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6530664
       objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 6560907534143759994, guid: 5c0f631d112334848960e4d5e6bef370,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 1154744975708112631, guid: 46248a4fbeb8391408f4d4b229bfa640,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A powerful air cannon that disperses fog temporarily
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 6560907534143759994, guid: 5c0f631d112334848960e4d5e6bef370,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 1154744975708112631, guid: 46248a4fbeb8391408f4d4b229bfa640,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A powerful air cannon that disperses fog temporarily
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
+      propertyPath: m_Name
+      value: btn_arc_defence
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274565, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -6252,6 +6257,31 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 4543698018332886323, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -6348,10 +6378,111 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4767305868616740740}
     m_Modifications:
-    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_Name
-      value: btn_repel_fan
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 6560907534143759994, guid: 5c0f631d112334848960e4d5e6bef370,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 7576686742386201728, guid: 3a9b3ad17f27f634990521c92e105de0,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A heavy duty fan designed to blow air at a rapid speed.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 6560907534143759994, guid: 5c0f631d112334848960e4d5e6bef370,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 7576686742386201728, guid: 3a9b3ad17f27f634990521c92e105de0,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A heavy duty fan designed to blow air at a rapid speed.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274564, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -6473,136 +6604,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6530664
       objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 6560907534143759994, guid: 5c0f631d112334848960e4d5e6bef370,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 7576686742386201728, guid: 3a9b3ad17f27f634990521c92e105de0,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A heavy duty fan designed to blow air at a rapid speed.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 55
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 6560907534143759994, guid: 5c0f631d112334848960e4d5e6bef370,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 7576686742386201728, guid: 3a9b3ad17f27f634990521c92e105de0,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A heavy duty fan designed to blow air at a rapid speed.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 55
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
+      propertyPath: m_Name
+      value: btn_repel_fan
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274565, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -6714,6 +6719,31 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 4543698018332886323, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -6810,10 +6840,111 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4767305868616740740}
     m_Modifications:
-    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_Name
-      value: btn_battery
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 9123355121560153063, guid: 340476fbf3d6fcd4baaa822f0a25201c,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 5080299853057015924, guid: db7d222baed7b3645ad3945bc4d2a48d,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A generic battery that will increase your maximum power.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 9123355121560153063, guid: 340476fbf3d6fcd4baaa822f0a25201c,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 5080299853057015924, guid: db7d222baed7b3645ad3945bc4d2a48d,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A generic battery that will increase your maximum power.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274564, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -6935,136 +7066,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6530664
       objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 9123355121560153063, guid: 340476fbf3d6fcd4baaa822f0a25201c,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 5080299853057015924, guid: db7d222baed7b3645ad3945bc4d2a48d,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A generic battery that will increase your maximum power.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 9123355121560153063, guid: 340476fbf3d6fcd4baaa822f0a25201c,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 5080299853057015924, guid: db7d222baed7b3645ad3945bc4d2a48d,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A generic battery that will increase your maximum power.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
+      propertyPath: m_Name
+      value: btn_battery
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274565, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -7150,6 +7155,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4543698018332886323, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -7241,10 +7271,113 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4767305868616740740}
     m_Modifications:
-    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_Name
-      value: btn_harvester
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 8905697690950743768, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 7751029815147248385, guid: d515833ba49804f4880616c7b8ac0b20,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A large barrel-like object that will collect resources for you when placed
+        on them.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 8905697690950743768, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 7751029815147248385, guid: d515833ba49804f4880616c7b8ac0b20,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: A large barrel-like object that will collect resources for you when placed
+        on them.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274564, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -7366,138 +7499,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6530664
       objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 8905697690950743768, guid: 83b4c172226db9d4592c5f3ca06d3014,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 7751029815147248385, guid: d515833ba49804f4880616c7b8ac0b20,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A large barrel-like object that will collect resources for you when placed
-        on them.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 52
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 8905697690950743768, guid: 83b4c172226db9d4592c5f3ca06d3014,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 7751029815147248385, guid: d515833ba49804f4880616c7b8ac0b20,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: A large barrel-like object that will collect resources for you when placed
-        on them.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 52
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
+      propertyPath: m_Name
+      value: btn_harvester
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274565, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -7609,6 +7614,31 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 4543698018332886323, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -7705,14 +7735,90 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6195752891288055357}
     m_Modifications:
-    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_Name
-      value: btn_remove
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 54
       objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 54
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274564, guid: 1f5b5d8926d223747a177c8bff80d0ab,
@@ -7835,100 +7941,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 70
+      propertyPath: m_Name
+      value: btn_remove
       objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 54
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 54
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274565, guid: 1f5b5d8926d223747a177c8bff80d0ab,
@@ -7985,6 +8005,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Colors.m_DisabledColor.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 647413150251887674, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -8048,10 +8078,113 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4767305868616740740}
     m_Modifications:
-    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_Name
-      value: btn_generator
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 3888435897935543363, guid: a21e3bd8ba66df84c9db1a3099ae05fa,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 8945195446823912800, guid: 28c16f601288ca6409c92fc574f60b3e,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: Another source of power, it will increase the speed at which your power
+        regenerates.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: holo_prefab
+      value: 
+      objectReference: {fileID: 3888435897935543363, guid: a21e3bd8ba66df84c9db1a3099ae05fa,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: build_prefab
+      value: 
+      objectReference: {fileID: 8945195446823912800, guid: 28c16f601288ca6409c92fc574f60b3e,
+        type: 3}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: towerType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingDesc
+      value: 
+      objectReference: {fileID: 4767305868169174225}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: descText
+      value: Another source of power, it will increase the speed at which your power
+        regenerates.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: _key
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: buildingCost
+      value: 
+      objectReference: {fileID: 6153769857162608600}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
+        type: 3}
+    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274564, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -8173,138 +8306,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6530664
       objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+    - target: {fileID: 6984790126344274567, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.80586
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 3888435897935543363, guid: a21e3bd8ba66df84c9db1a3099ae05fa,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 8945195446823912800, guid: 28c16f601288ca6409c92fc574f60b3e,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: Another source of power, it will increase the speed at which your power
-        regenerates.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 51
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: holo_prefab
-      value: 
-      objectReference: {fileID: 3888435897935543363, guid: a21e3bd8ba66df84c9db1a3099ae05fa,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: build_prefab
-      value: 
-      objectReference: {fileID: 8945195446823912800, guid: 28c16f601288ca6409c92fc574f60b3e,
-        type: 3}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: towerType
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingDesc
-      value: 
-      objectReference: {fileID: 4767305868169174225}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: descText
-      value: Another source of power, it will increase the speed at which your power
-        regenerates.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: _key
-      value: 51
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274808, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: buildingCost
-      value: 
-      objectReference: {fileID: 6153769857162608600}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.92941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2b1184c64bec9e94e9ffab6f50654079,
-        type: 3}
-    - target: {fileID: 6984790126344274810, guid: 1f5b5d8926d223747a177c8bff80d0ab,
-        type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
+      propertyPath: m_Name
+      value: btn_generator
       objectReference: {fileID: 0}
     - target: {fileID: 6984790126344274565, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}
@@ -8415,6 +8420,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.80586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334957557958271103, guid: 1f5b5d8926d223747a177c8bff80d0ab,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4543698018332886323, guid: 1f5b5d8926d223747a177c8bff80d0ab,
         type: 3}

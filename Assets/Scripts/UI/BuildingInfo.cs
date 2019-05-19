@@ -10,6 +10,7 @@ public class BuildingInfo : MonoBehaviour
     [SerializeField] GameObject healthBar;
     [SerializeField] Image healthBarFill;
     [SerializeField] Button destroyButton;
+    [SerializeField] Gradient healthGradient;
     [HideInInspector] public Building building;
     private RectTransform parent;
 
@@ -20,6 +21,7 @@ public class BuildingInfo : MonoBehaviour
         if (healthBar.activeSelf)
         {
             healthBarFill.fillAmount = building.Health / building.MaxHealth;
+            healthBarFill.color = healthGradient.Evaluate(healthBarFill.fillAmount);
         }
         if (Visible)
         {

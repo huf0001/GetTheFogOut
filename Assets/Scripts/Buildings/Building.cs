@@ -20,6 +20,7 @@ public abstract class Building : PlaneObject
     [SerializeField] protected AudioClip audioDestroy;
     [SerializeField] protected RectTransform healthBarCanvas;
     [SerializeField] protected Image healthBarImage;
+    [SerializeField] protected Gradient healthGradient;
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
@@ -119,7 +120,8 @@ public abstract class Building : PlaneObject
             }
 
             healthBarImage.fillAmount = Health / MaxHealth;
-            healthBarImage.color = Color.Lerp(new Color32(255, 0, 0, 255), new Color32(0, 153, 0, 255), healthBarImage.fillAmount);
+            //healthBarImage.color = Color.Lerp(new Color32(255, 0, 0, 255), new Color32(0, 153, 0, 255), healthBarImage.fillAmount);
+            healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
             healthBarCanvas.LookAt(Camera.main.transform);
         }
         else
