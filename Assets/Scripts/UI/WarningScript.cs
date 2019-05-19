@@ -112,25 +112,35 @@ public class WarningScript : MonoBehaviour
     private void CheckBuildings()
     {
         List<Building> buildings = resourceController.Buildings;
+        WarningLevel level = WarningLevel.Normal;
 
         foreach (Building b in buildings)
         {
             if (b.TakingDamage)
             {
-                warnings["buildings"] = WarningLevel.Danger;
-                buildingStatus.text = DANGER + "Buildings are taking damage!";
-                return;
+                level = WarningLevel.Danger;
+                break;
             }
             else if (b.Health < b.MaxHealth)
             {
+                level = WarningLevel.Warning;
+            }
+        }
+
+        switch (level)
+        {
+            case WarningLevel.Danger:
+                warnings["buildings"] = WarningLevel.Danger;
+                buildingStatus.text = DANGER + "Buildings are taking damage!";
+                break;
+            case WarningLevel.Warning:
                 warnings["buildings"] = WarningLevel.Warning;
                 buildingStatus.text = WARNING + "Some buildings are damaged";
-            }
-            else
-            {
+                break;
+            case WarningLevel.Normal:
                 warnings["buildings"] = WarningLevel.Normal;
                 buildingStatus.text = NORMAL + "All buildings are healthy";
-            }
+                break;
         }
     }
 
