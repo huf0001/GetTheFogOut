@@ -13,6 +13,7 @@ public class BuildingInfo : MonoBehaviour
     [SerializeField] Gradient healthGradient;
     [HideInInspector] public Building building;
     private RectTransform parent;
+    private int mineralHealth;
 
     public bool Visible { get; private set; }
 
@@ -25,17 +26,37 @@ public class BuildingInfo : MonoBehaviour
         }
         if (Visible)
         {
+            if (building != null) { UpdateText(); }
             parent.LookAt(Camera.main.transform);
+        }
+    }
+
+    private void UpdateText()
+    {
+        mainText.text = $"<b>{building.name}</b>\n" +
+            $"HP\n";
+        if (building.Powered)
+        {
+            mainText.text += "<color=#009900>POWERED</color>\n";
+        }
+        else
+        {
+            mainText.text += "<color=\"red\">NO POWER</color>\n";
+        }
+
+        if (building.BuildingType == BuildingType.Harvester)
+        {
+            mainText.text += $"\nMinerals remaining in node: {building.Location.Resource.Health}";
         }
     }
 
     public void ShowInfo(Building b)
     {
+        building = b;
         if (parent == null)
         {
             parent = GetComponentInParent<RectTransform>();
         }
-        building = b;
         if (building.BuildingType == BuildingType.Hub)
         {
             destroyButton.gameObject.SetActive(false);
@@ -44,17 +65,7 @@ public class BuildingInfo : MonoBehaviour
         {
             destroyButton.gameObject.SetActive(true);
         }
-
-        mainText.text = $"<b>{b.BuildingType}</b>\n" +
-            $"HP\n";
-        if (b.Powered)
-        {
-            mainText.text += "<color=#009900>POWERED</color>\n";
-        }
-        else
-        {
-            mainText.text += "<color=\"red\">NO POWER</color>\n";
-        }
+        UpdateText();
 
         healthBar.SetActive(true);
         parent.position = new Vector3(b.transform.position.x, 0, b.transform.position.z) + new Vector3(0.5f, 1, -1.5f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
@@ -65,6 +76,7 @@ public class BuildingInfo : MonoBehaviour
 
     public void ShowInfo(ShipComponent shipComponent)
     {
+        building = null;
         if (parent == null)
         {
             parent = GetComponentInParent<RectTransform>();
