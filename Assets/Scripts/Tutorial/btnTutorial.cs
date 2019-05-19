@@ -9,7 +9,7 @@ public class btnTutorial : MonoBehaviour
 
     //Non-Serialized Fields
     private TutorialController tutorialController;
-    private bool reportClick = false;
+    //private bool reportClick = false;
     private Button button;
 
     private bool lerping = false;
@@ -23,7 +23,7 @@ public class btnTutorial : MonoBehaviour
     //Public Properties
     public Button Button { get => button; }
     public bool Lerping { get => lerping;}
-    public bool ReportClick { get => reportClick; set => reportClick = value; }
+    //public bool ReportClick { get => reportClick; set => reportClick = value; }
 
     private void Start()
     {
@@ -35,6 +35,7 @@ public class btnTutorial : MonoBehaviour
 
     private void Update()
     {
+        //This also needs to consult Liam's list of building types that are valid for the current tile.
         if (tutorialController.ButtonAllowed(buildingType) && tutorialController.TutorialStage != TutorialStage.Finished)
         {
             button.interactable = true;
@@ -113,11 +114,11 @@ public class btnTutorial : MonoBehaviour
         lerping = false;
     }
 
-    public void ReportClickToTutorialController()
-    {
-        if (reportClick)
-        {
-            tutorialController.RegisterButtonClicked();
-        }
-    }
+    //public void ReportClickToTutorialController()
+    //{
+    //    if (reportClick)
+    //    {
+    //        tutorialController.RegisterButtonClicked();
+    //    }
+    //}
 }

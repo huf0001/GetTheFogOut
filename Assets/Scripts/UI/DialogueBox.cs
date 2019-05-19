@@ -11,6 +11,7 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] TextMeshProUGUI textBox;
     [SerializeField] DialogueBoxController dialogueBoxController;
     [SerializeField] float popUpSpeed = 0.5f;
+    [SerializeField] private int lerpTextInterval = 3;
 
     //Non-Serialized Fields
     private List<string> textToDisplay = new List<string>();
@@ -19,7 +20,6 @@ public class DialogueBox : MonoBehaviour
     private bool activated = false;
     private string currentText = "";
     private int lerpTextIndex = 0;
-    private int lerpTextInterval = 3;
 
     //Public Properties
     public bool Activated { get => activated; }

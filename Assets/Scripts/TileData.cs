@@ -78,7 +78,7 @@ public class TileData
             }
         }
     }
-    
+   
     public TileData(int x, int z)
     {
         this.x = x;
@@ -140,21 +140,21 @@ public class TileData
 
     void UpdateResource()
     {
-        bool visTemp = Resource.Visable;
+        bool visTemp = Resource.Visible;
 
         if (Building == null && Resource.Health > 0)
         {
-            Resource.Visable = true;
+            Resource.Visible = true;
         }
         else
         {
-            if (Building.BuildingType == BuildingType.Harvester || Resource.Health <= 0)
+            if (Building.BuildingType == BuildingType.Harvester) // || Resource.Health <= 0
             {
-                Resource.Visable = false;
+                Resource.Visible = false;
             }
         }
 
-        if (visTemp != Resource.Visable)
+        if (visTemp != Resource.Visible)
         {
             MeshRenderer[] renderers = Resource.GetComponentsInChildren<MeshRenderer>();
             foreach (MeshRenderer renderer in renderers)
