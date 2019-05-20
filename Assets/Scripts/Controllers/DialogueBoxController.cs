@@ -11,7 +11,7 @@ public class KeyDialoguePair
 {
     //Serialized Fields
     [SerializeField] private string key;
-    [SerializeField, TextArea] private List<string> dialogue;
+    [SerializeField, TextArea(15,20)] private List<string> dialogue;
 
     //Public Properties
     public string Key { get => key; }
