@@ -76,7 +76,7 @@ public class BuildingInfo : MonoBehaviour
         UpdateText();
 
         healthBar.SetActive(true);
-        parent.position = new Vector3(b.transform.position.x, 0, b.transform.position.z) + new Vector3(0.5f, 1, -1.5f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
+        parent.position = new Vector3(b.transform.position.x, 1.5f, b.transform.position.z) + new Vector3(-0.3f, 0, -2.3f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
         parent.LookAt(Camera.main.transform);
         gameObject.SetActive(true);
         Visible = true;
