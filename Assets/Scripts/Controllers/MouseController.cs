@@ -118,7 +118,7 @@ public class MouseController : MonoBehaviour
         // code based somewhat off:
         //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
 
-        if (Time.timeScale == 1.0f && (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A")) && !EventSystem.current.IsPointerOverGameObject())
+        if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject())
         {
             TileData tile;
 
@@ -188,7 +188,7 @@ public class MouseController : MonoBehaviour
 
             UIController.instance.buildingSelector.freezeCam();
             
-        if (Time.timeScale == 1.0f && (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Xbox_A")) && !EventSystem.current.IsPointerOverGameObject())
+        if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject())
         {
             TileData tile;
             RaycastHit hit;

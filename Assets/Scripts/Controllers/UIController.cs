@@ -17,10 +17,12 @@ public class UIController : MonoBehaviour
     public BuildingInfo buildingInfo;
     public TextMeshProUGUI endGameText;
 
+    private GameObject cursor;
     private Slider powerSlider;
     private int power = 0, powerChange = 0, mineral = 0;
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
+    private bool isCursorOn = false;
     [SerializeField] Image powerImg;
 
     [SerializeField] Sprite[] powerLevelSprites;
@@ -44,6 +46,8 @@ public class UIController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         FindSliders();
 
+        cursor = GameObject.Find("Cursor");
+        cursor.SetActive(false);
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
         //hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
@@ -60,6 +64,12 @@ public class UIController : MonoBehaviour
         powerTime += Time.deltaTime;
         mineralTime += Time.deltaTime;
         UpdateResourceText();
+
+        if (Input.GetKeyDown("c"))
+        {
+            isCursorOn = !isCursorOn;
+            cursor.SetActive(isCursorOn);
+        }
     }
 
     // find sliders and text
@@ -74,6 +84,11 @@ public class UIController : MonoBehaviour
     {
         endGameText.text = text;
         endGame.SetActive(true);
+    }
+
+    public void ToggleCursor(bool isOn)
+    {
+        cursor.SetActive(isOn);
     }
 
     void UpdateResourceText()
@@ -185,6 +200,69 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Leave the Planet</b>\n\n" +
                     "<size=75%>The fog is out to get you! Hurry and gather enough power to leave this wretched planet behind!\n\n" +
                     $"Target: {Mathf.Round(Mathf.Lerp(powerVal, power, powerTime))} / {ObjectiveController.Instance.PowerTarget} <size=90%><sprite=\"all_icons\" index=0>";
+                break;
+        }
+    }
+
+    public void UpdateObjectiveText(TutorialStage stage)
+    {
+        switch (stage)
+        {
+            case TutorialStage.None:
+            case TutorialStage.CrashLanding:
+            case TutorialStage.ShipPartsCrashing:
+            case TutorialStage.ZoomBackToShip:
+            case TutorialStage.ExplainSituation:
+                hudObjText.text = "Objective: Complete the Tutorial";
+                objWindowText.text = "<b>Complete the Tutorial</b>\n\n" +
+                    "<size=75%>Complete the tutorial and learn to play the game!\n\n";
+                break;
+            case TutorialStage.MoveCamera:
+                hudObjText.text = "Objective: Move Nexy";
+                objWindowText.text = "<b>Move Nexy</b>\n\n" +
+                    "<size=75%>Learn how to move your Nexus Drone.\n\n";
+                break;
+            case TutorialStage.RotateCamera:
+                hudObjText.text = "Objective: Rotate Nexy";
+                objWindowText.text = "<b>Rotate Nexy</b>\n\n" +
+                    "<size=75%>Learn how to rotate your Nexus Drone.\n\n";
+                break;
+            case TutorialStage.BuildGenerator:
+                hudObjText.text = "Objective: Build Generator";
+                objWindowText.text = "<b>Build Generator</b>\n\n" +
+                    "<size=75%>Build a Power Generator to increase your available power generation.\n\n";
+                break;
+            case TutorialStage.BuildRelay:
+                hudObjText.text = "Objective: Build Relay";
+                objWindowText.text = "<b>Build Relay</b>\n\n" +
+                    "<size=75%>Build a Power Relay to extend your range.\n\n";
+                break;
+            case TutorialStage.BuildBattery:
+                hudObjText.text = "Objective: Build Battery";
+                objWindowText.text = "<b>Build Battery</b>\n\n" +
+                    "<size=75%>Build a Battery to increase your stored power.\n\n";
+                break;
+            case TutorialStage.IncreasePowerGeneration:
+                hudObjText.text = "Objective: More Power Generation";
+                objWindowText.text = "<b>More Power Generation</b>\n\n" +
+                    $"<size=75%>Build more Power Generators and increase your power output to +{TutorialController.Instance.PowerGainGoal}.\n\n" +
+                    $"Target: +{powerChange} / +{TutorialController.Instance.PowerGainGoal} <size=90%><sprite=\"all_icons\" index=0>";
+                break;
+            case TutorialStage.BuildHarvesters:
+                hudObjText.text = "Objective: Build Harvesters";
+                objWindowText.text = "<b>Build Harvesters</b>\n\n" +
+                    $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to replenish your building materials.\n\n" +
+                    $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} <size=90%><sprite=\"all_icons\" index=0>";
+                break;
+            case TutorialStage.BuildArcDefence:
+                hudObjText.text = "Objective: Build Arc Defence";
+                objWindowText.text = "<b>Build Arc Defence</b>\n\n" +
+                    "<size=75%>Build an Arc Defence to protect yourself from the Fog!\n\n";
+                break;
+            case TutorialStage.BuildRepelFan:
+                hudObjText.text = "Objective: Build Repel Fan";
+                objWindowText.text = "<b>Build Repel Fan</b>\n\n" +
+                    "<size=75%>Build a Repel Fan to protect yourself from the Fog!\n\n";
                 break;
         }
     }
