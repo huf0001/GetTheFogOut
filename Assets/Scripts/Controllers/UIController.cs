@@ -130,8 +130,7 @@ public class UIController : MonoBehaviour
             {
                 powerImg.sprite = powerLevelSprites[0];
             }
-
-            // old code that probably should be adapted to tween mineral stock number
+            
             if (resourceController.StoredMineral != mineral)
             {
                 mineralVal = mineral;

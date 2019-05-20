@@ -14,6 +14,7 @@ public class BuildingInfo : MonoBehaviour
     [HideInInspector] public Building building;
     private RectTransform parent;
     private int mineralHealth;
+    private float mineralTime, mineralVal, mineral;
 
     public bool Visible { get; private set; }
 
@@ -46,7 +47,14 @@ public class BuildingInfo : MonoBehaviour
 
         if (building.BuildingType == BuildingType.Harvester)
         {
-            mainText.text += $"\nMinerals remaining in node: {building.Location.Resource.Health}";
+            mineralTime += Time.deltaTime;
+            if (building.Location.Resource.Health != mineral)
+            {
+                mineralVal = mineral;
+                mineral = building.Location.Resource.Health;
+                mineralTime = 0;
+            }
+            mainText.text += $"\n<color=#e09100><size=125%><sprite=\"all_icons\" index=2><size=100%>Remaining: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))}</color>";
         }
     }
 

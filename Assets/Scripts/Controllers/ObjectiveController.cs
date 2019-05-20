@@ -161,6 +161,7 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI completion text
                 SendDialogue("end part stage", 1);
                 ResetSubstage();
+                IncrementStage();
                 break;
             default:
                 break;
@@ -205,8 +206,8 @@ public class ObjectiveController : DialogueBoxController
     {
         if (currStage != 0)
         {
-            StartCoroutine(CompleteObjective());
             generatorLimit += 4;
+            StartCoroutine(CompleteObjective());
         }
         else
         {
