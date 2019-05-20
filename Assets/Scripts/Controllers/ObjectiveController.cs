@@ -21,9 +21,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] bool objectivesOn = true;
     [SerializeField] ObjectiveStage currStage = ObjectiveStage.None;
     [SerializeField] int subStage = 0;
-    [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveCompletePrefab;
-    [SerializeField] GameObject objectiveWindowOpenArrows;
     [SerializeField] GameObject hub;
     [SerializeField] GameObject ShipComponent;
     [SerializeField] int mineralTarget = 500;
@@ -42,9 +40,7 @@ public class ObjectiveController : DialogueBoxController
 
     // Non-Serialized Fields
     bool stageComplete = false;
-    bool objWindowVisibility = false;
     private AudioSource audioSource;
-
 
     // Public Properties -------------------------------------------------------------------------------------
 
@@ -218,7 +214,7 @@ public class ObjectiveController : DialogueBoxController
         }
         else
         {
-            if (!objWindowVisibility)
+            if (!objWindowVisible)
             {
                 ToggleObjWindow();
             }
@@ -238,22 +234,6 @@ public class ObjectiveController : DialogueBoxController
         subStage = 0;
     }
 
-    public void ToggleObjWindow()
-    {
-        if (!objWindowVisibility)
-        {
-            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(5, 0.3f).SetEase(Ease.OutCubic);
-            objectiveWindowOpenArrows.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 180), 0.3f);
-            objWindowVisibility = true;
-        }
-        else
-        {
-            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-250, 0.3f).SetEase(Ease.InCubic);
-            objectiveWindowOpenArrows.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 0), 0.3f);
-            objWindowVisibility = false;
-        }
-    }
-
     // run as coroutine
     IEnumerator CompleteObjective()
     {
@@ -267,7 +247,7 @@ public class ObjectiveController : DialogueBoxController
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad);
         yield return new WaitForSeconds(0.3f);
         Destroy(objComp);
-        if (!objWindowVisibility)
+        if (!objWindowVisible)
         {
             ToggleObjWindow();
         }

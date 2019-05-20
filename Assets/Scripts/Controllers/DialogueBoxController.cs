@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
+using TMPro;
 
 [Serializable]
 public class KeyDialoguePair
@@ -24,6 +27,9 @@ public class KeyDialoguePair
 public class DialogueBoxController : MonoBehaviour
 {
     //Serialized Fields
+    [SerializeField] GameObject objectiveWindow;
+    [SerializeField] GameObject objectiveWindowOpenArrows;
+
     [SerializeField] protected DialogueBox aiText;
     [SerializeField] private List<KeyDialoguePair> dialogue;
 
@@ -31,6 +37,10 @@ public class DialogueBoxController : MonoBehaviour
     protected bool instructionsSent = false;
     protected bool dialogueRead = false;
     protected bool tileClicked = false;
+
+    protected bool objWindowVisible = false;
+
+    public bool ObjWindowVisible { get => objWindowVisible; set => objWindowVisible = value; }
 
     public void RegisterDialogueRead()
     {
@@ -79,5 +89,23 @@ public class DialogueBoxController : MonoBehaviour
     public void RegisterButtonClicked()
     {
         tileClicked = true;
+    }
+
+    public void ToggleObjWindow()
+    {
+        if (!objWindowVisible)
+        {
+            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(5, 0.3f).SetEase(Ease.OutCubic);
+            objectiveWindowOpenArrows.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 180), 0.3f);
+            TutorialController.Instance.ObjWindowVisible = true;
+            ObjectiveController.Instance.ObjWindowVisible = true;
+        }
+        else
+        {
+            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosX(-250, 0.3f).SetEase(Ease.InCubic);
+            objectiveWindowOpenArrows.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 0), 0.3f);
+            TutorialController.Instance.ObjWindowVisible = false;
+            ObjectiveController.Instance.ObjWindowVisible = false;
+        }
     }
 }
