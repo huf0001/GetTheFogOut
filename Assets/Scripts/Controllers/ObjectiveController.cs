@@ -36,6 +36,10 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] AudioClip audioTransition2To3;
     [SerializeField] AudioClip audioStage3;
 
+    [SerializeField] int fogGrowthEasy;
+    [SerializeField] int fogGrowthMedium;
+    [SerializeField] int fogGrowthHard;
+
     // Non-Serialized Fields
     bool stageComplete = false;
     bool objWindowVisibility = false;
@@ -111,6 +115,7 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI text for stage
                 SendDialogue("start harvest stage", 1);
                 // Set fog AI to 'Docile'
+                Fog.Instance.FogGrowth = fogGrowthEasy;
                 // Unlock 5 generators
                 IncrementSubstage();
                 break;
@@ -146,6 +151,7 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI text for stage
                 SendDialogue("start part stage", 1);
                 // Set fog AI to 'Moderate Aggression'
+                Fog.Instance.FogGrowth = fogGrowthMedium;
                 IncrementSubstage();
                 break;
             case 1:
@@ -180,6 +186,7 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI text for stage
                 SendDialogue("start power stage", 1);
                 // Set fog AI to 'Overly Aggressive'
+                Fog.Instance.FogGrowth = fogGrowthHard;
                 IncrementSubstage();
                 break;
             case 1:
