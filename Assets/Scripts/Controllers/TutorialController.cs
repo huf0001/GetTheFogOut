@@ -248,6 +248,12 @@ public class TutorialController : DialogueBoxController
                 break;
             case 3:
                 SendDialogue("move camera", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
                 cameraStartPosition = camera.position;
                 break;
             case 4:
@@ -272,6 +278,12 @@ public class TutorialController : DialogueBoxController
                 break;
             case 6:
                 SendDialogue("rotate camera", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
                 cameraStartRotation = camera.rotation;
                 break;
             case 7:
@@ -314,6 +326,12 @@ public class TutorialController : DialogueBoxController
                 ActivateTarget(generatorLandmark);
                 MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build generator decal", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
                 break;
             case 2:
                 if (dialogueRead)
@@ -379,6 +397,12 @@ public class TutorialController : DialogueBoxController
                 ActivateTarget(relayLandmark);
                 MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build relay decal", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
                 break;
             case 2:
                 if (dialogueRead)
@@ -435,6 +459,12 @@ public class TutorialController : DialogueBoxController
                 ActivateTarget(batteryLandmark);
                 MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build battery decal", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
                 break;
             case 2:
                 if (dialogueRead)
@@ -485,6 +515,12 @@ public class TutorialController : DialogueBoxController
             case 1:
                 MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("increase power generation", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
                 break;
             case 2:
                 if (dialogueRead)
@@ -534,6 +570,12 @@ public class TutorialController : DialogueBoxController
             case 1:
                 MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build harvesters", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
                 break;
             case 2:
                 if (dialogueRead)
@@ -584,6 +626,12 @@ public class TutorialController : DialogueBoxController
                 Fog.Instance.ActivateFog();
                 MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build arc defence", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
                 break;
             case 2:
                 if (dialogueRead)
@@ -633,6 +681,12 @@ public class TutorialController : DialogueBoxController
             case 1:
                 MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build repel fan", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
                 break;
             case 2:
                 if (dialogueRead)
