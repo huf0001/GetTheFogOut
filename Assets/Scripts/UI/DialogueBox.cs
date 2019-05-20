@@ -13,9 +13,9 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] float popUpSpeed = 0.5f;
     [SerializeField] private int lerpTextInterval = 3;
 
-    [SerializeField] private string squareBracketColour = "green";
-    [SerializeField] private string squigglyBracketColour = "orange";
-    [SerializeField] private string vBracketColour = "red";
+    [SerializeField] private string squareBracketColour;
+    [SerializeField] private string squigglyBracketColour;
+    [SerializeField] private string vBracketColour;
 
     //Non-Serialized Fields
     [SerializeField] private List<string> textToDisplay = new List<string>();
@@ -30,11 +30,29 @@ public class DialogueBox : MonoBehaviour
 
     private bool coloured = false;
     private bool lerpFinished = true;
-    private string textColour;
+    private string textColourString;
 
     //Public Properties
     public bool Activated { get => activated; set { activated = value; Debug.Log("activated changed"); } }
     public int DialogueCount { get => textToDisplay.Count; }
+
+    private void Awake()
+    {
+        if (squareBracketColour[0].ToString() != "#")
+        {
+            squareBracketColour = $"\"{squareBracketColour}\"";
+        }
+
+        if (squigglyBracketColour[0].ToString() != "#")
+        {
+            squigglyBracketColour = $"\"{squigglyBracketColour}\"";
+        }
+
+        if (vBracketColour[0].ToString() != "#")
+        {
+            vBracketColour = $"\"{vBracketColour}\"";
+        }
+    }
 
     private void Update()
     {
@@ -51,7 +69,7 @@ public class DialogueBox : MonoBehaviour
                     if (c.ToString() == "]" || c.ToString() == "}" || c.ToString() == "<")
                     {
                         coloured = false;
-                        pendingText += $"<color=\"{textColour}\"><b>{pendingColouredText}</b></color>";
+                        pendingText += $"<color={textColourString}><b>{pendingColouredText}</b></color>";
                         pendingColouredText = "";
                     }
                     else
@@ -64,17 +82,17 @@ public class DialogueBox : MonoBehaviour
                     if (c.ToString() == "[")
                     {
                         coloured = true;
-                        textColour = squareBracketColour;
+                        textColourString = squareBracketColour;
                     }
                     else if (c.ToString() == "{")
                     {
                         coloured = true;
-                        textColour = squigglyBracketColour;
+                        textColourString = squigglyBracketColour;
                     }
                     else if (c.ToString() == ">")
                     {
                         coloured = true;
-                        textColour = vBracketColour;
+                        textColourString = vBracketColour;
                     }
                     else
                     {
@@ -85,7 +103,7 @@ public class DialogueBox : MonoBehaviour
 
             if (coloured)
             {
-                pendingText += $"<color=\"{textColour}\"><b>{pendingColouredText}</b></color>";
+                pendingText += $"<color={textColourString}><b>{pendingColouredText}</b></color>";
             }
 
             textBox.text = pendingText;
