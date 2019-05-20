@@ -17,10 +17,12 @@ public class UIController : MonoBehaviour
     public BuildingInfo buildingInfo;
     public TextMeshProUGUI endGameText;
 
+    private GameObject cursor;
     private Slider powerSlider;
     private int power = 0, powerChange = 0, mineral = 0;
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
+    private bool isCursorOn = false;
     [SerializeField] Image powerImg;
 
     [SerializeField] Sprite[] powerLevelSprites;
@@ -44,6 +46,8 @@ public class UIController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         FindSliders();
 
+        cursor = GameObject.Find("Cursor");
+        cursor.SetActive(false);
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
         //hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
@@ -60,6 +64,12 @@ public class UIController : MonoBehaviour
         powerTime += Time.deltaTime;
         mineralTime += Time.deltaTime;
         UpdateResourceText();
+
+        if (Input.GetKeyDown("c"))
+        {
+            isCursorOn = !isCursorOn;
+            cursor.SetActive(isCursorOn);
+        }
     }
 
     // find sliders and text
@@ -74,6 +84,11 @@ public class UIController : MonoBehaviour
     {
         endGameText.text = text;
         endGame.SetActive(true);
+    }
+
+    public void ToggleCursor(bool isOn)
+    {
+        cursor.SetActive(isOn);
     }
 
     void UpdateResourceText()

@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -33.69, y: 33.69}
+  m_AnchoredPosition: {x: 12, y: 6}
   m_SizeDelta: {x: 32.62, y: 32.62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6686823918771130109
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.003921569}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1741,6 +1741,7 @@ MonoBehaviour:
   textBox: {fileID: 4767305868673010206}
   dialogueBoxController: {fileID: 0}
   popUpSpeed: 0.5
+  lerpTextInterval: 3
 --- !u!1 &4767305867469215120
 GameObject:
   m_ObjectHideFlags: 0
@@ -4951,7 +4952,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8171985708282168663
 RectTransform:
   m_ObjectHideFlags: 0
