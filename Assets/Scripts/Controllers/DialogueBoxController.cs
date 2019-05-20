@@ -34,7 +34,7 @@ public class DialogueBoxController : MonoBehaviour
     [SerializeField] private List<KeyDialoguePair> dialogue;
 
     //Non-Serialized fields
-    protected bool instructionsSent = false;
+    //protected bool instructionsSent = false;
     protected bool dialogueRead = false;
     protected bool tileClicked = false;
 
@@ -54,22 +54,25 @@ public class DialogueBoxController : MonoBehaviour
 
     protected virtual void SendDialogue(string dialogueKey, float invokeDelay)
     {
-        if (!instructionsSent)
+        Debug.Log("SendDialogue called");
+        //if (!instructionsSent)
+        //{
+        //Activate DialogueBox, passing dialogue to it
+        if (aiText.Activated)
         {
-            //Activate DialogueBox, passing dialogue to it
-            if (aiText.Activated)
-            {
-                //aiText.ReactivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
-                aiText.ChangeDialogue(GetDialogue(dialogueKey));
-            }
-            else
-            {
-                aiText.ActivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
-            }
-
-            //Set dialogueSent to true so that the dialogue box isn't being repeatedly activated
-            instructionsSent = true;
+            aiText.ChangeDialogue(GetDialogue(dialogueKey));
+            Debug.Log("SendDialogue Dialogue Changed");
         }
+        else
+        {
+            aiText.ActivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
+            Debug.Log("SendDialogue Dialogue Activated");
+        }
+
+        //Set dialogueSent to true so that the dialogue box isn't being repeatedly activated
+        //instructionsSent = true;
+        //}
+        Debug.Log("SendDialogue dialogue sent");
     }
 
     private List<string> GetDialogue(string key)

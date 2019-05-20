@@ -14,15 +14,15 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private int lerpTextInterval = 3;
 
     //Non-Serialized Fields
-    private List<string> textToDisplay = new List<string>();
+    [SerializeField] private List<string> textToDisplay = new List<string>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
-    private bool activated = false;
+    [SerializeField] private bool activated = false;
     private string currentText = "";
     private int lerpTextIndex = 0;
 
     //Public Properties
-    public bool Activated { get => activated; }
+    public bool Activated { get => activated; set { activated = value; Debug.Log("activated changed"); } }
     public int DialogueCount { get => textToDisplay.Count; }
 
     private void Update()
@@ -55,7 +55,7 @@ public class DialogueBox : MonoBehaviour
     {
         if (texts.Count > 0)
         {
-            activated = true;
+            Activated = true;
 
             //Caches required tweening information for performance saving
             dialogueRectTransform = GetComponent<RectTransform>();
@@ -95,12 +95,14 @@ public class DialogueBox : MonoBehaviour
 
     public void RegisterDialogueRead()
     {
+        Debug.Log("Registering dialogue read");
         if (textToDisplay.Count > 0)
         {
             LerpNext();
         }
-        else if (activated)
+        else if (Activated)
         {
+            Debug.Log("RegisterDialogueRead calling DeactivateDialogue");
             DeactivateDialogueBox();
         }
     }
@@ -114,8 +116,17 @@ public class DialogueBox : MonoBehaviour
                 dialogueRectTransform.anchoredPosition = originalRectTransformPosition;
                 gameObject.SetActive(false);
                 textBox.text = "";
-                dialogueBoxController.RegisterDialogueRead();
-                activated = false;
+
+                if (TutorialController.Instance.TutorialStage != TutorialStage.Finished)
+                {
+                    TutorialController.Instance.RegisterDialogueRead();
+                }
+                else
+                {
+                    ObjectiveController.Instance.RegisterDialogueRead();
+                }
+
+                Activated = false;
             });
     }
 
