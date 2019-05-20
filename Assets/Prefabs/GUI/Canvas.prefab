@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -33.69, y: 33.69}
+  m_AnchoredPosition: {x: 12, y: 6}
   m_SizeDelta: {x: 32.62, y: 32.62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6686823918771130109
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.003921569}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1741,6 +1741,7 @@ MonoBehaviour:
   textBox: {fileID: 4767305868673010206}
   dialogueBoxController: {fileID: 0}
   popUpSpeed: 0.5
+  lerpTextInterval: 3
 --- !u!1 &4767305867469215120
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,7 +3200,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 5}
+  m_AnchoredPosition: {x: 0, y: 6}
   m_SizeDelta: {x: 261.59, y: 193.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4767305868545777641
@@ -4623,6 +4624,35 @@ MonoBehaviour:
   healthBar: {fileID: 1671142176916032542}
   healthBarFill: {fileID: 1227474596686091452}
   destroyButton: {fileID: 2505737457742917440}
+  healthGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 0.999694, g: 0.79607844, b: 0, a: 1}
+    key2: {r: 0, g: 0.6, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 16384
+    ctime1: 32768
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
   building: {fileID: 0}
 --- !u!1 &4842999563495811240
 GameObject:
@@ -4951,7 +4981,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8171985708282168663
 RectTransform:
   m_ObjectHideFlags: 0

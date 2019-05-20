@@ -398,12 +398,12 @@ public class WorldController : MonoBehaviour
         showActiveTiles();
         
 
-        if (Input.GetButtonDown("Xbox_A") && cameraController.buildingSelector.activeSelf)
+        if (Input.GetButtonDown("Submit") && cameraController.buildingSelector.activeSelf)
         {
             cameraController.ToggleCameraMovement();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
+        if (Input.GetButtonDown("Cancel"))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -417,7 +417,7 @@ public class WorldController : MonoBehaviour
             hub = FindObjectOfType<Hub>();
         }
 
-        if (Input.GetKeyDown("p") || Input.GetButtonDown("Xbox_Menu"))
+        if (Input.GetButtonDown("Pause"))
         {
             pause.SetActive(!pause.activeSelf);
             SetPause(pause.activeSelf);
@@ -519,7 +519,7 @@ public class WorldController : MonoBehaviour
             //InBuildMode = false;
         }
 
-        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) 
+        if ((Input.GetButtonDown("Cancel"))
             && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.TutorialStage == TutorialStage.Finished))
         {
             Destroy(PlaneSpawn);
@@ -608,7 +608,7 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.GetComponentInParent<RectTransform>().position = new Vector3(tile.X, 0, tile.Z) + new Vector3(0.5f, 0, -1.5f);// + new Vector3(Screen.width / 13, 0);
+        uiController.buildingSelector.GetComponentInParent<RectTransform>().position = new Vector3(tile.X, 1.5f, tile.Z) + new Vector3(-0.3f, 0, -2.3f);// + new Vector3(Screen.width / 13, 0);
         uiController.buildingSelector.GetComponentInParent<RectTransform>().LookAt(Camera.main.transform);
     }
 
