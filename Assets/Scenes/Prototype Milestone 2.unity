@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.13506117, a: 1}
+  m_IndirectSpecularColor: {r: 0.0673975, g: 0.08987059, b: 0.1349672, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5376,7 +5376,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogue.Array.data[4].dialogue.Array.data[0]
       value: "Since the backup generator will not be sufficient, you will have to
-        place <color=\"green\"><b>POWER GENERATORS</b></color>.\r\n"
+        place <color=#00a651><b>POWER GENERATORS</b></color>.\r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5391,7 +5391,7 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[5].dialogue.Array.data[0]
-      value: Now, click on the <color="green"><b>POWER GENERATOR</b></color> icon.
+      value: Now, click on the <color=#00a651><b>POWER GENERATOR</b></color> icon.
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5401,7 +5401,7 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[6].dialogue.Array.data[0]
-      value: Next are <color="green"><b>POWER RELAYS</b></color>. These will extend
+      value: Next are <color=#00a651><b>POWER RELAYS</b></color>. These will extend
         the power range from your ship and allow you to place buildings further out.
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
@@ -5479,8 +5479,9 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[9].dialogue.Array.data[0]
-      value: "The next important building you have access to is a <color=\"orange\"><b>HARVESTER</b></color>.
-        When placed on a mineral, it will collect its contents for you.\r\n"
+      value: "The next important building you have access to is a <color=#e09500><b>HARVESTER</b></color>.
+        When placed on a <color=#e09500><b>mineral</b></color>, it will collect its
+        contents for you.\r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5491,7 +5492,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogue.Array.data[10].dialogue.Array.data[0]
       value: Your final and most important buildings are the <color="red"><b>ARC DEFENSE</b></color>
-        and <color="red"><b>REPEL FANS</b></color>
+        and <color="red"><b>REPEL FANS</b></color>.
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5502,7 +5503,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogue.Array.data[11].dialogue.Array.data[0]
       value: Great. Now, a <color="red"><b>REPEL FAN</b></color> will push the fog
-        away from a small area around it when placed
+        away from a small area around it when placed.
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5648,15 +5649,15 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[7].dialogue.Array.data[0]
-      value: "The final power related building is a <color=\"green\"><b>BATTERY</b></color>.
+      value: "The final power related building is a <color=#00a651><b>BATTERY</b></color>.
         When you place it, it will increase your power capacity.\r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[8].dialogue.Array.data[0]
-      value: 'Now that you have these skills, increase your <color="green"><b>POWER
-        GENERATION</b></color>. Do not forget to try more <color="green"><b>POWER
-        RELAYS</b></color> and <color="green"><b>BATTERIES</b></color>
+      value: 'Now that you have these skills, increase your <color=#00a651><b>POWER
+        GENERATION</b></color>. Do not forget to try more <color=#00a651><b>POWER
+        RELAYS</b></color> and <color=#00a651><b>BATTERIES</b></color>
 
 '
       objectReference: {fileID: 0}
@@ -5673,7 +5674,7 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[9].dialogue.Array.data[1]
-      value: 'Place 3 <color="orange"><b>HARVESTERS</b></color>.
+      value: 'Place 3 <color=#e09500><b>HARVESTERS</b></color>.
 
 '
       objectReference: {fileID: 0}
@@ -6805,7 +6806,7 @@ PrefabInstance:
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145712
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
@@ -6820,7 +6821,7 @@ PrefabInstance:
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145712
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
