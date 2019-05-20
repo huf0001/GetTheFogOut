@@ -701,11 +701,9 @@ public class TutorialController : DialogueBoxController
 
     private bool CameraRotated(Vector3 startRotation, Vector3 currentRotation)
     {
-        Debug.Log(currentRotation.x + ", " + currentRotation.y + ", " + currentRotation.z);
         if (currentRotation.y + 5 < startRotation.y ||
             currentRotation.y - 5 > startRotation.y)
         {
-            Debug.Log("Camera Rotated");
             return true;
         }
 
