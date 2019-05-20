@@ -12,7 +12,9 @@ public enum TutorialStage
     CrashLanding,
     ShipPartsCrashing,
     ZoomBackToShip,
-    CameraControls,
+    ExplainSituation,
+    MoveCamera,
+    RotateCamera,
     BuildGenerator,
     BuildRelay,
     BuildBattery,
@@ -56,8 +58,8 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
 
-    [SerializeField] private int powerGainGoal;
-    [SerializeField] private int mineralHarvestingGoal;
+    [SerializeField] private int powerGainGoal = 15;
+    [SerializeField] private int builtHarvestersGoal = 3;
 
     //Non-Serialized Fields
     [SerializeField] private TutorialStage tutorialStage = TutorialStage.CrashLanding;
@@ -88,6 +90,8 @@ public class TutorialController : DialogueBoxController
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
     public Color UINormalColour { get => uiNormalColour; }
     public Color UIHighlightColour { get => uiHighlightColour; }
+    public int PowerGainGoal { get => powerGainGoal; }
+    public int BuiltHarvestersGoal { get => builtHarvestersGoal; }
 
     //Start-Up Methods-----------------------------------------------------------------------------
 
@@ -124,12 +128,24 @@ public class TutorialController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (tutorialStage != TutorialStage.Finished && targetDecal.enabled)
-        {
-            LerpDecal();
-        }
-
         CheckTutorialStage();
+
+        if (tutorialStage != TutorialStage.Finished)
+        {
+            if (tutorialStage == TutorialStage.BuildRepelFan && subStage > 5)
+            {
+                UIController.instance.UpdateObjectiveText(TutorialStage.None);
+            }
+            else
+            { 
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+            }
+
+            if (targetDecal.enabled)
+            {
+                LerpDecal();
+            }
+        }
     }
 
     private void CheckTutorialStage()
@@ -145,7 +161,9 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.ZoomBackToShip:
                 ZoomBackToShip();
                 break;
-            case TutorialStage.CameraControls:
+            case TutorialStage.ExplainSituation:
+            case TutorialStage.MoveCamera:
+            case TutorialStage.RotateCamera:
                 CameraControls();
                 break;
             case TutorialStage.BuildGenerator:
@@ -207,8 +225,7 @@ public class TutorialController : DialogueBoxController
     {
         //Run camera movement to move camera back to the hub
 
-        //tutorialStage = TutorialStage.ExplainSituation;
-        tutorialStage = TutorialStage.CameraControls;
+        tutorialStage = TutorialStage.ExplainSituation;
     }
 
     //Tutorial Stage 2: AI Walks Player Through How to do Stuff
@@ -225,6 +242,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
+                    tutorialStage = TutorialStage.MoveCamera;
                 }
 
                 break;
@@ -240,6 +258,7 @@ public class TutorialController : DialogueBoxController
                 else if (CameraMoved(cameraStartPosition, camera.position))
                 {
                     SkipTutorialAhead(6);
+                    tutorialStage = TutorialStage.RotateCamera;
                 }
 
                 break;
@@ -247,6 +266,7 @@ public class TutorialController : DialogueBoxController
                 if (CameraMoved(cameraStartPosition, camera.position))
                 {
                     IncrementSubStage();
+                    tutorialStage = TutorialStage.RotateCamera;
                 }
 
                 break;
@@ -538,7 +558,7 @@ public class TutorialController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 5:
-                if (Hub.Instance.GetHarvesters().Count == 3)
+                if (ResourceController.Instance.Harvesters.Count == builtHarvestersGoal)
                 {
                     IncrementSubStage();
                 }
