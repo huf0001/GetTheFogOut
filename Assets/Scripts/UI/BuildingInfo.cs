@@ -10,8 +10,11 @@ public class BuildingInfo : MonoBehaviour
     [SerializeField] GameObject healthBar;
     [SerializeField] Image healthBarFill;
     [SerializeField] Button destroyButton;
+    [SerializeField] Gradient healthGradient;
     [HideInInspector] public Building building;
     private RectTransform parent;
+    private int mineralHealth;
+    private float mineralTime, mineralVal, mineral;
 
     public bool Visible { get; private set; }
 
@@ -20,32 +23,20 @@ public class BuildingInfo : MonoBehaviour
         if (healthBar.activeSelf)
         {
             healthBarFill.fillAmount = building.Health / building.MaxHealth;
+            healthBarFill.color = healthGradient.Evaluate(healthBarFill.fillAmount);
         }
         if (Visible)
         {
+            if (building != null) { UpdateText(); }
             parent.LookAt(Camera.main.transform);
         }
     }
 
-    public void ShowInfo(Building b)
+    private void UpdateText()
     {
-        if (parent == null)
-        {
-            parent = GetComponentInParent<RectTransform>();
-        }
-        building = b;
-        if (building.BuildingType == BuildingType.Hub)
-        {
-            destroyButton.gameObject.SetActive(false);
-        }
-        else
-        {
-            destroyButton.gameObject.SetActive(true);
-        }
-
-        mainText.text = $"<b>{b.BuildingType}</b>\n" +
+        mainText.text = $"<b>{building.name}</b>\n" +
             $"HP\n";
-        if (b.Powered)
+        if (building.Powered)
         {
             mainText.text += "<color=#009900>POWERED</color>\n";
         }
@@ -54,8 +45,38 @@ public class BuildingInfo : MonoBehaviour
             mainText.text += "<color=\"red\">NO POWER</color>\n";
         }
 
+        if (building.BuildingType == BuildingType.Harvester)
+        {
+            mineralTime += Time.deltaTime;
+            if (building.Location.Resource.Health != mineral)
+            {
+                mineralVal = mineral;
+                mineral = building.Location.Resource.Health;
+                mineralTime = 0;
+            }
+            mainText.text += $"\n<color=#e09100><size=125%><sprite=\"all_icons\" index=2><size=100%>Remaining: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))}</color>";
+        }
+    }
+
+    public void ShowInfo(Building b)
+    {
+        building = b;
+        if (parent == null)
+        {
+            parent = GetComponentInParent<RectTransform>();
+        }
+        if (building.BuildingType == BuildingType.Hub)
+        {
+            destroyButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            destroyButton.gameObject.SetActive(true);
+        }
+        UpdateText();
+
         healthBar.SetActive(true);
-        parent.position = new Vector3(b.transform.position.x, 0, b.transform.position.z) + new Vector3(0.5f, 1, -1.5f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
+        parent.position = new Vector3(b.transform.position.x, 1.5f, b.transform.position.z) + new Vector3(-0.3f, 0, -2.3f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
         parent.LookAt(Camera.main.transform);
         gameObject.SetActive(true);
         Visible = true;
@@ -63,6 +84,7 @@ public class BuildingInfo : MonoBehaviour
 
     public void ShowInfo(ShipComponent shipComponent)
     {
+        building = null;
         if (parent == null)
         {
             parent = GetComponentInParent<RectTransform>();
