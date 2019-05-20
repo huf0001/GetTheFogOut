@@ -13,13 +13,24 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] float popUpSpeed = 0.5f;
     [SerializeField] private int lerpTextInterval = 3;
 
+    [SerializeField] private string squareBracketColour = "green";
+    [SerializeField] private string squigglyBracketColour = "orange";
+    [SerializeField] private string vBracketColour = "red";
+
     //Non-Serialized Fields
     [SerializeField] private List<string> textToDisplay = new List<string>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
     [SerializeField] private bool activated = false;
     private string currentText = "";
-    private int lerpTextIndex = 0;
+    private string pendingText = "";
+    private string pendingColouredText = "";
+    private int lerpTextMinIndex = 0;
+    private int lerpTextMaxIndex = 0;
+
+    private bool coloured = false;
+    private bool lerpFinished = true;
+    private string textColour;
 
     //Public Properties
     public bool Activated { get => activated; set { activated = value; Debug.Log("activated changed"); } }
@@ -27,14 +38,66 @@ public class DialogueBox : MonoBehaviour
 
     private void Update()
     {
-        if (textBox.text != currentText)
+        if (!lerpFinished)
         {
-            textBox.text = currentText.Substring(0, lerpTextIndex);
-            lerpTextIndex += lerpTextInterval;
-
-            if (lerpTextIndex > currentText.Length)
+            pendingText = "";
+            pendingColouredText = "";
+            coloured = false;
+            Debug.Log($"index: {lerpTextMaxIndex}, length: {currentText.Length}");
+            foreach (char c in currentText.Substring(0, lerpTextMaxIndex))
             {
-                lerpTextIndex = currentText.Length;
+                if (coloured)
+                {
+                    if (c.ToString() == "]" || c.ToString() == "}" || c.ToString() == "<")
+                    {
+                        coloured = false;
+                        pendingText += $"<color=\"{textColour}\"><b>{pendingColouredText}</b></color>";
+                        pendingColouredText = "";
+                    }
+                    else
+                    {
+                        pendingColouredText += c;
+                    }
+                }
+                else
+                {
+                    if (c.ToString() == "[")
+                    {
+                        coloured = true;
+                        textColour = squareBracketColour;
+                    }
+                    else if (c.ToString() == "{")
+                    {
+                        coloured = true;
+                        textColour = squigglyBracketColour;
+                    }
+                    else if (c.ToString() == ">")
+                    {
+                        coloured = true;
+                        textColour = vBracketColour;
+                    }
+                    else
+                    {
+                        pendingText += c;
+                    }
+                }
+            }
+
+            if (coloured)
+            {
+                pendingText += $"<color=\"{textColour}\"><b>{pendingColouredText}</b></color>";
+            }
+
+            textBox.text = pendingText;
+
+            if (lerpTextMaxIndex < currentText.Length - 1)
+            {
+                lerpTextMaxIndex = Mathf.Min(lerpTextMaxIndex + lerpTextInterval, currentText.Length - 1);
+            }
+            else
+            {
+                Debug.Log("TextLerpFinished");
+                lerpFinished = true;
             }
         }
 
@@ -43,6 +106,21 @@ public class DialogueBox : MonoBehaviour
             RegisterDialogueRead();
         }
     }
+
+
+
+    //private bool IsAllUpper(string input)
+    //{
+    //    for (int i = 0; i < input.Length; i++)
+    //    {
+    //        if (char.IsLetter(input[i]) && !char.IsUpper(input[i]))
+    //        {
+    //            return false;
+    //        }
+    //    }
+
+    //    return true;
+    //}
 
     public void ActivateDialogueBox(string text, float invokeDelay)
     {
@@ -73,17 +151,25 @@ public class DialogueBox : MonoBehaviour
 
     private void DisplayNext()
     {
-        textBox.text = textToDisplay[0];
+        //textBox.text = textToDisplay[0];
+        //currentText = textToDisplay[0];
+        //textToDisplay.Remove(textToDisplay[0]);
+
+        lerpFinished = false;
+        textBox.text = "";
         currentText = textToDisplay[0];
         textToDisplay.Remove(textToDisplay[0]);
+        lerpTextMaxIndex = currentText.Length - 1;
     }
 
     private void LerpNext()
     {
-        lerpTextIndex = 0;
+        Debug.Log("LerpingNext");
+        lerpFinished = false;
         textBox.text = "";
         currentText = textToDisplay[0];
         textToDisplay.Remove(textToDisplay[0]);
+        lerpTextMaxIndex = 0;
     }
 
     private void ShowDialogueBox()
