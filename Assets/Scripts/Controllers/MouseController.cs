@@ -188,7 +188,7 @@ public class MouseController : MonoBehaviour
 
             UIController.instance.buildingSelector.freezeCam();
             
-        if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject())
+        if (Time.timeScale == 1.0f && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) //Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject())
         {
             TileData tile;
             RaycastHit hit;

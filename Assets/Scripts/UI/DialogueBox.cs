@@ -13,28 +13,109 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] float popUpSpeed = 0.5f;
     [SerializeField] private int lerpTextInterval = 3;
 
+    [SerializeField] private string squareBracketColour;
+    [SerializeField] private string squigglyBracketColour;
+    [SerializeField] private string vBracketColour;
+
     //Non-Serialized Fields
-    private List<string> textToDisplay = new List<string>();
+    [SerializeField] private List<string> textToDisplay = new List<string>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
-    private bool activated = false;
+    [SerializeField] private bool activated = false;
     private string currentText = "";
-    private int lerpTextIndex = 0;
+    private string pendingText = "";
+    private string pendingColouredText = "";
+    private int lerpTextMinIndex = 0;
+    private int lerpTextMaxIndex = 0;
+
+    private bool coloured = false;
+    private bool lerpFinished = true;
+    private string textColourString;
 
     //Public Properties
-    public bool Activated { get => activated; }
+    public bool Activated { get => activated; set { activated = value; Debug.Log("activated changed"); } }
     public int DialogueCount { get => textToDisplay.Count; }
+
+    private void Awake()
+    {
+        if (squareBracketColour[0].ToString() != "#")
+        {
+            squareBracketColour = $"\"{squareBracketColour}\"";
+        }
+
+        if (squigglyBracketColour[0].ToString() != "#")
+        {
+            squigglyBracketColour = $"\"{squigglyBracketColour}\"";
+        }
+
+        if (vBracketColour[0].ToString() != "#")
+        {
+            vBracketColour = $"\"{vBracketColour}\"";
+        }
+    }
 
     private void Update()
     {
-        if (textBox.text != currentText)
+        if (!lerpFinished)
         {
-            textBox.text = currentText.Substring(0, lerpTextIndex);
-            lerpTextIndex += lerpTextInterval;
-
-            if (lerpTextIndex > currentText.Length)
+            pendingText = "";
+            pendingColouredText = "";
+            coloured = false;
+            Debug.Log($"index: {lerpTextMaxIndex}, length: {currentText.Length}");
+            foreach (char c in currentText.Substring(0, lerpTextMaxIndex))
             {
-                lerpTextIndex = currentText.Length;
+                if (coloured)
+                {
+                    if (c.ToString() == "]" || c.ToString() == "}" || c.ToString() == "<")
+                    {
+                        coloured = false;
+                        pendingText += $"<color={textColourString}><b>{pendingColouredText}</b></color>";
+                        pendingColouredText = "";
+                    }
+                    else
+                    {
+                        pendingColouredText += c;
+                    }
+                }
+                else
+                {
+                    if (c.ToString() == "[")
+                    {
+                        coloured = true;
+                        textColourString = squareBracketColour;
+                    }
+                    else if (c.ToString() == "{")
+                    {
+                        coloured = true;
+                        textColourString = squigglyBracketColour;
+                    }
+                    else if (c.ToString() == ">")
+                    {
+                        coloured = true;
+                        textColourString = vBracketColour;
+                    }
+                    else
+                    {
+                        pendingText += c;
+                    }
+                }
+            }
+
+            if (coloured)
+            {
+                pendingText += $"<color={textColourString}><b>{pendingColouredText}</b></color>";
+            }
+
+            textBox.text = pendingText;
+
+            if (lerpTextMaxIndex < currentText.Length - 1)
+            {
+                lerpTextMaxIndex = Mathf.Min(lerpTextMaxIndex + lerpTextInterval, currentText.Length - 1);
+            }
+            else
+            {
+                Debug.Log("TextLerpFinished");
+                lerpFinished = true;
             }
         }
 
@@ -43,6 +124,21 @@ public class DialogueBox : MonoBehaviour
             RegisterDialogueRead();
         }
     }
+
+
+
+    //private bool IsAllUpper(string input)
+    //{
+    //    for (int i = 0; i < input.Length; i++)
+    //    {
+    //        if (char.IsLetter(input[i]) && !char.IsUpper(input[i]))
+    //        {
+    //            return false;
+    //        }
+    //    }
+
+    //    return true;
+    //}
 
     public void ActivateDialogueBox(string text, float invokeDelay)
     {
@@ -55,7 +151,7 @@ public class DialogueBox : MonoBehaviour
     {
         if (texts.Count > 0)
         {
-            activated = true;
+            Activated = true;
 
             //Caches required tweening information for performance saving
             dialogueRectTransform = GetComponent<RectTransform>();
@@ -73,17 +169,25 @@ public class DialogueBox : MonoBehaviour
 
     private void DisplayNext()
     {
-        textBox.text = textToDisplay[0];
+        //textBox.text = textToDisplay[0];
+        //currentText = textToDisplay[0];
+        //textToDisplay.Remove(textToDisplay[0]);
+
+        lerpFinished = false;
+        textBox.text = "";
         currentText = textToDisplay[0];
         textToDisplay.Remove(textToDisplay[0]);
+        lerpTextMaxIndex = currentText.Length - 1;
     }
 
     private void LerpNext()
     {
-        lerpTextIndex = 0;
+        Debug.Log("LerpingNext");
+        lerpFinished = false;
         textBox.text = "";
         currentText = textToDisplay[0];
         textToDisplay.Remove(textToDisplay[0]);
+        lerpTextMaxIndex = 0;
     }
 
     private void ShowDialogueBox()
@@ -95,12 +199,14 @@ public class DialogueBox : MonoBehaviour
 
     public void RegisterDialogueRead()
     {
+        Debug.Log("Registering dialogue read");
         if (textToDisplay.Count > 0)
         {
             LerpNext();
         }
-        else if (activated)
+        else if (Activated)
         {
+            Debug.Log("RegisterDialogueRead calling DeactivateDialogue");
             DeactivateDialogueBox();
         }
     }
@@ -114,8 +220,17 @@ public class DialogueBox : MonoBehaviour
                 dialogueRectTransform.anchoredPosition = originalRectTransformPosition;
                 gameObject.SetActive(false);
                 textBox.text = "";
-                dialogueBoxController.RegisterDialogueRead();
-                activated = false;
+
+                if (TutorialController.Instance.TutorialStage != TutorialStage.Finished)
+                {
+                    TutorialController.Instance.RegisterDialogueRead();
+                }
+                else
+                {
+                    ObjectiveController.Instance.RegisterDialogueRead();
+                }
+
+                Activated = false;
             });
     }
 

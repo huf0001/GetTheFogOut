@@ -1369,6 +1369,16 @@ PrefabInstance:
       propertyPath: dialogueBoxController
       value: 
       objectReference: {fileID: 245833256}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: squareBracketColour
+      value: '#00a651'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: squigglyBracketColour
+      value: '#e09500'
+      objectReference: {fileID: 0}
     - target: {fileID: 4767305868673010206, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -5337,19 +5347,19 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[0].dialogue.Array.data[0]
-      value: Bug caused by developer. Click for your compensation. Go on. Give it
-        a click.
+      value: '>Bug caused by developer<. Click for your compensation. Go on. Give
+        it a click. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[1].dialogue.Array.data[0]
-      value: Hello. I am your very own Nexus Drone. You may call me Nex for short.
-        I am an emergency drone that you can control from your ship.
+      value: 'Hello. I am your very own Nexus Drone. You may call me Nex for short.
+        I am an emergency drone that you can control from your ship. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[2].dialogue.Array.data[0]
-      value: WASD moves me around.
+      value: 'WASD moves me around. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5359,13 +5369,13 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[3].dialogue.Array.data[0]
-      value: Press Q or E to make me spin.
+      value: 'Press Q or E to make me spin. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[0].dialogue.Array.data[1]
-      value: Mr. and Mrs. Dursley of number four, Privet Drive, were proud to say
-        that they were perfectly normal, thank you very much.
+      value: 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to say
+        that they were perfectly normal, thank you very much. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5376,7 +5386,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogue.Array.data[4].dialogue.Array.data[0]
       value: "Since the backup generator will not be sufficient, you will have to
-        place power generators.\r\n"
+        place [POWER GENERATORS].\r \n"
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5391,7 +5401,7 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[5].dialogue.Array.data[0]
-      value: Now, click on the power generator icon.
+      value: 'Now, click on the [POWER GENERATOR] icon. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5401,8 +5411,8 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[6].dialogue.Array.data[0]
-      value: Next are power relays. These will extend the power range from your hull
-        and allow you to place buildings away from your hull.
+      value: 'Next are [POWER RELAYS]. These will extend the power range from your
+        ship and allow you to place buildings further out. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5417,17 +5427,17 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[1].dialogue.Array.data[1]
-      value: Let me run a scan for you to see the extent of the damage.
+      value: 'Let me run a scan for you to see the extent of the damage. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[1].dialogue.Array.data[2]
-      value: Scanning...
+      value: 'Scanning... '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[1].dialogue.Array.data[3]
-      value: The hull has sustained copious damage and a thruster is missing.
+      value: 'The hull has sustained copious damage and a thruster is missing. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5459,7 +5469,7 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[4].dialogue.Array.data[1]
-      value: Click here.
+      value: 'Click here. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5479,8 +5489,8 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[9].dialogue.Array.data[0]
-      value: "The next important building you have access to is a harvester. When
-        placed on a mineral, it will collect its contents for you.\r\n"
+      value: "The next important building you have access to is a {HARVESTER}. When
+        placed on a mineral, it will collect its contents for you.\r \n"
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5490,8 +5500,8 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[10].dialogue.Array.data[0]
-      value: Your final and most important buildings are the arc defense and repel
-        fans.
+      value: 'Your final and most important buildings are the >ARC DEFENSE< and >REPEL
+        FANS<. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5501,8 +5511,8 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[11].dialogue.Array.data[0]
-      value: Great. Now, a repel fan will push the fog away from a small area around
-        it when placed
+      value: 'Great. Now, a >REPEL FAN< will push the fog away from a small area around
+        it when placed. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5513,7 +5523,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogue.Array.data[12].dialogue.Array.data[0]
       value: "Now that you know how to use these buildings, I would suggest trying
-        to find your ship\u2019s thruster."
+        to find your ship\u2019s thruster. "
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5648,19 +5658,19 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[7].dialogue.Array.data[0]
-      value: "The final power related building is a battery. When you place it, it
-        will increase your power capacity.\r\n"
+      value: "The final power related building is a [BATTERY]. When you place it,
+        it will increase your power capacity.\r \n"
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[8].dialogue.Array.data[0]
-      value: "Now that you have these skills, increase your power generation. Do not
-        forget to try more power relays and batteries.\r\n"
+      value: "Now that you have these skills, increase your [POWER GENERATION]. Do
+        not forget to try more [POWER RELAYS] and [BATTERIES]. \n"
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[6].dialogue.Array.data[1]
-      value: Place one here.
+      value: 'Place one here. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5670,20 +5680,18 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[9].dialogue.Array.data[1]
-      value: 'Place 3 harvesters.
-
-'
+      value: "Place 3 {HARVESTERS}. \n"
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[10].dialogue.Array.data[1]
-      value: An arc defense will discharge an intense ball of air that will dissipate
-        the fog.
+      value: 'An >ARC DEFENSE< will discharge an intense ball of air that will dissipate
+        the fog. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[10].dialogue.Array.data[2]
-      value: Try placing one.
+      value: 'Try placing one. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5699,7 +5707,7 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: dialogue.Array.data[7].dialogue.Array.data[1]
-      value: Place one here.
+      value: 'Place one here. '
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -6802,32 +6810,52 @@ PrefabInstance:
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145713
+      value: -0.1514571
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.36564985
+      value: 0.36564982
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.35143614
+      value: 0.35143608
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145713
+      value: -0.1514571
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.36564985
+      value: 0.36564982
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.35143614
+      value: 0.35143608
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8484419
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 14.654311
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 22.650002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.4643097
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524170164334, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}

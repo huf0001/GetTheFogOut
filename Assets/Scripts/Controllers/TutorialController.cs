@@ -817,9 +817,9 @@ public class TutorialController : DialogueBoxController
     }
 
     private void IncrementSubStage()
-        {
-            subStage++;
-        }
+    {
+        subStage++;
+    }
 
     private void ResetSubStage()
     {
@@ -829,30 +829,23 @@ public class TutorialController : DialogueBoxController
     private void DismissMouse()
     {
         MouseController.Instance.ReportTutorialClick = false;
-
         tileClicked = false;
         currentlyLerping = ButtonType.None;
-
         IncrementSubStage();
     }
 
     private void DismissDialogue()
     {
-        instructionsSent = false;
         ResetDialogueRead();
-
         IncrementSubStage();
     }
 
     private void SkipTutorialAhead(int nextSubStage)
     {
         MouseController.Instance.ReportTutorialClick = false;
-
         tileClicked = false;
-        instructionsSent = false;
-
-        subStage = nextSubStage;
         ResetDialogueRead();
+        subStage = nextSubStage;
     }
 
     private void GetLocationOf(Locatable l)
