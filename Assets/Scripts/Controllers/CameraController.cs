@@ -78,8 +78,8 @@ public class CameraController : MonoBehaviour
         if (Input.GetMouseButton(2) || Input.GetMouseButton(1))
         {
             //Right or middle mouse
-            float h = dragSpeed * camera.m_Lens.FieldOfView * -(Input.GetAxis("Mouse X"));
-            float v = dragSpeed * camera.m_Lens.FieldOfView * -(Input.GetAxis("Mouse Y"));
+            float h = dragSpeed * camera.m_Lens.FieldOfView * -(Input.GetAxis("MouseX"));
+            float v = dragSpeed * camera.m_Lens.FieldOfView * -(Input.GetAxis("MouseY"));
             transform.Translate(h, 0, v, transform);
         }
 

@@ -10,7 +10,8 @@ public enum ObjectiveStage
     None,
     HarvestMinerals,
     RecoverPart,
-    StorePower
+    StorePower,
+    Finished
 }
 
 public class ObjectiveController : DialogueBoxController
@@ -84,8 +85,6 @@ public class ObjectiveController : DialogueBoxController
         UIController.instance.UpdateObjectiveText(currStage);
         switch (currStage)
         {
-            //case ObjectiveStage.None:
-            //    break;
             case ObjectiveStage.HarvestMinerals:
                 HarvestMineralStage();
                 break;
@@ -94,6 +93,9 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case ObjectiveStage.StorePower:
                 StorePowerStage();
+                break;
+            case ObjectiveStage.Finished:
+                //End of game
                 break;
             default:
                 break;
@@ -108,25 +110,42 @@ public class ObjectiveController : DialogueBoxController
         {
             case 0:
                 // Play music Var 1 soundtrack
-                // Run AI text for stage
-                SendDialogue("start harvest stage", 1);
                 // Set fog AI to 'Docile'
                 Fog.Instance.FogGrowth = fogGrowthEasy;
+                // Run AI text for stage
+                SendDialogue("start harvest stage", 1);
                 // Unlock 5 generators
-                IncrementSubstage();
+                IncrementSubStage();
                 break;
             case 1:
                 // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
                 if (ResourceController.Instance.StoredMineral >= 500)
                 {
-                    IncrementSubstage();
+                    SkipObjectivesAhead(3);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
                 }
                 break;
             case 2:
+                if (ResourceController.Instance.StoredMineral >= 500)
+                {
+                    IncrementSubStage();
+                }
+                break;
+            case 3:
                 // Run AI completion text
                 SendDialogue("end harvest stage", 1);
-                ResetSubstage();
-                IncrementStage();
+                IncrementSubStage();
+                break;
+            case 4:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    ResetSubStage();
+                    IncrementStage();
+                }
                 break;
             default:
                 break;
@@ -144,11 +163,11 @@ public class ObjectiveController : DialogueBoxController
                 ShipComponent.SetActive(true);
                 // Play music Var 2 soundtrack
                 MusicController.Instance.StartStage2();
-                // Run AI text for stage
-                SendDialogue("start part stage", 1);
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.FogGrowth = fogGrowthMedium;
-                IncrementSubstage();
+                // Run AI text for stage
+                SendDialogue("start part stage", 1);
+                IncrementSubStage();
                 break;
             case 1:
                 // Update objectives window to 'Recover ship thrusters'
@@ -156,14 +175,35 @@ public class ObjectiveController : DialogueBoxController
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
                     ShipComponent.SetActive(false);
-                    IncrementSubstage();
+                    SkipObjectivesAhead(3);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
                 }
                 break;
             case 2:
+                // Update objectives window to 'Recover ship thrusters'
+                // End stage if the part is collected
+                if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
+                {
+                    ShipComponent.SetActive(false);
+                    IncrementSubStage();
+                }
+
+                break;
+            case 3:
                 // Run AI completion text
                 SendDialogue("end part stage", 1);
-                ResetSubstage();
-                IncrementStage();
+                IncrementSubStage();
+                break;
+            case 4:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    ResetSubStage();
+                    IncrementStage();
+                }
                 break;
             default:
                 break;
@@ -180,23 +220,45 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(2).gameObject.SetActive(true);
                 // Play music Var 3 soundtrack
                 MusicController.Instance.StartStage3();
-                // Run AI text for stage
-                SendDialogue("start power stage", 1);
                 // Set fog AI to 'Overly Aggressive'
                 Fog.Instance.FogGrowth = fogGrowthHard;
-                IncrementSubstage();
+                // Run AI text for stage
+                SendDialogue("start power stage", 1);
+                IncrementSubStage();
                 break;
             case 1:
                 // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
                 if (ResourceController.Instance.StoredPower >= 500)
                 {
-                    IncrementSubstage();
+                    SkipObjectivesAhead(3);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
                 }
                 break;
             case 2:
+                // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
+                if (ResourceController.Instance.StoredPower >= 500)
+                {
+                    IncrementSubStage();
+                }
+                break;
+            case 3:
                 // Run AI completetion text
                 SendDialogue("end power stage", 1);
-                ResetSubstage();
+                IncrementSubStage();
+                break;
+            case 4:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    ResetSubStage();
+                    IncrementStage();
+                    // Note: if more stages are added to the objective controller, when the last one is fulfilled, you can't just 
+                    // reset the substage, or it'll loop back to the start of the stage rather than finishing and that will
+                    // create issues with the dialogue if there isn't a propper dialogueRead check like this one.
+                }
                 break;
             default:
                 break;
@@ -204,6 +266,24 @@ public class ObjectiveController : DialogueBoxController
     }
 
     // Utility Functions ------------------------------------------------------------------------------------------
+
+    protected override void SendDialogue(string dialogueKey, float invokeDelay)
+    {
+        dialogueRead = false;
+        base.SendDialogue(dialogueKey, invokeDelay);
+    }
+
+    private void DismissDialogue()
+    {
+        ResetDialogueRead();
+        IncrementSubStage();
+    }
+
+    private void SkipObjectivesAhead(int nextSubStage)
+    {
+        ResetDialogueRead();
+        subStage = nextSubStage;
+    }
 
     public void IncrementStage()
     {
@@ -224,12 +304,12 @@ public class ObjectiveController : DialogueBoxController
         currStage++;
     }
 
-    void IncrementSubstage()
+    void IncrementSubStage()
     {
         subStage++;
     }
 
-    void ResetSubstage()
+    void ResetSubStage()
     {
         subStage = 0;
     }
