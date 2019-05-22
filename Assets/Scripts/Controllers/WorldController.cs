@@ -128,7 +128,7 @@ public class WorldController : MonoBehaviour
         SetResourcesToTiles();
         SetBuildingsToTiles();
         SetLandmarksToTiles();
-        GetComponent<Fog>().PopulateFogPool();
+        TutorialController.Instance.StartTutorial();
     }
 
     void SetResourcesToTiles()

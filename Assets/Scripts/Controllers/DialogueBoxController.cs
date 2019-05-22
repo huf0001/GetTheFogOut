@@ -26,6 +26,8 @@ public class KeyDialoguePair
 
 public class DialogueBoxController : MonoBehaviour
 {
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
+
     //Serialized Fields
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveWindowOpenArrows;
@@ -34,47 +36,16 @@ public class DialogueBoxController : MonoBehaviour
     [SerializeField] private List<KeyDialoguePair> dialogue;
 
     //Non-Serialized fields
-    //protected bool instructionsSent = false;
     protected bool dialogueRead = false;
     protected bool tileClicked = false;
-
     protected bool objWindowVisible = false;
 
+    //Public Properties
     public bool ObjWindowVisible { get => objWindowVisible; set => objWindowVisible = value; }
 
-    public void RegisterDialogueRead()
-    {
-        dialogueRead = true;
-    }
+    //Utility Methods--------------------------------------------------------------------------------------------------------------------------------
 
-    protected void ResetDialogueRead()
-    {
-        dialogueRead = false;
-    }
-
-    protected virtual void SendDialogue(string dialogueKey, float invokeDelay)
-    {
-        Debug.Log("SendDialogue called");
-        //if (!instructionsSent)
-        //{
-        //Activate DialogueBox, passing dialogue to it
-        if (aiText.Activated)
-        {
-            aiText.ChangeDialogue(GetDialogue(dialogueKey));
-            Debug.Log("SendDialogue Dialogue Changed");
-        }
-        else
-        {
-            aiText.ActivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
-            Debug.Log("SendDialogue Dialogue Activated");
-        }
-
-        //Set dialogueSent to true so that the dialogue box isn't being repeatedly activated
-        //instructionsSent = true;
-        //}
-        Debug.Log("SendDialogue dialogue sent");
-    }
-
+    //Retrieves dialogue from the list using the dialogue key
     private List<string> GetDialogue(string key)
     {
         foreach (KeyDialoguePair p in dialogue)
@@ -89,11 +60,39 @@ public class DialogueBoxController : MonoBehaviour
         return null;
     }
 
+    //Passes dialogue to the DialogueBox
+    protected virtual void SendDialogue(string dialogueKey, float invokeDelay)
+    {
+        //Activate DialogueBox, passing dialogue to it
+        if (aiText.Activated)
+        {
+            aiText.ChangeDialogue(GetDialogue(dialogueKey));
+        }
+        else
+        {
+            aiText.ActivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
+        }
+    }
+
+    //Called by btnTutorial to register that that button has been clicked
     public void RegisterButtonClicked()
     {
         tileClicked = true;
     }
 
+    //Called by DialogueBox to register that dialogue has all been read
+    public void RegisterDialogueRead()
+    {
+        dialogueRead = true;
+    }
+
+    //Resets the dialogueRead variable
+    protected void ResetDialogueRead()
+    {
+        dialogueRead = false;
+    }
+
+    //Toggles visibility of the objective window
     public void ToggleObjWindow()
     {
         if (!objWindowVisible)
