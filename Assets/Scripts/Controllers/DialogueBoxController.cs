@@ -75,7 +75,7 @@ public class DialogueBoxController : MonoBehaviour
     }
 
     //Called by btnTutorial to register that that button has been clicked
-    public void RegisterButtonClicked()
+    public void RegisterMouseClicked()
     {
         tileClicked = true;
     }

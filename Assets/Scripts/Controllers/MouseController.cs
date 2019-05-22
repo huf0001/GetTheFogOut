@@ -214,7 +214,7 @@ public class MouseController : MonoBehaviour
 
                         if (reportTutorialClick)
                         {
-                            TutorialController.Instance.RegisterButtonClicked();
+                            TutorialController.Instance.RegisterMouseClicked();
                         }
 
                         towerManager.CurrentTile = tile;

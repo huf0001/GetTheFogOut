@@ -7,12 +7,11 @@ public class btnTutorial : MonoBehaviour
 {
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
-    //Serialized Fields------------------------------------------------------------------------------------------------------------------------------
+    //Serialized Fields
     [SerializeField] private ButtonType buildingType;
 
     //Non-Serialized Fields
     private TutorialController tutorialController;
-    //private bool reportClick = false;
     private Button button;
 
     private bool lerping = false;
@@ -26,7 +25,6 @@ public class btnTutorial : MonoBehaviour
     //Public Properties
     public Button Button { get => button; }
     public bool Lerping { get => lerping;}
-    //public bool ReportClick { get => reportClick; set => reportClick = value; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -44,7 +42,6 @@ public class btnTutorial : MonoBehaviour
     //Controls when lerping happens based on outside variables
     private void Update()
     {
-        //This also needs to consult Liam's list of building types that are valid for the current tile.
         if (tutorialController.ButtonAllowed(buildingType) && tutorialController.TutorialStage != TutorialStage.Finished)
         {
             button.interactable = true;
@@ -77,7 +74,6 @@ public class btnTutorial : MonoBehaviour
     //Lerps the button's colour
     private void LerpButtonColour()
     {
-        //lerp button's NormalColor's values
         ColorBlock cb = button.colors;
         cb.normalColor = Color.Lerp(uiNormalColour, uiHighlightColour, lerpProgress);
         button.colors = cb;
