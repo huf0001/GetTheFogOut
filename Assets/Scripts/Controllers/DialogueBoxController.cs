@@ -6,22 +6,36 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
+public enum AIExpression
+{
+    None,
+    Happy,
+    Neutral,
+    Sad
+}
+
 [Serializable]
-public class KeyDialoguePair
+public class ExpressionDialoguePair
+{
+    //Serialized Fields
+    [SerializeField] private AIExpression aiExpression;
+    [SerializeField, TextArea(15, 20)] private string dialogue;
+
+    //Public Properties
+    public AIExpression AIExpression { get => aiExpression; }
+    public string Dialogue { get => dialogue; }
+}
+
+[Serializable]
+public class DialogueSet
 {
     //Serialized Fields
     [SerializeField] private string key;
-    [SerializeField, TextArea(15,20)] private List<string> dialogue;
+    [SerializeField] private List<ExpressionDialoguePair> expressionDialoguePair;
 
     //Public Properties
     public string Key { get => key; }
-    public List<string> Dialogue { get => dialogue; }
-
-    public KeyDialoguePair(string k, List<string> d)
-    {
-        key = k;
-        dialogue = d;
-    }
+    public List<ExpressionDialoguePair> ExpressionDialoguePair { get => expressionDialoguePair; }
 }
 
 public class DialogueBoxController : MonoBehaviour
@@ -33,7 +47,7 @@ public class DialogueBoxController : MonoBehaviour
     [SerializeField] GameObject objectiveWindowOpenArrows;
 
     [SerializeField] protected DialogueBox aiText;
-    [SerializeField] private List<KeyDialoguePair> dialogue;
+    [SerializeField] private List<DialogueSet> dialogue;
 
     //Non-Serialized fields
     protected bool dialogueRead = false;
@@ -46,13 +60,13 @@ public class DialogueBoxController : MonoBehaviour
     //Utility Methods--------------------------------------------------------------------------------------------------------------------------------
 
     //Retrieves dialogue from the list using the dialogue key
-    private List<string> GetDialogue(string key)
+    private List<ExpressionDialoguePair> GetExpressionDialoguePairs(string key)
     {
-        foreach (KeyDialoguePair p in dialogue)
+        foreach (DialogueSet p in dialogue)
         {
             if (p.Key == key)
             {
-                return p.Dialogue;
+                return p.ExpressionDialoguePair;
             }
         }
 
@@ -66,11 +80,11 @@ public class DialogueBoxController : MonoBehaviour
         //Activate DialogueBox, passing dialogue to it
         if (aiText.Activated)
         {
-            aiText.ChangeDialogue(GetDialogue(dialogueKey));
+            aiText.ChangeDialogue(GetExpressionDialoguePairs(dialogueKey));
         }
         else
         {
-            aiText.ActivateDialogueBox(GetDialogue(dialogueKey), invokeDelay);
+            aiText.ActivateDialogueBox(GetExpressionDialoguePairs(dialogueKey), invokeDelay);
         }
     }
 

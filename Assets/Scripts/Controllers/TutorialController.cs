@@ -43,13 +43,12 @@ public class TutorialController : DialogueBoxController
     //Serialized Fields
     [SerializeField] private bool skipTutorial = true;
 
-    [SerializeField] private Transform camera;
-    [SerializeField] private Landmark arcDefenceLandmark;
+    //[SerializeField] private Landmark arcDefenceLandmark;
     [SerializeField] private Landmark batteryLandmark;
     [SerializeField] private Landmark generatorLandmark;
-    [SerializeField] private ResourceNode harvesterResource;
+    //[SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark relayLandmark;
-    [SerializeField] private Landmark repelFanLandmark;
+    //[SerializeField] private Landmark repelFanLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [SerializeField] private CameraKey wKey;
