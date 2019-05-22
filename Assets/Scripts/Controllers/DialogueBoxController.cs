@@ -18,7 +18,7 @@ public enum AIExpression
 public class ExpressionDialoguePair
 {
     //Serialized Fields
-    [SerializeField] private AIExpression aiExpression;
+    [SerializeField] private AIExpression aiExpression = AIExpression.Neutral;
     [SerializeField, TextArea(15, 20)] private string dialogue;
 
     //Public Properties
