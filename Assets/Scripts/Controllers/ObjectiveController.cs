@@ -253,12 +253,15 @@ public class ObjectiveController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    ResetSubStage();
-                    IncrementStage();
+                    WorldController.Instance.GameWin = true;
+                    WorldController.Instance.GameOver = true;
+                    IncrementSubStage();
                     // Note: if more stages are added to the objective controller, when the last one is fulfilled, you can't just 
                     // reset the substage, or it'll loop back to the start of the stage rather than finishing and that will
                     // create issues with the dialogue if there isn't a propper dialogueRead check like this one.
                 }
+                break;
+            case 5:
                 break;
             default:
                 break;

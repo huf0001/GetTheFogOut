@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class ShipComponentState
@@ -27,25 +28,24 @@ public class WorldController : MonoBehaviour
 
     //Serialized Fields
     [Header("World Spawning Rules")]
-    [SerializeField]
-    private int width = 31;
+    [SerializeField] private int width = 31;
     [SerializeField] private int length = 31;
-    [SerializeField] private bool spawnResources = false;
+    [SerializeField] private bool spawnResources = false, gameWin = false, gameOver = false;
     [SerializeField] int mineralSpawnChance = 5, fuelSpawnChance = 5, powerSpawnChance = 5, organSpawnChance = 5;
 
     [Header("Prefab/Gameobject assignment")]
-    [SerializeField]
-    private GameObject ground;
+    [SerializeField] private GameObject ground;
 
     [SerializeField] GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
-    public GameObject pause;
+    [SerializeField] protected GameObject camera;
 
     [Header("Public variable?")]
     public bool InBuildMode;
+    public GameObject pause;
 
     //Non-Serialized Fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
@@ -56,11 +56,10 @@ public class WorldController : MonoBehaviour
     //Other Controllers
     private ResourceController resourceController;
     private UIController uiController;
+    private CameraController cameraController;
     //private TutorialController tutorialController;
     //private MouseController mouseController
 
-    private CameraController cameraController;
-    [SerializeField] protected GameObject camera;
 
     private List<TileData> activeTiles = new List<TileData>();
     public List<TileData> ActiveTiles { get => activeTiles; }
@@ -73,7 +72,6 @@ public class WorldController : MonoBehaviour
 
     //Flags
     private bool hubBuilt = false;
-    private bool isGameOver;
     private bool hubDestroyed = false;
    // private bool isOn;
 
@@ -89,6 +87,9 @@ public class WorldController : MonoBehaviour
     public Hub Hub { get => hub; set => hub = value; }
     public bool HubDestroyed { get => hubDestroyed; set => hubDestroyed = value; }
     public List<ShipComponentState> ShipComponents { get => shipComponents; }
+    public bool GameWin { get => gameWin; set => gameWin = value; }
+    public bool GameOver { get => gameOver; set => gameOver = value; }
+
     //public TutorialStage TutorialStage { get => tutorialStage;  }
     //public ResourceController ResourceController { get => resourceController; }
     //public TutorialController TutorialController { get => tutorialController; }
@@ -104,7 +105,7 @@ public class WorldController : MonoBehaviour
 
         InBuildMode = false;
         Instance = this;
-        isGameOver = false;
+        SetPause(false);
        // isOn = false;
 
         tm = FindObjectOfType<TowerManager>();
@@ -362,7 +363,7 @@ public class WorldController : MonoBehaviour
 
     private void Update()
     {
-        if (!isGameOver)
+        if (!GameOver)
         {
             GameUpdate();
         }
@@ -436,7 +437,7 @@ public class WorldController : MonoBehaviour
         if (resourceController.IsWin() || hubDestroyed)
         {
             Time.timeScale = 0.2f;
-            isGameOver = true;
+            GameOver = true;
             InBuildMode = false;
         }
     }
@@ -472,7 +473,7 @@ public class WorldController : MonoBehaviour
 
     private void GameOverUpdate()
     {
-        if (resourceController.IsWin())
+        if (GameWin)
         {
             //Display win UI
             uiController.EndGameDisplay("You win!");
@@ -665,6 +666,12 @@ public class WorldController : MonoBehaviour
         }
 
     }
+
+    public void ResetGame()
+    {
+        SceneManager.LoadScene("Prototype Milestone 2");
+    }
+
     //Apparently Currently Unused Methods------------------------------------------------------------------------------------------------------------
 
     //private void ShowTile()
