@@ -38,7 +38,6 @@ public class TowerManager : MonoBehaviour
                     Building b = toBuild.GetComponentInChildren<Building>();
                     if (currentTile.Building == null && (currentTile.Resource == null || b.BuildingType == BuildingType.Harvester))
                     {
-
                         if (b.BuildingType == BuildingType.Generator)
                         {
                             if (ResourceController.Instance.Generators.Count >= ObjectiveController.Instance.GeneratorLimit) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators (not needed anymore)
@@ -47,6 +46,7 @@ public class TowerManager : MonoBehaviour
                                 return;
                             }
                         }
+
                         currentTile.PlacedTower = toBuild;
                         selectedTower = null;
                         Destroy(hologramTower);
@@ -57,13 +57,11 @@ public class TowerManager : MonoBehaviour
                 {
                     Debug.Log("toBuild's building component is non-existant");
                 }
-
             }
             else
             {
                 Building removeBuilding = MouseController.Instance.ReturnCost(currentTile);
                 MouseController.Instance.RemoveBulding(removeBuilding);
-
             }
         }
         //WorldController.Instance.InBuildMode = true;
