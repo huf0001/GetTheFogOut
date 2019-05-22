@@ -183,7 +183,7 @@ public class DialogueBox : MonoBehaviour
     private void ShowDialogueBox()
     {
         DisplayNext();
-        dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).From(true).SetEase(Ease.OutBack).SetUpdate(true);
+        dialogueRectTransform.DOAnchorPosY(Screen.height / 100, popUpSpeed).SetEase(Ease.OutBack).SetUpdate(true);
         gameObject.SetActive(true);
     }
 
@@ -239,11 +239,11 @@ public class DialogueBox : MonoBehaviour
     //Tweens the dialogue box out
     private void DeactivateDialogueBox()
     {
-        dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
+        dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y, popUpSpeed).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
             delegate 
             {
                 //Reset position after tweening
-                dialogueRectTransform.anchoredPosition = originalRectTransformPosition;
+                //dialogueRectTransform.anchoredPosition = originalRectTransformPosition;
                 gameObject.SetActive(false);
                 textBox.text = "";
 
