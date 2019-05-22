@@ -11,6 +11,7 @@ public class BuildingInfo : MonoBehaviour
     [SerializeField] Image healthBarFill;
     [SerializeField] Button destroyButton;
     [SerializeField] Gradient healthGradient;
+    [SerializeField] private Image bg;
     [HideInInspector] public Building building;
     private RectTransform parent;
     private int mineralHealth;
@@ -67,11 +68,24 @@ public class BuildingInfo : MonoBehaviour
         }
         if (building.BuildingType == BuildingType.Hub)
         {
+            bg.color = new Color32(0, 92, 118, 237);
             destroyButton.gameObject.SetActive(false);
         }
         else
         {
             destroyButton.gameObject.SetActive(true);
+        }
+        if (building.BuildingType == BuildingType.Battery || building.BuildingType == BuildingType.Generator || building.BuildingType == BuildingType.Relay)
+        {
+            bg.color = new Color32(0, 166, 81, 237);
+        }
+        else if (building.BuildingType == BuildingType.Harvester)
+        {
+            bg.color = new Color32(224, 145, 0, 237);
+        }
+        else if (building.BuildingType == BuildingType.RepelFan || building.BuildingType == BuildingType.ArcDefence)
+        {
+            bg.color = new Color32(255, 0, 0, 237);
         }
         UpdateText();
 
@@ -99,6 +113,8 @@ public class BuildingInfo : MonoBehaviour
             mainText.text = "<b>It's your missing thruster!\n" +
                 "Collect it so we can move on</b>";
         }
+
+        bg.color = new Color32(0, 92, 118, 237);
 
         destroyButton.gameObject.SetActive(false);
         healthBar.SetActive(false);
