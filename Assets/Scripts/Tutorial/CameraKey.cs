@@ -11,7 +11,7 @@ public class CameraKey : MonoBehaviour
     [SerializeField] private float lerpOpaque = 0.8f;
 
     //Non-Serialized Fields
-    private Button button;
+    private Image image;
 
     private bool lerping = false;
     private bool lerpForward = true;
@@ -24,16 +24,16 @@ public class CameraKey : MonoBehaviour
 
     //Public Properties
 
-    public bool LerpInCalled { get => lerpInCalled; }
+    //public bool LerpInCalled { get => lerpInCalled; }
     public bool LerpOutCalled { get => lerpOutCalled; }
-    public bool Finished { get => Finished; }
+    public bool Finished { get => finished; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
-    //Gets the attached button component
+    //Gets the attached image component
     private void Start()
     {
-        button = GetComponent<Button>();
+        image = GetComponent<Image>();
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
@@ -79,13 +79,12 @@ public class CameraKey : MonoBehaviour
         }
     }
 
-    //Does the lerping
+    //Lerps the image opacity
     private void Lerp()
     {
-        ColorBlock cb = button.colors;
-        Color nc = cb.normalColor;
-        nc.a = Mathf.Lerp(0, lerpOpaque, lerpProgress);
-        button.colors = cb;
+        Color c = image.color;
+        c.a = Mathf.Lerp(0, lerpOpaque, lerpProgress);
+        image.color = c;
     }
 
     //Utility Methods--------------------------------------------------------------------------------------------------------------------------------

@@ -82,9 +82,6 @@ public class TutorialController : DialogueBoxController
     private float lerpProgress = 0f;
     private bool lerpForward = true;
 
-    private Vector3 cameraStartPosition;
-    private Quaternion cameraStartRotation;
-
     //Public Properties
     // public static TutorialController used to get the instance of the WorldManager from anywhere.
     public static TutorialController Instance { get; protected set; }
@@ -268,31 +265,36 @@ public class TutorialController : DialogueBoxController
                     ToggleObjWindow();
                 }
 
-                cameraStartPosition = camera.position;
+                wKey.LerpIn();
+                aKey.LerpIn();
+                sKey.LerpIn();
+                dKey.LerpIn();
                 break;
             case 4:
-                //GetCameraMovementInput();
+                GetCameraMovementInput();
 
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
-                //else if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
-                else if (CameraMoved(cameraStartPosition, camera.position))
+                else if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
                     SkipTutorialAhead(6);
                     tutorialStage = TutorialStage.RotateCamera;
+                    qKey.LerpIn();
+                    eKey.LerpIn();
                 }
 
                 break;
             case 5:
-                //GetCameraMovementInput();
+                GetCameraMovementInput();
                 
-                //if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
-                if (CameraMoved(cameraStartPosition, camera.position))
+                if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
                     IncrementSubStage();
                     tutorialStage = TutorialStage.RotateCamera;
+                    qKey.LerpIn();
+                    eKey.LerpIn();
                 }
 
                 break;
@@ -304,27 +306,24 @@ public class TutorialController : DialogueBoxController
                     ToggleObjWindow();
                 }
 
-                cameraStartRotation = camera.rotation;
                 break;
             case 7:
-                //GetCameraRotationInput();
+                GetCameraRotationInput();
 
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
-                else if (CameraRotated(cameraStartRotation.eulerAngles, camera.rotation.eulerAngles))
-                //else if (qKey.Finished && eKey.Finished)
+                else if (qKey.Finished && eKey.Finished)
                 {
                     SkipTutorialAhead(9);
                 }
 
                 break;
             case 8:
-                //GetCameraRotationInput();
+                GetCameraRotationInput();
 
-                if (CameraRotated(cameraStartRotation.eulerAngles, camera.rotation.eulerAngles))
-                //if (qKey.Finished && eKey.Finished)
+                if (qKey.Finished && eKey.Finished)
                 {
                     IncrementSubStage();
                 }
@@ -781,60 +780,20 @@ public class TutorialController : DialogueBoxController
     //Checks inputs for camera rotation part of the tutorial
     private void GetCameraRotationInput()
     {
-        GetButtonInput("Q", eKey, qKey);
+        GetButtonInput("Rotation", eKey, qKey);
     }
 
     //Checks a specific camera input's input
     private void GetButtonInput(string input, CameraKey negativeKey, CameraKey positiveKey)
     {
-        if (Input.GetAxis(input) > 0.001)
+        if (Input.GetAxis(input) > 0.001 && !positiveKey.LerpOutCalled)
         {
-            if (!positiveKey.LerpInCalled)
-            {
-                positiveKey.LerpIn();
-            }
-            else if (!positiveKey.LerpOutCalled)
-            {
-                positiveKey.LerpOut();
-            }
+            positiveKey.LerpOut();
         }
-        else if (Input.GetAxis(input) < -0.001)
+        else if (Input.GetAxis(input) < -0.001 && !negativeKey.LerpOutCalled)
         {
-            if (!negativeKey.LerpInCalled)
-            {
-                negativeKey.LerpIn();
-            }
-            else if (!negativeKey.LerpOutCalled)
-            {
-                negativeKey.LerpOut();
-            }
+            negativeKey.LerpOut();
         }
-    }
-
-    //Checks if the camera has moved significantly
-    private bool CameraMoved(Vector3 startPosition, Vector3 currentPosition)
-    {
-        if (currentPosition.x + 5 < startPosition.x ||
-            currentPosition.x - 5 > startPosition.x ||
-            currentPosition.z + 5 < startPosition.z ||
-            currentPosition.z - 5 > startPosition.z)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    //Checks if the camera has been rotated significantly
-    private bool CameraRotated(Vector3 startRotation, Vector3 currentRotation)
-    {
-        if (currentRotation.y + 5 < startRotation.y ||
-            currentRotation.y - 5 > startRotation.y)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     //Tutorial Utility Methods - Checking if X is allowed--------------------------------------------------------------------------------------------
