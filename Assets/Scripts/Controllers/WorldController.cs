@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class ShipComponentState
@@ -104,6 +105,7 @@ public class WorldController : MonoBehaviour
 
         InBuildMode = false;
         Instance = this;
+        SetPause(false);
        // isOn = false;
 
         tm = FindObjectOfType<TowerManager>();
@@ -664,6 +666,12 @@ public class WorldController : MonoBehaviour
         }
 
     }
+
+    public void ResetGame()
+    {
+        SceneManager.LoadScene("Prototype Milestone 2");
+    }
+
     //Apparently Currently Unused Methods------------------------------------------------------------------------------------------------------------
 
     //private void ShowTile()

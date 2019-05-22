@@ -43,7 +43,6 @@ public class UIController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        DontDestroyOnLoad(gameObject);
         FindSliders();
 
         cursor = GameObject.Find("Cursor");
