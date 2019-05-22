@@ -53,6 +53,13 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark repelFanLandmark;
     [SerializeField] private Locatable buildingTarget;
 
+    [SerializeField] private Image wKey;
+    [SerializeField] private Image aKey;
+    [SerializeField] private Image sKey;
+    [SerializeField] private Image dKey;
+    [SerializeField] private Image qKey;
+    [SerializeField] private Image eKey;
+
     //Note: if new UI buttons will be used, they need to have btnTutorial added
 
     [SerializeField] private Color uiNormalColour;
@@ -262,6 +269,7 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                 }
                 else if (CameraMoved(cameraStartPosition, camera.position))
+                //else if (!wKey.gameObject.visible && !aKey.gameObject.visible && !sKey.gameObject.visible && !dKey.gameObject.visible)
                 {
                     SkipTutorialAhead(6);
                     tutorialStage = TutorialStage.RotateCamera;
@@ -424,8 +432,6 @@ public class TutorialController : DialogueBoxController
                 break;
             case 4:
                 currentlyLerping = ButtonType.Relay;
-                //btnCurrent = btnBuildRelay;
-                //btnCurrent.ReportClick = true;
                 IncrementSubStage();
                 break;
             case 5:
@@ -778,7 +784,7 @@ public class TutorialController : DialogueBoxController
 
     public bool ButtonAllowed(ButtonType button)
     {
-        if ((tutorialStage == TutorialStage.Finished || button == currentlyLerping) && ButtonsNormallyAllowed(lastTileChecked).Contains(button))
+        if ((tutorialStage == TutorialStage.Finished || button == currentlyLerping || button == ButtonType.Destroy) && ButtonsNormallyAllowed(lastTileChecked).Contains(button))
         {
             return true;
         }
@@ -806,6 +812,8 @@ public class TutorialController : DialogueBoxController
             result.Add(ButtonType.Relay);
             result.Add(ButtonType.RepelFan);
         }
+
+        result.Add(ButtonType.Destroy);
 
         return result;
     }
