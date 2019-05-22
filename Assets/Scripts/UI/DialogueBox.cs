@@ -19,6 +19,8 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private string squigglyBracketColour;
     [SerializeField] private string vBracketColour;
 
+    [SerializeField] private List<Sprite> aiSprites;
+
     //Non-Serialized Fields
     [SerializeField] private List<string> textToDisplay = new List<string>();
     private Vector2 originalRectTransformPosition;
