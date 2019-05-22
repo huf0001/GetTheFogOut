@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class DialogueBox : MonoBehaviour
 {
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
+
     //Serialized Fields
     [SerializeField] TextMeshProUGUI textBox;
     [SerializeField] DialogueBoxController dialogueBoxController;
@@ -37,6 +39,9 @@ public class DialogueBox : MonoBehaviour
     public bool Activated { get => activated; }
     public int DialogueCount { get => textToDisplay.Count; }
 
+    //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+
+    //Awake checks that all the colour strings are valid
     private void Awake()
     {
         if (squareBracketColour == "")
@@ -67,6 +72,9 @@ public class DialogueBox : MonoBehaviour
         }
     }
 
+    //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
+
+    //Lerps text, checks if player used spacebar to progress text
     private void Update()
     {
         if (!lerpFinished)
@@ -138,6 +146,9 @@ public class DialogueBox : MonoBehaviour
         }
     }
 
+    //Utility Methods - Changeover the dialogue list-------------------------------------------------------------------------------------------------
+
+    //Activates the dialogue box; takes a single string
     public void ActivateDialogueBox(string text, float invokeDelay)
     {
         List<string> texts = new List<string>();
@@ -145,6 +156,7 @@ public class DialogueBox : MonoBehaviour
         ActivateDialogueBox(texts, invokeDelay);
     }
 
+    //Activates the dialogue box; takes a list of strings
     public void ActivateDialogueBox(List<string> texts, float invokeDelay)
     {
         if (texts.Count > 0)
@@ -165,6 +177,24 @@ public class DialogueBox : MonoBehaviour
         }
     }
 
+    //Displays the dialogue box once it's been activated and the invocation delay has finished
+    private void ShowDialogueBox()
+    {
+        DisplayNext();
+        dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).From(true).SetEase(Ease.OutBack).SetUpdate(true);
+        gameObject.SetActive(true);
+    }
+
+    //Changes over the dialogue in the list; used instead of ActivateDialogueBox when the dialogue box is already active
+    public void ChangeDialogue(List<string> texts)
+    {
+        textToDisplay = new List<string>(texts);
+        LerpNext();
+    }
+
+    //Utility Methods - Display next string in list--------------------------------------------------------------------------------------------------
+
+    //Shows the next section of dialogue in one hit
     private void DisplayNext()
     {
         lerpFinished = false;
@@ -174,6 +204,7 @@ public class DialogueBox : MonoBehaviour
         lerpTextMaxIndex = currentText.Length - 1;
     }
 
+    //Lerps the next lot of dialogue onto the dialogue box
     private void LerpNext()
     {
         //Debug.Log("LerpingNext");
@@ -184,22 +215,13 @@ public class DialogueBox : MonoBehaviour
         lerpTextMaxIndex = 0;
     }
 
-    private void ShowDialogueBox()
-    {
-        DisplayNext();
-        dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).From(true).SetEase(Ease.OutBack).SetUpdate(true);
-        gameObject.SetActive(true);
-    }
+    //Utility Methods - Progress / Finish Dialogue---------------------------------------------------------------------------------------------------
 
-    //public void OnClickRegisterDialogueRead()
-    //{
-    //    clickCount++;
-    //    Debug.Log($"Click count: {clickCount}");
-    //    RegisterDialogueRead();
-    //}
-
+    //Called by OnClick to register that the player has read the currently displayed dialogue
     public void RegisterDialogueRead()
     {
+        //clickCount++;
+        //Debug.Log($"Click count: {clickCount}");
         //Debug.Log("Registering dialogue read");
         if (textToDisplay.Count > 0)
         {
@@ -212,6 +234,7 @@ public class DialogueBox : MonoBehaviour
         }
     }
 
+    //Tweens the dialogue box out
     private void DeactivateDialogueBox()
     {
         dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y - 100f, popUpSpeed).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
@@ -233,11 +256,5 @@ public class DialogueBox : MonoBehaviour
 
                 activated = false;
             });
-    }
-
-    public void ChangeDialogue(List<string> texts)
-    {
-        textToDisplay = new List<string>(texts);
-        LerpNext();
     }
 }

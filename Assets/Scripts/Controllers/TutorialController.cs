@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.HDPipeline;
 using UnityEngine.UI;
 
-//Unnecessary: ExplainSituation and ExplainBuildingPlacement
 public enum TutorialStage
 {
     None,
@@ -39,7 +38,7 @@ public enum ButtonType
 
 public class TutorialController : DialogueBoxController
 {
-    //Fields---------------------------------------------------------------------------------------
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
     [SerializeField] private bool skipTutorial = true;
@@ -53,14 +52,12 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark repelFanLandmark;
     [SerializeField] private Locatable buildingTarget;
 
-    [SerializeField] private Image wKey;
-    [SerializeField] private Image aKey;
-    [SerializeField] private Image sKey;
-    [SerializeField] private Image dKey;
-    [SerializeField] private Image qKey;
-    [SerializeField] private Image eKey;
-
-    //Note: if new UI buttons will be used, they need to have btnTutorial added
+    [SerializeField] private CameraKey wKey;
+    [SerializeField] private CameraKey aKey;
+    [SerializeField] private CameraKey sKey;
+    [SerializeField] private CameraKey dKey;
+    [SerializeField] private CameraKey qKey;
+    [SerializeField] private CameraKey eKey;
 
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
@@ -69,11 +66,11 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private int builtHarvestersGoal = 3;
 
     //Non-Serialized Fields
-    [SerializeField] private TutorialStage tutorialStage = TutorialStage.CrashLanding;
-    [SerializeField] private int subStage = 1;
-    [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
+    private TutorialStage tutorialStage = TutorialStage.CrashLanding;
+    private int subStage = 1;
+    private BuildingType currentlyBuilding = BuildingType.None;
 
-    [SerializeField] private TileData currentTile = null;
+    private TileData currentTile = null;
     private TileData lastTileChecked;
 
     private ButtonType currentlyLerping;
@@ -91,17 +88,21 @@ public class TutorialController : DialogueBoxController
     //Public Properties
     // public static TutorialController used to get the instance of the WorldManager from anywhere.
     public static TutorialController Instance { get; protected set; }
+
     public TutorialStage TutorialStage { get => tutorialStage; }
     public TileData CurrentTile { get => currentTile; }
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
+
     public Color UINormalColour { get => uiNormalColour; }
     public Color UIHighlightColour { get => uiHighlightColour; }
+
     public int PowerGainGoal { get => powerGainGoal; }
     public int BuiltHarvestersGoal { get => builtHarvestersGoal; }
 
-    //Start-Up Methods-----------------------------------------------------------------------------
+    //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
 
+    //Ensures singleton-ness
     private void Awake()
     {
         if (Instance != null)
@@ -112,17 +113,19 @@ public class TutorialController : DialogueBoxController
         Instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
+    public void StartTutorial()
     {
+        Fog.Instance.enabled = true;
+        Fog.Instance.PopulateFogPool();
+
         if (skipTutorial)
         {
-            MusicController.Instance.SkipTutorial();
-            tutorialStage = TutorialStage.Finished;
-            Fog.Instance.enabled = true;
             Fog.Instance.SpawnStartingFog();
-            Fog.Instance.ActivateFog();
+            Fog.Instance.InvokeActivateFog(2);
+            tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
+            MusicController.Instance.SkipTutorial();
         }
         else
         {
@@ -130,7 +133,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Tutorial Stage Management Methods------------------------------------------------------------
+    //General Recurring Methods----------------------------------------------------------------------------------------------------------------------
 
     // Update is called once per frame
     void Update()
@@ -155,6 +158,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Calls the appropriate stage method depending on the current stage
     private void CheckTutorialStage()
     {
         switch (tutorialStage)
@@ -204,7 +208,8 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Tutorial Stage 1: Start Scene Animation
+    //Stage-Specific Recurring Methods - Animations--------------------------------------------------------------------------------------------------
+
     //Ship crash lands, intro scene
     private void CrashLanding()
     {
@@ -221,6 +226,7 @@ public class TutorialController : DialogueBoxController
         tutorialStage = TutorialStage.ZoomBackToShip;
     }
 
+    //Drone zooms out of ship to get a top-down view of it
     private void DroneLeavesShipToGetTopDownView()
     {
         //Run animation / camera movement for watching a drone leavig the ship
@@ -235,13 +241,14 @@ public class TutorialController : DialogueBoxController
         tutorialStage = TutorialStage.ExplainSituation;
     }
 
-    //Tutorial Stage 2: AI Walks Player Through How to do Stuff
+    //Stage-Specific Recurring Methods - Player Completes Tutorial-----------------------------------------------------------------------------------
+
+    //Player learns camera controls
     private void CameraControls()
     {
         switch (subStage)
         {
             case 1:
-                Fog.Instance.enabled = true;
                 Fog.Instance.SpawnStartingFog();
                 SendDialogue("explain situation", 2);
                 break;
@@ -264,12 +271,14 @@ public class TutorialController : DialogueBoxController
                 cameraStartPosition = camera.position;
                 break;
             case 4:
+                //GetCameraMovementInput();
+
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
+                //else if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 else if (CameraMoved(cameraStartPosition, camera.position))
-                //else if (!wKey.gameObject.visible && !aKey.gameObject.visible && !sKey.gameObject.visible && !dKey.gameObject.visible)
                 {
                     SkipTutorialAhead(6);
                     tutorialStage = TutorialStage.RotateCamera;
@@ -277,6 +286,9 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 5:
+                //GetCameraMovementInput();
+                
+                //if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 if (CameraMoved(cameraStartPosition, camera.position))
                 {
                     IncrementSubStage();
@@ -295,18 +307,24 @@ public class TutorialController : DialogueBoxController
                 cameraStartRotation = camera.rotation;
                 break;
             case 7:
+                //GetCameraRotationInput();
+
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (CameraRotated(cameraStartRotation.eulerAngles, camera.rotation.eulerAngles))
+                //else if (qKey.Finished && eKey.Finished)
                 {
                     SkipTutorialAhead(9);
                 }
 
                 break;
             case 8:
+                //GetCameraRotationInput();
+
                 if (CameraRotated(cameraStartRotation.eulerAngles, camera.rotation.eulerAngles))
+                //if (qKey.Finished && eKey.Finished)
                 {
                     IncrementSubStage();
                 }
@@ -325,6 +343,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Player learns about and places a generator
     private void BuildGenerator()
     {
         switch (subStage)
@@ -396,6 +415,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Player learns about and places a relay
     private void BuildRelay()
     {
         switch (subStage)
@@ -456,6 +476,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Player learns about and places a battery
     private void BuildBattery()
     {
         switch (subStage)
@@ -514,6 +535,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Player increases their power generation
     private void IncreasePowerGeneration()
     {
         switch (subStage)
@@ -569,6 +591,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Player learns about and builds a harvester
     private void BuildHarvesters()
     {
         switch (subStage)
@@ -624,6 +647,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Player learns about and builds an arc defence
     private void BuildArcDefence()
     {
         switch (subStage)
@@ -680,6 +704,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Player learns about and builds a repel fan
     private void BuildRepelFan()
     {
         switch (subStage)
@@ -744,8 +769,49 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Utility Methods------------------------------------------------------------------------------
+    //Tutorial Utility Methods - Camera--------------------------------------------------------------------------------------------------------------
 
+    //Checks inputs for camera movement part of the tutorial
+    private void GetCameraMovementInput()
+    {
+        GetButtonInput("Vertical", sKey, wKey);
+        GetButtonInput("Horizontal", aKey, dKey);
+    }
+
+    //Checks inputs for camera rotation part of the tutorial
+    private void GetCameraRotationInput()
+    {
+        GetButtonInput("Q", eKey, qKey);
+    }
+
+    //Checks a specific camera input's input
+    private void GetButtonInput(string input, CameraKey negativeKey, CameraKey positiveKey)
+    {
+        if (Input.GetAxis(input) > 0.001)
+        {
+            if (!positiveKey.LerpInCalled)
+            {
+                positiveKey.LerpIn();
+            }
+            else if (!positiveKey.LerpOutCalled)
+            {
+                positiveKey.LerpOut();
+            }
+        }
+        else if (Input.GetAxis(input) < -0.001)
+        {
+            if (!negativeKey.LerpInCalled)
+            {
+                negativeKey.LerpIn();
+            }
+            else if (!negativeKey.LerpOutCalled)
+            {
+                negativeKey.LerpOut();
+            }
+        }
+    }
+
+    //Checks if the camera has moved significantly
     private bool CameraMoved(Vector3 startPosition, Vector3 currentPosition)
     {
         if (currentPosition.x + 5 < startPosition.x ||
@@ -759,6 +825,7 @@ public class TutorialController : DialogueBoxController
         return false;
     }
 
+    //Checks if the camera has been rotated significantly
     private bool CameraRotated(Vector3 startRotation, Vector3 currentRotation)
     {
         if (currentRotation.y + 5 < startRotation.y ||
@@ -770,6 +837,9 @@ public class TutorialController : DialogueBoxController
         return false;
     }
 
+    //Tutorial Utility Methods - Checking if X is allowed--------------------------------------------------------------------------------------------
+
+    //Checking if a tile is acceptable
     public bool TileAllowed(TileData tile)
     {
         lastTileChecked = tile;
@@ -782,6 +852,7 @@ public class TutorialController : DialogueBoxController
         return false;
     }
 
+    //Checking if a button is acceptable
     public bool ButtonAllowed(ButtonType button)
     {
         if ((tutorialStage == TutorialStage.Finished || button == currentlyLerping || button == ButtonType.Destroy) && ButtonsNormallyAllowed(lastTileChecked).Contains(button))
@@ -792,6 +863,7 @@ public class TutorialController : DialogueBoxController
         return false;
     }
 
+    //Getting the normally acceptable buttons for a tile
     private List<ButtonType> ButtonsNormallyAllowed(TileData tile)
     {
         List<ButtonType> result = new List<ButtonType>();
@@ -818,36 +890,16 @@ public class TutorialController : DialogueBoxController
         return result;
     }
 
+    //Tutorial Utility Methods - Stage Progression---------------------------------------------------------------------------------------------------
+
+    //Override of SendDialogue that calls IncrementSubStage once dialogue is sent
     protected override void SendDialogue(string dialogueKey, float invokeDelay)
     {
         base.SendDialogue(dialogueKey, invokeDelay);
         IncrementSubStage();
     }
 
-    private void IncrementSubStage()
-    {
-        subStage++;
-    }
-
-    private void ResetSubStage()
-    {
-        subStage = 1;
-    }
-
-    private void DismissMouse()
-    {
-        MouseController.Instance.ReportTutorialClick = false;
-        tileClicked = false;
-        currentlyLerping = ButtonType.None;
-        IncrementSubStage();
-    }
-
-    private void DismissDialogue()
-    {
-        ResetDialogueRead();
-        IncrementSubStage();
-    }
-
+    //Dismisses dialgue and the mouse and skips the tutorial ahead appropriately
     private void SkipTutorialAhead(int nextSubStage)
     {
         MouseController.Instance.ReportTutorialClick = false;
@@ -856,6 +908,37 @@ public class TutorialController : DialogueBoxController
         subStage = nextSubStage;
     }
 
+    //Dismisses the dialogue and increments the substage
+    private void DismissDialogue()
+    {
+        ResetDialogueRead();
+        IncrementSubStage();
+    }
+
+    //Dismisses the mouse and increments the substage
+    private void DismissMouse()
+    {
+        MouseController.Instance.ReportTutorialClick = false;
+        tileClicked = false;
+        currentlyLerping = ButtonType.None;
+        IncrementSubStage();
+    }
+
+    //Increments the substage by 1
+    private void IncrementSubStage()
+    {
+        subStage++;
+    }
+
+    //Resets the substage to 1
+    private void ResetSubStage()
+    {
+        subStage = 1;
+    }
+
+    //Tutorial Utility Methods - (Targeted) Building-------------------------------------------------------------------------------------------------
+
+    //Get location of a locatable object
     private void GetLocationOf(Locatable l)
     {
         if (l != null)
@@ -873,6 +956,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Activate the building target at the locatable's location
     private void ActivateTarget(Locatable l)
     {
         buildingTarget.Location = currentTile;
@@ -883,6 +967,7 @@ public class TutorialController : DialogueBoxController
         lerpForward = true;
     }
 
+    //Lerp the target decal
     private void LerpDecal()
     {
         float lerped = Mathf.Lerp(decalMin, decalMax, lerpProgress);
@@ -895,6 +980,7 @@ public class TutorialController : DialogueBoxController
         targetDecal.enabled = true;
     }
 
+    //Update the decal's lerping values
     private void UpdateLerpValues()
     {
         if (lerpForward)
@@ -918,6 +1004,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Check if the building currently being built at a specific location has been built
     private bool BuiltCurrentlyBuilding()
     {
         if (currentTile != null)
@@ -934,6 +1021,7 @@ public class TutorialController : DialogueBoxController
         return false;
     }
 
+    //Deactivates the building target
     private void DeactivateTarget()
     {
         targetDecal.enabled = false;

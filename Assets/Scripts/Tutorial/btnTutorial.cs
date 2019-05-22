@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class btnTutorial : MonoBehaviour
 {
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
+
+    //Serialized Fields------------------------------------------------------------------------------------------------------------------------------
     [SerializeField] private ButtonType buildingType;
 
     //Non-Serialized Fields
@@ -25,6 +28,9 @@ public class btnTutorial : MonoBehaviour
     public bool Lerping { get => lerping;}
     //public bool ReportClick { get => reportClick; set => reportClick = value; }
 
+    //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+
+    //Gets some necessary values
     private void Start()
     {
         button = GetComponent<Button>();
@@ -33,6 +39,9 @@ public class btnTutorial : MonoBehaviour
         uiHighlightColour = tutorialController.UIHighlightColour;
     }
 
+    //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
+
+    //Controls when lerping happens based on outside variables
     private void Update()
     {
         //This also needs to consult Liam's list of building types that are valid for the current tile.
@@ -65,6 +74,7 @@ public class btnTutorial : MonoBehaviour
         }
     }
 
+    //Lerps the button's colour
     private void LerpButtonColour()
     {
         //lerp button's NormalColor's values
@@ -75,6 +85,7 @@ public class btnTutorial : MonoBehaviour
         UpdateLerpValues();
     }
 
+    //Updates the lerp values
     private void UpdateLerpValues()
     {
         if (lerpForward)
@@ -98,6 +109,7 @@ public class btnTutorial : MonoBehaviour
         }
     }
 
+    //Edits variables ready to start up the lerping
     private void ActivateLerping()
     {
         lerping = true;
@@ -105,6 +117,7 @@ public class btnTutorial : MonoBehaviour
         lerpForward = true;
     }
 
+    //Resets the lerped button back to normal
     public void DeactivateLerping()
     {
         ColorBlock cb = button.colors;
@@ -113,12 +126,4 @@ public class btnTutorial : MonoBehaviour
 
         lerping = false;
     }
-
-    //public void ReportClickToTutorialController()
-    //{
-    //    if (reportClick)
-    //    {
-    //        tutorialController.RegisterButtonClicked();
-    //    }
-    //}
 }

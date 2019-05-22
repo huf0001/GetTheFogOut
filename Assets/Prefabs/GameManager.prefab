@@ -1,5 +1,263 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1643795189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1643795190}
+  - component: {fileID: 1643795194}
+  - component: {fileID: 1643795193}
+  - component: {fileID: 1643795192}
+  - component: {fileID: 1643795191}
+  m_Layer: 0
+  m_Name: MusicController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1643795190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643795189}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1899903245264256475}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1643795194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643795189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5821df60ee838714983c49ac3a523a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doubleAudioSource: {fileID: 1643795193}
+  audioSource: {fileID: 1643795192}
+  acMenutoStage1: {fileID: 8300000, guid: 9761ef4fa391c634b965152112c5c08c, type: 3}
+  acStage1: {fileID: 8300000, guid: 5b197f79cec46be42b4e008b99ee23a1, type: 3}
+  acStageToStage2: {fileID: 8300000, guid: 3462e55b8715cd140a56d43f48aada2e, type: 3}
+  acStage2: {fileID: 8300000, guid: dc7bc0c6e6ef0ac4e959122a4d023521, type: 3}
+  acStage2ToStage3: {fileID: 8300000, guid: 1a6f9d878a1270b40871847dbc3372ba, type: 3}
+  acStage3: {fileID: 8300000, guid: 154204e1daa6a144391765bf398927bf, type: 3}
+--- !u!114 &1643795193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643795189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 269c3e45c40d3cf4494f875cb78ba6ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &1643795192
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643795189}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: fc8a1ddaf1f104b4aa532e7bfee0a68c, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1643795191
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643795189}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1899903245264256479
 GameObject:
   m_ObjectHideFlags: 0
@@ -20,6 +278,7 @@ GameObject:
   - component: {fileID: 1899903245264256486}
   - component: {fileID: 1963843383001614104}
   - component: {fileID: 7305178377255849301}
+  - component: {fileID: 963070261}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -37,7 +296,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.38, y: -5, z: 17.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1643795190}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -56,6 +316,8 @@ MonoBehaviour:
   width: 51
   length: 51
   spawnResources: 0
+  gameWin: 0
+  gameOver: 0
   mineralSpawnChance: 5
   fuelSpawnChance: 5
   powerSpawnChance: 5
@@ -63,7 +325,7 @@ MonoBehaviour:
   ground: {fileID: 0}
   planeGridprefab: {fileID: 6018002286047896067, guid: a9a48ed08e70c5840891481cb21c444d,
     type: 3}
-  hubPrefab: {fileID: 1405241161030514272, guid: 47e172c828d0ea4428b22c2696684f4c,
+  hubPrefab: {fileID: 2071841716570308282, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
     type: 3}
   mineralPrefab: {fileID: 8502067115120478638, guid: b73f147f6fafb3242895252f4e5718fb,
     type: 3}
@@ -73,7 +335,8 @@ MonoBehaviour:
     type: 3}
   organPrefab: {fileID: 7857378348933392223, guid: 5ab951eea836f594ea15cdb13afd6328,
     type: 3}
-  tilePrefab: {fileID: 0}
+  tilePrefab: {fileID: 1230523831537891005, guid: ae3c8c22e37954d42892aa77c874a272,
+    type: 3}
   hub: {fileID: 0}
   shipComponents:
   - component: 0
@@ -82,9 +345,9 @@ MonoBehaviour:
     collected: 0
   - component: 2
     collected: 0
-  pause: {fileID: 0}
-  InBuildMode: 1
   camera: {fileID: 0}
+  InBuildMode: 1
+  pause: {fileID: 0}
 --- !u!114 &1210913968312047254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,7 +365,7 @@ MonoBehaviour:
   maxOrganic: 100
   maxFuel: 100
   storedPower: 0
-  storedMineral: 100
+  storedMineral: 200
   storedOrganic: 0
   storedFuel: 0
   powerChange: 0
@@ -194,120 +457,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6e49c22bc42cb04890ed435db975f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectiveWindow: {fileID: 0}
+  objectiveWindowOpenArrows: {fileID: 0}
   aiText: {fileID: 0}
   dialogue:
+  - key: error
+    dialogue:
+    - '>Bug caused by developer<. Click for your compensation. Go on. Give it a click. '
+    - 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to say that they
+      were perfectly normal, thank you very much. '
   - key: explain situation
     dialogue:
-    - Well then! That landing was a bit rougher than I had hoped. I will scan the
-      ship and our current surroundings. (Click to Continue)
-    - Scanning . . .
-    - Scan complete.
-    - Bad news. The ship has sustained substantial damaged and three core components
-      are missing.
-    - Good news, the planet is only inhabited by flora. Fauna is not present. You
-      are currently the only living animal to set foot on this planet.
-  - key: explain building placement
+    - 'Hello. I am your very own Nexus Drone. You may call me Nex for short. I am
+      an emergency drone that you can control from your ship. '
+    - 'Let me run a scan for you to see the extent of the damage. '
+    - 'Scanning... '
+    - 'The hull has sustained copious damage and a thruster is missing. '
+    - "The scan also picked up hostility coming from the surrounding fog. It may be
+      sentient. What are the chances?\r\n"
+    - Your ship comes equipped with important blueprints, should the need arise to
+      use them.
+  - key: move camera
     dialogue:
-    - You are going to need to find those pieces off your ship if we are going to
-      get home. Let me start the back-up generator.
-    - Done. But, it does not look like that will be enough to get us by. You are going
-      to need to build your way out of here.
-    - You see that shiny lump of minerals over there? It is a common resource in our
-      universe, and it is used in most buildings back home.
-  - key: build harvester menu icon
+    - 'WASD moves me around. '
+  - key: rotate camera
     dialogue:
-    - To help you in your journey, I am going to download important building blueprints.
-    - Downloading . . .
-    - Download complete.
-    - The blueprints have been implemented. Click on the icon to open the building
-      menu.
-  - key: build harvester harvester icon
+    - 'Press Q or E to make me spin. '
+  - key: build generator decal
     dialogue:
-    - The first blueprint to be used will be the harvester.
-    - Use the mouse to select the harvester. Other buildings will become available
-      to you once you have enough materials.
-  - key: build harvester place harvester
+    - "Since the backup generator will not be sufficient, you will have to place [POWER
+      GENERATORS].\r \n"
+    - 'Click here. '
+  - key: build generator icon
     dialogue:
-    - Now, place the harvester on top of the mineral by clicking it.
-  - key: build generator
+    - 'Now, click on the [POWER GENERATOR] icon. '
+  - key: build relay decal
     dialogue:
-    - Great! Seems the bump on your head from the landing did not do as much damage
-      as I thought.
-    - Now that you have some minerals, you can build another power generator.
-    - See this gauge? It shows you how much power you currently have.
-    - Do not be fooled, though. Each building you place will chew into your power
-      reserve.
-    - 'Hovering over the harvester will show you its power consumption. '
-    - Do not forget this will be the same for every building. Now, build a power generator.
-  - key: build relay
+    - 'Next are [POWER RELAYS]. These will extend the power range from your ship and
+      allow you to place buildings further out. '
+    - 'Place one here. '
+  - key: build battery decal
     dialogue:
-    - Great. The more generators you have, the quicker your power gauge replenishes.
-    - 'You can place another building called power relays. These are important. '
-    - 'When you place them, they increase your power range from your hub. '
-    - Place one now, you will see what I mean.
-  - key: fog hazard detect
+    - "The final power related building is a [BATTERY]. When you place it, it will
+      increase your power capacity.\r \n"
+    - 'Place one here. '
+  - key: increase power generation
     dialogue:
-    - Perfect! Now you can . . . hold on, my sensors are picking up something.
-  - key: fog hazard will kill you
+    - "Now that you have these skills, increase your [POWER GENERATION]. Do not forget
+      to try more [POWER RELAYS] and [BATTERIES]. \n"
+  - key: build harvesters
     dialogue:
-    - "Oh golly\u2026 you see that nice, thick fog that is currently seeping its way
-      towards us? "
-    - It is sentient, and not happy that we are here.
-    - Oh boy, it wants to nibble your giblets. Well, more accurately, it wants to
-      suck the oxygen from your lungs . . .
-    - '. . . and replace it with some deadly toxins that have a 98.12% chance of killing
-      you instantly, and if you died . . . '
-    - '. . . I would be left here all alone, with no one but me, sitting here talking
-      to myself . . . '
-    - . . . and goodness knows how long . . . sorry, I ramble when I am nervous.
-    - "It seems to only want us dead, it hasn\u2019t touched the ship pieces. "
-    - For all that you can worship in this universe, find those pieces and get us
-      home alive!
+    - "The next important building you have access to is a {HARVESTER}. When placed
+      on a mineral, it will collect its contents for you.\r \n"
+    - "Place 3 {HARVESTERS}. \n"
   - key: build arc defence
     dialogue:
-    - WAIT! Before you go, I have a plan!
-    - Have you heard of an arc defence or a repel fan? No? Well, you have now.
-    - And luckily for us I was smart enough to download their blueprints along with
-      the other buildings.
-    - 'Now that you know how to place buildings, try placing an arc defence. '
+    - 'Your final and most important buildings are the >ARC DEFENSE< and >REPEL FANS<. '
+    - 'An >ARC DEFENSE< will discharge an intense ball of air that will dissipate
+      the fog. '
+    - 'Try placing one. '
   - key: build repel fan
     dialogue:
-    - See how it pushes the fog away for a moment?
-    - That should be enough time to let you decide if that is the way you want to
-      venture.
-    - Now place a repel fan.
-  - key: gloat
+    - 'Great. Now, a >REPEL FAN< will push the fog away from a small area around it
+      when placed. '
+  - key: finished
     dialogue:
-    - It worked? HAH! Take that you degenerate fog! . . . Wait, it cannot hear me
-      can it?
+    - "Now that you know how to use these buildings, I would suggest trying to find
+      your ship\u2019s thruster. "
   skipTutorial: 0
-  harvesterResource: {fileID: 0}
-  generatorLandmark: {fileID: 0}
-  relayLandmark: {fileID: 0}
+  camera: {fileID: 0}
   arcDefenceLandmark: {fileID: 0}
+  batteryLandmark: {fileID: 0}
+  generatorLandmark: {fileID: 0}
+  harvesterResource: {fileID: 0}
+  relayLandmark: {fileID: 0}
   repelFanLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
-  btnBuildSelect: {fileID: 0}
-  btnBuildArcDefence: {fileID: 0}
-  btnBuildGenerator: {fileID: 0}
-  btnBuildHarvester: {fileID: 0}
-  btnBuildRelay: {fileID: 0}
-  btnBuildRepelFan: {fileID: 0}
+  wKey: {fileID: 0}
+  aKey: {fileID: 0}
+  sKey: {fileID: 0}
+  dKey: {fileID: 0}
+  qKey: {fileID: 0}
+  eKey: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
-  tutorialStage: 1
-  subStage: 1
-  currentlyBuilding: 0
-  currentTile:
-    powerSources: []
-    resource: {fileID: 0}
-    building: {fileID: 0}
-    onMaterial: {fileID: 0}
-    visibleMaterial: {fileID: 0}
-    startMaterial: {fileID: 0}
-    x: 0
-    z: 0
-    plane: {fileID: 0}
+  powerGainGoal: 15
+  builtHarvestersGoal: 3
 --- !u!114 &4019818891569145385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,50 +555,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ca729de76823c4d9b580afa04edcd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectiveWindow: {fileID: 0}
+  objectiveWindowOpenArrows: {fileID: 0}
   aiText: {fileID: 0}
   dialogue:
   - key: start harvest stage
     dialogue:
-    - Time to repair your hull. You will need collect minerals to repair the hull.
-    - There is likely to be more minerals further out. You will need to venture into
-      the fog to find them.
+    - Time to repair your hull. You will need collect minerals to repair it.
+    - There is likely to be minerals scattered around the planet. You will need to
+      venture out to find them.
   - key: end harvest stage
     dialogue:
     - "Great, you\u2019ve repaired your hull. Do not relax just yet. Next step, finding
-      the ships thrusters.\r\n"
+      the ship's missing thruster.\r\n"
     - My sensors are struggling to pick up their location, but I can at least confirm
       they are out there somewhere. I wonder why the fog has not consumed them yet?
   - key: start part stage
     dialogue:
-    - Good job, you found the ships thrusters. Thankfully they are not in too much
-      disrepair. Next, you will need to store enough power to get out of here.
+    - You found the ship's missing thruster! Thankfully it is not in too much disrepair.
   - key: end part stage
     dialogue:
-    - "Oh\u2026 I thought I should let you know, that fog you\u2019ve been fighting
-      through is showing extreme signs of aggression. Better save power fast!"
+    - "Oh\u2026 I thought I should let you know that fog you\u2019ve been fighting
+      through is showing extreme signs of aggression. "
   - key: start power stage
-    dialogue: []
+    dialogue:
+    - Quick, if you save some power there should be enough to get out of here!
   - key: end power stage
     dialogue:
-    - "Finally, enough power! Quick, push the launch button and let\u2019s get out
-      of here!"
+    - Finally, enough power! Quick, push the launch button and get out of here!
   objectivesOn: 1
   currStage: 0
   subStage: 0
-  objectiveWindow: {fileID: 0}
   objectiveCompletePrefab: {fileID: 2273471419132843575, guid: 53f4928f807d9b64bbacc1c4655740f2,
     type: 3}
   hub: {fileID: 0}
   ShipComponent: {fileID: 0}
   mineralTarget: 500
   powerTarget: 500
-  generatorLimit: 1
-  audioCompleteObjective: {fileID: 0}
+  generatorLimit: 5
+  audioCompleteObjective: {fileID: 8300000, guid: 320d947259c5f924c9abc2ec9a9911cb,
+    type: 3}
   audioStage1: {fileID: 0}
   audioTransition1To2: {fileID: 0}
   audioStage2: {fileID: 0}
   audioTransition2To3: {fileID: 0}
   audioStage3: {fileID: 0}
+  fogGrowthEasy: 5
+  fogGrowthMedium: 10
+  fogGrowthHard: 15
 --- !u!114 &3646138034780775634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +618,7 @@ MonoBehaviour:
   projectilesInPlay: []
   projectilesInPool: []
   poolSize: 30
-  projectilePrefab: {fileID: 2058973584694880921, guid: 515bdfe2bba66024db3d86dab9ad9e3d,
+  projectilePrefab: {fileID: 2058973584694880921, guid: 0133ff06884692d4baf63c0b7da6096d,
     type: 3}
   visibleMaterial: {fileID: 2100000, guid: f551b82fe732f0b409ba5fe50e2cf6d1, type: 2}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
@@ -390,18 +629,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899903245264256479}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d37a928823b9f6a48814cc817e7d13c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lerpStartingFog: 1
-  fogUnitPrefab: {fileID: 6045479659823427939, guid: f16f94a244adbcf47a2a91498a1edb9a,
+  fogUnitPrefab: {fileID: 2516856455530505698, guid: 81ce07d50c91d3843b2866edb20d15f5,
     type: 3}
   configuration: 5
   expansionDirection: 0
-  fogAccelerates: 1
-  fogGrowth: 5
+  fogAccelerates: 0
+  fogGrowth: 2
   fogMaxHealth: 100
   fogSpillThreshold: 50
   damageOn: 1
@@ -420,7 +659,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899903245264256479}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f732e2dd7226e8949b2f44c4715c63d2, type: 3}
   m_Name: 
@@ -441,3 +680,99 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupText: {fileID: 2224538830913006596, guid: 94d300174e596ea4093ea21d7b68b406,
     type: 3}
+--- !u!82 &963070261
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899903245264256479}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
