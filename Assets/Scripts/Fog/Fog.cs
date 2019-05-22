@@ -290,9 +290,9 @@ public class Fog : MonoBehaviour
     //Invokes the "update" methods of Fog according to the intervals set in the inspector
     public void ActivateFog()
     {
-        InvokeRepeating("UpdateDamageToFogUnits", 0.1f, fogDamageInterval);
         InvokeRepeating("UpdateFogFill", 0.1f, fogFillInterval);
-        InvokeRepeating("CheckExpandFog", 0.1f, fogExpansionInterval);
+        InvokeRepeating("CheckExpandFog", 0.3f, fogExpansionInterval);
+        InvokeRepeating("UpdateDamageToFogUnits", 0.5f, fogDamageInterval);
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
