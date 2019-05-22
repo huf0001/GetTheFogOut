@@ -33,7 +33,7 @@ public class DialogueBox : MonoBehaviour
     private string textColourString;
 
     //Public Properties
-    public bool Activated { get => activated; set { activated = value; Debug.Log("activated changed"); } }
+    public bool Activated { get => activated; }
     public int DialogueCount { get => textToDisplay.Count; }
 
     private void Awake()
@@ -137,21 +137,6 @@ public class DialogueBox : MonoBehaviour
         }
     }
 
-
-
-    //private bool IsAllUpper(string input)
-    //{
-    //    for (int i = 0; i < input.Length; i++)
-    //    {
-    //        if (char.IsLetter(input[i]) && !char.IsUpper(input[i]))
-    //        {
-    //            return false;
-    //        }
-    //    }
-
-    //    return true;
-    //}
-
     public void ActivateDialogueBox(string text, float invokeDelay)
     {
         List<string> texts = new List<string>();
@@ -163,7 +148,7 @@ public class DialogueBox : MonoBehaviour
     {
         if (texts.Count > 0)
         {
-            Activated = true;
+            activated = true;
 
             //Caches required tweening information for performance saving
             dialogueRectTransform = GetComponent<RectTransform>();
@@ -181,10 +166,6 @@ public class DialogueBox : MonoBehaviour
 
     private void DisplayNext()
     {
-        //textBox.text = textToDisplay[0];
-        //currentText = textToDisplay[0];
-        //textToDisplay.Remove(textToDisplay[0]);
-
         lerpFinished = false;
         textBox.text = "";
         currentText = textToDisplay[0];
@@ -216,7 +197,7 @@ public class DialogueBox : MonoBehaviour
         {
             LerpNext();
         }
-        else if (Activated)
+        else if (activated)
         {
             Debug.Log("RegisterDialogueRead calling DeactivateDialogue");
             DeactivateDialogueBox();
@@ -242,7 +223,7 @@ public class DialogueBox : MonoBehaviour
                     ObjectiveController.Instance.RegisterDialogueRead();
                 }
 
-                Activated = false;
+                activated = false;
             });
     }
 
