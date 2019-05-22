@@ -38,17 +38,29 @@ public class DialogueBox : MonoBehaviour
 
     private void Awake()
     {
-        if (squareBracketColour[0].ToString() != "#")
+        if (squareBracketColour == "")
+        {
+            Debug.LogError("DialogueBox.squareBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
+        }
+        else if (squareBracketColour[0].ToString() != "#")
         {
             squareBracketColour = $"\"{squareBracketColour}\"";
         }
 
-        if (squigglyBracketColour[0].ToString() != "#")
+        if (squareBracketColour == "")
+        {
+            Debug.LogError("DialogueBox.squigglyBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
+        }
+        else if (squigglyBracketColour[0].ToString() != "#")
         {
             squigglyBracketColour = $"\"{squigglyBracketColour}\"";
         }
 
-        if (vBracketColour[0].ToString() != "#")
+        if (squareBracketColour == "")
+        {
+            Debug.LogError("DialogueBox.vBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
+        }
+        else if (vBracketColour[0].ToString() != "#")
         {
             vBracketColour = $"\"{vBracketColour}\"";
         }
