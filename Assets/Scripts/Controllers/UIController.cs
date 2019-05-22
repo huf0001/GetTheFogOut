@@ -127,23 +127,23 @@ public class UIController : MonoBehaviour
 
             float powerCheck = float.Parse(powerText.text.Split('/')[0]) / resourceController.MaxPower;
 
-            if (powerCheck > 0 && powerCheck <= .25f)
+            if (powerCheck > 0 && powerCheck <= .25f && powerImg.sprite != powerLevelSprites[1])
             {
                 powerImg.sprite = powerLevelSprites[1];
             }
-            else if (powerCheck > .25f && powerCheck <= .50f)
+            else if (powerCheck > .25f && powerCheck <= .50f && powerImg.sprite != powerLevelSprites[2])
             {
                 powerImg.sprite = powerLevelSprites[2];
             }
-            else if (powerCheck > .50f && powerCheck <= .75f)
+            else if (powerCheck > .50f && powerCheck <= .75f && powerImg.sprite != powerLevelSprites[3])
             {
                 powerImg.sprite = powerLevelSprites[3];
             }
-            else if (powerCheck > .75f)
+            else if (powerCheck > .75f && powerImg.sprite != powerLevelSprites[4])
             {
                 powerImg.sprite = powerLevelSprites[4];
             }
-            else
+            else if (powerCheck == 0 && powerImg.sprite != powerLevelSprites[0])
             {
                 powerImg.sprite = powerLevelSprites[0];
             }

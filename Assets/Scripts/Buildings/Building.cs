@@ -119,10 +119,10 @@ public abstract class Building : PlaneObject
                 healthBarCanvas.gameObject.SetActive(true);
             }
 
-            healthBarImage.fillAmount = Health / MaxHealth;
-            //healthBarImage.color = Color.Lerp(new Color32(255, 0, 0, 255), new Color32(0, 153, 0, 255), healthBarImage.fillAmount);
+            healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
             healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
-            healthBarCanvas.LookAt(Camera.main.transform);
+            healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
+            healthBarCanvas.Rotate(0, 135, 0);
         }
         else
         {
