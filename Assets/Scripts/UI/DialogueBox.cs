@@ -27,6 +27,7 @@ public class DialogueBox : MonoBehaviour
     private string pendingColouredText = "";
     private int lerpTextMinIndex = 0;
     private int lerpTextMaxIndex = 0;
+    //private int clickCount = 0;
 
     private bool coloured = false;
     private bool lerpFinished = true;
@@ -73,7 +74,7 @@ public class DialogueBox : MonoBehaviour
             pendingText = "";
             pendingColouredText = "";
             coloured = false;
-            Debug.Log($"index: {lerpTextMaxIndex}, length: {currentText.Length}");
+            //Debug.Log($"index: {lerpTextMaxIndex}, length: {currentText.Length}");
             foreach (char c in currentText.Substring(0, lerpTextMaxIndex))
             {
                 if (coloured)
@@ -126,7 +127,7 @@ public class DialogueBox : MonoBehaviour
             }
             else
             {
-                Debug.Log("TextLerpFinished");
+                //Debug.Log("TextLerpFinished");
                 lerpFinished = true;
             }
         }
@@ -175,7 +176,7 @@ public class DialogueBox : MonoBehaviour
 
     private void LerpNext()
     {
-        Debug.Log("LerpingNext");
+        //Debug.Log("LerpingNext");
         lerpFinished = false;
         textBox.text = "";
         currentText = textToDisplay[0];
@@ -190,16 +191,23 @@ public class DialogueBox : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    //public void OnClickRegisterDialogueRead()
+    //{
+    //    clickCount++;
+    //    Debug.Log($"Click count: {clickCount}");
+    //    RegisterDialogueRead();
+    //}
+
     public void RegisterDialogueRead()
     {
-        Debug.Log("Registering dialogue read");
+        //Debug.Log("Registering dialogue read");
         if (textToDisplay.Count > 0)
         {
             LerpNext();
         }
         else if (activated)
         {
-            Debug.Log("RegisterDialogueRead calling DeactivateDialogue");
+            //Debug.Log("RegisterDialogueRead calling DeactivateDialogue");
             DeactivateDialogueBox();
         }
     }
