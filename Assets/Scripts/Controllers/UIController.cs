@@ -108,14 +108,17 @@ public class UIController : MonoBehaviour
             string colour;
             if (powerChange > 0)
             {
+                WorldController.Instance.changePowerTIle(Color.green);
                 colour = "#009900>+";
             }
             else if (powerChange < 0)
             {
+                WorldController.Instance.changePowerTIle(Color.red);
                 colour = "\"red\">";
             }
             else
             {
+                WorldController.Instance.changePowerTIle(Color.yellow);
                 colour = "#006273>±";
             }
 
