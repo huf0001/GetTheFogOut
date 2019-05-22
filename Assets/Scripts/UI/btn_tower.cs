@@ -85,7 +85,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Battery>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_generator":
-                    buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}\n" +
+                    buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{build_prefab.GetComponentInChildren<Generator>().Upkeep}<sprite=\"all_icons\" index=0>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Generator>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
