@@ -100,7 +100,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<ArcDefence>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_repel_fan":
-                    buildingDesc.text = $"<b>Repel Fan</b>\n" +
+                    buildingDesc.text = $"<b>Repel Tower</b>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<RepelFan>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
