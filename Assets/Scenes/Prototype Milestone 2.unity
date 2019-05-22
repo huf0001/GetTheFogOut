@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06744319, g: 0.08993444, b: 0.13506025, a: 1}
+  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.13506117, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5639,6 +5639,49 @@ PrefabInstance:
       propertyPath: objectiveWindowOpenArrows
       value: 
       objectReference: {fileID: 332461609}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: ground
+      value: 
+      objectReference: {fileID: 160074829}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: hub
+      value: 
+      objectReference: {fileID: 1541682272}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: pause
+      value: 
+      objectReference: {fileID: 101069077}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: mineralPrefab
+      value: 
+      objectReference: {fileID: 8502067115120478638, guid: b73f147f6fafb3242895252f4e5718fb,
+        type: 3}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: spawnResources
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: hubPrefab
+      value: 
+      objectReference: {fileID: 2071841716570308282, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: tilePrefab
+      value: 
+      objectReference: {fileID: 1230523831537891005, guid: ae3c8c22e37954d42892aa77c874a272,
+        type: 3}
     - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5694,49 +5737,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: ground
-      value: 
-      objectReference: {fileID: 160074829}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: hub
-      value: 
-      objectReference: {fileID: 1541682272}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: pause
-      value: 
-      objectReference: {fileID: 101069077}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: camera
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: mineralPrefab
-      value: 
-      objectReference: {fileID: 8502067115120478638, guid: b73f147f6fafb3242895252f4e5718fb,
-        type: 3}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: spawnResources
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: hubPrefab
-      value: 
-      objectReference: {fileID: 2071841716570308282, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
-        type: 3}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: tilePrefab
-      value: 
-      objectReference: {fileID: 1230523831537891005, guid: ae3c8c22e37954d42892aa77c874a272,
-        type: 3}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: powerLevelSprites.Array.size
@@ -6638,7 +6638,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5452056051915305575}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -6.4, y: -4.3, z: -2.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8810472176967237498}
@@ -6655,7 +6655,7 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 0.38602668, b: 0, a: 1}
-  m_Intensity: 11.753592
+  m_Intensity: 7.957747
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -6699,6 +6699,7 @@ VFXRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 0}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -6789,7 +6790,7 @@ PrefabInstance:
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.1514571
+      value: -0.15145709
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
@@ -6804,7 +6805,7 @@ PrefabInstance:
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.1514571
+      value: -0.15145709
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
@@ -6976,10 +6977,10 @@ MonoBehaviour:
   maxSmoothness: 0.99
   applyRangeAttenuation: 1
   useOldInspector: 0
-  useVolumetric: 1
+  useVolumetric: 0
   featuresFoldout: 1
   showAdditionalSettings: 0
-  displayLightIntensity: 147.7
+  displayLightIntensity: 100
   displayAreaLightEmissiveMesh: 0
   lightLayers: 1
   shadowNearPlane: 0.1
@@ -7084,11 +7085,20 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
+      - m_Value: 16
+        m_Name: AnimationFR
+        m_Overridden: 0
       - m_Value: 2
-        m_Name: LifetimeMax 1
+        m_Name: LifetimeMax
         m_Overridden: 0
       - m_Value: 1
-        m_Name: LifetimeMin 1
+        m_Name: LifetimeMin
+        m_Overridden: 0
+      - m_Value: 0
+        m_Name: Smoke LifetimeMax
+        m_Overridden: 0
+      - m_Value: 0
+        m_Name: Smoke LifetimeMin
         m_Overridden: 0
       - m_Value: 1
         m_Name: SparkSize
@@ -7099,12 +7109,18 @@ VisualEffect:
     m_Vector2f:
       m_Array: []
     m_Vector3f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0, y: 7.5, z: 0}
+        m_Name: Smoke Velocity
+        m_Overridden: 0
     m_Vector4f:
       m_Array:
+      - m_Value: {x: 0.18039216, y: 0.05882353, z: 0.050980393, w: 0}
+        m_Name: Smoke Colour
+        m_Overridden: 1
       - m_Value: {x: 766.9961, y: 208.81569, z: 0, w: 0}
         m_Name: SparkColour
-        m_Overridden: 0
+        m_Overridden: 1
     m_Uint:
       m_Array: []
     m_Int:
@@ -7172,7 +7188,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5553711033846887766}
   m_LocalRotation: {x: 0.0033141584, y: 0.9906007, z: -0.13455132, w: 0.024398189}
-  m_LocalPosition: {x: 0.65600014, y: 0.74036324, z: 0.20890808}
+  m_LocalPosition: {x: 0.47, y: -0.143, z: -0.54}
   m_LocalScale: {x: 0.036000032, y: 0.036, z: 0.03600002}
   m_Children:
   - {fileID: 2212281636427756646}
