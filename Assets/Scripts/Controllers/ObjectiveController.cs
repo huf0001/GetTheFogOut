@@ -29,15 +29,12 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
     [SerializeField] AudioClip audioCompleteObjective;
-    [SerializeField] AudioClip audioStage1;
-    [SerializeField] AudioClip audioTransition1To2;
-    [SerializeField] AudioClip audioStage2;
-    [SerializeField] AudioClip audioTransition2To3;
-    [SerializeField] AudioClip audioStage3;
 
     [SerializeField] int fogGrowthEasy;
     [SerializeField] int fogGrowthMedium;
     [SerializeField] int fogGrowthHard;
+
+    [SerializeField] GameObject shipSmoke;
 
     // Non-Serialized Fields
     bool stageComplete = false;
@@ -217,6 +214,7 @@ public class ObjectiveController : DialogueBoxController
             case 0:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
+                shipSmoke.SetActive(false);
                 hub.transform.GetChild(2).gameObject.SetActive(true);
                 // Play music Var 3 soundtrack
                 MusicController.Instance.StartStage3();
