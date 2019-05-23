@@ -23,8 +23,9 @@ public class UIController : MonoBehaviour
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
     private bool isCursorOn = false;
-    [SerializeField] Image powerImg;
+    private Image launchButtonImage;
 
+    [SerializeField] Image powerImg;
     [SerializeField] Sprite[] powerLevelSprites;
     [SerializeField] TextMeshProUGUI objWindowText;
     [SerializeField] TextMeshProUGUI hudObjText;
@@ -32,6 +33,8 @@ public class UIController : MonoBehaviour
     [SerializeField] Color powerMedium;
     [SerializeField] Color powerHigh;
     [SerializeField] Color powerCurrent;
+    [SerializeField] GameObject launchCanvas;
+    [SerializeField] Button launchButton;
 
     ResourceController resourceController = null;
     private MeshRenderer mr;
@@ -89,6 +92,31 @@ public class UIController : MonoBehaviour
     void FindTile()
     {
         mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
+    }
+
+    public void ShowLaunchButton()
+    {
+        launchCanvas.SetActive(true);
+        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        launchButtonImage = launchButton.image;
+
+        Sequence showLaunch = DOTween.Sequence();
+        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+            //.AppendInterval(0.5f)
+            .Append(launchButtonImage.DOFade(1, 0.5f))
+            .OnComplete(
+            delegate
+            {
+                launchButton.enabled = true;
+                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+            });
+    }
+
+    public void WinGame()
+    {
+        DOTween.Kill(launchButtonImage);
+        WorldController.Instance.GameWin = true;
+        WorldController.Instance.GameOver = true;
     }
 
     // End Game Method
@@ -286,7 +314,7 @@ public class UIController : MonoBehaviour
                 hudObjText.text = "Objective: Build Harvesters";
                 objWindowText.text = "<b>Build Harvesters</b>\n\n" +
                     $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to replenish your building materials.\n\n" +
-                    $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} <size=90%><sprite=\"all_icons\" index=0>";
+                    $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
                 break;
             case TutorialStage.BuildArcDefence:
                 hudObjText.text = "Objective: Build Arc Defence";
