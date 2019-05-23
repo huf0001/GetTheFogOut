@@ -34,6 +34,8 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int fogGrowthMedium;
     [SerializeField] int fogGrowthHard;
 
+    [SerializeField] GameObject shipSmoke;
+
     // Non-Serialized Fields
     bool stageComplete = false;
     private AudioSource audioSource;
@@ -212,6 +214,7 @@ public class ObjectiveController : DialogueBoxController
             case 0:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
+                shipSmoke.SetActive(false);
                 hub.transform.GetChild(2).gameObject.SetActive(true);
                 // Play music Var 3 soundtrack
                 MusicController.Instance.StartStage3();
