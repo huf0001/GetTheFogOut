@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
         if (runCameraPan)
         {
             cameraCutscene.gameObject.SetActive(true);
-            Invoke("RunCameraPan", 1f);
+            Invoke("RunCameraPan", 7f);
         }
 
     }
