@@ -320,6 +320,7 @@ GameObject:
   - component: {fileID: 7526459976829055203}
   - component: {fileID: 7543930341897282415}
   - component: {fileID: 6723334858916017676}
+  - component: {fileID: 1619400358356772759}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -407,6 +408,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &1619400358356772759
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4965358395330854184}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &5376351232332770312
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,8 +513,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.08, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.1, y: 0.17198342, z: 0.1}
+  m_Center: {x: 0, y: -0.001347317, z: 0}
 --- !u!82 &8105151107402323316
 AudioSource:
   m_ObjectHideFlags: 0
