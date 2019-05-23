@@ -10,8 +10,8 @@ public class DialogueBox : MonoBehaviour
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
-    [SerializeField] TextMeshProUGUI textBox;
-    [SerializeField] DialogueBoxController dialogueBoxController;
+    [SerializeField] private TextMeshProUGUI textBox;
+    [SerializeField] private Image aiImage;
     [SerializeField] float popUpSpeed = 0.5f;
     [SerializeField] private int lerpTextInterval = 3;
 
@@ -19,10 +19,13 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private string squigglyBracketColour;
     [SerializeField] private string vBracketColour;
 
-    [SerializeField] private List<Sprite> aiSprites;
+    [SerializeField] private AIExpression currentExpression;
+    [SerializeField] private Sprite aiHappy;
+    [SerializeField] private Sprite aiNeutral;
+    [SerializeField] private Sprite aiSad;
 
     //Non-Serialized Fields
-    [SerializeField] private List<string> textToDisplay = new List<string>();
+    [SerializeField] private List<ExpressionDialoguePair> contentToDisplay = new List<ExpressionDialoguePair>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
     [SerializeField] private bool activated = false;
@@ -39,11 +42,11 @@ public class DialogueBox : MonoBehaviour
 
     //Public Properties
     public bool Activated { get => activated; }
-    public int DialogueCount { get => textToDisplay.Count; }
+    public int DialogueCount { get => contentToDisplay.Count; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
-    //Awake checks that all the colour strings are valid
+    //Awake checks that all the colour strings are valid, and gets the starting AI expression
     private void Awake()
     {
         if (squareBracketColour == "")
@@ -71,6 +74,19 @@ public class DialogueBox : MonoBehaviour
         else if (vBracketColour[0].ToString() != "#")
         {
             vBracketColour = $"\"{vBracketColour}\"";
+        }
+
+        if (aiImage.sprite == aiHappy)
+        {
+            currentExpression = AIExpression.Happy;
+        }
+        else if (aiImage.sprite == aiNeutral)
+        {
+            currentExpression = AIExpression.Neutral;
+        }
+        else if (aiImage.sprite == aiSad)
+        {
+            currentExpression = AIExpression.Sad;
         }
     }
 
@@ -151,17 +167,17 @@ public class DialogueBox : MonoBehaviour
     //Utility Methods - Changeover the dialogue list-------------------------------------------------------------------------------------------------
 
     //Activates the dialogue box; takes a single string
-    public void ActivateDialogueBox(string text, float invokeDelay)
+    public void ActivateDialogueBox(ExpressionDialoguePair newContent, float invokeDelay)
     {
-        List<string> texts = new List<string>();
-        texts.Add(text);
-        ActivateDialogueBox(texts, invokeDelay);
+        List<ExpressionDialoguePair> newContentList = new List<ExpressionDialoguePair>();
+        newContentList.Add(newContent);
+        ActivateDialogueBox(newContentList, invokeDelay);
     }
 
     //Activates the dialogue box; takes a list of strings
-    public void ActivateDialogueBox(List<string> texts, float invokeDelay)
+    public void ActivateDialogueBox(List<ExpressionDialoguePair> newContent, float invokeDelay)
     {
-        if (texts.Count > 0)
+        if (newContent.Count > 0)
         {
             activated = true;
 
@@ -170,7 +186,7 @@ public class DialogueBox : MonoBehaviour
             originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
 
             //Debug.Log("DialogueBoxActivated");
-            textToDisplay = new List<string>(texts);
+            contentToDisplay = new List<ExpressionDialoguePair>(newContent);
 
             Invoke("ShowDialogueBox", invokeDelay);
         } else
@@ -188,21 +204,27 @@ public class DialogueBox : MonoBehaviour
     }
 
     //Changes over the dialogue in the list; used instead of ActivateDialogueBox when the dialogue box is already active
-    public void ChangeDialogue(List<string> texts)
+    public void ChangeDialogue(List<ExpressionDialoguePair> newContent)
     {
-        textToDisplay = new List<string>(texts);
+        contentToDisplay = new List<ExpressionDialoguePair>(newContent);
         LerpNext();
     }
 
-    //Utility Methods - Display next string in list--------------------------------------------------------------------------------------------------
+    //Utility Methods - Display next set of content--------------------------------------------------------------------------------------------------
 
     //Shows the next section of dialogue in one hit
     private void DisplayNext()
     {
         lerpFinished = false;
         textBox.text = "";
-        currentText = textToDisplay[0];
-        textToDisplay.Remove(textToDisplay[0]);
+        currentText = contentToDisplay[0].Dialogue;
+
+        if (contentToDisplay[0].AIExpression != currentExpression)
+        {
+            ChangeAIExpression(contentToDisplay[0].AIExpression);
+        }
+
+        contentToDisplay.Remove(contentToDisplay[0]);
         lerpTextMaxIndex = currentText.Length - 1;
     }
 
@@ -212,9 +234,32 @@ public class DialogueBox : MonoBehaviour
         //Debug.Log("LerpingNext");
         lerpFinished = false;
         textBox.text = "";
-        currentText = textToDisplay[0];
-        textToDisplay.Remove(textToDisplay[0]);
+        currentText = contentToDisplay[0].Dialogue;
+
+        if (contentToDisplay[0].AIExpression != currentExpression)
+        {
+            ChangeAIExpression(contentToDisplay[0].AIExpression);
+        }
+
+        contentToDisplay.Remove(contentToDisplay[0]);
         lerpTextMaxIndex = 0;
+    }
+
+    //Updates the sprite of aiImage
+    private void ChangeAIExpression(AIExpression expression)
+    {
+        switch (expression)
+        {
+            case AIExpression.Happy:
+                aiImage.sprite = aiHappy;
+                break;
+            case AIExpression.Neutral:
+                aiImage.sprite = aiNeutral;
+                break;
+            case AIExpression.Sad:
+                aiImage.sprite = aiSad;
+                break;
+        }
     }
 
     //Utility Methods - Progress / Finish Dialogue---------------------------------------------------------------------------------------------------
@@ -225,7 +270,7 @@ public class DialogueBox : MonoBehaviour
         //clickCount++;
         //Debug.Log($"Click count: {clickCount}");
         //Debug.Log("Registering dialogue read");
-        if (textToDisplay.Count > 0)
+        if (contentToDisplay.Count > 0)
         {
             LerpNext();
         }
