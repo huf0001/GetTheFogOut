@@ -199,8 +199,32 @@ public class ObjectiveController : DialogueBoxController
 
                 break;
             case 5:
-                ResetSubStage();
-                IncrementStage();
+                // Update hub model with attached thrusters
+                hub.transform.GetChild(1).gameObject.SetActive(false);
+                shipSmoke.SetActive(false);
+                hub.transform.GetChild(2).gameObject.SetActive(true);
+
+                // Play music Var 3 soundtrack
+                MusicController.Instance.StartStage3();
+
+                // Set fog AI to 'Overly Aggressive'
+                Fog.Instance.FogGrowth = fogGrowthHard;
+
+                //If already completed store power stage
+                if (ResourceController.Instance.StoredPower >= 500)
+                {
+                    //Advance stage and substage to the point where the launch button appears
+                    currStage = ObjectiveStage.StorePower;
+                    subStage = 5;
+                }
+                //Otherwise
+                else
+                {
+                    //Go to next stage
+                    ResetSubStage();
+                    IncrementStage();
+                }
+
                 break;
             default:
                 break;
@@ -212,14 +236,6 @@ public class ObjectiveController : DialogueBoxController
         switch (subStage)
         {
             case 0:
-                // Update hub model with attached thrusters
-                hub.transform.GetChild(1).gameObject.SetActive(false);
-                shipSmoke.SetActive(false);
-                hub.transform.GetChild(2).gameObject.SetActive(true);
-                // Play music Var 3 soundtrack
-                MusicController.Instance.StartStage3();
-                // Set fog AI to 'Overly Aggressive'
-                Fog.Instance.FogGrowth = fogGrowthHard;
                 // Run AI completion text
                 SendDialogue("end part stage", 1);
                 IncrementSubStage();

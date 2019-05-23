@@ -158,7 +158,7 @@ public class DialogueBox : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Jump"))
+        if (activated && (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")))
         {
             RegisterDialogueRead();
         }
