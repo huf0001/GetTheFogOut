@@ -29,11 +29,6 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
     [SerializeField] AudioClip audioCompleteObjective;
-    [SerializeField] AudioClip audioStage1;
-    [SerializeField] AudioClip audioTransition1To2;
-    [SerializeField] AudioClip audioStage2;
-    [SerializeField] AudioClip audioTransition2To3;
-    [SerializeField] AudioClip audioStage3;
 
     [SerializeField] int fogGrowthEasy;
     [SerializeField] int fogGrowthMedium;
