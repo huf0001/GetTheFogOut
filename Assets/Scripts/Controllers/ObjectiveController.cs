@@ -132,17 +132,8 @@ public class ObjectiveController : DialogueBoxController
                 }
                 break;
             case 3:
-                // Run AI completion text
-                SendDialogue("end harvest stage", 1);
-                IncrementSubStage();
-                break;
-            case 4:
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                    ResetSubStage();
-                    IncrementStage();
-                }
+                ResetSubStage();
+                IncrementStage();
                 break;
             default:
                 break;
@@ -162,24 +153,42 @@ public class ObjectiveController : DialogueBoxController
                 MusicController.Instance.StartStage2();
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.FogGrowth = fogGrowthMedium;
-                // Run AI text for stage
-                SendDialogue("start part stage", 1);
+                // Run AI completion text
+                SendDialogue("end harvest stage", 1);
                 IncrementSubStage();
                 break;
             case 1:
-                // Update objectives window to 'Recover ship thrusters'
-                // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
                     ShipComponent.SetActive(false);
-                    SkipObjectivesAhead(3);
+                    SkipObjectivesAhead(5);
                 }
                 else if (dialogueRead)
                 {
                     DismissDialogue();
                 }
+
                 break;
             case 2:
+                // Run AI text for stage
+                SendDialogue("start part stage", 1);
+                IncrementSubStage();
+                break;
+            case 3:
+                // Update objectives window to 'Recover ship thrusters'
+                // End stage if the part is collected
+                if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
+                {
+                    ShipComponent.SetActive(false);
+                    SkipObjectivesAhead(5);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 4:
                 // Update objectives window to 'Recover ship thrusters'
                 // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
@@ -189,18 +198,9 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 3:
-                // Run AI completion text
-                SendDialogue("end part stage", 1);
-                IncrementSubStage();
-                break;
-            case 4:
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                    ResetSubStage();
-                    IncrementStage();
-                }
+            case 5:
+                ResetSubStage();
+                IncrementStage();
                 break;
             default:
                 break;
@@ -220,34 +220,52 @@ public class ObjectiveController : DialogueBoxController
                 MusicController.Instance.StartStage3();
                 // Set fog AI to 'Overly Aggressive'
                 Fog.Instance.FogGrowth = fogGrowthHard;
-                // Run AI text for stage
-                SendDialogue("start power stage", 1);
+                // Run AI completion text
+                SendDialogue("end part stage", 1);
                 IncrementSubStage();
                 break;
             case 1:
                 // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
                 if (ResourceController.Instance.StoredPower >= 500)
                 {
-                    SkipObjectivesAhead(3);
+                    SkipObjectivesAhead(5);
                 }
                 else if (dialogueRead)
                 {
                     DismissDialogue();
                 }
+
                 break;
             case 2:
+                SendDialogue("start power stage", 1);
+                IncrementSubStage();
+                break;
+            case 3:
+                // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
+                if (ResourceController.Instance.StoredPower >= 500)
+                {
+                    SkipObjectivesAhead(5);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 4:
                 // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
                 if (ResourceController.Instance.StoredPower >= 500)
                 {
                     IncrementSubStage();
                 }
+
                 break;
-            case 3:
+            case 5:
                 // Run AI completetion text
                 SendDialogue("end power stage", 1);
                 IncrementSubStage();
                 break;
-            case 4:
+            case 6:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -258,8 +276,7 @@ public class ObjectiveController : DialogueBoxController
                     // reset the substage, or it'll loop back to the start of the stage rather than finishing and that will
                     // create issues with the dialogue if there isn't a propper dialogueRead check like this one.
                 }
-                break;
-            case 5:
+
                 break;
             default:
                 break;
