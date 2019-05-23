@@ -251,8 +251,9 @@ public class ObjectiveController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    WorldController.Instance.GameWin = true;
-                    WorldController.Instance.GameOver = true;
+                    UIController.instance.ShowLaunchButton();
+                    //WorldController.Instance.GameWin = true;
+                    //WorldController.Instance.GameOver = true;
                     IncrementSubStage();
                     // Note: if more stages are added to the objective controller, when the last one is fulfilled, you can't just 
                     // reset the substage, or it'll loop back to the start of the stage rather than finishing and that will
