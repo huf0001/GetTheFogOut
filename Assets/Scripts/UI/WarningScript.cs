@@ -147,7 +147,13 @@ public class WarningScript : MonoBehaviour
     private void CheckPower()
     {
         int pChange = resourceController.PowerChange;
-        if ((pChange > 0 && pChangeValue > 0) || (pChange < 0 && pChangeValue < 0) || (pChange == 0 && pChangeValue == 0)) { pChangeValue = pChange; return; }
+
+        if ((pChange > 0 && pChangeValue > 0) || (pChange < 0 && pChangeValue < 0) || (pChange == 0 && pChangeValue == 0))
+        {
+            pChangeValue = pChange;
+            return;
+        }
+
         pChangeValue = pChange;
 
         if (pChangeValue > 0)
@@ -155,6 +161,7 @@ public class WarningScript : MonoBehaviour
             warnings["power"] = WarningLevel.Normal;
             powerStatus.text = NORMAL + "Power grid is stable";
             StartCoroutine(ShowMessage(powerStatus.text));
+            ObjectiveController.Instance.PowerOverloaded = false;
         }
         else if (pChangeValue < 0)
         {
@@ -162,12 +169,14 @@ public class WarningScript : MonoBehaviour
             powerStatus.text = DANGER + "Power grid is overloaded!";
             audioSource.PlayOneShot(audioPowerGridOverloadedAlert);
             StartCoroutine(ShowMessage(powerStatus.text));
+            ObjectiveController.Instance.PowerOverloaded = true;
         }
         else
         {
             warnings["power"] = WarningLevel.Warning;
             powerStatus.text = WARNING + "Power grid is at max capacity";
             StartCoroutine(ShowMessage(powerStatus.text));
+            ObjectiveController.Instance.PowerOverloaded = false;
         }
     }
 

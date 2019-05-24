@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0673975, g: 0.08987059, b: 0.1349672, a: 1}
+  m_IndirectSpecularColor: {r: 0.0674212, g: 0.08990203, b: 0.13501103, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5063,6 +5063,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
+      propertyPath: dialogue.Array.data[7].expressionDialoguePair.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
       propertyPath: objectiveWindow
       value: 
       objectReference: {fileID: 326070618}
@@ -5357,6 +5362,11 @@ PrefabInstance:
       propertyPath: dialogue.Array.data[6].expressionDialoguePairs.Array.data[0].dialogue
       value: "\rFinally, enough power! Quick, push the launch button and get out of
         here!\r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].expressionDialoguePair.Array.data[0].dialogue
+      value: power overloaded
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -5835,12 +5845,12 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: skipTutorial
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: skipTutorial
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -7110,7 +7120,7 @@ PrefabInstance:
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145712
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
@@ -7125,7 +7135,7 @@ PrefabInstance:
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145712
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
@@ -7140,7 +7150,7 @@ PrefabInstance:
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145712
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
@@ -7155,7 +7165,7 @@ PrefabInstance:
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145712
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}

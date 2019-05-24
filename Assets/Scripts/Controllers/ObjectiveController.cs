@@ -41,6 +41,7 @@ public class ObjectiveController : DialogueBoxController
     private AudioSource audioSource;
 
     private bool powerOverloaded = false;
+    private bool alertedAboutOverload = false;
     private bool powerOverloadedLastUpdate = false;
     private float lastOverload = -1f;
     private float lastOverloadDialogue = -1f;
@@ -114,6 +115,7 @@ public class ObjectiveController : DialogueBoxController
 
     private void CheckPowerOverloaded()
     {
+        //Debug.Log("Checking Power Overloaded");
         if (powerOverloaded != powerOverloadedLastUpdate)
         {
             powerOverloadedLastUpdate = !powerOverloadedLastUpdate;
@@ -121,13 +123,19 @@ public class ObjectiveController : DialogueBoxController
             if (powerOverloaded)
             {
                 lastOverload = Time.fixedTime;
+                alertedAboutOverload = false;
             }
         }
 
-        if (powerOverloaded && !aiText.Activated && (Time.fixedTime - lastOverload) >= 3f)
+        if (powerOverloaded && !alertedAboutOverload && !aiText.Activated && (Time.fixedTime - lastOverload) >= 5f)
         {
             lastOverloadDialogue = Time.fixedTime;
             SendDialogue("power overloaded", 0f);
+            alertedAboutOverload = true;
+        }
+        else if (powerOverloaded && alertedAboutOverload && aiText.Activated && aiText.CurrentDialogueSet != "power overloaded" && (Time.fixedTime - lastOverload) <= 2f)
+        {
+            alertedAboutOverload = false;
         }
         else if (aiText.Activated && aiText.CurrentDialogueSet == "power overloaded" && (!powerOverloaded || (Time.fixedTime - lastOverloadDialogue) >= 10f))
         {
