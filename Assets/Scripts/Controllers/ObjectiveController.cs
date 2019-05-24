@@ -40,11 +40,6 @@ public class ObjectiveController : DialogueBoxController
     bool stageComplete = false;
     private AudioSource audioSource;
 
-    private bool powerOverloaded = false;
-    private bool powerOverloadedLastUpdate = false;
-    private float lastOverload = -1f;
-    private float lastOverloadDialogue = -1f;
-
     // Public Properties -------------------------------------------------------------------------------------
 
     public static ObjectiveController Instance { get; protected set; }
@@ -52,7 +47,6 @@ public class ObjectiveController : DialogueBoxController
     public int MineralTarget { get => mineralTarget; }
     public int CurrStage { get => (int)currStage; }
     public int GeneratorLimit { get => generatorLimit; }
-    public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
 
     // Start functions -------------------------------------------------------------------------------------
 
@@ -70,8 +64,6 @@ public class ObjectiveController : DialogueBoxController
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        lastOverload = Time.fixedTime;
-        lastOverloadDialogue = Time.fixedTime;
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -82,11 +74,6 @@ public class ObjectiveController : DialogueBoxController
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
-        }
-
-        if (currStage > ObjectiveStage.None)
-        {
-            CheckPowerOverloaded();
         }
     }
 
@@ -110,29 +97,6 @@ public class ObjectiveController : DialogueBoxController
             default:
                 break;
         }
-    }
-
-    private void CheckPowerOverloaded()
-    {
-        if (powerOverloaded != powerOverloadedLastUpdate)
-        {
-            powerOverloadedLastUpdate = !powerOverloadedLastUpdate;
-
-            if (powerOverloaded)
-            {
-                lastOverload = Time.fixedTime;
-            }
-        }
-
-        if (powerOverloaded && !aiText.Activated && (Time.fixedTime - lastOverload) >= 3f)
-        {
-            lastOverloadDialogue = Time.fixedTime;
-            SendDialogue("power overloaded", 0f);
-        }
-        else if (aiText.Activated && aiText.CurrentDialogueSet == "power overloaded" && (!powerOverloaded || (Time.fixedTime - lastOverloadDialogue) >= 10f))
-        {
-            aiText.SubmitDeactivation();
-        }        
     }
 
     // Stage Functions ----------------------------------------------------------------------------------------

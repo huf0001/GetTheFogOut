@@ -222,18 +222,18 @@ public class ResourceController : MonoBehaviour
         storedOrganic += organicChange;
         StoredMineral += mineralChange;
 
-        //if (powerChange < 0)
-        //{
-        //    // if (!overloadPlayed)
-        //    // {
-        //    //     audioOverload.Play();
-        //    //     overloadPlayed = true;
-        //    // }
-        //}
-        //// else
-        //// {
-        ////     overloadPlayed = false;
-        //// }
+        if (powerChange < 0)
+        {
+            // if (!overloadPlayed)
+            // {
+            //     audioOverload.Play();
+            //     overloadPlayed = true;
+            // }
+        }
+        // else
+        // {
+        //     overloadPlayed = false;
+        // }
         CheckLimits();
     }
 

@@ -29,8 +29,6 @@ public class DialogueBox : MonoBehaviour
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
     [SerializeField] private bool activated = false;
-    [SerializeField] private bool clickable = false;
-    private string currentDialogueSet = "";
     private string currentText = "";
     private string pendingText = "";
     private string pendingColouredText = "";
@@ -42,14 +40,9 @@ public class DialogueBox : MonoBehaviour
     private bool lerpFinished = true;
     private string textColourString;
 
-    private DialogueSet nextDialogueSet = null;
-    private float nextInvokeDelay = 0f;
-    private bool deactivationSubmitted = false;
-
     //Public Properties
     public bool Activated { get => activated; }
     public int DialogueCount { get => contentToDisplay.Count; }
-    public string CurrentDialogueSet { get => currentDialogueSet; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -99,35 +92,15 @@ public class DialogueBox : MonoBehaviour
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
 
-    //Checks for new dialogue, lerps text, checks if player wants to progress text
+    //Lerps text, checks if player used spacebar to progress text
     private void Update()
     {
-        if (nextDialogueSet != null)
-        {
-            if (activated)
-            {
-                ChangeDialogue(nextDialogueSet);
-            }
-            else
-            {
-                ActivateDialogueBox(nextDialogueSet, nextInvokeDelay);
-            }
-
-            nextDialogueSet = null;
-            nextInvokeDelay = 0f;
-        }
-        else if (deactivationSubmitted && activated)
-        {
-            DeactivateDialogueBox();
-        }
-
-        deactivationSubmitted = false;
-
         if (!lerpFinished)
         {
             pendingText = "";
             pendingColouredText = "";
             coloured = false;
+            //Debug.Log($"index: {lerpTextMaxIndex}, length: {currentText.Length}");
             foreach (char c in currentText.Substring(0, lerpTextMaxIndex))
             {
                 if (coloured)
@@ -180,11 +153,12 @@ public class DialogueBox : MonoBehaviour
             }
             else
             {
+                //Debug.Log("TextLerpFinished");
                 lerpFinished = true;
             }
         }
 
-        if (clickable && (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")))
+        if (activated && (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")))
         {
             RegisterDialogueRead();
         }
@@ -192,26 +166,27 @@ public class DialogueBox : MonoBehaviour
 
     //Utility Methods - Changeover the dialogue list-------------------------------------------------------------------------------------------------
 
-    //Submits a dialogue set and invoke delay to the DialogueBox to change over to during the next update
-    public void SubmitDialogueSet(DialogueSet dialogueSet, float invokeDelay)
+    //Activates the dialogue box; takes a single string
+    public void ActivateDialogueBox(ExpressionDialoguePair newContent, float invokeDelay)
     {
-        nextDialogueSet = dialogueSet;
-        nextInvokeDelay = invokeDelay;
+        List<ExpressionDialoguePair> newContentList = new List<ExpressionDialoguePair>();
+        newContentList.Add(newContent);
+        ActivateDialogueBox(newContentList, invokeDelay);
     }
 
     //Activates the dialogue box; takes a list of strings
-    private void ActivateDialogueBox(DialogueSet dialogueSet, float invokeDelay)
+    public void ActivateDialogueBox(List<ExpressionDialoguePair> newContent, float invokeDelay)
     {
-        if (dialogueSet.ExpressionDialoguePairs.Count > 0)
+        if (newContent.Count > 0)
         {
+            activated = true;
+
             //Caches required tweening information for performance saving
             dialogueRectTransform = GetComponent<RectTransform>();
             originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
 
-            contentToDisplay = new List<ExpressionDialoguePair>(dialogueSet.ExpressionDialoguePairs);
-            currentDialogueSet = dialogueSet.Key;
-
-            activated = true;
+            //Debug.Log("DialogueBoxActivated");
+            contentToDisplay = new List<ExpressionDialoguePair>(newContent);
 
             Invoke("ShowDialogueBox", invokeDelay);
         } else
@@ -224,27 +199,15 @@ public class DialogueBox : MonoBehaviour
     private void ShowDialogueBox()
     {
         DisplayNext();
-        dialogueRectTransform.DOAnchorPosY(Screen.height / 100, popUpSpeed).SetEase(Ease.OutBack).SetUpdate(true).OnComplete(
-            delegate
-            {
-                clickable = true;
-            });
-        //gameObject.SetActive(true);
+        dialogueRectTransform.DOAnchorPosY(Screen.height / 100, popUpSpeed).SetEase(Ease.OutBack).SetUpdate(true);
+        gameObject.SetActive(true);
     }
 
     //Changes over the dialogue in the list; used instead of ActivateDialogueBox when the dialogue box is already active
-    private void ChangeDialogue(DialogueSet dialogueSet)
+    public void ChangeDialogue(List<ExpressionDialoguePair> newContent)
     {
-        if (dialogueSet.ExpressionDialoguePairs.Count > 0)
-        {
-            contentToDisplay = new List<ExpressionDialoguePair>(dialogueSet.ExpressionDialoguePairs);
-            currentDialogueSet = dialogueSet.Key;
-            LerpNext();
-        }
-        else
-        {
-            Debug.LogError("No text to display in dialogue box");
-        }
+        contentToDisplay = new List<ExpressionDialoguePair>(newContent);
+        LerpNext();
     }
 
     //Utility Methods - Display next set of content--------------------------------------------------------------------------------------------------
@@ -314,8 +277,6 @@ public class DialogueBox : MonoBehaviour
         else if (activated)
         {
             //Debug.Log("RegisterDialogueRead calling DeactivateDialogue");
-            currentDialogueSet = "";
-            clickable = false;
             DeactivateDialogueBox();
         }
     }
@@ -328,7 +289,7 @@ public class DialogueBox : MonoBehaviour
             {
                 //Reset position after tweening
                 //dialogueRectTransform.anchoredPosition = originalRectTransformPosition;
-                //gameObject.SetActive(false);
+                gameObject.SetActive(false);
                 textBox.text = "";
 
                 if (TutorialController.Instance.TutorialStage != TutorialStage.Finished)
@@ -342,11 +303,5 @@ public class DialogueBox : MonoBehaviour
 
                 activated = false;
             });
-    }
-
-    //Lets other classes call for the dialogue box to be deactivated.
-    public void SubmitDeactivation()
-    {
-        deactivationSubmitted = true;
     }
 }
