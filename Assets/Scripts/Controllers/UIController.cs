@@ -37,9 +37,11 @@ public class UIController : MonoBehaviour
     [SerializeField] Button launchButton;
 
     ResourceController resourceController = null;
-    private MeshRenderer mr;
+    private MeshRenderer MeshRend;
+    private int index,temp;
+    private IEnumerator coroutine;
 
-  //  private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
+    //  private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
 
     // Start is called before the first frame update
     void Awake()
@@ -52,9 +54,10 @@ public class UIController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        index = 0;
+        temp = 2;
         FindSliders();
-
+        coroutine = FadeTo(0.15f, 2.0f);
         cursor = GameObject.Find("Cursor");
         cursor.SetActive(false);
    //     Invoke("FindTile", 5);
@@ -88,11 +91,11 @@ public class UIController : MonoBehaviour
         powerText = GameObject.Find("PowerLevel").GetComponent<TextMeshProUGUI>();
         mineralText = GameObject.Find("MineralLevel").GetComponent<TextMeshProUGUI>();
     }
-
+    /*
     void FindTile()
     {
         mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-    }
+    }*/
 
     public void ShowLaunchButton()
     {
@@ -131,6 +134,49 @@ public class UIController : MonoBehaviour
         cursor.SetActive(isOn);
     }
 
+    public IEnumerator FadeTo(float aValue,float aTime)
+    {
+        bool toggle = true;
+        while (true)
+        {
+            Color c = powerLow;
+            Color newColor;
+            float alpha = c.a;
+            if (toggle)
+            {
+                for (float t = 1.0f; t > 0.0f; t -= Time.deltaTime / aTime)
+                {
+                    newColor = new Color(c.r, c.g, c.b, Mathf.Lerp(aValue, alpha, t));
+                    changeColor(newColor,true);
+                    yield return null;
+                }
+                toggle = !toggle;
+                yield return new WaitForSeconds(2);
+            }
+            else
+            {
+                for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+                {
+                    newColor = new Color(c.r, c.g, c.b, Mathf.Lerp(aValue, 0.6f, t));
+                    changeColor(newColor,true);
+                    yield return null;
+                }
+                toggle = !toggle;
+                yield return new WaitForSeconds(2);
+            }
+        }
+    }
+
+    public void changeColor(Color newColor, bool flash)
+    {
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
+        foreach (GameObject tile in gameObjects)
+        {
+            MeshRend = tile.GetComponent<MeshRenderer>();
+            MeshRend.material.DOColor(newColor, "_BaseColor", 1);
+        }
+    }
+
     void UpdateResourceText()
     {
         if (resourceController != null)
@@ -144,24 +190,50 @@ public class UIController : MonoBehaviour
             }
 
             powerChange = resourceController.PowerChange;
-
-            // change colour of power change text depending on +, - or ±
             string colour;
             if (powerChange > 0)
             {
-            //    WorldController.Instance.changePowerTIle(Color.green);
+                index = 0;
                 colour = "#009900>+";
             }
             else if (powerChange < 0)
             {
-             //   WorldController.Instance.changePowerTIle(Color.red);
+                index = 1;
                 colour = "\"red\">";
             }
             else
             {
-              //  WorldController.Instance.changePowerTIle(Color.yellow);
+                index = 2;
                 colour = "#006273>±";
             }
+
+            if(temp != index)
+            {
+                temp = index;
+                switch (index)
+                {
+                    case 0: // green
+                        powerCurrent = powerHigh;
+                        break;
+                    case 1:  //red
+                        powerCurrent = powerLow;
+                        break;
+                    case 2: // yellow
+                        powerCurrent = powerMedium;
+                        break;
+                }
+                if (index == 1)
+                {
+                    changeColor(powerCurrent,false);
+                    StartCoroutine(coroutine);
+                }
+                else
+                {
+                    StopCoroutine(coroutine);
+                    changeColor(powerCurrent,false);
+                }
+            }
+            
 
             // update text values
             powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + resourceController.MaxPower + "\n<color=" + colour + powerChange + "</color>";
@@ -170,44 +242,25 @@ public class UIController : MonoBehaviour
 
             if (powerCheck > 0 && powerCheck <= .25f && powerImg.sprite != powerLevelSprites[1])
             {
-                //  mat.DOColor(powerHigh, 1);
-                //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-                //mr.material.SetColor("_BaseColor",Color.white);
-
-                // mat = GameObject.FindGameObjectWithTag("Tile").GetComponent<Material>();
-         //       powerCurrent = powerHigh;
-         //       Debug.Log(mr.material.name);
                 powerImg.sprite = powerLevelSprites[1];
             }
             else if (powerCheck > .25f && powerCheck <= .50f && powerImg.sprite != powerLevelSprites[2])
             {
-                //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-                //mr.material.DOColor(Color.white, 1);
-          //      powerCurrent = powerMedium;
                 powerImg.sprite = powerLevelSprites[2];
             }
             else if (powerCheck > .50f && powerCheck <= .75f && powerImg.sprite != powerLevelSprites[3])
             {
-                //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-                //mr.material.DOColor(Color.white, 1);
                 powerImg.sprite = powerLevelSprites[3];
             }
             else if (powerCheck > .75f && powerImg.sprite != powerLevelSprites[4])
             {
-                //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-                //mr.material.DOColor(Color.white, 1);
                 powerImg.sprite = powerLevelSprites[4];
             }
             else if (powerCheck == 0 && powerImg.sprite != powerLevelSprites[0])
             {
-                //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-                //mr.material.DOColor(Color.white, 1);
-                //   mr.material.SetColor("_BaseColor", Color.white);
                 powerImg.sprite = powerLevelSprites[0];
             }
-            
-     //       mr.material.SetColor("_BaseColor", powerCurrent); //Color.Lerp(prev, new Color(r, g, b, a), 0.5f)
-
+             
             if (resourceController.StoredMineral != mineral)
             {
                 mineralVal = mineral;

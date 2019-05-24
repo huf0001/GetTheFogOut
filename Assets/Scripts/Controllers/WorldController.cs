@@ -666,10 +666,10 @@ public class WorldController : MonoBehaviour
         }
 
     }
-	
-	    public void changePowerTIle(Color newColor)
+	/*  USE THIS, IF YOU WISH TO BREAK YOUR PC xD
+	public void changePowerTIle(Color newColor)
     {
-        /*
+   
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
 
         float r = (newColor.r / 255.0f) * 100;
@@ -684,7 +684,7 @@ public class WorldController : MonoBehaviour
             tile.GetComponent<Renderer>().material.shader = Shader.Find("HDRP/Lit");
             tile.GetComponent<Renderer>().material.SetColor("_BaseColor", Color.Lerp(prev,new Color(r,g,b,a),0.5f));
         }
-        */
+        ////////
         float r = (newColor.r / 255.0f) * 100;
         float g = (newColor.g / 255.0f) * 100;
         float b = (newColor.b / 255.0f) * 100;
@@ -695,7 +695,7 @@ public class WorldController : MonoBehaviour
     //    tileobj.GetComponent<MeshRenderer>().material.shader = Shader.Find("HDRP/Lit");
         tileobj.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", new Color(r, g, b, a)); //Color.Lerp(prev, new Color(r, g, b, a), 0.5f)
     }
-
+*/
     public void ResetGame()
     {
         SceneManager.LoadScene("Prototype Milestone 2");
