@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour
     ResourceController resourceController = null;
     private MeshRenderer mr;
 
-    //private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
+  //  private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
 
     // Start is called before the first frame update
     void Awake()
@@ -57,7 +57,7 @@ public class UIController : MonoBehaviour
 
         cursor = GameObject.Find("Cursor");
         cursor.SetActive(false);
-        //Invoke("FindTile", 5);
+   //     Invoke("FindTile", 5);
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
         //hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);

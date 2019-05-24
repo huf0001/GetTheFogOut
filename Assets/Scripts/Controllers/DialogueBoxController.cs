@@ -31,11 +31,11 @@ public class DialogueSet
 {
     //Serialized Fields
     [SerializeField] private string key;
-    [SerializeField] private List<ExpressionDialoguePair> expressionDialoguePairs;
+    [SerializeField] private List<ExpressionDialoguePair> expressionDialoguePair;
 
     //Public Properties
     public string Key { get => key; }
-    public List<ExpressionDialoguePair> ExpressionDialoguePairs { get => expressionDialoguePairs; }
+    public List<ExpressionDialoguePair> ExpressionDialoguePair { get => expressionDialoguePair; }
 }
 
 public class DialogueBoxController : MonoBehaviour
@@ -60,13 +60,13 @@ public class DialogueBoxController : MonoBehaviour
     //Utility Methods--------------------------------------------------------------------------------------------------------------------------------
 
     //Retrieves dialogue from the list using the dialogue key
-    private DialogueSet GetDialogueSet(string key)
+    private List<ExpressionDialoguePair> GetExpressionDialoguePairs(string key)
     {
         foreach (DialogueSet p in dialogue)
         {
             if (p.Key == key)
             {
-                return p;
+                return p.ExpressionDialoguePair;
             }
         }
 
@@ -77,8 +77,15 @@ public class DialogueBoxController : MonoBehaviour
     //Passes dialogue to the DialogueBox
     protected virtual void SendDialogue(string dialogueKey, float invokeDelay)
     {
-        //Pass dialogue to DialogueBox for it to display during its next update
-        aiText.SubmitDialogueSet(GetDialogueSet(dialogueKey), invokeDelay);
+        //Activate DialogueBox, passing dialogue to it
+        if (aiText.Activated)
+        {
+            aiText.ChangeDialogue(GetExpressionDialoguePairs(dialogueKey));
+        }
+        else
+        {
+            aiText.ActivateDialogueBox(GetExpressionDialoguePairs(dialogueKey), invokeDelay);
+        }
     }
 
     //Called by btnTutorial to register that that button has been clicked
