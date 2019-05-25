@@ -174,9 +174,9 @@ public class DialogueBox : MonoBehaviour
 
             textBox.text = pendingText;
 
-            if (lerpTextMaxIndex < currentText.Length - 1)
+            if (lerpTextMaxIndex < currentText.Length)// - 1)
             {
-                lerpTextMaxIndex = Mathf.Min(lerpTextMaxIndex + lerpTextInterval, currentText.Length - 1);
+                lerpTextMaxIndex = Mathf.Min(lerpTextMaxIndex + lerpTextInterval, currentText.Length);// - 1);
             }
             else
             {
