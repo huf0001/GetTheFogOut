@@ -93,12 +93,12 @@ public class ResourceController : MonoBehaviour
         {
             storedPower += connectedGenerators[0].Upkeep * connectedGenerators.Count;
             powerChange += connectedGenerators[0].Upkeep * connectedGenerators.Count;
-        //    Debug.Log(generators.Count + " ge " + connectedGenerators.Count + " conge");
+            //    Debug.Log(generators.Count + " ge " + connectedGenerators.Count + " conge");
             foreach (Generator g in generators)
             {
                 if (connectedGenerators.Contains(g))
                 {
-                    g.PowerUp();      
+                    g.PowerUp();
                 }
                 else
                 {
@@ -222,18 +222,18 @@ public class ResourceController : MonoBehaviour
         storedOrganic += organicChange;
         StoredMineral += mineralChange;
 
-        if (powerChange < 0)
-        {
-            // if (!overloadPlayed)
-            // {
-            //     audioOverload.Play();
-            //     overloadPlayed = true;
-            // }
-        }
-        // else
-        // {
-        //     overloadPlayed = false;
-        // }
+        //if (powerChange < 0)
+        //{
+        //    // if (!overloadPlayed)
+        //    // {
+        //    //     audioOverload.Play();
+        //    //     overloadPlayed = true;
+        //    // }
+        //}
+        //// else
+        //// {
+        ////     overloadPlayed = false;
+        //// }
         CheckLimits();
     }
 

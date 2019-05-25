@@ -40,6 +40,12 @@ public class ObjectiveController : DialogueBoxController
     bool stageComplete = false;
     private AudioSource audioSource;
 
+    private bool powerOverloaded = false;
+    private bool alertedAboutOverload = false;
+    private bool powerOverloadedLastUpdate = false;
+    private float lastOverload = -1f;
+    private float lastOverloadDialogue = -1f;
+
     // Public Properties -------------------------------------------------------------------------------------
 
     public static ObjectiveController Instance { get; protected set; }
@@ -47,6 +53,7 @@ public class ObjectiveController : DialogueBoxController
     public int MineralTarget { get => mineralTarget; }
     public int CurrStage { get => (int)currStage; }
     public int GeneratorLimit { get => generatorLimit; }
+    public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
 
     // Start functions -------------------------------------------------------------------------------------
 
@@ -64,6 +71,8 @@ public class ObjectiveController : DialogueBoxController
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        lastOverload = Time.fixedTime;
+        lastOverloadDialogue = Time.fixedTime;
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -74,6 +83,11 @@ public class ObjectiveController : DialogueBoxController
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
+        }
+
+        if (currStage > ObjectiveStage.None)
+        {
+            CheckPowerOverloaded();
         }
     }
 
@@ -96,6 +110,36 @@ public class ObjectiveController : DialogueBoxController
                 break;
             default:
                 break;
+        }
+    }
+
+    private void CheckPowerOverloaded()
+    {
+        //Debug.Log("Checking Power Overloaded");
+        if (powerOverloaded != powerOverloadedLastUpdate)
+        {
+            powerOverloadedLastUpdate = !powerOverloadedLastUpdate;
+
+            if (powerOverloaded)
+            {
+                lastOverload = Time.fixedTime;
+                alertedAboutOverload = false;
+            }
+        }
+
+        if (powerOverloaded && !alertedAboutOverload && !aiText.Activated && (Time.fixedTime - lastOverload) >= 5f)
+        {
+            lastOverloadDialogue = Time.fixedTime;
+            SendDialogue("power overloaded", 0f);
+            alertedAboutOverload = true;
+        }
+        else if (powerOverloaded && alertedAboutOverload && aiText.Activated && aiText.CurrentDialogueSet != "power overloaded" && (Time.fixedTime - lastOverload) <= 2f)
+        {
+            alertedAboutOverload = false;
+        }
+        else if (aiText.Activated && aiText.CurrentDialogueSet == "power overloaded" && (!powerOverloaded || (Time.fixedTime - lastOverloadDialogue) >= 10f))
+        {
+            aiText.SubmitDeactivation();
         }
     }
 
