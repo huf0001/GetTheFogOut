@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour
     ResourceController resourceController = null;
     private MeshRenderer mr;
 
-  //  private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
+    //private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
 
     // Start is called before the first frame update
     void Awake()
@@ -57,7 +57,7 @@ public class UIController : MonoBehaviour
 
         cursor = GameObject.Find("Cursor");
         cursor.SetActive(false);
-   //     Invoke("FindTile", 5);
+        //Invoke("FindTile", 5);
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
         //hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
@@ -149,17 +149,17 @@ public class UIController : MonoBehaviour
             string colour;
             if (powerChange > 0)
             {
-            //    WorldController.Instance.changePowerTIle(Color.green);
+                //    WorldController.Instance.changePowerTIle(Color.green);
                 colour = "#009900>+";
             }
             else if (powerChange < 0)
             {
-             //   WorldController.Instance.changePowerTIle(Color.red);
+                //   WorldController.Instance.changePowerTIle(Color.red);
                 colour = "\"red\">";
             }
             else
             {
-              //  WorldController.Instance.changePowerTIle(Color.yellow);
+                //  WorldController.Instance.changePowerTIle(Color.yellow);
                 colour = "#006273>±";
             }
 
@@ -175,15 +175,15 @@ public class UIController : MonoBehaviour
                 //mr.material.SetColor("_BaseColor",Color.white);
 
                 // mat = GameObject.FindGameObjectWithTag("Tile").GetComponent<Material>();
-         //       powerCurrent = powerHigh;
-         //       Debug.Log(mr.material.name);
+                //       powerCurrent = powerHigh;
+                //       Debug.Log(mr.material.name);
                 powerImg.sprite = powerLevelSprites[1];
             }
             else if (powerCheck > .25f && powerCheck <= .50f && powerImg.sprite != powerLevelSprites[2])
             {
                 //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
                 //mr.material.DOColor(Color.white, 1);
-          //      powerCurrent = powerMedium;
+                //      powerCurrent = powerMedium;
                 powerImg.sprite = powerLevelSprites[2];
             }
             else if (powerCheck > .50f && powerCheck <= .75f && powerImg.sprite != powerLevelSprites[3])
@@ -205,8 +205,8 @@ public class UIController : MonoBehaviour
                 //   mr.material.SetColor("_BaseColor", Color.white);
                 powerImg.sprite = powerLevelSprites[0];
             }
-            
-     //       mr.material.SetColor("_BaseColor", powerCurrent); //Color.Lerp(prev, new Color(r, g, b, a), 0.5f)
+
+            //       mr.material.SetColor("_BaseColor", powerCurrent); //Color.Lerp(prev, new Color(r, g, b, a), 0.5f)
 
             if (resourceController.StoredMineral != mineral)
             {

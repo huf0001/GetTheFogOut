@@ -53,6 +53,7 @@ public class ObjectiveController : DialogueBoxController
     public int MineralTarget { get => mineralTarget; }
     public int CurrStage { get => (int)currStage; }
     public int GeneratorLimit { get => generatorLimit; }
+    public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
 
     // Start functions -------------------------------------------------------------------------------------
 
@@ -70,6 +71,8 @@ public class ObjectiveController : DialogueBoxController
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        lastOverload = Time.fixedTime;
+        lastOverloadDialogue = Time.fixedTime;
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -80,6 +83,11 @@ public class ObjectiveController : DialogueBoxController
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
+        }
+
+        if (currStage > ObjectiveStage.None)
+        {
+            CheckPowerOverloaded();
         }
     }
 
@@ -132,7 +140,7 @@ public class ObjectiveController : DialogueBoxController
         else if (aiText.Activated && aiText.CurrentDialogueSet == "power overloaded" && (!powerOverloaded || (Time.fixedTime - lastOverloadDialogue) >= 10f))
         {
             aiText.SubmitDeactivation();
-        }        
+        }
     }
 
     // Stage Functions ----------------------------------------------------------------------------------------
