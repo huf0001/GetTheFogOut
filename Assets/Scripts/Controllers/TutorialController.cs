@@ -333,6 +333,8 @@ public class TutorialController : DialogueBoxController
                 currentlyBuilding = BuildingType.Generator;
                 ResetSubStage();
 
+                wKey.transform.parent.gameObject.SetActive(false);
+
                 break;
             default:
                 SendDialogue("error", 1);
