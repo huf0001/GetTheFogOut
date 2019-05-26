@@ -69,7 +69,7 @@ public class FogUnit : Entity
     {
         if (Location.Building != null)
         {
-            StartCoroutine(Location.Building.DealDamageToBuilding(damage * (base.Health / MaxHealth)));
+            Location.Building.DealDamageToBuilding(damage * (base.Health / MaxHealth));
         }
     }
 
