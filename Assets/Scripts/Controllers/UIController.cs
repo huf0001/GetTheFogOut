@@ -316,9 +316,9 @@ public class UIController : MonoBehaviour
         }
     }
 
-    public void UpdateObjectiveText(ObjectiveStage stageNum)
+    public void UpdateObjectiveText(ObjectiveStage stage)
     {
-        switch (stageNum)
+        switch (stage)
         {
             case ObjectiveStage.None:
                 hudObjText.text = "Objective: Complete the Tutorial";
@@ -362,13 +362,13 @@ public class UIController : MonoBehaviour
                     "<size=75%>Complete the tutorial and learn to play the game!\n\n";
                 break;
             case TutorialStage.MoveCamera:
-                hudObjText.text = "Objective: Move Nexy";
-                objWindowText.text = "<b>Move Nexy</b>\n\n" +
+                hudObjText.text = "Objective: Move Nex";
+                objWindowText.text = "<b>Move Nex</b>\n\n" +
                     "<size=75%>Learn how to move your Nexus Drone.\n\n";
                 break;
             case TutorialStage.RotateCamera:
-                hudObjText.text = "Objective: Rotate Nexy";
-                objWindowText.text = "<b>Rotate Nexy</b>\n\n" +
+                hudObjText.text = "Objective: Rotate Nex";
+                objWindowText.text = "<b>Rotate Nex</b>\n\n" +
                     "<size=75%>Learn how to rotate your Nexus Drone.\n\n";
                 break;
             case TutorialStage.BuildGenerator:
@@ -376,10 +376,10 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Build Generator</b>\n\n" +
                     "<size=75%>Build a Power Generator to increase your available power generation.\n\n";
                 break;
-            case TutorialStage.BuildRelay:
-                hudObjText.text = "Objective: Build Relay";
-                objWindowText.text = "<b>Build Relay</b>\n\n" +
-                    "<size=75%>Build a Power Relay to extend your range.\n\n";
+            case TutorialStage.BuildExtender:
+                hudObjText.text = "Objective: Build Power Extender";
+                objWindowText.text = "<b>Build Power Extender</b>\n\n" +
+                    "<size=75%>Build a Power Extender to extend your range.\n\n";
                 break;
             case TutorialStage.BuildBattery:
                 hudObjText.text = "Objective: Build Battery";
@@ -398,15 +398,15 @@ public class UIController : MonoBehaviour
                     $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to replenish your building materials.\n\n" +
                     $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
                 break;
-            case TutorialStage.BuildArcDefence:
-                hudObjText.text = "Objective: Build Arc Defence";
-                objWindowText.text = "<b>Build Arc Defence</b>\n\n" +
-                    "<size=75%>Build an Arc Defence to protect yourself from the Fog!\n\n";
+            case TutorialStage.BuildAirCannon:
+                hudObjText.text = "Objective: Build Air Cannon";
+                objWindowText.text = "<b>Build Air Cannon</b>\n\n" +
+                    "<size=75%>Build an Air Cannon to protect yourself from the Fog!\n\n";
                 break;
-            case TutorialStage.BuildRepelFan:
-                hudObjText.text = "Objective: Build Repel Fan";
-                objWindowText.text = "<b>Build Repel Fan</b>\n\n" +
-                    "<size=75%>Build a Repel Fan to protect yourself from the Fog!\n\n";
+            case TutorialStage.BuildFogRepeller:
+                hudObjText.text = "Objective: Build Fog Repeller";
+                objWindowText.text = "<b>Build Fog Repeller</b>\n\n" +
+                    "<size=75%>Build a Fog Repeller to protect yourself from the Fog!\n\n";
                 break;
         }
     }

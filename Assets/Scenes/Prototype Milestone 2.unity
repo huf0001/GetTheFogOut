@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0674448, g: 0.08993495, b: 0.13505739, a: 1}
+  m_IndirectSpecularColor: {r: 0.067397416, g: 0.08987052, b: 0.13496715, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -779,6 +779,16 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4767305868102073344, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305868102073344, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4767305868102073346, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -1014,16 +1024,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 84221712}
-    - target: {fileID: 4767305868102073344, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4767305868102073344, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0d96ef103d08e4429542615f2b52508, type: 3}
 --- !u!114 &326070611 stripped
@@ -1281,18 +1281,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b73f147f6fafb3242895252f4e5718fb, type: 3}
---- !u!114 &501069190 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9118112184725691006, guid: b73f147f6fafb3242895252f4e5718fb,
-    type: 3}
-  m_PrefabInstance: {fileID: 1409251835}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed6d37a806b280498c454644f3bf924, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &506994421 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3575913343396146165, guid: b73f147f6fafb3242895252f4e5718fb,
@@ -1579,7 +1567,7 @@ PrefabInstance:
     - target: {fileID: 2711652308868781353, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
       propertyPath: m_Name
-      value: RelayLandmark
+      value: ExtenderLandmark
       objectReference: {fileID: 0}
     - target: {fileID: 4932851536360969956, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
@@ -1935,18 +1923,6 @@ Transform:
   m_Father: {fileID: 1338089004}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1015231317 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3937144064170020782, guid: 96bff486ac9ca384a894669da2068243,
-    type: 3}
-  m_PrefabInstance: {fileID: 1269434976}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 611883204a730864eb3d38513ded6c5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1022294620 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4767305868788545471, guid: f0d96ef103d08e4429542615f2b52508,
@@ -1957,18 +1933,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2aff8c61d0eeef045b64aa8d8248e4fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1041046693 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3937144064170020782, guid: 96bff486ac9ca384a894669da2068243,
-    type: 3}
-  m_PrefabInstance: {fileID: 1960561548}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 611883204a730864eb3d38513ded6c5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1068872317
@@ -2204,7 +2168,12 @@ PrefabInstance:
     - target: {fileID: 2711652308868781353, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
       propertyPath: m_Name
-      value: RepelFanLandmark
+      value: FogRepellerLandmark
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711652308868781353, guid: 96bff486ac9ca384a894669da2068243,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4932851536360969956, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
@@ -2365,11 +2334,6 @@ PrefabInstance:
       propertyPath: audioDestroy
       value: 
       objectReference: {fileID: 8300000, guid: 0db611dac5c227a48a276880bb3e54ea, type: 3}
-    - target: {fileID: 2340487390083100012, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
-        type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1676051121940668404, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2430,6 +2394,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1676051121940668403, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6408134455620286879, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2340487390083100012, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7478471421583233554, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8724498286393051607, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2444,21 +2428,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 1676051121940668403, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7478471421583233554, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6408134455620286879, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1676051123050696165, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
@@ -3570,11 +3539,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: powerLevelSprites.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: endGame
       value: 
       objectReference: {fileID: 326070620}
@@ -3620,169 +3584,9 @@ PrefabInstance:
       objectReference: {fileID: 1756010258}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: launchButtonImage
-      value: 
-      objectReference: {fileID: 1746547520}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: launchButton
       value: 
       objectReference: {fileID: 1746547519}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerLow.a
-      value: 0.3137255
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerLow.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerMedium.a
-      value: 0.3137255
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerMedium.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerMedium.g
-      value: 0.78683865
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerMedium.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerHigh.r
-      value: 0.16620678
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerHigh.g
-      value: 0.7830188
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerHigh.b
-      value: 0.27217957
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerHigh.a
-      value: 0.3137255
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerCurrent.r
-      value: 0.16620678
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerCurrent.g
-      value: 0.7830188
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerCurrent.b
-      value: 0.27217957
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerCurrent.a
-      value: 0.3137255
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePair.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePairs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePairs.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePairs.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].expressionDialoguePairs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePairs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePairs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow
@@ -3810,424 +3614,9 @@ PrefabInstance:
       objectReference: {fileID: 1313111741}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: dialogue.Array.data[1].key
-      value: start harvest stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].key
-      value: end harvest stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].key
-      value: start part stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].key
-      value: end part stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].key
-      value: start power stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].key
-      value: end power stage
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].key
-      value: error
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.data[0].aiExpression
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.data[0].dialogue
-      value: "\r>Bug caused by developer<. Click for your compensation. Go on. Give
-        it a click. \r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.data[1].dialogue
-      value: 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to say
-        that they were perfectly normal, thank you very much. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.data[1].aiExpression
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[0].dialogue
-      value: Time to repair your hull. You will need collect minerals to repair it.
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[1].dialogue
-      value: There is likely to be minerals scattered around the planet. You will
-        need to venture out to find them.
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePair.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePair.Array.data[0].dialogue
-      value: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next step,
-        finding the ship's missing thruster."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePair.Array.data[1].dialogue
-      value: My sensors are struggling to pick up its location, but I can at least
-        confirm it is out there somewhere. I wonder why the fog has not consumed it
-        yet?
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].expressionDialoguePair.Array.data[0].dialogue
-      value: You found the ship's missing thruster! Thankfully it is not in too much
-        disrepair.
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePair.Array.data[0].dialogue
-      value: "Oh\u2026 I thought I should let you know that fog you\u2019ve been fighting
-        through is showing extreme signs of aggression. "
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].expressionDialoguePair.Array.data[0].dialogue
-      value: Quick, if you save some power there should be enough to get out of here!
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePair.Array.data[0].dialogue
-      value: Finally, enough power! Quick, push the launch button and get out of here!
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: shipSmoke
       value: 
       objectReference: {fileID: 5553711033846887766}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].key
-      value: power overloaded
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePairs.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePairs.Array.data[0].dialogue
-      value: Power overloaded!
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePairs.Array.data[0].dialogue
-      value: '>Bug caused by developer<. Click for your compensation. Go on. Give
-        it a click. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePairs.Array.data[0].aiExpression
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePairs.Array.data[1].dialogue
-      value: 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to say
-        that they were perfectly normal, thank you very much. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePairs.Array.data[1].aiExpression
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePairs.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePairs.Array.data[0].dialogue
-      value: Time to repair your hull. You will need collect minerals to repair it.
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePairs.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePairs.Array.data[1].dialogue
-      value: There is likely to be minerals scattered around the planet. You will
-        need to venture out to find them.
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[0].dialogue
-      value: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next step,
-        finding the ship's missing thruster.\r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[1].dialogue
-      value: My sensors are struggling to pick up their location, but I can at least
-        confirm they are out there somewhere. I wonder why the fog has not consumed
-        them yet?
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].expressionDialoguePairs.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].expressionDialoguePairs.Array.data[0].dialogue
-      value: You found the ship's missing thruster! Thankfully it is not in too much
-        disrepair.
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePairs.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePairs.Array.data[0].dialogue
-      value: "Oh\u2026 I thought I should let you know that fog you\u2019ve been fighting
-        through is showing extreme signs of aggression. "
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePairs.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[0].dialogue
-      value: Quick, if you save some power there should be enough to get out of here!
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePairs.Array.data[0].dialogue
-      value: "\rFinally, enough power! Quick, push the launch button and get out of
-        here!\r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePair.Array.data[0].dialogue
-      value: power overloaded
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: fogGrowthEasy
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: fogGrowthMedium
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: fogGrowthHard
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: ground
-      value: 
-      objectReference: {fileID: 160074829}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: hub
-      value: 
-      objectReference: {fileID: 1541682272}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: pause
-      value: 
-      objectReference: {fileID: 101069077}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: ground
-      value: 
-      objectReference: {fileID: 160074829}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: hub
-      value: 
-      objectReference: {fileID: 1541682272}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: pause
-      value: 
-      objectReference: {fileID: 101069077}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: camera
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: mineralPrefab
-      value: 
-      objectReference: {fileID: 8502067115120478638, guid: b73f147f6fafb3242895252f4e5718fb,
-        type: 3}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: spawnResources
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: hubPrefab
-      value: 
-      objectReference: {fileID: 2071841716570308282, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
-        type: 3}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: tilePrefab
-      value: 
-      objectReference: {fileID: 1230523831537891005, guid: ae3c8c22e37954d42892aa77c874a272,
-        type: 3}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].dialogueExpressionPairs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePair.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePair.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePair.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].expressionDialoguePair.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].expressionDialoguePair.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[11].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[12].expressionDialoguePair.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow
@@ -4245,16 +3634,6 @@ PrefabInstance:
       objectReference: {fileID: 326070611}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: camera
-      value: 
-      objectReference: {fileID: 4455723525751102814}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: arcDefenceLandmark
-      value: 
-      objectReference: {fileID: 1041046693}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: batteryLandmark
       value: 
       objectReference: {fileID: 1729089823}
@@ -4265,19 +3644,9 @@ PrefabInstance:
       objectReference: {fileID: 390134775}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: harvesterResource
-      value: 
-      objectReference: {fileID: 501069190}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: relayLandmark
       value: 
       objectReference: {fileID: 1655635319}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: repelFanLandmark
-      value: 
-      objectReference: {fileID: 1015231317}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: buildingTarget
@@ -4315,294 +3684,90 @@ PrefabInstance:
       objectReference: {fileID: 326070628}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.data[0].aiExpression
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.data[0].dialogue
-      value: '>Bug caused by developer<. Click for your compensation. Go on. Give
-        it a click. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.data[1].aiExpression
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[0].expressionDialoguePair.Array.data[1].dialogue
-      value: 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to say
-        that they were perfectly normal, thank you very much. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[0].dialogue
-      value: "\rHello. I am your very own Nexus Drone. You may call me Nex for short.
-        I am an emergency drone that you can control from your ship."
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[1].dialogue
-      value: "Let me run a scan for you to see the extent of the damage. \r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[0].aiExpression
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[2].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[2].dialogue
-      value: 'Scanning... '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[3].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[3].dialogue
-      value: 'The hull has sustained copious damage and a thruster is missing. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[4].dialogue
-      value: The scan also picked up hostility coming from the surrounding fog. It
-        may be sentient. What are the chances?
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[4].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[1].expressionDialoguePair.Array.data[5].dialogue
-      value: Your ship comes equipped with important blueprints, should the need arise
-        to use them.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[2].expressionDialoguePair.Array.data[0].dialogue
-      value: 'WASD moves me around. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[3].expressionDialoguePair.Array.data[0].dialogue
-      value: 'Press Q or E to make me spin. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePair.Array.data[0].dialogue
-      value: Since the backup generator will not be sufficient, you will have to place
-        [POWER GENERATORS].
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePair.Array.data[1].dialogue
-      value: 'Click here. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePair.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[4].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].expressionDialoguePair.Array.data[0].dialogue
-      value: 'Now, click on the [POWER GENERATOR] icon. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePair.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[5].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePair.Array.data[0].dialogue
-      value: 'Next are [POWER EXTENDERS]. These will extend the power range from your
-        ship and allow you to place buildings further out. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[6].expressionDialoguePair.Array.data[1].dialogue
-      value: 'Place one here. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePair.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePair.Array.data[0].dialogue
-      value: 'The final power related building is a [BATTERY]. When you place it,
-        it will increase your power capacity. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[7].expressionDialoguePair.Array.data[1].dialogue
-      value: 'Place one here. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].expressionDialoguePair.Array.data[0].aiExpression
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[8].expressionDialoguePair.Array.data[0].dialogue
-      value: 'Now that you have these skills, increase your [POWER GENERATION]. Do
-        not forget to try more [POWER EXTENDERS] and [BATTERIES]. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].expressionDialoguePair.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].expressionDialoguePair.Array.data[0].dialogue
-      value: The next important building you have access to is a {HARVESTER}. When
-        placed on a {MINERAL}, it will collect its contents for you.
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[9].expressionDialoguePair.Array.data[1].dialogue
-      value: 'Place 3 {HARVESTERS}. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].expressionDialoguePair.Array.data[0].dialogue
-      value: 'Your final and most important buildings are the >AIR CANNON< and >FOG
-        REPELLER<. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].expressionDialoguePair.Array.data[0].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].expressionDialoguePair.Array.data[1].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].expressionDialoguePair.Array.data[2].aiExpression
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].expressionDialoguePair.Array.data[1].dialogue
-      value: 'An >AIR CANNON< will discharge an intense ball of air that will dissipate
-        the fog. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[10].expressionDialoguePair.Array.data[2].dialogue
-      value: 'Try placing one. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[11].expressionDialoguePair.Array.data[0].dialogue
-      value: 'Great. Now, a >FOG REPELLER< will push the fog away from a small area
-        around it when placed. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[11].expressionDialoguePair.Array.data[0].aiExpression
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogue.Array.data[12].expressionDialoguePair.Array.data[0].dialogue
-      value: "Now that you know how to use these buildings, I would suggest trying
-        to find your ship\u2019s thruster. "
-      objectReference: {fileID: 0}
+      propertyPath: extenderLandmark
+      value: 
+      objectReference: {fileID: 1655635319}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: skipTutorial
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: skipTutorial
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: ground
+      value: 
+      objectReference: {fileID: 160074829}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: hub
+      value: 
+      objectReference: {fileID: 1541682272}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: pause
+      value: 
+      objectReference: {fileID: 101069077}
     - target: {fileID: 1899903245264256477, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: warningScript
       value: 
       objectReference: {fileID: 1022294620}
-    - target: {fileID: 1794963871152971053, guid: c327127a5d1d641479ca91d40ce5c9e5,
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: fc8a1ddaf1f104b4aa532e7bfee0a68c, type: 3}
-    - target: {fileID: 1210913968312047254, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: storedMineral
-      value: 200
+      propertyPath: m_LocalPosition.x
+      value: 17.38
       objectReference: {fileID: 0}
-    - target: {fileID: 3646138034780775634, guid: c327127a5d1d641479ca91d40ce5c9e5,
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: projectilePrefab
-      value: 
-      objectReference: {fileID: 2058973584694880921, guid: 0133ff06884692d4baf63c0b7da6096d,
+      propertyPath: m_LocalPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-    m_RemovedComponents:
-    - {fileID: 8407754260918598668, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
-    - {fileID: 7614967848554030477, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
-    - {fileID: 7203705830101688018, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
-    - {fileID: 1794963871152971053, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 17.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
 --- !u!1001 &1729089821
 PrefabInstance:
@@ -4776,18 +3941,6 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1746547520 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4001440657662359210, guid: f0d96ef103d08e4429542615f2b52508,
-    type: 3}
-  m_PrefabInstance: {fileID: 326070610}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1756010258 stripped
@@ -4992,7 +4145,12 @@ PrefabInstance:
     - target: {fileID: 2711652308868781353, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
       propertyPath: m_Name
-      value: ArcDefenceLandmark
+      value: AirCannonLandmark
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711652308868781353, guid: 96bff486ac9ca384a894669da2068243,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4932851536360969956, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
@@ -5504,82 +4662,82 @@ PrefabInstance:
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145716
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.36564982
+      value: 0.3656498
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.35143614
+      value: 0.3514361
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145716
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.36564982
+      value: 0.3656498
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.35143614
+      value: 0.3514361
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145716
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723524555981922, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145716
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145716
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.36564982
+      value: 0.3656498
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.35143614
+      value: 0.3514361
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145716
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.36564982
+      value: 0.3656498
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.35143614
+      value: 0.3514361
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145716
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.15145716
+      value: -0.15145713
       objectReference: {fileID: 0}
     - target: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
         type: 3}
@@ -5655,12 +4813,6 @@ PrefabInstance:
     - {fileID: 4455723523956921977, guid: 802ddf5b63779fb4db83761d2eb4550a, type: 3}
     - {fileID: 4455723523956921976, guid: 802ddf5b63779fb4db83761d2eb4550a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 802ddf5b63779fb4db83761d2eb4550a, type: 3}
---- !u!4 &4455723525751102814 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4455723523853987719, guid: 802ddf5b63779fb4db83761d2eb4550a,
-    type: 3}
-  m_PrefabInstance: {fileID: 4455723525751102813}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4624800829874131964
 PrefabInstance:
   m_ObjectHideFlags: 0

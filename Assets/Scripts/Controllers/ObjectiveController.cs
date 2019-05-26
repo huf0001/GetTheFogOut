@@ -87,13 +87,13 @@ public class ObjectiveController : DialogueBoxController
 
         if (currStage > ObjectiveStage.None)
         {
+            UIController.instance.UpdateObjectiveText(currStage);
             CheckPowerOverloaded();
         }
     }
 
     void CheckObjectiveStage()
     {
-        UIController.instance.UpdateObjectiveText(currStage);
         switch (currStage)
         {
             case ObjectiveStage.HarvestMinerals:

@@ -15,24 +15,24 @@ public enum TutorialStage
     MoveCamera,
     RotateCamera,
     BuildGenerator,
-    BuildRelay,
+    BuildExtender,
     BuildBattery,
     IncreasePowerGeneration,
     BuildHarvesters,
-    BuildArcDefence,
-    BuildRepelFan,
+    BuildAirCannon,
+    BuildFogRepeller,
     Finished
 }
 
 public enum ButtonType
 {
     None,
-    ArcDefence,
+    AirCannon,
     Battery,
     Generator,
     Harvester,
-    Relay,
-    RepelFan,
+    Extender,
+    FogRepeller,
     Destroy
 }
 
@@ -43,12 +43,12 @@ public class TutorialController : DialogueBoxController
     //Serialized Fields
     [SerializeField] private bool skipTutorial = true;
 
-    //[SerializeField] private Landmark arcDefenceLandmark;
+    //[SerializeField] private Landmark airCannonLandmark;
     [SerializeField] private Landmark batteryLandmark;
     [SerializeField] private Landmark generatorLandmark;
     //[SerializeField] private ResourceNode harvesterResource;
-    [SerializeField] private Landmark relayLandmark;
-    //[SerializeField] private Landmark repelFanLandmark;
+    [SerializeField] private Landmark extenderLandmark;
+    //[SerializeField] private Landmark fogRepellerLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [SerializeField] private CameraKey wKey;
@@ -118,10 +118,11 @@ public class TutorialController : DialogueBoxController
         if (skipTutorial)
         {
             Fog.Instance.SpawnStartingFog();
-            Fog.Instance.InvokeActivateFog(2);
+            Fog.Instance.InvokeActivateFog(5);
             tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
             MusicController.Instance.SkipTutorial();
+            wKey.transform.parent.gameObject.SetActive(false);
         }
         else
         {
@@ -138,7 +139,7 @@ public class TutorialController : DialogueBoxController
 
         if (tutorialStage != TutorialStage.Finished)
         {
-            if (tutorialStage == TutorialStage.BuildRepelFan && subStage > 5)
+            if (tutorialStage == TutorialStage.BuildFogRepeller && subStage > 5)
             {
                 UIController.instance.UpdateObjectiveText(TutorialStage.None);
             }
@@ -176,8 +177,8 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildGenerator:
                 BuildGenerator();
                 break;
-            case TutorialStage.BuildRelay:
-                BuildRelay();
+            case TutorialStage.BuildExtender:
+                BuildExtender();
                 break;
             case TutorialStage.BuildBattery:
                 BuildBattery();
@@ -188,11 +189,11 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildHarvesters:
                 BuildHarvesters();
                 break;
-            case TutorialStage.BuildArcDefence:
-                BuildArcDefence();
+            case TutorialStage.BuildAirCannon:
+                BuildAirCannon();
                 break;
-            case TutorialStage.BuildRepelFan:
-                BuildRepelFan();
+            case TutorialStage.BuildFogRepeller:
+                BuildFogRepeller();
                 break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
@@ -246,6 +247,7 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 Fog.Instance.SpawnStartingFog();
+                UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("explain situation", 2);
                 break;
             case 2:
@@ -257,6 +259,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 3:
+                UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("move camera", 1);
 
                 if (!objWindowVisible)
@@ -298,6 +301,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
+                UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("rotate camera", 1);
 
                 if (!objWindowVisible)
@@ -352,6 +356,7 @@ public class TutorialController : DialogueBoxController
                 GetLocationOf(generatorLandmark);
                 ActivateTarget(generatorLandmark);
                 MouseController.Instance.ReportTutorialClick = true;
+                UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build generator decal", 1);
 
                 if (!objWindowVisible)
@@ -401,8 +406,8 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
-                tutorialStage = TutorialStage.BuildRelay;
-                currentlyBuilding = BuildingType.Relay;
+                tutorialStage = TutorialStage.BuildExtender;
+                currentlyBuilding = BuildingType.Extender;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
                 DeactivateTarget();
@@ -416,15 +421,16 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player learns about and places a relay
-    private void BuildRelay()
+    private void BuildExtender()
     {
         switch (subStage)
         {
             case 1:
-                GetLocationOf(relayLandmark);
-                ActivateTarget(relayLandmark);
+                GetLocationOf(extenderLandmark);
+                ActivateTarget(extenderLandmark);
                 MouseController.Instance.ReportTutorialClick = true;
-                SendDialogue("build relay decal", 1);
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("build extender decal", 1);
 
                 if (!objWindowVisible)
                 {
@@ -451,7 +457,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                currentlyLerping = ButtonType.Relay;
+                currentlyLerping = ButtonType.Extender;
                 IncrementSubStage();
                 break;
             case 5:
@@ -485,6 +491,7 @@ public class TutorialController : DialogueBoxController
                 GetLocationOf(batteryLandmark);
                 ActivateTarget(batteryLandmark);
                 MouseController.Instance.ReportTutorialClick = true;
+                UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build battery decal", 1);
 
                 if (!objWindowVisible)
@@ -636,8 +643,8 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                tutorialStage = TutorialStage.BuildArcDefence;
-                currentlyBuilding = BuildingType.ArcDefence;
+                tutorialStage = TutorialStage.BuildAirCannon;
+                currentlyBuilding = BuildingType.AirCannon;
                 ResetSubStage();
                 break;
             default:
@@ -648,14 +655,14 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player learns about and builds an arc defence
-    private void BuildArcDefence()
+    private void BuildAirCannon()
     {
         switch (subStage)
         {
             case 1:
                 Fog.Instance.ActivateFog();
                 MouseController.Instance.ReportTutorialClick = true;
-                SendDialogue("build arc defence", 1);
+                SendDialogue("build air cannon", 1);
 
                 if (!objWindowVisible)
                 {
@@ -682,7 +689,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                currentlyLerping = ButtonType.ArcDefence;
+                currentlyLerping = ButtonType.AirCannon;
                 IncrementSubStage();
                 break;
             case 5:
@@ -693,8 +700,8 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                tutorialStage = TutorialStage.BuildRepelFan;
-                currentlyBuilding = BuildingType.RepelFan;
+                tutorialStage = TutorialStage.BuildFogRepeller;
+                currentlyBuilding = BuildingType.FogRepeller;
                 ResetSubStage();
                 break;
             default:
@@ -705,13 +712,13 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player learns about and builds a repel fan
-    private void BuildRepelFan()
+    private void BuildFogRepeller()
     {
         switch (subStage)
         {
             case 1:
                 MouseController.Instance.ReportTutorialClick = true;
-                SendDialogue("build repel fan", 1);
+                SendDialogue("build fog repeller", 1);
 
                 if (!objWindowVisible)
                 {
@@ -738,7 +745,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                currentlyLerping = ButtonType.RepelFan;
+                currentlyLerping = ButtonType.FogRepeller;
                 IncrementSubStage();
                 break;
             case 5:
@@ -839,10 +846,10 @@ public class TutorialController : DialogueBoxController
                 result.Add(ButtonType.Generator);
             }
 
-            result.Add(ButtonType.ArcDefence);
+            result.Add(ButtonType.AirCannon);
             result.Add(ButtonType.Battery);
-            result.Add(ButtonType.Relay);
-            result.Add(ButtonType.RepelFan);
+            result.Add(ButtonType.Extender);
+            result.Add(ButtonType.FogRepeller);
         }
 
         result.Add(ButtonType.Destroy);

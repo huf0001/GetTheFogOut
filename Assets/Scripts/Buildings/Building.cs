@@ -290,7 +290,7 @@ public abstract class Building : PlaneObject
 
         switch (buildingType)
         {
-            case BuildingType.ArcDefence:
+            case BuildingType.AirCannon:
                 script = transform.GetComponentInChildren<ArcDefence>();
                 break;
             case BuildingType.Battery:
@@ -305,10 +305,10 @@ public abstract class Building : PlaneObject
             case BuildingType.Hub:
                 script = transform.GetComponentInChildren<Hub>();
                 break;
-            case BuildingType.Relay:
+            case BuildingType.Extender:
                 script = transform.GetComponentInChildren<Relay>();
                 break;
-            case BuildingType.RepelFan:
+            case BuildingType.FogRepeller:
                 script = transform.GetComponentInChildren<RepelFan>();
                 break;
             default:
@@ -327,7 +327,7 @@ public abstract class Building : PlaneObject
             WorldController.Instance.HubDestroyed = true;
         }
 
-        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Relay)
+        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Extender)
         {
             PowerSource p = this as PowerSource;
             p.DismantlePowerSource();

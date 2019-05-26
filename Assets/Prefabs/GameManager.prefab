@@ -276,7 +276,6 @@ GameObject:
   - component: {fileID: 4019818891569145385}
   - component: {fileID: 3646138034780775634}
   - component: {fileID: 1899903245264256486}
-  - component: {fileID: 1963843383001614104}
   - component: {fileID: 7305178377255849301}
   - component: {fileID: 963070261}
   m_Layer: 0
@@ -445,6 +444,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: dbcded0b72a66044bbab44d79f074e0a, type: 3}
   objWindowText: {fileID: 0}
   hudObjText: {fileID: 0}
+  powerLow: {r: 1, g: 0, b: 0, a: 0.3137255}
+  powerMedium: {r: 1, g: 0.78683865, b: 0, a: 0.3137255}
+  powerHigh: {r: 0.16620678, g: 0.7830188, b: 0.27217957, a: 0.3137255}
+  powerCurrent: {r: 0.16620678, g: 0.7830188, b: 0.27217957, a: 0.3137255}
+  launchCanvas: {fileID: 0}
+  launchButton: {fileID: 0}
 --- !u!114 &334475222590731063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,76 +467,99 @@ MonoBehaviour:
   aiText: {fileID: 0}
   dialogue:
   - key: error
-    dialogue:
-    - '>Bug caused by developer<. Click for your compensation. Go on. Give it a click. '
-    - 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to say that they
-      were perfectly normal, thank you very much. '
+    expressionDialoguePairs:
+    - aiExpression: 3
+      dialogue: '>Bug caused by developer<. Click for your compensation. Go on. Give
+        it a click. '
+    - aiExpression: 1
+      dialogue: 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to
+        say that they were perfectly normal, thank you very much. '
   - key: explain situation
-    dialogue:
-    - 'Hello. I am your very own Nexus Drone. You may call me Nex for short. I am
-      an emergency drone that you can control from your ship. '
-    - 'Let me run a scan for you to see the extent of the damage. '
-    - 'Scanning... '
-    - 'The hull has sustained copious damage and a thruster is missing. '
-    - "The scan also picked up hostility coming from the surrounding fog. It may be
-      sentient. What are the chances?\r\n"
-    - Your ship comes equipped with important blueprints, should the need arise to
-      use them.
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: "\rHello. I am your very own Nexus Drone. You may call me Nex for
+        short. I am an emergency drone that you can control from your ship. \r\n"
+    - aiExpression: 2
+      dialogue: 'Let me run a scan for you to see the extent of the damage. '
+    - aiExpression: 2
+      dialogue: 'Scanning... '
+    - aiExpression: 2
+      dialogue: 'The hull has sustained copious damage and a thruster is missing. '
+    - aiExpression: 2
+      dialogue: The scan also picked up hostility coming from the surrounding fog.
+        It may be sentient. What are the chances?
+    - aiExpression: 2
+      dialogue: Your ship comes equipped with important blueprints, should the need
+        arise to use them.
   - key: move camera
-    dialogue:
-    - 'WASD moves me around. '
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: 'WASD moves me around. '
   - key: rotate camera
-    dialogue:
-    - 'Press Q or E to make me spin. '
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "\rPress Q or E to make me spin. \r\n"
   - key: build generator decal
-    dialogue:
-    - "Since the backup generator will not be sufficient, you will have to place [POWER
-      GENERATORS].\r \n"
-    - 'Click here. '
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Since the backup generator will not be sufficient, you will have to
+        place [POWER GENERATORS].
+    - aiExpression: 2
+      dialogue: 'Click here. '
   - key: build generator icon
-    dialogue:
-    - 'Now, click on the [POWER GENERATOR] icon. '
-  - key: build relay decal
-    dialogue:
-    - 'Next are [POWER RELAYS]. These will extend the power range from your ship and
-      allow you to place buildings further out. '
-    - 'Place one here. '
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: 'Now, click on the [POWER GENERATOR] icon. '
+  - key: build extender decal
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "\rNext are [POWER EXTENDERS]. These will extend the power range from
+        your ship and allow you to place buildings further out. \r\n"
+    - aiExpression: 2
+      dialogue: 'Place one here. '
   - key: build battery decal
-    dialogue:
-    - "The final power related building is a [BATTERY]. When you place it, it will
-      increase your power capacity.\r \n"
-    - 'Place one here. '
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: 'The final power related building is a [BATTERY]. When you place it,
+        it will increase your power capacity. '
+    - aiExpression: 2
+      dialogue: 'Place one here. '
   - key: increase power generation
-    dialogue:
-    - "Now that you have these skills, increase your [POWER GENERATION]. Do not forget
-      to try more [POWER RELAYS] and [BATTERIES]. \n"
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: 'Now that you have these skills, increase your [POWER GENERATION].
+        Do not forget to try more [POWER EXTENDERS] and [BATTERIES] later. '
   - key: build harvesters
-    dialogue:
-    - "The next important building you have access to is a {HARVESTER}. When placed
-      on a mineral, it will collect its contents for you.\r \n"
-    - "Place 3 {HARVESTERS}. \n"
-  - key: build arc defence
-    dialogue:
-    - 'Your final and most important buildings are the >ARC DEFENSE< and >REPEL FANS<. '
-    - 'An >ARC DEFENSE< will discharge an intense ball of air that will dissipate
-      the fog. '
-    - 'Try placing one. '
-  - key: build repel fan
-    dialogue:
-    - 'Great. Now, a >REPEL FAN< will push the fog away from a small area around it
-      when placed. '
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: The next important building you have access to is a {HARVESTER}. When
+        placed on a {MINERAL}, it will collect its contents for you.
+    - aiExpression: 2
+      dialogue: Place 3 {HARVESTERS}.
+  - key: build air cannon
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "Your final and most important buildings are the >AIR CANNON< and
+        >FOG REPELLER<. \r\n"
+    - aiExpression: 2
+      dialogue: 'An >AIR CANNON< will discharge an intense ball of air that will dissipate
+        the fog. '
+    - aiExpression: 2
+      dialogue: 'Try placing one. '
+  - key: build fog repeller
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: 'Great. Now, a >FOG REPELLER< will push the fog away from a small
+        area around it when placed. '
   - key: finished
-    dialogue:
-    - "Now that you know how to use these buildings, I would suggest trying to find
-      your ship\u2019s thruster. "
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "Now that you know how to use these buildings, I would suggest trying
+        to find your ship\u2019s thruster. "
   skipTutorial: 0
-  camera: {fileID: 0}
-  arcDefenceLandmark: {fileID: 0}
   batteryLandmark: {fileID: 0}
   generatorLandmark: {fileID: 0}
-  harvesterResource: {fileID: 0}
   relayLandmark: {fileID: 0}
-  repelFanLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
   wKey: {fileID: 0}
   aKey: {fileID: 0}
@@ -559,30 +587,55 @@ MonoBehaviour:
   objectiveWindowOpenArrows: {fileID: 0}
   aiText: {fileID: 0}
   dialogue:
+  - key: error
+    expressionDialoguePairs:
+    - aiExpression: 3
+      dialogue: '>Bug caused by developer<. Click for your compensation. Go on. Give
+        it a click. '
+    - aiExpression: 1
+      dialogue: 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to
+        say that they were perfectly normal, thank you very much. '
   - key: start harvest stage
-    dialogue:
-    - Time to repair your hull. You will need collect minerals to repair it.
-    - There is likely to be minerals scattered around the planet. You will need to
-      venture out to find them.
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Time to repair your hull. You will need collect {MINERALS} to repair
+        it.
+    - aiExpression: 2
+      dialogue: There is likely to be {MINERALS} scattered around the planet. You
+        will need to venture out to find them.
   - key: end harvest stage
-    dialogue:
-    - "Great, you\u2019ve repaired your hull. Do not relax just yet. Next step, finding
-      the ship's missing thruster.\r\n"
-    - My sensors are struggling to pick up their location, but I can at least confirm
-      they are out there somewhere. I wonder why the fog has not consumed them yet?
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next
+        step, finding the ship's missing thruster.\r\n"
+    - aiExpression: 2
+      dialogue: My sensors are struggling to pick up their location, but I can at
+        least confirm they are out there somewhere. I wonder why the fog has not consumed
+        them yet?
   - key: start part stage
-    dialogue:
-    - You found the ship's missing thruster! Thankfully it is not in too much disrepair.
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: You found the ship's missing thruster! Thankfully it is not in too
+        much disrepair.
   - key: end part stage
-    dialogue:
-    - "Oh\u2026 I thought I should let you know that fog you\u2019ve been fighting
-      through is showing extreme signs of aggression. "
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "Oh\u2026 I thought I should let you know that fog you\u2019ve been
+        fighting through is showing extreme signs of aggression. "
   - key: start power stage
-    dialogue:
-    - Quick, if you save some power there should be enough to get out of here!
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Quick, if you save some power there should be enough to get out of
+        here!
   - key: end power stage
-    dialogue:
-    - Finally, enough power! Quick, push the launch button and get out of here!
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "\rFinally, enough power! Quick, push the launch button and get out
+        of here!\r\n"
+  - key: power overloaded
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Power overloaded!
   objectivesOn: 1
   currStage: 0
   subStage: 0
@@ -595,14 +648,10 @@ MonoBehaviour:
   generatorLimit: 5
   audioCompleteObjective: {fileID: 8300000, guid: 320d947259c5f924c9abc2ec9a9911cb,
     type: 3}
-  audioStage1: {fileID: 0}
-  audioTransition1To2: {fileID: 0}
-  audioStage2: {fileID: 0}
-  audioTransition2To3: {fileID: 0}
-  audioStage3: {fileID: 0}
-  fogGrowthEasy: 5
-  fogGrowthMedium: 10
-  fogGrowthHard: 15
+  fogGrowthEasy: 20
+  fogGrowthMedium: 30
+  fogGrowthHard: 60
+  shipSmoke: {fileID: 0}
 --- !u!114 &3646138034780775634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,20 +701,6 @@ MonoBehaviour:
   fogFillInterval: 0.2
   fogDamageInterval: 0.02
   fogExpansionInterval: 0.5
---- !u!114 &1963843383001614104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899903245264256479}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f732e2dd7226e8949b2f44c4715c63d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xAndYRange: 52
-  FogTexture: {fileID: 2800000, guid: 46d526b21522be64ca6f38c477e29a41, type: 3}
 --- !u!114 &7305178377255849301
 MonoBehaviour:
   m_ObjectHideFlags: 0

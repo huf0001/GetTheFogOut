@@ -75,7 +75,7 @@ public class BuildingInfo : MonoBehaviour
         {
             destroyButton.gameObject.SetActive(true);
         }
-        if (building.BuildingType == BuildingType.Battery || building.BuildingType == BuildingType.Generator || building.BuildingType == BuildingType.Relay)
+        if (building.BuildingType == BuildingType.Battery || building.BuildingType == BuildingType.Generator || building.BuildingType == BuildingType.Extender)
         {
             bg.color = new Color32(0, 166, 81, 237);
         }
@@ -83,7 +83,7 @@ public class BuildingInfo : MonoBehaviour
         {
             bg.color = new Color32(224, 145, 0, 237);
         }
-        else if (building.BuildingType == BuildingType.RepelFan || building.BuildingType == BuildingType.ArcDefence)
+        else if (building.BuildingType == BuildingType.FogRepeller || building.BuildingType == BuildingType.AirCannon)
         {
             bg.color = new Color32(255, 0, 0, 237);
         }

@@ -45,7 +45,7 @@ public abstract class PowerSource : Building
             {
                 batteries.Add(b as Battery);
             }
-            else if (b.BuildingType == BuildingType.Relay)
+            else if (b.BuildingType == BuildingType.Extender)
             {
                 Relay r = b as Relay;
                 batteries.AddRange(r.GetBatteries());
@@ -65,7 +65,7 @@ public abstract class PowerSource : Building
             {
                 generators.Add(b as Generator);
             }
-            else if (b.BuildingType == BuildingType.Relay)
+            else if (b.BuildingType == BuildingType.Extender)
             {
                 Relay r = b as Relay;
                 generators.AddRange(r.GetGenerators());
@@ -81,7 +81,7 @@ public abstract class PowerSource : Building
 
         foreach (Building b in suppliedBuildings)
         {
-            if (b.BuildingType == BuildingType.Relay)
+            if (b.BuildingType == BuildingType.Extender)
             {
                 Relay r = b as Relay;
                 relays.Add(r);
@@ -98,11 +98,11 @@ public abstract class PowerSource : Building
 
         foreach (Building b in suppliedBuildings)
         {
-            if (b.BuildingType == BuildingType.ArcDefence)
+            if (b.BuildingType == BuildingType.AirCannon)
             {
                 arcDefences.Add(b as ArcDefence);
             }
-            else if (b.BuildingType == BuildingType.Relay)
+            else if (b.BuildingType == BuildingType.Extender)
             {
                 Relay r = b as Relay;
                 arcDefences.AddRange(r.GetArcDefences());
@@ -118,11 +118,11 @@ public abstract class PowerSource : Building
 
         foreach (Building b in suppliedBuildings)
         {
-            if (b.BuildingType == BuildingType.RepelFan)
+            if (b.BuildingType == BuildingType.FogRepeller)
             {
                 repelFans.Add(b as RepelFan);
             }
-            else if (b.BuildingType == BuildingType.Relay)
+            else if (b.BuildingType == BuildingType.Extender)
             {
                 Relay r = b as Relay;
                 repelFans.AddRange(r.GetRepelFans());
@@ -138,11 +138,11 @@ public abstract class PowerSource : Building
 
         foreach (Building b in suppliedBuildings)
         {
-            if (b.BuildingType == BuildingType.ArcDefence || b.BuildingType == BuildingType.RepelFan )
+            if (b.BuildingType == BuildingType.AirCannon || b.BuildingType == BuildingType.FogRepeller )
             {
                 defences.Add(b as Defence);
             }
-            else if (b.BuildingType == BuildingType.Relay)
+            else if (b.BuildingType == BuildingType.Extender)
             {
                 Relay r = b as Relay;
                 defences.AddRange(r.GetDefences());
@@ -162,7 +162,7 @@ public abstract class PowerSource : Building
             {
                 harvesters.Add(b as Harvester);
             }
-            else if (b.BuildingType == BuildingType.Relay)
+            else if (b.BuildingType == BuildingType.Extender)
             {
                 Relay r = b as Relay;
                 harvesters.AddRange(r.GetHarvesters());
