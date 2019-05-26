@@ -666,7 +666,17 @@ public class WorldController : MonoBehaviour
         }
 
     }
-	/*  USE THIS, IF YOU WISH TO BREAK YOUR PC xD
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+                Application.Quit();
+        #endif
+    }
+
+    /*  USE THIS, IF YOU WISH TO BREAK YOUR PC xD
 	public void changePowerTIle(Color newColor)
     {
    
