@@ -39,7 +39,6 @@ public class UIController : MonoBehaviour
     ResourceController resourceController = null;
     private MeshRenderer MeshRend;
     private int index,temp;
-    private IEnumerator coroutine;
 
     //private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
 
@@ -54,10 +53,12 @@ public class UIController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         index = 0;
         temp = 2;
+
         FindSliders();
-        coroutine = FadeTo(0.15f, 2.0f);
+
         cursor = GameObject.Find("Cursor");
         cursor.SetActive(false);
         //Invoke("FindTile", 5);
@@ -134,47 +135,28 @@ public class UIController : MonoBehaviour
         cursor.SetActive(isOn);
     }
 
-    public IEnumerator FadeTo(float aValue,float aTime)
-    {
-        bool toggle = true;
-        while (true)
-        {
-            Color c = powerLow;
-            Color newColor;
-            float alpha = c.a;
-            if (toggle)
-            {
-                for (float t = 1.0f; t > 0.0f; t -= Time.deltaTime / aTime)
-                {
-                    newColor = new Color(c.r, c.g, c.b, Mathf.Lerp(aValue, alpha, t));
-                    changeColor(newColor,true);
-                    yield return null;
-                }
-                toggle = !toggle;
-                yield return new WaitForSeconds(2);
-            }
-            else
-            {
-                for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
-                {
-                    newColor = new Color(c.r, c.g, c.b, Mathf.Lerp(aValue, 0.6f, t));
-                    changeColor(newColor,true);
-                    yield return null;
-                }
-                toggle = !toggle;
-                yield return new WaitForSeconds(2);
-            }
-        }
-    }
-
     public void changeColor(Color newColor, bool flash)
     {
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
         foreach (GameObject tile in gameObjects)
         {
             MeshRend = tile.GetComponent<MeshRenderer>();
-            MeshRend.material.DOColor(newColor, "_BaseColor", 1);
+            if (!flash)
+            {
+                MeshRend.material.DOColor(newColor, "_BaseColor", 1);
+            }else
+            {
+                MeshRend.material.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
+                MeshRend.material.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased();
+            }
         }
+    }
+
+    public Color getAlpha(Color color,float avalue)
+    {
+        Color current = color;
+        current.a = avalue;
+        return current;
     }
 
     void UpdateResourceText()
@@ -236,12 +218,13 @@ public class UIController : MonoBehaviour
                 }
                 if (index == 1)
                 {
-                    changeColor(powerCurrent,false);
-                    StartCoroutine(coroutine);
+                    changeColor(powerCurrent,true);
+                 //   StartCoroutine(coroutine);
                 }
                 else
                 {
-                    StopCoroutine(coroutine);
+                    //   StopCoroutine(coroutine);
+                    DOTween.KillAll();
                     changeColor(powerCurrent,false);
                 }
             }
@@ -410,4 +393,39 @@ public class UIController : MonoBehaviour
                 break;
         }
     }
+
+    /*  no use, tween value issues
+public IEnumerator FadeTo(float aValue,float aTime)
+{
+    bool toggle = true;
+    while (true)
+    {
+        Color c = powerLow;
+        Color newColor;
+        float alpha = c.a;
+        if (toggle)
+        {
+            for (float t = 1.0f; t > 0.0f; t -= Time.deltaTime / aTime)
+            {
+                newColor = new Color(c.r, c.g, c.b, Mathf.Lerp(aValue, alpha, t));
+                changeColor(newColor,true);
+                yield return null;
+            }
+            toggle = !toggle;
+            yield return new WaitForSeconds(2);
+        }
+        else
+        {
+            for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+            {
+                newColor = new Color(c.r, c.g, c.b, Mathf.Lerp(aValue, 0.6f, t));
+                changeColor(newColor,true);
+                yield return null;
+            }
+            toggle = !toggle;
+            yield return new WaitForSeconds(2);
+        }
+    }
+}
+*/
 }
