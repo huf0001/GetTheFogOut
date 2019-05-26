@@ -26,7 +26,6 @@ public abstract class Building : PlaneObject
 
     //Non-serialized fields
     private Animator animator;
-    private ResourceController resourceController = null;
     protected AudioSource audioSource;
     private bool damagingNotified = false;
     private bool damagedNotified = false;
@@ -62,7 +61,6 @@ public abstract class Building : PlaneObject
 
         audioSource = GetComponent<AudioSource>();
 
-        resourceController = ResourceController.Instance;
         //if (placed)
         //{
         //    GetComponent<Renderer>().material.shader = buildingShader;
@@ -159,7 +157,7 @@ public abstract class Building : PlaneObject
             }
         }
 
-        resourceController.AddBuilding(this);
+        ResourceController.Instance.AddBuilding(this);
         placed = true;
 
         /*
@@ -359,7 +357,7 @@ public abstract class Building : PlaneObject
             UIController.instance.buildingInfo.HideInfo();
         }
 
-        resourceController.RemoveBuilding(this);
+        ResourceController.Instance.RemoveBuilding(this);
 
         //Debug.Log("Should be removed from ResourceController's list of my building type");
 

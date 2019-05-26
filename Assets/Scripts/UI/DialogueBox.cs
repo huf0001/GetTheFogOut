@@ -45,6 +45,7 @@ public class DialogueBox : MonoBehaviour
     private DialogueSet nextDialogueSet = null;
     private float nextInvokeDelay = 0f;
     private bool deactivationSubmitted = false;
+    private bool nextDialogueSetReady = false;
 
     //Public Properties
     public bool Activated { get => activated; }
@@ -118,11 +119,23 @@ public class DialogueBox : MonoBehaviour
         }
         else if (deactivationSubmitted && activated)
         {
+            currentDialogueSet = "";
+            clickable = false;
             DeactivateDialogueBox();
         }
 
         deactivationSubmitted = false;
 
+        if (nextDialogueSetReady)
+        {
+            DisplayNext();
+            nextDialogueSetReady = false;
+        }
+        else if (clickable && (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")))
+        {
+            RegisterDialogueRead();
+        }
+        
         if (!lerpFinished)
         {
             pendingText = "";
@@ -183,11 +196,6 @@ public class DialogueBox : MonoBehaviour
                 lerpFinished = true;
             }
         }
-
-        if (clickable && (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")))
-        {
-            RegisterDialogueRead();
-        }
     }
 
     //Utility Methods - Changeover the dialogue list-------------------------------------------------------------------------------------------------
@@ -212,6 +220,7 @@ public class DialogueBox : MonoBehaviour
             currentDialogueSet = dialogueSet.Key;
 
             activated = true;
+            nextDialogueSetReady = false;
 
             Invoke("ShowDialogueBox", invokeDelay);
         }
@@ -224,13 +233,13 @@ public class DialogueBox : MonoBehaviour
     //Displays the dialogue box once it's been activated and the invocation delay has finished
     private void ShowDialogueBox()
     {
-        DisplayNext();
+        nextDialogueSetReady = true;
+
         dialogueRectTransform.DOAnchorPosY(Screen.height / 100, popUpSpeed).SetEase(Ease.OutBack).SetUpdate(true).OnComplete(
             delegate
             {
                 clickable = true;
             });
-        //gameObject.SetActive(true);
     }
 
     //Changes over the dialogue in the list; used instead of ActivateDialogueBox when the dialogue box is already active
