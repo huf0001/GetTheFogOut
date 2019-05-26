@@ -353,11 +353,9 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                GetLocationOf(generatorLandmark);
-                ActivateTarget(generatorLandmark);
-                MouseController.Instance.ReportTutorialClick = true;
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build generator decal", 1);
+                Invoke("ActivateTarget", 1);
 
                 if (!objWindowVisible)
                 {
@@ -426,11 +424,8 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                GetLocationOf(extenderLandmark);
-                ActivateTarget(extenderLandmark);
-                MouseController.Instance.ReportTutorialClick = true;
-                UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build extender decal", 1);
+                Invoke("ActivateTarget", 1);
 
                 if (!objWindowVisible)
                 {
@@ -488,11 +483,8 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                GetLocationOf(batteryLandmark);
-                ActivateTarget(batteryLandmark);
-                MouseController.Instance.ReportTutorialClick = true;
-                UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build battery decal", 1);
+                Invoke("ActivateTarget", 1);
 
                 if (!objWindowVisible)
                 {
@@ -548,8 +540,8 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("increase power generation", 1);
+                Invoke("ActivateMouse", 1);
 
                 if (!objWindowVisible)
                 {
@@ -604,8 +596,8 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build harvesters", 1);
+                Invoke("ActivateMouse", 1);
 
                 if (!objWindowVisible)
                 {
@@ -661,8 +653,8 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 Fog.Instance.ActivateFog();
-                MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build air cannon", 1);
+                Invoke("ActivateMouse", 1);
 
                 if (!objWindowVisible)
                 {
@@ -719,6 +711,7 @@ public class TutorialController : DialogueBoxController
             case 1:
                 MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build fog repeller", 1);
+                Invoke("ActivateMouse", 1);
 
                 if (!objWindowVisible)
                 {
@@ -859,6 +852,12 @@ public class TutorialController : DialogueBoxController
 
     //Tutorial Utility Methods - Stage Progression---------------------------------------------------------------------------------------------------
 
+    //Tells MouseController to report clicks to TutorialController
+    private void ActivateMouse()
+    {
+        MouseController.Instance.ReportTutorialClick = true;
+    }
+
     //Override of SendDialogue that calls IncrementSubStage once dialogue is sent
     protected override void SendDialogue(string dialogueKey, float invokeDelay)
     {
@@ -905,6 +904,53 @@ public class TutorialController : DialogueBoxController
 
     //Tutorial Utility Methods - (Targeted) Building-------------------------------------------------------------------------------------------------
 
+    //(Invokably) activate the building target based on the current stage rather than passing a parameter
+    private void ActivateTarget()
+    {
+        Locatable l = null;
+
+        switch (tutorialStage)
+        {
+            case TutorialStage.BuildGenerator:
+                l = generatorLandmark;
+                break;
+            case TutorialStage.BuildExtender:
+                l = extenderLandmark;
+                break;
+            case TutorialStage.BuildBattery:
+                l = batteryLandmark;
+                break;
+            default:
+                Debug.Log($"Why are you activating a target during stage {tutorialStage}?");
+                break;
+        }
+
+        if (l != null)
+        {
+            ActivateTarget(l);
+        }
+        else
+        {
+            Debug.Log("Locatable l in TutorialController.ActivateTarget() is null");
+        }
+
+    }
+
+    //Activate the building target at the locatable's location
+    private void ActivateTarget(Locatable l)
+    {
+        GetLocationOf(l);
+
+        buildingTarget.Location = currentTile;
+        buildingTarget.transform.position = l.transform.position;
+        targetRenderer.enabled = true;
+
+        lerpProgress = 0f;
+        lerpForward = true;
+
+        ActivateMouse();
+    }
+
     //Get location of a locatable object
     private void GetLocationOf(Locatable l)
     {
@@ -921,17 +967,6 @@ public class TutorialController : DialogueBoxController
         {
             Debug.Log("TutorialController.CurrentTile is null");
         }
-    }
-
-    //Activate the building target at the locatable's location
-    private void ActivateTarget(Locatable l)
-    {
-        buildingTarget.Location = currentTile;
-        buildingTarget.transform.position = l.transform.position;
-        targetRenderer.enabled = true;
-
-        lerpProgress = 0f;
-        lerpForward = true;
     }
 
     //Lerp the target decal
