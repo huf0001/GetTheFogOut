@@ -160,7 +160,7 @@ public class WarningScript : MonoBehaviour
         {
             warnings["power"] = WarningLevel.Normal;
             powerStatus.text = NORMAL + "Power grid is stable";
-            StartCoroutine(ShowMessage(powerStatus.text));
+            ShowMessage(powerStatus.text);
             ObjectiveController.Instance.PowerOverloaded = false;
         }
         else if (pChangeValue < 0)
@@ -168,34 +168,42 @@ public class WarningScript : MonoBehaviour
             warnings["power"] = WarningLevel.Danger;
             powerStatus.text = DANGER + "Power grid is overloaded!";
             audioSource.PlayOneShot(audioPowerGridOverloadedAlert);
-            StartCoroutine(ShowMessage(powerStatus.text));
+            ShowMessage(powerStatus.text);
             ObjectiveController.Instance.PowerOverloaded = true;
         }
         else
         {
             warnings["power"] = WarningLevel.Warning;
             powerStatus.text = WARNING + "Power grid is at max capacity";
-            StartCoroutine(ShowMessage(powerStatus.text));
+            ShowMessage(powerStatus.text);
             ObjectiveController.Instance.PowerOverloaded = false;
         }
     }
 
-    public IEnumerator ShowMessage(string txt)
+    public void ShowMessage(string txt)
     {
         GameObject message = Instantiate(popupMessage, GameObject.Find("Warnings").transform);
+        RectTransform messageTrans = message.GetComponent<RectTransform>();
+
         if (existingMessages.Count != 0)
         {
             message.transform.position = existingMessages[existingMessages.Count - 1].transform.position + new Vector3(335, 0);
         }
         message.transform.position -= new Vector3(0, Screen.height / 20);
+
         message.GetComponentInChildren<TextMeshProUGUI>().text = txt;
         existingMessages.Add(message);
-        message.GetComponent<RectTransform>().DOAnchorPosX(-330, 0.5f).SetEase(Ease.OutExpo);
-        yield return new WaitForSeconds(3.5f);
-        message.GetComponent<RectTransform>().DOAnchorPosX(5, 0.5f).SetEase(Ease.InExpo);
-        yield return new WaitForSeconds(0.5f);
-        existingMessages.Remove(message);
-        Destroy(message);
+
+        Sequence showMessage = DOTween.Sequence();
+        showMessage.Append(messageTrans.DOAnchorPosX(-330, 0.5f).SetEase(Ease.OutExpo))
+            .AppendInterval(5)
+            .Append(messageTrans.DOAnchorPosX(5, 0.5f).SetEase(Ease.InExpo))
+            .OnComplete(
+            delegate
+            {
+                existingMessages.Remove(message);
+                Destroy(message);
+            });
     }
 
     public void ToggleVisibility()

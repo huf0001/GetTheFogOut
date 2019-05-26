@@ -393,7 +393,7 @@ public abstract class Building : PlaneObject
         }
     }
 
-    public IEnumerator DealDamageToBuilding(float damageVal)
+    public void DealDamageToBuilding(float damageVal)
     {
         if (damagedNotified)
         {
@@ -404,10 +404,9 @@ public abstract class Building : PlaneObject
 
         if (!damagingNotified)
         {
-            StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"A {BuildingType} is being damaged!"));
+            MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"<size=80%>A {BuildingType} is being damaged!");
             audioSource.PlayOneShot(audioDamage);
             damagingNotified = true;
         }
-        yield return new WaitForSeconds(0.1f);
     }
 }
