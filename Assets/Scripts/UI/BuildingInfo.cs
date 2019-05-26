@@ -28,7 +28,7 @@ public class BuildingInfo : MonoBehaviour
         }
         if (Visible)
         {
-            if (building != null) { UpdateText(); }
+            mineralTime += Time.deltaTime;
             parent.LookAt(Camera.main.transform);
         }
     }
@@ -48,12 +48,18 @@ public class BuildingInfo : MonoBehaviour
 
         if (building.BuildingType == BuildingType.Harvester)
         {
-            mineralTime += Time.deltaTime;
             if (building.Location.Resource.Health != mineral)
             {
                 mineralVal = mineral;
                 mineral = building.Location.Resource.Health;
                 mineralTime = 0;
+            }
+
+            if (!Visible)
+            {
+                mineralVal = mineral;
+                mainText.text += $"\n<color=#e09100><size=125%><sprite=\"all_icons\" index=2><size=100%>Remaining: {mineral}</color>";
+                return;
             }
             mainText.text += $"\n<color=#e09100><size=125%><sprite=\"all_icons\" index=2><size=100%>Remaining: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))}</color>";
         }
@@ -87,7 +93,7 @@ public class BuildingInfo : MonoBehaviour
         {
             bg.color = new Color32(255, 0, 0, 237);
         }
-        UpdateText();
+        InvokeRepeating("UpdateText", 0, 0.1f);
 
         healthBar.SetActive(true);
         parent.position = new Vector3(b.transform.position.x, 1.5f, b.transform.position.z) + new Vector3(-0.3f, 0, -2.3f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
@@ -126,6 +132,7 @@ public class BuildingInfo : MonoBehaviour
 
     public void HideInfo()
     {
+        CancelInvoke("UpdateText");
         building = null;
         gameObject.SetActive(false);
         Visible = false;
