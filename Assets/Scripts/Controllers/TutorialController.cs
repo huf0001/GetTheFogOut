@@ -74,7 +74,7 @@ public class TutorialController : DialogueBoxController
 
     private ButtonType currentlyLerping;
 
-    private DecalProjectorComponent targetDecal = null;
+    private MeshRenderer targetRenderer = null;
     private float decalMin = 1.5f;
     private float decalMax = 3f;
     private float lerpMultiplier = 1f;
@@ -126,7 +126,7 @@ public class TutorialController : DialogueBoxController
         }
         else
         {
-            targetDecal = buildingTarget.GetComponent<DecalProjectorComponent>();
+            targetRenderer = buildingTarget.GetComponent<MeshRenderer>();
         }
     }
 
@@ -148,7 +148,7 @@ public class TutorialController : DialogueBoxController
                 UIController.instance.UpdateObjectiveText(tutorialStage);
             }
 
-            if (targetDecal.enabled)
+            if (targetRenderer.enabled)
             {
                 LerpDecal();
             }
@@ -928,7 +928,7 @@ public class TutorialController : DialogueBoxController
     {
         buildingTarget.Location = currentTile;
         buildingTarget.transform.position = l.transform.position;
-        targetDecal.enabled = true;
+        targetRenderer.enabled = true;
 
         lerpProgress = 0f;
         lerpForward = true;
@@ -938,13 +938,9 @@ public class TutorialController : DialogueBoxController
     private void LerpDecal()
     {
         float lerped = Mathf.Lerp(decalMin, decalMax, lerpProgress);
-        targetDecal.m_Size.Set(lerped, 1, lerped);
+        buildingTarget.transform.localScale = new Vector3(lerped, 1, lerped);
 
         UpdateLerpValues();
-
-        //Forces the decal to show the lerping
-        targetDecal.enabled = false;
-        targetDecal.enabled = true;
     }
 
     //Update the decal's lerping values
@@ -991,7 +987,7 @@ public class TutorialController : DialogueBoxController
     //Deactivates the building target
     private void DeactivateTarget()
     {
-        targetDecal.enabled = false;
+        targetRenderer.enabled = false;
     }
 }
 
