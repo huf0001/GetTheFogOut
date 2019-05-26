@@ -44,7 +44,7 @@ public class ArcDefence : Defence
     public override void PowerDown()
     {
         base.PowerDown();
-        CancelInvoke();
+        CancelInvoke("Fire");
     }
 
     //protected override void OnDestroy()

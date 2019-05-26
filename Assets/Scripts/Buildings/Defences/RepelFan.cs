@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.VFX;
 
 public class RepelFan : Defence
 {
@@ -8,6 +9,7 @@ public class RepelFan : Defence
     [SerializeField] private int aoeDamage = 25;
     [SerializeField] private float rateOfFire = 1f;
     [SerializeField] private bool placedInEditor = false;
+   // private VisualEffect myeffect;
 
     protected override void Awake()
     {
@@ -33,7 +35,7 @@ public class RepelFan : Defence
     public override void PowerUp()
     {
         base.PowerUp();
-
+        setParticle(true);
         if (!IsInvoking("Fire"))
         {
             InvokeRepeating("Fire", 1f, rateOfFire);
@@ -43,7 +45,13 @@ public class RepelFan : Defence
     public override void PowerDown()
     {
         base.PowerDown();
-        CancelInvoke();
+        setParticle(false);
+        CancelInvoke("Fire");
+    }
+
+    private void setParticle(bool toggle)
+    {
+        this.gameObject.GetComponentInChildren<VisualEffect>().enabled = toggle;
     }
 
     void Fire()
