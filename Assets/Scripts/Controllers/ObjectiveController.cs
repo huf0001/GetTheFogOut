@@ -324,12 +324,12 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI completetion text
                 SendDialogue("end power stage", 1);
                 IncrementSubStage();
+                UIController.instance.ShowLaunchButton();
                 break;
             case 6:
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    UIController.instance.ShowLaunchButton();
                     //WorldController.Instance.GameWin = true;
                     //WorldController.Instance.GameOver = true;
                     IncrementSubStage();

@@ -46,7 +46,7 @@ public class TutorialController : DialogueBoxController
     //[SerializeField] private Landmark airCannonLandmark;
     [SerializeField] private Landmark batteryLandmark;
     [SerializeField] private Landmark generatorLandmark;
-    //[SerializeField] private ResourceNode harvesterResource;
+    [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark extenderLandmark;
     //[SerializeField] private Landmark fogRepellerLandmark;
     [SerializeField] private Locatable buildingTarget;
@@ -354,7 +354,7 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
-                SendDialogue("build generator decal", 1);
+                SendDialogue("build generator target", 1);
                 Invoke("ActivateTarget", 1);
 
                 if (!objWindowVisible)
@@ -424,7 +424,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                SendDialogue("build extender decal", 1);
+                SendDialogue("build extender target", 1);
                 Invoke("ActivateTarget", 1);
 
                 if (!objWindowVisible)
@@ -483,7 +483,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                SendDialogue("build battery decal", 1);
+                SendDialogue("build battery target", 1);
                 Invoke("ActivateTarget", 1);
 
                 if (!objWindowVisible)
@@ -596,8 +596,8 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                SendDialogue("build harvesters", 1);
-                Invoke("ActivateMouse", 1);
+                SendDialogue("build harvester target", 1);
+                Invoke("ActivateTarget", 1);
 
                 if (!objWindowVisible)
                 {
@@ -628,13 +628,47 @@ public class TutorialController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 5:
+                if (BuiltCurrentlyBuilding())
+                {
+                    DeactivateTarget();
+                    IncrementSubStage();
+                }
+
+                break;
+            case 6:
+                SendDialogue("build more harvesters", 1);
+                Invoke("ActivateMouse", 1);
+                break;
+            case 7:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    SkipTutorialAhead(9);
+                }
+
+                break;
+            case 8:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
+
+                break;
+            case 9:
+                currentlyLerping = ButtonType.Harvester;
+                IncrementSubStage();
+                break;
+            case 10:
                 if (ResourceController.Instance.Harvesters.Count == builtHarvestersGoal)
                 {
                     IncrementSubStage();
                 }
 
                 break;
-            case 6:
+            case 11:
                 tutorialStage = TutorialStage.BuildAirCannon;
                 currentlyBuilding = BuildingType.AirCannon;
                 ResetSubStage();
@@ -870,6 +904,7 @@ public class TutorialController : DialogueBoxController
     {
         MouseController.Instance.ReportTutorialClick = false;
         tileClicked = false;
+        currentlyLerping = ButtonType.None;
         ResetDialogueRead();
         subStage = nextSubStage;
     }
@@ -919,6 +954,9 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.BuildBattery:
                 l = batteryLandmark;
+                break;
+            case TutorialStage.BuildHarvesters:
+                l = harvesterResource;
                 break;
             default:
                 Debug.Log($"Why are you activating a target during stage {tutorialStage}?");

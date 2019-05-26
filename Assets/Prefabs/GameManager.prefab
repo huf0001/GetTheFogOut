@@ -324,8 +324,7 @@ MonoBehaviour:
   ground: {fileID: 0}
   planeGridprefab: {fileID: 6018002286047896067, guid: a9a48ed08e70c5840891481cb21c444d,
     type: 3}
-  hubPrefab: {fileID: 2071841716570308282, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
-    type: 3}
+  hubPrefab: {fileID: 0}
   mineralPrefab: {fileID: 8502067115120478638, guid: b73f147f6fafb3242895252f4e5718fb,
     type: 3}
   fuelPrefab: {fileID: 8393472377661496211, guid: 4d4c598dd9bc8cb43a0d126a2b0e2eb8,
@@ -499,7 +498,7 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: "\rPress Q or E to make me spin. \r\n"
-  - key: build generator decal
+  - key: build generator target
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: Since the backup generator will not be sufficient, you will have to
@@ -510,14 +509,14 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: 'Now, click on the [POWER GENERATOR] icon. '
-  - key: build extender decal
+  - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: "\rNext are [POWER EXTENDERS]. These will extend the power range from
         your ship and allow you to place buildings further out. \r\n"
     - aiExpression: 2
       dialogue: 'Place one here. '
-  - key: build battery decal
+  - key: build battery target
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: 'The final power related building is a [BATTERY]. When you place it,
@@ -529,13 +528,18 @@ MonoBehaviour:
     - aiExpression: 1
       dialogue: 'Now that you have these skills, increase your [POWER GENERATION].
         Do not forget to try more [POWER EXTENDERS] and [BATTERIES] later. '
-  - key: build harvesters
+  - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: The next important building you have access to is a {HARVESTER}. When
         placed on a {MINERAL}, it will collect its contents for you.
     - aiExpression: 2
-      dialogue: Place 3 {HARVESTERS}.
+      dialogue: Place a {HARVESTER} here.
+  - key: build more harvesters
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: Good, you're learning. Now build two more to speed up your {MINERAL}
+        collection.
   - key: build air cannon
     expressionDialoguePairs:
     - aiExpression: 2
@@ -556,9 +560,10 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: "Now that you know how to use these buildings, I would suggest trying
         to find your ship\u2019s thruster. "
-  skipTutorial: 1
+  skipTutorial: 0
   batteryLandmark: {fileID: 0}
   generatorLandmark: {fileID: 0}
+  harvesterResource: {fileID: 0}
   extenderLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
   wKey: {fileID: 0}

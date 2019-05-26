@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.1350612, a: 1}
+  m_IndirectSpecularColor: {r: 0.067397416, g: 0.08987052, b: 0.13496715, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3513,6 +3513,11 @@ PrefabInstance:
       objectReference: {fileID: 160074829}
     - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
+      propertyPath: hubPrefab
+      value: 
+      objectReference: {fileID: 1660711161}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
       propertyPath: hub
       value: 
       objectReference: {fileID: 1541682272}
@@ -3521,11 +3526,6 @@ PrefabInstance:
       propertyPath: pause
       value: 
       objectReference: {fileID: 101069077}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: hubPrefab
-      value: 
-      objectReference: {fileID: 1660711161}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow
@@ -3551,6 +3551,11 @@ PrefabInstance:
       propertyPath: generatorLandmark
       value: 
       objectReference: {fileID: 390134775}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: harvesterResource
+      value: 
+      objectReference: {fileID: 2128707803}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: extenderLandmark
@@ -3591,11 +3596,6 @@ PrefabInstance:
       propertyPath: eKey
       value: 
       objectReference: {fileID: 326070628}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256477, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: warningScript
@@ -4386,6 +4386,18 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2128707803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9118112184725691006, guid: b73f147f6fafb3242895252f4e5718fb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1409251835}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed6d37a806b280498c454644f3bf924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4455723525751102813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4627,7 +4639,7 @@ PrefabInstance:
     - target: {fileID: 4932851536360969956, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 31
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 4932851536360969956, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
@@ -4637,7 +4649,7 @@ PrefabInstance:
     - target: {fileID: 4932851536360969956, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 21
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 4932851536360969956, guid: 96bff486ac9ca384a894669da2068243,
         type: 3}
