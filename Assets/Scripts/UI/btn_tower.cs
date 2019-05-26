@@ -53,7 +53,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 buildingCost.text = $"{build_prefab.GetComponentInChildren<Harvester>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_arc_defence":
-                buildingDesc.text = $"<b>Arc Defence</b>\n" + "<line-height=80% size=60%>" + descText;
+                buildingDesc.text = $"<b>Air Cannon</b>\n" + "<line-height=80% size=60%>" + descText;
                 buildingCost.text = $"{build_prefab.GetComponentInChildren<ArcDefence>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_repel_fan":
@@ -61,7 +61,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 buildingCost.text = $"{build_prefab.GetComponentInChildren<RepelFan>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_relay":
-                buildingDesc.text = $"<b>Power Relay</b>\n" + "<line-height=80% size=60%>" + descText;
+                buildingDesc.text = $"<b>Power Extender</b>\n" + "<line-height=80% size=60%>" + descText;
                 buildingCost.text = $"{build_prefab.GetComponentInChildren<Relay>().MineralCost} <sprite=\"all_icons\" index=3>";
                 break;
             case "btn_remove":
@@ -95,17 +95,17 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Harvester>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_arc_defence":
-                    buildingDesc.text = $"<b>Arc Defence</b>\n" +
+                    buildingDesc.text = $"<b>Air Cannon</b>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<ArcDefence>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_repel_fan":
-                    buildingDesc.text = $"<b>Repel Tower</b>\n" +
+                    buildingDesc.text = $"<b>Fog Repeller</b>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<RepelFan>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_relay":
-                    buildingDesc.text = $"<b>Power Relay</b>\n" +
+                    buildingDesc.text = $"<b>Power Extender</b>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Relay>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
