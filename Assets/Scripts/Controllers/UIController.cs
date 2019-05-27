@@ -59,8 +59,8 @@ public class UIController : MonoBehaviour
 
         FindSliders();
 
-        cursor = GameObject.Find("Cursor");
-        cursor.SetActive(false);
+        //cursor = GameObject.Find("Cursor");
+        //cursor.SetActive(false);
         //Invoke("FindTile", 5);
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
@@ -210,7 +210,7 @@ public class UIController : MonoBehaviour
             }else
             {
                 MeshRend.material.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
-                MeshRend.material.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased();
+                MeshRend.material.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
             }
         }
     }
@@ -287,7 +287,8 @@ public class UIController : MonoBehaviour
                 else
                 {
                     //   StopCoroutine(coroutine);
-                    DOTween.KillAll();
+                    //DOTween.KillAll();
+                    DOTween.Kill("tile");
                     changeColor(powerCurrent,false);
                 }
             }
