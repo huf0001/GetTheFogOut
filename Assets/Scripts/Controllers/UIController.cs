@@ -37,7 +37,7 @@ public class UIController : MonoBehaviour
     [SerializeField] Button launchButton;
 
     ResourceController resourceController = null;
-    private MeshRenderer MeshRend;
+//    private MeshRenderer MeshRend;
     private int index,temp;
 
     //private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
@@ -59,8 +59,8 @@ public class UIController : MonoBehaviour
 
         FindSliders();
 
-        cursor = GameObject.Find("Cursor");
-        cursor.SetActive(false);
+    //    cursor = GameObject.Find("Cursor");
+    //    cursor.SetActive(false);
         //Invoke("FindTile", 5);
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
@@ -137,6 +137,7 @@ public class UIController : MonoBehaviour
 
     public void changeColor(Color newColor, bool flash)
     {
+        /*
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
         foreach (GameObject tile in gameObjects)
         {
@@ -149,6 +150,16 @@ public class UIController : MonoBehaviour
                 MeshRend.material.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
                 MeshRend.material.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
             }
+        }*/
+        MeshRenderer tile = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
+        if (!flash)
+        {
+            tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1);
+        }
+        else
+        {
+            tile.sharedMaterial.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
+            tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
         }
     }
 
