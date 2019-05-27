@@ -37,7 +37,7 @@ public class UIController : MonoBehaviour
     [SerializeField] Button launchButton;
 
     ResourceController resourceController = null;
-    private MeshRenderer MeshRend;
+//    private MeshRenderer MeshRend;
     private int index,temp;
 
     //private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
@@ -59,8 +59,8 @@ public class UIController : MonoBehaviour
 
         FindSliders();
 
-        cursor = GameObject.Find("Cursor");
-        cursor.SetActive(false);
+        //cursor = GameObject.Find("Cursor");
+        //cursor.SetActive(false);
         //Invoke("FindTile", 5);
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
@@ -98,6 +98,8 @@ public class UIController : MonoBehaviour
         mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
     }*/
 
+
+    // Functions dealing with the drop down objective button
     public void ShowLaunchButton()
     {
         launchCanvas.SetActive(true);
@@ -106,13 +108,74 @@ public class UIController : MonoBehaviour
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchBackground.DOFillAmount(1, 1))
-            //.AppendInterval(0.5f)
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
             {
                 launchButton.enabled = true;
+                launchButton.onClick.AddListener(delegate { WinGame(); });
                 launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+            });
+    }
+
+    public void ShowAttachButton()
+    {
+        launchCanvas.SetActive(true);
+        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        launchButtonImage = launchButton.image;
+
+        Sequence showLaunch = DOTween.Sequence();
+        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+            .Append(launchButtonImage.DOFade(1, 0.5f))
+            .OnComplete(
+            delegate
+            {
+                launchButton.enabled = true;
+                launchButton.onClick.AddListener(
+                    delegate {
+                        ObjectiveController.Instance.IncrementSubStage();
+                        CloseButton();
+                    });
+                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+            });
+    }
+
+    public void ShowRepairButton()
+    {
+        launchCanvas.SetActive(true);
+        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        launchButtonImage = launchButton.image;
+
+        Sequence showLaunch = DOTween.Sequence();
+        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+            .Append(launchButtonImage.DOFade(1, 0.5f))
+            .OnComplete(
+            delegate
+            {
+                launchButton.enabled = true;
+                launchButton.onClick.AddListener(
+                    delegate {
+                        ObjectiveController.Instance.IncrementStage();
+                        CloseButton();
+                    });
+                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+            });
+    }
+
+    public void CloseButton()
+    {
+        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        DOTween.Kill(launchButtonImage);
+
+        Sequence showLaunch = DOTween.Sequence();
+            showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
+            .Append(launchBackground.DOFillAmount(0, 1))
+            .OnComplete(
+            delegate
+            {
+                launchButton.onClick.RemoveAllListeners();
+                launchButton.enabled = false;
+                launchCanvas.SetActive(false);
             });
     }
 
@@ -137,6 +200,7 @@ public class UIController : MonoBehaviour
 
     public void changeColor(Color newColor, bool flash)
     {
+        /*
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
         foreach (GameObject tile in gameObjects)
         {
@@ -149,6 +213,16 @@ public class UIController : MonoBehaviour
                 MeshRend.material.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
                 MeshRend.material.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
             }
+        }*/
+        MeshRenderer tile = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
+        if (!flash)
+        {
+            tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1);
+        }
+        else
+        {
+            tile.sharedMaterial.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
+            tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
         }
     }
 
