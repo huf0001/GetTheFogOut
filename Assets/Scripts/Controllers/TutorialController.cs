@@ -43,12 +43,12 @@ public class TutorialController : DialogueBoxController
     //Serialized Fields
     [SerializeField] private bool skipTutorial = true;
 
-    //[SerializeField] private Landmark airCannonLandmark;
+    [SerializeField] private Landmark airCannonLandmark;
     [SerializeField] private Landmark batteryLandmark;
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark extenderLandmark;
-    //[SerializeField] private Landmark fogRepellerLandmark;
+    [SerializeField] private Landmark fogRepellerLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [SerializeField] private CameraKey wKey;
@@ -355,7 +355,8 @@ public class TutorialController : DialogueBoxController
             case 1:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build generator target", 1);
-                Invoke("ActivateTarget", 1);
+                //Invoke("ActivateTarget", 1);
+                ActivateTarget(generatorLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -425,7 +426,8 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("build extender target", 1);
-                Invoke("ActivateTarget", 1);
+                //Invoke("ActivateTarget", 1);
+                ActivateTarget(extenderLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -484,7 +486,9 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("build battery target", 1);
-                Invoke("ActivateTarget", 1);
+                //Invoke("ActivateTarget", 1);
+
+                ActivateTarget(batteryLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -597,7 +601,8 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("build harvester target", 1);
-                Invoke("ActivateTarget", 1);
+                //Invoke("ActivateTarget", 1);
+                ActivateTarget(harvesterResource);
 
                 if (!objWindowVisible)
                 {
@@ -688,7 +693,8 @@ public class TutorialController : DialogueBoxController
             case 1:
                 Fog.Instance.ActivateFog();
                 SendDialogue("build air cannon", 1);
-                Invoke("ActivateMouse", 1);
+                //Invoke("ActivateTarget", 1);
+                ActivateTarget(airCannonLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -729,6 +735,7 @@ public class TutorialController : DialogueBoxController
                 tutorialStage = TutorialStage.BuildFogRepeller;
                 currentlyBuilding = BuildingType.FogRepeller;
                 ResetSubStage();
+                DeactivateTarget();
                 break;
             default:
                 SendDialogue("error", 1);
@@ -743,9 +750,9 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                MouseController.Instance.ReportTutorialClick = true;
                 SendDialogue("build fog repeller", 1);
-                Invoke("ActivateMouse", 1);
+                //Invoke("ActivateTarget", 1);
+                ActivateTarget(fogRepellerLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -785,6 +792,7 @@ public class TutorialController : DialogueBoxController
             case 6:
                 currentlyBuilding = BuildingType.None;
                 SendDialogue("finished", 1);
+                DeactivateTarget();
                 break;
             case 7:
                 if (dialogueRead)
@@ -838,7 +846,7 @@ public class TutorialController : DialogueBoxController
     {
         lastTileChecked = tile;
 
-        if (tutorialStage >= TutorialStage.IncreasePowerGeneration  || tile == currentTile)
+        if (tutorialStage == TutorialStage.Finished || (tutorialStage == TutorialStage.IncreasePowerGeneration && tile.Resource == null) || (tutorialStage == TutorialStage.BuildHarvesters && subStage > 5 && tile.Resource != null) || tile == currentTile)
         {
             return true;
         }
