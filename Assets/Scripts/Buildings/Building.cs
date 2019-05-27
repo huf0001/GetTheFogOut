@@ -402,7 +402,7 @@ public abstract class Building : PlaneObject
 
         if (!damagingNotified)
         {
-            MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"<size=80%>A {BuildingType} is being damaged!", this);
+            MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"<size=80%>A {BuildingType} is being damaged! <sprite=\"magnifyingGlass\" index=0>", this);
             audioSource.PlayOneShot(audioDamage);
             damagingNotified = true;
         }
