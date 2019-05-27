@@ -166,9 +166,9 @@ public class WarningScript : MonoBehaviour
         else if (pChangeValue < 0)
         {
             warnings["power"] = WarningLevel.Danger;
-            powerStatus.text = DANGER + "Power grid is overloaded!";
+            powerStatus.text = DANGER + "Power consumption exceeds generation!";
             audioSource.PlayOneShot(audioPowerGridOverloadedAlert);
-            ShowMessage(powerStatus.text);
+            ShowMessage(powerStatus.text.Insert(52, "<size=70%>"));
             ObjectiveController.Instance.PowerOverloaded = true;
         }
         else
