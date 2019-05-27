@@ -47,6 +47,8 @@ public class DialogueBox : MonoBehaviour
     private bool deactivationSubmitted = false;
     private bool nextDialogueSetReady = false;
 
+    private bool dialogueRead = false;
+
     //Public Properties
     public bool Activated { get => activated; }
     public int DialogueCount { get => contentToDisplay.Count; }
@@ -131,7 +133,7 @@ public class DialogueBox : MonoBehaviour
             DisplayNext();
             nextDialogueSetReady = false;
         }
-        else if (clickable && (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")))
+        else if (clickable && (dialogueRead || Input.GetButtonDown("Jump")))// || Input.GetButtonDown("Submit")))
         {
             RegisterDialogueRead();
         }
@@ -311,8 +313,14 @@ public class DialogueBox : MonoBehaviour
 
     //Utility Methods - Progress / Finish Dialogue---------------------------------------------------------------------------------------------------
 
+    //Called by OnClick to register that the player has clicked the dialogue box
+    public void OnDialogueClicked()
+    {
+        dialogueRead = true;
+    }
+
     //Called by OnClick to register that the player has read the currently displayed dialogue
-    public void RegisterDialogueRead()
+    private void RegisterDialogueRead()
     {
         //clickCount++;
         //Debug.Log($"Click count: {clickCount}");
