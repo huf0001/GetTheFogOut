@@ -180,7 +180,7 @@ public class WarningScript : MonoBehaviour
         }
     }
 
-    public void ShowMessage(string txt)
+    public void ShowMessage(string txt, Building building = null)
     {
         GameObject message = Instantiate(popupMessage, GameObject.Find("Warnings").transform);
         RectTransform messageTrans = message.GetComponent<RectTransform>();
@@ -192,6 +192,7 @@ public class WarningScript : MonoBehaviour
         message.transform.position -= new Vector3(0, Screen.height / 20);
 
         message.GetComponentInChildren<TextMeshProUGUI>().text = txt;
+        message.GetComponent<WarningPopup>().Building = building;
         existingMessages.Add(message);
 
         Sequence showMessage = DOTween.Sequence();
