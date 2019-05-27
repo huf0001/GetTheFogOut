@@ -147,7 +147,7 @@ public class UIController : MonoBehaviour
             }else
             {
                 MeshRend.material.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
-                MeshRend.material.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased();
+                MeshRend.material.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
             }
         }
     }
@@ -224,7 +224,8 @@ public class UIController : MonoBehaviour
                 else
                 {
                     //   StopCoroutine(coroutine);
-                    DOTween.KillAll();
+                    //DOTween.KillAll();
+                    DOTween.Kill("tile");
                     changeColor(powerCurrent,false);
                 }
             }
