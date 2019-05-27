@@ -59,13 +59,8 @@ public class UIController : MonoBehaviour
 
         FindSliders();
 
-<<<<<<< HEAD
-    //    cursor = GameObject.Find("Cursor");
-    //    cursor.SetActive(false);
-=======
         //cursor = GameObject.Find("Cursor");
         //cursor.SetActive(false);
->>>>>>> master
         //Invoke("FindTile", 5);
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
