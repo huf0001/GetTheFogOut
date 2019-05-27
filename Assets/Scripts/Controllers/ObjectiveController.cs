@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using TMPro;
 using UnityEngine.UI;
+using Cinemachine;
 
 public enum ObjectiveStage
 {
@@ -35,6 +36,8 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int fogGrowthHard;
 
     [SerializeField] GameObject shipSmoke;
+
+    [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     // Non-Serialized Fields
     bool stageComplete = false;
@@ -194,7 +197,6 @@ public class ObjectiveController : DialogueBoxController
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.transform.GetChild(0).gameObject.SetActive(false);
                 hub.transform.GetChild(1).gameObject.SetActive(true);
-                ShipComponent.SetActive(true);
                 // Play music Var 2 soundtrack
                 MusicController.Instance.StartStage2();
                 // Set fog AI to 'Moderate Aggression'
@@ -204,12 +206,7 @@ public class ObjectiveController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 1:
-                if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
-                {
-                    ShipComponent.SetActive(false);
-                    SkipObjectivesAhead(5);
-                }
-                else if (dialogueRead)
+                if (dialogueRead)
                 {
                     DismissDialogue();
                 }
@@ -217,19 +214,18 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 2:
                 // Run AI text for stage
+                ShipComponent.SetActive(true);
+                thrusterCamera.gameObject.SetActive(true);
+                Time.timeScale = 0.25f; // 0.001f;
+                //aiText.Whatever; << That's the dialogue box
                 SendDialogue("start part stage", 1);
                 IncrementSubStage();
                 break;
             case 3:
-                // Update objectives window to 'Recover ship thrusters'
-                // End stage if the part is collected
-                if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
+                if (dialogueRead)
                 {
-                    ShipComponent.SetActive(false);
-                    SkipObjectivesAhead(5);
-                }
-                else if (dialogueRead)
-                {
+                    Time.timeScale = 1f;
+                    thrusterCamera.gameObject.SetActive(false);
                     DismissDialogue();
                 }
 
@@ -245,8 +241,6 @@ public class ObjectiveController : DialogueBoxController
                 }
                 break;
             case 5:
-                break;
-            case 6:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
                 shipSmoke.SetActive(false);

@@ -53,6 +53,7 @@ public class DialogueBox : MonoBehaviour
     public bool Activated { get => activated; }
     public int DialogueCount { get => contentToDisplay.Count; }
     public string CurrentDialogueSet { get => currentDialogueSet; }
+    public bool Clickable { get => clickable; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
