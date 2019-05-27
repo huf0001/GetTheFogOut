@@ -176,8 +176,10 @@ public class ObjectiveController : DialogueBoxController
                 }
                 break;
             case 3:
-                ResetSubStage();
-                IncrementStage();
+                UIController.instance.ShowRepairButton();
+                IncrementSubStage();
+                break;
+            case 4:
                 break;
             default:
                 break;
@@ -239,10 +241,12 @@ public class ObjectiveController : DialogueBoxController
                 {
                     ShipComponent.SetActive(false);
                     IncrementSubStage();
+                    UIController.instance.ShowAttachButton();
                 }
-
                 break;
             case 5:
+                break;
+            case 6:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
                 shipSmoke.SetActive(false);
@@ -265,7 +269,6 @@ public class ObjectiveController : DialogueBoxController
                 else
                 {
                     //Go to next stage
-                    ResetSubStage();
                     IncrementStage();
                 }
 
@@ -379,11 +382,12 @@ public class ObjectiveController : DialogueBoxController
             }
         }
 
+        ResetSubStage();
         stageComplete = false;
         currStage++;
     }
 
-    void IncrementSubStage()
+    public void IncrementSubStage()
     {
         subStage++;
     }

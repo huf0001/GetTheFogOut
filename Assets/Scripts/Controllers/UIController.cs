@@ -59,8 +59,13 @@ public class UIController : MonoBehaviour
 
         FindSliders();
 
+<<<<<<< HEAD
     //    cursor = GameObject.Find("Cursor");
     //    cursor.SetActive(false);
+=======
+        //cursor = GameObject.Find("Cursor");
+        //cursor.SetActive(false);
+>>>>>>> master
         //Invoke("FindTile", 5);
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
@@ -98,6 +103,8 @@ public class UIController : MonoBehaviour
         mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
     }*/
 
+
+    // Functions dealing with the drop down objective button
     public void ShowLaunchButton()
     {
         launchCanvas.SetActive(true);
@@ -106,13 +113,74 @@ public class UIController : MonoBehaviour
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchBackground.DOFillAmount(1, 1))
-            //.AppendInterval(0.5f)
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
             {
                 launchButton.enabled = true;
+                launchButton.onClick.AddListener(delegate { WinGame(); });
                 launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+            });
+    }
+
+    public void ShowAttachButton()
+    {
+        launchCanvas.SetActive(true);
+        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        launchButtonImage = launchButton.image;
+
+        Sequence showLaunch = DOTween.Sequence();
+        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+            .Append(launchButtonImage.DOFade(1, 0.5f))
+            .OnComplete(
+            delegate
+            {
+                launchButton.enabled = true;
+                launchButton.onClick.AddListener(
+                    delegate {
+                        ObjectiveController.Instance.IncrementSubStage();
+                        CloseButton();
+                    });
+                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+            });
+    }
+
+    public void ShowRepairButton()
+    {
+        launchCanvas.SetActive(true);
+        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        launchButtonImage = launchButton.image;
+
+        Sequence showLaunch = DOTween.Sequence();
+        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+            .Append(launchButtonImage.DOFade(1, 0.5f))
+            .OnComplete(
+            delegate
+            {
+                launchButton.enabled = true;
+                launchButton.onClick.AddListener(
+                    delegate {
+                        ObjectiveController.Instance.IncrementStage();
+                        CloseButton();
+                    });
+                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+            });
+    }
+
+    public void CloseButton()
+    {
+        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        DOTween.Kill(launchButtonImage);
+
+        Sequence showLaunch = DOTween.Sequence();
+            showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
+            .Append(launchBackground.DOFillAmount(0, 1))
+            .OnComplete(
+            delegate
+            {
+                launchButton.onClick.RemoveAllListeners();
+                launchButton.enabled = false;
+                launchCanvas.SetActive(false);
             });
     }
 
