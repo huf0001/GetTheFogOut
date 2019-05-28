@@ -166,9 +166,9 @@ public class WarningScript : MonoBehaviour
         else if (pChangeValue < 0)
         {
             warnings["power"] = WarningLevel.Danger;
-            powerStatus.text = DANGER + "Power grid is overloaded!";
+            powerStatus.text = DANGER + "Power consumption exceeds generation!";
             audioSource.PlayOneShot(audioPowerGridOverloadedAlert);
-            ShowMessage(powerStatus.text);
+            ShowMessage(powerStatus.text.Insert(52, "<size=70%>"));
             ObjectiveController.Instance.PowerOverloaded = true;
         }
         else
@@ -180,7 +180,12 @@ public class WarningScript : MonoBehaviour
         }
     }
 
-    public void ShowMessage(string txt)
+    /// <summary>
+    /// Creates an alert pop-up that tweens in, hangs around then tweens out
+    /// </summary>
+    /// <param name="txt">The text to display on the alert</param>
+    /// <param name="building">The building to move the camera to when clicked on</param>
+    public void ShowMessage(string txt, Building building = null)
     {
         GameObject message = Instantiate(popupMessage, GameObject.Find("Warnings").transform);
         RectTransform messageTrans = message.GetComponent<RectTransform>();
@@ -192,18 +197,26 @@ public class WarningScript : MonoBehaviour
         message.transform.position -= new Vector3(0, Screen.height / 20);
 
         message.GetComponentInChildren<TextMeshProUGUI>().text = txt;
+        message.GetComponent<WarningPopup>().Building = building;
         existingMessages.Add(message);
 
         Sequence showMessage = DOTween.Sequence();
-        showMessage.Append(messageTrans.DOAnchorPosX(-330, 0.5f).SetEase(Ease.OutExpo))
-            .AppendInterval(5)
-            .Append(messageTrans.DOAnchorPosX(5, 0.5f).SetEase(Ease.InExpo))
-            .OnComplete(
-            delegate
-            {
-                existingMessages.Remove(message);
-                Destroy(message);
-            });
+        showMessage.Append(messageTrans.DOAnchorPosX(-330, 0.5f).SetEase(Ease.OutExpo));
+
+        if (building != null)
+        {
+            showMessage.Append(messageTrans.DOShakeAnchorPos(3.5f, 5, 100));
+        }
+        else
+        {
+            showMessage.AppendInterval(3.5f);
+        }
+        showMessage.Append(messageTrans.DOAnchorPosX(5, 0.5f).SetEase(Ease.InExpo)).OnComplete(
+        delegate
+        {
+            existingMessages.Remove(message);
+            Destroy(message);
+        });
     }
 
     public void ToggleVisibility()
