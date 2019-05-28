@@ -241,12 +241,15 @@ public class ObjectiveController : DialogueBoxController
                 {
                     ShipComponent.SetActive(false);
                     IncrementSubStage();
-                    UIController.instance.ShowAttachButton();
                 }
                 break;
             case 5:
+                UIController.instance.ShowAttachButton();
+                IncrementSubStage();
                 break;
             case 6:
+                break;
+            case 7:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
                 shipSmoke.SetActive(false);
