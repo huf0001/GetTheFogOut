@@ -508,7 +508,7 @@ MonoBehaviour:
       dialogue: Since the backup generator will not be sufficient, you will have to
         place [POWER GENERATORS].
     - aiExpression: 2
-      dialogue: 'Click here. '
+      dialogue: Click there to place a generator.
   - key: build generator icon
     expressionDialoguePairs:
     - aiExpression: 2
@@ -519,14 +519,14 @@ MonoBehaviour:
       dialogue: "\rNext are [POWER EXTENDERS]. These will extend the power range from
         your ship and allow you to place buildings further out. \r\n"
     - aiExpression: 2
-      dialogue: 'Place one here. '
+      dialogue: 'Place one there. '
   - key: build battery target
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: 'The final power related building is a [BATTERY]. When you place it,
         it will increase your power capacity. '
     - aiExpression: 2
-      dialogue: 'Place one here. '
+      dialogue: 'Now place a [BATTERY] there. '
   - key: increase power generation
     expressionDialoguePairs:
     - aiExpression: 1
@@ -538,7 +538,7 @@ MonoBehaviour:
       dialogue: The next important building you have access to is a {HARVESTER}. When
         placed on a {MINERAL}, it will collect its contents for you.
     - aiExpression: 2
-      dialogue: Place a {HARVESTER} here.
+      dialogue: Place a {HARVESTER} on the {MINERAL}.
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
