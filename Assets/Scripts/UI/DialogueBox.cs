@@ -48,11 +48,13 @@ public class DialogueBox : MonoBehaviour
     private bool nextDialogueSetReady = false;
 
     private bool dialogueRead = false;
+    private bool deactivating = false;
 
     //Public Properties
     public bool Activated { get => activated; }
     public int DialogueCount { get => contentToDisplay.Count; }
     public string CurrentDialogueSet { get => currentDialogueSet; }
+    public bool Clickable { get => clickable; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -107,17 +109,20 @@ public class DialogueBox : MonoBehaviour
     {
         if (nextDialogueSet != null)
         {
-            if (activated)
-            {
-                ChangeDialogue(nextDialogueSet);
-            }
-            else
+            if (!activated)
             {
                 ActivateDialogueBox(nextDialogueSet, nextInvokeDelay);
-            }
 
-            nextDialogueSet = null;
-            nextInvokeDelay = 0f;
+                nextDialogueSet = null;
+                nextInvokeDelay = 0f;
+            }
+            else if (!deactivating)
+            {
+                ChangeDialogue(nextDialogueSet);
+
+                nextDialogueSet = null;
+                nextInvokeDelay = 0f;
+            }
         }
         else if (deactivationSubmitted && activated)
         {
@@ -341,6 +346,7 @@ public class DialogueBox : MonoBehaviour
     //Tweens the dialogue box out
     private void DeactivateDialogueBox()
     {
+        deactivating = true;
         dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y, popUpSpeed).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
             delegate
             {
@@ -348,6 +354,7 @@ public class DialogueBox : MonoBehaviour
                 //dialogueRectTransform.anchoredPosition = originalRectTransformPosition;
                 //gameObject.SetActive(false);
                 textBox.text = "";
+                deactivating = false;
 
                 if (TutorialController.Instance.TutorialStage != TutorialStage.Finished)
                 {
