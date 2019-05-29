@@ -327,20 +327,19 @@ public class DialogueBox : MonoBehaviour
     //Called by OnClick to register that the player has read the currently displayed dialogue
     private void RegisterDialogueRead()
     {
-        //clickCount++;
-        //Debug.Log($"Click count: {clickCount}");
-        //Debug.Log("Registering dialogue read");
-        if (contentToDisplay.Count > 0)
+        if (clickable)
         {
-            LerpNext();
-        }
-        else if (activated)
-        {
-            //Debug.Log("RegisterDialogueRead calling DeactivateDialogue");
-            currentDialogueSet = "";
-            clickable = false;
-            DeactivateDialogueBox();
-        }
+            if (contentToDisplay.Count > 0)
+            {
+                LerpNext();
+            }
+            else if (activated)
+            {
+                currentDialogueSet = "";
+                clickable = false;
+                DeactivateDialogueBox();
+            }
+        }        
     }
 
     //Tweens the dialogue box out
