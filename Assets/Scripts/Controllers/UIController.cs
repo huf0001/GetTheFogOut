@@ -35,6 +35,7 @@ public class UIController : MonoBehaviour
     [SerializeField] Color powerCurrent;
     [SerializeField] GameObject launchCanvas;
     [SerializeField] Button launchButton;
+    [SerializeField] Sprite[] objectiveButtonSprites;
 
     ResourceController resourceController = null;
 //    private MeshRenderer MeshRend;
@@ -104,7 +105,7 @@ public class UIController : MonoBehaviour
     {
         launchCanvas.SetActive(true);
         Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
-        launchButtonImage = launchButton.image;
+        launchButtonImage.sprite = objectiveButtonSprites[2];
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchBackground.DOFillAmount(1, 1))
@@ -122,7 +123,7 @@ public class UIController : MonoBehaviour
     {
         launchCanvas.SetActive(true);
         Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
-        launchButtonImage = launchButton.image;
+        launchButtonImage.sprite = objectiveButtonSprites[1];
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchBackground.DOFillAmount(1, 1))
@@ -133,6 +134,7 @@ public class UIController : MonoBehaviour
                 launchButton.enabled = true;
                 launchButton.onClick.AddListener(
                     delegate {
+                        launchButton.enabled = false;
                         ObjectiveController.Instance.IncrementSubStage();
                         CloseButton();
                     });
@@ -145,6 +147,7 @@ public class UIController : MonoBehaviour
         launchCanvas.SetActive(true);
         Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
         launchButtonImage = launchButton.image;
+        launchButtonImage.sprite = objectiveButtonSprites[0];
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchBackground.DOFillAmount(1, 1))
@@ -155,6 +158,7 @@ public class UIController : MonoBehaviour
                 launchButton.enabled = true;
                 launchButton.onClick.AddListener(
                     delegate {
+                        launchButton.enabled = false;
                         ObjectiveController.Instance.IncrementStage();
                         CloseButton();
                     });
