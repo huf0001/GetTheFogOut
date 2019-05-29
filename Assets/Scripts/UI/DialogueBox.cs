@@ -107,7 +107,7 @@ public class DialogueBox : MonoBehaviour
     //Checks for new dialogue, lerps text, checks if player wants to progress text
     private void Update()
     {
-        if (nextDialogueSet != null)
+        if (nextDialogueSet != null && !deactivating)
         {
             if (!activated)
             {
@@ -116,7 +116,7 @@ public class DialogueBox : MonoBehaviour
                 nextDialogueSet = null;
                 nextInvokeDelay = 0f;
             }
-            else if (!deactivating)
+            else
             {
                 ChangeDialogue(nextDialogueSet);
 
