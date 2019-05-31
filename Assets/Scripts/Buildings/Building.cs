@@ -77,7 +77,7 @@ public abstract class Building : PlaneObject
         MaxHealth = Health;
         InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
         buildHealth = health;
-        InvokeRepeating("CheckStillDamaging", 1, 1);
+        InvokeRepeating("CheckStillDamaging", 1, 3);
     }
 
     private void CheckForDamage()
@@ -402,7 +402,10 @@ public abstract class Building : PlaneObject
 
         if (!damagingNotified)
         {
-            MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Danger + $"<size=80%>A {BuildingType} is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+            MouseController.Instance.WarningScript.ShowMessage(
+                MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
+                $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
+                $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
             audioSource.PlayOneShot(audioDamage);
             damagingNotified = true;
         }

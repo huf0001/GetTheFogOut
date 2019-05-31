@@ -24,6 +24,7 @@ public class UIController : MonoBehaviour
     private float powerTime = 0.0f, mineralTime = 0.0f;
     private bool isCursorOn = false;
     private Image launchButtonImage;
+    private Image launchBackground;
 
     [SerializeField] Image powerImg;
     [SerializeField] Sprite[] powerLevelSprites;
@@ -104,7 +105,6 @@ public class UIController : MonoBehaviour
     public void ShowLaunchButton()
     {
         launchCanvas.SetActive(true);
-        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
         launchButtonImage.sprite = objectiveButtonSprites[2];
 
         Sequence showLaunch = DOTween.Sequence();
@@ -122,7 +122,6 @@ public class UIController : MonoBehaviour
     public void ShowAttachButton()
     {
         launchCanvas.SetActive(true);
-        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
         launchButtonImage.sprite = objectiveButtonSprites[1];
 
         Sequence showLaunch = DOTween.Sequence();
@@ -145,7 +144,7 @@ public class UIController : MonoBehaviour
     public void ShowRepairButton()
     {
         launchCanvas.SetActive(true);
-        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        launchBackground = launchCanvas.GetComponentInChildren<Image>();
         launchButtonImage = launchButton.image;
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
@@ -168,7 +167,6 @@ public class UIController : MonoBehaviour
 
     public void CloseButton()
     {
-        Image launchBackground = launchCanvas.GetComponentInChildren<Image>();
         DOTween.Kill(launchButtonImage);
 
         Sequence showLaunch = DOTween.Sequence();
