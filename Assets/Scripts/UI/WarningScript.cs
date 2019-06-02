@@ -160,7 +160,7 @@ public class WarningScript : MonoBehaviour
         {
             warnings["power"] = WarningLevel.Normal;
             powerStatus.text = NORMAL + "Power grid is stable";
-            ShowMessage(powerStatus.text);
+            ShowMessage(WarningLevel.Normal, powerStatus.text);
             ObjectiveController.Instance.PowerOverloaded = false;
         }
         else if (pChangeValue < 0)
@@ -168,14 +168,14 @@ public class WarningScript : MonoBehaviour
             warnings["power"] = WarningLevel.Danger;
             powerStatus.text = DANGER + "Power consumption exceeds generation!";
             audioSource.PlayOneShot(audioPowerGridOverloadedAlert);
-            ShowMessage(powerStatus.text.Insert(50, "<size=70%>"));
+            ShowMessage(WarningLevel.Danger, powerStatus.text.Insert(50, "<size=70%>"));
             ObjectiveController.Instance.PowerOverloaded = true;
         }
         else
         {
             warnings["power"] = WarningLevel.Warning;
             powerStatus.text = WARNING + "Power grid is at max capacity";
-            ShowMessage(powerStatus.text);
+            ShowMessage(WarningLevel.Warning, powerStatus.text);
             ObjectiveController.Instance.PowerOverloaded = false;
         }
     }
@@ -183,39 +183,61 @@ public class WarningScript : MonoBehaviour
     /// <summary>
     /// Creates an alert pop-up that tweens in, hangs around then tweens out
     /// </summary>
+    /// <param name="level">Warning level</param>
     /// <param name="txt">The text to display on the alert</param>
     /// <param name="building">The building to move the camera to when clicked on</param>
-    public void ShowMessage(string txt, Building building = null)
+    public void ShowMessage(WarningLevel level, string txt, Building building = null)
     {
         GameObject message = Instantiate(popupMessage, GameObject.Find("Warnings").transform);
         RectTransform messageTrans = message.GetComponent<RectTransform>();
+        WarningPopup warningPopup = message.GetComponent<WarningPopup>();
 
         if (existingMessages.Count != 0)
         {
             message.transform.position = existingMessages[existingMessages.Count - 1].transform.position + new Vector3(335, 0);
         }
-        message.transform.position -= new Vector3(0, Screen.height / 20);
+        //message.transform.position -= new Vector3(0, Screen.height / 20);
+        messageTrans.anchoredPosition -= new Vector2(0, Screen.height / 40);
+        
+        switch (level)
+        {
+            case WarningLevel.Normal:
+                message.GetComponent<Image>().color = new Color32(0, 153, 0, 237);
+                break;
+            case WarningLevel.Warning:
+                message.GetComponent<Image>().color = new Color32(240, 176, 64, 237);
+                break;
+            case WarningLevel.Danger:
+                message.GetComponent<Image>().color = new Color32(200, 0, 0, 237);
+                break;
+        }
 
         message.GetComponentInChildren<TextMeshProUGUI>().text = txt;
-        message.GetComponent<WarningPopup>().Building = building;
+        warningPopup.Building = building;
         existingMessages.Add(message);
+        warningPopup.Index = existingMessages.IndexOf(message);
 
         Sequence showMessage = DOTween.Sequence();
         showMessage.Append(messageTrans.DOAnchorPosX(-330, 0.5f).SetEase(Ease.OutExpo));
-
-        if (building != null)
-        {
-            showMessage.Append(messageTrans.DOShakeAnchorPos(3.5f, 5, 100));
-        }
-        else
-        {
+        //if (building != null)
+        //{
+        //    showMessage.Append(messageTrans.DOShakeAnchorPos(3.5f, 5, 100));
+        //}
+        //else
+        //{
             showMessage.AppendInterval(3.5f);
-        }
+        //}
         showMessage.Append(messageTrans.DOAnchorPosX(5, 0.5f).SetEase(Ease.InExpo)).OnComplete(
         delegate
         {
+            int index = existingMessages.IndexOf(message);
             existingMessages.Remove(message);
             Destroy(message);
+            for (int i = index; i < existingMessages.Count; i++)
+            {
+                //existingMessages[i].transform.position += new Vector3(0, Screen.height / 20);
+                existingMessages[i].GetComponent<WarningPopup>().Index = i;
+            }
         });
     }
 
