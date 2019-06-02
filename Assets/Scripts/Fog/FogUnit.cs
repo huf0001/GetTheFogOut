@@ -117,8 +117,14 @@ public class FogUnit : Entity
         }
     }
 
-    //Updates the fog unit's shader according to its health
-    public void Render()
+    //Updates the fog unit's shader colour at random between two values
+    //public void RenderColour()
+    //{
+    //    gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, base.Health / MaxHealth));
+    //}
+
+    //Updates the fog unit's shader opacity according to its health
+    public void RenderOpacity()
     {
         gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, base.Health / MaxHealth));
     }
