@@ -18,6 +18,8 @@ public class MusicController : MonoBehaviour
     [SerializeField] private AudioClip acStage2;
     [SerializeField] private AudioClip acStage2ToStage3;
     [SerializeField] private AudioClip acStage3;
+    [SerializeField] private AudioClip acOutroWin;
+    [SerializeField] private AudioClip acOutroLose;
 
 
     //Non-Serialized Fields
@@ -37,9 +39,14 @@ public class MusicController : MonoBehaviour
         {
             _instance = this;
         }
-
+        audioSource.volume = 0;
     }
-    
+
+    private void Start()
+    {
+        audioSource.DOFade(1, 20).SetUpdate(true);
+    }
+
 
 
     public void SkipTutorial()
@@ -63,16 +70,44 @@ public class MusicController : MonoBehaviour
         ChangeTrack(acStage2ToStage3, acStage3);
     }
 
-    private void ChangeTrack(AudioClip transition, AudioClip track)
+    public void StartOutroWin()
     {
-        doubleAudioSource.CrossFade(transition, 1, 5f, .5f);
-
-        nextTrack = track;
-        tracklength = transition.length;
-        timeUntilChange = 0;
-        changeTrack = true;
+        doubleAudioSource.CrossFade(acOutroWin, 1, 3);
+        foreach(AudioSource a in GetComponents<AudioSource>())
+        {
+            a.loop = false;
+        }
     }
 
+    public void StartOutroLose()
+    {
+        doubleAudioSource.CrossFade(acOutroLose, 1, 3);
+        foreach (AudioSource a in GetComponents<AudioSource>())
+        {
+            a.loop = false;
+        }
+    }
+
+    /*
+    private void ChangeTrack(AudioClip transition, AudioClip track)
+    {
+        doubleAudioSource.CrossFade(transition, 1, 10f);
+        nextTrack = track;
+        tracklength = transition.length - 5;
+        timeUntilChange = 0;
+        changeTrack = true;
+    }*/
+
+    private void ChangeTrack(AudioClip transition, AudioClip track)
+    {
+        doubleAudioSource.CrossFade(transition, 1, 3f);
+
+        tracklength = transition.length;
+
+        doubleAudioSource.CrossFade(track, 1, 1f, tracklength - 2f);
+    }
+
+    /*
     private void Update()
     {
         if (changeTrack)
@@ -80,9 +115,9 @@ public class MusicController : MonoBehaviour
             timeUntilChange += Time.deltaTime;
             if (timeUntilChange >= tracklength)
             {
-                doubleAudioSource.CrossFade(nextTrack, 5, 0.01f);
+                doubleAudioSource.CrossFade(nextTrack, 1, 3f);
                 changeTrack = false;
             }
         }
-    }
+    }*/
 }

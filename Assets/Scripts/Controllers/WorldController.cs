@@ -436,6 +436,7 @@ public class WorldController : MonoBehaviour
         if (resourceController.IsWin() || hubDestroyed)
         {
             Time.timeScale = 0.2f;
+            MusicController.Instance.StartOutroLose();
             GameOver = true;
             InBuildMode = false;
         }
@@ -475,11 +476,13 @@ public class WorldController : MonoBehaviour
         if (GameWin)
         {
             //Display win UI
+
             uiController.EndGameDisplay("You win!");
         }
         else
         {
             //Display lose UI
+
             uiController.EndGameDisplay("You lose!");
         }
     }
