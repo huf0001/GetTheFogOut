@@ -340,7 +340,7 @@ public class Fog : MonoBehaviour
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
-            //f.RenderColour();
+            f.RenderColour();
 
             if (!f.NeighboursFull && f.Health >= fogSpillThreshold)
             {

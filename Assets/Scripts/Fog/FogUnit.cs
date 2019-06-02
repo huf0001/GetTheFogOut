@@ -9,12 +9,19 @@ public class FogUnit : Entity
     [SerializeField] private float lerpToMaxInterval;
     [SerializeField] private float rapidLerpMultiplier = 3f;
 
+    [SerializeField] private float startOpacity = 0f;
+    [SerializeField] private float endOpacity = 0.90f;
+
+    [SerializeField] [ColorUsageAttribute(true, true)] private Color startColour;
+    [SerializeField] [ColorUsageAttribute(true, true)] private Color endColour;
+    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
+
     //Non-Serialized Fields
     private Fog fog;
 
-    private float start = 0f;
-    private float end = 0.90f;
-
+    private float colourProgress = 0;
+    private float colourProgressTarget = 0;
+    private bool lerpForward = true;
     /*[SerializeField]*/ private float healthProgress = 0;
     /*[SerializeField]*/ private float startHealth;
     /*[SerializeField]*/ private float targetHealth;
@@ -118,15 +125,48 @@ public class FogUnit : Entity
     }
 
     //Updates the fog unit's shader colour at random between two values
-    //public void RenderColour()
-    //{
-    //    gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, base.Health / MaxHealth));
-    //}
+    public void RenderColour()
+    {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Colour", Color.Lerp(startColour, endColour, colourProgress));
+
+        if (lerpForward)
+        {
+            colourProgress += Time.deltaTime * colourLerpSpeedMultiplier;
+
+            if (colourProgress > colourProgressTarget)
+            {
+                colourProgress = colourProgressTarget;
+            }
+        }
+        else
+        {
+            colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
+
+            if (colourProgress < colourProgressTarget)
+            {
+                colourProgress = colourProgressTarget;
+            }
+        }
+
+        if (colourProgress == colourProgressTarget)
+        {
+            colourProgressTarget = Random.Range(0f, 1f);
+
+            if (colourProgressTarget > colourProgress)
+            {
+                lerpForward = true;
+            }
+            else
+            {
+                lerpForward = false;
+            }
+        }
+    }
 
     //Updates the fog unit's shader opacity according to its health
     public void RenderOpacity()
     {
-        gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(start, end, base.Health / MaxHealth));
+        gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(startOpacity, endOpacity, base.Health / MaxHealth));
     }
 
     //Tells Fog to put the fog unit back in the pool
