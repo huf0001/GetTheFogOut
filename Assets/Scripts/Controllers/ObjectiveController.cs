@@ -203,6 +203,10 @@ public class ObjectiveController : DialogueBoxController
                 Fog.Instance.FogGrowth = fogGrowthMedium;
                 // Run AI completion text
                 SendDialogue("end harvest stage", 1);
+                //Camera pans to the thruster
+                ShipComponent.SetActive(true);
+                thrusterCamera.gameObject.SetActive(true);
+                Time.timeScale = 0.25f;
                 IncrementSubStage();
                 break;
             case 1:
@@ -213,10 +217,6 @@ public class ObjectiveController : DialogueBoxController
 
                 break;
             case 2:
-                //Camera pans to the thruster
-                ShipComponent.SetActive(true);
-                thrusterCamera.gameObject.SetActive(true);
-                Time.timeScale = 0.25f;
                 // Run AI text for stage
                 SendDialogue("start part stage", 1);
                 IncrementSubStage();
@@ -403,11 +403,11 @@ public class ObjectiveController : DialogueBoxController
         GameObject objCompImage = objComp.GetComponentInChildren<Image>().gameObject;
         TextMeshProUGUI unlocksText = objCompImage.GetComponentInChildren<TextMeshProUGUI>();
         unlocksText.text = $"You can build a maximum of {generatorLimit} generators now!";
-        objCompImage.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad);
+        objCompImage.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad).SetUpdate(true);
         audioSource.PlayOneShot(audioCompleteObjective);
-        yield return new WaitForSeconds(5f);
-        objCompImage.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSecondsRealtime(5f);
+        objCompImage.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad).SetUpdate(true);
+        yield return new WaitForSecondsRealtime(0.3f);
         Destroy(objComp);
         if (!objWindowVisible)
         {
