@@ -316,7 +316,7 @@ public class MouseController : MonoBehaviour
             }
             else
             {
-                warningScript.ShowMessage(warningScript.Warning + "Not enough minerals to build!");
+                warningScript.ShowMessage(WarningScript.WarningLevel.Warning, warningScript.Warning + "Not enough minerals to build!");
                 Debug.Log("Can't build, do not have the required resources.");
             }
         }
