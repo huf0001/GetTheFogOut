@@ -212,7 +212,7 @@ public class Fog : MonoBehaviour
                 finished = true;
             }
 
-            f.Render();
+            f.RenderOpacity();
         }
 
         if (finished)
@@ -236,6 +236,7 @@ public class Fog : MonoBehaviour
         TileData t = wc.GetTileAt(pos);
 
         fGO.transform.position = new Vector3(x, 0.13f, z);
+        fGO.transform.SetPositionAndRotation(new Vector3(x, 0.13f, z), Quaternion.Euler(fGO.transform.rotation.eulerAngles.x, Random.Range(0, 360), fGO.transform.rotation.eulerAngles.z));
         fGO.name = "FogUnit(" + x + "," + z + ")";
 
         f.gameObject.GetComponent<Renderer>().material = visibleMaterial;
@@ -247,7 +248,7 @@ public class Fog : MonoBehaviour
         fogUnitsInPlay.Add(f);
         fogCoveredTiles.Add(t);
 
-        f.Render();
+        f.RenderOpacity();
     }
 
     //Instantiates a fog unit that isn't on the board or in the pool
@@ -321,14 +322,14 @@ public class Fog : MonoBehaviour
 
         foreach (FogUnit f in toRender)
         {
-            f.Render();
+            f.RenderOpacity();
         }
     }
 
     //Fills the health of fog units
     private void UpdateFogFill()
     {
-        List<FogUnit> toRender = new List<FogUnit>();
+        List<FogUnit> toRenderOpacity = new List<FogUnit>();
 
         if (fogAccelerates && fogGrowth < 100)
         {
@@ -339,6 +340,8 @@ public class Fog : MonoBehaviour
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
+            f.RenderColour();
+
             if (!f.NeighboursFull && f.Health >= fogSpillThreshold)
             {
                 int count = f.Location.AdjacentTiles.Count;
@@ -354,9 +357,9 @@ public class Fog : MonoBehaviour
                         {
                             af.Health += fogFillInterval * fogGrowth / count;
 
-                            if (!toRender.Contains(af))
+                            if (!toRenderOpacity.Contains(af))
                             {
-                                toRender.Add(af);
+                                toRenderOpacity.Add(af);
                             }
                         }
                         else if (af.Health >= fogMaxHealth)
@@ -373,9 +376,9 @@ public class Fog : MonoBehaviour
             }
         }
 
-        foreach (FogUnit f in toRender)
+        foreach (FogUnit f in toRenderOpacity)
         {
-            f.Render();
+            f.RenderOpacity();
         }
     }
 
