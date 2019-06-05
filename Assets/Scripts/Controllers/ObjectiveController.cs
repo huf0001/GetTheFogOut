@@ -256,6 +256,7 @@ public class ObjectiveController : DialogueBoxController
 
                 // Set fog AI to 'Overly Aggressive'
                 Fog.Instance.FogGrowth = fogGrowthHard;
+                Fog.Instance.ToggleAnger();
 
                 //If already completed store power stage
                 if (ResourceController.Instance.StoredPower >= 500)

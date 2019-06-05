@@ -12,29 +12,34 @@ public class FogUnit : Entity
     [SerializeField] private float startOpacity = 0f;
     [SerializeField] private float endOpacity = 0.90f;
 
-    [SerializeField] [ColorUsageAttribute(true, true)] private Color startColour;
-    [SerializeField] [ColorUsageAttribute(true, true)] private Color endColour;
+    [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
+    [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
+    [SerializeField] [ColorUsageAttribute(true, true)] private Color damagedColour;
+    [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
     [SerializeField] private float colourLerpSpeedMultiplier = 1f;
 
     //Non-Serialized Fields
     private Fog fog;
+    private bool angry = false;
 
     private float colourProgress = 0;
     private float colourProgressTarget = 0;
+    //private float oldcolourProgressTarget = 0;
     private bool lerpForward = true;
-    /*[SerializeField]*/ private float healthProgress = 0;
-    /*[SerializeField]*/ private float startHealth;
-    /*[SerializeField]*/ private float targetHealth;
-    /*[SerializeField]*/ private bool takingDamage = false;
+    private float healthProgress = 0;
+    private float startHealth;
+    private float targetHealth;
+    private bool takingDamage = false;
 
-    /*[SerializeField]*/ private bool spill = false;
-    /*[SerializeField]*/ private bool neighboursFull = false;
+    private bool spill = false;
+    private bool neighboursFull = false;
 
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
     public bool Spill { get => spill; set => spill = value; }
     public bool TakingDamage { get => takingDamage; }
+    public bool Angry { get => angry; set => angry = value; }
 
     //Altered Public Properties
     public override float Health
@@ -69,6 +74,23 @@ public class FogUnit : Entity
     {
         startHealth = base.Health;
         targetHealth = base.Health;
+        currentColours = docileColours;
+    }
+
+    //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
+    //so that newly spawned fog units don't look docile when the fog is angry.
+    public void SetStartEmotion(bool a)
+    {
+        angry = a;
+
+        if (angry)
+        {
+            currentColours = angryColours;
+        }
+        else
+        {
+            currentColours = docileColours;
+        }
     }
 
     //Fog unit deals damage to the building on its tile
@@ -127,40 +149,64 @@ public class FogUnit : Entity
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
     {
-        gameObject.GetComponent<Renderer>().material.SetColor("_Colour", Color.Lerp(startColour, endColour, colourProgress));
+        gameObject.GetComponent<Renderer>().material.SetColor("_Colour", currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
 
-        if (lerpForward)
+        if ((!angry && currentColours == angryColours) || (angry && currentColours == docileColours))
         {
-            colourProgress += Time.deltaTime * colourLerpSpeedMultiplier;
+            colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
 
-            if (colourProgress > colourProgressTarget)
+            if (((!angry && currentColours == angryColours) || (angry && currentColours == docileColours)) && colourProgress < 0)
             {
-                colourProgress = colourProgressTarget;
+                colourProgress = 0;
+                //oldcolourProgressTarget = colourProgressTarget;
+                colourProgressTarget = 0;
+
+                if (angry)
+                {
+                    currentColours = angryColours;
+                }
+                else
+                {
+                    currentColours = docileColours;
+                }
             }
         }
         else
         {
-            colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
-
-            if (colourProgress < colourProgressTarget)
+            if (colourProgress == colourProgressTarget)
             {
-                colourProgress = colourProgressTarget;
+                //oldcolourProgressTarget = colourProgressTarget;
+                colourProgressTarget = UnityEngine.Random.Range(0f, 1f);
+
+                if (colourProgressTarget > colourProgress)
+                {
+                    lerpForward = true;
+                }
+                else
+                {
+                    lerpForward = false;
+                }
             }
-        }
 
-        if (colourProgress == colourProgressTarget)
-        {
-            colourProgressTarget = Random.Range(0f, 1f);
-
-            if (colourProgressTarget > colourProgress)
+            if (lerpForward)
             {
-                lerpForward = true;
+                colourProgress += Time.deltaTime * colourLerpSpeedMultiplier;
+
+                if (colourProgress > colourProgressTarget)
+                {
+                    colourProgress = colourProgressTarget;
+                }
             }
             else
             {
-                lerpForward = false;
+                colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
+
+                if (colourProgress < colourProgressTarget)
+                {
+                    colourProgress = colourProgressTarget;
+                }
             }
-        }
+        } 
     }
 
     //Updates the fog unit's shader opacity according to its health
