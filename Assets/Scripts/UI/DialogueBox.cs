@@ -23,6 +23,7 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private Sprite aiHappy;
     [SerializeField] private Sprite aiNeutral;
     [SerializeField] private Sprite aiSad;
+    [SerializeField] private Image continueArrow;
 
     //Non-Serialized Fields
     [SerializeField] private List<ExpressionDialoguePair> contentToDisplay = new List<ExpressionDialoguePair>();
@@ -107,6 +108,17 @@ public class DialogueBox : MonoBehaviour
     //Checks for new dialogue, lerps text, checks if player wants to progress text
     private void Update()
     {
+        if (clickable && !continueArrow.enabled)
+        {
+            continueArrow.enabled = true;
+            continueArrow.GetComponent<RectTransform>().DOAnchorPosY(continueArrow.GetComponent<RectTransform>().anchoredPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo);
+        }
+        else if (!clickable && continueArrow.enabled)
+        {
+            continueArrow.enabled = false;
+            DOTween.Kill(continueArrow.GetComponent<RectTransform>());
+        }
+
         if (nextDialogueSet != null && !deactivating)
         {
             if (!activated)
