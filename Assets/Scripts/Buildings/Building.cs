@@ -77,7 +77,7 @@ public abstract class Building : PlaneObject
         MaxHealth = Health;
         InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
         buildHealth = health;
-        InvokeRepeating("CheckStillDamaging", 1, 3);
+        InvokeRepeating("CheckStillDamaging", 1, 5);
     }
 
     private void CheckForDamage()
@@ -134,6 +134,25 @@ public abstract class Building : PlaneObject
         }
     }
 
+    private void ReparingBuilding()
+    {
+        float waitingtime = 5f;
+        bool isfull = false;
+        if (!isfull)
+        {
+            if (Time.time > waitingtime)
+            {
+                health += 2f;
+                if (health >= MaxHealth)
+                {
+                    health = MaxHealth;
+                    isfull = true;
+                }
+            }
+        }
+
+    }
+
     private void CheckStillDamaging()
     {
         if (TakingDamage)
@@ -144,6 +163,14 @@ public abstract class Building : PlaneObject
                 damagingNotified = false;
             }
             buildHealth = Health;
+        }
+        else
+        {
+            if (buildHealth < maxHealth)
+            {
+                //Debug.Log(this.name + health);
+                ReparingBuilding();
+            }
         }
     }
 
