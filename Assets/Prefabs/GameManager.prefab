@@ -436,6 +436,7 @@ MonoBehaviour:
   buildingSelector: {fileID: 0}
   buildingInfo: {fileID: 0}
   endGameText: {fileID: 0}
+  buttonClosed: 1
   powerImg: {fileID: 0}
   powerLevelSprites:
   - {fileID: 21300000, guid: 88d41290badea9d49a808952d37fc94c, type: 3}
@@ -620,16 +621,12 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next
-        step, finding the ship's missing thruster.\r\n"
-    - aiExpression: 2
-      dialogue: My sensors are struggling to pick up their location, but I can at
-        least confirm they are out there somewhere. I wonder why the fog has not consumed
-        them yet?
+        step, attaching the ship's missing thruster.\r\n"
   - key: start part stage
     expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: You found the ship's missing thruster! Thankfully it is not in too
-        much disrepair.
+    - aiExpression: 1
+      dialogue: Thankfully it is not in too much disrepair. We've just got to clear
+        the fog and retrieve it.
   - key: end part stage
     expressionDialoguePairs:
     - aiExpression: 2
