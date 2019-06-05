@@ -118,9 +118,9 @@ public class DialogueBox : MonoBehaviour
         }
         else if (!clickable && continueArrow.enabled)
         {
-            continueArrow.enabled = false;
             DOTween.Kill(continueArrow.GetComponent<RectTransform>());
             continueArrow.GetComponent<RectTransform>().anchoredPosition = arrowInitialPosition;
+            continueArrow.enabled = false;
         }
 
         if (nextDialogueSet != null && !deactivating)
