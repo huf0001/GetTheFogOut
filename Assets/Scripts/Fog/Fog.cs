@@ -44,6 +44,8 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogDamageInterval = 0.02f;
     [SerializeField] private float fogExpansionInterval = 0.5f;
 
+    [SerializeField] private bool angry = false;
+
     //Private Fields
     private WorldController wc;
     private int xMax;
@@ -243,6 +245,7 @@ public class Fog : MonoBehaviour
         f.Location = t;
         f.Health = health;
         f.Spill = false;
+        f.SetStartEmotion(angry);
         t.FogUnit = f;
 
         fogUnitsInPlay.Add(f);
@@ -459,5 +462,17 @@ public class Fog : MonoBehaviour
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f);
         fogCoveredTiles.Remove(f.Location);
+    }
+
+    //Other Methods----------------------------------------------------------------------------------------------------------------------------------
+
+    public void ToggleAnger()
+    {
+        angry = !angry;
+
+        foreach (FogUnit f in fogUnitsInPlay)
+        {
+            f.Angry = angry;
+        }
     }
 }

@@ -16,6 +16,7 @@ public class UIController : MonoBehaviour
     public BuildingSelector buildingSelector;
     public BuildingInfo buildingInfo;
     public TextMeshProUGUI endGameText;
+    public bool buttonClosed = true;
 
     private GameObject cursor;
     private Slider powerSlider;
@@ -116,6 +117,7 @@ public class UIController : MonoBehaviour
                 launchButton.enabled = true;
                 launchButton.onClick.AddListener(delegate { WinGame(); });
                 launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+                buttonClosed = false;
             });
     }
 
@@ -131,6 +133,7 @@ public class UIController : MonoBehaviour
             delegate
             {
                 launchButton.enabled = true;
+                buttonClosed = false;
                 launchButton.onClick.AddListener(
                     delegate {
                         launchButton.enabled = false;
@@ -155,6 +158,7 @@ public class UIController : MonoBehaviour
             delegate
             {
                 launchButton.enabled = true;
+                buttonClosed = false;
                 launchButton.onClick.AddListener(
                     delegate {
                         launchButton.enabled = false;
@@ -178,6 +182,7 @@ public class UIController : MonoBehaviour
                 launchButton.onClick.RemoveAllListeners();
                 launchButton.enabled = false;
                 launchCanvas.SetActive(false);
+                buttonClosed = true;
             });
     }
 
