@@ -14,8 +14,8 @@ public class ResourceNode : PlaneObject
     public float ResMultiplier { get => resMultiplier; }
     public bool Visible { get => visible; set => visible = value; }
 
-    void Awake()
+    /*void Awake()
     {
         FindToolTip();
-    }
+    }*/
 }
