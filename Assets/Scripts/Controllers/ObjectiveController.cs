@@ -240,8 +240,11 @@ public class ObjectiveController : DialogueBoxController
                 }
                 break;
             case 5:
-                UIController.instance.ShowAttachButton();
-                IncrementSubStage();
+                if (UIController.instance.buttonClosed)
+                {
+                    UIController.instance.ShowAttachButton();
+                    IncrementSubStage();
+                }
                 break;
             case 6:
                 break;
@@ -313,7 +316,6 @@ public class ObjectiveController : DialogueBoxController
                 {
                     DismissDialogue();
                 }
-
                 break;
             case 4:
                 // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
@@ -327,9 +329,15 @@ public class ObjectiveController : DialogueBoxController
                 // Run AI completetion text
                 SendDialogue("end power stage", 1);
                 IncrementSubStage();
-                UIController.instance.ShowLaunchButton();
                 break;
             case 6:
+                if (UIController.instance.buttonClosed)
+                {
+                    UIController.instance.ShowLaunchButton();
+                    IncrementSubStage();
+                }
+                break;
+            case 7:
                 if (dialogueRead)
                 {
                     DismissDialogue();
