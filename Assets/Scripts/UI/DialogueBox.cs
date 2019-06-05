@@ -29,6 +29,7 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private List<ExpressionDialoguePair> contentToDisplay = new List<ExpressionDialoguePair>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
+    private Vector2 arrowInitialPosition;
     [SerializeField] private bool activated = false;
     [SerializeField] private bool clickable = false;
     private string currentDialogueSet = "";
@@ -62,6 +63,8 @@ public class DialogueBox : MonoBehaviour
     //Awake checks that all the colour strings are valid, and gets the starting AI expression
     private void Awake()
     {
+        arrowInitialPosition = continueArrow.GetComponent<RectTransform>().anchoredPosition;
+
         if (squareBracketColour == "")
         {
             Debug.LogError("DialogueBox.squareBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
@@ -111,7 +114,7 @@ public class DialogueBox : MonoBehaviour
         if (clickable && !continueArrow.enabled)
         {
             continueArrow.enabled = true;
-            continueArrow.GetComponent<RectTransform>().DOAnchorPosY(continueArrow.GetComponent<RectTransform>().anchoredPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo);
+            continueArrow.GetComponent<RectTransform>().DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo);
         }
         else if (!clickable && continueArrow.enabled)
         {
