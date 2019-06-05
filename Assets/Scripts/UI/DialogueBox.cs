@@ -114,7 +114,7 @@ public class DialogueBox : MonoBehaviour
         if (clickable && !continueArrow.enabled)
         {
             continueArrow.enabled = true;
-            continueArrow.GetComponent<RectTransform>().DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo);
+            continueArrow.GetComponent<RectTransform>().DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
         }
         else if (!clickable && continueArrow.enabled)
         {
