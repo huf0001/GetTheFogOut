@@ -14,7 +14,8 @@ public class FogUnit : Entity
 
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
-    [SerializeField] [ColorUsageAttribute(true, true)] private Color damagedColour;
+    //[SerializeField] [ColorUsageAttribute(true, true)] private Color damagedColour;
+    //[ColorUsageAttribute(true, true)] private Color undamagedColour;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
     [SerializeField] private float colourLerpSpeedMultiplier = 1f;
 
@@ -24,12 +25,12 @@ public class FogUnit : Entity
 
     private float colourProgress = 0;
     private float colourProgressTarget = 0;
-    //private float oldcolourProgressTarget = 0;
     private bool lerpForward = true;
     private float healthProgress = 0;
     private float startHealth;
     private float targetHealth;
     private bool takingDamage = false;
+    private float damageLerpProgress = 0;
 
     private bool spill = false;
     private bool neighboursFull = false;
@@ -149,6 +150,35 @@ public class FogUnit : Entity
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
     {
+        //if (takingDamage && damageLerpProgress < 1)
+        //{
+        //    if (damageLerpProgress == 0)
+        //    {
+        //        undamagedColour = gameObject.GetComponent<Renderer>().material.color;
+        //    }
+
+        //    gameObject.GetComponent<Renderer>().material.SetColor("_Colour", Color.Lerp(undamagedColour, damagedColour, damageLerpProgress));
+
+        //    damageLerpProgress += Time.deltaTime * colourLerpSpeedMultiplier;
+
+        //    if (damageLerpProgress > 1)
+        //    {
+        //        damageLerpProgress = 1;
+        //    }
+        //}
+        //else if (!takingDamage && damageLerpProgress > 0)
+        //{
+        //    gameObject.GetComponent<Renderer>().material.SetColor("_Colour", Color.Lerp(undamagedColour, damagedColour, damageLerpProgress));
+
+        //    damageLerpProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
+
+        //    if (damageLerpProgress < 0)
+        //    {
+        //        damageLerpProgress = 0;
+        //    }
+        //}
+        //else
+        //{
         gameObject.GetComponent<Renderer>().material.SetColor("_Colour", currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
 
         if ((!angry && currentColours == angryColours) || (angry && currentColours == docileColours))
@@ -158,7 +188,6 @@ public class FogUnit : Entity
             if (((!angry && currentColours == angryColours) || (angry && currentColours == docileColours)) && colourProgress < 0)
             {
                 colourProgress = 0;
-                //oldcolourProgressTarget = colourProgressTarget;
                 colourProgressTarget = 0;
 
                 if (angry)
@@ -175,7 +204,6 @@ public class FogUnit : Entity
         {
             if (colourProgress == colourProgressTarget)
             {
-                //oldcolourProgressTarget = colourProgressTarget;
                 colourProgressTarget = UnityEngine.Random.Range(0f, 1f);
 
                 if (colourProgressTarget > colourProgress)
@@ -206,7 +234,8 @@ public class FogUnit : Entity
                     colourProgress = colourProgressTarget;
                 }
             }
-        } 
+        }
+        //} 
     }
 
     //Updates the fog unit's shader opacity according to its health
