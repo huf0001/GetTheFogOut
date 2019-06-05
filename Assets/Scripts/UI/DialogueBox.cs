@@ -120,6 +120,7 @@ public class DialogueBox : MonoBehaviour
         {
             continueArrow.enabled = false;
             DOTween.Kill(continueArrow.GetComponent<RectTransform>());
+            continueArrow.GetComponent<RectTransform>().anchoredPosition = arrowInitialPosition;
         }
 
         if (nextDialogueSet != null && !deactivating)
