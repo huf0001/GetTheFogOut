@@ -347,6 +347,18 @@ public abstract class Building : PlaneObject
         return script;
     }
 
+    public void ShutdownBuilding()
+    {
+        if (powerSource != null)
+        {
+            //Debug.Log("Unplugging from " + powerSource.name);
+            //  powerSource.SuppliedBuildings.Remove(this);
+            powerSource.Unplug(this);
+        }
+
+        PowerDown();
+    }
+
     public void DismantleBuilding()
     {
         Debug.Log("Dismantling " + this.name);
@@ -361,12 +373,7 @@ public abstract class Building : PlaneObject
             p.DismantlePowerSource();
         }
 
-        if (powerSource != null)
-        {
-            //Debug.Log("Unplugging from " + powerSource.name);
-            //  powerSource.SuppliedBuildings.Remove(this);
-            powerSource.Unplug(this);
-        }
+        ShutdownBuilding();
 
         //MakeTilesNotVisible();
 
@@ -376,8 +383,6 @@ public abstract class Building : PlaneObject
             Location.RemoveObserver(this);
             Location.Building = null;
         }
-
-        PowerDown();
 
         if (UIController.instance.buildingInfo.building == this)
         {
