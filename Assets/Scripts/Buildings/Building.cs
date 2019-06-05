@@ -57,7 +57,7 @@ public abstract class Building : PlaneObject
     protected virtual void Awake()
     {
         //MakeTilesVisible();
-        FindToolTip();
+        //FindToolTip();
 
         audioSource = GetComponent<AudioSource>();
 
