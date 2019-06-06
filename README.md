@@ -1,4 +1,4 @@
-# <p align="center"><img src="https://github.com/swin-sep/2019GP-Under-Ctrl/blob/master/images/Star%20Jump%20Logo.jpg"></p>
+# <p align="center"><img src="https://github.com/swin-sep/2019GP-Under-Ctrl/blob/master/images/Star%20Jump%20Logo.png"></p>
 **Developed by Under Ctrl**
 
 ## Development
