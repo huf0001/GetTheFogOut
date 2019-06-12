@@ -14,10 +14,10 @@ public class FogUnit : Entity
 
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
-    //[SerializeField] [ColorUsageAttribute(true, true)] private Color damagedColour;
-    //[ColorUsageAttribute(true, true)] private Color undamagedColour;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
     [SerializeField] private float colourLerpSpeedMultiplier = 1f;
+
+    [SerializeField] private GameObject angryFogEvaporation;
 
     //Non-Serialized Fields
     private Fog fog;
@@ -106,6 +106,8 @@ public class FogUnit : Entity
     //A defence has dealtt damage to the fog unit
     public void DealDamageToFogUnit(float damage)
     {
+        //Run angry fog evaporation effect here
+
         takingDamage = true;
 
         startHealth = base.Health;
@@ -150,35 +152,6 @@ public class FogUnit : Entity
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
     {
-        //if (takingDamage && damageLerpProgress < 1)
-        //{
-        //    if (damageLerpProgress == 0)
-        //    {
-        //        undamagedColour = gameObject.GetComponent<Renderer>().material.color;
-        //    }
-
-        //    gameObject.GetComponent<Renderer>().material.SetColor("_Colour", Color.Lerp(undamagedColour, damagedColour, damageLerpProgress));
-
-        //    damageLerpProgress += Time.deltaTime * colourLerpSpeedMultiplier;
-
-        //    if (damageLerpProgress > 1)
-        //    {
-        //        damageLerpProgress = 1;
-        //    }
-        //}
-        //else if (!takingDamage && damageLerpProgress > 0)
-        //{
-        //    gameObject.GetComponent<Renderer>().material.SetColor("_Colour", Color.Lerp(undamagedColour, damagedColour, damageLerpProgress));
-
-        //    damageLerpProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
-
-        //    if (damageLerpProgress < 0)
-        //    {
-        //        damageLerpProgress = 0;
-        //    }
-        //}
-        //else
-        //{
         gameObject.GetComponent<Renderer>().material.SetColor("_Colour", currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
 
         if ((!angry && currentColours == angryColours) || (angry && currentColours == docileColours))
@@ -235,7 +208,6 @@ public class FogUnit : Entity
                 }
             }
         }
-        //} 
     }
 
     //Updates the fog unit's shader opacity according to its health
