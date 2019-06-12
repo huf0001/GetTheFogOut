@@ -91,7 +91,7 @@ public class BuildingInfo : MonoBehaviour
         }
         else if (building.BuildingType == BuildingType.FogRepeller || building.BuildingType == BuildingType.AirCannon)
         {
-            bg.color = new Color32(255, 0, 0, 237);
+            bg.color = new Color32(113, 66, 236, 237);
         }
         InvokeRepeating("UpdateText", 0, 0.1f);
 
