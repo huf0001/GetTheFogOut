@@ -63,8 +63,9 @@ public class Wires : MonoBehaviour
                 children[i] = new GameObject("Child0" + i);
                 children[i].transform.parent = transform;
                 LineRenderer temp = children[i].AddComponent<LineRenderer>();
-                temp.SetVertexCount(steps);
-                temp.SetWidth(radius, radius);
+                temp.positionCount = steps;
+                temp.startWidth = radius;
+                temp.endWidth = radius;
                 temp.material = material;
                 for (int j = 0; j < steps; j++)
                 {

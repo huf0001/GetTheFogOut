@@ -63,6 +63,7 @@ public class DialogueBox : MonoBehaviour
     //Awake checks that all the colour strings are valid, and gets the starting AI expression
     private void Awake()
     {
+        aiImage.sprite = aiNeutral;
         arrowInitialPosition = continueArrow.GetComponent<RectTransform>().anchoredPosition;
 
         if (squareBracketColour == "")
