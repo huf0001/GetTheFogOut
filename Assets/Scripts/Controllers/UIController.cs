@@ -103,10 +103,12 @@ public class UIController : MonoBehaviour
 
 
     // Functions dealing with the drop down objective button
-    public void ShowLaunchButton()
+    public void ShowRepairButton()
     {
         launchCanvas.SetActive(true);
-        launchButtonImage.sprite = objectiveButtonSprites[2];
+        launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        launchButtonImage = launchButton.image;
+        launchButtonImage.sprite = objectiveButtonSprites[0];
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchBackground.DOFillAmount(1, 1))
@@ -115,9 +117,18 @@ public class UIController : MonoBehaviour
             delegate
             {
                 launchButton.enabled = true;
-                launchButton.onClick.AddListener(delegate { WinGame(); });
-                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
                 buttonClosed = false;
+                launchButton.onClick.AddListener(
+                    delegate {
+                        if (ResourceController.Instance.StoredMineral >= 500)
+                        {
+                            ResourceController.Instance.StoredMineral -= 500;
+                            launchButton.enabled = false;
+                            ObjectiveController.Instance.IncrementStage();
+                            CloseButton();
+                        }
+                    });
+                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
             });
     }
 
@@ -144,12 +155,10 @@ public class UIController : MonoBehaviour
             });
     }
 
-    public void ShowRepairButton()
+    public void ShowLaunchButton()
     {
         launchCanvas.SetActive(true);
-        launchBackground = launchCanvas.GetComponentInChildren<Image>();
-        launchButtonImage = launchButton.image;
-        launchButtonImage.sprite = objectiveButtonSprites[0];
+        launchButtonImage.sprite = objectiveButtonSprites[2];
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchBackground.DOFillAmount(1, 1))
@@ -158,14 +167,15 @@ public class UIController : MonoBehaviour
             delegate
             {
                 launchButton.enabled = true;
-                buttonClosed = false;
-                launchButton.onClick.AddListener(
-                    delegate {
-                        launchButton.enabled = false;
-                        ObjectiveController.Instance.IncrementStage();
-                        CloseButton();
-                    });
+                launchButton.onClick.AddListener(delegate {
+                    if (ResourceController.Instance.StoredPower >= 500)
+                    {
+                        ResourceController.Instance.StoredPower -= 500;
+                        WinGame();
+                    }
+                });
                 launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+                buttonClosed = false;
             });
     }
 

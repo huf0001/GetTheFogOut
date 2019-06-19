@@ -647,6 +647,16 @@ MonoBehaviour:
     - aiExpression: 3
       dialogue: Power generation exceeded! Try destroying some buildings or building
         more generators
+  - key: maintain minerals
+    expressionDialoguePairs:
+    - aiExpression: 3
+      dialogue: Come on, what are you doing? You can't repair your ship without enough
+        minerals. You had them  and you wasted them.
+  - key: maintain power
+    expressionDialoguePairs:
+    - aiExpression: 3
+      dialogue: Come on, what are you doing? You can't launch your ship without enough
+        power. You had it  and you wasted it.
   objectivesOn: 1
   currStage: 0
   subStage: 0
@@ -713,6 +723,7 @@ MonoBehaviour:
   fogFillInterval: 0.2
   fogDamageInterval: 0.02
   fogExpansionInterval: 0.5
+  angry: 0
 --- !u!114 &7305178377255849301
 MonoBehaviour:
   m_ObjectHideFlags: 0

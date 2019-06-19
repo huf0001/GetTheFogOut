@@ -165,24 +165,37 @@ public class ObjectiveController : DialogueBoxController
                 // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
                 if (ResourceController.Instance.StoredMineral >= 500)
                 {
-                    SkipObjectivesAhead(3);
+                    ChangeToSubStage(3);
                 }
                 else if (dialogueRead)
                 {
                     DismissDialogue();
                 }
+
                 break;
             case 2:
                 if (ResourceController.Instance.StoredMineral >= 500)
                 {
                     IncrementSubStage();
                 }
+
                 break;
             case 3:
-                UIController.instance.ShowRepairButton();
-                IncrementSubStage();
+                if (UIController.instance.buttonClosed)
+                {
+                    UIController.instance.ShowRepairButton();
+                    IncrementSubStage();
+                }
+
                 break;
             case 4:
+                if (ResourceController.Instance.StoredMineral < 500)
+                {
+                    UIController.instance.CloseButton();
+                    SendDialogue("maintain minerals", 1);
+                    ChangeToSubStage(1);
+                }
+
                 break;
             default:
                 break;
@@ -238,6 +251,7 @@ public class ObjectiveController : DialogueBoxController
                     ShipComponent.SetActive(false);
                     IncrementSubStage();
                 }
+
                 break;
             case 5:
                 if (UIController.instance.buttonClosed)
@@ -245,6 +259,7 @@ public class ObjectiveController : DialogueBoxController
                     UIController.instance.ShowAttachButton();
                     IncrementSubStage();
                 }
+
                 break;
             case 6:
                 break;
@@ -294,7 +309,7 @@ public class ObjectiveController : DialogueBoxController
                 // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
                 if (ResourceController.Instance.StoredPower >= 500)
                 {
-                    SkipObjectivesAhead(5);
+                    ChangeToSubStage(5);
                 }
                 else if (dialogueRead)
                 {
@@ -310,12 +325,13 @@ public class ObjectiveController : DialogueBoxController
                 // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
                 if (ResourceController.Instance.StoredPower >= 500)
                 {
-                    SkipObjectivesAhead(5);
+                    ChangeToSubStage(5);
                 }
                 else if (dialogueRead)
                 {
                     DismissDialogue();
                 }
+
                 break;
             case 4:
                 // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
@@ -336,21 +352,35 @@ public class ObjectiveController : DialogueBoxController
                     UIController.instance.ShowLaunchButton();
                     IncrementSubStage();
                 }
+
                 break;
             case 7:
-                if (dialogueRead)
+                if (ResourceController.Instance.StoredPower < 500)
+                {
+                    UIController.instance.CloseButton();
+                    SendDialogue("maintain power", 1);
+                    ChangeToSubStage(3);
+                }
+                else if (dialogueRead)
                 {
                     DismissDialogue();
-                    //WorldController.Instance.GameWin = true;
-                    //WorldController.Instance.GameOver = true;
                     IncrementSubStage();
-                    // Note: if more stages are added to the objective controller, when the last one is fulfilled, you can't just 
-                    // reset the substage, or it'll loop back to the start of the stage rather than finishing and that will
-                    // create issues with the dialogue if there isn't a propper dialogueRead check like this one.
+                }
+
+                break;
+            case 8:
+                if (ResourceController.Instance.StoredPower < 500)
+                {
+                    UIController.instance.CloseButton();
+                    SendDialogue("maintain power", 1);
+                    ChangeToSubStage(3);
                 }
 
                 break;
             default:
+                // Note: if more stages are added to the objective controller, when the last one is fulfilled, you can't just 
+                // reset the substage, or it'll loop back to the start of the stage rather than finishing and that will
+                // create issues with the dialogue if there isn't a propper dialogueRead check like this one.
                 break;
         }
     }
@@ -369,7 +399,7 @@ public class ObjectiveController : DialogueBoxController
         IncrementSubStage();
     }
 
-    private void SkipObjectivesAhead(int nextSubStage)
+    public void ChangeToSubStage(int nextSubStage)
     {
         ResetDialogueRead();
         subStage = nextSubStage;
@@ -398,6 +428,11 @@ public class ObjectiveController : DialogueBoxController
     public void IncrementSubStage()
     {
         subStage++;
+    }
+
+    public void DecrementSubStage()
+    {
+        subStage--;
     }
 
     void ResetSubStage()
