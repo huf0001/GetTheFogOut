@@ -327,6 +327,12 @@ public class Fog : MonoBehaviour
         {
             f.RenderOpacity();
         }
+
+        if (fogUnitsInPlay.Count == 0)
+        {
+            ObjectiveController.Instance.FogDestroyed();
+            CancelInvoke();
+        }
     }
 
     //Fills the health of fog units

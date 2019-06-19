@@ -393,6 +393,16 @@ public class ObjectiveController : DialogueBoxController
         base.SendDialogue(dialogueKey, invokeDelay);
     }
 
+    public void FogDestroyed()
+    {
+        SendDialogue("fog destroyed", 1);
+    }
+
+    public void AllTilesPowered()
+    {
+        SendDialogue("all tiles powered", 1);
+    }
+
     private void DismissDialogue()
     {
         ResetDialogueRead();
