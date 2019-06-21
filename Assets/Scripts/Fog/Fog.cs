@@ -102,7 +102,7 @@ public class Fog : MonoBehaviour
     }
 
     //Spawns the starting fog on the board with the configuration passed to it
-    public void SpawnStartingFog(StartConfiguration startConfiguration)
+    private void SpawnStartingFog(StartConfiguration startConfiguration)
     {
         switch (startConfiguration)
         {
@@ -195,7 +195,7 @@ public class Fog : MonoBehaviour
 
         if (lerpStartingFog)
         {
-            InvokeRepeating("LerpStartingFogToMaxHealth", fogLerpInInterval, fogLerpInInterval);
+            InvokeRepeating(nameof(LerpStartingFogToMaxHealth), fogLerpInInterval, fogLerpInInterval);
         }
     }
 
@@ -219,7 +219,7 @@ public class Fog : MonoBehaviour
 
         if (finished)
         {
-            CancelInvoke("LerpStartingFogToMaxHealth");
+            CancelInvoke(nameof(LerpStartingFogToMaxHealth));
         }
     }
 
@@ -230,15 +230,16 @@ public class Fog : MonoBehaviour
     }
 
     //Takes a fog unit and puts it on the board
-    public void SpawnFogUnit(int x, int z, float health)
+    private void SpawnFogUnit(int x, int z, float health)
     {
         GameObject fGO = GetFogUnit().gameObject;
         FogUnit f = fGO.GetComponent<FogUnit>();
         Vector2 pos = new Vector2(x, z);
         TileData t = wc.GetTileAt(pos);
-
-        fGO.transform.position = new Vector3(x, 0.13f, z);
-        fGO.transform.SetPositionAndRotation(new Vector3(x, 0.13f, z), Quaternion.Euler(fGO.transform.rotation.eulerAngles.x, Random.Range(0, 360), fGO.transform.rotation.eulerAngles.z));
+        Transform ft = fGO.transform;
+        
+        ft.position = new Vector3(x, 0.13f, z);
+        ft.SetPositionAndRotation(new Vector3(x, 0.13f, z), Quaternion.Euler(ft.rotation.eulerAngles.x, Random.Range(0, 360), ft.rotation.eulerAngles.z));
         fGO.name = "FogUnit(" + x + "," + z + ")";
 
         f.gameObject.GetComponent<Renderer>().material = visibleMaterial;
@@ -257,16 +258,15 @@ public class Fog : MonoBehaviour
     //Instantiates a fog unit that isn't on the board or in the pool
     private FogUnit CreateFogUnit()
     {
-        FogUnit f = Instantiate<FogUnit>(fogUnitPrefab);
-        f.transform.position = this.transform.position;
-        f.transform.SetParent(this.transform, true);
+        FogUnit f = Instantiate<FogUnit>(fogUnitPrefab, transform, true);
+        f.transform.position = transform.position;
         f.MaxHealth = fogMaxHealth;
         f.Fog = this;
         return f;
     }
 
     //Retrieves a fog unit from the pool, or asks for a new one if the pool is empty
-    public FogUnit GetFogUnit()
+    private FogUnit GetFogUnit()
     {
         FogUnit f;
         int lastAvailableIndex = fogUnitsInPool.Count - 1;
@@ -288,15 +288,15 @@ public class Fog : MonoBehaviour
     //Invokes the ActivateFog method according to the parameter passed to it.
     public void InvokeActivateFog(int delay)
     {
-        Invoke("ActivateFog", delay);
+        Invoke(nameof(ActivateFog), delay);
     }
 
     //Invokes the "update" methods of Fog according to the intervals set in the inspector
     public void ActivateFog()
     {
-        InvokeRepeating("UpdateFogFill", 0.1f, fogFillInterval);
-        InvokeRepeating("CheckExpandFog", 0.3f, fogExpansionInterval);
-        InvokeRepeating("UpdateDamageToFogUnits", 0.5f, fogDamageInterval);
+        InvokeRepeating(nameof(UpdateFogFill), 0.1f, fogFillInterval);
+        InvokeRepeating(nameof(CheckExpandFog), 0.3f, fogExpansionInterval);
+        InvokeRepeating(nameof(UpdateDamageToFogUnits), 0.5f, fogDamageInterval);
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
@@ -351,37 +351,40 @@ public class Fog : MonoBehaviour
         {
             f.RenderColour();
 
-            if (!f.NeighboursFull && f.Health >= fogSpillThreshold)
+            if (f.NeighboursFull || f.Health < fogSpillThreshold)
             {
-                int count = f.Location.AdjacentTiles.Count;
-                int fullCount = 0;
+                continue;
+            }
 
-                foreach (TileData t in f.Location.AdjacentTiles)
+            int count = f.Location.AdjacentTiles.Count;
+            int fullCount = 0;
+
+            foreach (TileData t in f.Location.AdjacentTiles)
+            {
+                af = t.FogUnit;
+
+                if (af == null)
                 {
-                    af = t.FogUnit;
+                    continue;
+                }
+                else if (af.Health < f.Health)
+                {
+                    af.Health += fogFillInterval * fogGrowth / count;
 
-                    if (af != null)
+                    if (!toRenderOpacity.Contains(af))
                     {
-                        if (af.Health < f.Health)
-                        {
-                            af.Health += fogFillInterval * fogGrowth / count;
-
-                            if (!toRenderOpacity.Contains(af))
-                            {
-                                toRenderOpacity.Add(af);
-                            }
-                        }
-                        else if (af.Health >= fogMaxHealth)
-                        {
-                            fullCount++;
-                        }
+                        toRenderOpacity.Add(af);
                     }
                 }
-
-                if (count == fullCount)
+                else if (af.Health >= fogMaxHealth)
                 {
-                    f.NeighboursFull = true;
+                    fullCount++;
                 }
+            }
+
+            if (count == fullCount)
+            {
+                f.NeighboursFull = true;
             }
         }
 
@@ -447,7 +450,7 @@ public class Fog : MonoBehaviour
     }
 
     //Takes the fog unit off the board and puts it back in the pool
-    public void ReturnFogUnitToPool(FogUnit f)
+    private void ReturnFogUnitToPool(FogUnit f)
     {
         f.gameObject.name = "FogUnitInPool";
 

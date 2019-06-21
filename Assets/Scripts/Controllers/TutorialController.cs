@@ -226,7 +226,7 @@ public class TutorialController : DialogueBoxController
     //Drone zooms out of ship to get a top-down view of it
     private void DroneLeavesShipToGetTopDownView()
     {
-        //Run animation / camera movement for watching a drone leavig the ship
+        //Run animation / camera movement for watching a drone leaving the ship
         tutorialStage = TutorialStage.ZoomBackToShip;
     }
 
@@ -545,7 +545,7 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("increase power generation", 1);
-                Invoke("ActivateMouse", 1);
+                Invoke(nameof(ActivateMouse), 1);
 
                 if (!objWindowVisible)
                 {
@@ -642,7 +642,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 6:
                 SendDialogue("build more harvesters", 1);
-                Invoke("ActivateMouse", 1);
+                Invoke(nameof(ActivateMouse), 1);
                 break;
             case 7:
                 if (dialogueRead)
@@ -845,24 +845,13 @@ public class TutorialController : DialogueBoxController
     public bool TileAllowed(TileData tile)
     {
         lastTileChecked = tile;
-
-        if (tutorialStage == TutorialStage.Finished || (tutorialStage == TutorialStage.IncreasePowerGeneration && tile.Resource == null) || (tutorialStage == TutorialStage.BuildHarvesters && subStage > 5 && tile.Resource != null) || tile == currentTile)
-        {
-            return true;
-        }
-
-        return false;
+        return tutorialStage == TutorialStage.Finished || (tutorialStage == TutorialStage.IncreasePowerGeneration && tile.Resource == null) || (tutorialStage == TutorialStage.BuildHarvesters && subStage > 5 && tile.Resource != null) || tile == currentTile;
     }
 
     //Checking if a button is acceptable
     public bool ButtonAllowed(ButtonType button)
     {
-        if ((tutorialStage == TutorialStage.Finished || button == currentlyLerping || button == ButtonType.Destroy) && ButtonsNormallyAllowed(lastTileChecked).Contains(button))
-        {
-            return true;
-        }
-
-        return false;
+        return (tutorialStage == TutorialStage.Finished || button == currentlyLerping || button == ButtonType.Destroy) && ButtonsNormallyAllowed(lastTileChecked).Contains(button);
     }
 
     //Getting the normally acceptable buttons for a tile
@@ -888,7 +877,6 @@ public class TutorialController : DialogueBoxController
         }
 
         result.Add(ButtonType.Destroy);
-
         return result;
     }
 
@@ -907,7 +895,7 @@ public class TutorialController : DialogueBoxController
         IncrementSubStage();
     }
 
-    //Dismisses dialgue and the mouse and skips the tutorial ahead appropriately
+    //Dismisses dialogue and the mouse and skips the tutorial ahead appropriately
     private void SkipTutorialAhead(int nextSubStage)
     {
         MouseController.Instance.ReportTutorialClick = false;
@@ -1051,18 +1039,7 @@ public class TutorialController : DialogueBoxController
     //Check if the building currently being built at a specific location has been built
     private bool BuiltCurrentlyBuilding()
     {
-        if (currentTile != null)
-        {
-            if (currentTile.Building != null)
-            {
-                if (currentTile.Building.BuildingType == currentlyBuilding)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return currentTile != null && currentTile.Building != null && currentTile.Building.BuildingType == currentlyBuilding;
     }
 
     //Deactivates the building target

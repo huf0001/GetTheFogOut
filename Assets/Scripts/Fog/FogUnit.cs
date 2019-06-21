@@ -32,6 +32,10 @@ public class FogUnit : Entity
     private bool takingDamage = false;
     private float damageLerpProgress = 0;
 
+    private Renderer fogRenderer;
+    private int colour;
+    private int alpha;
+
     private bool spill = false;
     private bool neighboursFull = false;
 
@@ -69,9 +73,17 @@ public class FogUnit : Entity
             }
         }
     }
+    
+    //Awake
+    private void Awake()
+    {
+        fogRenderer = gameObject.GetComponent<Renderer>();
+        colour = Shader.PropertyToID("_Colour");
+        alpha = Shader.PropertyToID("_Alpha");
+    }
 
     //Sets the starting values for fog damage health variables
-    void Start()
+    private void Start()
     {
         startHealth = base.Health;
         targetHealth = base.Health;
@@ -84,14 +96,7 @@ public class FogUnit : Entity
     {
         angry = a;
 
-        if (angry)
-        {
-            currentColours = angryColours;
-        }
-        else
-        {
-            currentColours = docileColours;
-        }
+        currentColours = angry ? angryColours : docileColours;
     }
 
     //Fog unit deals damage to the building on its tile
@@ -103,7 +108,7 @@ public class FogUnit : Entity
         }
     }
 
-    //A defence has dealtt damage to the fog unit
+    //A defence has dealt damage to the fog unit
     public void DealDamageToFogUnit(float damage)
     {
         //Run angry fog evaporation effect here
@@ -152,9 +157,9 @@ public class FogUnit : Entity
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
     {
-        gameObject.GetComponent<Renderer>().material.SetColor("_Colour", currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
+        fogRenderer.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
 
-        if ((!angry && currentColours == angryColours) || (angry && currentColours == docileColours))
+        if (!angry && currentColours == angryColours || angry && currentColours == docileColours)
         {
             colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
 
@@ -163,30 +168,16 @@ public class FogUnit : Entity
                 colourProgress = 0;
                 colourProgressTarget = 0;
 
-                if (angry)
-                {
-                    currentColours = angryColours;
-                }
-                else
-                {
-                    currentColours = docileColours;
-                }
+                currentColours = angry ? angryColours : docileColours;
             }
         }
         else
         {
             if (colourProgress == colourProgressTarget)
             {
-                colourProgressTarget = UnityEngine.Random.Range(0f, 1f);
+                colourProgressTarget = Random.Range(0f, 1f);
 
-                if (colourProgressTarget > colourProgress)
-                {
-                    lerpForward = true;
-                }
-                else
-                {
-                    lerpForward = false;
-                }
+                lerpForward = colourProgressTarget > colourProgress;
             }
 
             if (lerpForward)
@@ -213,11 +204,11 @@ public class FogUnit : Entity
     //Updates the fog unit's shader opacity according to its health
     public void RenderOpacity()
     {
-        gameObject.GetComponent<Renderer>().material.SetFloat("_Alpha", Mathf.Lerp(startOpacity, endOpacity, base.Health / MaxHealth));
+        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, base.Health / MaxHealth));
     }
 
     //Tells Fog to put the fog unit back in the pool
-    public void ReturnToFogPool()
+    private void ReturnToFogPool()
     {
         if (fog)
         {
@@ -225,7 +216,7 @@ public class FogUnit : Entity
         }
         else
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

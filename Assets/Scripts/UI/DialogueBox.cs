@@ -181,24 +181,23 @@ public class DialogueBox : MonoBehaviour
                 }
                 else
                 {
-                    if (c.ToString() == "[")
+                    switch (c.ToString())
                     {
-                        coloured = true;
-                        textColourString = squareBracketColour;
-                    }
-                    else if (c.ToString() == "{")
-                    {
-                        coloured = true;
-                        textColourString = squigglyBracketColour;
-                    }
-                    else if (c.ToString() == ">")
-                    {
-                        coloured = true;
-                        textColourString = vBracketColour;
-                    }
-                    else
-                    {
-                        pendingText += c;
+                        case "[":
+                            coloured = true;
+                            textColourString = squareBracketColour;
+                            break;
+                        case "{":
+                            coloured = true;
+                            textColourString = squigglyBracketColour;
+                            break;
+                        case ">":
+                            coloured = true;
+                            textColourString = vBracketColour;
+                            break;
+                        default:
+                            pendingText += c;
+                            break;
                     }
                 }
             }
@@ -245,7 +244,7 @@ public class DialogueBox : MonoBehaviour
             activated = true;
             nextDialogueSetReady = false;
 
-            Invoke("ShowDialogueBox", invokeDelay);
+            Invoke(nameof(ShowDialogueBox), invokeDelay);
         }
         else
         {
@@ -335,10 +334,10 @@ public class DialogueBox : MonoBehaviour
     //Utility Methods - Progress / Finish Dialogue---------------------------------------------------------------------------------------------------
 
     //Called by OnClick to register that the player has clicked the dialogue box
-    public void OnDialogueClicked()
-    {
-        dialogueRead = true;
-    }
+    //    public void OnDialogueClicked()
+    //    {
+    //        dialogueRead = true;
+    //    }
 
     //Called by OnClick to register that the player has read the currently displayed dialogue
     private void RegisterDialogueRead()
