@@ -172,8 +172,8 @@ public class TileData
         TileData[,] worldTiles = WorldController.Instance.Tiles;
         int width = WorldController.Instance.Width;
         int height = WorldController.Instance.Length;
-        int x, yoff = r;
-        int y, cd, xoff = 0;
+        int yoff = r;
+        int xoff = 0;
         int b = -r;
         int p0, p1, w0, w1;
 

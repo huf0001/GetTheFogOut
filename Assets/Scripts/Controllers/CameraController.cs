@@ -5,8 +5,8 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] CinemachineVirtualCamera camera;
-    [SerializeField] CinemachineVirtualCamera cameraCutscene;
+    [SerializeField] CinemachineVirtualCamera serialCamera;
+    [SerializeField] CinemachineVirtualCamera serialCameraCutscene;
     [SerializeField] bool runCameraPan;
     CinemachineFollowZoom zoom;
     public GameObject buildingSelector;
@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] float rotationSpeed = 40f;
     [SerializeField] float zoomMulti = 10f;
     [SerializeField] float dragSpeed;
-    [SerializeField] bool enableEdgePan = false;
+    //[SerializeField] bool enableEdgePan = false;
 
     private bool isBuildingSelect;
     private Vector3 forward;
@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour
 
         if (runCameraPan)
         {
-            cameraCutscene.gameObject.SetActive(true);
+            serialCameraCutscene.gameObject.SetActive(true);
             Invoke("RunCameraPan", 7f);
         }
 
@@ -48,7 +48,7 @@ public class CameraController : MonoBehaviour
     void RunCameraPan()
     {
         //camera.gameObject.SetActive(true);
-        cameraCutscene.gameObject.SetActive(false);
+        serialCameraCutscene.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -78,8 +78,8 @@ public class CameraController : MonoBehaviour
         if (Input.GetMouseButton(2) || Input.GetMouseButton(1))
         {
             //Right or middle mouse
-            float h = dragSpeed * camera.m_Lens.FieldOfView * -(Input.GetAxis("MouseX"));
-            float v = dragSpeed * camera.m_Lens.FieldOfView * -(Input.GetAxis("MouseY"));
+            float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -(Input.GetAxis("MouseX"));
+            float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -(Input.GetAxis("MouseY"));
             transform.Translate(h, 0, v, transform);
         }
 

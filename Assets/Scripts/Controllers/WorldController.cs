@@ -41,7 +41,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
-    [SerializeField] protected GameObject camera;
+    [SerializeField] protected GameObject serialCamera;
 
     [Header("Public variable?")]
     public bool InBuildMode;
@@ -112,7 +112,7 @@ public class WorldController : MonoBehaviour
         Cursor.lockState = wantedMode;
         Cursor.visible = (CursorLockMode.Locked != wantedMode);
 
-        camera = GameObject.Find("CameraTarget");
+        serialCamera = GameObject.Find("CameraTarget");
         cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
