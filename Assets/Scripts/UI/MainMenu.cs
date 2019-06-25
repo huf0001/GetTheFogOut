@@ -14,6 +14,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Image quitButton;
     [SerializeField] private TextMeshProUGUI quitText;
     [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private Slider loadingBar;
+    [SerializeField] private CanvasGroup loadingCanvasGroup;
 
     public void playGame()
     {
@@ -26,16 +28,34 @@ public class MainMenu : MonoBehaviour
             .OnComplete(
             delegate
             {
-                SceneManager.LoadScene(gameScene);
+                StartCoroutine(Load());
             });
+    }
+
+    private IEnumerator Load()
+    {
+        yield return null;
+        AsyncOperation loading = SceneManager.LoadSceneAsync(gameScene);
+        //loadingCanvasGroup.DOFade(1, 0.5f).OnComplete(
+        //    delegate
+        //    {
+        //    });
+        loadingCanvasGroup.alpha = 1;
+        while (!loading.isDone)
+        {
+            float progress = Mathf.Clamp01(loading.progress / 0.9f);
+            //Debug.Log($"Loading progress: {progress * 100}%");
+            loadingBar.DOValue(progress, 0.1f);
+            yield return null;
+        }
     }
 
     public void quitGame()
     {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
             Application.Quit();
-        #endif
+#endif
     }
 }
