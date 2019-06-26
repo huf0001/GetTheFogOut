@@ -13,7 +13,6 @@ public enum TutorialStage
     ZoomBackToShip,
     ExplainSituation,
     MoveCamera,
-    RotateCamera,
     BuildGenerator,
     BuildExtender,
     BuildBattery,
@@ -55,8 +54,6 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraKey aKey;
     [SerializeField] private CameraKey sKey;
     [SerializeField] private CameraKey dKey;
-    [SerializeField] private CameraKey qKey;
-    [SerializeField] private CameraKey eKey;
 
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
@@ -171,7 +168,6 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.ExplainSituation:
             case TutorialStage.MoveCamera:
-            case TutorialStage.RotateCamera:
                 CameraControls();
                 break;
             case TutorialStage.BuildGenerator:
@@ -282,9 +278,6 @@ public class TutorialController : DialogueBoxController
                 else if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
                     SkipTutorialAhead(6);
-                    tutorialStage = TutorialStage.RotateCamera;
-                    qKey.LerpIn();
-                    eKey.LerpIn();
                 }
 
                 break;
@@ -294,49 +287,13 @@ public class TutorialController : DialogueBoxController
                 if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
                     IncrementSubStage();
-                    tutorialStage = TutorialStage.RotateCamera;
-                    qKey.LerpIn();
-                    eKey.LerpIn();
                 }
 
                 break;
             case 6:
-                UIController.instance.UpdateObjectiveText(tutorialStage);
-                SendDialogue("rotate camera", 1);
-
-                if (!objWindowVisible)
-                {
-                    ToggleObjWindow();
-                }
-
-                break;
-            case 7:
-                GetCameraRotationInput();
-
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                }
-                else if (qKey.Finished && eKey.Finished)
-                {
-                    SkipTutorialAhead(9);
-                }
-
-                break;
-            case 8:
-                GetCameraRotationInput();
-
-                if (qKey.Finished && eKey.Finished)
-                {
-                    IncrementSubStage();
-                }
-
-                break;
-            case 9:
                 tutorialStage = TutorialStage.BuildGenerator;
                 currentlyBuilding = BuildingType.Generator;
                 ResetSubStage();
-
                 wKey.transform.parent.gameObject.SetActive(false);
 
                 break;
@@ -818,12 +775,6 @@ public class TutorialController : DialogueBoxController
     {
         GetButtonInput("Vertical", sKey, wKey);
         GetButtonInput("Horizontal", aKey, dKey);
-    }
-
-    //Checks inputs for camera rotation part of the tutorial
-    private void GetCameraRotationInput()
-    {
-        GetButtonInput("Rotation", eKey, qKey);
     }
 
     //Checks a specific camera input's input
