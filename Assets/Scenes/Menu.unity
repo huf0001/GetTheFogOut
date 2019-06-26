@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0674448, g: 0.08993495, b: 0.13505739, a: 1}
+  m_IndirectSpecularColor: {r: 0.06744319, g: 0.08993444, b: 0.13506025, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -339,8 +339,9 @@ GameObject:
   m_Component:
   - component: {fileID: 232103425}
   - component: {fileID: 232103426}
+  - component: {fileID: 232103427}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: TutToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -424,6 +425,18 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!225 &232103427
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232103424}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &343919822
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1511,6 +1524,7 @@ MonoBehaviour:
   quitButton: {fileID: 557898975}
   quitText: {fileID: 1175931122}
   titleText: {fileID: 3676458665294805386}
+  tutorialToggle: {fileID: 232103427}
   loadingBar: {fileID: 2127949562}
   loadingCanvasGroup: {fileID: 2127949560}
 --- !u!1001 &607361202
@@ -7295,6 +7309,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1294883713}
     m_Modifications:
+    - target: {fileID: 1366804467, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
+      propertyPath: m_Name
+      value: Broken Ship
+      objectReference: {fileID: 0}
     - target: {fileID: 1366804468, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.39
@@ -7338,10 +7356,6 @@ PrefabInstance:
     - target: {fileID: 1366804468, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1366804467, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
-      propertyPath: m_Name
-      value: Broken Ship
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3eaf8989f44d084b839e060e504b247, type: 3}

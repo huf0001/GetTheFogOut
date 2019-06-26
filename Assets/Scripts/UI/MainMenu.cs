@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Image quitButton;
     [SerializeField] private TextMeshProUGUI quitText;
     [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private CanvasGroup tutorialToggle;
     [SerializeField] private Slider loadingBar;
     [SerializeField] private CanvasGroup loadingCanvasGroup;
     private bool skipTutorial = false;
@@ -32,6 +33,7 @@ public class MainMenu : MonoBehaviour
             .Insert(0, titleText.DOFade(0, 0.5f))
             .Insert(0, quitText.DOFade(0, 0.5f))
             .Insert(0, playText.DOFade(0, 0.5f))
+            .Insert(0, tutorialToggle.DOFade(0, 0.5f))
             .OnComplete(
             delegate
             {
