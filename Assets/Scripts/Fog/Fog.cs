@@ -24,7 +24,6 @@ public class Fog : MonoBehaviour
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
-    [SerializeField] private bool lerpStartingFog = true;
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private FogExpansionDirection expansionDirection;
@@ -38,8 +37,6 @@ public class Fog : MonoBehaviour
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
 
-    [SerializeField] private float fogLerpInInterval = 0.02f;
-    [SerializeField] private float fogLerpInIncrement = 1f;
     [SerializeField] private float fogFillInterval = 0.2f;
     [SerializeField] private float fogDamageInterval = 0.02f;
     [SerializeField] private float fogExpansionInterval = 0.5f;
@@ -78,23 +75,6 @@ public class Fog : MonoBehaviour
         Instance = this;
     }
 
-    ////Create the max no. of fog units the game should need
-    ////Pooling methods adapted / borrowed from: https://catlikecoding.com/unity/tutorials/object-pools/
-    //public void PopulateFogPool()
-    //{
-    //    WorldController.Instance = WorldController.Instance;
-    //    xMax = WorldController.Instance.Width;
-    //    zMax = WorldController.Instance.Length;
-
-    //    if (fogUnitsInPool.Count == 0)
-    //    {
-    //        for (int i = 0; i < xMax * zMax; i++)
-    //        {
-    //            fogUnitsInPool.Add(CreateFogUnit());
-    //        }
-    //    }
-    //}
-
     //Loads the starting fog on the board into the fog script, and pools units according to the configuration set in the inspector.
     public void SetFogToTiles()
     {
@@ -110,9 +90,8 @@ public class Fog : MonoBehaviour
             TileData t = WorldController.Instance.GetTileAt(f.transform.position);
             f.Fog = this;
             f.Location = t;
-            //f.Health = minHealth;
-            f.Health = fogMaxHealth;
             f.MaxHealth = fogMaxHealth;
+            f.Health = fogMaxHealth;
             f.SetStartEmotion(angry);
             t.FogUnit = f;
             fogUnitsInPlay.Add(f);
@@ -261,42 +240,13 @@ public class Fog : MonoBehaviour
 
                 break;
         }
-
-        if (lerpStartingFog)
-        {
-            InvokeRepeating(nameof(LerpStartingFogToMaxHealth), fogLerpInInterval, fogLerpInInterval);
-        }
     }
 
-    //Smoothly lerps the fog in when it spawns instead of the fog being like "BAM!! I'm heeeeEEEEERRRREEEEEE!!!"
-    private void LerpStartingFogToMaxHealth()
-    {
-        bool finished = false;
-
-        foreach (FogUnit f in fogUnitsInPlay)
-        {
-            f.Health += fogLerpInIncrement;
-
-            if (f.Health >= fogMaxHealth)
-            {
-                f.Health = fogMaxHealth;
-                finished = true;
-            }
-
-            f.RenderOpacity();
-        }
-
-        if (finished)
-        {
-            CancelInvoke(nameof(LerpStartingFogToMaxHealth));
-        }
-    }
-
-    //Take a fog unit and puts it on the board with maximum health
-    private void SpawnFogUnitWithMinHealth(int x, int z)
-    {
-        SpawnFogUnit(x, z, minHealth);
-    }
+    ////Take a fog unit and puts it on the board with maximum health
+    //private void SpawnFogUnitWithMinHealth(int x, int z)
+    //{
+    //    SpawnFogUnit(x, z, minHealth);
+    //}
 
     //Takes a fog unit and puts it on the board
     private void SpawnFogUnit(int x, int z, float health)
@@ -505,7 +455,7 @@ public class Fog : MonoBehaviour
         {
             foreach (TileData n in newTiles)
             {
-                SpawnFogUnitWithMinHealth(n.X, n.Z);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
+                SpawnFogUnit(n.X, n.Z, minHealth);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
             }
         }
     }

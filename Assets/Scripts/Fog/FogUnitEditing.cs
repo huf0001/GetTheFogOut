@@ -15,9 +15,12 @@ public class FogUnitEditing : MonoBehaviour
     [SerializeField] private int zChange = 0;
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
-
+        if (enabled)
+        {
+            enabled = false;
+        }
     }
 
     // Update is called once per frame
