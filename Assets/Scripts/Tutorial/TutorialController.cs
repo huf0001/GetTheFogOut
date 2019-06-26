@@ -110,11 +110,12 @@ public class TutorialController : DialogueBoxController
     public void StartTutorial()
     {
         Fog.Instance.enabled = true;
-        Fog.Instance.PopulateFogPool();
+        //Fog.Instance.PopulateFogPool();
+        Fog.Instance.SetFogToTiles();
 
         if (skipTutorial)
         {
-            Fog.Instance.SpawnStartingFog();
+            //Fog.Instance.SpawnStartingFog();
             Fog.Instance.InvokeActivateFog(5);
             tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
@@ -242,7 +243,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                Fog.Instance.SpawnStartingFog();
+                //Fog.Instance.SpawnStartingFog();
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("explain situation", 2);
                 break;
