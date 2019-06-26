@@ -107,6 +107,8 @@ public class TutorialController : DialogueBoxController
         }
 
         Instance = this;
+
+        skipTutorial = GlobalVars.SkipTut;
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog

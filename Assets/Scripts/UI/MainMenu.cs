@@ -25,6 +25,7 @@ public class MainMenu : MonoBehaviour
 
     public void playGame()
     {
+        GlobalVars.SkipTut = skipTutorial;
         Sequence sequence = DOTween.Sequence();
         sequence.Insert(0, playButton.DOFade(0, 0.5f))
             .Insert(0, quitButton.DOFade(0, 0.5f))
