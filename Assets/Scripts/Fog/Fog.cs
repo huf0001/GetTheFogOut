@@ -31,7 +31,7 @@ public class Fog : MonoBehaviour
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
-    [SerializeField] public Difficulty selectDifficulty = Difficulty.normal;
+    [SerializeField] private Difficulty selectDifficulty = Difficulty.normal;
     [SerializeField] private bool lerpStartingFog = true;
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
@@ -59,10 +59,13 @@ public class Fog : MonoBehaviour
     private float minHealth = 0.0001f;
 
     //Private Container Fields
-    private List<TileData> fogCoveredTiles = new List<TileData>();              //i.e. tiles currently covered by fog
-    private List<FogUnit> fogUnitsInPlay = new List<FogUnit>();                 //i.e. currently active fog units on the board
-    private List<FogUnit> fogUnitsToReturnToPool = new List<FogUnit>();         //i.e. currently waiting to be re-pooled
-    private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                 //i.e. currently inactive fog units waiting for spawning
+    private List<TileData> fogCoveredTiles = new List<TileData>();                  //i.e. tiles currently covered by fog
+    private List<FogUnit> fogUnitsInPlay = new List<FogUnit>();                     //i.e. currently active fog units on the board
+    private List<FogUnit> fogUnitsToReturnToPool = new List<FogUnit>();             //i.e. currently waiting to be re-pooled
+    private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                     //i.e. currently inactive fog units waiting for spawning
+    private List<FogSphere> fogSpheresInPlay = new List<FogSphere>();               //i.e. currently active fog spheres on the board
+    private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
+    private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
 
     //Public Properties
     public static Fog Instance { get; protected set; }
@@ -71,11 +74,30 @@ public class Fog : MonoBehaviour
     public float FogGrowth { get => fogGrowth; set => fogGrowth = value; }
     public bool FogAccelerates { get => fogAccelerates; set => fogAccelerates = value; }
     public float FogMaxHealth { get => fogMaxHealth; set => fogMaxHealth = value; }
+    public Difficulty SelectDifficulty { get => selectDifficulty; set => selectDifficulty = value; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+    //Fog's awake method sets the static instance of Fog
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("There should not be more than one Fog");
+        }
+
+        Instance = this;
+    }
+
+    // Sets the difficulty of the fog on start
+    void Start()
+    {
+        SetDifficulty();
+    }
+
+    //Sets the difficulty according to what the player selects
     public void SetDifficulty()
     {
-        fogDamage = fogUnitPrefab.damage;
+        fogDamage = fogUnitPrefab.Damage;
         switch (selectDifficulty)
         {
             case Difficulty.easy:
@@ -87,22 +109,6 @@ public class Fog : MonoBehaviour
                 fogDamage = fogDamage * 2f;
                 break;
         }
-    }
-
-    //Fog's awake method sets the static instance of Fog
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Debug.LogError("There should not be more than one Fog");
-        }
-        Instance = this;
-    }
-
-    // Sets the difficulty of the fog on start
-    void Start()
-    {
-        SetDifficulty();
     }
 
     //Loads the starting fog on the board into the fog script, and pools units according to the configuration set in the inspector.
@@ -310,7 +316,7 @@ public class Fog : MonoBehaviour
         FogUnit f = Instantiate<FogUnit>(fogUnitPrefab, transform, true);
         f.transform.position = transform.position;
         f.MaxHealth = fogMaxHealth;
-        f.damage = fogDamage;
+        f.Damage = fogDamage;
         f.Fog = this;
         return f;
     }
@@ -524,6 +530,25 @@ public class Fog : MonoBehaviour
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f);
         fogCoveredTiles.Remove(f.Location);
+    }
+
+    //Puts the fog sphere in the list of fog spheres to be put back in the pool
+    public void QueueFogSphereForPooling(FogSphere f)
+    {
+        fogSpheresToReturnToPool.Add(f);
+    }
+
+    //Takes the fog unit off the board and puts it back in the pool
+    private void ReturnFogSphereToPool(FogSphere f)
+    {
+        f.gameObject.name = "FogSphereInPool";
+        f.gameObject.SetActive(false);
+        f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
+        //f.Spill = true;
+        f.gameObject.transform.position = transform.position;
+
+        fogSpheresInPool.Add(f);
+        fogSpheresInPlay.Remove(f);
     }
 
     //Other Methods----------------------------------------------------------------------------------------------------------------------------------

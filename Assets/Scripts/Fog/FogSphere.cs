@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FogUnit : Entity
+public class FogSphere : MonoBehaviour
 {
     //Serialized Fields
-   // [SerializeField] private float damage = 0.1f;
+    // [SerializeField] private float damage = 0.1f;
     [SerializeField] private float lerpToMaxInterval;
     [SerializeField] private float rapidLerpMultiplier = 3f;
     [SerializeField] private float damage = 0.1f;
@@ -18,6 +18,9 @@ public class FogUnit : Entity
     [SerializeField] private float colourLerpSpeedMultiplier = 1f;
 
     [SerializeField] private GameObject angryFogEvaporation;
+
+    [SerializeField] private float health = 1f;
+    [SerializeField] private float maxHealth = 1f;
 
     //Non-Serialized Fields
     private Fog fog;
@@ -36,45 +39,55 @@ public class FogUnit : Entity
     private int colour;
     private int alpha;
 
-    private bool spill = false;
-    private bool neighboursFull = false;
+    //private bool spill = false;
+    //private bool neighboursFull = false;
 
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
-    public float Damage { get => damage; set => damage = value; }
-    public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
-    public bool Spill { get => spill; set => spill = value; }
-    public bool TakingDamage { get => takingDamage; }
+    //public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
+    //public bool Spill { get => spill; set => spill = value; }
     public bool Angry { get => angry; set => angry = value; }
 
+    public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public bool TakingDamage { get => takingDamage; }
+
     //Altered Public Properties
-    public override float Health
+    public float Health
     {
         get
         {
-            return base.Health;
+            return health;
         }
 
         set
         {
             if (!takingDamage)
             {
-                base.Health = value;
+                health = value;
 
-                if (base.Health >= maxHealth)
+                if (health >= maxHealth)
                 {
-                    base.Health = maxHealth;
+                    health = maxHealth;
                 }
-                else if (base.Health <= 0)
+                else if (health <= 0)
                 {
                     ReturnToFogPool();
                 }
 
-                targetHealth = base.Health;
+                targetHealth = health;
             }
         }
     }
-    
+    protected bool GotNoHealth()
+    {
+        if (health <= 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     //Awake
     private void Awake()
     {
@@ -86,8 +99,8 @@ public class FogUnit : Entity
     //Sets the starting values for fog damage health variables
     private void Start()
     {
-        startHealth = base.Health;
-        targetHealth = base.Health;
+        startHealth = health;
+        targetHealth = health;
         currentColours = docileColours;
     }
 
@@ -100,29 +113,20 @@ public class FogUnit : Entity
         currentColours = angry ? angryColours : docileColours;
     }
 
-    //Verifies that (x, z) is the fog unit's position
-    public bool PositionIs(int x, int z)
-    {
-        return transform.position.x == x && transform.position.z == z;
-    }
-
-    //Fog unit deals damage to the building on its tile
-    public void DealDamageToBuilding()
-    {
-        if (Location.Building != null)
-        {
-            Location.Building.DealDamageToBuilding(damage * (base.Health / MaxHealth));
-        }
-    }
+    ////Verifies that (x, z) is the fog unit's position
+    //public bool PositionIs(int x, int z)
+    //{
+    //    return transform.position.x == x && transform.position.z == z;
+    //}
 
     //A defence has dealt damage to the fog unit
-    public void DealDamageToFogUnit(float damage)
+    public void DealDamageToFogSphere(float damage)
     {
         //Run angry fog evaporation effect here
 
         takingDamage = true;
 
-        startHealth = base.Health;
+        startHealth = health;
         targetHealth -= damage;
         healthProgress = 0;
 
@@ -130,24 +134,16 @@ public class FogUnit : Entity
         {
             targetHealth = 0;
         }
-
-        foreach (TileData t in Location.AdjacentTiles)
-        {
-            if (t.FogUnit != null)
-            {
-                t.FogUnit.NeighboursFull = false;
-            }
-        }
     }
- 
-    //Updates the damage dealt to the fog unit
-    public void UpdateDamageToFogUnit(float damageInterval)
-    {
-        base.Health = Mathf.Lerp(startHealth, targetHealth, healthProgress);
 
-        if (base.Health <= targetHealth)
+    //Updates the damage dealt to the fog unit
+    public void UpdateDamageToFogSphere(float damageInterval)
+    {
+        health = Mathf.Lerp(startHealth, targetHealth, healthProgress);
+
+        if (health <= targetHealth)
         {
-            base.Health = targetHealth;
+            health = targetHealth;
             takingDamage = false;
         }
         else
@@ -155,7 +151,7 @@ public class FogUnit : Entity
             healthProgress += damageInterval * rapidLerpMultiplier;
         }
 
-        if (base.Health <= 0)
+        if (health <= 0)
         {
             ReturnToFogPool();
         }
@@ -211,7 +207,7 @@ public class FogUnit : Entity
     //Updates the fog unit's shader opacity according to its health
     public void RenderOpacity()
     {
-        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, base.Health / MaxHealth));
+        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / MaxHealth));
     }
 
     //Tells Fog to put the fog unit back in the pool
@@ -219,7 +215,7 @@ public class FogUnit : Entity
     {
         if (fog)
         {
-            fog.QueueFogUnitForPooling(this);
+            fog.QueueFogSphereForPooling(this);
         }
         else
         {
