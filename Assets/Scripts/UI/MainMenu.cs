@@ -16,6 +16,12 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private Slider loadingBar;
     [SerializeField] private CanvasGroup loadingCanvasGroup;
+    private bool skipTutorial = false;
+
+    public void ToggleTutorial(bool tutorialOn)
+    {
+        skipTutorial = !tutorialOn;
+    }
 
     public void playGame()
     {
