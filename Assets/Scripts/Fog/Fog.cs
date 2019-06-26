@@ -47,7 +47,6 @@ public class Fog : MonoBehaviour
     [SerializeField] private bool angry = false;
 
     //Private Fields
-    private WorldController wc;
     private int xMax;
     private int zMax;
     private float minHealth = 0.0001f;
@@ -83,9 +82,9 @@ public class Fog : MonoBehaviour
     ////Pooling methods adapted / borrowed from: https://catlikecoding.com/unity/tutorials/object-pools/
     //public void PopulateFogPool()
     //{
-    //    wc = WorldController.Instance;
-    //    xMax = wc.Width;
-    //    zMax = wc.Length;
+    //    WorldController.Instance = WorldController.Instance;
+    //    xMax = WorldController.Instance.Width;
+    //    zMax = WorldController.Instance.Length;
 
     //    if (fogUnitsInPool.Count == 0)
     //    {
@@ -102,9 +101,48 @@ public class Fog : MonoBehaviour
         SetFogToTiles(configuration);
     }
 
-    //Loads the starting fog on the board into the fog script, poolung units according to the configuration passed to it.
+    //Loads the starting fog on the board into the fog script, pooling units according to the configuration passed to it.
     private void SetFogToTiles(StartConfiguration startConfiguration)
     {
+        //Loads the starting fog unit on the board into the fog script.
+        void SetFogUnitToTile(FogUnit f)
+        {
+            TileData t = WorldController.Instance.GetTileAt(f.transform.position);
+            //try
+            //{
+            //}
+            //catch
+            //{
+            //    Debug.Log($"No tile at {f.name}'s position of {f.transform.position}.");
+            //    Debug.Log($"FU is {f}, FU.transform is {f.transform}, FU position is {f.transform.position}");
+            //    continue;
+            //}
+
+            f.Fog = this;
+            f.Location = t;
+            f.Health = minHealth;
+            f.MaxHealth = fogMaxHealth;
+            f.SetStartEmotion(angry);
+            t.FogUnit = f;
+            fogUnitsInPlay.Add(f);
+            fogCoveredTiles.Add(t);
+            f.RenderOpacity();
+        }
+
+        //Takes the pre-instantiated fog unit out of the scene and puts it in the pool of fog units
+        void SetFogUnitToPool(FogUnit f)
+        {
+            f.Fog = this;
+            f.MaxHealth = fogMaxHealth;
+            f.Location.FogUnit = null;
+            f.Spill = true;
+            f.gameObject.name = "FogUnitInPool";
+            f.gameObject.SetActive(false);
+            f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
+            f.gameObject.transform.position = transform.position;
+            fogUnitsInPool.Add(f);
+        }
+
         FogUnit[] fogUnitsBeingSpawned = FindObjectsOfType<FogUnit>();
         xMax = WorldController.Instance.Width;
         zMax = WorldController.Instance.Length;
@@ -124,7 +162,7 @@ public class Fog : MonoBehaviour
                     }
                     else
                     {
-                        ReturnFogUnitToPool(f);
+                        SetFogUnitToPool(f);
                     }
                 }
 
@@ -142,7 +180,7 @@ public class Fog : MonoBehaviour
                     }
                     else
                     {
-                        ReturnFogUnitToPool(f);
+                        SetFogUnitToPool(f);
                     }
                 }
 
@@ -160,7 +198,7 @@ public class Fog : MonoBehaviour
                     }
                     else
                     {
-                        ReturnFogUnitToPool(f);
+                        SetFogUnitToPool(f);
                     }
                 }
 
@@ -184,7 +222,7 @@ public class Fog : MonoBehaviour
                     }
                     else
                     {
-                        ReturnFogUnitToPool(f);
+                        SetFogUnitToPool(f);
                     }
                 }
 
@@ -203,7 +241,7 @@ public class Fog : MonoBehaviour
                     }
                     else
                     {
-                        ReturnFogUnitToPool(f);
+                        SetFogUnitToPool(f);
                     }
                 }
 
@@ -221,7 +259,7 @@ public class Fog : MonoBehaviour
                     }
                     else
                     {
-                        ReturnFogUnitToPool(f);
+                        SetFogUnitToPool(f);
                     }
                 }
 
@@ -240,27 +278,6 @@ public class Fog : MonoBehaviour
         {
             InvokeRepeating(nameof(LerpStartingFogToMaxHealth), fogLerpInInterval, fogLerpInInterval);
         }
-    }
-
-    private void SetFogUnitToTile(FogUnit f)
-    {
-        TileData t =  WorldController.Instance.GetTileAt(f.transform.position);
-        //try
-        //{
-        //}
-        //catch
-        //{
-        //    Debug.Log($"No tile at {f.name}'s position of {f.transform.position}.");
-        //    Debug.Log($"FU is {f}, FU.transform is {f.transform}, FU position is {f.transform.position}");
-        //    continue;
-        //}
-
-        f.Location = t;
-        f.Health = minHealth;
-        f.SetStartEmotion(angry);
-        t.FogUnit = f;
-        fogUnitsInPlay.Add(f);
-        f.RenderOpacity();
     }
 
     ////Spawns the starting fog on the board with the configuration set in the inspector
@@ -403,7 +420,7 @@ public class Fog : MonoBehaviour
         GameObject fGO = GetFogUnit().gameObject;
         FogUnit f = fGO.GetComponent<FogUnit>();
         Vector2 pos = new Vector2(x, z);
-        TileData t = wc.GetTileAt(pos);
+        TileData t = WorldController.Instance.GetTileAt(pos);
         Transform ft = fGO.transform;
         
         ft.position = new Vector3(x, 0.13f, z);
