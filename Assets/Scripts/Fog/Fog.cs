@@ -108,19 +108,10 @@ public class Fog : MonoBehaviour
         void SetFogUnitToTile(FogUnit f)
         {
             TileData t = WorldController.Instance.GetTileAt(f.transform.position);
-            //try
-            //{
-            //}
-            //catch
-            //{
-            //    Debug.Log($"No tile at {f.name}'s position of {f.transform.position}.");
-            //    Debug.Log($"FU is {f}, FU.transform is {f.transform}, FU position is {f.transform.position}");
-            //    continue;
-            //}
-
             f.Fog = this;
             f.Location = t;
-            f.Health = minHealth;
+            //f.Health = minHealth;
+            f.Health = fogMaxHealth;
             f.MaxHealth = fogMaxHealth;
             f.SetStartEmotion(angry);
             t.FogUnit = f;
@@ -146,9 +137,6 @@ public class Fog : MonoBehaviour
         FogUnit[] fogUnitsBeingSpawned = FindObjectsOfType<FogUnit>();
         xMax = WorldController.Instance.Width;
         zMax = WorldController.Instance.Length;
-
-        Debug.Log($"Fog count: {fogUnitsBeingSpawned.Length}, tile count: {WorldController.Instance.Tiles.Length}. Tile array dimensions: {WorldController.Instance.Tiles.GetLength(0)}, {WorldController.Instance.Tiles.GetLength(1)}");
-        Debug.Log($"Tile[0,0] is {WorldController.Instance.GetTileAt(new Vector2(0, 0))}");
 
         switch (startConfiguration)
         {
@@ -232,7 +220,7 @@ public class Fog : MonoBehaviour
                 {
                     Vector3 p = f.gameObject.transform.position;
 
-                    if (p.x == 0         //Left
+                    if (   p.x == 0         //Left
                         || p.x == xMax - 1  //Right
                         || p.z == 0         //Bottom
                         || p.z == zMax - 1) //Top
@@ -279,110 +267,6 @@ public class Fog : MonoBehaviour
             InvokeRepeating(nameof(LerpStartingFogToMaxHealth), fogLerpInInterval, fogLerpInInterval);
         }
     }
-
-    ////Spawns the starting fog on the board with the configuration set in the inspector
-    //public void SpawnStartingFog()
-    //{
-    //    SpawnStartingFog(configuration);
-    //}
-
-    ////Spawns the starting fog on the board with the configuration passed to it
-    //private void SpawnStartingFog(StartConfiguration startConfiguration)
-    //{
-    //    switch (startConfiguration)
-    //    {
-    //        case StartConfiguration.OneSide:
-    //            //Spawns fog on one side of the board.
-    //            for (int i = 0; i < xMax; i++)
-    //            {
-    //                SpawnFogUnitWithMinHealth(i, zMax - 1);
-    //            }
-
-    //            break;
-    //        case StartConfiguration.Corners:
-    //            //Corner spaces
-    //            SpawnFogUnitWithMinHealth(0, 0);
-    //            SpawnFogUnitWithMinHealth(0, zMax - 1);
-    //            SpawnFogUnitWithMinHealth(xMax - 1, 0);
-    //            SpawnFogUnitWithMinHealth(xMax - 1, zMax - 1);
-    //            break;
-
-    //        case StartConfiguration.FourCompassPoints:
-    //            //Four compass points
-    //            SpawnFogUnitWithMinHealth(Mathf.RoundToInt(xMax / 2), 0);
-    //            SpawnFogUnitWithMinHealth(Mathf.RoundToInt(xMax / 2), zMax - 1);
-    //            SpawnFogUnitWithMinHealth(0, Mathf.RoundToInt(zMax / 2));
-    //            SpawnFogUnitWithMinHealth(xMax - 1, Mathf.RoundToInt(zMax / 2));
-    //            break;
-    //        case StartConfiguration.EightCompassPoints:
-    //            //Corner spaces
-    //            SpawnFogUnitWithMinHealth(0, 0);
-    //            SpawnFogUnitWithMinHealth(0, zMax - 1);
-    //            SpawnFogUnitWithMinHealth(xMax - 1, 0);
-    //            SpawnFogUnitWithMinHealth(xMax - 1, zMax - 1);
-
-    //            //Four compass points
-    //            SpawnFogUnitWithMinHealth(Mathf.RoundToInt(xMax / 2), 0);
-    //            SpawnFogUnitWithMinHealth(Mathf.RoundToInt(xMax / 2), zMax - 1);
-    //            SpawnFogUnitWithMinHealth(0, Mathf.RoundToInt(zMax / 2));
-    //            SpawnFogUnitWithMinHealth(xMax - 1, Mathf.RoundToInt(zMax / 2));
-
-    //            break;
-    //        case StartConfiguration.FourSides:
-    //            //Each side
-    //            for (int i = 1; i < xMax - 1; i++)
-    //            {
-    //                SpawnFogUnitWithMinHealth(i, 0);
-    //                SpawnFogUnitWithMinHealth(i, zMax - 1);
-    //            }
-
-    //            for (int i = 1; i < zMax - 1; i++)
-    //            {
-    //                SpawnFogUnitWithMinHealth(0, i);
-    //                SpawnFogUnitWithMinHealth(xMax - 1, i);
-    //            }
-
-    //            //Corner spaces
-    //            SpawnFogUnitWithMinHealth(0, 0);
-    //            SpawnFogUnitWithMinHealth(0, zMax - 1);
-    //            SpawnFogUnitWithMinHealth(xMax - 1, 0);
-    //            SpawnFogUnitWithMinHealth(xMax - 1, zMax - 1);
-
-    //            break;
-    //        case StartConfiguration.SurroundingHub:
-    //            Vector3 hubPosition = GameObject.Find("Hub").transform.position;
-
-    //            //Every space on the board
-    //            for (int i = 0; i < xMax; i++)
-    //            {
-    //                for (int j = 0; j < zMax; j++)
-    //                {
-    //                    //Except those within a specified range of the hub
-    //                    if (Vector3.Distance(hubPosition, new Vector3(i, hubPosition.y, j)) > surroundingHubRange)
-    //                    {
-    //                        SpawnFogUnitWithMinHealth(i, j);
-    //                    }
-    //                }
-    //            }
-
-    //            break;
-    //        case StartConfiguration.FullBoard:
-    //            //Every space on the board
-    //            for (int i = 0; i < xMax; i++)
-    //            {
-    //                for (int j = 0; j < zMax; j++)
-    //                {
-    //                    SpawnFogUnitWithMinHealth(i, j);
-    //                }
-    //            }
-    //            break;
-    //    }
-
-    //    if (lerpStartingFog)
-    //    {
-    //        InvokeRepeating(nameof(LerpStartingFogToMaxHealth), fogLerpInInterval, fogLerpInInterval);
-    //    }
-    //}
 
     //Smoothly lerps the fog in when it spawns instead of the fog being like "BAM!! I'm heeeeEEEEERRRREEEEEE!!!"
     private void LerpStartingFogToMaxHealth()
@@ -663,6 +547,7 @@ public class Fog : MonoBehaviour
 
     //Other Methods----------------------------------------------------------------------------------------------------------------------------------
 
+    //Switches the fog between angry and not angry
     public void ToggleAnger()
     {
         angry = !angry;

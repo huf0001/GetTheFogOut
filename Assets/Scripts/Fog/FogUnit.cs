@@ -36,8 +36,8 @@ public class FogUnit : Entity
     private int colour;
     private int alpha;
 
-    [SerializeField] private bool spill = false;
-    [SerializeField] private bool neighboursFull = false;
+    private bool spill = false;
+    private bool neighboursFull = false;
 
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
