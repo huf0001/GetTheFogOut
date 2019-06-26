@@ -398,11 +398,6 @@ public class WorldController : MonoBehaviour
         showActiveTiles();
         
 
-        if (Input.GetButtonDown("Submit") && cameraController.buildingSelector.activeSelf)
-        {
-            cameraController.ToggleCameraMovement();
-        }
-
         if (Input.GetButtonDown("Cancel"))
         {
             Destroy(PlaneSpawn);
