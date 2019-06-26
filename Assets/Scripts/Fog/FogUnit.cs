@@ -36,8 +36,8 @@ public class FogUnit : Entity
     private int colour;
     private int alpha;
 
-    private bool spill = false;
-    private bool neighboursFull = false;
+    [SerializeField] private bool spill = false;
+    [SerializeField] private bool neighboursFull = false;
 
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
@@ -97,6 +97,12 @@ public class FogUnit : Entity
         angry = a;
 
         currentColours = angry ? angryColours : docileColours;
+    }
+
+    //Verifies that (x, z) is the fog unit's position
+    public bool PositionIs(int x, int z)
+    {
+        return transform.position.x == x && transform.position.z == z;
     }
 
     //Fog unit deals damage to the building on its tile
