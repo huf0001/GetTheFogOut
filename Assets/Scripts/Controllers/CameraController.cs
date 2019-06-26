@@ -71,13 +71,6 @@ public class CameraController : MonoBehaviour
 
             hasChanged = true;
         }
-        
-        //Only run if player is moving left/right/up/down
-        if (Input.GetAxisRaw("Rotation") != 0)
-        {
-            rMove = rotationSpeed * Time.deltaTime * Input.GetAxis("Rotation");
-            myTransform.Rotate(0f, rMove, 0f);
-        }
 
         //Handle screen dragging if right click is held down
         if (Input.GetMouseButton(2) || Input.GetMouseButton(1))
