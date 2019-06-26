@@ -19,18 +19,28 @@ public enum StartConfiguration
     FullBoard
 }
 
+public enum Difficulty
+{
+    easy,
+    normal,
+    hard
+}
+
 public class Fog : MonoBehaviour
 {
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
+    [SerializeField] public Difficulty selectDifficulty = Difficulty.normal;
+    [SerializeField] private bool lerpStartingFog = true;
     [SerializeField] private FogUnit fogUnitPrefab;
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private FogExpansionDirection expansionDirection;
     [SerializeField] private bool fogAccelerates = true;
-    [SerializeField] private float fogGrowth = 5f;
+    [SerializeField] private float fogGrowth = 5;
     [SerializeField] private float fogMaxHealth = 100f;
     [SerializeField] private float fogSpillThreshold = 50f;
+    private float fogDamage;
     [SerializeField] private bool damageOn = false;
     [SerializeField] private float surroundingHubRange;
 
@@ -60,9 +70,24 @@ public class Fog : MonoBehaviour
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public float FogGrowth { get => fogGrowth; set => fogGrowth = value; }
     public bool FogAccelerates { get => fogAccelerates; set => fogAccelerates = value; }
-    public float FogMaxHealth { get => fogMaxHealth; }
+    public float FogMaxHealth { get => fogMaxHealth; set => fogMaxHealth = value; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+    public void SetDifficulty()
+    {
+        fogDamage = fogUnitPrefab.damage;
+        switch (selectDifficulty)
+        {
+            case Difficulty.easy:
+                fogDamage = fogDamage / 1.40f;
+                break;
+            case Difficulty.normal:
+                break;
+            case Difficulty.hard:
+                fogDamage = fogDamage * 2f;
+                break;
+        }
+    }
 
     //Fog's awake method sets the static instance of Fog
     private void Awake()
@@ -71,8 +96,13 @@ public class Fog : MonoBehaviour
         {
             Debug.LogError("There should not be more than one Fog");
         }
-
         Instance = this;
+    }
+
+    // Sets the difficulty of the fog on start
+    void Start()
+    {
+        SetDifficulty();
     }
 
     //Loads the starting fog on the board into the fog script, and pools units according to the configuration set in the inspector.
@@ -280,6 +310,7 @@ public class Fog : MonoBehaviour
         FogUnit f = Instantiate<FogUnit>(fogUnitPrefab, transform, true);
         f.transform.position = transform.position;
         f.MaxHealth = fogMaxHealth;
+        f.damage = fogDamage;
         f.Fog = this;
         return f;
     }

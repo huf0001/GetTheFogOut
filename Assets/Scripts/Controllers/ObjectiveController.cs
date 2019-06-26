@@ -77,6 +77,7 @@ public class ObjectiveController : DialogueBoxController
         audioSource = GetComponent<AudioSource>();
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
+        CheckDifficulty();
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -93,6 +94,25 @@ public class ObjectiveController : DialogueBoxController
         {
             UIController.instance.UpdateObjectiveText(currStage);
             CheckPowerOverloaded();
+        }
+    }
+
+    void CheckDifficulty()
+    {
+        switch (Fog.Instance.selectDifficulty)
+        {
+            case Difficulty.easy:
+                fogGrowthEasy = fogGrowthEasy / 2;
+                fogGrowthMedium = fogGrowthMedium / 2;
+                fogGrowthHard = fogGrowthHard / 2;
+                break;
+            case Difficulty.normal:
+                break;
+            case Difficulty.hard:
+                fogGrowthEasy = fogGrowthEasy * 2;
+                fogGrowthMedium = fogGrowthMedium * 2;
+                fogGrowthHard = fogGrowthHard * 2;
+                break;
         }
     }
 
