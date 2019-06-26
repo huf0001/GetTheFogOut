@@ -99,6 +99,12 @@ public class FogUnit : Entity
         currentColours = angry ? angryColours : docileColours;
     }
 
+    //Verifies that (x, z) is the fog unit's position
+    public bool PositionIs(int x, int z)
+    {
+        return transform.position.x == x && transform.position.z == z;
+    }
+
     //Fog unit deals damage to the building on its tile
     public void DealDamageToBuilding()
     {

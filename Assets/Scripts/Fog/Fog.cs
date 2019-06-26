@@ -47,8 +47,6 @@ public class Fog : MonoBehaviour
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
 
-    [SerializeField] private float fogLerpInInterval = 0.02f;
-    [SerializeField] private float fogLerpInIncrement = 1f;
     [SerializeField] private float fogFillInterval = 0.2f;
     [SerializeField] private float fogDamageInterval = 0.02f;
     [SerializeField] private float fogExpansionInterval = 0.5f;
@@ -56,9 +54,9 @@ public class Fog : MonoBehaviour
     [SerializeField] private bool angry = false;
 
     //Private Fields
-    private WorldController wc;
     private int xMax;
     private int zMax;
+    private float minHealth = 0.0001f;
 
     //Private Container Fields
     private List<TileData> fogCoveredTiles = new List<TileData>();              //i.e. tiles currently covered by fog
@@ -101,157 +99,184 @@ public class Fog : MonoBehaviour
         Instance = this;
     }
 
-    //Create the max no. of fog units the game should need
-    //Pooling methods adapted / borrowed from: https://catlikecoding.com/unity/tutorials/object-pools/
-    public void PopulateFogPool()
+    // Sets the difficulty of the fog on start
+    void Start()
     {
         SetDifficulty();
-        wc = WorldController.Instance;
-        xMax = wc.Width;
-        zMax = wc.Length;
+    }
 
-        if (fogUnitsInPool.Count == 0)
+    //Loads the starting fog on the board into the fog script, and pools units according to the configuration set in the inspector.
+    public void SetFogToTiles()
+    {
+        SetFogToTiles(configuration);
+    }
+
+    //Loads the starting fog on the board into the fog script, pooling units according to the configuration passed to it.
+    private void SetFogToTiles(StartConfiguration startConfiguration)
+    {
+        //Loads the starting fog unit on the board into the fog script.
+        void SetFogUnitToTile(FogUnit f)
         {
-            for (int i = 0; i < xMax * zMax; i++)
-            {
-                fogUnitsInPool.Add(CreateFogUnit());
-            }
+            TileData t = WorldController.Instance.GetTileAt(f.transform.position);
+            f.Fog = this;
+            f.Location = t;
+            f.MaxHealth = fogMaxHealth;
+            f.Health = fogMaxHealth;
+            f.SetStartEmotion(angry);
+            t.FogUnit = f;
+            fogUnitsInPlay.Add(f);
+            fogCoveredTiles.Add(t);
+            f.RenderOpacity();
         }
-    }
 
-    //Spawns the starting fog on the board with the configuration set in the inspector
-    public void SpawnStartingFog()
-    {
-        SpawnStartingFog(configuration);
-    }
+        //Takes the pre-instantiated fog unit out of the scene and puts it in the pool of fog units
+        void SetFogUnitToPool(FogUnit f)
+        {
+            f.Fog = this;
+            f.MaxHealth = fogMaxHealth;
+            f.Location.FogUnit = null;
+            f.Spill = true;
+            f.gameObject.name = "FogUnitInPool";
+            f.gameObject.SetActive(false);
+            f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
+            f.gameObject.transform.position = transform.position;
+            fogUnitsInPool.Add(f);
+        }
 
-    //Spawns the starting fog on the board with the configuration passed to it
-    private void SpawnStartingFog(StartConfiguration startConfiguration)
-    {
+        FogUnit[] fogUnitsBeingSpawned = FindObjectsOfType<FogUnit>();
+        xMax = WorldController.Instance.Width;
+        zMax = WorldController.Instance.Length;
+
         switch (startConfiguration)
         {
             case StartConfiguration.OneSide:
                 //Spawns fog on one side of the board.
-                for (int i = 0; i < xMax; i++)
+                foreach (FogUnit f in fogUnitsBeingSpawned)
                 {
-                    SpawnFogUnitWithMinHealth(i, zMax - 1);
+                    if (f.gameObject.transform.position.z == zMax - 1)
+                    {
+                        SetFogUnitToTile(f);
+                    }
+                    else
+                    {
+                        SetFogUnitToPool(f);
+                    }
                 }
 
                 break;
             case StartConfiguration.Corners:
                 //Corner spaces
-                SpawnFogUnitWithMinHealth(0, 0);
-                SpawnFogUnitWithMinHealth(0, zMax - 1);
-                SpawnFogUnitWithMinHealth(xMax - 1, 0);
-                SpawnFogUnitWithMinHealth(xMax - 1, zMax - 1);
-                break;
+                foreach (FogUnit f in fogUnitsBeingSpawned)
+                {
+                    if (f.PositionIs(0, 0)
+                        || f.PositionIs(0, zMax - 1)
+                        || f.PositionIs(xMax - 1, 0)
+                        || f.PositionIs(xMax - 1, zMax - 1))
+                    {
+                        SetFogUnitToTile(f);
+                    }
+                    else
+                    {
+                        SetFogUnitToPool(f);
+                    }
+                }
 
+                break;
             case StartConfiguration.FourCompassPoints:
                 //Four compass points
-                SpawnFogUnitWithMinHealth(Mathf.RoundToInt(xMax / 2), 0);
-                SpawnFogUnitWithMinHealth(Mathf.RoundToInt(xMax / 2), zMax - 1);
-                SpawnFogUnitWithMinHealth(0, Mathf.RoundToInt(zMax / 2));
-                SpawnFogUnitWithMinHealth(xMax - 1, Mathf.RoundToInt(zMax / 2));
+                foreach (FogUnit f in fogUnitsBeingSpawned)
+                {
+                    if (f.PositionIs(Mathf.RoundToInt(xMax / 2), 0)
+                        || f.PositionIs(Mathf.RoundToInt(xMax / 2), zMax - 1)
+                        || f.PositionIs(0, Mathf.RoundToInt(zMax / 2))
+                        || f.PositionIs(xMax - 1, Mathf.RoundToInt(zMax / 2)))
+                    {
+                        SetFogUnitToTile(f);
+                    }
+                    else
+                    {
+                        SetFogUnitToPool(f);
+                    }
+                }
+
                 break;
             case StartConfiguration.EightCompassPoints:
-                //Corner spaces
-                SpawnFogUnitWithMinHealth(0, 0);
-                SpawnFogUnitWithMinHealth(0, zMax - 1);
-                SpawnFogUnitWithMinHealth(xMax - 1, 0);
-                SpawnFogUnitWithMinHealth(xMax - 1, zMax - 1);
-
-                //Four compass points
-                SpawnFogUnitWithMinHealth(Mathf.RoundToInt(xMax / 2), 0);
-                SpawnFogUnitWithMinHealth(Mathf.RoundToInt(xMax / 2), zMax - 1);
-                SpawnFogUnitWithMinHealth(0, Mathf.RoundToInt(zMax / 2));
-                SpawnFogUnitWithMinHealth(xMax - 1, Mathf.RoundToInt(zMax / 2));
+                foreach (FogUnit f in fogUnitsBeingSpawned)
+                {
+                    if (
+                        //Corner spaces
+                        f.PositionIs(0, 0)
+                        || f.PositionIs(0, zMax - 1)
+                        || f.PositionIs(xMax - 1, 0)
+                        || f.PositionIs(xMax - 1, zMax - 1)
+                        //Four compass points
+                        || f.PositionIs(Mathf.RoundToInt(xMax / 2), 0)
+                        || f.PositionIs(Mathf.RoundToInt(xMax / 2), zMax - 1)
+                        || f.PositionIs(0, Mathf.RoundToInt(zMax / 2))
+                        || f.PositionIs(xMax - 1, Mathf.RoundToInt(zMax / 2)))
+                    {
+                        SetFogUnitToTile(f);
+                    }
+                    else
+                    {
+                        SetFogUnitToPool(f);
+                    }
+                }
 
                 break;
             case StartConfiguration.FourSides:
-                //Each side
-                for (int i = 1; i < xMax - 1; i++)
+                foreach (FogUnit f in fogUnitsBeingSpawned)
                 {
-                    SpawnFogUnitWithMinHealth(i, 0);
-                    SpawnFogUnitWithMinHealth(i, zMax - 1);
-                }
+                    Vector3 p = f.gameObject.transform.position;
 
-                for (int i = 1; i < zMax - 1; i++)
-                {
-                    SpawnFogUnitWithMinHealth(0, i);
-                    SpawnFogUnitWithMinHealth(xMax - 1, i);
+                    if (   p.x == 0         //Left
+                        || p.x == xMax - 1  //Right
+                        || p.z == 0         //Bottom
+                        || p.z == zMax - 1) //Top
+                    {
+                        SetFogUnitToTile(f);
+                    }
+                    else
+                    {
+                        SetFogUnitToPool(f);
+                    }
                 }
-
-                //Corner spaces
-                SpawnFogUnitWithMinHealth(0, 0);
-                SpawnFogUnitWithMinHealth(0, zMax - 1);
-                SpawnFogUnitWithMinHealth(xMax - 1, 0);
-                SpawnFogUnitWithMinHealth(xMax - 1, zMax - 1);
 
                 break;
             case StartConfiguration.SurroundingHub:
                 Vector3 hubPosition = GameObject.Find("Hub").transform.position;
 
                 //Every space on the board
-                for (int i = 0; i < xMax; i++)
+                foreach (FogUnit f in fogUnitsBeingSpawned)
                 {
-                    for (int j = 0; j < zMax; j++)
+                    //Except those within a specified range of the hub
+                    if (Vector3.Distance(hubPosition, f.transform.position) > surroundingHubRange)
                     {
-                        //Except those within a specified range of the hub
-                        if (Vector3.Distance(hubPosition, new Vector3(i, hubPosition.y, j)) > surroundingHubRange)
-                        {
-                            SpawnFogUnitWithMinHealth(i, j);
-                        }
+                        SetFogUnitToTile(f);
+                    }
+                    else
+                    {
+                        SetFogUnitToPool(f);
                     }
                 }
 
                 break;
             case StartConfiguration.FullBoard:
                 //Every space on the board
-                for (int i = 0; i < xMax; i++)
+                foreach (FogUnit f in fogUnitsBeingSpawned)
                 {
-                    for (int j = 0; j < zMax; j++)
-                    {
-                        SpawnFogUnitWithMinHealth(i, j);
-                    }
+                    SetFogUnitToTile(f);
                 }
+
                 break;
         }
-
-        if (lerpStartingFog)
-        {
-            InvokeRepeating(nameof(LerpStartingFogToMaxHealth), fogLerpInInterval, fogLerpInInterval);
-        }
     }
 
-    //Smoothly lerps the fog in when it spawns instead of the fog being like "BAM!! I'm heeeeEEEEERRRREEEEEE!!!"
-    private void LerpStartingFogToMaxHealth()
-    {
-        bool finished = false;
-
-        foreach (FogUnit f in fogUnitsInPlay)
-        {
-            f.Health += fogLerpInIncrement;
-
-            if (f.Health >= fogMaxHealth)
-            {
-                f.Health = fogMaxHealth;
-                finished = true;
-            }
-
-            f.RenderOpacity();
-        }
-
-        if (finished)
-        {
-            CancelInvoke(nameof(LerpStartingFogToMaxHealth));
-        }
-    }
-
-    //Take a fog unit and puts it on the board with maximum health
-    private void SpawnFogUnitWithMinHealth(int x, int z)
-    {
-        SpawnFogUnit(x, z, 0.0001f);
-    }
+    ////Take a fog unit and puts it on the board with maximum health
+    //private void SpawnFogUnitWithMinHealth(int x, int z)
+    //{
+    //    SpawnFogUnit(x, z, minHealth);
+    //}
 
     //Takes a fog unit and puts it on the board
     private void SpawnFogUnit(int x, int z, float health)
@@ -259,7 +284,7 @@ public class Fog : MonoBehaviour
         GameObject fGO = GetFogUnit().gameObject;
         FogUnit f = fGO.GetComponent<FogUnit>();
         Vector2 pos = new Vector2(x, z);
-        TileData t = wc.GetTileAt(pos);
+        TileData t = WorldController.Instance.GetTileAt(pos);
         Transform ft = fGO.transform;
         
         ft.position = new Vector3(x, 0.13f, z);
@@ -461,7 +486,7 @@ public class Fog : MonoBehaviour
         {
             foreach (TileData n in newTiles)
             {
-                SpawnFogUnitWithMinHealth(n.X, n.Z);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
+                SpawnFogUnit(n.X, n.Z, minHealth);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
             }
         }
     }
@@ -479,11 +504,14 @@ public class Fog : MonoBehaviour
     {
         f.gameObject.name = "FogUnitInPool";
 
-        foreach (TileData t in f.Location.AdjacentTiles)
+        if (f.Location != null)
         {
-            if (t.FogUnit != null)
+            foreach (TileData t in f.Location.AdjacentTiles)
             {
-                t.FogUnit.Spill = false;
+                if (t.FogUnit != null)
+                {
+                    t.FogUnit.Spill = false;
+                }
             }
         }
 
@@ -500,6 +528,7 @@ public class Fog : MonoBehaviour
 
     //Other Methods----------------------------------------------------------------------------------------------------------------------------------
 
+    //Switches the fog between angry and not angry
     public void ToggleAnger()
     {
         angry = !angry;
