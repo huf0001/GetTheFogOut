@@ -111,7 +111,7 @@ public class TutorialController : DialogueBoxController
     {
         Fog.Instance.enabled = true;
         //Fog.Instance.PopulateFogPool();
-        Fog.Instance.SetFogToTiles();
+        Fog.Instance.SpawnStartingFog();
 
         if (skipTutorial)
         {
