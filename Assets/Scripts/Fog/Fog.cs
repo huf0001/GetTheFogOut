@@ -63,9 +63,9 @@ public class Fog : MonoBehaviour
     private List<FogUnit> fogUnitsInPlay = new List<FogUnit>();                     //i.e. currently active fog units on the board
     private List<FogUnit> fogUnitsToReturnToPool = new List<FogUnit>();             //i.e. currently waiting to be re-pooled
     private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                     //i.e. currently inactive fog units waiting for spawning
-    private List<FogSphere> fogSpheresInPlay = new List<FogSphere>();               //i.e. currently active fog spheres on the board
-    private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
-    private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
+    //private List<FogSphere> fogSpheresInPlay = new List<FogSphere>();               //i.e. currently active fog spheres on the board
+    //private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
+    //private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
 
     //Public Properties
     public static Fog Instance { get; protected set; }
@@ -532,24 +532,24 @@ public class Fog : MonoBehaviour
         fogCoveredTiles.Remove(f.Location);
     }
 
-    //Puts the fog sphere in the list of fog spheres to be put back in the pool
-    public void QueueFogSphereForPooling(FogSphere f)
-    {
-        fogSpheresToReturnToPool.Add(f);
-    }
+    ////Puts the fog sphere in the list of fog spheres to be put back in the pool
+    //public void QueueFogSphereForPooling(FogSphere f)
+    //{
+    //    fogSpheresToReturnToPool.Add(f);
+    //}
 
-    //Takes the fog unit off the board and puts it back in the pool
-    private void ReturnFogSphereToPool(FogSphere f)
-    {
-        f.gameObject.name = "FogSphereInPool";
-        f.gameObject.SetActive(false);
-        f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
-        //f.Spill = true;
-        f.gameObject.transform.position = transform.position;
+    ////Takes the fog unit off the board and puts it back in the pool
+    //private void ReturnFogSphereToPool(FogSphere f)
+    //{
+    //    f.gameObject.name = "FogSphereInPool";
+    //    f.gameObject.SetActive(false);
+    //    f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
+    //    //f.Spill = true;
+    //    f.gameObject.transform.position = transform.position;
 
-        fogSpheresInPool.Add(f);
-        fogSpheresInPlay.Remove(f);
-    }
+    //    fogSpheresInPool.Add(f);
+    //    fogSpheresInPlay.Remove(f);
+    //}
 
     //Other Methods----------------------------------------------------------------------------------------------------------------------------------
 
