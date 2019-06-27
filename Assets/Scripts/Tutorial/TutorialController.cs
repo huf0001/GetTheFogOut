@@ -79,7 +79,6 @@ public class TutorialController : DialogueBoxController
     private bool lerpForward = true;
 
     //Public Properties
-    // public static TutorialController used to get the instance of the WorldManager from anywhere.
     public static TutorialController Instance { get; protected set; }
 
     public TutorialStage TutorialStage { get => tutorialStage; }
@@ -110,12 +109,10 @@ public class TutorialController : DialogueBoxController
     public void StartTutorial()
     {
         Fog.Instance.enabled = true;
-        //Fog.Instance.PopulateFogPool();
         Fog.Instance.SpawnStartingFog();
 
         if (skipTutorial)
         {
-            //Fog.Instance.SpawnStartingFog();
             Fog.Instance.InvokeActivateFog(5);
             tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();

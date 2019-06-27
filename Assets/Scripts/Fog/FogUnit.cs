@@ -5,7 +5,6 @@ using UnityEngine;
 public class FogUnit : Entity
 {
     //Serialized Fields
-   // [SerializeField] private float damage = 0.1f;
     [SerializeField] private float lerpToMaxInterval;
     [SerializeField] private float rapidLerpMultiplier = 3f;
     [SerializeField] private float damage = 0.1f;
