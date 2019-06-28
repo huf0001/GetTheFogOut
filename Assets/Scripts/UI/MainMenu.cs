@@ -12,11 +12,14 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private string gameScene;
     [SerializeField] private CanvasGroup mainCanvasGroup;
     [SerializeField] private TextMeshProUGUI difficultyButtonText;
+    [Header("Loading Bar")]
     [SerializeField] private Slider loadingBar;
     [SerializeField] private CanvasGroup loadingCanvasGroup;
+    [Header("Difficulty Sub-menu")]
     [SerializeField] private CanvasGroup difficultySubmenu;
     [SerializeField, TextArea] private string[] difficultyDescriptions;
     [SerializeField] private TextMeshProUGUI difficultyDescText;
+    [SerializeField] private TMP_Dropdown dropdown;
 
     private bool skipTutorial = false;
     private int difficulty = 1;
@@ -30,14 +33,6 @@ public class MainMenu : MonoBehaviour
     {
         difficulty = diff;
         difficultyDescText.text = difficultyDescriptions[difficulty];
-        StartCoroutine(Unhover());
-    }
-
-    private IEnumerator Unhover()
-    {
-        difficultySubmenu.blocksRaycasts = false;
-        yield return new WaitForSeconds(0.1f);
-        difficultySubmenu.blocksRaycasts = true;
     }
 
     public void OpenMenu()
