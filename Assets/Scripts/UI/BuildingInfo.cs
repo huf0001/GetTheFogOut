@@ -13,7 +13,6 @@ public class BuildingInfo : MonoBehaviour
     [SerializeField] Gradient healthGradient;
     [SerializeField] private Image bg;
     [HideInInspector] public Building building;
-    private RectTransform parent;
     private int mineralHealth;
     private float mineralTime, mineralVal, mineral;
     private MeshRenderer Range;
@@ -29,7 +28,7 @@ public class BuildingInfo : MonoBehaviour
         if (Visible)
         {
             mineralTime += Time.deltaTime;
-            parent.LookAt(Camera.main.transform);
+            transform.position = Camera.main.WorldToScreenPoint(building.transform.position) + new Vector3(Screen.width / 13, 0);
         }
     }
 
@@ -68,10 +67,6 @@ public class BuildingInfo : MonoBehaviour
     public void ShowInfo(Building b)
     {
         building = b;
-        if (parent == null)
-        {
-            parent = GetComponentInParent<RectTransform>();
-        }
         if (building.BuildingType == BuildingType.Hub)
         {
             bg.color = new Color32(0, 92, 118, 237);
@@ -101,8 +96,7 @@ public class BuildingInfo : MonoBehaviour
         }
 
         healthBar.SetActive(true);
-        parent.position = new Vector3(b.transform.position.x, 1.5f, b.transform.position.z) + new Vector3(-0.3f, 0, -2.3f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
-        parent.LookAt(Camera.main.transform);
+        transform.position = Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
         gameObject.SetActive(true);
         Visible = true;
     }
@@ -110,10 +104,6 @@ public class BuildingInfo : MonoBehaviour
     public void ShowInfo(ShipComponent shipComponent)
     {
         building = null;
-        if (parent == null)
-        {
-            parent = GetComponentInParent<RectTransform>();
-        }
         if (shipComponent.Location.FogUnit != null)
         {
             mainText.text = "<b>It looks like your missing thruster!\n" +
@@ -129,8 +119,7 @@ public class BuildingInfo : MonoBehaviour
 
         destroyButton.gameObject.SetActive(false);
         healthBar.SetActive(false);
-        parent.position = new Vector3(shipComponent.transform.position.x, 0, shipComponent.transform.position.z) + new Vector3(0.5f, 1, -1.5f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
-        parent.LookAt(Camera.main.transform);
+        transform.position = Camera.main.WorldToScreenPoint(shipComponent.transform.position) + new Vector3(Screen.width / 13, 0);
         gameObject.SetActive(true);
         Visible = true;
     }

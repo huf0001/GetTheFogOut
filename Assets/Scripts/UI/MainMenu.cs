@@ -5,37 +5,124 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private string gameScene;
-    [SerializeField] private Image playButton;
-    [SerializeField] private TextMeshProUGUI playText;
-    [SerializeField] private Image quitButton;
-    [SerializeField] private TextMeshProUGUI quitText;
-    [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private CanvasGroup mainCanvasGroup;
+    [SerializeField] private TextMeshProUGUI difficultyButtonText;
+    [Header("Loading Bar")]
+    [SerializeField] private Slider loadingBar;
+    [SerializeField] private CanvasGroup loadingCanvasGroup;
+    [Header("Difficulty Sub-menu")]
+    [SerializeField] private CanvasGroup difficultySubmenu;
+    [SerializeField, TextArea] private string[] difficultyDescriptions;
+    [SerializeField] private TextMeshProUGUI difficultyDescText;
+    [SerializeField] private TMP_Dropdown dropdown;
 
-    public void playGame()
+    private bool skipTutorial = false;
+    private int difficulty = 1;
+
+    public void ToggleTutorial(bool tutorialOn)
     {
-        Sequence sequence = DOTween.Sequence();
-        sequence.Insert(0, playButton.DOFade(0, 0.5f))
-            .Insert(0, quitButton.DOFade(0, 0.5f))
-            .Insert(0, titleText.DOFade(0, 0.5f))
-            .Insert(0, quitText.DOFade(0, 0.5f))
-            .Insert(0, playText.DOFade(0, 0.5f))
+        skipTutorial = !tutorialOn;
+    }
+
+    public void ChangeDifficulty(int diff)
+    {
+        difficulty = diff;
+        difficultyDescText.text = difficultyDescriptions[difficulty];
+    }
+
+    public void OpenMenu()
+    {
+        StartCoroutine(OpenDifficultyMenu());
+    }
+
+    private IEnumerator OpenDifficultyMenu()
+    {
+        mainCanvasGroup.blocksRaycasts = false;
+        yield return new WaitForSeconds(0.1f);
+        mainCanvasGroup.interactable = false;
+        mainCanvasGroup.DOFade(0, 0.5f)
             .OnComplete(
             delegate
             {
-                SceneManager.LoadScene(gameScene);
+                difficultySubmenu.DOFade(1, 0.5f);
+                difficultySubmenu.interactable = true;
+                difficultySubmenu.blocksRaycasts = true;
             });
+    }
+
+    public void CloseMenu()
+    {
+        StartCoroutine(CloseDifficultyMenu());
+    }
+
+    private IEnumerator CloseDifficultyMenu()
+    {
+        switch (difficulty)
+        {
+            case 0:
+                difficultyButtonText.text = "Difficulty: Easy";
+                break;
+            case 1:
+                difficultyButtonText.text = "Difficulty: Medium";
+                break;
+            case 2:
+                difficultyButtonText.text = "Difficulty: Hard";
+                break;
+        }
+        difficultySubmenu.blocksRaycasts = false;
+        yield return new WaitForSeconds(0.1f);
+        difficultySubmenu.interactable = false;
+        difficultySubmenu.DOFade(0, 0.5f)
+            .OnComplete(
+            delegate
+            {
+                mainCanvasGroup.DOFade(1, 0.5f);
+                mainCanvasGroup.interactable = true;
+                mainCanvasGroup.blocksRaycasts = true;
+            });
+    }
+
+    public void playGame()
+    {
+        GlobalVars.SkipTut = skipTutorial;
+        GlobalVars.Difficulty = difficulty;
+        GlobalVars.LoadedFromMenu = true;
+        mainCanvasGroup.DOFade(0, 0.5f)
+            .OnComplete(
+            delegate
+            {
+                StartCoroutine(Load());
+            });
+    }
+
+    private IEnumerator Load()
+    {
+        yield return null;
+        AsyncOperation loading = SceneManager.LoadSceneAsync(gameScene);
+        //loadingCanvasGroup.DOFade(1, 0.5f).OnComplete(
+        //    delegate
+        //    {
+        //    });
+        loadingCanvasGroup.alpha = 1;
+        while (!loading.isDone)
+        {
+            float progress = Mathf.Clamp01(loading.progress / 0.9f);
+            loadingBar.DOValue(progress, 0.1f);
+            yield return null;
+        }
     }
 
     public void quitGame()
     {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
             Application.Quit();
-        #endif
+#endif
     }
 }
