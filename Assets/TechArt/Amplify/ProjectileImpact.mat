@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ObjectNormalRefraction
+  m_Name: ProjectileImpact
   m_Shader: {fileID: 4800000, guid: 2804f7b141b729843a63342bb87c753d, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: a599dcdec4400194ca793909c2ea2216, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
@@ -41,7 +41,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _ChromaticAberration: 0.3
-    - _IndexofRefraction: 1.5
+    - _IndexofRefraction: 2
     - _NormalScale: 0.25
     - _Opacity: 0
     - __dirty: 0
