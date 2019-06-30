@@ -148,7 +148,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6b33310d5dbe687479c6f390e39c3696, type: 2}
+  - {fileID: 2100000, guid: 6ad03636713ea12419b306f7403fddcd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -286,7 +286,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: db1e933c0e2d25a4eb4a020c0d5a68a3, type: 2}
+  - {fileID: 2100000, guid: bcf826d8cb8e58c41ba3177bc45d608f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -417,9 +417,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed6d37a806b280498c454644f3bf924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  location:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
   health: 1
+  maxHealth: 1
   resourceType: 3
   resMultiplier: 1
+  visible: 1
 --- !u!65 &1785492324537557324
 BoxCollider:
   m_ObjectHideFlags: 0
