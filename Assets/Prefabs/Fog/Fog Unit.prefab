@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8377111147698654675}
   - component: {fileID: 8377111147698654672}
   - component: {fileID: 2516856455530505698}
+  - component: {fileID: 6015043631471046084}
   m_Layer: 0
   m_Name: Fog Unit
   m_TagString: Untagged
@@ -180,7 +181,6 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
-  damagedColour: {r: 766.9961, g: 670.6196, b: 0, a: 1}
   currentColours:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -211,3 +211,23 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   colourLerpSpeedMultiplier: 0.4
+  angryFogEvaporation: {fileID: 0}
+--- !u!114 &6015043631471046084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8377111147698654670}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a32c1f8ae56ea4991bbdf9510f31dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reposition: 0
+  randomiseRotation: 0
+  rename: 0
+  snapToGrid: 0
+  xChange: 0
+  yChange: 0
+  zChange: 0
