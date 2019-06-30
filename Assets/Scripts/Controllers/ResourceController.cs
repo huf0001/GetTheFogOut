@@ -198,6 +198,8 @@ public class ResourceController : MonoBehaviour
                                     if (h.Location.Resource.Health == 0)
                                     {
                                         ResourceNode.Destroy(h.Location.Resource.gameObject);
+                                        h.Location.Building.ShutdownBuilding();
+                                    //    h.Location.Building.DismantleBuilding();
                                     }
                                     break;
                                 case Resource.Fuel:

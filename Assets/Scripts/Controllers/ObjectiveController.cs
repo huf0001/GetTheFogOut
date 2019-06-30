@@ -31,6 +31,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int generatorLimit = 3;
     [SerializeField] AudioClip audioCompleteObjective;
 
+    [SerializeField] int[] fogGrowth = new int[2];
     [SerializeField] int fogGrowthEasy;
     [SerializeField] int fogGrowthMedium;
     [SerializeField] int fogGrowthHard;
@@ -40,7 +41,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     // Non-Serialized Fields
-    bool stageComplete = false;
+    // bool stageComplete = false;
     private AudioSource audioSource;
 
     private bool powerOverloaded = false;
@@ -76,6 +77,7 @@ public class ObjectiveController : DialogueBoxController
         audioSource = GetComponent<AudioSource>();
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
+        CheckDifficulty();
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -92,6 +94,25 @@ public class ObjectiveController : DialogueBoxController
         {
             UIController.instance.UpdateObjectiveText(currStage);
             CheckPowerOverloaded();
+        }
+    }
+
+    void CheckDifficulty()
+    {
+        switch (Fog.Instance.SelectDifficulty)
+        {
+            case Difficulty.easy:
+                fogGrowthEasy = fogGrowthEasy / 2;
+                fogGrowthMedium = fogGrowthMedium / 2;
+                fogGrowthHard = fogGrowthHard / 2;
+                break;
+            case Difficulty.normal:
+                break;
+            case Difficulty.hard:
+                fogGrowthEasy = fogGrowthEasy * 2;
+                fogGrowthMedium = fogGrowthMedium * 2;
+                fogGrowthHard = fogGrowthHard * 2;
+                break;
         }
     }
 
@@ -431,7 +452,7 @@ public class ObjectiveController : DialogueBoxController
         }
 
         ResetSubStage();
-        stageComplete = false;
+        // stageComplete = false;
         currStage++;
     }
 

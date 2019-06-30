@@ -77,7 +77,7 @@ public abstract class Building : PlaneObject
         MaxHealth = Health;
         InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
         buildHealth = health;
-        InvokeRepeating("CheckStillDamaging", 1, 3);
+        InvokeRepeating("CheckStillDamaging", 1, 5);
     }
 
     private void CheckForDamage()
@@ -134,6 +134,25 @@ public abstract class Building : PlaneObject
         }
     }
 
+    private void ReparingBuilding()
+    {
+        float waitingtime = 5f;
+        bool isfull = false;
+        if (!isfull)
+        {
+            if (Time.time > waitingtime)
+            {
+                health += 2f;
+                if (health >= MaxHealth)
+                {
+                    health = MaxHealth;
+                    isfull = true;
+                }
+            }
+        }
+
+    }
+
     private void CheckStillDamaging()
     {
         if (TakingDamage)
@@ -144,6 +163,14 @@ public abstract class Building : PlaneObject
                 damagingNotified = false;
             }
             buildHealth = Health;
+        }
+        else
+        {
+            if (buildHealth < maxHealth)
+            {
+                //Debug.Log(this.name + health);
+                ReparingBuilding();
+            }
         }
     }
 
@@ -320,6 +347,18 @@ public abstract class Building : PlaneObject
         return script;
     }
 
+    public void ShutdownBuilding()
+    {
+        if (powerSource != null)
+        {
+            //Debug.Log("Unplugging from " + powerSource.name);
+            //  powerSource.SuppliedBuildings.Remove(this);
+            powerSource.Unplug(this);
+        }
+
+        PowerDown();
+    }
+
     public void DismantleBuilding()
     {
         Debug.Log("Dismantling " + this.name);
@@ -334,12 +373,7 @@ public abstract class Building : PlaneObject
             p.DismantlePowerSource();
         }
 
-        if (powerSource != null)
-        {
-            //Debug.Log("Unplugging from " + powerSource.name);
-            //  powerSource.SuppliedBuildings.Remove(this);
-            powerSource.Unplug(this);
-        }
+        ShutdownBuilding();
 
         //MakeTilesNotVisible();
 
@@ -349,8 +383,6 @@ public abstract class Building : PlaneObject
             Location.RemoveObserver(this);
             Location.Building = null;
         }
-
-        PowerDown();
 
         if (UIController.instance.buildingInfo.building == this)
         {

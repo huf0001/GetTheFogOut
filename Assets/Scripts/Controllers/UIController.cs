@@ -442,11 +442,6 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Move Nex</b>\n\n" +
                     "<size=75%>Learn how to move your Nexus Drone.\n\n";
                 break;
-            case TutorialStage.RotateCamera:
-                hudObjText.text = "Objective: Rotate Nex";
-                objWindowText.text = "<b>Rotate Nex</b>\n\n" +
-                    "<size=75%>Learn how to rotate your Nexus Drone.\n\n";
-                break;
             case TutorialStage.BuildGenerator:
                 hudObjText.text = "Objective: Build Generator";
                 objWindowText.text = "<b>Build Generator</b>\n\n" +

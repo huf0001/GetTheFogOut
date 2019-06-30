@@ -5,17 +5,17 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] CinemachineVirtualCamera camera;
-    [SerializeField] CinemachineVirtualCamera cameraCutscene;
+    [SerializeField] CinemachineVirtualCamera serialCamera;
+    [SerializeField] CinemachineVirtualCamera serialCameraCutscene;
     [SerializeField] bool runCameraPan;
-    CinemachineFollowZoom zoom;
+    private CinemachineFollowZoom zoom;
     public GameObject buildingSelector;
 
     [SerializeField] float moveSpeed = 20f;
     [SerializeField] float rotationSpeed = 40f;
     [SerializeField] float zoomMulti = 10f;
     [SerializeField] float dragSpeed;
-    [SerializeField] bool enableEdgePan = false;
+    //[SerializeField] bool enableEdgePan = false;
 
     private bool isBuildingSelect;
     private Vector3 forward;
@@ -24,93 +24,85 @@ public class CameraController : MonoBehaviour
     private Vector3 xMove;
     private Vector3 zMove;
     private float rMove;
+    private Transform myTransform;
 
     private void Start()
     {
+        myTransform = transform;
         zoom = FindObjectOfType<CinemachineFollowZoom>();
 
         if (runCameraPan)
         {
-            cameraCutscene.gameObject.SetActive(true);
-            Invoke("RunCameraPan", 7f);
+            serialCameraCutscene.gameObject.SetActive(true);
+            Invoke(nameof(RunCameraPan), 7f);
         }
 
-    }
-
-    private void Awake()
-    {
-        //zoom = FindObjectOfType<CinemachineFollowZoom>();
-        //cameraCutscene.gameObject.SetActive(true);
-        //camera.gameObject.SetActive(false);
-        //Invoke("RunCameraPan", 1f);
     }
 
     void RunCameraPan()
     {
         //camera.gameObject.SetActive(true);
-        cameraCutscene.gameObject.SetActive(false);
+        serialCameraCutscene.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isBuildingSelect)
-        {
-            UpdateCameraMovement();
-        }
+        UpdateCameraMovement();
     }
 
     void UpdateCameraMovement()
     {
-        forward = transform.forward;
-        right = transform.right;
+        bool hasChanged = false;
+        //Only run if player is moving left/right/up/down
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        {
+            forward = myTransform.forward;
+            right = myTransform.right;
 
-        // Camera keyboard movement
-        xMove = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
-        zMove = forward * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
-        rMove = rotationSpeed * Time.deltaTime * Input.GetAxis("Rotation");
+            // Camera keyboard movement
+            xMove = moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal") * right;
+            zMove = moveSpeed * Time.deltaTime * Input.GetAxis("Vertical") * forward;
+            
+            var position = myTransform.localPosition;
+            position += xMove;
+            position += zMove;
+            myTransform.localPosition = position;
 
-        transform.position += xMove;
-        transform.position += zMove;
-        transform.Rotate(0f, rMove, 0f);
+            hasChanged = true;
+        }
 
-        //Handle screen dragging
+        //Handle screen dragging if right click is held down
         if (Input.GetMouseButton(2) || Input.GetMouseButton(1))
         {
             //Right or middle mouse
-            float h = dragSpeed * camera.m_Lens.FieldOfView * -(Input.GetAxis("MouseX"));
-            float v = dragSpeed * camera.m_Lens.FieldOfView * -(Input.GetAxis("MouseY"));
+            float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -(Input.GetAxis("MouseX"));
+            float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -(Input.GetAxis("MouseY"));
             transform.Translate(h, 0, v, transform);
+
+            hasChanged = true;
+            
         }
 
         // Zoom
-        if (Input.GetAxis("Zoom") != 0)
+        if (Input.GetAxisRaw("Zoom") != 0)
         {
             //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
             //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
 
             zoom.m_Width -= Input.GetAxis("Zoom") * zoomMulti;
-            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 10);
+            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
         }
 
-        Vector3 pos = transform.position;
-
-        // Boundry checks
-        pos.x = Mathf.Clamp(pos.x, 0f, WorldController.Instance.Width);
-        pos.z = Mathf.Clamp(pos.z, 0f, WorldController.Instance.Length);
-
-        transform.position = pos;
-    }
-
-    public void ToggleCameraMovement()
-    {
-        if (buildingSelector.activeSelf)
+        if (hasChanged)
         {
-            isBuildingSelect = false;
-        }
-        else
-        {
-            isBuildingSelect = !isBuildingSelect;
+            Vector3 pos = myTransform.localPosition;
+
+            // Boundry checks
+            pos.x = Mathf.Clamp(pos.x, 0f, WorldController.Instance.Width);
+            pos.z = Mathf.Clamp(pos.z, 0f, WorldController.Instance.Length);
+
+            myTransform.localPosition = pos;
         }
     }
 }
