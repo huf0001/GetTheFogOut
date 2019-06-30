@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.HDPipeline;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum TutorialStage
 {
@@ -108,7 +109,10 @@ public class TutorialController : DialogueBoxController
 
         Instance = this;
 
-        skipTutorial = GlobalVars.SkipTut;
+        if (GlobalVars.LoadedFromMenu)
+        {
+            skipTutorial = GlobalVars.SkipTut;
+        }
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
@@ -146,7 +150,7 @@ public class TutorialController : DialogueBoxController
                 UIController.instance.UpdateObjectiveText(TutorialStage.None);
             }
             else
-            { 
+            {
                 UIController.instance.UpdateObjectiveText(tutorialStage);
             }
 
@@ -292,7 +296,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 5:
                 GetCameraMovementInput();
-                
+
                 if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
                     IncrementSubStage();

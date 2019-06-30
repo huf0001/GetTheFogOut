@@ -91,6 +91,7 @@ public class MainMenu : MonoBehaviour
     {
         GlobalVars.SkipTut = skipTutorial;
         GlobalVars.Difficulty = difficulty;
+        GlobalVars.LoadedFromMenu = true;
         mainCanvasGroup.DOFade(0, 0.5f)
             .OnComplete(
             delegate
@@ -111,7 +112,6 @@ public class MainMenu : MonoBehaviour
         while (!loading.isDone)
         {
             float progress = Mathf.Clamp01(loading.progress / 0.9f);
-            //Debug.Log($"Loading progress: {progress * 100}%");
             loadingBar.DOValue(progress, 0.1f);
             yield return null;
         }
