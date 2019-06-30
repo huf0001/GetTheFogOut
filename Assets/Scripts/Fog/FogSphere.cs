@@ -1,225 +1,249 @@
-﻿//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-//public class FogSphere : MonoBehaviour
-//{
-//    //Serialized Fields
-//    // [SerializeField] private float damage = 0.1f;
-//    [SerializeField] private float lerpToMaxInterval;
-//    [SerializeField] private float rapidLerpMultiplier = 3f;
-//    [SerializeField] private float damage = 0.1f;
-//    [SerializeField] private float startOpacity = 0f;
-//    [SerializeField] private float endOpacity = 0.90f;
+public enum FogSphereState
+{
+    None,
+    Filling,
+    Throwing
+}
 
-//    [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
-//    [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
-//    [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
-//    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
+public class FogSphere : MonoBehaviour
+{
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
-//    [SerializeField] private GameObject angryFogEvaporation;
+    //Serialized Fields
+    // [SerializeField] private float damage = 0.1f;
+    //[SerializeField] private float lerpToMaxInterval;
+    [SerializeField] private float rapidLerpMultiplier = 3f;
+    //[SerializeField] private float damage = 0.1f;
+    [SerializeField] private float startOpacity = 0f;
+    [SerializeField] private float endOpacity = 0.90f;
 
-//    [SerializeField] private float health = 1f;
-//    [SerializeField] private float maxHealth = 1f;
+    [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
+    [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
+    [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
+    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
 
-//    //Non-Serialized Fields
-//    private Fog fog;
-//    private bool angry = false;
+    [SerializeField] private float health = 1f;
+    [SerializeField] private float maxHealth = 1f;
 
-//    private float colourProgress = 0;
-//    private float colourProgressTarget = 0;
-//    private bool lerpForward = true;
-//    private float healthProgress = 0;
-//    private float startHealth;
-//    private float targetHealth;
-//    private bool takingDamage = false;
-//    private float damageLerpProgress = 0;
+    [SerializeField] private FogSphereState state;
 
-//    private Renderer fogRenderer;
-//    private int colour;
-//    private int alpha;
+    //Non-Serialized Fields
+    private Fog fog;
+    private bool angry = false;
 
-//    //private bool spill = false;
-//    //private bool neighboursFull = false;
+    private float colourProgress = 0;
+    private float colourProgressTarget = 0;
+    private bool lerpForward = true;
+    private float healthProgress = 0;
+    private float startHealth;
+    private float targetHealth;
+    private bool takingDamage = false;
+    private float damageLerpProgress = 0;
 
-//    //Public Properties
-//    public Fog Fog { get => fog; set => fog = value; }
-//    //public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
-//    //public bool Spill { get => spill; set => spill = value; }
-//    public bool Angry { get => angry; set => angry = value; }
+    private Renderer fogRenderer;
+    private int colour;
+    private int alpha;
 
-//    public float MaxHealth { get => maxHealth; set => maxHealth = value; }
-//    public bool TakingDamage { get => takingDamage; }
+    //private bool spill = false;
+    //private bool neighboursFull = false;
 
-//    //Altered Public Properties
-//    public float Health
-//    {
-//        get
-//        {
-//            return health;
-//        }
+    //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
-//        set
-//        {
-//            if (!takingDamage)
-//            {
-//                health = value;
+    //Basic Properties
+    public Fog Fog { get => fog; set => fog = value; }
+    //public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
+    //public bool Spill { get => spill; set => spill = value; }
+    public bool Angry { get => angry; set => angry = value; }
 
-//                if (health >= maxHealth)
-//                {
-//                    health = maxHealth;
-//                }
-//                else if (health <= 0)
-//                {
-//                    ReturnToFogPool();
-//                }
+    public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public bool TakingDamage { get => takingDamage; }
 
-//                targetHealth = health;
-//            }
-//        }
-//    }
-//    protected bool GotNoHealth()
-//    {
-//        if (health <= 0)
-//        {
-//            return true;
-//        }
+    //Altered Public Properties
+    public float Health
+    {
+        get
+        {
+            return health;
+        }
 
-//        return false;
-//    }
+        set
+        {
+            if (!takingDamage)
+            {
+                health = value;
 
-//    //Awake
-//    private void Awake()
-//    {
-//        fogRenderer = gameObject.GetComponent<Renderer>();
-//        colour = Shader.PropertyToID("_Colour");
-//        alpha = Shader.PropertyToID("_Alpha");
-//    }
+                if (health >= maxHealth)
+                {
+                    health = maxHealth;
+                    ReturnToFogPool();
+                }
+                else if (health <= 0)
+                {
+                    ReturnToFogPool();
+                }
 
-//    //Sets the starting values for fog damage health variables
-//    private void Start()
-//    {
-//        startHealth = health;
-//        targetHealth = health;
-//        currentColours = docileColours;
-//    }
+                targetHealth = health;
+            }
+        }
+    }
 
-//    //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
-//    //so that newly spawned fog units don't look docile when the fog is angry.
-//    public void SetStartEmotion(bool a)
-//    {
-//        angry = a;
+    //protected bool GotNoHealth()
+    //{
+    //    return health <= 0;
+    //}
 
-//        currentColours = angry ? angryColours : docileColours;
-//    }
+    //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
-//    ////Verifies that (x, z) is the fog unit's position
-//    //public bool PositionIs(int x, int z)
-//    //{
-//    //    return transform.position.x == x && transform.position.z == z;
-//    //}
+    //Awake
+    private void Awake()
+    {
+        fogRenderer = gameObject.GetComponentInChildren<Renderer>();
+        colour = Shader.PropertyToID("_Colour");
+        alpha = Shader.PropertyToID("_Alpha");
+    }
 
-//    //A defence has dealt damage to the fog unit
-//    public void DealDamageToFogSphere(float damage)
-//    {
-//        //Run angry fog evaporation effect here
+    //Sets the starting values for fog damage health variables
+    private void Start()
+    {
+        startHealth = health;
+        targetHealth = health;
+        currentColours = docileColours;
+    }
 
-//        takingDamage = true;
+    //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
+    //so that newly spawned fog units don't look docile when the fog is angry.
+    public void SetStartEmotion(bool a)
+    {
+        angry = a;
 
-//        startHealth = health;
-//        targetHealth -= damage;
-//        healthProgress = 0;
+        currentColours = angry ? angryColours : docileColours;
+    }
 
-//        if (targetHealth < 0)
-//        {
-//            targetHealth = 0;
-//        }
-//    }
+    //Recurring Methods - Movement and Spill---------------------------------------------------------------------------------------------------------
 
-//    //Updates the damage dealt to the fog unit
-//    public void UpdateDamageToFogSphere(float damageInterval)
-//    {
-//        health = Mathf.Lerp(startHealth, targetHealth, healthProgress);
+    private void Update()
+    {
+        if (state == FogSphereState.Throwing)
+        {
 
-//        if (health <= targetHealth)
-//        {
-//            health = targetHealth;
-//            takingDamage = false;
-//        }
-//        else
-//        {
-//            healthProgress += damageInterval * rapidLerpMultiplier;
-//        }
+        }
+    }
 
-//        if (health <= 0)
-//        {
-//            ReturnToFogPool();
-//        }
-//    }
+    //Recurring Methods - Health and Appearance------------------------------------------------------------------------------------------------------
+    
+    //Updates the damage dealt to the fog unit
+    public void UpdateDamageToFogSphere(float damageInterval)
+    {
+        health = Mathf.Lerp(startHealth, targetHealth, healthProgress);
 
-//    //Updates the fog unit's shader colour at random between two values
-//    public void RenderColour()
-//    {
-//        fogRenderer.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
+        if (health <= targetHealth)
+        {
+            health = targetHealth;
+            takingDamage = false;
+        }
+        else
+        {
+            healthProgress += damageInterval * rapidLerpMultiplier;
+        }
 
-//        if (!angry && currentColours == angryColours || angry && currentColours == docileColours)
-//        {
-//            colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
+        if (health <= 0)
+        {
+            ReturnToFogPool();
+        }
+    }
 
-//            if (((!angry && currentColours == angryColours) || (angry && currentColours == docileColours)) && colourProgress < 0)
-//            {
-//                colourProgress = 0;
-//                colourProgressTarget = 0;
+    //Updates the fog unit's shader colour at random between two values
+    public void RenderColour()
+    {
+        fogRenderer.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
 
-//                currentColours = angry ? angryColours : docileColours;
-//            }
-//        }
-//        else
-//        {
-//            if (colourProgress == colourProgressTarget)
-//            {
-//                colourProgressTarget = Random.Range(0f, 1f);
+        if (!angry && currentColours == angryColours || angry && currentColours == docileColours)
+        {
+            colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
 
-//                lerpForward = colourProgressTarget > colourProgress;
-//            }
+            if (((!angry && currentColours == angryColours) || (angry && currentColours == docileColours)) && colourProgress < 0)
+            {
+                colourProgress = 0;
+                colourProgressTarget = 0;
 
-//            if (lerpForward)
-//            {
-//                colourProgress += Time.deltaTime * colourLerpSpeedMultiplier;
+                currentColours = angry ? angryColours : docileColours;
+            }
+        }
+        else
+        {
+            if (colourProgress == colourProgressTarget)
+            {
+                colourProgressTarget = Random.Range(0f, 1f);
 
-//                if (colourProgress > colourProgressTarget)
-//                {
-//                    colourProgress = colourProgressTarget;
-//                }
-//            }
-//            else
-//            {
-//                colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
+                lerpForward = colourProgressTarget > colourProgress;
+            }
 
-//                if (colourProgress < colourProgressTarget)
-//                {
-//                    colourProgress = colourProgressTarget;
-//                }
-//            }
-//        }
-//    }
+            if (lerpForward)
+            {
+                colourProgress += Time.deltaTime * colourLerpSpeedMultiplier;
 
-//    //Updates the fog unit's shader opacity according to its health
-//    public void RenderOpacity()
-//    {
-//        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / MaxHealth));
-//    }
+                if (colourProgress > colourProgressTarget)
+                {
+                    colourProgress = colourProgressTarget;
+                }
+            }
+            else
+            {
+                colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
 
-//    //Tells Fog to put the fog unit back in the pool
-//    private void ReturnToFogPool()
-//    {
-//        if (fog)
-//        {
-//            fog.QueueFogSphereForPooling(this);
-//        }
-//        else
-//        {
-//            Destroy(gameObject);
-//        }
-//    }
-//}
+                if (colourProgress < colourProgressTarget)
+                {
+                    colourProgress = colourProgressTarget;
+                }
+            }
+        }
+    }
+
+    //Updates the fog unit's shader opacity according to its health
+    public void RenderOpacity()
+    {
+        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / MaxHealth));
+    }
+
+    //Triggered/Utility Methods----------------------------------------------------------------------------------------------------------------------
+
+    ////Verifies that (x, z) is the fog unit's position
+    //public bool PositionIs(int x, int z)
+    //{
+    //    return transform.position.x == x && transform.position.z == z;
+    //}
+
+    //A defence has dealt damage to the fog unit
+    public void DealDamageToFogSphere(float damage)
+    {
+        //Run angry fog evaporation effect here
+
+        takingDamage = true;
+
+        startHealth = health;
+        targetHealth -= damage;
+        healthProgress = 0;
+
+        if (targetHealth < 0)
+        {
+            targetHealth = 0;
+        }
+    }
+
+    //Tells Fog to put the fog unit back in the pool
+    private void ReturnToFogPool()
+    {
+        if (fog)
+        {
+            fog.QueueFogSphereForPooling(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+}

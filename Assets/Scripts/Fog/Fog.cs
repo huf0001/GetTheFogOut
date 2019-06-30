@@ -34,6 +34,7 @@ public class Fog : MonoBehaviour
     [SerializeField] private Difficulty selectDifficulty = Difficulty.normal;
     [SerializeField] private bool lerpStartingFog = true;
     [SerializeField] private FogUnit fogUnitPrefab;
+    [SerializeField] private FogSphere fogSpherePrefab;
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private FogExpansionDirection expansionDirection;
     [SerializeField] private bool fogAccelerates = true;
@@ -63,9 +64,9 @@ public class Fog : MonoBehaviour
     private List<FogUnit> fogUnitsInPlay = new List<FogUnit>();                     //i.e. currently active fog units on the board
     private List<FogUnit> fogUnitsToReturnToPool = new List<FogUnit>();             //i.e. currently waiting to be re-pooled
     private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                     //i.e. currently inactive fog units waiting for spawning
-    //private List<FogSphere> fogSpheresInPlay = new List<FogSphere>();               //i.e. currently active fog spheres on the board
-    //private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
-    //private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
+    private List<FogSphere> fogSpheresInPlay = new List<FogSphere>();               //i.e. currently active fog spheres on the board
+    private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
+    private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
 
     //Public Properties
     public static Fog Instance { get; protected set; }
@@ -77,6 +78,7 @@ public class Fog : MonoBehaviour
     public Difficulty SelectDifficulty { get => selectDifficulty; set => selectDifficulty = value; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+
     //Fog's awake method sets the static instance of Fog
     private void Awake()
     {
@@ -121,10 +123,11 @@ public class Fog : MonoBehaviour
     //Spawns the starting fog on the board with the configuration passed to it
     private void SpawnStartingFog(StartConfiguration startConfiguration)
     {
-        //Populate fog pool with fog units
+        //Get dimensions of tile array
         xMax = WorldController.Instance.Width;
         zMax = WorldController.Instance.Length;
 
+        //Populate fog unit pool with fog units
         if (fogUnitsInPool.Count == 0)
         {
             for (int i = 0; i < xMax * zMax; i++)
@@ -133,7 +136,16 @@ public class Fog : MonoBehaviour
             }
         }
 
-        //Arrange them on the board according to the passed configuration
+        //Populate fog sphere pool with fog spheres
+        if (fogSpheresInPool.Count == 0)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                fogSpheresInPool.Add(CreateFogSphere());
+            }
+        }
+
+        //Arrange fog units on the board according to the passed configuration
         switch (startConfiguration)
         {
             case StartConfiguration.OneSide:
@@ -224,44 +236,6 @@ public class Fog : MonoBehaviour
         }
     }
 
-    //Take a fog unit and puts it on the board with maximum health
-    //private void SpawnFogUnitWithMinHealth(int x, int z)
-    //{
-    //    SpawnFogUnit(x, z, minHealth);
-    //}
-    
-    //Take a fog unit and puts it on the board with maximum health
-    //private void SpawnFogUnitWithMaxHealth(int x, int z)
-    //{
-    //    SpawnFogUnit(x, z, fogMaxHealth);
-    //}
-
-    //Takes a fog unit and puts it on the board
-    private void SpawnFogUnit(int x, int z, float health)
-    {
-        GameObject fGO = GetFogUnit().gameObject;
-        FogUnit f = fGO.GetComponent<FogUnit>();
-        Vector2 pos = new Vector2(x, z);
-        TileData t = WorldController.Instance.GetTileAt(pos);
-        Transform ft = fGO.transform;
-        
-        ft.position = new Vector3(x, 0.13f, z);
-        ft.SetPositionAndRotation(new Vector3(x, 0.13f, z), Quaternion.Euler(ft.rotation.eulerAngles.x, Random.Range(0, 360), ft.rotation.eulerAngles.z));
-        fGO.name = "FogUnit(" + x + "," + z + ")";
-
-        f.gameObject.GetComponent<Renderer>().material = visibleMaterial;
-        f.Location = t;
-        f.Health = health;
-        f.Spill = false;
-        f.SetStartEmotion(angry);
-        t.FogUnit = f;
-
-        fogUnitsInPlay.Add(f);
-        fogCoveredTiles.Add(t);
-
-        f.RenderOpacity();
-    }
-
     //Instantiates a fog unit that isn't on the board or in the pool
     private FogUnit CreateFogUnit()
     {
@@ -291,6 +265,90 @@ public class Fog : MonoBehaviour
         }
 
         return f;
+    }
+
+    //Take a fog unit and puts it on the board with maximum health
+    //private void SpawnFogUnitWithMinHealth(int x, int z)
+    //{
+    //    SpawnFogUnit(x, z, minHealth);
+    //}
+
+    //Take a fog unit and puts it on the board with maximum health
+    //private void SpawnFogUnitWithMaxHealth(int x, int z)
+    //{
+    //    SpawnFogUnit(x, z, fogMaxHealth);
+    //}
+
+    //Takes a fog unit and puts it on the board
+    private void SpawnFogUnit(int x, int z, float health)
+    {
+        GameObject fGO = GetFogUnit().gameObject;
+        FogUnit f = fGO.GetComponent<FogUnit>();
+        Vector2 pos = new Vector2(x, z);
+        TileData t = WorldController.Instance.GetTileAt(pos);
+        Transform ft = fGO.transform;
+
+        ft.position = new Vector3(x, 0.13f, z);
+        ft.SetPositionAndRotation(new Vector3(x, 0.13f, z), Quaternion.Euler(ft.rotation.eulerAngles.x, Random.Range(0, 360), ft.rotation.eulerAngles.z));
+        fGO.name = "FogUnit(" + x + "," + z + ")";
+
+        fGO.GetComponent<Renderer>().material = visibleMaterial;
+        f.Location = t;
+        f.Health = health;
+        f.Spill = false;
+        f.SetStartEmotion(angry);
+        t.FogUnit = f;
+
+        fogUnitsInPlay.Add(f);
+        fogCoveredTiles.Add(t);
+
+        f.RenderOpacity();
+    }
+
+    //Instantiates a fog sphere that isn't on the board or in the pool
+    private FogSphere CreateFogSphere()
+    {
+        FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, transform, true);
+        f.transform.position = transform.position;
+        f.MaxHealth = fogMaxHealth;
+        f.Fog = this;
+        return f;
+    }
+
+    //Retrieves a fog sphere from the pool, or asks for a new one if the pool is empty
+    private FogSphere GetFogSphere()
+    {
+        FogSphere f;
+        int lastAvailableIndex = fogUnitsInPool.Count - 1;
+
+        if (lastAvailableIndex >= 0)
+        {
+            f = fogSpheresInPool[lastAvailableIndex];
+            fogUnitsInPool.RemoveAt(lastAvailableIndex);
+            f.gameObject.SetActive(true);
+        }
+        else
+        {
+            f = CreateFogSphere();
+        }
+
+        return f;
+    }
+
+    //Takes a fog unit and puts it on the board
+    private void SpawnFogSphere(Vector3 pos, Quaternion rot, float health)
+    {
+        GameObject fGO = GetFogSphere().gameObject;
+        FogSphere f = fGO.GetComponent<FogSphere>();
+        fGO.transform.SetPositionAndRotation(pos, rot);
+        //fGO.name = "FogSphere(" + x + "," + z + ")";
+        fGO.GetComponent<Renderer>().material = visibleMaterial;
+        f.Health = health;
+        f.SetStartEmotion(angry);
+
+        fogSpheresInPlay.Add(f);
+
+        f.RenderOpacity();
     }
 
     //Invokes the ActivateFog method according to the parameter passed to it.
@@ -484,24 +542,24 @@ public class Fog : MonoBehaviour
         fogCoveredTiles.Remove(f.Location);
     }
 
-    ////Puts the fog sphere in the list of fog spheres to be put back in the pool
-    //public void QueueFogSphereForPooling(FogSphere f)
-    //{
-    //    fogSpheresToReturnToPool.Add(f);
-    //}
+    //Puts the fog sphere in the list of fog spheres to be put back in the pool
+    public void QueueFogSphereForPooling(FogSphere f)
+    {
+        fogSpheresToReturnToPool.Add(f);
+    }
 
-    ////Takes the fog unit off the board and puts it back in the pool
-    //private void ReturnFogSphereToPool(FogSphere f)
-    //{
-    //    f.gameObject.name = "FogSphereInPool";
-    //    f.gameObject.SetActive(false);
-    //    f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
-    //    //f.Spill = true;
-    //    f.gameObject.transform.position = transform.position;
+    //Takes the fog unit off the board and puts it back in the pool
+    private void ReturnFogSphereToPool(FogSphere f)
+    {
+        f.gameObject.name = "FogSphereInPool";
+        f.gameObject.SetActive(false);
+        f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
+        //f.Spill = true;
+        f.gameObject.transform.position = transform.position;
 
-    //    fogSpheresInPool.Add(f);
-    //    fogSpheresInPlay.Remove(f);
-    //}
+        fogSpheresInPool.Add(f);
+        fogSpheresInPlay.Remove(f);
+    }
 
     //Other Methods----------------------------------------------------------------------------------------------------------------------------------
 
