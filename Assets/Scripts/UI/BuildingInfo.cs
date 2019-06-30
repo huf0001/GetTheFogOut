@@ -16,7 +16,7 @@ public class BuildingInfo : MonoBehaviour
     private RectTransform parent;
     private int mineralHealth;
     private float mineralTime, mineralVal, mineral;
-
+    private MeshRenderer Range;
     public bool Visible { get; private set; }
 
     private void Update()
@@ -94,6 +94,11 @@ public class BuildingInfo : MonoBehaviour
             bg.color = new Color32(113, 66, 236, 237);
         }
         InvokeRepeating("UpdateText", 0, 0.1f);
+        if (b.transform.Find("Range"))
+        {
+            Range = b.transform.Find("Range").GetComponent<MeshRenderer>();
+            Range.enabled = true;
+        }
 
         healthBar.SetActive(true);
         parent.position = new Vector3(b.transform.position.x, 1.5f, b.transform.position.z) + new Vector3(-0.3f, 0, -2.3f);//Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
@@ -135,6 +140,10 @@ public class BuildingInfo : MonoBehaviour
         CancelInvoke("UpdateText");
         building = null;
         gameObject.SetActive(false);
+        if (Range)
+        {
+            Range.enabled = false;
+        }
         Visible = false;
     }
 }
