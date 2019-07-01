@@ -30,6 +30,7 @@ public abstract class Building : Entity
     private bool damagingNotified = false;
     private bool damagedNotified = false;
     private float buildHealth;
+    private float regenWait;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -95,6 +96,24 @@ public abstract class Building : Entity
         {
             UpdateHealthBar();
         }
+
+        if (!TakingDamage && health < maxHealth)
+        {
+            if (regenWait <= 0)
+            {
+                InvokeRepeating("RepairBuilding", 0, 5);
+            }
+            else
+            {
+                regenWait -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            regenWait = 5;
+            CancelInvoke("RepairBuilding");
+        }
+
         if (GotNoHealth())
         {
             //Debug.Log(buildingType + " is being dismantled. Called from Building.Update() using Entity.GotNoHealth()");
@@ -134,23 +153,13 @@ public abstract class Building : Entity
         }
     }
 
-    private void RepairingBuilding()
+    private void RepairBuilding()
     {
-        float waitingtime = 5f;
-        bool isfull = false;
-        if (!isfull)
+        health += 2f;
+        if (health >= MaxHealth)
         {
-            if (Time.time > waitingtime)
-            {
-                health += 2f;
-                if (health >= MaxHealth)
-                {
-                    health = MaxHealth;
-                    isfull = true;
-                }
-            }
+            health = MaxHealth;
         }
-
     }
 
     private void CheckStillDamaging()
@@ -163,14 +172,6 @@ public abstract class Building : Entity
                 damagingNotified = false;
             }
             buildHealth = Health;
-        }
-        else
-        {
-            if (buildHealth < maxHealth)
-            {
-                //Debug.Log(this.name + health);
-                RepairingBuilding();
-            }
         }
     }
 

@@ -40,7 +40,6 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogGrowth = 5;
     [SerializeField] private float fogMaxHealth = 100f;
     [SerializeField] private float fogSpillThreshold = 50f;
-    private float fogDamage;
     [SerializeField] private bool damageOn = false;
     [SerializeField] private float surroundingHubRange;
 
@@ -57,6 +56,7 @@ public class Fog : MonoBehaviour
     private int xMax;
     private int zMax;
     private float minHealth = 0.0001f;
+    private float fogDamage;
 
     //Private Container Fields
     private List<TileData> fogCoveredTiles = new List<TileData>();                  //i.e. tiles currently covered by fog
@@ -91,11 +91,6 @@ public class Fog : MonoBehaviour
         {
             selectDifficulty = (Difficulty)GlobalVars.Difficulty;
         }
-    }
-
-    // Sets the difficulty of the fog on start
-    void Start()
-    {
         SetDifficulty();
     }
 
