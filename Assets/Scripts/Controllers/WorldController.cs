@@ -57,8 +57,6 @@ public class WorldController : MonoBehaviour
     private ResourceController resourceController;
     private UIController uiController;
     private CameraController cameraController;
-    //private TutorialController tutorialController;
-    //private MouseController mouseController
 
 
     private List<TileData> activeTiles = new List<TileData>();
@@ -73,7 +71,6 @@ public class WorldController : MonoBehaviour
     //Flags
     private bool hubBuilt = false;
     private bool hubDestroyed = false;
-   // private bool isOn;
 
     private int index;
 
@@ -90,10 +87,6 @@ public class WorldController : MonoBehaviour
     public bool GameWin { get => gameWin; set => gameWin = value; }
     public bool GameOver { get => gameOver; set => gameOver = value; }
 
-    //public TutorialStage TutorialStage { get => tutorialStage;  }
-    //public ResourceController ResourceController { get => resourceController; }
-    //public TutorialController TutorialController { get => tutorialController; }
-
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
     private void Awake()
     {
@@ -105,7 +98,6 @@ public class WorldController : MonoBehaviour
         InBuildMode = false;
         Instance = this;
         SetPause(false);
-       // isOn = false;
 
         tm = FindObjectOfType<TowerManager>();
 
@@ -116,7 +108,6 @@ public class WorldController : MonoBehaviour
         cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
-        //tutorialController = TutorialController.Instance;
     }
 
     private void Start()
@@ -163,7 +154,6 @@ public class WorldController : MonoBehaviour
             if (b.BuildingType == BuildingType.Hub)
             {
                 TileData tile = GetTileAt(b.transform.position);
-             //   TileData tile = GetTileAt(b.transform.parent.position);
                 tile.Building = b;
                 b.Location = tile;
                 b.Animator = b.GetComponentInChildren<Animator>();
@@ -184,19 +174,8 @@ public class WorldController : MonoBehaviour
         {
             if (b.BuildingType != BuildingType.Hub)
             {
-                // TileData tile = GetTileAt(b.transform.position);
                 TileData tile = GetTileAt(b.transform.parent.position);
                 b.Location = tile;
-
-                //ResourceController is now a public static class; Building calls it directly to assign it to a field.
-                //if (resourceController == null)
-                //{
-                //    Debug.Log("Hub is null in WorldController");
-                //}
-                //else
-                //{
-                //    b.ResourceController = resourceController;
-                //}
 
                 b.Animator = b.GetComponentInChildren<Animator>();
                 b.Animator.SetBool("Built", true);
@@ -239,11 +218,7 @@ public class WorldController : MonoBehaviour
                 tileObject.transform.position = new Vector3(tile.X, 0.1f, tile.Z);
                 tileObject.transform.SetParent(quad.transform);
 
-                    //set to true will render the tile; set to false, and it won't
-                    //tileGO.GetComponent<MeshRenderer>().enabled = true;
-                    //MeshRendererTileChild(false);
-
-                    if (spawnResources)
+                if (spawnResources)
                 {
                     if (UnityEngine.Random.Range(1, 100) < mineralSpawnChance)
                     {
@@ -376,25 +351,8 @@ public class WorldController : MonoBehaviour
     {
         if (InBuildMode)
         {
-            //    MeshRendererTileChild(true);
             RenderTower();
-            //    ShowTile();
         }
-        /*
-        if (Input.GetKeyDown("z") || Input.GetButtonDown("Xbox_RB"))
-        {
-            isOn = !isOn;
-        }
-        if (isOn)
-        {
-            showActiveTiles();
-        }
-        else
-        {
-            hideActiveTiles();
-            index = 0;
-        }
-        */
         showActiveTiles();
         
 
@@ -416,16 +374,11 @@ public class WorldController : MonoBehaviour
         {
             pause.SetActive(!pause.activeSelf);
             SetPause(pause.activeSelf);
-
-            // TEST CODE: Stopping Mouse from placing/deleting buildings in Game Pause/Over.
-            // mouseController.GamePlayStop();
         }
 
         if (Input.GetKeyDown("c"))
         {
-            // Debug.Log("Cursor State Before: " + Cursor.lockState + ", wantedMode = " + wantedMode);
             ChangeCursorState();
-            // Debug.Log("Cursor State After: " + Cursor.lockState + ", wantedMode = " + wantedMode);
         }
 
         if (resourceController.IsWin() || hubDestroyed)
@@ -457,10 +410,10 @@ public class WorldController : MonoBehaviour
         switch (Cursor.lockState)
         {
             case CursorLockMode.None:
-                wantedMode = CursorLockMode.Locked; // Debug.Log("Cursor has been locked");
+                wantedMode = CursorLockMode.Locked;
                 break;
             case CursorLockMode.Locked:
-                wantedMode = CursorLockMode.None;   // Debug.Log("Cursor has been unlocked");
+                wantedMode = CursorLockMode.None;
                 break;
         }
         Cursor.lockState = wantedMode;
@@ -470,15 +423,11 @@ public class WorldController : MonoBehaviour
     {
         if (GameWin)
         {
-            //Display win UI
-
-            uiController.EndGameDisplay("You win!");
+            uiController.EndGameDisplay("You win!"); //Display win UI
         }
         else
         {
-            //Display lose UI
-
-            uiController.EndGameDisplay("You lose!");
+            uiController.EndGameDisplay("You lose!"); //Display lose UI
         }
     }
 
@@ -513,8 +462,6 @@ public class WorldController : MonoBehaviour
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
-            //tm.EscToCancel();
-            //InBuildMode = false;
         }
 
         if ((Input.GetButtonDown("Cancel"))
@@ -537,15 +484,16 @@ public class WorldController : MonoBehaviour
         int x = Mathf.RoundToInt(pos.x);
         int y = Mathf.RoundToInt(pos.y);
 
-        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
-        {
-            //Debug.Log("Tile (" + x + "," + y + ") doesn't exist. Probably want to double check that it isn't supposed to exist and you haven't fucked up the code somewhere.");
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return !(x >= width || x < 0 || y >= length || y < 0);
+
+        //if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
+        //{
+        //    return false;
+        //}
+        //else
+        //{
+        //    return true;
+        //}
     }
 
     public TileData GetTileAt(Vector3 pos)
@@ -606,7 +554,7 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.GetComponentInParent<RectTransform>().position = new Vector3(tile.X, 1.5f, tile.Z) + new Vector3(-0.3f, 0, -2.3f);// + new Vector3(Screen.width / 13, 0);
+        uiController.buildingSelector.GetComponentInParent<RectTransform>().position = new Vector3(tile.X, 1.5f, tile.Z) + new Vector3(-0.3f, 0, -2.3f);
         uiController.buildingSelector.GetComponentInParent<RectTransform>().LookAt(Camera.main.transform);
     }
 
@@ -672,117 +620,4 @@ public class WorldController : MonoBehaviour
                 Application.Quit();
         #endif
     }
-
-    /*  USE THIS, IF YOU WISH TO BREAK YOUR PC xD
-	public void changePowerTIle(Color newColor)
-    {
-   
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
-
-        float r = (newColor.r / 255.0f) * 100;
-        float g = (newColor.g / 255.0f) * 100;
-        float b = (newColor.b / 255.0f) * 100;
-        float a = (newColor.a / 255.0f) * 10;
-
-        foreach (GameObject tile in gameObjects)
-        {
-            Color prev = tile.GetComponent<Renderer>().material.GetColor("_BaseColor");
-
-            tile.GetComponent<Renderer>().material.shader = Shader.Find("HDRP/Lit");
-            tile.GetComponent<Renderer>().material.SetColor("_BaseColor", Color.Lerp(prev,new Color(r,g,b,a),0.5f));
-        }
-        ////////
-        float r = (newColor.r / 255.0f) * 100;
-        float g = (newColor.g / 255.0f) * 100;
-        float b = (newColor.b / 255.0f) * 100;
-        float a = (newColor.a / 255.0f) * 10;
-
-        GameObject tileobj = GameObject.FindGameObjectWithTag("Tile");
-      //  Color prev = tileobj.GetComponent<MeshRenderer>().material.GetColor("_BaseColor");
-    //    tileobj.GetComponent<MeshRenderer>().material.shader = Shader.Find("HDRP/Lit");
-        tileobj.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", new Color(r, g, b, a)); //Color.Lerp(prev, new Color(r, g, b, a), 0.5f)
-    }
-*/
-    public void ResetGame()
-    {
-        SceneManager.LoadScene("Prototype Milestone 2");
-    }
-
-    //Apparently Currently Unused Methods------------------------------------------------------------------------------------------------------------
-
-    //private void ShowTile()
-    //{
-    //    RaycastHit[] hits;
-    //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //    hits = Physics.RaycastAll(ray, 100.0f);
-    //    for (int i = 0; i < hits.Length; i++)
-    //    {
-    //        RaycastHit hit = hits[i];
-    //        if (hit.transform.gameObject.tag == "Tile")
-    //        {
-    //            tiletest = hit.transform.gameObject;
-
-    //            EnableMeshRendTile(tiletest);
-
-    //        }
-    //    }
-    //}
-
-    //private void EnableMeshRendTile(GameObject tile_obj)
-    //{
-    //    pos = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
-    //    if (temp == null)
-    //    {
-    //        PlaneSpawn = Instantiate(planeGridprefab, pos, tile_obj.transform.rotation);
-    //        temp = tile_obj;
-    //    }
-    //    else
-    //    {
-    //        if (temp != tile_obj)
-    //        {
-    //            Destroy(PlaneSpawn);
-    //            Destroy(TowerSpawn);
-    //            temp = null;
-    //        }
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B"))
-    //    {
-    //        Destroy(PlaneSpawn);
-    //        Destroy(TowerSpawn);
-    //        tm.EscToCancel();
-    //        MeshRendererTileChild(false);
-    //        InBuildMode = false;
-    //    }
-    //}
-
-    //private void MeshRendererTileChild(bool toggle)
-    //{
-    //    objs = GameObject.FindGameObjectsWithTag("Tile");
-
-    //    //Caution child can be more than 4!!!
-    //    foreach (GameObject obj in objs)
-    //    {
-    //        for (int i = 0; i < 4; i++)
-    //        {
-    //            obj.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = toggle;
-    //        }
-    //    }
-    //}
-
-    //private int GetHalf(int n)
-    //{
-    //    if (n % 2 == 0)
-    //    {
-    //        return Mathf.FloorToInt(n / 2);
-    //    }
-    //    else
-    //    {
-    //        return Mathf.FloorToInt((n - 1) / 2);
-    //    }
-    //}
-
-    //public void SetToBuildMode()
-    //{
-    //    InBuildMode = true;
-    //}
 }
