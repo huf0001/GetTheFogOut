@@ -66,6 +66,7 @@ public class Fog : MonoBehaviour
     private int zMax;
     private float minHealth = 0.0001f;
     private float fogDamage;
+    private Vector3 hubPosition;
 
     //Private Container Fields
     private List<TileData>  fogCoveredTiles = new List<TileData>();                  //i.e. tiles currently covered by fog
@@ -134,6 +135,7 @@ public class Fog : MonoBehaviour
         //Get dimensions of tile array
         xMax = WorldController.Instance.Width;
         zMax = WorldController.Instance.Length;
+        hubPosition = GameObject.Find("Hub").transform.position;
 
         //Populate fog unit pool with fog units
         if (fogUnitsInPool.Count == 0)
@@ -361,7 +363,81 @@ public class Fog : MonoBehaviour
     //Calculates the position for the fog sphere
     private Vector3 GetFogSpherePosition()
     {
-        return Vector3.zero;
+        bool finished = false;
+        bool valid = true;
+        FogUnit f;
+        Vector3 pos;
+        List<TileData> adjacentTiles;
+        
+        //Find a fog unit where all adjacent tiles have fog units.
+        do
+        {
+            finished = true;
+            f = fogUnitsInPlay[Random.Range(0, fogUnitsInPlay.Count - 1)];
+            Debug.Log($"Selected {f.name}");
+
+            foreach (TileData t in f.Location.AdjacentTiles)
+            {
+                if (t.FogUnit == null)
+                {
+                    Debug.Log($"{t.Name} does not have a fog unit. Breaking foreach loop.");
+                    finished = false;
+                    break;
+                }
+                else
+                {
+                    Debug.Log($"{t.Name} has a fog unit.");
+                }
+            }
+        } while (!finished);
+
+        //If possible, select a closer fog unit from the adjacent fog units, iterating until you can't get any closer.
+        do
+        {
+            Debug.Log($"Iterating closer from {f.name}");
+            pos = f.gameObject.transform.position;
+            finished = true;
+            valid = true;
+            adjacentTiles = f.Location.AdjacentTiles;
+
+            //For each adjacent tile
+            foreach (TileData t in adjacentTiles)
+            {
+                Debug.Log($"Comparing distances between {f.name} and {t.Name}'s fog unit {t.FogUnit}");
+                //If its fog unit is closer to the hub
+                if (Vector3.Distance(t.FogUnit.gameObject.transform.position, hubPosition) < Vector3.Distance(pos, hubPosition))
+                {
+                    valid = true;
+                    Debug.Log($"{t.FogUnit} is closer. Checking if adjacent tiles have fog units.");
+
+                    //For each of it's adjacent tiles
+                    foreach (TileData a in f.Location.AdjacentTiles)
+                    {
+                        //If it doesn't have a fog unit
+                        if (a.FogUnit == null)
+                        {
+                            valid = false;
+                            break;
+                        }
+                    }
+
+                    //If all it's adjacent tiles have fog units
+                    if (valid)
+                    {
+                        f = t.FogUnit;
+                        pos = f.gameObject.transform.position;
+                        finished = false;
+                        Debug.Log($"Tiles adjacent to {f.name} have fog units, now comparing {f.name}.");
+                    }
+                    else
+                    {
+                        Debug.Log($"Tiles adjacent to {t.FogUnit.name} don't all have fog units, now comparing next tile's fog unit.");
+                    }
+                }
+            }
+        } while (!finished);
+
+        return pos;
     }
 
     //Invokes the ActivateFog method according to the parameter passed to it.
