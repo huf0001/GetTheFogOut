@@ -54,6 +54,7 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogFillInterval = 0.2f;
     [SerializeField] private float fogDamageInterval = 0.02f;
     [SerializeField] private float fogExpansionInterval = 0.5f;
+    [SerializeField] private float fogSphereInterval = 0.1f;
 
     [Header("Other")]
     [SerializeField] private bool angry = false;
@@ -258,12 +259,11 @@ public class Fog : MonoBehaviour
     private FogUnit GetFogUnit()
     {
         FogUnit f;
-        int lastAvailableIndex = fogUnitsInPool.Count - 1;
 
-        if (lastAvailableIndex >= 0)
+        if (fogUnitsInPool.Count > 0)
         {
-            f = fogUnitsInPool[lastAvailableIndex];
-            fogUnitsInPool.RemoveAt(lastAvailableIndex);
+            f = fogUnitsInPool[0];
+            fogUnitsInPool.Remove(f);
             f.gameObject.SetActive(true);
         }
         else
@@ -326,12 +326,11 @@ public class Fog : MonoBehaviour
     private FogSphere GetFogSphere()
     {
         FogSphere f;
-        int lastAvailableIndex = fogUnitsInPool.Count - 1;
 
-        if (lastAvailableIndex >= 0)
+        if (fogSpheresInPool.Count > 0)
         {
-            f = fogSpheresInPool[lastAvailableIndex];
-            fogUnitsInPool.RemoveAt(lastAvailableIndex);
+            f = fogSpheresInPool[0];
+            fogSpheresInPool.Remove(f);
             f.gameObject.SetActive(true);
         }
         else
@@ -348,12 +347,14 @@ public class Fog : MonoBehaviour
         GameObject fGO = GetFogSphere().gameObject;
         FogSphere f = fGO.GetComponent<FogSphere>();
         //fGO.transform.SetPositionAndRotation(pos, rot);
-        //fGO.name = "FogSphere(" + x + "," + z + ")";
+        fGO.name = "FogSphereInPlay";
         fGO.transform.position = GetFogSpherePosition();
-        fGO.GetComponent<Renderer>().material = visibleMaterial;
+        fGO.GetComponentInChildren<Renderer>().material = visibleMaterial;
         f.Health = minHealth;
+        f.State = FogSphereState.Filling;
         f.SetStartEmotion(angry);
         fogSpheresInPlay.Add(f);
+        f.UpdateHeight();
         f.RenderOpacity();
     }
 
@@ -372,10 +373,10 @@ public class Fog : MonoBehaviour
     //Invokes the "update" methods of Fog according to the intervals set in the inspector
     public void ActivateFog()
     {
-        InvokeRepeating(nameof(UpdateFogFill), 0.1f, fogFillInterval);
+        InvokeRepeating(nameof(UpdateFogUnitFill), 0.1f, fogFillInterval);
         InvokeRepeating(nameof(CheckExpandFog), 0.3f, fogExpansionInterval);
         InvokeRepeating(nameof(UpdateDamageToFogUnits), 0.5f, fogDamageInterval);
-        Invoke(nameof(UpdateFogSpheres), 1f);
+        InvokeRepeating(nameof(UpdateFogSpheres), 1f, fogSphereInterval);
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
@@ -394,13 +395,16 @@ public class Fog : MonoBehaviour
             }
         }
 
-        foreach (FogUnit f in fogUnitsToReturnToPool)
+        if (fogUnitsToReturnToPool.Count > 0)
         {
-            toRender.Remove(f);
-            ReturnFogUnitToPool(f);
-        }
+            foreach (FogUnit f in fogUnitsToReturnToPool)
+            {
+                toRender.Remove(f);
+                ReturnFogUnitToPool(f);
+            }
 
-        fogUnitsToReturnToPool = new List<FogUnit>();
+            fogUnitsToReturnToPool = new List<FogUnit>();
+        }
 
         foreach (FogUnit f in toRender)
         {
@@ -415,7 +419,7 @@ public class Fog : MonoBehaviour
     }
 
     //Fills the health of fog units
-    private void UpdateFogFill()
+    private void UpdateFogUnitFill()
     {
         List<FogUnit> toRenderOpacity = new List<FogUnit>();
 
@@ -525,7 +529,47 @@ public class Fog : MonoBehaviour
     {
         if (fogSpheresInPlay.Count == 0)
         {
+            Debug.Log("Spawning fog sphere");
             SpawnFogSphere();
+        }
+        else
+        {
+            Debug.Log($"{fogSpheresInPlay.Count} fog spheres in play.");
+        }
+
+        foreach (FogSphere f in fogSpheresInPlay)
+        {
+            f.RenderColour();
+
+            switch (f.State)
+            {
+                case FogSphereState.Damaged:
+                    f.UpdateDamageToFogSphere(fogSphereInterval);
+                    f.RenderOpacity();
+                    break;
+                case FogSphereState.Filling:
+                    if (f.Health < f.MaxHealth)
+                    {
+                        f.Health += fogSphereInterval * fogGrowth;
+                        f.UpdateHeight();
+                        f.RenderOpacity();
+                    }
+
+                    break;
+                case FogSphereState.Throwing:
+                    //Move along parabola path
+                    break;
+            }
+        }
+
+        if (fogSpheresToReturnToPool.Count > 0)
+        {
+            foreach(FogSphere f in fogSpheresToReturnToPool)
+            {
+                ReturnFogSphereToPool(f);
+            }
+
+            fogSpheresToReturnToPool = new List<FogSphere>();
         }
     }
 
@@ -575,8 +619,7 @@ public class Fog : MonoBehaviour
     {
         f.gameObject.name = "FogSphereInPool";
         f.gameObject.SetActive(false);
-        f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
-        //f.Spill = true;
+        f.gameObject.GetComponentInChildren<Renderer>().material = invisibleMaterial;
         f.gameObject.transform.position = transform.position;
 
         fogSpheresInPool.Add(f);
@@ -591,6 +634,11 @@ public class Fog : MonoBehaviour
         angry = !angry;
 
         foreach (FogUnit f in fogUnitsInPlay)
+        {
+            f.Angry = angry;
+        }
+
+        foreach (FogSphere f in fogSpheresInPlay)
         {
             f.Angry = angry;
         }

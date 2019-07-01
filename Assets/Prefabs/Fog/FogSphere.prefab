@@ -44,9 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbb638ee21a98042846fd6f7a02bad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rapidLerpMultiplier: 3
+  state: 1
+  health: 0.1
+  maxHealth: 1
+  damageLerpMultiplier: 3
+  minHeight: -1.2
+  maxHeight: 1.2
   startOpacity: 0
   endOpacity: 0.9
+  colourLerpSpeedMultiplier: 0.4
   docileColours:
     serializedVersion: 2
     key0: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
@@ -134,10 +140,6 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  colourLerpSpeedMultiplier: 0.4
-  health: 0.1
-  maxHealth: 1
-  state: 1
 --- !u!1 &3064332006645821888
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public enum FogSphereState
 {
     None,
     Filling,
+    Damaged,
     Throwing
 }
 
@@ -50,7 +51,6 @@ public class FogSphere : MonoBehaviour
     private float healthProgress = 0;
     private float startHealth;
     private float targetHealth;
-    private bool takingDamage = false;
     private float damageLerpProgress = 0;
 
     private Renderer fogRenderer;
@@ -67,9 +67,8 @@ public class FogSphere : MonoBehaviour
     //public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
     //public bool Spill { get => spill; set => spill = value; }
     public bool Angry { get => angry; set => angry = value; }
-
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
-    public bool TakingDamage { get => takingDamage; }
+    public FogSphereState State { get => state; set => state = value; }
 
     //Altered Public Properties
     public float Health
@@ -81,7 +80,7 @@ public class FogSphere : MonoBehaviour
 
         set
         {
-            if (!takingDamage)
+            if (state != FogSphereState.Damaged)
             {
                 health = value;
 
@@ -134,24 +133,30 @@ public class FogSphere : MonoBehaviour
 
     //Recurring Methods - Movement and Spill---------------------------------------------------------------------------------------------------------
 
-    private void Update()
+    //private void Update()
+    //{
+    //    if (state == FogSphereState.Filling)
+    //    {
+            
+    //    }
+    //    else if (state == FogSphereState.Throwing)
+    //    {
+    //        //Move along parabola
+    //    }
+    //}
+
+    //Lerps height according to health/maxHealth
+    public void UpdateHeight()
     {
-        if (state == FogSphereState.Filling)
-        {
-            Vector3 pos = transform.position;
-            pos.y = Mathf.Lerp(minHeight, maxHeight, Mathf.Min(health/maxHealth, 1));
-            transform.position = pos;
+        Vector3 pos = transform.position;
+        pos.y = Mathf.Lerp(minHeight, maxHeight, Mathf.Min(health / maxHealth, 1));
+        transform.position = pos;
 
-            if (transform.position.y == maxHeight)
-            {
-                state = FogSphereState.Throwing;
-
-                //Calculate parabola to target
-            }
-        }
-        else if (state == FogSphereState.Throwing)
+        if (transform.position.y == maxHeight)
         {
-            //Move along parabola
+            state = FogSphereState.Throwing;
+
+            //Calculate parabola to target
         }
     }
 
@@ -165,7 +170,7 @@ public class FogSphere : MonoBehaviour
         if (health <= targetHealth)
         {
             health = targetHealth;
-            takingDamage = false;
+            state = FogSphereState.Filling;
         }
         else
         {
@@ -233,18 +238,10 @@ public class FogSphere : MonoBehaviour
 
     //Triggered/Utility Methods----------------------------------------------------------------------------------------------------------------------
 
-    ////Verifies that (x, z) is the fog unit's position
-    //public bool PositionIs(int x, int z)
-    //{
-    //    return transform.position.x == x && transform.position.z == z;
-    //}
-
     //A defence has dealt damage to the fog unit
     public void DealDamageToFogSphere(float damage)
     {
-        //Run angry fog evaporation effect here
-
-        takingDamage = true;
+        state = FogSphereState.Damaged;
 
         startHealth = health;
         targetHealth -= damage;
