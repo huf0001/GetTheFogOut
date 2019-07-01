@@ -99,7 +99,7 @@ public class ObjectiveController : DialogueBoxController
 
     void CheckDifficulty()
     {
-        switch (Fog.Instance.SelectDifficulty)
+        switch (Fog.Instance.Difficulty)
         {
             case Difficulty.easy:
                 fogGrowthEasy = fogGrowthEasy / 2;

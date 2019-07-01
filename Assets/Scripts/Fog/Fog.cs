@@ -31,51 +31,58 @@ public class Fog : MonoBehaviour
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
-    [SerializeField] private Difficulty selectDifficulty = Difficulty.normal;
-    [SerializeField] private bool lerpStartingFog = true;
-    [SerializeField] private FogUnit fogUnitPrefab;
+    [Header("Prefabs")]
     [SerializeField] private FogSphere fogSpherePrefab;
-    [SerializeField] private StartConfiguration configuration;
-    [SerializeField] private FogExpansionDirection expansionDirection;
-    [SerializeField] private bool fogAccelerates = true;
-    [SerializeField] private float fogGrowth = 5;
-    [SerializeField] private float fogMaxHealth = 100f;
-    [SerializeField] private float fogSpillThreshold = 50f;
-    private float fogDamage;
-    [SerializeField] private bool damageOn = false;
-    [SerializeField] private float surroundingHubRange;
+    [SerializeField] private FogUnit fogUnitPrefab;
 
+    [Header("Materials")]
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
 
+    [Header("Settings")]
+    [SerializeField] private StartConfiguration configuration;
+    [SerializeField] private Difficulty difficulty = Difficulty.normal;
+    [SerializeField] private FogExpansionDirection expansionDirection;
+
+    [Header("Fog Expansion")]
+    [SerializeField] private bool fogAccelerates = true;
+    [SerializeField] private float fogGrowth = 5;
+    [SerializeField] private float fogSpillThreshold = 50f;
+    [SerializeField] private float fogMaxHealth = 100f;
+
+    [Header("Update Intervals")]
     [SerializeField] private float fogFillInterval = 0.2f;
     [SerializeField] private float fogDamageInterval = 0.02f;
     [SerializeField] private float fogExpansionInterval = 0.5f;
 
+    [Header("Other")]
     [SerializeField] private bool angry = false;
+    [SerializeField] private bool damageOn = false;
+    [SerializeField] private float surroundingHubRange;
 
     //Private Fields
     private int xMax;
     private int zMax;
     private float minHealth = 0.0001f;
+    private float fogDamage;
 
     //Private Container Fields
-    private List<TileData> fogCoveredTiles = new List<TileData>();                  //i.e. tiles currently covered by fog
-    private List<FogUnit> fogUnitsInPlay = new List<FogUnit>();                     //i.e. currently active fog units on the board
-    private List<FogUnit> fogUnitsToReturnToPool = new List<FogUnit>();             //i.e. currently waiting to be re-pooled
-    private List<FogUnit> fogUnitsInPool = new List<FogUnit>();                     //i.e. currently inactive fog units waiting for spawning
+    private List<TileData>  fogCoveredTiles = new List<TileData>();                  //i.e. tiles currently covered by fog
+    private List<FogUnit>   fogUnitsInPlay = new List<FogUnit>();                     //i.e. currently active fog units on the board
+    private List<FogUnit>   fogUnitsToReturnToPool = new List<FogUnit>();             //i.e. currently waiting to be re-pooled
+    private List<FogUnit>   fogUnitsInPool = new List<FogUnit>();                     //i.e. currently inactive fog units waiting for spawning
     private List<FogSphere> fogSpheresInPlay = new List<FogSphere>();               //i.e. currently active fog spheres on the board
     private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
     private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
 
     //Public Properties
-    public static Fog Instance { get; protected set; }
-    public bool DamageOn { get => damageOn; set => damageOn = value; }
+    public static Fog            Instance { get; protected set; }
+    public bool                  DamageOn { get => damageOn; set => damageOn = value; }
+    //public bool                  FogAccelerates { get => fogAccelerates; set => fogAccelerates = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
-    public float FogGrowth { get => fogGrowth; set => fogGrowth = value; }
-    public bool FogAccelerates { get => fogAccelerates; set => fogAccelerates = value; }
-    public float FogMaxHealth { get => fogMaxHealth; set => fogMaxHealth = value; }
-    public Difficulty SelectDifficulty { get => selectDifficulty; set => selectDifficulty = value; }
+    public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
+    //public float                 FogMaxHealth { get => fogMaxHealth; set => fogMaxHealth = value; }
+    public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -101,7 +108,7 @@ public class Fog : MonoBehaviour
     {
         fogDamage = fogUnitPrefab.Damage;
 
-        switch (selectDifficulty)
+        switch (difficulty)
         {
             case Difficulty.easy:
                 fogDamage = fogDamage / 1.40f;
@@ -336,19 +343,24 @@ public class Fog : MonoBehaviour
     }
 
     //Takes a fog unit and puts it on the board
-    private void SpawnFogSphere(Vector3 pos, Quaternion rot, float health)
+    private void SpawnFogSphere()
     {
         GameObject fGO = GetFogSphere().gameObject;
         FogSphere f = fGO.GetComponent<FogSphere>();
-        fGO.transform.SetPositionAndRotation(pos, rot);
+        //fGO.transform.SetPositionAndRotation(pos, rot);
         //fGO.name = "FogSphere(" + x + "," + z + ")";
+        fGO.transform.position = GetFogSpherePosition();
         fGO.GetComponent<Renderer>().material = visibleMaterial;
-        f.Health = health;
+        f.Health = minHealth;
         f.SetStartEmotion(angry);
-
         fogSpheresInPlay.Add(f);
-
         f.RenderOpacity();
+    }
+
+    //Calculates the position for the fog sphere
+    private Vector3 GetFogSpherePosition()
+    {
+        return Vector3.zero;
     }
 
     //Invokes the ActivateFog method according to the parameter passed to it.
@@ -363,6 +375,7 @@ public class Fog : MonoBehaviour
         InvokeRepeating(nameof(UpdateFogFill), 0.1f, fogFillInterval);
         InvokeRepeating(nameof(CheckExpandFog), 0.3f, fogExpansionInterval);
         InvokeRepeating(nameof(UpdateDamageToFogUnits), 0.5f, fogDamageInterval);
+        Invoke(nameof(UpdateFogSpheres), 1f);
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
@@ -504,6 +517,15 @@ public class Fog : MonoBehaviour
             {
                 SpawnFogUnit(n.X, n.Z, minHealth);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
             }
+        }
+    }
+
+    //Handles the fog spheres
+    private void UpdateFogSpheres()
+    {
+        if (fogSpheresInPlay.Count == 0)
+        {
+            SpawnFogSphere();
         }
     }
 

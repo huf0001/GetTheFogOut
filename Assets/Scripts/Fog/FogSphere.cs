@@ -14,22 +14,31 @@ public class FogSphere : MonoBehaviour
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
-    // [SerializeField] private float damage = 0.1f;
-    //[SerializeField] private float lerpToMaxInterval;
-    [SerializeField] private float rapidLerpMultiplier = 3f;
     //[SerializeField] private float damage = 0.1f;
+    //[SerializeField] private float lerpToMaxInterval;
+    //[SerializeField] private float damage = 0.1f;
+
+    [Header("Fog Sphere State")]
+    [SerializeField] private FogSphereState state;
+    
+    [Header("Health")]
+    [SerializeField] private float health = 1f;
+    [SerializeField] private float maxHealth = 1f;
+    [SerializeField] private float damageLerpMultiplier = 3f;
+
+    [Header("Height")]
+    [SerializeField] private float minHeight;
+    [SerializeField] private float maxHeight;
+
+    [Header("Opacity")]
     [SerializeField] private float startOpacity = 0f;
     [SerializeField] private float endOpacity = 0.90f;
 
+    [Header("Colour")]
+    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
-    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
-
-    [SerializeField] private float health = 1f;
-    [SerializeField] private float maxHealth = 1f;
-
-    [SerializeField] private FogSphereState state;
 
     //Non-Serialized Fields
     private Fog fog;
@@ -127,9 +136,22 @@ public class FogSphere : MonoBehaviour
 
     private void Update()
     {
-        if (state == FogSphereState.Throwing)
+        if (state == FogSphereState.Filling)
         {
+            Vector3 pos = transform.position;
+            pos.y = Mathf.Lerp(minHeight, maxHeight, Mathf.Min(health/maxHealth, 1));
+            transform.position = pos;
 
+            if (transform.position.y == maxHeight)
+            {
+                state = FogSphereState.Throwing;
+
+                //Calculate parabola to target
+            }
+        }
+        else if (state == FogSphereState.Throwing)
+        {
+            //Move along parabola
         }
     }
 
@@ -147,7 +169,7 @@ public class FogSphere : MonoBehaviour
         }
         else
         {
-            healthProgress += damageInterval * rapidLerpMultiplier;
+            healthProgress += damageInterval * damageLerpMultiplier;
         }
 
         if (health <= 0)

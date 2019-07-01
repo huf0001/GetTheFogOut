@@ -40,8 +40,10 @@ public class TutorialController : DialogueBoxController
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
+    [Header("Skip Tutorial")]
     [SerializeField] private bool skipTutorial = true;
 
+    [Header("Objects on Game Board")]
     [SerializeField] private Landmark airCannonLandmark;
     [SerializeField] private Landmark batteryLandmark;
     [SerializeField] private Landmark generatorLandmark;
@@ -50,14 +52,17 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark fogRepellerLandmark;
     [SerializeField] private Locatable buildingTarget;
 
+    [Header("Movement Keys")]
     [SerializeField] private CameraKey wKey;
     [SerializeField] private CameraKey aKey;
     [SerializeField] private CameraKey sKey;
     [SerializeField] private CameraKey dKey;
 
+    [Header("Colours")]
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
 
+    [Header("Goals")]
     [SerializeField] private int powerGainGoal = 15;
     [SerializeField] private int builtHarvestersGoal = 3;
 

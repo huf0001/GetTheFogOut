@@ -10,22 +10,30 @@ public class DialogueBox : MonoBehaviour
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
+    [Header("Text Box")]
     [SerializeField] private TextMeshProUGUI textBox;
     [SerializeField] private Image aiImage;
+
+    [Header("Tween/Lerp Speeds")]
     [SerializeField] float popUpSpeed = 0.5f;
     [SerializeField] private int lerpTextInterval = 3;
 
+    [Header("Colours")]
     [SerializeField] private string squareBracketColour;
     [SerializeField] private string squigglyBracketColour;
     [SerializeField] private string vBracketColour;
 
+    [Header("Expressions")]
     [SerializeField] private AIExpression currentExpression;
     [SerializeField] private Sprite aiHappy;
     [SerializeField] private Sprite aiNeutral;
     [SerializeField] private Sprite aiSad;
+
+    [Header("Images")]
     [SerializeField] private Image continueArrow;
 
     //Non-Serialized Fields
+    [Header("Temporarily Serialized")]
     [SerializeField] private List<ExpressionDialoguePair> contentToDisplay = new List<ExpressionDialoguePair>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;

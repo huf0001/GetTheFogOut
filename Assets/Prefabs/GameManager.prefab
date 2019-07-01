@@ -709,26 +709,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d37a928823b9f6a48814cc817e7d13c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectDifficulty: 0
-  lerpStartingFog: 0
-  fogUnitPrefab: {fileID: 2516856455530505698, guid: 81ce07d50c91d3843b2866edb20d15f5,
-    type: 3}
   fogSpherePrefab: {fileID: 9126576650219075606, guid: 37e1117ea4b07ab45a44109c6eb596b6,
     type: 3}
+  fogUnitPrefab: {fileID: 2516856455530505698, guid: 81ce07d50c91d3843b2866edb20d15f5,
+    type: 3}
+  visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
+  invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
   configuration: 5
+  difficulty: 1
   expansionDirection: 0
   fogAccelerates: 0
   fogGrowth: 10
-  fogMaxHealth: 100
   fogSpillThreshold: 50
-  damageOn: 1
-  surroundingHubRange: 9
-  visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
-  invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
+  fogMaxHealth: 100
   fogFillInterval: 0.2
   fogDamageInterval: 0.02
   fogExpansionInterval: 0.5
   angry: 0
+  damageOn: 1
+  surroundingHubRange: 9
 --- !u!114 &7305178377255849301
 MonoBehaviour:
   m_ObjectHideFlags: 0

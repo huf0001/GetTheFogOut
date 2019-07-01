@@ -5,17 +5,25 @@ using UnityEngine;
 public class FogUnit : Entity
 {
     //Serialized Fields
-    [SerializeField] private float lerpToMaxInterval;
-    [SerializeField] private float rapidLerpMultiplier = 3f;
-    [SerializeField] private float damage = 0.1f;
+    //[SerializeField] private float lerpToMaxInterval;
+
+    [Header("Opacity")]
     [SerializeField] private float startOpacity = 0f;
     [SerializeField] private float endOpacity = 0.90f;
 
+    [Header("Colour")]
+    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
-    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
 
+    [Header("Damage to Fog Unit")]
+    [SerializeField] private float damageLerpMultiplier = 3f;
+
+    [Header("Damage to Buildings")]
+    [SerializeField] private float damage = 0.1f;
+
+    [Header("VFX")]
     [SerializeField] private GameObject angryFogEvaporation;
 
     //Non-Serialized Fields
@@ -40,11 +48,11 @@ public class FogUnit : Entity
 
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
+    public bool Angry { get => angry; set => angry = value; }
     public float Damage { get => damage; set => damage = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
     public bool Spill { get => spill; set => spill = value; }
     public bool TakingDamage { get => takingDamage; }
-    public bool Angry { get => angry; set => angry = value; }
 
     //Altered Public Properties
     public override float Health
@@ -151,7 +159,7 @@ public class FogUnit : Entity
         }
         else
         {
-            healthProgress += damageInterval * rapidLerpMultiplier;
+            healthProgress += damageInterval * damageLerpMultiplier;
         }
 
         if (base.Health <= 0)
