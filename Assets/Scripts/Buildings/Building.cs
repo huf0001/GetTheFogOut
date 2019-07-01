@@ -141,8 +141,15 @@ public abstract class Building : Entity
 
             healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
             healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
-            healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
-            healthBarCanvas.Rotate(0, 135, 0);
+            if (buildingType != BuildingType.Hub)
+            {
+                healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
+                healthBarCanvas.Rotate(0, 135, 0);
+            }
+            else
+            {
+                healthBarCanvas.LookAt(Camera.main.transform);
+            }
         }
         else
         {
