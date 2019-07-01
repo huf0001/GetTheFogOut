@@ -7,7 +7,6 @@ using DG.Tweening;
 
 public class UIController : MonoBehaviour
 {
-
     public static UIController instance = null;
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public abstract class Building : PlaneObject
+public abstract class Building : Entity
 {
     //Serialized fields
     [SerializeField] protected float visibilityRange;

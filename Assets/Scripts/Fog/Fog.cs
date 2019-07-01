@@ -86,6 +86,11 @@ public class Fog : MonoBehaviour
         }
 
         Instance = this;
+
+        if (GlobalVars.LoadedFromMenu)
+        {
+            selectDifficulty = (Difficulty)GlobalVars.Difficulty;
+        }
     }
 
     // Sets the difficulty of the fog on start

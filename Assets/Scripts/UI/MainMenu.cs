@@ -12,9 +12,11 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private string gameScene;
     [SerializeField] private CanvasGroup mainCanvasGroup;
     [SerializeField] private TextMeshProUGUI difficultyButtonText;
-    [Header("Loading Bar")]
+    [Header("Loading Screen")]
     [SerializeField] private Slider loadingBar;
     [SerializeField] private CanvasGroup loadingCanvasGroup;
+    [SerializeField] private TextMeshProUGUI loadingMessageBox;
+    [SerializeField] private string[] loadingMessages;
     [Header("Difficulty Sub-menu")]
     [SerializeField] private CanvasGroup difficultySubmenu;
     [SerializeField, TextArea] private string[] difficultyDescriptions;
@@ -23,6 +25,11 @@ public class MainMenu : MonoBehaviour
 
     private bool skipTutorial = false;
     private int difficulty = 1;
+
+    private void Start()
+    {
+        Time.timeScale = 1;
+    }
 
     public void ToggleTutorial(bool tutorialOn)
     {
@@ -104,17 +111,30 @@ public class MainMenu : MonoBehaviour
     {
         yield return null;
         AsyncOperation loading = SceneManager.LoadSceneAsync(gameScene);
-        //loadingCanvasGroup.DOFade(1, 0.5f).OnComplete(
-        //    delegate
-        //    {
-        //    });
-        loadingCanvasGroup.alpha = 1;
+        loadingMessageBox.text = loadingMessages[Random.Range(0, loadingMessages.Length)];
+        yield return loadingCanvasGroup.DOFade(1, 0.5f);
+        InvokeRepeating("ChangeLoadingMessage", 3, 4);
+        //loadingCanvasGroup.alpha = 1;
         while (!loading.isDone)
         {
             float progress = Mathf.Clamp01(loading.progress / 0.9f);
             loadingBar.DOValue(progress, 0.1f);
             yield return null;
         }
+    }
+
+    private void ChangeLoadingMessage()
+    {
+        loadingMessageBox.DOFade(0, 0.5f).OnComplete(
+            delegate
+            {
+                string oldText = loadingMessageBox.text;
+                while (loadingMessageBox.text == oldText)
+                {
+                    loadingMessageBox.text = loadingMessages[Random.Range(0, loadingMessages.Length)];
+                }
+                loadingMessageBox.DOFade(1, 0.5f);
+            });
     }
 
     public void quitGame()

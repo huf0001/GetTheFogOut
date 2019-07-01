@@ -13,6 +13,7 @@ public class BuildingInfo : MonoBehaviour
     [SerializeField] Gradient healthGradient;
     [SerializeField] private Image bg;
     [HideInInspector] public Building building;
+    private ShipComponent shipComp;
     private int mineralHealth;
     private float mineralTime, mineralVal, mineral;
     private MeshRenderer Range;
@@ -27,8 +28,15 @@ public class BuildingInfo : MonoBehaviour
         }
         if (Visible)
         {
-            mineralTime += Time.deltaTime;
-            transform.position = Camera.main.WorldToScreenPoint(building.transform.position) + new Vector3(Screen.width / 13, 0);
+            if (building != null)
+            {
+                mineralTime += Time.deltaTime;
+                transform.position = Camera.main.WorldToScreenPoint(building.transform.position) + new Vector3(Screen.width / 13, 0);
+            }
+            else
+            {
+                transform.position = Camera.main.WorldToScreenPoint(shipComp.transform.position) + new Vector3(Screen.width / 13, 0);
+            }
         }
     }
 
@@ -67,6 +75,7 @@ public class BuildingInfo : MonoBehaviour
     public void ShowInfo(Building b)
     {
         building = b;
+        shipComp = null;
         if (building.BuildingType == BuildingType.Hub)
         {
             bg.color = new Color32(0, 92, 118, 237);
@@ -104,6 +113,7 @@ public class BuildingInfo : MonoBehaviour
     public void ShowInfo(ShipComponent shipComponent)
     {
         building = null;
+        shipComp = shipComponent;
         if (shipComponent.Location.FogUnit != null)
         {
             mainText.text = "<b>It looks like your missing thruster!\n" +
@@ -128,6 +138,7 @@ public class BuildingInfo : MonoBehaviour
     {
         CancelInvoke("UpdateText");
         building = null;
+        shipComp = null;
         gameObject.SetActive(false);
         if (Range)
         {

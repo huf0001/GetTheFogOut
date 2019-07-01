@@ -705,7 +705,7 @@ public class WorldController : MonoBehaviour
 */
     public void ResetGame()
     {
-        SceneManager.LoadScene("Prototype Milestone 2");
+        SceneManager.LoadScene("Menu");
     }
 
     //Apparently Currently Unused Methods------------------------------------------------------------------------------------------------------------
