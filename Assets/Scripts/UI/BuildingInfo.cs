@@ -16,7 +16,7 @@ public class BuildingInfo : MonoBehaviour
     private ShipComponent shipComp;
     private int mineralHealth;
     private float mineralTime, mineralVal, mineral;
-    private MeshRenderer Range;
+    private Transform Range;
     public bool Visible { get; private set; }
 
     private void Update()
@@ -98,10 +98,12 @@ public class BuildingInfo : MonoBehaviour
             bg.color = new Color32(113, 66, 236, 237);
         }
         InvokeRepeating("UpdateText", 0, 0.1f);
-        if (b.transform.Find("Range"))
+
+        Transform range = b.transform.Find("Range");
+        if (range)
         {
-            Range = b.transform.Find("Range").GetComponent<MeshRenderer>();
-            Range.enabled = true;
+            Range = range;
+            Range.gameObject.SetActive(true);
         }
 
         healthBar.SetActive(true);
@@ -142,7 +144,7 @@ public class BuildingInfo : MonoBehaviour
         gameObject.SetActive(false);
         if (Range)
         {
-            Range.enabled = false;
+            Range.gameObject.SetActive(false);
         }
         Visible = false;
     }

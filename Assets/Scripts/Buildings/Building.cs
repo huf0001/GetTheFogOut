@@ -134,7 +134,7 @@ public abstract class Building : Entity
         }
     }
 
-    private void ReparingBuilding()
+    private void RepairingBuilding()
     {
         float waitingtime = 5f;
         bool isfull = false;
@@ -169,7 +169,7 @@ public abstract class Building : Entity
             if (buildHealth < maxHealth)
             {
                 //Debug.Log(this.name + health);
-                ReparingBuilding();
+                RepairingBuilding();
             }
         }
     }
