@@ -7,6 +7,7 @@ public enum FogSphereState
     None,
     Filling,
     Damaged,
+    Full,
     Throwing
 }
 
@@ -68,6 +69,7 @@ public class FogSphere : MonoBehaviour
     //public bool Spill { get => spill; set => spill = value; }
     public bool Angry { get => angry; set => angry = value; }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public float MinHeight { get => minHeight; }
     public FogSphereState State { get => state; set => state = value; }
 
     //Altered Public Properties
@@ -87,7 +89,7 @@ public class FogSphere : MonoBehaviour
                 if (health >= maxHealth)
                 {
                     health = maxHealth;
-                    ReturnToFogPool();
+                    //ReturnToFogPool();
                 }
                 else if (health <= 0)
                 {
@@ -133,18 +135,6 @@ public class FogSphere : MonoBehaviour
 
     //Recurring Methods - Movement and Spill---------------------------------------------------------------------------------------------------------
 
-    //private void Update()
-    //{
-    //    if (state == FogSphereState.Filling)
-    //    {
-            
-    //    }
-    //    else if (state == FogSphereState.Throwing)
-    //    {
-    //        //Move along parabola
-    //    }
-    //}
-
     //Lerps height according to health/maxHealth
     public void UpdateHeight()
     {
@@ -154,9 +144,7 @@ public class FogSphere : MonoBehaviour
 
         if (transform.position.y == maxHeight)
         {
-            state = FogSphereState.Throwing;
-
-            //Calculate parabola to target
+            state = FogSphereState.Full;
         }
     }
 
@@ -264,5 +252,47 @@ public class FogSphere : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    //Fire() and CalculateVelocity() borrowed from Projectile.cs and then adapted to the fog sphere's needs
+
+    // Fires the projectile from the origin to the target, with the given damage
+    public void Fire()
+    {
+        Rigidbody r = gameObject.GetComponent<Rigidbody>();
+        Vector3 vel = CalculateVelocity(CalculateTarget(), transform.position, 1f);
+        r.velocity = vel;
+        r.useGravity = true;
+        transform.rotation = Quaternion.LookRotation(vel);
+        state = FogSphereState.Throwing;
+    }
+
+    //Calculates the target of the fog sphere
+    private Vector3 CalculateTarget()
+    {
+        return GameObject.Find("Hub").transform.position;
+    }
+
+    // Calculates the velocity for an arching projectile
+    // Taken from: https://www.youtube.com/watch?v=03GHtGyEHas
+    private Vector3 CalculateVelocity(Vector3 target, Vector3 origin, float time)
+    {
+        // Define the distance x and y first
+        Vector3 distance = target - origin;
+        Vector3 distanceXZ = distance;
+        distanceXZ.y = minHeight;
+
+        // Create a float to represent our distance
+        float Sy = distance.y;
+        float Sxz = distanceXZ.magnitude;
+
+        float Vxz = Sxz / time;
+        float Vy = Sy / time + 0.5f * Mathf.Abs(Physics.gravity.y) * time;
+
+        Vector3 result = distanceXZ.normalized;
+        result *= Vxz;
+        result.y = Vy;
+
+        return result;
     }
 }

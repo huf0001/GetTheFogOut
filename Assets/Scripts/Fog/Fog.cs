@@ -217,8 +217,6 @@ public class Fog : MonoBehaviour
 
                 break;
             case StartConfiguration.SurroundingHub:
-                Vector3 hubPosition = GameObject.Find("Hub").transform.position;
-
                 //Every space on the board
                 for (int i = 0; i < xMax; i++)
                 {
@@ -711,14 +709,21 @@ public class Fog : MonoBehaviour
                 case FogSphereState.Filling:
                     if (f.Health < f.MaxHealth)
                     {
-                        f.Health += fogSphereInterval * fogGrowth;
+                        f.Health += fogSphereInterval * fogGrowth * 0.5f;
                         f.UpdateHeight();
                         f.RenderOpacity();
                     }
 
                     break;
+                case FogSphereState.Full:
+                    f.Fire();
+                    break;
                 case FogSphereState.Throwing:
-                    //Move along parabola path
+                    if (f.transform.position.y < f.MinHeight)
+                    {
+                        QueueFogSphereForPooling(f);
+                    }
+
                     break;
             }
         }
