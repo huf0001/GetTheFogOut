@@ -167,7 +167,7 @@ public class ResourceController : MonoBehaviour
         //Get connected harvesters, account for power they consume, store the resources they collect
         List<Harvester> connectedHarvesters = hub.GetHarvesters();
         //Debug.Log("ConnectedHarvesters.Count is " + connectedHarvesters.Count);
-
+        bool needDestroy = false;
         if (connectedHarvesters.Count > 0)
         {
             foreach (Harvester h in harvesters)
@@ -198,8 +198,8 @@ public class ResourceController : MonoBehaviour
                                     if (h.Location.Resource.Health == 0)
                                     {
                                         ResourceNode.Destroy(h.Location.Resource.gameObject);
-                                        h.Location.Building.ShutdownBuilding();
-                                    //    h.Location.Building.DismantleBuilding();
+                                        needDestroy = true;
+                                        //    h.Location.Building.ShutdownBuilding();
                                     }
                                     break;
                                 case Resource.Fuel:
@@ -218,6 +218,12 @@ public class ResourceController : MonoBehaviour
                     h.PowerDown();
                 }
             }
+
+            if (needDestroy)
+            {
+                harvesters[0].Location.Building.DismantleBuilding();
+            }
+
         }
 
         storedFuel += fuelChange;

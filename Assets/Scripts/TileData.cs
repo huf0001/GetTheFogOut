@@ -146,6 +146,10 @@ public class TileData
         {
             Resource.Visible = true;
         }
+        else if (Building == null && Resource.Health == 0)
+        {
+            Debug.Log("Harvester removed, no longer needed");
+        }
         else
         {
             if (Building.BuildingType == BuildingType.Harvester) // || Resource.Health <= 0
