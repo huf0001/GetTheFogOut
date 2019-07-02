@@ -554,8 +554,8 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.GetComponentInParent<RectTransform>().position = new Vector3(tile.X, 1.5f, tile.Z) + new Vector3(-0.3f, 0, -2.3f);
-        uiController.buildingSelector.GetComponentInParent<RectTransform>().LookAt(Camera.main.transform);
+        uiController.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) - new Vector3(Screen.width / 63, -Screen.height / 25);
+        UIController.instance.buildingSelector.CurrentTile = tile;
     }
 
     public ShipComponentState GetShipComponent(ShipComponentsEnum c)
@@ -619,5 +619,10 @@ public class WorldController : MonoBehaviour
         #else
                 Application.Quit();
         #endif
+    }
+
+    public void ResetGame()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }

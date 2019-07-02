@@ -5,10 +5,9 @@ using UnityEngine;
 public class FogUnit : Entity
 {
     //Serialized Fields
-   // [SerializeField] private float damage = 0.1f;
     [SerializeField] private float lerpToMaxInterval;
     [SerializeField] private float rapidLerpMultiplier = 3f;
-    [SerializeField] public float damage = 0.1f;
+    [SerializeField] private float damage = 0.1f;
     [SerializeField] private float startOpacity = 0f;
     [SerializeField] private float endOpacity = 0.90f;
 
@@ -41,6 +40,7 @@ public class FogUnit : Entity
 
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
+    public float Damage { get => damage; set => damage = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
     public bool Spill { get => spill; set => spill = value; }
     public bool TakingDamage { get => takingDamage; }

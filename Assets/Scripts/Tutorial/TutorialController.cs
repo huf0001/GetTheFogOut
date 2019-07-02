@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.HDPipeline;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum TutorialStage
 {
@@ -79,7 +79,6 @@ public class TutorialController : DialogueBoxController
     private bool lerpForward = true;
 
     //Public Properties
-    // public static TutorialController used to get the instance of the WorldManager from anywhere.
     public static TutorialController Instance { get; protected set; }
 
     public TutorialStage TutorialStage { get => tutorialStage; }
@@ -104,18 +103,21 @@ public class TutorialController : DialogueBoxController
         }
 
         Instance = this;
+
+        if (GlobalVars.LoadedFromMenu)
+        {
+            skipTutorial = GlobalVars.SkipTut;
+        }
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
     public void StartTutorial()
     {
         Fog.Instance.enabled = true;
-        //Fog.Instance.PopulateFogPool();
-        Fog.Instance.SetFogToTiles();
+        Fog.Instance.SpawnStartingFog();
 
         if (skipTutorial)
         {
-            //Fog.Instance.SpawnStartingFog();
             Fog.Instance.InvokeActivateFog(5);
             tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
@@ -142,7 +144,7 @@ public class TutorialController : DialogueBoxController
                 UIController.instance.UpdateObjectiveText(TutorialStage.None);
             }
             else
-            { 
+            {
                 UIController.instance.UpdateObjectiveText(tutorialStage);
             }
 
@@ -284,7 +286,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 5:
                 GetCameraMovementInput();
-                
+
                 if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
                     IncrementSubStage();

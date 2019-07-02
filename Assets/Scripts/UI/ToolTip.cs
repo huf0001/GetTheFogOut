@@ -25,7 +25,7 @@ public class ToolTip : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void UpdateText(PlaneObject obj)
+    public void UpdateText(Building obj)
     {
         transform.position = Camera.main.WorldToScreenPoint(obj.transform.position) + offset;
 
