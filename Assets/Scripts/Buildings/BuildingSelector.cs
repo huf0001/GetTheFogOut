@@ -7,22 +7,16 @@ using Cinemachine;
 public class BuildingSelector : MonoBehaviour
 {
     //[SerializeField] TextMeshProUGUI buildingDesc;
-    [SerializeField] bool visible = false;
-    private RectTransform parent;
+    [SerializeField] private bool visible = false;
 
     public bool Visible { get => visible; set => visible = value; }
-
-    void Start()
-    {
-
-        parent = GetComponentInParent<RectTransform>();
-    }
+    public TileData CurrentTile { get; set; }
 
     void Update()
     {
         if (visible)
         {
-            parent.LookAt(Camera.main.transform);
+            transform.position = Camera.main.WorldToScreenPoint(new Vector3(CurrentTile.X, 0, CurrentTile.Z)) - new Vector3(Screen.width / 63, -Screen.height / 25);
         }
     }
 

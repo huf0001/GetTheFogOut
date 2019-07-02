@@ -85,13 +85,13 @@ public class CameraController : MonoBehaviour
         }
 
         // Zoom
-        if (Input.GetAxis("Zoom") != 0)
+        if (Input.GetAxisRaw("Zoom") != 0)
         {
             //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
             //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
 
             zoom.m_Width -= Input.GetAxis("Zoom") * zoomMulti;
-            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 10);
+            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
         }
 
         if (hasChanged)

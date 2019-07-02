@@ -7,7 +7,6 @@ using DG.Tweening;
 
 public class UIController : MonoBehaviour
 {
-
     public static UIController instance = null;
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
@@ -441,11 +440,6 @@ public class UIController : MonoBehaviour
                 hudObjText.text = "Objective: Move Nex";
                 objWindowText.text = "<b>Move Nex</b>\n\n" +
                     "<size=75%>Learn how to move your Nexus Drone.\n\n";
-                break;
-            case TutorialStage.RotateCamera:
-                hudObjText.text = "Objective: Rotate Nex";
-                objWindowText.text = "<b>Rotate Nex</b>\n\n" +
-                    "<size=75%>Learn how to rotate your Nexus Drone.\n\n";
                 break;
             case TutorialStage.BuildGenerator:
                 hudObjText.text = "Objective: Build Generator";
