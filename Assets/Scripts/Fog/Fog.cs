@@ -21,9 +21,9 @@ public enum StartConfiguration
 
 public enum Difficulty
 {
-    easy,
-    normal,
-    hard
+    Easy,
+    Normal,
+    Hard
 }
 
 public class Fog : MonoBehaviour
@@ -41,7 +41,7 @@ public class Fog : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private StartConfiguration configuration;
-    [SerializeField] private Difficulty difficulty = Difficulty.normal;
+    [SerializeField] private Difficulty difficulty = Difficulty.Normal;
     [SerializeField] private FogExpansionDirection expansionDirection;
 
     [Header("Fog Expansion")]
@@ -112,13 +112,13 @@ public class Fog : MonoBehaviour
 
         switch (difficulty)
         {
-            case Difficulty.easy:
-                fogDamage = fogDamage / 1.40f;
+            case Difficulty.Easy:
+                fogDamage /= 1.40f;
                 break;
-            case Difficulty.normal:
+            case Difficulty.Normal:
                 break;
-            case Difficulty.hard:
-                fogDamage = fogDamage * 2f;
+            case Difficulty.Hard:
+                fogDamage *= 2f;
                 break;
         }
     }
@@ -376,27 +376,27 @@ public class Fog : MonoBehaviour
         List<TileData> adjacentTiles;
 
         int highestCount = 0;
-        int newCount = 0;
+        int newCount;
         int distanceCount = 0;
 
         //Find a fog unit where not all adjacent tiles have fog units.
         do
         {
             f = fogUnitsInPlay[Random.Range(0, fogUnitsInPlay.Count - 1)];
-            Debug.Log($"Selected {f.name}");
+            //Debug.Log($"Selected {f.name}");
 
             foreach (TileData t in f.Location.AdjacentTiles)
             {
                 if (t.FogUnit == null)
                 {
-                    Debug.Log($"{t.Name} does not have a fog unit. Breaking foreach loop.");
+                    //Debug.Log($"{t.Name} does not have a fog unit. Breaking foreach loop.");
                     finished = true;
                     break;
                 }
-                else
-                {
-                    Debug.Log($"{t.Name} has a fog unit.");
-                }
+                //else
+                //{
+                //    Debug.Log($"{t.Name} has a fog unit.");
+                //}
             }
         } while (!finished);
 
@@ -418,7 +418,7 @@ public class Fog : MonoBehaviour
         //If possible, select a fog unit with more neighbouring tiles with fog units on them
         do
         {
-            Debug.Log($"Iterating closer from {f.name}");
+            //Debug.Log($"Iterating closer from {f.name}");
             finished = true;
 
             //For each adjacent tile
