@@ -71,13 +71,6 @@ public class CameraController : MonoBehaviour
 
             hasChanged = true;
         }
-        
-        //Only run if player is moving left/right/up/down
-        if (Input.GetAxisRaw("Rotation") != 0)
-        {
-            rMove = rotationSpeed * Time.deltaTime * Input.GetAxis("Rotation");
-            myTransform.Rotate(0f, rMove, 0f);
-        }
 
         //Handle screen dragging if right click is held down
         if (Input.GetMouseButton(2) || Input.GetMouseButton(1))
@@ -92,13 +85,13 @@ public class CameraController : MonoBehaviour
         }
 
         // Zoom
-        if (Input.GetAxis("Zoom") != 0)
+        if (Input.GetAxisRaw("Zoom") != 0)
         {
             //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
             //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
 
             zoom.m_Width -= Input.GetAxis("Zoom") * zoomMulti;
-            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 10);
+            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
         }
 
         if (hasChanged)

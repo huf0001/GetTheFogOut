@@ -345,7 +345,7 @@ MonoBehaviour:
     collected: 0
   - component: 2
     collected: 0
-  camera: {fileID: 0}
+  serialCamera: {fileID: 0}
   InBuildMode: 1
   pause: {fileID: 0}
 --- !u!114 &1210913968312047254
@@ -501,10 +501,6 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: 'WASD moves me around. '
-  - key: rotate camera
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: "\rPress Q or E to make me spin. \r\n"
   - key: build generator target
     expressionDialoguePairs:
     - aiExpression: 2
@@ -567,7 +563,7 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: "Now that you know how to use these buildings, I would suggest trying
         to find your ship\u2019s thruster. "
-  skipTutorial: 1
+  skipTutorial: 0
   airCannonLandmark: {fileID: 0}
   batteryLandmark: {fileID: 0}
   generatorLandmark: {fileID: 0}
@@ -657,6 +653,15 @@ MonoBehaviour:
     - aiExpression: 3
       dialogue: Come on, what are you doing? You can't launch your ship without enough
         power. You had it  and you wasted it.
+  - key: fog destroyed
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: You destroyed all of the fog. Nice job. Now, can we leave yet?
+  - key: all tiles powered
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: You've supplied power to the whole map? I mean, good job, but can
+        you focus on leaving already?
   objectivesOn: 1
   currStage: 0
   subStage: 0
@@ -669,9 +674,10 @@ MonoBehaviour:
   generatorLimit: 5
   audioCompleteObjective: {fileID: 8300000, guid: 829473fd5b1ed95469182e2d546272f3,
     type: 3}
+  fogGrowth: 0000000000000000
   fogGrowthEasy: 10
-  fogGrowthMedium: 30
-  fogGrowthHard: 70
+  fogGrowthMedium: 25
+  fogGrowthHard: 50
   shipSmoke: {fileID: 0}
   thrusterCamera: {fileID: 0}
 --- !u!114 &3646138034780775634
@@ -705,13 +711,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d37a928823b9f6a48814cc817e7d13c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectDifficulty: 0
   lerpStartingFog: 1
   fogUnitPrefab: {fileID: 2516856455530505698, guid: 81ce07d50c91d3843b2866edb20d15f5,
     type: 3}
   configuration: 5
   expansionDirection: 0
   fogAccelerates: 0
-  fogGrowth: 2
+  fogGrowth: 10
   fogMaxHealth: 100
   fogSpillThreshold: 50
   damageOn: 1

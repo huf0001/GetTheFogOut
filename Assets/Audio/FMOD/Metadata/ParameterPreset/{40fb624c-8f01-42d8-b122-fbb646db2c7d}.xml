@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{40fb624c-8f01-42d8-b122-fbb646db2c7d}">
+		<property name="name">
+			<value>GameOverLose</value>
+		</property>
+		<relationship name="folder">
+			<destination>{dffad63b-4011-40f5-9498-40e2cd65acf6}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{bb45d302-a269-4f4e-9eb5-7b1eaf1829f6}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{bb45d302-a269-4f4e-9eb5-7b1eaf1829f6}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>False</value>
+			<value>True</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

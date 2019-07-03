@@ -139,7 +139,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4455723523853987716}
-  m_LocalRotation: {x: 0.3656498, y: 0.35143614, z: -0.15145715, w: 0.84844196}
+  m_LocalRotation: {x: 0.36564982, y: 0.3514361, z: -0.15145713, w: 0.84844196}
   m_LocalPosition: {x: 14.654311, y: 22.650002, z: 6.4643097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -586,7 +586,6 @@ MonoBehaviour:
   rotationSpeed: 70
   zoomMulti: 10
   dragSpeed: 0.02
-  enableEdgePan: 0
 --- !u!1 &4455723524555981923
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,7 +611,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4455723524555981923}
-  m_LocalRotation: {x: 0.3656498, y: 0.35143614, z: -0.15145713, w: 0.84844196}
+  m_LocalRotation: {x: 0.36564982, y: 0.3514361, z: -0.15145713, w: 0.84844196}
   m_LocalPosition: {x: 14.654311, y: 22.650002, z: 6.4643097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -671,8 +670,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Width: 10
   m_Damping: 1
-  m_MinFOV: 8
-  m_MaxFOV: 20
+  m_MinFOV: 4
+  m_MaxFOV: 40
 --- !u!1 &4455723524915634850
 GameObject:
   m_ObjectHideFlags: 0
