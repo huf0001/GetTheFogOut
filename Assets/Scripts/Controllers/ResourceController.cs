@@ -16,6 +16,7 @@ public class ResourceController : MonoBehaviour
     [SerializeField] private List<Generator> generators = new List<Generator>();
     [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
     [SerializeField] private List<Relay> relays = new List<Relay>();
+    [SerializeField] private bool hvtSelfDestroy = false;
     private List<Building> buildings = new List<Building>();
 
     //Non-serialized fields
@@ -168,6 +169,8 @@ public class ResourceController : MonoBehaviour
         List<Harvester> connectedHarvesters = hub.GetHarvesters();
         //Debug.Log("ConnectedHarvesters.Count is " + connectedHarvesters.Count);
 
+        bool needDestroy = false;
+
         if (connectedHarvesters.Count > 0)
         {
             foreach (Harvester h in harvesters)
@@ -198,8 +201,8 @@ public class ResourceController : MonoBehaviour
                                     if (h.Location.Resource.Health == 0)
                                     {
                                         ResourceNode.Destroy(h.Location.Resource.gameObject);
-                                        h.Location.Building.ShutdownBuilding();
-                                    //    h.Location.Building.DismantleBuilding();
+                                        needDestroy = true;
+                                        //    h.Location.Building.ShutdownBuilding();   // if you dont want to destroy, this line, insteat, will turn power off
                                     }
                                     break;
                                 case Resource.Fuel:
@@ -218,6 +221,16 @@ public class ResourceController : MonoBehaviour
                     h.PowerDown();
                 }
             }
+            if (hvtSelfDestroy)
+            {
+                if (needDestroy)
+                {
+                    MouseController.Instance.ReturnCost(harvesters[0].Location);
+                    MouseController.Instance.RemoveBulding(harvesters[0]);
+                //    harvesters[0].Location.Building.DismantleBuilding();  //alternatively
+                }
+            }
+
         }
 
         storedFuel += fuelChange;

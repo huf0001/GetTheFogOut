@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,17 +7,21 @@ public class Projectile : MonoBehaviour
 {
     int damage;
     int aoeDamage;
+    float timeToReturn;
+    bool isLanded;
+    private Rigidbody rigidbody;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        rigidbody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
+        if (isLanded)
+        {
+            ReturnMeToPool();
+        }
     }
 
     public void Fire(Vector3 origin, Vector3 target, int dmg, int aoeDmg)
@@ -85,6 +90,19 @@ public class Projectile : MonoBehaviour
         }
 
         // Return the projectile to the pool
-        ProjectilePool.Instance.ReturnToPool(this);
+        timeToReturn = 0.7f;
+        isLanded = true;
+        rigidbody.isKinematic = true;
+    }
+
+    void ReturnMeToPool()
+    {
+        timeToReturn -= Time.deltaTime;
+        if (timeToReturn <= 0)
+        {
+            ProjectilePool.Instance.ReturnToPool(this);
+            isLanded = false;
+            rigidbody.isKinematic = false;
+        }
     }
 }
