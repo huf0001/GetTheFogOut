@@ -17,6 +17,8 @@ public class AbilityController : MonoBehaviour
     // Private variables -----------------------------------------------------------------------------------------------
     private AbilityController instance;
     private List<CollectibleObject> collectedObjects = new List<CollectibleObject>();
+    private Ability selectedAbility;
+    private bool isAbilitySelected = false;
     private Dictionary<AbilityEnum, bool> abilityTriggered = new Dictionary<AbilityEnum, bool>();
     private Dictionary<AbilityEnum, float> abilityCooldowns = new Dictionary<AbilityEnum, float>();
 
@@ -60,6 +62,7 @@ public class AbilityController : MonoBehaviour
     void Update()
     {
         UpdateButtonCooldowns();
+        ProcessInput();
     }
 
     void UpdateButtons()
@@ -96,7 +99,7 @@ public class AbilityController : MonoBehaviour
             {
                 abilityCooldowns[trigger.Key] -= Time.deltaTime;
                 
-                // Do visual cooldown stuff here
+                // TODO: Do visual cooldown stuff here
                 
                 if (abilityCooldowns[trigger.Key] <= 0f)
                 {
@@ -109,13 +112,32 @@ public class AbilityController : MonoBehaviour
     // Button Management -----------------------------------------------------------------------------------------------
     public void OnButtonClicked(Ability ability)
     {
-        if (!abilityTriggered[ability.AbilityType])
+        selectedAbility = ability;
+        isAbilitySelected = true;
+    }
+
+    private void ProcessInput()
+    {
+        if (isAbilitySelected)
         {
-            ability.TriggerAbility();
-            abilityTriggered[ability.AbilityType] = true;
-            abilityCooldowns[ability.AbilityType] = ability.baseCoolDown;
-            // Play sound effect
-            // Start visual cooldown stuff
+            // Use ability
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (!abilityTriggered[selectedAbility.AbilityType])
+                {
+                    selectedAbility.TriggerAbility();
+                    abilityTriggered[selectedAbility.AbilityType] = true;
+                    abilityCooldowns[selectedAbility.AbilityType] = selectedAbility.baseCoolDown;
+                    // TODO: Play sound effect
+                    // TODO: Start visual cooldown stuff
+                }
+            } 
+            // Cancel ability
+            else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
+            {
+                isAbilitySelected = false;
+                selectedAbility = null;
+            }
         }
     }
 
