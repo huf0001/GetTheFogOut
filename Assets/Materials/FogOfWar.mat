@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: FogOfWar
-  m_Shader: {fileID: 4800000, guid: 3ce4d20fe331d4b43b396ab108c3b185, type: 3}
+  m_Shader: {fileID: 4800000, guid: 4cd06eeb9c8800f479d19300816d5c8f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
@@ -29,6 +29,18 @@ Material:
         m_Texture: {fileID: 2800000, guid: d34cf0b1a6163ad4abc469a5ed4d036f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normals:
+        m_Texture: {fileID: 2800000, guid: c559870912e037b4384a2dcb95a56c29, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSheet:
+        m_Texture: {fileID: 2800000, guid: d34cf0b1a6163ad4abc469a5ed4d036f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_6B13D93: 1
     - Vector1_7CE1AA49: 1
@@ -38,8 +50,10 @@ Material:
     - Vector1_E0871888: 1
     - Vector1_EF6A4DE9: 1
     - _Alpha: 1
+    - _FPS: 16
     - _FadeSize: 1
     - _FogFade: 1
+    - __dirty: 0
     m_Colors:
     - Color_4DCAB2B4: {r: 0, g: 1, b: 1, a: 0}
     - Color_93C309E7: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 0}

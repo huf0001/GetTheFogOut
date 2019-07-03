@@ -7,18 +7,6 @@ public class Projectile : MonoBehaviour
     int damage;
     int aoeDamage;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void Fire(Vector3 origin, Vector3 target, int dmg, int aoeDmg)
     // Fires the projectile from the origin to the target, with the given damage
     {
