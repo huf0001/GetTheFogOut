@@ -16,7 +16,7 @@ public class BuildingSelector : MonoBehaviour
     {
         if (visible)
         {
-            transform.position = Camera.main.WorldToScreenPoint(new Vector3(CurrentTile.X, 0, CurrentTile.Z)) - new Vector3(Screen.width / 63, -Screen.height / 25);
+            transform.position = Camera.main.WorldToScreenPoint(new Vector3(CurrentTile.X, 0, CurrentTile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
         }
     }
 

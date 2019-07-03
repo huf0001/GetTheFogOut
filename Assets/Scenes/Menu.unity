@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06744362, g: 0.08993498, b: 0.13506117, a: 1}
+  m_IndirectSpecularColor: {r: 0.0674448, g: 0.08993495, b: 0.13505739, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1764,9 +1764,11 @@ MonoBehaviour:
   - The fog looks pretty
   difficultySubmenu: {fileID: 1636422186}
   difficultyDescriptions:
-  - Easy mode is fun!
-  - Medium is the standard mode!
-  - Hard is for the hardcore!
+  - For players unfamiliar with Tower Defense games. Fog will do less damage and buildings
+    will repair themselves after a short period of time.
+  - For players familiar with Tower Defense games. Developer intended difficulty.
+  - For those who love a challenge. Fog is extremely hostile, buildings take more
+    damage and resources are scarce.
   difficultyDescText: {fileID: 532195592}
   dropdown: {fileID: 1596818770}
 --- !u!1001 &607361202
@@ -9104,10 +9106,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1294883713}
     m_Modifications:
-    - target: {fileID: 1366804467, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
-      propertyPath: m_Name
-      value: Broken Ship
-      objectReference: {fileID: 0}
     - target: {fileID: 1366804468, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.39
@@ -9151,6 +9149,10 @@ PrefabInstance:
     - target: {fileID: 1366804468, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366804467, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
+      propertyPath: m_Name
+      value: Broken Ship
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
