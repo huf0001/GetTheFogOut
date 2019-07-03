@@ -555,7 +555,7 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) - new Vector3(Screen.width / 63, -Screen.height / 25);
+        uiController.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
         UIController.instance.buildingSelector.CurrentTile = tile;
     }
 
