@@ -201,6 +201,7 @@ public class ResourceController : MonoBehaviour
                                     if (h.Location.Resource.Health == 0)
                                     {
                                         ResourceNode.Destroy(h.Location.Resource.gameObject);
+                                        h.TurnOnMineralIndicator();
                                         needDestroy = true;
                                         //    h.Location.Building.ShutdownBuilding();   // if you dont want to destroy, this line, insteat, will turn power off
                                     }

@@ -30,7 +30,7 @@ public class AbilityMenu : MonoBehaviour
         toggleButton.interactable = false;
         open = true;
         buttons.alpha = 1;
-        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).
+        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).SetEase(Ease.OutBack).
             OnComplete(delegate
             {
                 buttons.interactable = true;
@@ -45,7 +45,7 @@ public class AbilityMenu : MonoBehaviour
         buttons.interactable = false;
         buttons.blocksRaycasts = false;
         open = false;
-        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, 0, 0.3f).
+        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, 0, 0.3f).SetEase(Ease.InBack).
             OnComplete(delegate
             {
                 buttons.alpha = 0;
