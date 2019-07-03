@@ -8,7 +8,8 @@ public enum FogSphereState
     Filling,
     Damaged,
     Full,
-    Throwing
+    Throwing,
+    Spilling
 }
 
 public class FogSphere : MonoBehaviour
@@ -148,10 +149,8 @@ public class FogSphere : MonoBehaviour
     // Sets the fog sphere moving towards the target position
     public void Throw()
     {
-        Debug.Log("Throw!");
         startPosition = transform.position;
         targetPosition = CalculateTarget();
-        targetPosition.y = minHeight;
         state = FogSphereState.Throwing;
     }
 
@@ -164,33 +163,31 @@ public class FogSphere : MonoBehaviour
     public void Move(float increment)
     {
         moveProgress += increment;
-        float y = transform.position.y;
-        Vector3 pos = Vector3.Lerp(startPosition, targetPosition, moveProgress);
+        //float y = transform.position.y;
+        //Vector3 pos = Vector3.Lerp(startPosition, targetPosition, moveProgress);
 
-        if (moveProgress < 0.4)
-        {
-            pos.y = y + heightIncrement;
-        }
-        else
-        {
-            pos.y = y - heightIncrement;
-        }
+        //if (moveProgress < 0.45)
+        //{
+        //    pos.y = y + heightIncrement;
+        //}
+        //else 
+        //{
+        //    pos.y = y - heightIncrement;
 
-        transform.position = pos;
+        //    if (moveProgress >= 1)
+        //    {
+        //        state = FogSphereState.Spilling;
+        //    }
+        //}
 
-        if (transform.position.y < 0.1f && transform.position.y > -0.1f)
-        {
-            Spill();
-        }
-        else if (transform.position.y < minHeight)
-        {
-            ReturnToFogPool();
-        }
+        //transform.position = pos;
+
+        transform.position = MathParabola.Parabola(startPosition, targetPosition, maxHeight * 2.5f, moveProgress);
     }
 
-    private void Spill()
+    public void Spill()
     {
-        //Stuff
+        ReturnToFogPool();
     }
 
     //Recurring Methods - Health and Appearance------------------------------------------------------------------------------------------------------
