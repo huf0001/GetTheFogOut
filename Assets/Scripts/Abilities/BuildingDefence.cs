@@ -10,7 +10,7 @@ namespace Abilities
             throw new System.NotImplementedException();
         }
 
-        public override void TriggerAbility()
+        public override void TriggerAbility(TileData tile)
         {
             throw new System.NotImplementedException();
         }

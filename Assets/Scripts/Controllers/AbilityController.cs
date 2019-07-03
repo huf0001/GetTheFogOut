@@ -21,6 +21,9 @@ public class AbilityController : MonoBehaviour
     private bool isAbilitySelected = false;
     private Dictionary<AbilityEnum, bool> abilityTriggered = new Dictionary<AbilityEnum, bool>();
     private Dictionary<AbilityEnum, float> abilityCooldowns = new Dictionary<AbilityEnum, float>();
+    private TileData selectedTile;
+
+    [SerializeField] private GameObject rangeIndicatorGO;
 
     // Public Properties -----------------------------------------------------------------------------------------------
     public List<CollectibleObject> CollectedObjects
@@ -37,6 +40,16 @@ public class AbilityController : MonoBehaviour
     {
         get { return instance; }
         set { instance = value; }
+    }
+
+    private bool IsAbilitySelected
+    {
+        get { return isAbilitySelected; }
+        set
+        {
+            rangeIndicatorGO.SetActive(value);
+            isAbilitySelected = value;
+        }
     }
 
     // Start up --------------------------------------------------------------------------------------------------------
@@ -63,6 +76,10 @@ public class AbilityController : MonoBehaviour
     {
         UpdateButtonCooldowns();
         ProcessInput();
+        if (IsAbilitySelected)
+        {
+            DisplayTarget();
+        }
     }
 
     void UpdateButtons()
@@ -113,19 +130,19 @@ public class AbilityController : MonoBehaviour
     public void OnButtonClicked(Ability ability)
     {
         selectedAbility = ability;
-        isAbilitySelected = true;
+        IsAbilitySelected = true;
     }
 
     private void ProcessInput()
     {
-        if (isAbilitySelected)
+        if (IsAbilitySelected)
         {
             // Use ability
             if (Input.GetMouseButtonDown(0))
             {
                 if (!abilityTriggered[selectedAbility.AbilityType])
                 {
-                    selectedAbility.TriggerAbility();
+                    selectedAbility.TriggerAbility(selectedTile);
                     abilityTriggered[selectedAbility.AbilityType] = true;
                     abilityCooldowns[selectedAbility.AbilityType] = selectedAbility.baseCoolDown;
                     // TODO: Play sound effect
@@ -135,7 +152,7 @@ public class AbilityController : MonoBehaviour
             // Cancel ability
             else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
             {
-                isAbilitySelected = false;
+                IsAbilitySelected = false;
                 selectedAbility = null;
             }
         }
@@ -145,5 +162,14 @@ public class AbilityController : MonoBehaviour
     void DisplayTarget()
     {
         // Visually display the targeted area
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (WorldController.Instance.groundCollider.Raycast(ray, out hit, Mathf.Infinity) &&
+            WorldController.Instance.TileExistsAt(hit.point))
+        {
+            TileData tile = WorldController.Instance.GetTileAt(hit.point);
+            rangeIndicatorGO.transform.position = new Vector3(tile.X, 0, tile.Z);
+            selectedTile = tile;
+        }
     } 
 }

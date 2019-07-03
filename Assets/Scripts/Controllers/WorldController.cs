@@ -35,6 +35,7 @@ public class WorldController : MonoBehaviour
 
     [Header("Prefab/Gameobject assignment")]
     [SerializeField] private GameObject ground;
+    public Collider groundCollider;
 
     [SerializeField] GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
 
@@ -118,6 +119,7 @@ public class WorldController : MonoBehaviour
         SetResourcesToTiles();
         SetBuildingsToTiles();
         SetLandmarksToTiles();
+        groundCollider = ground.GetComponent<Collider>();
         TutorialController.Instance.StartTutorial();
     }
 
@@ -508,7 +510,6 @@ public class WorldController : MonoBehaviour
 
         if (x >= width || x < 0 || y >= length || y < 0)    //width by length array, the last value will be at position (width - 1, length - 1) 'cause arrays love 0s.
         {
-            Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
             return null;
         }
 
