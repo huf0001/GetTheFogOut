@@ -101,7 +101,7 @@ public abstract class Building : Entity
         {
             if (regenWait <= 0)
             {
-                InvokeRepeating("RepairBuilding", 0, 5);
+                InvokeRepeating("RepairBuilding", 5, 5f);
             }
             else
             {
