@@ -26,14 +26,8 @@ public class ProjectilePool : MonoBehaviour
         PopulatePool();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void PopulatePool()
-    // Adds an inital amount to populate the pool
+    // Adds an initial amount to populate the pool
     {
         for (int i = 0; i < poolSize; i++)
         {

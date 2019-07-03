@@ -5,7 +5,7 @@ namespace Abilities
     [CreateAssetMenu (menuName = "Abilities/BuildingDefence")]
     public class BuildingDefence : Ability
     {
-        public override void Initialize(GameObject obj)
+        public override void Initialize(GameObject obj)    
         {
             throw new System.NotImplementedException();
         }
