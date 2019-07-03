@@ -9,6 +9,7 @@ public enum FogSphereState
     Damaged,
     Full,
     Throwing,
+    Attacking,
     Spilling
 }
 
@@ -43,29 +44,34 @@ public class FogSphere : MonoBehaviour
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
 
-    [Header("Movement")]
-    [SerializeField] private float heightIncrement;
+    //[Header("Movement")]
+    //[SerializeField] private float heightIncrement;
 
     //Non-Serialized Fields
     private Fog fog;
     private bool angry = false;
 
+    private Renderer fogRenderer;
+    private int colour;
+    private int alpha;
+
     private float colourProgress = 0;
     private float colourProgressTarget = 0;
     private bool lerpForward = true;
+
     private float healthProgress = 0;
     private float startHealth;
     private float targetHealth;
     private float damageLerpProgress = 0;
 
-    private Renderer fogRenderer;
-    private int colour;
-    private int alpha;
-
     private Vector3 startPosition;
-    private Vector3 targetPosition;
+    private Vector3 throwTarget;
+    private Vector3 attackTarget;
+    private Vector3 reflectStartPosition;
+    private Vector3 reflectThrowTarget;
+    private Vector3 reflectAttackTarget;
     private float moveProgress = 0;
-    private float heightProgress = 0;
+    //private float heightProgress = 0;
 
     //private bool spill = false;
     //private bool neighboursFull = false;
@@ -149,8 +155,23 @@ public class FogSphere : MonoBehaviour
     // Sets the fog sphere moving towards the target position
     public void Throw()
     {
+        //Positive y targets
         startPosition = transform.position;
-        targetPosition = CalculateTarget();
+        Vector3 targetBuilding = CalculateTarget();
+
+        throwTarget = targetBuilding;
+        throwTarget.y = maxHeight * 7;
+        attackTarget = targetBuilding;
+        attackTarget.y = 0;
+
+        //Negative y targets
+        reflectStartPosition = startPosition;
+        reflectStartPosition.y *= -1;
+        reflectThrowTarget = throwTarget;
+        reflectThrowTarget.y *= -1;
+        reflectAttackTarget = attackTarget;
+        reflectAttackTarget.y *= -1;
+
         state = FogSphereState.Throwing;
     }
 
@@ -160,29 +181,32 @@ public class FogSphere : MonoBehaviour
         return GameObject.Find("Hub").transform.position;
     }
 
+    //Change so it moves in a vertical quater circle from the base of the circle to one side.
     public void Move(float increment)
     {
         moveProgress += increment;
-        //float y = transform.position.y;
-        //Vector3 pos = Vector3.Lerp(startPosition, targetPosition, moveProgress);
+        Vector3 pos = Vector3.Lerp(startPosition, throwTarget, moveProgress);
+        pos.y = transform.position.y * 1.05f;
+        transform.position = pos;
 
-        //if (moveProgress < 0.45)
-        //{
-        //    pos.y = y + heightIncrement;
-        //}
-        //else 
-        //{
-        //    pos.y = y - heightIncrement;
+        if (moveProgress >= 1)
+        {
+            moveProgress = 0;
+            state = FogSphereState.Attacking;
+        }
+    }
 
-        //    if (moveProgress >= 1)
-        //    {
-        //        state = FogSphereState.Spilling;
-        //    }
-        //}
+    //Move up a bit, then drop down (parabolic)? Or keep as straight drop down?
+    public void Attack(float increment)
+    {
+        moveProgress += increment;
+        transform.position = Vector3.Lerp(throwTarget, attackTarget, moveProgress);
 
-        //transform.position = pos;
-
-        transform.position = MathParabola.Parabola(startPosition, targetPosition, maxHeight * 2.5f, moveProgress);
+        if (moveProgress >= 1)
+        {
+            moveProgress = 0;
+            state = FogSphereState.Spilling;
+        }
     }
 
     public void Spill()

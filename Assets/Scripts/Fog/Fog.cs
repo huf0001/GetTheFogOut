@@ -720,7 +720,10 @@ public class Fog : MonoBehaviour
                     f.Throw();
                     break;
                 case FogSphereState.Throwing:
-                    f.Move(fogSphereInterval * 0.5f);
+                    f.Move(fogSphereInterval * 0.25f);
+                    break;
+                case FogSphereState.Attacking:
+                    f.Attack(fogSphereInterval * 0.75f);
                     break;
                 case FogSphereState.Spilling:
                     f.Spill();
