@@ -525,7 +525,7 @@ public class Fog : MonoBehaviour
         //    }
         //} while (!finished);
 
-        return f.gameObject.transform.position; ;
+        return f.transform.position; ;
     }
 
     //Invokes the ActivateFog method according to the parameter passed to it.
@@ -704,6 +704,7 @@ public class Fog : MonoBehaviour
             {
                 case FogSphereState.Damaged:
                     f.UpdateDamageToFogSphere(fogSphereInterval);
+                    f.UpdateHeight();
                     f.RenderOpacity();
                     break;
                 case FogSphereState.Filling:
@@ -716,14 +717,10 @@ public class Fog : MonoBehaviour
 
                     break;
                 case FogSphereState.Full:
-                    f.Fire();
+                    f.Throw();
                     break;
                 case FogSphereState.Throwing:
-                    if (f.transform.position.y < f.MinHeight)
-                    {
-                        QueueFogSphereForPooling(f);
-                    }
-
+                    f.Move(fogSphereInterval);
                     break;
             }
         }
@@ -767,7 +764,7 @@ public class Fog : MonoBehaviour
         f.Location.FogUnit = null;
         f.gameObject.GetComponent<Renderer>().material = invisibleMaterial;
         f.Spill = true;
-        f.gameObject.transform.position = transform.position;
+        f.transform.position = transform.position;
 
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f);
@@ -786,7 +783,7 @@ public class Fog : MonoBehaviour
         f.gameObject.name = "FogSphereInPool";
         f.gameObject.SetActive(false);
         f.gameObject.GetComponentInChildren<Renderer>().material = invisibleMaterial;
-        f.gameObject.transform.position = transform.position;
+        f.transform.position = transform.position;
 
         fogSpheresInPool.Add(f);
         fogSpheresInPlay.Remove(f);

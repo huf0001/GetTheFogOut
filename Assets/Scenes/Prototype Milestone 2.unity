@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.067397416, g: 0.08987052, b: 0.13496715, a: 1}
+  m_IndirectSpecularColor: {r: 0.0674448, g: 0.08993495, b: 0.13505739, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -359,11 +359,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FogSphere
       objectReference: {fileID: 0}
-    - target: {fileID: 3064332006142968861, guid: 37e1117ea4b07ab45a44109c6eb596b6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -372,7 +367,7 @@ PrefabInstance:
     - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.2
+      value: 0.77
       objectReference: {fileID: 0}
     - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
         type: 3}
@@ -419,7 +414,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4273201183174169860, guid: 37e1117ea4b07ab45a44109c6eb596b6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 37e1117ea4b07ab45a44109c6eb596b6, type: 3}
 --- !u!114 &245833255 stripped
 MonoBehaviour:
