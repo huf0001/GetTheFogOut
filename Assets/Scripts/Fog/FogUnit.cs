@@ -63,11 +63,21 @@ public class FogUnit : Entity
     {
         get
         {
+            //if (fillingFromFogSphere)
+            //{
+            //    Debug.Log($"{name}.Health.get accessed while filling from fog sphere.");
+            //}
+
             return base.Health;
         }
 
         set
         {
+            //if (fillingFromFogSphere)
+            //{
+            //    Debug.Log($"{name}.Health.set accessed while filling from fog sphere.");
+            //}
+
             if (!takingDamage)
             {
                 base.Health = value;
@@ -78,6 +88,7 @@ public class FogUnit : Entity
                 }
                 else if (base.Health <= 0)
                 {
+                    Debug.Log($"{name}.Health is {base.Health}. Returning to fog pool.");
                     ReturnToFogPool();
                 }
 
