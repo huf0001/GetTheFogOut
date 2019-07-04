@@ -67,11 +67,16 @@ public class FogSphere : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 throwTarget;
     private Vector3 attackTarget;
-    private Vector3 reflectStartPosition;
-    private Vector3 reflectThrowTarget;
-    private Vector3 reflectAttackTarget;
+    private Vector3 spillTarget;
     private float moveProgress = 0;
+    //private Vector3 reflectStartPosition;
+    //private Vector3 reflectThrowTarget;
+    //private Vector3 reflectAttackTarget;
     //private float heightProgress = 0;
+
+    private List<FogUnit> spiltFog;
+    private float fogUnitMinHealth;
+    private float fogUnitMaxHealth;
 
     //private bool spill = false;
     //private bool neighboursFull = false;
@@ -83,7 +88,11 @@ public class FogSphere : MonoBehaviour
     //public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
     //public bool Spill { get => spill; set => spill = value; }
     public bool Angry { get => angry; set => angry = value; }
+    public Renderer FogRenderer {  get => fogRenderer; }
+    public float FogUnitMaxHealth {  get => fogUnitMaxHealth; set => fogUnitMaxHealth = value; }
+    public float FogUnitMinHealth {  get => fogUnitMinHealth; set => fogUnitMinHealth = value; }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
     public FogSphereState State { get => state; set => state = value; }
 
     //Altered Public Properties
@@ -155,22 +164,23 @@ public class FogSphere : MonoBehaviour
     // Sets the fog sphere moving towards the target position
     public void Throw()
     {
-        //Positive y targets
         startPosition = transform.position;
         Vector3 targetBuilding = CalculateTarget();
 
         throwTarget = targetBuilding;
-        throwTarget.y = maxHeight * 7;
+        throwTarget.y = maxHeight * 2;
         attackTarget = targetBuilding;
         attackTarget.y = 0;
+        spillTarget = attackTarget;
+        spillTarget.y = minHeight * 2;
 
         //Negative y targets
-        reflectStartPosition = startPosition;
-        reflectStartPosition.y *= -1;
-        reflectThrowTarget = throwTarget;
-        reflectThrowTarget.y *= -1;
-        reflectAttackTarget = attackTarget;
-        reflectAttackTarget.y *= -1;
+        //reflectStartPosition = startPosition;
+        //reflectStartPosition.y *= -1;
+        //reflectThrowTarget = throwTarget;
+        //reflectThrowTarget.y *= -1;
+        //reflectAttackTarget = attackTarget;
+        //reflectAttackTarget.y *= -1;
 
         state = FogSphereState.Throwing;
     }
@@ -178,16 +188,40 @@ public class FogSphere : MonoBehaviour
     //Calculates the target of the fog sphere
     private Vector3 CalculateTarget()
     {
-        return GameObject.Find("Hub").transform.position;
+        Vector3 initial;
+        Vector3 target;
+
+        List<TileData> fft = Fog.Instance.FogFreeTiles;
+        int count = fft.Count;
+
+        do
+        {
+            TileData tile = fft[Random.Range(0, count)];
+            initial = new Vector3(tile.X, 0, tile.Z);
+            target = initial;
+
+            foreach (TileData t in tile.AdjacentTiles)
+            {
+                if (t.FogUnit == null)
+                {
+                    Vector3 temp = new Vector3(t.X, 0, t.Z);
+
+                    if (Vector3.Distance(transform.position, temp) > Vector3.Distance(transform.position, target))
+                    {
+                        target = temp;
+                    }
+                }
+            }
+        } while (target == initial);
+
+        return target;
     }
 
     //Change so it moves in a vertical quater circle from the base of the circle to one side.
     public void Move(float increment)
     {
         moveProgress += increment;
-        Vector3 pos = Vector3.Lerp(startPosition, throwTarget, moveProgress);
-        pos.y = transform.position.y * 1.05f;
-        transform.position = pos;
+        transform.position = MathParabola.Parabola(startPosition, throwTarget, maxHeight * 3f, moveProgress);
 
         if (moveProgress >= 1)
         {
@@ -200,18 +234,46 @@ public class FogSphere : MonoBehaviour
     public void Attack(float increment)
     {
         moveProgress += increment;
-        transform.position = Vector3.Lerp(throwTarget, attackTarget, moveProgress);
+        transform.position = MathParabola.Parabola(throwTarget, attackTarget, maxHeight * 4f, moveProgress);
 
         if (moveProgress >= 1)
         {
             moveProgress = 0;
             state = FogSphereState.Spilling;
+
+            if (WorldController.Instance.TileExistsAt(transform.position))
+            {
+                spiltFog = new List<FogUnit>();
+                TileData t = WorldController.Instance.GetTileAt(transform.position);
+
+                Fog.Instance.SpawnFogUnitWithMinHealth(t);
+                spiltFog.Add(t.FogUnit);
+                t.FogUnit.FillingFromFogSphere = true;
+
+                foreach (TileData a in t.AdjacentTiles)
+                {
+                    Fog.Instance.SpawnFogUnitWithMinHealth(a);
+                    spiltFog.Add(a.FogUnit);
+                    a.FogUnit.FillingFromFogSphere = true;
+                }
+            }
         }
     }
 
-    public void Spill()
+    public void Spill(float increment)
     {
-        ReturnToFogPool();
+        moveProgress += increment;
+        transform.position = Vector3.Lerp(attackTarget, spillTarget, moveProgress);
+
+        foreach (FogUnit f in spiltFog)
+        {
+            f.Health = Mathf.Lerp(fogUnitMinHealth, fogUnitMaxHealth, moveProgress);
+        }
+
+        if (moveProgress >= 1)
+        {
+            ReturnToFogPool();
+        }
     }
 
     //Recurring Methods - Health and Appearance------------------------------------------------------------------------------------------------------

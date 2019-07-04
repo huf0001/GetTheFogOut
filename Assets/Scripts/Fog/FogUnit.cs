@@ -46,10 +46,14 @@ public class FogUnit : Entity
     private bool spill = false;
     private bool neighboursFull = false;
 
+    private bool fillingFromFogSphere = false;
+
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
     public bool Angry { get => angry; set => angry = value; }
     public float Damage { get => damage; set => damage = value; }
+    public bool FillingFromFogSphere {  get => fillingFromFogSphere; set => fillingFromFogSphere = value; }
+    public Renderer FogRenderer { get => fogRenderer; set => fogRenderer = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
     public bool Spill { get => spill; set => spill = value; }
     public bool TakingDamage { get => takingDamage; }
@@ -126,23 +130,25 @@ public class FogUnit : Entity
     public void DealDamageToFogUnit(float damage)
     {
         //Run angry fog evaporation effect here
-
-        takingDamage = true;
-
-        startHealth = base.Health;
-        targetHealth -= damage;
-        healthProgress = 0;
-
-        if (targetHealth < 0)
+        if (!fillingFromFogSphere)
         {
-            targetHealth = 0;
-        }
+            takingDamage = true;
 
-        foreach (TileData t in Location.AdjacentTiles)
-        {
-            if (t.FogUnit != null)
+            startHealth = base.Health;
+            targetHealth -= damage;
+            healthProgress = 0;
+
+            if (targetHealth < 0)
             {
-                t.FogUnit.NeighboursFull = false;
+                targetHealth = 0;
+            }
+
+            foreach (TileData t in Location.AdjacentTiles)
+            {
+                if (t.FogUnit != null)
+                {
+                    t.FogUnit.NeighboursFull = false;
+                }
             }
         }
     }
