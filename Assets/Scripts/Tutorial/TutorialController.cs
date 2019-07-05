@@ -121,7 +121,7 @@ public class TutorialController : DialogueBoxController
             Fog.Instance.InvokeActivateFog(5);
             tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
-            MusicController.Instance.SkipTutorial();
+            //MusicController.Instance.SkipTutorial();
             wKey.transform.parent.gameObject.SetActive(false);
         }
         else
@@ -760,7 +760,7 @@ public class TutorialController : DialogueBoxController
                     tutorialStage = TutorialStage.Finished;
                     ResetSubStage();
                     ObjectiveController.Instance.IncrementStage();
-                    MusicController.Instance.StartStage1();
+                    //MusicController.Instance.StartStage1();
                 }
 
                 break;
