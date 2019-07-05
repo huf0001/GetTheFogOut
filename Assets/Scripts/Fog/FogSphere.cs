@@ -78,6 +78,8 @@ public class FogSphere : MonoBehaviour
     private float fogUnitMinHealth;
     private float fogUnitMaxHealth;
 
+    private List<TileData> tilesInRange = new List<TileData>();
+
     //private bool spill = false;
     //private bool neighboursFull = false;
 
@@ -93,31 +95,32 @@ public class FogSphere : MonoBehaviour
     public float FogUnitMinHealth {  get => fogUnitMinHealth; set => fogUnitMinHealth = value; }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
 
-    public List<FogUnit> SpiltFog
-    {
-        get
-        {
-            Debug.Log($"FogSphere.SpiltFog.get accessed externally. SpiltFog.Count is {spiltFog.Count}");
-            return spiltFog; 
-        }
+    public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
+    //{
+    //    get
+    //    {
+    //        Debug.Log($"FogSphere.SpiltFog.get accessed externally. SpiltFog.Count is {spiltFog.Count}");
+    //        return spiltFog; 
+    //    }
 
-        set
-        {
-            Debug.Log($"FogSphere.SpiltFog.set accessed externally. SpiltFog.Count is {spiltFog.Count}.");
-            if (value == null)
-            { 
-                Debug.Log("Value is null.");
-            }
-            else
-            {
-                Debug.Log($"value.Count is {value.Count}");
-            }
+    //    set
+    //    {
+    //        Debug.Log($"FogSphere.SpiltFog.set accessed externally. SpiltFog.Count is {spiltFog.Count}.");
+    //        if (value == null)
+    //        { 
+    //            Debug.Log("Value is null.");
+    //        }
+    //        else
+    //        {
+    //            Debug.Log($"value.Count is {value.Count}");
+    //        }
 
-            spiltFog = value;
-        }
-    }
+    //        spiltFog = value;
+    //    }
+    //}
 
     public FogSphereState State { get => state; set => state = value; }
+    public List<TileData> TilesInRange { get => tilesInRange; set => tilesInRange = value; }
 
     //Altered Public Properties
     public float Health
@@ -189,11 +192,11 @@ public class FogSphere : MonoBehaviour
     public void Throw()
     {
         startPosition = transform.position;
-        Vector3 targetBuilding = CalculateTarget();
+        Vector3 target = CalculateTarget();
 
-        throwTarget = targetBuilding;
+        throwTarget = target;
         throwTarget.y = maxHeight * 2;
-        attackTarget = targetBuilding;
+        attackTarget = target;
         attackTarget.y = 0;
         spillTarget = attackTarget;
         spillTarget.y = minHeight;
@@ -212,35 +215,99 @@ public class FogSphere : MonoBehaviour
     //Calculates the target of the fog sphere
     private Vector3 CalculateTarget()
     {
-        Vector3 initial;
-        Vector3 target;
-        //bool finished;
+        //Vector3 initial = startPosition;
+        Vector3 target = startPosition;     //set to startPosition initially in case there are no valid targets; otherwise the code complains it could be unassigned when it is returned.
+        bool finished = false;
+        bool valid = true;
 
-        List<TileData> fft = Fog.Instance.FogFreeTiles;
-        int count = fft.Count;
-        Vector3 hubPosition = GameObject.Find("Hub").transform.position;
+        List<TileData> targets = new List<TileData>();
+        Vector3 hPos = GameObject.Find("Hub").transform.position;
+        Vector3 sPos = transform.position;
 
-        do
+        //Find all tiles where none of it or its neighbours have fog units on them
+        foreach (TileData t in tilesInRange)
         {
-            TileData tile = fft[Random.Range(0, count)];
-            initial = new Vector3(tile.X, 0, tile.Z);
-            target = initial;
-
-            foreach (TileData t in tile.AdjacentTiles)
+            if (t.FogUnit == null)
             {
-                if (t.FogUnit == null)
+                foreach (TileData a in t.AdjacentTiles)
                 {
-                    Vector3 temp = new Vector3(t.X, 0, t.Z);
-
-                    if (Vector3.Distance(transform.position, temp) > Vector3.Distance(transform.position, target))
+                    if (a.FogUnit != null)
                     {
-                        target = temp;
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid)
+                {
+                    targets.Add(t);
+                }
+                else
+                {
+                    valid = true;
+                }
+            }
+        }
+
+        //If none, find all tiles where none of it or its neighbours have full health and either they're closer to the tile than they are to the hub or they're closer to the hub than the tile is 
+        if (targets.Count == 0)
+        {
+            foreach (TileData t in tilesInRange)
+            {
+                Vector3 tPos = new Vector3(t.X, 0, t.Z);
+                float selfToHub = Vector3.Distance(sPos, hPos);
+
+                if (t.FogUnit.Health < t.FogUnit.MaxHealth && (Vector3.Distance(sPos, tPos ) < selfToHub || Vector3.Distance(tPos, hPos) > selfToHub))
+                {
+                    foreach (TileData a in t.AdjacentTiles)
+                    {
+                        if (a.FogUnit.Health >= a.FogUnit.MaxHealth)
+                        {
+                            valid = false;
+                            break;
+                        }
+                    }
+
+                    if (valid)
+                    {
+                        targets.Add(t);
+                    }
+                    else
+                    {
+                        valid = true;
                     }
                 }
             }
 
-            //finished = target != initial && Vector3.Distance(transform.position, target) < Vector3.Distance(transform.position, hubPosition);
-        } while (target == initial || Vector3.Distance(transform.position, target) > Vector3.Distance(transform.position, hubPosition));
+            //If none, return start position.
+            if (targets.Count == 0)
+            {
+                finished = true;
+            }
+        }
+
+        //
+        while (!finished)
+        {
+            TileData tile = targets[Random.Range(0, targets.Count)];
+            target = new Vector3(tile.X, 0, tile.Z);
+            //initial = target;
+
+            //foreach (TileData t in tile.AdjacentTiles)
+            //{
+            //    if (t.FogUnit == null)
+            //    {
+            //        Vector3 temp = new Vector3(t.X, 0, t.Z);
+
+            //        if (Vector3.Distance(transform.position, temp) > Vector3.Distance(transform.position, target))
+            //        {
+            //            target = temp;
+            //        }
+            //    }
+            //}
+
+            finished = /*target != initial &&*/ Vector3.Distance(transform.position, target) < Vector3.Distance(transform.position, hPos);
+        } 
 
         return target;
     }
@@ -306,7 +373,7 @@ public class FogSphere : MonoBehaviour
         {
             float temp = Mathf.Lerp(fogUnitMinHealth, fogUnitMaxHealth, moveProgress);
             Debug.Log($"FogSphere.Spill. FogUnit: {f.name}, health: {f.Health}, new health from lerp: {temp}. MinHealth: {fogUnitMinHealth}, MaxHealth: {fogUnitMaxHealth}, MoveProgress: {moveProgress}");
-            f.Health = temp;
+            f.Health = Mathf.Max(temp, f.Health);
             f.RenderColour();
             f.RenderOpacity();
         }

@@ -174,6 +174,7 @@ public abstract class PowerSource : Building
     public void ActivateTiles()
     {
         List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)powerRange);
+
         foreach (TileData tile in tiles)
         {
             tile.PowerUp(this as PowerSource);
