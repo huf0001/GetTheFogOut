@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public enum FogSphereState
@@ -179,6 +180,8 @@ public class FogSphere : MonoBehaviour
     }
 
     //Recurring Methods - Movement and Spill---------------------------------------------------------------------------------------------------------
+
+    Rework the fog sphere so that it rushes at the hub and fills up up to 9 fog units along the way. If it hits the Hub, all its remaining strength goes into damaging it. Maybe rename this to fog mass.
 
     //Lerps height according to health/maxHealth
     public void UpdateHeight()
