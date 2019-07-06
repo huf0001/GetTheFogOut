@@ -527,37 +527,33 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    public bool TileExistsAt(Vector3 pos)
-    {
-        return TileExistsAt(new Vector2(pos.x, pos.z));
-    }
-
     public bool TileExistsAt(Vector2 pos)
     {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.y);
+        return TileExistsAt((int)pos.x, (int)pos.y);
+    }  
 
-        if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
-        {
-            //Debug.Log("Tile (" + x + "," + y + ") doesn't exist. Probably want to double check that it isn't supposed to exist and you haven't fucked up the code somewhere.");
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+    public bool TileExistsAt(Vector3 position)
+    {
+        return TileExistsAt((int)position.x, (int)position.z);
     }
 
-    public TileData GetTileAt(Vector3 pos)
+    public bool TileExistsAt(int x, int y)
     {
-        return GetTileAt(new Vector2(pos.x, pos.z));
+        return x < width && x >= 0 && y < length && y >= 0;
     }
 
-    public TileData GetTileAt(Vector2 pos)
+    public TileData GetTileAt(Vector3 position)
     {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.y);
+        return GetTileAt((int)position.x, (int)position.z);
+    }
 
+    public TileData GetTileAt(Vector2 position)
+    {
+        return GetTileAt((int)position.x, (int)position.y);
+    }
+
+    public TileData GetTileAt(int x, int y)
+    {
         if (x >= width || x < 0 || y >= length || y < 0)    //width by length array, the last value will be at position (width - 1, length - 1) 'cause arrays love 0s.
         {
             Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
@@ -730,10 +726,10 @@ public class WorldController : MonoBehaviour
 
     //private void EnableMeshRendTile(GameObject tile_obj)
     //{
-    //    pos = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
+    //    position = new Vector3(tile_obj.transform.position.x, tile_obj.transform.position.y + 0.1f, tile_obj.transform.position.z);
     //    if (temp == null)
     //    {
-    //        PlaneSpawn = Instantiate(planeGridprefab, pos, tile_obj.transform.rotation);
+    //        PlaneSpawn = Instantiate(planeGridprefab, position, tile_obj.transform.rotation);
     //        temp = tile_obj;
     //    }
     //    else

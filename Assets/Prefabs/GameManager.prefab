@@ -719,6 +719,11 @@ MonoBehaviour:
   difficulty: 1
   expansionDirection: 0
   fogAccelerates: 0
+  fogUnitsGrow: 1
+  fogSpheresGrow: 1
+  minSphereDistanceFromHub: 6
+  minFogSphereRange: 5
+  maxFogSphereRange: 8
   fogGrowth: 10
   fogSpillThreshold: 50
   minHealth: 0.01
@@ -726,9 +731,9 @@ MonoBehaviour:
   fogFillInterval: 0.2
   fogDamageInterval: 0.02
   fogExpansionInterval: 0.5
-  fogSphereInterval: 0.1
+  fogSphereInterval: 0.05
   angry: 0
-  damageOn: 1
+  damageOn: 0
   surroundingHubRange: 9
 --- !u!114 &7305178377255849301
 MonoBehaviour:

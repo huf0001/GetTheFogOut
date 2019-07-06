@@ -405,86 +405,85 @@ public class Fog : MonoBehaviour
             f = fogUnitsInPlay[Random.Range(0, fogUnitsInPlay.Count - 1)];
             TileData t = f.Location;
 
-            if (noSpheresSpawning.Contains(t))
+            if (!noSpheresSpawning.Contains(t))
             {
-                continue;
-            }
+                bool valid = true;
 
-            bool valid = true;
-
-            foreach (TileData a in t.AdjacentTiles)
-            {
-                if (t.FogUnit == null)
+                foreach (TileData a in t.AdjacentTiles)
                 {
-                    valid = false;
-                    break;
-                }
-            }
-
-            if (valid)
-            {
-                int i = (int)Mathf.Max(t.X - maxFogSphereRange, 0);
-                int j = (int)Mathf.Max(t.Z - maxFogSphereRange, 0);
-                float iMax = Mathf.Min(xMax, t.X + maxFogSphereRange);
-                float jMax = Mathf.Min(xMax, t.Z + maxFogSphereRange);
-
-                int iMinLeft = (int)Mathf.Max(t.X - minFogSphereRange, 0);
-                int jMinLeft = (int)Mathf.Max(t.Z - minFogSphereRange, 0);
-                float iMinRight = Mathf.Min(xMax, t.X + minFogSphereRange);
-                float jMinRight = Mathf.Min(xMax, t.Z + minFogSphereRange);
-
-                //Foreach tile that exists in a unitTileProximityRange * unitTileProximityRange grid
-                while (i < iMax && !finished)
-                {
-                    while (j < jMax && !finished)
+                    if (t.FogUnit == null)
                     {
-                        //If it's not too close to the prospective tile for the fog sphere
-                        if (i < iMinLeft || i > iMinRight || j < jMinLeft || j > jMinRight)
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid)
+                {
+                    int i = (int)Mathf.Max(t.X - maxFogSphereRange, 0);
+                    int j = (int)Mathf.Max(t.Z - maxFogSphereRange, 0);
+                    float iMax = Mathf.Min(xMax, t.X + maxFogSphereRange);
+                    float jMax = Mathf.Min(xMax, t.Z + maxFogSphereRange);
+
+                    int iMinLeft = (int)Mathf.Max(t.X - minFogSphereRange, 0);
+                    int jMinLeft = (int)Mathf.Max(t.Z - minFogSphereRange, 0);
+                    float iMinRight = Mathf.Min(xMax, t.X + minFogSphereRange);
+                    float jMinRight = Mathf.Min(xMax, t.Z + minFogSphereRange);
+                    
+                    //Foreach tile that exists in a unitTileProximityRange * unitTileProximityRange grid
+                    while (i < iMax && !finished)
+                    {
+                        while (j < jMax && !finished)
                         {
-                            Vector2 p = new Vector2(i, j);
-
-                            if (wc.TileExistsAt(p))
+                            //If it's not too close to the prospective tile for the fog sphere
+                            if (i < iMinLeft || i > iMinRight || j < jMinLeft || j > jMinRight)
                             {
-                                TileData n = wc.GetTileAt(p);
+                                Vector2 p = new Vector2(i, j);
 
-                                //If it and all its neighbours and neighbour's neighbours have no fog, then there will probably be a valid target for the FogSphere to pursue.
-                                if (n.FogUnit == null)
+                                if (wc.TileExistsAt(p))
                                 {
-                                    valid = true;
+                                    TileData n = wc.GetTileAt(p);
 
-                                    foreach (TileData a in n.AdjacentTiles)
+                                    //If it and all its neighbours and neighbour's neighbours have no fog, then there will probably be a valid target for the FogSphere to pursue.
+                                    if (n.FogUnit == null)
                                     {
-                                        if (a.FogUnit != null)
+                                        //finished = true;
+                                        valid = true;
+
+                                        foreach (TileData a in n.AdjacentTiles)
                                         {
-                                            foreach (TileData b in a.AdjacentTiles)
+                                            if (a.FogUnit != null)
                                             {
-                                                if (b.FogUnit != null)
+                                                foreach (TileData b in a.AdjacentTiles)
                                                 {
-                                                    valid = false;
-                                                    break;
+                                                    if (b.FogUnit != null)
+                                                    {
+                                                        valid = false;
+                                                        break;
+                                                    }
                                                 }
+                                            }
+
+                                            if (!valid)
+                                            {
+                                                break;
                                             }
                                         }
 
-                                        if (!valid)
+                                        if (valid)
                                         {
-                                            break;
+                                            finished = true;
+                                            s.TilesInRange = t.CollectTilesInRange(t.X, t.Z, (int)maxFogSphereRange);
                                         }
-                                    }
-
-                                    if (valid)
-                                    {
-                                        finished = true;
-                                        s.TilesInRange = t.CollectTilesInRange(t.X, t.Z, (int)maxFogSphereRange);
                                     }
                                 }
                             }
+
+                            j++;
                         }
 
-                        j++;
+                        i++;
                     }
-
-                    i++;
                 }
             }
         } while (!finished);
@@ -492,100 +491,100 @@ public class Fog : MonoBehaviour
         return f.transform.position;
     }
 
-    private Vector3 IterateIntoFog()
-    {
-        //Iterates from a fog unit into the fog a bit
-        bool finished = false;
-        FogUnit f = null;
-        Vector3 posFirst;
-        Vector3 posCurrent;
-        List<TileData> adjacentTiles;
+    //private Vector3 IterateIntoFog()
+    //{
+    //    //Iterates from a fog unit into the fog a bit
+    //    bool finished = false;
+    //    FogUnit f;
+    //    Vector3 posFirst;
+    //    Vector3 posCurrent;
+    //    List<TileData> adjacentTiles;
 
-        int highestCount = 0;
-        int newCount;
-        int distanceCount = 0;
+    //    int highestCount = 0;
+    //    int newCount;
+    //    int distanceCount = 0;
 
-        //Find a fog unit where not all adjacent tiles have fog units, and it is far enough away from the hub.
-        do
-        {
-            f = fogUnitsInPlay[Random.Range(0, fogUnitsInPlay.Count - 1)];
+    //    //Find a fog unit where not all adjacent tiles have fog units, and it is far enough away from the hub.
+    //    do
+    //    {
+    //        f = fogUnitsInPlay[Random.Range(0, fogUnitsInPlay.Count - 1)];
             
-            if (noSpheresSpawning.Contains(f.Location))
-            {
-                continue;
-            }
+    //        if (noSpheresSpawning.Contains(f.Location))
+    //        {
+    //            continue;
+    //        }
 
-            //Debug.Log($"Selected {f.name}");
+    //        //Debug.Log($"Selected {f.name}");
 
-            foreach (TileData t in f.Location.AdjacentTiles)
-            {
-                if (t.FogUnit == null)
-                {
-                    //Debug.Log($"{t.Name} does not have a fog unit. Breaking foreach loop.");
-                    finished = true;
-                    break;
-                }
-                //else
-                //{
-                //    Debug.Log($"{t.Name} has a fog unit.");
-                //}
-            }
-        } while (!finished);
+    //        foreach (TileData t in f.Location.AdjacentTiles)
+    //        {
+    //            if (t.FogUnit == null)
+    //            {
+    //                //Debug.Log($"{t.Name} does not have a fog unit. Breaking foreach loop.");
+    //                finished = true;
+    //                break;
+    //            }
+    //            //else
+    //            //{
+    //            //    Debug.Log($"{t.Name} has a fog unit.");
+    //            //}
+    //        }
+    //    } while (!finished);
 
-        //Get selected unit's position
-        posCurrent = f.transform.position;
-        posFirst = posCurrent;
+    //    //Get selected unit's position
+    //    posCurrent = f.transform.position;
+    //    posFirst = posCurrent;
 
-        //Get it's number of adjacent fog units
-        adjacentTiles = f.Location.AdjacentTiles;
+    //    //Get it's number of adjacent fog units
+    //    adjacentTiles = f.Location.AdjacentTiles;
 
-        foreach (TileData t in adjacentTiles)
-        {
-            if (t.FogUnit != null)
-            {
-                highestCount++;
-            }
-        }
+    //    foreach (TileData t in adjacentTiles)
+    //    {
+    //        if (t.FogUnit != null)
+    //        {
+    //            highestCount++;
+    //        }
+    //    }
 
-        //If possible, select a fog unit with more neighbouring tiles with fog units on them
-        do
-        {
-            //Debug.Log($"Iterating closer from {f.name}");
-            finished = true;
+    //    //If possible, select a fog unit with more neighbouring tiles with fog units on them
+    //    do
+    //    {
+    //        //Debug.Log($"Iterating closer from {f.name}");
+    //        finished = true;
 
-            //For each adjacent tile
-            foreach (TileData t in adjacentTiles)
-            {
-                //Check how many of it's adjacent tiles have fog units
-                newCount = 0;
+    //        //For each adjacent tile
+    //        foreach (TileData t in adjacentTiles)
+    //        {
+    //            //Check how many of it's adjacent tiles have fog units
+    //            newCount = 0;
 
-                foreach (TileData ta in t.AdjacentTiles)
-                {
-                    if (t.FogUnit != null)
-                    {
-                        newCount++;
-                    }
-                }
+    //            foreach (TileData ta in t.AdjacentTiles)
+    //            {
+    //                if (ta.FogUnit != null)
+    //                {
+    //                    newCount++;
+    //                }
+    //            }
 
-                //If better than the current fog unit, keep it
-                if (newCount > highestCount || (newCount == highestCount && distanceCount < 3 && Vector3.Distance(posFirst, t.FogUnit.transform.position) > Vector3.Distance(posCurrent, posFirst)))
-                {
-                    if (newCount == highestCount)
-                    {
-                        distanceCount++;
-                    }
+    //            //If better than the current fog unit, keep it
+    //            if (newCount > highestCount || (newCount == highestCount && distanceCount < 3 && Vector3.Distance(posFirst, t.FogUnit.transform.position) > Vector3.Distance(posCurrent, posFirst)))
+    //            {
+    //                if (newCount == highestCount)
+    //                {
+    //                    distanceCount++;
+    //                }
 
-                    f = t.FogUnit;
-                    posCurrent = f.transform.position;
-                    adjacentTiles = t.AdjacentTiles;
-                    highestCount = newCount;
-                    finished = false;
-                }
-            }
-        } while (!finished);
+    //                f = t.FogUnit;
+    //                posCurrent = f.transform.position;
+    //                adjacentTiles = t.AdjacentTiles;
+    //                highestCount = newCount;
+    //                finished = false;
+    //            }
+    //        }
+    //    } while (!finished);
 
-        return f.transform.position; ;
-    }
+    //    return f.transform.position; ;
+    //}
 
     //Invokes the ActivateFog method according to the parameter passed to it.
     public void InvokeActivateFog(int delay)
@@ -812,7 +811,7 @@ public class Fog : MonoBehaviour
     //Puts the fog unit in the list of fog units to be put back in the pool
     public void QueueFogUnitForPooling(FogUnit f)
     {
-        Debug.Log("Returning sphere to fog pool");
+        //Debug.Log("Returning sphere to fog pool");
         fogUnitsToReturnToPool.Add(f);
     }
 
@@ -856,7 +855,7 @@ public class Fog : MonoBehaviour
     //Puts the fog sphere in the list of fog spheres to be put back in the pool
     public void QueueFogSphereForPooling(FogSphere f)
     {
-        Debug.Log("Returning sphere to fog pool");
+        //Debug.Log("Returning sphere to fog pool");
         fogSpheresToReturnToPool.Add(f);
     }
 

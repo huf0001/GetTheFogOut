@@ -181,7 +181,7 @@ public class FogSphere : MonoBehaviour
 
     //Recurring Methods - Movement and Spill---------------------------------------------------------------------------------------------------------
 
-    Rework the fog sphere so that it rushes at the hub and fills up up to 9 fog units along the way. If it hits the Hub, all its remaining strength goes into damaging it. Maybe rename this to fog mass.
+    //Rework the fog sphere so that it rushes at the hub and fills up up to 9 fog units along the way. If it hits the Hub, all its remaining strength goes into damaging it. Maybe rename this to fog mass
 
     //Lerps height according to health/maxHealth
     public void UpdateHeight()
@@ -252,7 +252,7 @@ public class FogSphere : MonoBehaviour
             }
         }
 
-        //If none, find all tiles where none of it or its neighbours have full health and either they're closer to the tile than they are to the hub or they're closer to the hub than the tile is 
+        //If none, find all tiles where none of it or its neighbours have fog units with full health, and either they're closer to the tile than they are to the hub or they're closer to the hub than the tile is 
         if (targets.Count == 0)
         {
             foreach (TileData t in tilesInRange)
@@ -260,11 +260,11 @@ public class FogSphere : MonoBehaviour
                 Vector3 tPos = new Vector3(t.X, 0, t.Z);
                 float selfToHub = Vector3.Distance(sPos, hPos);
 
-                if (t.FogUnit.Health < t.FogUnit.MaxHealth && (Vector3.Distance(sPos, tPos ) < selfToHub || Vector3.Distance(tPos, hPos) > selfToHub))
+                if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth) && (Vector3.Distance(sPos, tPos) < selfToHub || Vector3.Distance(tPos, hPos) > selfToHub))
                 {
                     foreach (TileData a in t.AdjacentTiles)
                     {
-                        if (a.FogUnit.Health >= a.FogUnit.MaxHealth)
+                        if (a.FogUnit != null && a.FogUnit.Health >= a.FogUnit.MaxHealth)
                         {
                             valid = false;
                             break;
@@ -289,7 +289,6 @@ public class FogSphere : MonoBehaviour
             }
         }
 
-        //
         while (!finished)
         {
             TileData tile = targets[Random.Range(0, targets.Count)];
@@ -310,9 +309,10 @@ public class FogSphere : MonoBehaviour
             //}
 
             finished = /*target != initial &&*/ Vector3.Distance(transform.position, target) < Vector3.Distance(transform.position, hPos);
-        } 
+        }
 
         return target;
+        //return hPos;
     }
 
     //Change so it moves in a vertical quarter circle from the base of the circle to one side.
@@ -360,7 +360,7 @@ public class FogSphere : MonoBehaviour
                     a.FogUnit.FillingFromFogSphere = true;
                 }
 
-                Debug.Log($"Final count for spiltFog should be {spiltFog.Count}");
+                //Debug.Log($"Final count for spiltFog should be {spiltFog.Count}");
             }
         }
     }
@@ -368,15 +368,14 @@ public class FogSphere : MonoBehaviour
     public void Spill(float increment)
     {
         moveProgress += increment;
-        Debug.Log($"Spill, moveProgress is {moveProgress}, spiltFog.Count is {spiltFog.Count}");
-
+        //Debug.Log($"Spill, moveProgress is {moveProgress}, spiltFog.Count is {spiltFog.Count}");
         transform.position = Vector3.Lerp(attackTarget, spillTarget, moveProgress);
 
         foreach (FogUnit f in spiltFog)
         {
-            float temp = Mathf.Lerp(fogUnitMinHealth, fogUnitMaxHealth, moveProgress);
-            Debug.Log($"FogSphere.Spill. FogUnit: {f.name}, health: {f.Health}, new health from lerp: {temp}. MinHealth: {fogUnitMinHealth}, MaxHealth: {fogUnitMaxHealth}, MoveProgress: {moveProgress}");
-            f.Health = Mathf.Max(temp, f.Health);
+            //float temp = Mathf.Lerp(fogUnitMinHealth, fogUnitMaxHealth, moveProgress);
+            //Debug.Log($"FogSphere.Spill. FogUnit: {f.name}, health: {f.Health}, new health from lerp: {temp}. MinHealth: {fogUnitMinHealth}, MaxHealth: {fogUnitMaxHealth}, MoveProgress: {moveProgress}");
+            f.Health = Mathf.Max(f.Health, Mathf.Lerp(fogUnitMinHealth, fogUnitMaxHealth, moveProgress));
             f.RenderColour();
             f.RenderOpacity();
         }
