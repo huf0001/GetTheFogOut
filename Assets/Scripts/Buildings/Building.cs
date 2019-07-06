@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public abstract class Building : PlaneObject
+public abstract class Building : Entity
 {
     //Serialized fields
     [SerializeField] protected float visibilityRange;
@@ -30,6 +30,7 @@ public abstract class Building : PlaneObject
     private bool damagingNotified = false;
     private bool damagedNotified = false;
     private float buildHealth;
+    private float regenWait;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -95,6 +96,24 @@ public abstract class Building : PlaneObject
         {
             UpdateHealthBar();
         }
+
+        if (!TakingDamage && health < maxHealth)
+        {
+            if (regenWait <= 0)
+            {
+                InvokeRepeating("RepairBuilding", 5, 5f);
+            }
+            else
+            {
+                regenWait -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            regenWait = 5;
+            CancelInvoke("RepairBuilding");
+        }
+
         if (GotNoHealth())
         {
             //Debug.Log(buildingType + " is being dismantled. Called from Building.Update() using Entity.GotNoHealth()");
@@ -122,8 +141,15 @@ public abstract class Building : PlaneObject
 
             healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
             healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
-            healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
-            healthBarCanvas.Rotate(0, 135, 0);
+            if (buildingType != BuildingType.Hub)
+            {
+                healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
+                healthBarCanvas.Rotate(0, 135, 0);
+            }
+            else
+            {
+                healthBarCanvas.LookAt(Camera.main.transform);
+            }
         }
         else
         {
@@ -134,23 +160,13 @@ public abstract class Building : PlaneObject
         }
     }
 
-    private void ReparingBuilding()
+    private void RepairBuilding()
     {
-        float waitingtime = 5f;
-        bool isfull = false;
-        if (!isfull)
+        health += 2f;
+        if (health >= MaxHealth)
         {
-            if (Time.time > waitingtime)
-            {
-                health += 2f;
-                if (health >= MaxHealth)
-                {
-                    health = MaxHealth;
-                    isfull = true;
-                }
-            }
+            health = MaxHealth;
         }
-
     }
 
     private void CheckStillDamaging()
@@ -163,14 +179,6 @@ public abstract class Building : PlaneObject
                 damagingNotified = false;
             }
             buildHealth = Health;
-        }
-        else
-        {
-            if (buildHealth < maxHealth)
-            {
-                //Debug.Log(this.name + health);
-                ReparingBuilding();
-            }
         }
     }
 

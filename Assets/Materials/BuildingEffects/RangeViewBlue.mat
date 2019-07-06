@@ -8,9 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RangeViewBlue
-  m_Shader: {fileID: 4800000, guid: ce2b398cf2b702d4f8c25f2bc0e5df84, type: 3}
+  m_Shader: {fileID: 4800000, guid: d4229cebb51478044b43e499d6d6e3d1, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -29,6 +29,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 3ccd458bf31480649ad421f187cfd4ef, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_33E72BD5: 5
     - Vector1_33FD5A4E: 1
@@ -39,10 +43,16 @@ Material:
     - Vector1_B620CE04: 0.37
     - Vector1_D8BE04E0: 15
     - Vector1_EFC174AB: 100
+    - _IntersectIntensity: 1.5
+    - _NoiseSpeed: 0.01
+    - __dirty: 0
     m_Colors:
     - Color_523F26E1: {r: 0, g: 23.968628, b: 0, a: 0}
     - Color_8C846246: {r: 0, g: 3.780392, b: 3.858824, a: 0}
     - Color_B8A98B56: {r: 0, g: 2.307616, b: 22.037733, a: 0}
     - Vector2_9446B769: {r: 3, g: 0, b: 0, a: 0}
     - Vector2_96DEEA84: {r: 1, g: 0, b: 0, a: 0}
+    - _EdgeColour: {r: 0, g: 2.509804, b: 23.968628, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _NoiseScale: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _NoiseSpeed: {r: 0, g: 0.03, b: 0, a: 0}

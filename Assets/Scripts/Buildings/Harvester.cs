@@ -5,6 +5,7 @@ using UnityEngine;
 public class Harvester : Building
 {
     [SerializeField] private int harvestAmt = +5;
+    [SerializeField] private Canvas noMineralCanvas;
 
     public int HarvestAmt { get => harvestAmt; }
 
@@ -18,6 +19,16 @@ public class Harvester : Building
     protected override void Update()
     {
         base.Update();
+
+        if (!location.Resource)
+        {
+            noMineralCanvas.transform.LookAt(Camera.main.transform);
+        }
+    }
+
+    public void TurnOnMineralIndicator()
+    {
+        noMineralCanvas.gameObject.SetActive(true);
     }
 
     //public override void PowerUp()

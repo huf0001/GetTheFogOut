@@ -91,7 +91,7 @@ public class CameraController : MonoBehaviour
             //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
 
             zoom.m_Width -= Input.GetAxis("Zoom") * zoomMulti;
-            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 10);
+            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
         }
 
         if (hasChanged)
