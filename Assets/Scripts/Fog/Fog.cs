@@ -79,8 +79,6 @@ public class Fog : MonoBehaviour
     private List<TileData>  noSpheresSpawning;
 
     private List<FogUnit>   fogUnitsInPlay = new List<FogUnit>();                   //i.e. currently active fog units on the board
-    //private List<FogUnit>   fogUnitsTakingDamage = new List<FogUnit>();             //i.e. currently active fog units on the board
-    //private List<FogUnit>   fogUnitsFinishedTakingDamage = new List<FogUnit>();     //i.e. currently active fog units on the board
     private List<FogUnit>   fogUnitsToReturnToPool = new List<FogUnit>();           //i.e. currently waiting to be re-pooled
     private List<FogUnit>   fogUnitsInPool = new List<FogUnit>();                   //i.e. currently inactive fog units waiting for spawning
 
@@ -91,15 +89,10 @@ public class Fog : MonoBehaviour
     //Public Properties
     public static Fog            Instance { get; protected set; }
     public bool                  DamageOn { get => damageOn; set => damageOn = value; }
-    //public bool                  FogAccelerates { get => fogAccelerates; set => fogAccelerates = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public List<TileData>        FogFreeTiles { get => fogFreeTiles; }
     public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
-    //public List<FogUnit>         FogUnitsTakingDamage { get => fogUnitsTakingDamage; }
-    //public List<FogUnit>         FogUnitsFinishedTakingDamage { get => fogUnitsFinishedTakingDamage; }
     public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
-    //public float                 MaxHealth { get => maxHealth; set => maxHealth = value; }
-    //public float                 MinHealth { get => minHealth; set => minHealth = value; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -304,18 +297,6 @@ public class Fog : MonoBehaviour
         SpawnFogUnit(t.X, t.Z, minHealth);
     }
 
-    ////Take a fog unit and puts it on the board with minimum health
-    //private void SpawnFogUnitWithMinHealth(int x, int z)
-    //{
-    //    SpawnFogUnit(x, z, minHealth);
-    //}
-
-    ////Take a fog unit and puts it on the board with maximum health
-    //private void SpawnFogUnitWithMaxHealth(int x, int z)
-    //{
-    //    SpawnFogUnit(x, z, maxHealth);
-    //}
-
     //Takes a fog unit and puts it on the board
     private void SpawnFogUnit(int x, int z, float health)
     {
@@ -377,7 +358,6 @@ public class Fog : MonoBehaviour
     {
         GameObject fGO = GetFogSphere().gameObject;
         FogSphere f = fGO.GetComponent<FogSphere>();
-        //fGO.transform.SetPositionAndRotation(pos, rot);
         fGO.name = "FogSphereInPlay";
         fGO.transform.position = GetFogSpherePosition(f);
         f.FogRenderer.material = visibleMaterial;
@@ -452,7 +432,6 @@ public class Fog : MonoBehaviour
                                 //If it and all its neighbours and neighbour's neighbours have no fog, then there will probably be a valid target for the FogSphere to pursue.
                                 if (n.FogUnit == null)
                                 {
-                                    //finished = true;
                                     valid = true;
 
                                     foreach (TileData a in n.AdjacentTiles)
@@ -612,7 +591,7 @@ public class Fog : MonoBehaviour
     {
         List<FogUnit> toRender = new List<FogUnit>();
 
-        foreach (FogUnit f in fogUnitsInPlay)   //fogUnitsTakingDamage)
+        foreach (FogUnit f in fogUnitsInPlay)
         {
             if (f.TakingDamage)
             {
@@ -621,19 +600,11 @@ public class Fog : MonoBehaviour
             }
         }
 
-        //foreach (FogUnit f in fogUnitsFinishedTakingDamage)
-        //{
-        //    fogUnitsTakingDamage.Remove(f);
-        //}
-
-        //fogUnitsFinishedTakingDamage = new List<FogUnit>();
-
         if (fogUnitsToReturnToPool.Count > 0)
         {
             foreach (FogUnit f in fogUnitsToReturnToPool)
             {
                 toRender.Remove(f);
-                //fogUnitsTakingDamage.Remove(f);
                 ReturnFogUnitToPool(f);
             }
 
@@ -751,7 +722,7 @@ public class Fog : MonoBehaviour
         {
             foreach (TileData n in newTiles)
             {
-                SpawnFogUnit(n.X, n.Z, minHealth);        //SpawnFogUnit adds the tile spawned on to the list fogTiles
+                SpawnFogUnit(n.X, n.Z, minHealth);
             }
         }
     }
@@ -820,7 +791,6 @@ public class Fog : MonoBehaviour
     //Puts the fog unit in the list of fog units to be put back in the pool
     public void QueueFogUnitForPooling(FogUnit f)
     {
-        //Debug.Log("Returning sphere to fog pool");
         fogUnitsToReturnToPool.Add(f);
     }
 
@@ -865,7 +835,6 @@ public class Fog : MonoBehaviour
     //Puts the fog sphere in the list of fog spheres to be put back in the pool
     public void QueueFogSphereForPooling(FogSphere f)
     {
-        //Debug.Log("Returning sphere to fog pool");
         fogSpheresToReturnToPool.Add(f);
     }
 

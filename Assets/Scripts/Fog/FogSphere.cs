@@ -19,10 +19,6 @@ public class FogSphere : MonoBehaviour
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
-    //[SerializeField] private float damage = 0.1f;
-    //[SerializeField] private float lerpToMaxInterval;
-    //[SerializeField] private float damage = 0.1f;
-
     [Header("Fog Sphere State")]
     [SerializeField] private FogSphereState state;
 
@@ -44,9 +40,6 @@ public class FogSphere : MonoBehaviour
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
-
-    //[Header("Movement")]
-    //[SerializeField] private float heightIncrement;
 
     //Non-Serialized Fields
     private Fog fog;
@@ -70,10 +63,6 @@ public class FogSphere : MonoBehaviour
     private Vector3 attackTarget;
     private Vector3 spillTarget;
     private float moveProgress = 0;
-    //private Vector3 reflectStartPosition;
-    //private Vector3 reflectThrowTarget;
-    //private Vector3 reflectAttackTarget;
-    //private float heightProgress = 0;
 
     private List<FogUnit> spiltFog = new List<FogUnit>();
     private float fogUnitMinHealth;
@@ -81,45 +70,16 @@ public class FogSphere : MonoBehaviour
 
     private List<TileData> tilesInRange = new List<TileData>();
 
-    //private bool spill = false;
-    //private bool neighboursFull = false;
-
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Properties
     public Fog Fog { get => fog; set => fog = value; }
-    //public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
-    //public bool Spill { get => spill; set => spill = value; }
     public bool Angry { get => angry; set => angry = value; }
     public Renderer FogRenderer {  get => fogRenderer; }
     public float FogUnitMaxHealth {  get => fogUnitMaxHealth; set => fogUnitMaxHealth = value; }
     public float FogUnitMinHealth {  get => fogUnitMinHealth; set => fogUnitMinHealth = value; }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
-
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
-    //{
-    //    get
-    //    {
-    //        Debug.Log($"FogSphere.SpiltFog.get accessed externally. SpiltFog.Count is {spiltFog.Count}");
-    //        return spiltFog; 
-    //    }
-
-    //    set
-    //    {
-    //        Debug.Log($"FogSphere.SpiltFog.set accessed externally. SpiltFog.Count is {spiltFog.Count}.");
-    //        if (value == null)
-    //        { 
-    //            Debug.Log("Value is null.");
-    //        }
-    //        else
-    //        {
-    //            Debug.Log($"value.Count is {value.Count}");
-    //        }
-
-    //        spiltFog = value;
-    //    }
-    //}
-
     public FogSphereState State { get => state; set => state = value; }
     public List<TileData> TilesInRange { get => tilesInRange; set => tilesInRange = value; }
 
@@ -180,9 +140,7 @@ public class FogSphere : MonoBehaviour
     }
 
     //Recurring Methods - Movement and Spill---------------------------------------------------------------------------------------------------------
-
-    //Rework the fog sphere so that it rushes at the hub and fills up up to 9 fog units along the way. If it hits the Hub, all its remaining strength goes into damaging it. Maybe rename this to fog mass
-
+    
     //Lerps height according to health/maxHealth
     public void UpdateHeight()
     {
@@ -204,21 +162,12 @@ public class FogSphere : MonoBehaviour
         spillTarget = attackTarget;
         spillTarget.y = minHeight;
 
-        //Negative y targets
-        //reflectStartPosition = startPosition;
-        //reflectStartPosition.y *= -1;
-        //reflectThrowTarget = throwTarget;
-        //reflectThrowTarget.y *= -1;
-        //reflectAttackTarget = attackTarget;
-        //reflectAttackTarget.y *= -1;
-
         state = FogSphereState.Throwing;
     }
 
     //Calculates the target of the fog sphere
     private Vector3 CalculateTarget()
     {
-        //Vector3 initial = startPosition;
         Vector3 target = startPosition;     //set to startPosition initially in case there are no valid targets; otherwise the code complains it could be unassigned when it is returned.
         bool finished = false;
         bool valid = true;
@@ -293,26 +242,11 @@ public class FogSphere : MonoBehaviour
         {
             TileData tile = targets[Random.Range(0, targets.Count)];
             target = new Vector3(tile.X, 0, tile.Z);
-            //initial = target;
 
-            //foreach (TileData t in tile.AdjacentTiles)
-            //{
-            //    if (t.FogUnit == null)
-            //    {
-            //        Vector3 temp = new Vector3(t.X, 0, t.Z);
-
-            //        if (Vector3.Distance(transform.position, temp) > Vector3.Distance(transform.position, target))
-            //        {
-            //            target = temp;
-            //        }
-            //    }
-            //}
-
-            finished = /*target != initial &&*/ Vector3.Distance(transform.position, target) < Vector3.Distance(transform.position, hPos);
+            finished = Vector3.Distance(transform.position, target) < Vector3.Distance(transform.position, hPos);
         }
 
         return target;
-        //return hPos;
     }
 
     //Change so it moves in a vertical quarter circle from the base of the circle to one side.
@@ -359,8 +293,6 @@ public class FogSphere : MonoBehaviour
                     spiltFog.Add(a.FogUnit);
                     a.FogUnit.FillingFromFogSphere = true;
                 }
-
-                //Debug.Log($"Final count for spiltFog should be {spiltFog.Count}");
             }
         }
     }
@@ -368,13 +300,10 @@ public class FogSphere : MonoBehaviour
     public void Spill(float increment)
     {
         moveProgress += increment;
-        //Debug.Log($"Spill, moveProgress is {moveProgress}, spiltFog.Count is {spiltFog.Count}");
         transform.position = Vector3.Lerp(attackTarget, spillTarget, moveProgress);
 
         foreach (FogUnit f in spiltFog)
         {
-            //float temp = Mathf.Lerp(fogUnitMinHealth, fogUnitMaxHealth, moveProgress);
-            //Debug.Log($"FogSphere.Spill. FogUnit: {f.name}, health: {f.Health}, new health from lerp: {temp}. MinHealth: {fogUnitMinHealth}, MaxHealth: {fogUnitMaxHealth}, MoveProgress: {moveProgress}");
             f.Health = Mathf.Max(f.Health, Mathf.Lerp(fogUnitMinHealth, fogUnitMaxHealth, moveProgress));
             f.RenderColour();
             f.RenderOpacity();

@@ -5,8 +5,6 @@ using UnityEngine;
 public class FogUnit : Entity
 {
     //Serialized Fields
-    //[SerializeField] private float lerpToMaxInterval;
-
     [Header("Opacity")]
     [SerializeField] private float startOpacity = 0f;
     [SerializeField] private float endOpacity = 0.90f;
@@ -63,21 +61,11 @@ public class FogUnit : Entity
     {
         get
         {
-            //if (fillingFromFogSphere)
-            //{
-            //    Debug.Log($"{name}.Health.get accessed while filling from fog sphere.");
-            //}
-
             return base.Health;
         }
 
         set
         {
-            //if (fillingFromFogSphere)
-            //{
-            //    Debug.Log($"{name}.Health.set accessed while filling from fog sphere.");
-            //}
-
             if (!takingDamage)
             {
                 base.Health = value;
@@ -144,8 +132,6 @@ public class FogUnit : Entity
         if (!fillingFromFogSphere)
         {
             takingDamage = true;
-            //fog.FogUnitsTakingDamage.Add(this);
-
             startHealth = base.Health;
             targetHealth -= damage;
             healthProgress = 0;
@@ -174,11 +160,6 @@ public class FogUnit : Entity
         {
             base.Health = targetHealth;
             takingDamage = false;
-
-            //if (base.Health > 0)
-            //{
-            //    fog.FogUnitsFinishedTakingDamage.Add(this);
-            //}
         }
         else
         {
