@@ -563,7 +563,7 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: "Now that you know how to use these buildings, I would suggest trying
         to find your ship\u2019s thruster. "
-  skipTutorial: 0
+  skipTutorial: 1
   airCannonLandmark: {fileID: 0}
   batteryLandmark: {fileID: 0}
   generatorLandmark: {fileID: 0}
@@ -575,8 +575,6 @@ MonoBehaviour:
   aKey: {fileID: 0}
   sKey: {fileID: 0}
   dKey: {fileID: 0}
-  qKey: {fileID: 0}
-  eKey: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
   powerGainGoal: 15
@@ -706,31 +704,37 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899903245264256479}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d37a928823b9f6a48814cc817e7d13c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectDifficulty: 0
-  lerpStartingFog: 1
+  fogSpherePrefab: {fileID: 9126576650219075606, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+    type: 3}
   fogUnitPrefab: {fileID: 2516856455530505698, guid: 81ce07d50c91d3843b2866edb20d15f5,
     type: 3}
-  configuration: 5
-  expansionDirection: 0
-  fogAccelerates: 0
-  fogGrowth: 10
-  fogMaxHealth: 100
-  fogSpillThreshold: 50
-  damageOn: 1
-  surroundingHubRange: 9
   visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
-  fogLerpInInterval: 0.02
-  fogLerpInIncrement: 1
+  configuration: 5
+  difficulty: 1
+  expansionDirection: 0
+  fogAccelerates: 0
+  fogUnitsGrow: 1
+  fogSpheresGrow: 1
+  minSphereDistanceFromHub: 6
+  minFogSphereRange: 5
+  maxFogSphereRange: 8
+  fogGrowth: 10
+  fogSpillThreshold: 50
+  minHealth: 0.01
+  maxHealth: 100
   fogFillInterval: 0.2
   fogDamageInterval: 0.02
   fogExpansionInterval: 0.5
+  fogSphereInterval: 0.05
   angry: 0
+  damageOn: 1
+  surroundingHubRange: 9
 --- !u!114 &7305178377255849301
 MonoBehaviour:
   m_ObjectHideFlags: 0

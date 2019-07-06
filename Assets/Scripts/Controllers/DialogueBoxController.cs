@@ -43,9 +43,11 @@ public class DialogueBoxController : MonoBehaviour
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
+    [Header("Objective Window")]
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveWindowOpenArrows;
 
+    [Header("Dialogue")]
     [SerializeField] protected DialogueBox aiText;
     [SerializeField] private List<DialogueSet> dialogue;
 

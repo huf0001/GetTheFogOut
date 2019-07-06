@@ -476,39 +476,34 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    public bool TileExistsAt(Vector3 pos)
+    public bool TileExistsAt(Vector2 position)
     {
-        return TileExistsAt(new Vector2(pos.x, pos.z));
+        return TileExistsAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
     }
 
-    public bool TileExistsAt(Vector2 pos)
+    public bool TileExistsAt(Vector3 position)
     {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.y);
-
-        return !(x >= width || x < 0 || y >= length || y < 0);
-
-        //if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
-        //{
-        //    return false;
-        //}
-        //else
-        //{
-        //    return true;
-        //}
+        return TileExistsAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
     }
 
-    public TileData GetTileAt(Vector3 pos)
+    public bool TileExistsAt(int x, int y)
     {
-        return GetTileAt(new Vector2(pos.x, pos.z));
+        return x < width && x >= 0 && y < length && y >= 0;
     }
 
-    public TileData GetTileAt(Vector2 pos)
+    public TileData GetTileAt(Vector2 position)
     {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.y);
+        return GetTileAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
+    }
 
-        if (x >= width || x < 0 || y >= length || y < 0)    //width by length array, the last value will be at position (width - 1, length - 1) 'cause arrays love 0s.
+    public TileData GetTileAt(Vector3 position)
+    {
+        return GetTileAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
+    }
+
+    public TileData GetTileAt(int x, int y)
+    {
+        if (x >= width || x < 0 || y >= length || y < 0)
         {
             return null;
         }
@@ -627,3 +622,4 @@ public class WorldController : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 }
+

@@ -377,6 +377,75 @@ Transform:
   m_Father: {fileID: 1338089004}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &243872696
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3064332006142968861, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_Name
+      value: FogSphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 31.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 23.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064332006142968858, guid: 37e1117ea4b07ab45a44109c6eb596b6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 37e1117ea4b07ab45a44109c6eb596b6, type: 3}
 --- !u!114 &245833255 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
@@ -5642,21 +5711,6 @@ PrefabInstance:
       propertyPath: dKey
       value: 
       objectReference: {fileID: 326070630}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: qKey
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: eKey
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256477, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: warningScript
@@ -5726,36 +5780,6 @@ PrefabInstance:
         type: 3}
       propertyPath: maxMineral
       value: 9999
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: selectDifficulty
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: fogGrowth
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: fogDamage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: configuration
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: lerpStartingFog
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 364191101844308908, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: selectDifficulty
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}

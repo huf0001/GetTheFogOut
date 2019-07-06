@@ -11,7 +11,7 @@ public enum ShipComponentsEnum
 
 public class ShipComponent : Entity
 {
-    [SerializeField] private WorldController controller;
+    [Header("Component ID")]
     [SerializeField] private ShipComponentsEnum id;
 
     public ShipComponentsEnum Id { get => id; set => id = value; }
@@ -19,7 +19,7 @@ public class ShipComponent : Entity
     // Start is called before the first frame update
     void Start()
     {
-        controller = WorldController.Instance;
+        
     }
 
     // Update is called once per frame
@@ -48,7 +48,7 @@ public class ShipComponent : Entity
     {
         if (Location.FogUnit == null)
         {
-            controller.GetShipComponent(id).Collected = true;
+            WorldController.Instance.GetShipComponent(id).Collected = true;
             UIController.instance.buildingInfo.HideInfo();
         }
     }
