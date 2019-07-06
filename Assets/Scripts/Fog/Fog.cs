@@ -390,11 +390,11 @@ public class Fog : MonoBehaviour
     //Calculates the position for the fog sphere
     private Vector3 GetFogSpherePosition(FogSphere s)
     {
-        return UnitTileProximity(s);
+        return SphereRange(s);
         //return IterateIntoFog(s);
     }
 
-    private Vector3 UnitTileProximity(FogSphere s)
+    private Vector3 SphereRange(FogSphere s)
     {
         FogUnit f;
         bool finished = false;
@@ -407,6 +407,11 @@ public class Fog : MonoBehaviour
 
             if (!noSpheresSpawning.Contains(t))
             {
+                if (fogFreeTiles.Count == 0)
+                {
+                    return f.transform.position;
+                }
+
                 bool valid = true;
 
                 foreach (TileData a in t.AdjacentTiles)
@@ -436,45 +441,40 @@ public class Fog : MonoBehaviour
                         while (j < jMax && !finished)
                         {
                             //If it's not too close to the prospective tile for the fog sphere
-                            if (i < iMinLeft || i > iMinRight || j < jMinLeft || j > jMinRight)
+                            if (wc.TileExistsAt(i, j) && (i < iMinLeft || i > iMinRight || j < jMinLeft || j > jMinRight))
                             {
-                                Vector2 p = new Vector2(i, j);
+                                TileData n = wc.GetTileAt(i, j);
 
-                                if (wc.TileExistsAt(p))
+                                //If it and all its neighbours and neighbour's neighbours have no fog, then there will probably be a valid target for the FogSphere to pursue.
+                                if (n.FogUnit == null)
                                 {
-                                    TileData n = wc.GetTileAt(p);
+                                    //finished = true;
+                                    valid = true;
 
-                                    //If it and all its neighbours and neighbour's neighbours have no fog, then there will probably be a valid target for the FogSphere to pursue.
-                                    if (n.FogUnit == null)
+                                    foreach (TileData a in n.AdjacentTiles)
                                     {
-                                        //finished = true;
-                                        valid = true;
-
-                                        foreach (TileData a in n.AdjacentTiles)
+                                        if (a.FogUnit != null)
                                         {
-                                            if (a.FogUnit != null)
+                                            foreach (TileData b in a.AdjacentTiles)
                                             {
-                                                foreach (TileData b in a.AdjacentTiles)
+                                                if (b.FogUnit != null)
                                                 {
-                                                    if (b.FogUnit != null)
-                                                    {
-                                                        valid = false;
-                                                        break;
-                                                    }
+                                                    valid = false;
+                                                    break;
                                                 }
                                             }
-
-                                            if (!valid)
-                                            {
-                                                break;
-                                            }
                                         }
 
-                                        if (valid)
+                                        if (!valid)
                                         {
-                                            finished = true;
-                                            s.TilesInRange = t.CollectTilesInRange(t.X, t.Z, (int)maxFogSphereRange);
+                                            break;
                                         }
+                                    }
+
+                                    if (valid)
+                                    {
+                                        finished = true;
+                                        s.TilesInRange = t.CollectTilesInRange(t.X, t.Z, (int)maxFogSphereRange);
                                     }
                                 }
                             }

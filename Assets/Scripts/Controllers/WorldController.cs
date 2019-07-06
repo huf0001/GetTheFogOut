@@ -527,14 +527,14 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    public bool TileExistsAt(Vector2 pos)
+    public bool TileExistsAt(Vector2 position)
     {
-        return TileExistsAt((int)pos.x, (int)pos.y);
-    }  
+        return TileExistsAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
+    }
 
     public bool TileExistsAt(Vector3 position)
     {
-        return TileExistsAt((int)position.x, (int)position.z);
+        return TileExistsAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
     }
 
     public bool TileExistsAt(int x, int y)
@@ -542,21 +542,21 @@ public class WorldController : MonoBehaviour
         return x < width && x >= 0 && y < length && y >= 0;
     }
 
-    public TileData GetTileAt(Vector3 position)
-    {
-        return GetTileAt((int)position.x, (int)position.z);
-    }
-
     public TileData GetTileAt(Vector2 position)
     {
-        return GetTileAt((int)position.x, (int)position.y);
+        return GetTileAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
+    }
+
+    public TileData GetTileAt(Vector3 position)
+    {
+        return GetTileAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
     }
 
     public TileData GetTileAt(int x, int y)
     {
-        if (x >= width || x < 0 || y >= length || y < 0)    //width by length array, the last value will be at position (width - 1, length - 1) 'cause arrays love 0s.
+        if (x >= width || x < 0 || y >= length || y < 0)
         {
-            Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
+            Debug.LogError($"Position ({x}, {y}) is out of range. There is no tile at ({x}, {y}).");
             return null;
         }
 
