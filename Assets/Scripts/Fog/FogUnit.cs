@@ -144,6 +144,7 @@ public class FogUnit : Entity
         if (!fillingFromFogSphere)
         {
             takingDamage = true;
+            //fog.FogUnitsTakingDamage.Add(this);
 
             startHealth = base.Health;
             targetHealth -= damage;
@@ -173,6 +174,11 @@ public class FogUnit : Entity
         {
             base.Health = targetHealth;
             takingDamage = false;
+
+            //if (base.Health > 0)
+            //{
+            //    fog.FogUnitsFinishedTakingDamage.Add(this);
+            //}
         }
         else
         {

@@ -79,6 +79,8 @@ public class Fog : MonoBehaviour
     private List<TileData>  noSpheresSpawning;
 
     private List<FogUnit>   fogUnitsInPlay = new List<FogUnit>();                   //i.e. currently active fog units on the board
+    //private List<FogUnit>   fogUnitsTakingDamage = new List<FogUnit>();             //i.e. currently active fog units on the board
+    //private List<FogUnit>   fogUnitsFinishedTakingDamage = new List<FogUnit>();     //i.e. currently active fog units on the board
     private List<FogUnit>   fogUnitsToReturnToPool = new List<FogUnit>();           //i.e. currently waiting to be re-pooled
     private List<FogUnit>   fogUnitsInPool = new List<FogUnit>();                   //i.e. currently inactive fog units waiting for spawning
 
@@ -93,6 +95,8 @@ public class Fog : MonoBehaviour
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public List<TileData>        FogFreeTiles { get => fogFreeTiles; }
     public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
+    //public List<FogUnit>         FogUnitsTakingDamage { get => fogUnitsTakingDamage; }
+    //public List<FogUnit>         FogUnitsFinishedTakingDamage { get => fogUnitsFinishedTakingDamage; }
     public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
     //public float                 MaxHealth { get => maxHealth; set => maxHealth = value; }
     //public float                 MinHealth { get => minHealth; set => minHealth = value; }
@@ -608,7 +612,7 @@ public class Fog : MonoBehaviour
     {
         List<FogUnit> toRender = new List<FogUnit>();
 
-        foreach (FogUnit f in fogUnitsInPlay)
+        foreach (FogUnit f in fogUnitsInPlay)   //fogUnitsTakingDamage)
         {
             if (f.TakingDamage)
             {
@@ -617,11 +621,19 @@ public class Fog : MonoBehaviour
             }
         }
 
+        //foreach (FogUnit f in fogUnitsFinishedTakingDamage)
+        //{
+        //    fogUnitsTakingDamage.Remove(f);
+        //}
+
+        //fogUnitsFinishedTakingDamage = new List<FogUnit>();
+
         if (fogUnitsToReturnToPool.Count > 0)
         {
             foreach (FogUnit f in fogUnitsToReturnToPool)
             {
                 toRender.Remove(f);
+                //fogUnitsTakingDamage.Remove(f);
                 ReturnFogUnitToPool(f);
             }
 
@@ -656,40 +668,37 @@ public class Fog : MonoBehaviour
             {
                 f.RenderColour();
 
-                if (f.NeighboursFull || f.Health < fogSpillThreshold)
+                if (!f.NeighboursFull && f.Health >= fogSpillThreshold)
                 {
-                    continue;
-                }
+                    int count = f.Location.AdjacentTiles.Count;
+                    int fullCount = 0;
 
-                int count = f.Location.AdjacentTiles.Count;
-                int fullCount = 0;
-
-                foreach (TileData t in f.Location.AdjacentTiles)
-                {
-                    FogUnit af = t.FogUnit;
-
-                    if (af == null)
+                    foreach (TileData t in f.Location.AdjacentTiles)
                     {
-                        continue;
-                    }
-                    else if (af.Health < f.Health)
-                    {
-                        af.Health += fogFillInterval * fogGrowth / count;
+                        FogUnit af = t.FogUnit;
 
-                        if (!toRenderOpacity.Contains(af))
+                        if (af != null)
                         {
-                            toRenderOpacity.Add(af);
+                            if (af.Health < f.Health)
+                            {
+                                af.Health += fogFillInterval * fogGrowth / count;
+
+                                if (!toRenderOpacity.Contains(af))
+                                {
+                                    toRenderOpacity.Add(af);
+                                }
+                            }
+                            else if (af.Health >= maxHealth)
+                            {
+                                fullCount++;
+                            }
                         }
                     }
-                    else if (af.Health >= maxHealth)
-                    {
-                        fullCount++;
-                    }
-                }
 
-                if (count == fullCount)
-                {
-                    f.NeighboursFull = true;
+                    if (count == fullCount)
+                    {
+                        f.NeighboursFull = true;
+                    }
                 }
             }
 
@@ -703,7 +712,7 @@ public class Fog : MonoBehaviour
     //Checks if the fog is able to spill over into adjacent tiles
     private void CheckExpandFog()
     {
-        if (fogUnitsInPool.Count > 0 && configuration != StartConfiguration.FullBoard)
+        if (fogUnitsInPool.Count > 0)
         {
             ExpandFog();
         }
@@ -724,7 +733,7 @@ public class Fog : MonoBehaviour
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
-            if (f.Spill == false && f.Health >= fogSpillThreshold)
+            if (!f.Spill && f.Health >= fogSpillThreshold)
             {
                 f.Spill = true;
 
@@ -822,6 +831,8 @@ public class Fog : MonoBehaviour
 
         if (f.Location != null)
         {
+            f.Location.FogUnit = null;
+
             foreach (TileData t in f.Location.AdjacentTiles)
             {
                 if (t.FogUnit != null)
@@ -841,7 +852,6 @@ public class Fog : MonoBehaviour
 
         f.FillingFromFogSphere = false;
         f.gameObject.SetActive(false);
-        f.Location.FogUnit = null;
         f.FogRenderer.material = invisibleMaterial;
         f.Spill = true;
         f.transform.position = transform.position;
