@@ -7,12 +7,12 @@ public abstract class PowerSource : Building
     [SerializeField] protected float powerRange;
 
     [SerializeField] protected List<Building> suppliedBuildings = new List<Building>();
+
     public List<Building> SuppliedBuildings { get => suppliedBuildings; set => suppliedBuildings = value; }
 
     protected override void Awake()
     {
         base.Awake();
-        
     }
 
     // Start is called before the first frame update
@@ -171,30 +171,70 @@ public abstract class PowerSource : Building
         return harvesters;
     }
 
+    public void UpdateTiles()
+    { 
+        foreach (TileData tile in WorldController.Instance.ActiveTiles)
+            {
+                tile.PowerUp(this as PowerSource);
+            }
+
+        foreach (TileData tile in WorldController.Instance.DisableTiles)
+        {
+            tile.PowerDown(this as PowerSource);
+        }
+
+        Debug.Log("both are off");
+    }
+
     public void ActivateTiles()
     {
-        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)powerRange);
-        foreach (TileData tile in tiles)
-        {
-            tile.PowerUp(this as PowerSource);
-
-            if ((tile.X == 28) || (tile.X == 29) || (tile.X == 30))
+            List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)powerRange);
+            foreach (TileData tile in tiles)
             {
-                if ((tile.Z == 20) || (tile.Z == 21) || (tile.Z == 22))
+            tile.PowerUp(this as PowerSource);
+            if ((tile.X == 28) || (tile.X == 29) || (tile.X == 30))
                 {
-                    tile.PowerDown(this as PowerSource);
-                    WorldController.Instance.DisableTiles.Add(tile);
-                     if (tile.X == 29 && tile.Z == 21) //this block is to re-enable the hub tile , removed this if you don't want the player to see the hub
-                     {
-                        WorldController.Instance.DisableTiles.Remove(tile);
-                        tile.PowerUp(this as PowerSource);
+                    if ((tile.Z == 20) || (tile.Z == 21) || (tile.Z == 22))
+                    {
+                        tile.PowerDown(this as PowerSource);
+                        WorldController.Instance.DisableTiles.Add(tile);
+                        if (tile.X == 29 && tile.Z == 21) //this block is to re-enable the hub tile , removed this if you don't want the player to see the hub
+                        {
+                            WorldController.Instance.DisableTiles.Remove(tile);
+                            tile.PowerUp(this as PowerSource);
+                        }
+                    }
+                }
+            
+            if (ObjectiveController.Instance.ShipComponent.activeSelf)
+            {
+                if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
+                {
+                    if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
+                    {
+                        WorldController.Instance.tempPower = tile.PowerSource;
+                        tile.PowerDown(tile.PowerSource);
+                        WorldController.Instance.DisableTiles.Add(tile);
+                        WorldController.Instance.ActiveTiles.Remove(tile);
                     }
                 }
             }
-
+            
+            if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
+            {
+                if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
+                {
+                    if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
+                    {
+                        tile.PowerUp(tile.PowerSource);
+                        Debug.Log("collected");
+                    }
+                }
+            }
+            
             if (!WorldController.Instance.ActiveTiles.Contains(tile))
             {
-                if(!WorldController.Instance.DisableTiles.Contains(tile))
+                if (!WorldController.Instance.DisableTiles.Contains(tile))
                 {
                     WorldController.Instance.ActiveTiles.Add(tile);
                     if (tile.X == 29 && tile.Z == 21) // hide green tile in the middle of the hub.
@@ -203,8 +243,8 @@ public abstract class PowerSource : Building
                     }
                 }
             }
+            
         }
-
     }
 
     public void DeactivateTiles()
