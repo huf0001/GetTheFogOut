@@ -10,7 +10,7 @@ public abstract class Ability : ScriptableObject, ICollectible
     public AudioClip sound;
     public Sprite sprite;
     public float baseCoolDown = 1f;
-    public float targetRadius = 10f;
+    public int targetRadius = 10;
     public int powerCost;
     public int duration;
 

@@ -69,6 +69,12 @@ public class AbilityController : MonoBehaviour
         abilityCooldowns[AbilityEnum.BuildingDefence] = 0f;
         abilityCooldowns[AbilityEnum.DamageBlast] = 0f;
         abilityCooldowns[AbilityEnum.FreezeFog] = 0f;
+
+        abilityTriggered[AbilityEnum.Overclock] = false;
+        abilityTriggered[AbilityEnum.Sonar] = false;
+        abilityTriggered[AbilityEnum.BuildingDefence] = false;
+        abilityTriggered[AbilityEnum.DamageBlast] = false;
+        abilityTriggered[AbilityEnum.FreezeFog] = false;
     }
 
     // Update functions ------------------------------------------------------------------------------------------------
@@ -110,7 +116,7 @@ public class AbilityController : MonoBehaviour
     void UpdateButtonCooldowns()
     {
         // Loop through each ability and if it is triggered, run its cooldown
-        foreach (KeyValuePair<AbilityEnum,bool> trigger in abilityTriggered)
+        foreach (KeyValuePair<AbilityEnum, bool> trigger in abilityTriggered)
         {
             if (trigger.Value == true)
             {
@@ -131,6 +137,10 @@ public class AbilityController : MonoBehaviour
     {
         selectedAbility = ability;
         IsAbilitySelected = true;
+        
+        // Set correct range for the range indicator
+        Vector3 scale = new Vector3(ability.targetRadius * 2, 0.01f, ability.targetRadius * 2);
+        rangeIndicatorGO.transform.localScale = scale;
     }
 
     private void ProcessInput()
@@ -145,6 +155,7 @@ public class AbilityController : MonoBehaviour
                     selectedAbility.TriggerAbility(selectedTile);
                     abilityTriggered[selectedAbility.AbilityType] = true;
                     abilityCooldowns[selectedAbility.AbilityType] = selectedAbility.baseCoolDown;
+                    ResourceController.Instance.StoredPower -= selectedAbility.powerCost;
                     // TODO: Play sound effect
                     // TODO: Start visual cooldown stuff
                 }
