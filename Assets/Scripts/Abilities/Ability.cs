@@ -11,6 +11,8 @@ public abstract class Ability : ScriptableObject, ICollectible
     public Sprite sprite;
     public float baseCoolDown = 1f;
     public float targetRadius = 10f;
+    public int powerCost;
+    public int duration;
 
     public string CollectibleName { get => collectibleName; }
 
