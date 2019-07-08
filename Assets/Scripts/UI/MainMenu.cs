@@ -22,6 +22,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField, TextArea] private string[] difficultyDescriptions;
     [SerializeField] private TextMeshProUGUI difficultyDescText;
     [SerializeField] private TMP_Dropdown dropdown;
+    [SerializeField] private Button dummyButton;
 
     private bool skipTutorial = false;
     private int difficulty = 1;
@@ -29,6 +30,14 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1;
+    }
+
+    private void Update()
+    {
+        if (difficultySubmenu.alpha != 0 && !dropdown.IsExpanded && EventSystem.current.currentSelectedGameObject == dropdown.gameObject)
+        {
+            dummyButton.Select();
+        }
     }
 
     public void ToggleTutorial(bool tutorialOn)

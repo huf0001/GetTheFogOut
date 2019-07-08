@@ -110,8 +110,8 @@ public abstract class Building : Entity
         }
         else
         {
-            regenWait = 5;
             CancelInvoke("RepairBuilding");
+            regenWait = 5;
         }
 
         if (GotNoHealth())
