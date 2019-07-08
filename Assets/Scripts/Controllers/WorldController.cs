@@ -59,6 +59,7 @@ public class WorldController : MonoBehaviour
     private UIController uiController;
     private CameraController cameraController;
 
+    private List<TileData> ThrusterList = new List<TileData>();
 
     private List<TileData> activeTiles = new List<TileData>();
     public List<TileData> ActiveTiles { get => activeTiles; }
@@ -74,6 +75,8 @@ public class WorldController : MonoBehaviour
     private bool hubDestroyed = false;
 
     private int index;
+    private bool thrusterToggle = true;
+    public PowerSource tempPower;
 
     //Public Properties
     // public static WorldController used to get the instance of the WorldManager from anywhere.
@@ -357,8 +360,18 @@ public class WorldController : MonoBehaviour
         }
         showActiveTiles();
         
+        if (ObjectiveController.Instance.ShipComponent.activeSelf)
+        {
+            thrusterTilesOn();
 
-        if (Input.GetButtonDown("Cancel"))
+        }
+        
+        if(GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
+        {
+            thrusterTilesOff();
+        }
+        
+            if (Input.GetButtonDown("Cancel"))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -591,6 +604,7 @@ public class WorldController : MonoBehaviour
     public void showActiveTiles()
     {
         GameObject grids = GameObject.Find("Grids");
+        
         if (index != activeTiles.Count)
         {
             hideActiveTiles();
@@ -605,9 +619,55 @@ public class WorldController : MonoBehaviour
             }
             index = activeTiles.Count;
         }
-
     }
 
+    public void thrusterTilesOff()
+    {
+        if (!thrusterToggle)
+        {
+            List<TileData> tempDisable = new List<TileData>(DisableTiles);
+            foreach (TileData tile in tempDisable)
+            {
+                if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
+                {
+                    if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
+                    {
+                        activeTiles.Add(tile);
+                        DisableTiles.Remove(tile);
+                        tile.PowerUp(tempPower);
+                    }
+                }
+            }
+            Debug.Log("off");
+            thrusterToggle = true;
+        }
+    }
+    public void thrusterTilesOn()
+    {
+        if (thrusterToggle)
+        {
+            List<TileData> tempActive = new List<TileData>(activeTiles);
+            foreach (TileData tile in tempActive)
+            {
+                if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
+                {
+                    if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
+                    {
+                        DisableTiles.Add(tile);
+                        activeTiles.Remove(tile);
+                        if (tile.getself().Building)
+                        {
+                            MouseController.Instance.RemoveBulding(MouseController.Instance.ReturnCost(tile.getself()));
+                        }
+                        tempPower = tile.getself().PowerSource;
+                        tile.PowerDown(tempPower);
+                    }
+                }
+            }
+            Debug.Log("on");
+            thrusterToggle = false;
+        }
+    }
     public void QuitGame()
     {
         #if UNITY_EDITOR

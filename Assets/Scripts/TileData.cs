@@ -48,6 +48,7 @@ public class TileData
     public List<TileData> AdjacentTiles { get => adjacentTiles; }
     public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
 
+    private bool buildable = true;
     //Altered public properties
     public Building Building
     {
@@ -98,7 +99,6 @@ public class TileData
             return null;
         }
     }
-
     public void PowerUp(PowerSource power)
     {
         if (!powerSources.Contains(power))
@@ -236,7 +236,11 @@ public class TileData
                 }
             }
         }
+    }
 
+    public TileData getself()
+    {
+        return this;
     }
 
 }

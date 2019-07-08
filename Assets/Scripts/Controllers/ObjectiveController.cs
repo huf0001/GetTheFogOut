@@ -25,7 +25,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveCompletePrefab;
     [SerializeField] GameObject hub;
-    [SerializeField] GameObject ShipComponent;
+    [SerializeField] public GameObject ShipComponent;
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
@@ -35,15 +35,12 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int fogGrowthEasy;
     [SerializeField] int fogGrowthMedium;
     [SerializeField] int fogGrowthHard;
-
-    [SerializeField] GameObject shipSmoke;
-
+    
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     // Non-Serialized Fields
     // bool stageComplete = false;
     private AudioSource audioSource;
-
     private bool powerOverloaded = false;
     private bool alertedAboutOverload = false;
     private bool powerOverloadedLastUpdate = false;
@@ -185,7 +182,7 @@ public class ObjectiveController : DialogueBoxController
             case 1:
                 // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
                 if (ResourceController.Instance.StoredMineral >= 500)
-                {
+                { 
                     ChangeToSubStage(3);
                 }
                 else if (dialogueRead)
@@ -239,6 +236,7 @@ public class ObjectiveController : DialogueBoxController
                 SendDialogue("end harvest stage", 1);
                 //Camera pans to the thruster
                 ShipComponent.SetActive(true);
+                
                 thrusterCamera.gameObject.SetActive(true);
                 Time.timeScale = 0.25f;
                 IncrementSubStage();
@@ -287,7 +285,6 @@ public class ObjectiveController : DialogueBoxController
             case 7:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
-                shipSmoke.SetActive(false);
                 hub.transform.GetChild(2).gameObject.SetActive(true);
 
                 // Play music Var 3 soundtrack

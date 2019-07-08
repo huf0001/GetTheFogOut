@@ -307,7 +307,10 @@ public class MouseController : MonoBehaviour
 
                 // Set and play animation
                 building.Animator = buildingGo.GetComponentInChildren<Animator>();
-                building.Animator.SetBool("Built", true);
+                if (building.Animator)
+                {
+                    building.Animator.SetBool("Built", true);
+                }
 
                 //Tell the building to do things it should do when placed
                 building.Place();
