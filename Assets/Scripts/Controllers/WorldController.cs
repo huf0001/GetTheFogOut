@@ -435,10 +435,12 @@ public class WorldController : MonoBehaviour
     {
         if (GameWin)
         {
+            musicFMOD.GameWinMusic();
             uiController.EndGameDisplay("You win!"); //Display win UI
         }
         else
         {
+            musicFMOD.GameLoseMusic();
             uiController.EndGameDisplay("You lose!"); //Display lose UI
         }
     }

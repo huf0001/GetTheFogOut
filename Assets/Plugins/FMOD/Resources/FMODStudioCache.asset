@@ -30,8 +30,42 @@ MonoBehaviour:
   - {fileID: 114264502293643854}
   StringsBanks:
   - {fileID: 114534783520657260}
-  stringsBankWriteTime: 636977633472500598
+  stringsBankWriteTime: 636980611055742043
   cacheVersion: 3
+--- !u!114 &114033732526172038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/Stages
+  m_EditorClassIdentifier: 
+  Name: Stages
+  Min: 0
+  Max: 7
+  Default: 0
+  Exists: 0
+--- !u!114 &114037300237597886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/IsWinGame
+  m_EditorClassIdentifier: 
+  Name: IsWinGame
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &114043232168985776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52,10 +86,32 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114529593891000396}
+  - {fileID: 114517741692532664}
+  - {fileID: 114037300237597886}
+  - {fileID: 114825716003083532}
+  - {fileID: 114189943000864278}
+  - {fileID: 114596310471809908}
+  - {fileID: 114289825342565112}
   MinDistance: 0
   MaxDistance: 0
-  Length: 335342
+  Length: 319726
+--- !u!114 &114068472793821138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/Stage3
+  m_EditorClassIdentifier: 
+  Name: Stage3
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
 --- !u!114 &114110599660094236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,12 +126,80 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\MusicBank.bank
   SubDir: 
-  lastModified: 636977633638268533
+  lastModified: 636980611059386342
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 4923520
+    Value: 4916224
   Exists: 1
+--- !u!114 &114159519530271246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/StartGame
+  m_EditorClassIdentifier: 
+  Name: StartGame
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &114189943000864278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/Stage2
+  m_EditorClassIdentifier: 
+  Name: Stage2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &114198739700056396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/IsReturnMenu
+  m_EditorClassIdentifier: 
+  Name: IsReturnMenu
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &114219909223281794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/IsWinGame
+  m_EditorClassIdentifier: 
+  Name: IsWinGame
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
 --- !u!114 &114264502293643854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,11 +214,96 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.bank
   SubDir: 
-  lastModified: 636977633472250809
+  lastModified: 636980611055542083
   LoadResult: 0
   FileSizes:
   - Name: Desktop
     Value: 1000
+  Exists: 1
+--- !u!114 &114278449955493112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/IsLoseGame
+  m_EditorClassIdentifier: 
+  Name: IsLoseGame
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
+--- !u!114 &114289825342565112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/Stage3
+  m_EditorClassIdentifier: 
+  Name: Stage3
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &114290989920965942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/StartGame
+  m_EditorClassIdentifier: 
+  Name: StartGame
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
+--- !u!114 &114369876719762282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/Stage2
+  m_EditorClassIdentifier: 
+  Name: Stage2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &114390083897662840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/IsWinGame
+  m_EditorClassIdentifier: 
+  Name: IsWinGame
+  Min: 0
+  Max: 1
+  Default: 0
   Exists: 1
 --- !u!114 &114398566392016534
 MonoBehaviour:
@@ -119,6 +328,57 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 111780
+--- !u!114 &114440610858397036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/IsReturnMenu
+  m_EditorClassIdentifier: 
+  Name: IsReturnMenu
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
+--- !u!114 &114467758861382668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/GameStages
+  m_EditorClassIdentifier: 
+  Name: GameStages
+  Min: 0
+  Max: 7
+  Default: 0
+  Exists: 0
+--- !u!114 &114500956709643466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/Stage3
+  m_EditorClassIdentifier: 
+  Name: Stage3
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &114506718524681660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +402,23 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3287
+--- !u!114 &114517741692532664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/IsLoseGame
+  m_EditorClassIdentifier: 
+  Name: IsLoseGame
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &114529593891000396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,12 +450,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.strings.bank
   SubDir: 
-  lastModified: 636977633472500598
+  lastModified: 636980611055742043
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1190
+    Value: 1426
   Exists: 1
+--- !u!114 &114543978023473328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/Stage2
+  m_EditorClassIdentifier: 
+  Name: Stage2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
 --- !u!114 &114556614038273374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +496,23 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3287
+--- !u!114 &114564705749464832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/Stages
+  m_EditorClassIdentifier: 
+  Name: Stages
+  Min: 0
+  Max: 7
+  Default: 0
+  Exists: 0
 --- !u!114 &114571515333296120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +530,23 @@ MonoBehaviour:
   Max: 7
   Default: 0
   Exists: 0
+--- !u!114 &114596310471809908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/StartGame
+  m_EditorClassIdentifier: 
+  Name: StartGame
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &114706841665229098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +570,23 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 6575
+--- !u!114 &114733411865225174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/IsLoseGame
+  m_EditorClassIdentifier: 
+  Name: IsLoseGame
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &114737178721013088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,11 +601,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\SFXBank.bank
   SubDir: 
-  lastModified: 636977633649511954
+  lastModified: 636980611060692515
   LoadResult: 0
   FileSizes:
   - Name: Desktop
     Value: 271648
+  Exists: 1
+--- !u!114 &114825716003083532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music2D/IsReturnMenu
+  m_EditorClassIdentifier: 
+  Name: IsReturnMenu
+  Min: 0
+  Max: 1
+  Default: 0
   Exists: 1
 --- !u!114 &114855522453163448
 MonoBehaviour:

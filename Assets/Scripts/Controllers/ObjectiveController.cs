@@ -49,6 +49,7 @@ public class ObjectiveController : DialogueBoxController
     private bool powerOverloadedLastUpdate = false;
     private float lastOverload = -1f;
     private float lastOverloadDialogue = -1f;
+    private MusicFMOD musicFMOD;
 
     // Public Properties -------------------------------------------------------------------------------------
 
@@ -78,6 +79,13 @@ public class ObjectiveController : DialogueBoxController
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
         CheckDifficulty();
+
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            musicFMOD.StageOneMusic();
+        }
+
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -125,9 +133,11 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case ObjectiveStage.RecoverPart:
                 RecoverPartStage();
+                musicFMOD.StageTwoMusic();
                 break;
             case ObjectiveStage.StorePower:
                 StorePowerStage();
+                musicFMOD.StageThreeMusic();
                 break;
             case ObjectiveStage.Finished:
                 //End of game
