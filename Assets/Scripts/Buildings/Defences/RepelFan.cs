@@ -35,6 +35,7 @@ public class RepelFan : Defence
     public override void PowerUp()
     {
         base.PowerUp();
+        this.gameObject.GetComponentInChildren<ParticleSystem>().Play();
         if (!IsInvoking("Fire"))
         {
             InvokeRepeating("Fire", 1f, rateOfFire);
@@ -44,14 +45,10 @@ public class RepelFan : Defence
     public override void PowerDown()
     {
         base.PowerDown();
+        this.gameObject.GetComponentInChildren<ParticleSystem>().Pause();
         CancelInvoke("Fire");
     }
-    /*
-    private void setParticle(bool toggle)
-    {
-        this.gameObject.GetComponentInChildren<VisualEffect>().enabled = toggle;
-    }
-    */
+
     void Fire()
     {
         List<TileData> directtarget = location.AllAdjacentTiles;

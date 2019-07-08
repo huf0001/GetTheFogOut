@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: DamageBlast
   m_EditorClassIdentifier: 
   collectibleName: DamageBlast
+  abilityType: 0
   sound: {fileID: 0}
   sprite: {fileID: 0}
   baseCoolDown: 1
-  targetRadius: 10
+  targetRadius: 7
+  powerCost: 50
+  duration: 0
+  fullDamageRange: 5
+  fullDamage: 100
+  fallOffDamage: 50

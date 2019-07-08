@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Entity : Locatable
 {
+    [Header("Entity Health")]
     [SerializeField] protected float health = 1f;
     [SerializeField] protected float maxHealth = 1f;
 
