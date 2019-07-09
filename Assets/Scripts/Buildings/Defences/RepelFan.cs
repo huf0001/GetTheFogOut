@@ -22,7 +22,7 @@ public class RepelFan : Defence
         base.Start();
         if (placedInEditor)
         {
-            InvokeRepeating("Fire", 1f, rateOfFire);
+            InvokeRepeating("FirePulse", 1f, rateOfFire);
         }
     }
 
@@ -36,9 +36,9 @@ public class RepelFan : Defence
     {
         base.PowerUp();
         this.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-        if (!IsInvoking("Fire"))
+        if (!IsInvoking("FirePulse"))
         {
-            InvokeRepeating("Fire", 1f, rateOfFire);
+            InvokeRepeating("FirePulse", 1f, rateOfFire);
         }
     }
 
@@ -46,45 +46,37 @@ public class RepelFan : Defence
     {
         base.PowerDown();
         this.gameObject.GetComponentInChildren<ParticleSystem>().Pause();
-        CancelInvoke("Fire");
+        CancelInvoke("FirePulse");
     }
 
-    void Fire()
+    void FirePulse()
     {
-        List<TileData> directtarget = location.AllAdjacentTiles;
-        List<TileData> Notdirecttarget = getTarget(2);
+        List<TileData> directTarget = location.AllAdjacentTiles;
+        List<TileData> notDirectTarget = GetTarget(2);
 
-        if ((directtarget != null) || Notdirecttarget != null)
+        if ((directTarget != null) || notDirectTarget != null)
         {
-            foreach (TileData dir in directtarget)
+            foreach (TileData dir in directTarget)
             {
                 if ((dir.FogUnit != null && !dir.FogUnit.TakingDamage))
                 {
                     dir.FogUnit.DealDamageToFogUnit(directDamage);
                 }
-                //else if (dir.FogBatch.Batched)
-                //{
-                //    dir.FogBatch.DealDamage(directDamage, new Vector3(dir.X, 0, dir.Z));
-                //}
             }
 
-            foreach (TileData ndir in Notdirecttarget)
+            foreach (TileData ndir in notDirectTarget)
             {
                 if (ndir.FogUnit != null && !ndir.FogUnit.TakingDamage)
                 {
                     ndir.FogUnit.DealDamageToFogUnit(aoeDamage);
                 }
-                //else if (ndir.FogBatch.Batched)
-                //{
-                //    ndir.FogBatch.DealDamage(directDamage, new Vector3(ndir.X, 0, ndir.Z));
-                //}
             }
 
         }
 
     }
 
-    List<TileData> getTarget(int range)
+    List<TileData> GetTarget(int range)
     {
         List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, range);
 
