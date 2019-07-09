@@ -113,10 +113,13 @@ public class WorldController : MonoBehaviour
 
         if (GameObject.Find("MusicFMOD") != null)
         {
+            Debug.Log("MusicFMOD found for World Controller!");
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            musicFMOD.StageOneMusic();
         }
         else
         {
+            Debug.Log("No MusicFMOD found for World Controller, initialising one.");
             Instantiate(musicfmod);
             musicFMOD = musicfmod;
         }
@@ -435,12 +438,10 @@ public class WorldController : MonoBehaviour
     {
         if (GameWin)
         {
-            musicFMOD.GameWinMusic();
             uiController.EndGameDisplay("You win!"); //Display win UI
         }
         else
         {
-            musicFMOD.GameLoseMusic();
             uiController.EndGameDisplay("You lose!"); //Display lose UI
         }
     }

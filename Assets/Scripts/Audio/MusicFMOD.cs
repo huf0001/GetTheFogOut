@@ -8,43 +8,40 @@ public class MusicFMOD : MonoBehaviour
     public string music = "event:/MUSIC/Music2D";
 
     FMOD.Studio.EventInstance musicEvent;
-    FMOD.Studio.PARAMETER_ID StartGame, Stage2, Stage3, IsReturnMenu, IsLoseGame, IsWinGame;
-    FMOD.Studio.EventDescription startGameDesc, stage2Desc, stage3Desc, isReturnMenuDesc, isLoseGameDesc, isWinGameDesc;
+    FMOD.Studio.PARAMETER_ID stageOne, stageTwo, stageThree, lose, win;
+    FMOD.Studio.EventDescription stageOneDesc, stageTwoDesc, stageThreeDesc, loseDesc, winDesc;
 
     // Start is called before the first frame update
     void Start()
     {
         musicEvent = FMODUnity.RuntimeManager.CreateInstance(music);
 
-        musicEvent.getDescription(out startGameDesc);
-        FMOD.Studio.PARAMETER_DESCRIPTION startGameParameterDesc;
-        startGameDesc.getParameterDescriptionByName("StartGame", out startGameParameterDesc);
-        StartGame = startGameParameterDesc.id;
+        musicEvent.getDescription(out stageOneDesc);
+        FMOD.Studio.PARAMETER_DESCRIPTION stageOneParamDesc;
+        
+        musicEvent.getDescription(out stageTwoDesc);
+        FMOD.Studio.PARAMETER_DESCRIPTION stageTwoParamDesc;
+        
+        musicEvent.getDescription(out stageThreeDesc);
+        FMOD.Studio.PARAMETER_DESCRIPTION stageThreeParamDesc;
+        
+        musicEvent.getDescription(out loseDesc);
+        FMOD.Studio.PARAMETER_DESCRIPTION loseParamDesc;
+        
+        musicEvent.getDescription(out winDesc);
+        FMOD.Studio.PARAMETER_DESCRIPTION winParamDesc;
 
-        musicEvent.getDescription(out stage2Desc);
-        FMOD.Studio.PARAMETER_DESCRIPTION stage2ParameterDesc;
-        stage2Desc.getParameterDescriptionByName("Stage2", out stage2ParameterDesc);
-        Stage2 = stage2ParameterDesc.id;
+        stageOneDesc.getParameterDescriptionByName("MusicStage1", out stageOneParamDesc);
+        stageTwoDesc.getParameterDescriptionByName("MusicStage2", out stageTwoParamDesc);
+        stageThreeDesc.getParameterDescriptionByName("MusicStage3", out stageThreeParamDesc);
+        loseDesc.getParameterDescriptionByName("Lose", out loseParamDesc);
+        winDesc.getParameterDescriptionByName("Win", out winParamDesc);
 
-        musicEvent.getDescription(out stage3Desc);
-        FMOD.Studio.PARAMETER_DESCRIPTION stage3ParameterDesc;
-        stage3Desc.getParameterDescriptionByName("Stage3", out stage3ParameterDesc);
-        Stage3 = stage3ParameterDesc.id;
-
-        musicEvent.getDescription(out isReturnMenuDesc);
-        FMOD.Studio.PARAMETER_DESCRIPTION isReturnMenuParameterDesc;
-        isReturnMenuDesc.getParameterDescriptionByName("IsReturnMenu", out isReturnMenuParameterDesc);
-        IsReturnMenu = isReturnMenuParameterDesc.id;
-
-        musicEvent.getDescription(out isLoseGameDesc);
-        FMOD.Studio.PARAMETER_DESCRIPTION isLoseGameParameterDesc;
-        isLoseGameDesc.getParameterDescriptionByName("IsLoseGame", out isLoseGameParameterDesc);
-        IsLoseGame = isLoseGameParameterDesc.id;
-
-        musicEvent.getDescription(out isWinGameDesc);
-        FMOD.Studio.PARAMETER_DESCRIPTION isWinGameParameterDesc;
-        isWinGameDesc.getParameterDescriptionByName("IsWinGame", out isWinGameParameterDesc);
-        IsWinGame = isWinGameParameterDesc.id;
+        stageOne = stageOneParamDesc.id;
+        stageTwo = stageTwoParamDesc.id;
+        stageThree = stageThreeParamDesc.id;
+        lose = loseParamDesc.id;
+        win = winParamDesc.id;
 
         musicEvent.start();
         DontDestroyOnLoad(this);
@@ -53,42 +50,46 @@ public class MusicFMOD : MonoBehaviour
     // Player begins the game from Menu, onto Stage 1 of Game. Will start here on Prototype Milestone 2 scene.
     public void StageOneMusic()
     {
-        musicEvent.setParameterByID(StartGame, 1f);
+        musicEvent.setParameterByID(lose, 0f);
+        musicEvent.setParameterByID(win, 0f);
+        musicEvent.setParameterByID(stageOne, 1f);
     }
 
     // First objective complete, move onto Stage 2 of Game.
     public void StageTwoMusic()
     {
-        musicEvent.setParameterByID(Stage2, 1f);
+        musicEvent.setParameterByID(stageTwo, 1f);
+        musicEvent.setParameterByID(stageOne, 0f);
     }
 
     // Second objective complete, move onto Stage 3 of Game.
     public void StageThreeMusic()
     {
-        musicEvent.setParameterByID(Stage3, 1f);
+        musicEvent.setParameterByID(stageThree, 1f);
+        musicEvent.setParameterByID(stageTwo, 0f);
     }
 
-    // Player quits the game, return to Menu scene, stop music.
-    public void ReturnMenuMusic()
-    {
-        musicEvent.setParameterByID(IsReturnMenu, 1f);
-    }
-
-    // Player's ship is destroyed, GAME OVER.
+    // Player's ship is destroyed, GAME OVER. Return to Menu music.
     public void GameLoseMusic()
     {
-        musicEvent.setParameterByID(IsLoseGame, 1f);
+        musicEvent.setParameterByID(stageOne, 0f);
+        musicEvent.setParameterByID(stageTwo, 0f);
+        musicEvent.setParameterByID(stageThree, 0f);
+        musicEvent.setParameterByID(lose, 1f);
     }
 
-    // Player leaves the planet, WIN!
+    // Player leaves the planet, WIN! Return to Menu music.
     public void GameWinMusic()
     {
-        musicEvent.setParameterByID(IsWinGame, 1f);
+        musicEvent.setParameterByID(stageOne, 0f);
+        musicEvent.setParameterByID(stageTwo, 0f);
+        musicEvent.setParameterByID(stageThree, 0f);
+        musicEvent.setParameterByID(win, 1f);
     }
 
-    // Update is called once per frame
-    //void Update()
-    //{
-        //
-    //}
+    // Close the class.
+    public void Release()
+    {
+        musicEvent.release();
+    }
 }
