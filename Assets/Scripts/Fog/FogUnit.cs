@@ -24,6 +24,9 @@ public class FogUnit : Entity
     [Header("VFX")]
     [SerializeField] private GameObject angryFogEvaporation;
 
+    [Header("For Testing")]
+    [SerializeField] private bool returnToPool;
+
     //Non-Serialized Fields
     private Fog fog;
     private bool angry = false;
@@ -53,6 +56,7 @@ public class FogUnit : Entity
     public bool FillingFromFogSphere {  get => fillingFromFogSphere; set => fillingFromFogSphere = value; }
     public Renderer FogRenderer { get => fogRenderer; set => fogRenderer = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
+    public bool ReturnToPool { get => returnToPool; set => returnToPool = value; }
     public bool Spill { get => spill; set => spill = value; }
     public bool TakingDamage { get => takingDamage; }
 

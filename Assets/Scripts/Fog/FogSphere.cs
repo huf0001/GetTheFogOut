@@ -58,6 +58,8 @@ public class FogSphere : MonoBehaviour
     private float targetHealth;
     private float damageLerpProgress = 0;
 
+    private TileData spawningTile;
+
     private Vector3 startPosition;
     private Vector3 throwTarget;
     private Vector3 attackTarget;
@@ -81,6 +83,7 @@ public class FogSphere : MonoBehaviour
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
     public FogSphereState State { get => state; set => state = value; }
+    public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
     public List<TileData> TilesInRange { get => tilesInRange; set => tilesInRange = value; }
 
     //Altered Public Properties
@@ -317,6 +320,35 @@ public class FogSphere : MonoBehaviour
 
     //Recurring Methods - Health and Appearance------------------------------------------------------------------------------------------------------
 
+    //Updates how much health the fog unit has
+    public void UpdateFill(float increment)
+    {
+        Health += increment * GetFillMultiplier();
+        UpdateHeight();
+        RenderOpacity();
+    }
+
+    //Returns +1 or -1 depending on how much fog is available to fuel the fog sphere.
+    private int GetFillMultiplier()
+    {
+        //Shrivels if the spawning tile's fog unit hasn't spilt; one fog unit isn't enough.
+        if (spawningTile.FogUnit == null || !spawningTile.FogUnit.Spill)
+        {
+            return -1;
+        }
+
+        //Shrivels if any of the adjacent tile's FogUnits aren't present or strong enough.
+        foreach (TileData t in spawningTile.AdjacentTiles)
+        {
+            if (t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.33)
+            {
+                return -1;
+            }
+        }
+
+        return 1;
+    }
+
     //Updates the damage dealt to the fog unit
     public void UpdateDamageToFogSphere(float damageInterval)
     {
@@ -335,6 +367,11 @@ public class FogSphere : MonoBehaviour
         if (health <= 0)
         {
             ReturnToFogPool();
+        }
+        else
+        {
+            UpdateHeight();
+            RenderOpacity();
         }
     }
 

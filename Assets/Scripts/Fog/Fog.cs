@@ -359,7 +359,9 @@ public class Fog : MonoBehaviour
         GameObject fGO = GetFogSphere().gameObject;
         FogSphere f = fGO.GetComponent<FogSphere>();
         fGO.name = "FogSphereInPlay";
-        fGO.transform.position = GetFogSpherePosition(f);
+        FogUnit u = GetFillingFogUnit(f); //GetFogSpherePosition(f);
+        fGO.transform.position = u.transform.position;
+        f.SpawningTile = u.Location;
         f.FogRenderer.material = visibleMaterial;
         f.Health = minHealth;
         f.FogUnitMinHealth = minHealth;
@@ -372,13 +374,13 @@ public class Fog : MonoBehaviour
     }
 
     //Calculates the position for the fog sphere
-    private Vector3 GetFogSpherePosition(FogSphere s)
-    {
-        return SphereRange(s);
-        //return IterateIntoFog(s);
-    }
+    //private Vector3 GetFogSpherePosition(FogSphere s)
+    //{
+    //    return SphereRange(s);
+    //    return IterateIntoFog(s);
+    //}
 
-    private Vector3 SphereRange(FogSphere s)
+    private FogUnit GetFillingFogUnit(FogSphere s)
     {
         FogUnit f;
         bool finished = false;
@@ -393,7 +395,7 @@ public class Fog : MonoBehaviour
             {
                 if (fogFreeTiles.Count == 0)
                 {
-                    return f.transform.position;
+                    return f;
                 }
 
                 bool valid = true;
@@ -471,7 +473,7 @@ public class Fog : MonoBehaviour
             }
         } while (!finished);
 
-        return f.transform.position;
+        return f;
     }
 
     //private Vector3 IterateIntoFog()
@@ -597,6 +599,12 @@ public class Fog : MonoBehaviour
             {
                 f.UpdateDamageToFogUnit(fogDamageInterval);
                 toRender.Add(f);
+            }
+
+            if (f.ReturnToPool)
+            {
+                QueueFogUnitForPooling(f);
+                f.ReturnToPool = false;
             }
         }
 
@@ -740,17 +748,9 @@ public class Fog : MonoBehaviour
                 {
                     case FogSphereState.Damaged:
                         f.UpdateDamageToFogSphere(fogSphereInterval);
-                        f.UpdateHeight();
-                        f.RenderOpacity();
                         break;
                     case FogSphereState.Filling:
-                        if (f.Health < f.MaxHealth)
-                        {
-                            f.Health += fogSphereInterval * fogGrowth * 0.5f;
-                            f.UpdateHeight();
-                            f.RenderOpacity();
-                        }
-
+                        f.UpdateFill(fogSphereInterval * fogGrowth * 0.5f);
                         break;
                     case FogSphereState.Full:
                         f.Throw();
