@@ -42,7 +42,7 @@ public class btnTutorial : MonoBehaviour
     //Controls when lerping happens based on outside variables
     private void Update()
     {
-        if (tutorialController.ButtonAllowed(buildingType) && tutorialController.TutorialStage != TutorialStage.Finished)
+        if (UIController.instance.buildingSelector.Visible && tutorialController.ButtonAllowed(buildingType) && tutorialController.TutorialStage != TutorialStage.Finished)
         {
             button.interactable = true;
 

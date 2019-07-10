@@ -31,6 +31,7 @@ public abstract class Building : Entity
     private bool damagedNotified = false;
     private float buildHealth;
     private float regenWait;
+    private MeshRenderer rend;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -79,6 +80,8 @@ public abstract class Building : Entity
         InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
         buildHealth = health;
         InvokeRepeating("CheckStillDamaging", 1, 5);
+
+        rend = GetComponentInChildren<MeshRenderer>();
     }
 
     private void CheckForDamage()
@@ -442,10 +445,15 @@ public abstract class Building : Entity
 
         if (!damagingNotified)
         {
-            MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-                MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
-                $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
-                $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+            //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
+            //    MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
+            //    $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
+            //    $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+
+            if (!rend.isVisible)
+            {
+                Debug.Log("A building be damaged off-screen");
+            }
             audioSource.PlayOneShot(audioDamage);
             damagingNotified = true;
         }
