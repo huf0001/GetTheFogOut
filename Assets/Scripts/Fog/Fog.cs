@@ -756,17 +756,17 @@ public class Fog : MonoBehaviour
                         f.Throw();
                         break;
                     case FogSphereState.Throwing:
-                        f.Move(fogSphereInterval * 0.25f);
+                        f.Move(fogSphereInterval);
                         break;
-                    case FogSphereState.Attacking:
-                        f.Attack(fogSphereInterval * 0.75f);
-                        break;
+                    //case FogSphereState.Attacking:
+                    //    f.Attack(fogSphereInterval * 0.75f);
+                    //    break;
                     case FogSphereState.Spilling:
                         f.Spill(fogSphereInterval * 0.5f);
                         break;
                 }
             }
-
+                            
             if (fogSpheresToReturnToPool.Count > 0)
             {
                 foreach(FogSphere f in fogSpheresToReturnToPool)

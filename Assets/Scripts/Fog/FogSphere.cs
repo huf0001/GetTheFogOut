@@ -10,7 +10,7 @@ public enum FogSphereState
     Damaged,
     Full,
     Throwing,
-    Attacking,
+    //Attacking,
     Spilling
 }
 
@@ -27,9 +27,10 @@ public class FogSphere : MonoBehaviour
     [SerializeField] private float maxHealth = 1f;
     [SerializeField] private float damageLerpMultiplier = 3f;
 
-    [Header("Height")]
+    [Header("Movement")]
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
+    [SerializeField] private float movementSpeed;
 
     [Header("Opacity")]
     [SerializeField] private float startOpacity = 0f;
@@ -59,10 +60,9 @@ public class FogSphere : MonoBehaviour
     private float damageLerpProgress = 0;
 
     private TileData spawningTile;
-
     private Vector3 startPosition;
     private Vector3 throwTarget;
-    private Vector3 attackTarget;
+    //private Vector3 attackTarget;
     private Vector3 spillTarget;
     private float moveProgress = 0;
 
@@ -160,9 +160,9 @@ public class FogSphere : MonoBehaviour
 
         throwTarget = target;
         throwTarget.y = maxHeight * 2;
-        attackTarget = target;
-        attackTarget.y = 0;
-        spillTarget = attackTarget;
+        //attackTarget = target;
+        //attackTarget.y = 0;
+        spillTarget = throwTarget;
         spillTarget.y = minHeight;
 
         state = FogSphereState.Throwing;
@@ -253,29 +253,18 @@ public class FogSphere : MonoBehaviour
     }
 
     //Change so it moves in a vertical quarter circle from the base of the circle to one side.
-    public void Move(float increment)
+    public void Move(float interval)
     {
-        moveProgress += increment;
-        transform.position = MathParabola.Parabola(startPosition, throwTarget, maxHeight * 3f, moveProgress);
+        //moveProgress += increment;
+        transform.position = Vector3.MoveTowards(transform.position, throwTarget, movementSpeed * interval);
+        //transform.position = Vector3.Lerp(startPosition, throwTarget, moveProgress);
+        //TODO: change to move at the same speed regardless of distance.
 
-        if (moveProgress >= 1)
-        {
-            moveProgress = 0;
-            state = FogSphereState.Attacking;
-        }
-    }
-
-    //Move up a bit, then drop down (parabolic)? Or keep as straight drop down?
-    public void Attack(float increment)
-    {
-        moveProgress += increment;
-        transform.position = MathParabola.Parabola(throwTarget, attackTarget, maxHeight * 4f, moveProgress);
-
-        if (moveProgress >= 1)
+        if (transform.position == throwTarget)
         {
             moveProgress = 0;
             state = FogSphereState.Spilling;
-            attackTarget = transform.position;  //Accounts for overshoot
+            throwTarget = transform.position;  //Accounts for overshoot
 
             if (WorldController.Instance.TileExistsAt(transform.position))
             {
@@ -292,7 +281,7 @@ public class FogSphere : MonoBehaviour
                     {
                         Fog.Instance.SpawnFogUnitWithMinHealth(a);
                     }
-                    
+
                     spiltFog.Add(a.FogUnit);
                     a.FogUnit.FillingFromFogSphere = true;
                 }
@@ -300,10 +289,45 @@ public class FogSphere : MonoBehaviour
         }
     }
 
+    ////Move up a bit, then drop down (parabolic)? Or keep as straight drop down?
+    //public void Attack(float increment)
+    //{
+    //    moveProgress += increment;
+    //    transform.position = MathParabola.Parabola(throwTarget, attackTarget, maxHeight * 4f, moveProgress);
+
+    //    if (moveProgress >= 1)
+    //    {
+    //        moveProgress = 0;
+    //        state = FogSphereState.Spilling;
+    //        attackTarget = transform.position;  //Accounts for overshoot
+
+    //        if (WorldController.Instance.TileExistsAt(transform.position))
+    //        {
+    //            spiltFog = new List<FogUnit>();
+    //            TileData t = WorldController.Instance.GetTileAt(transform.position);
+
+    //            Fog.Instance.SpawnFogUnitWithMinHealth(t);
+    //            spiltFog.Add(t.FogUnit);
+    //            t.FogUnit.FillingFromFogSphere = true;
+
+    //            foreach (TileData a in t.AdjacentTiles)
+    //            {
+    //                if (a.FogUnit == null)
+    //                {
+    //                    Fog.Instance.SpawnFogUnitWithMinHealth(a);
+    //                }
+                    
+    //                spiltFog.Add(a.FogUnit);
+    //                a.FogUnit.FillingFromFogSphere = true;
+    //            }
+    //        }
+    //    }
+    //}
+
     public void Spill(float increment)
     {
         moveProgress += increment;
-        transform.position = Vector3.Lerp(attackTarget, spillTarget, moveProgress);
+        transform.position = Vector3.Lerp(throwTarget, spillTarget, moveProgress);
 
         foreach (FogUnit f in spiltFog)
         {
