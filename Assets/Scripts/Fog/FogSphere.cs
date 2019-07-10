@@ -30,7 +30,8 @@ public class FogSphere : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
-    [SerializeField] private float movementSpeed;
+    [SerializeField] private float minMovementSpeed;
+    [SerializeField] private float maxMovementSpeed;
 
     [Header("Opacity")]
     [SerializeField] private float startOpacity = 0f;
@@ -65,6 +66,9 @@ public class FogSphere : MonoBehaviour
     //private Vector3 attackTarget;
     private Vector3 spillTarget;
     private float moveProgress = 0;
+
+    [Header("Exposed During Testing")]
+    [SerializeField] private float movementSpeed;
 
     private List<FogUnit> spiltFog = new List<FogUnit>();
     private float fogUnitMinHealth;
@@ -135,8 +139,12 @@ public class FogSphere : MonoBehaviour
     public void SetStartEmotion(bool a)
     {
         angry = a;
-
         currentColours = angry ? angryColours : docileColours;
+    }
+
+    public void RandomiseMovementSpeed()
+    {
+        movementSpeed = Random.Range(minMovementSpeed, maxMovementSpeed);
     }
 
     //Recurring Methods - Movement and Spill---------------------------------------------------------------------------------------------------------
@@ -159,97 +167,10 @@ public class FogSphere : MonoBehaviour
         state = FogSphereState.Throwing;
     }
 
-    //Calculates the target of the fog sphere
-    //private Vector3 CalculateTarget()
-    //{
-    //    Vector3 target = startPosition;     //set to startPosition initially in case there are no valid targets; otherwise the code complains it could be unassigned when it is returned.
-    //    bool finished = false;
-    //    bool valid = true;
-
-    //    List<TileData> targets = new List<TileData>();
-    //    Vector3 hPos = GameObject.Find("Hub").transform.position;
-    //    Vector3 sPos = transform.position;
-
-    //    //Find all tiles where none of it or its neighbours have fog units on them
-    //    foreach (TileData t in tilesInRange)
-    //    {
-    //        if (t.FogUnit == null)
-    //        {
-    //            foreach (TileData a in t.AdjacentTiles)
-    //            {
-    //                if (a.FogUnit != null)
-    //                {
-    //                    valid = false;
-    //                    break;
-    //                }
-    //            }
-
-    //            if (valid)
-    //            {
-    //                targets.Add(t);
-    //            }
-    //            else
-    //            {
-    //                valid = true;
-    //            }
-    //        }
-    //    }
-
-    //    //If none, find all tiles where none of it or its neighbours have fog units with full health, and either they're closer to the tile than they are to the hub or they're closer to the hub than the tile is 
-    //    if (targets.Count == 0)
-    //    {
-    //        foreach (TileData t in tilesInRange)
-    //        {
-    //            Vector3 tPos = new Vector3(t.X, 0, t.Z);
-    //            float selfToHub = Vector3.Distance(sPos, hPos);
-
-    //            if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth) && (Vector3.Distance(sPos, tPos) < selfToHub || Vector3.Distance(tPos, hPos) > selfToHub))
-    //            {
-    //                foreach (TileData a in t.AdjacentTiles)
-    //                {
-    //                    if (a.FogUnit != null && a.FogUnit.Health >= a.FogUnit.MaxHealth)
-    //                    {
-    //                        valid = false;
-    //                        break;
-    //                    }
-    //                }
-
-    //                if (valid)
-    //                {
-    //                    targets.Add(t);
-    //                }
-    //                else
-    //                {
-    //                    valid = true;
-    //                }
-    //            }
-    //        }
-
-    //        //If none, return start position.
-    //        if (targets.Count == 0)
-    //        {
-    //            finished = true;
-    //        }
-    //    }
-
-    //    while (!finished)
-    //    {
-    //        TileData tile = targets[Random.Range(0, targets.Count)];
-    //        target = new Vector3(tile.X, 0, tile.Z);
-
-    //        finished = Vector3.Distance(transform.position, target) < Vector3.Distance(transform.position, hPos);
-    //    }
-
-    //    return target;
-    //}
-
     //Change so it moves in a vertical quarter circle from the base of the circle to one side.
     public void Move(float interval)
     {
-        //moveProgress += increment;
         transform.position = Vector3.MoveTowards(transform.position, hubPos, movementSpeed * interval);
-        //transform.position = Vector3.Lerp(startPosition, throwTarget, moveProgress);
-        //TODO: change to move at the same speed regardless of distance.
 
         if (transform.position == hubPos)
         {
@@ -280,41 +201,7 @@ public class FogSphere : MonoBehaviour
         }
     }
 
-    ////Move up a bit, then drop down (parabolic)? Or keep as straight drop down?
-    //public void Attack(float increment)
-    //{
-    //    moveProgress += increment;
-    //    transform.position = MathParabola.Parabola(throwTarget, attackTarget, maxHeight * 4f, moveProgress);
-
-    //    if (moveProgress >= 1)
-    //    {
-    //        moveProgress = 0;
-    //        state = FogSphereState.Spilling;
-    //        attackTarget = transform.position;  //Accounts for overshoot
-
-    //        if (WorldController.Instance.TileExistsAt(transform.position))
-    //        {
-    //            spiltFog = new List<FogUnit>();
-    //            TileData t = WorldController.Instance.GetTileAt(transform.position);
-
-    //            Fog.Instance.SpawnFogUnitWithMinHealth(t);
-    //            spiltFog.Add(t.FogUnit);
-    //            t.FogUnit.FillingFromFogSphere = true;
-
-    //            foreach (TileData a in t.AdjacentTiles)
-    //            {
-    //                if (a.FogUnit == null)
-    //                {
-    //                    Fog.Instance.SpawnFogUnitWithMinHealth(a);
-    //                }
-                    
-    //                spiltFog.Add(a.FogUnit);
-    //                a.FogUnit.FillingFromFogSphere = true;
-    //            }
-    //        }
-    //    }
-    //}
-
+    //Fog sphere spills into fog tiles that it finds.
     public void Spill(float increment)
     {
         moveProgress += increment;

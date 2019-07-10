@@ -378,6 +378,7 @@ public class Fog : MonoBehaviour
             s.FogUnitMaxHealth = maxHealth;
             s.State = FogSphereState.Filling;
             s.SetStartEmotion(angry);
+            s.RandomiseMovementSpeed();
             fogSpheresInPlay.Add(s);
             s.UpdateHeight();
             s.RenderOpacity();
