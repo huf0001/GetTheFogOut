@@ -195,6 +195,26 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4455723523853987716}
   m_Enabled: 1
+--- !u!114 &4455723523853987715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455723523853987716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19fb6e5a195048844b3ec754aa929140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serialCamera: {fileID: 0}
+  serialCameraCutscene: {fileID: 0}
+  runCameraPan: 0
+  buildingSelector: {fileID: 0}
+  moveSpeed: 20
+  rotationSpeed: 40
+  zoomMulti: 10
+  dragSpeed: 0
 --- !u!114 &4455723523853987712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +422,7 @@ GameObject:
   - component: {fileID: 4455723524170164328}
   - component: {fileID: 4455723524170164329}
   - component: {fileID: 4455723524170164334}
+  - component: {fileID: 7951065955864581401}
   m_Layer: 11
   m_Name: CameraTarget
   m_TagString: Untagged
@@ -517,6 +538,19 @@ MonoBehaviour:
   rotationSpeed: 70
   zoomMulti: 10
   dragSpeed: 0.02
+--- !u!114 &7951065955864581401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455723524170164332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListenerNumber: 0
 --- !u!1 &4455723524555981923
 GameObject:
   m_ObjectHideFlags: 0
