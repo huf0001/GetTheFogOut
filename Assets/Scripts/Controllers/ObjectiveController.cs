@@ -70,6 +70,15 @@ public class ObjectiveController : DialogueBoxController
         }
 
         Instance = this;
+
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
+        else
+        {
+            Debug.LogError("ERROR: MusicFMOD not found for Objective Controller.");
+        }
     }
 
     // Start is called before the first frame update
@@ -79,17 +88,6 @@ public class ObjectiveController : DialogueBoxController
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
         CheckDifficulty();
-
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            Debug.Log("MusicFMOD found for Objective Controller!");
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-        else
-        {
-            Debug.LogError("ERROR: MusicFMOD not found for Objective Controller.");
-        }
-
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -495,6 +493,7 @@ public class ObjectiveController : DialogueBoxController
         unlocksText.text = $"You can build a maximum of {generatorLimit} generators now!";
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad).SetUpdate(true);
         //audioSource.PlayOneShot(audioCompleteObjective);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
         yield return new WaitForSecondsRealtime(5f);
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad).SetUpdate(true);
         yield return new WaitForSecondsRealtime(0.3f);

@@ -113,16 +113,15 @@ public class WorldController : MonoBehaviour
 
         if (GameObject.Find("MusicFMOD") != null)
         {
-            Debug.Log("MusicFMOD found for World Controller!");
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-            musicFMOD.StageOneMusic();
         }
         else
         {
-            Debug.Log("No MusicFMOD found for World Controller, initialising one.");
             Instantiate(musicfmod);
             musicFMOD = musicfmod;
         }
+
+        musicFMOD.StageOneMusic();
     }
 
     private void Start()

@@ -26,7 +26,7 @@ public abstract class Building : Entity
 
     //Non-serialized fields
     private Animator animator;
-    protected AudioSource audioSource;
+    //protected AudioSource audioSource;
     private bool damagingNotified = false;
     private bool damagedNotified = false;
     private float buildHealth;
@@ -60,7 +60,7 @@ public abstract class Building : Entity
         //MakeTilesVisible();
         //FindToolTip();
 
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
 
         //if (placed)
         //{
@@ -446,7 +446,8 @@ public abstract class Building : Entity
                 MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
                 $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
                 $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
-            audioSource.PlayOneShot(audioDamage);
+            //audioSource.PlayOneShot(audioDamage);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
             damagingNotified = true;
         }
     }

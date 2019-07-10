@@ -8,8 +8,8 @@ public class MusicFMOD : MonoBehaviour
     public string music = "event:/MUSIC/Music2D";
 
     FMOD.Studio.EventInstance musicEvent;
-    FMOD.Studio.PARAMETER_ID stageOne, stageTwo, stageThree, lose, win;
-    FMOD.Studio.EventDescription stageOneDesc, stageTwoDesc, stageThreeDesc, loseDesc, winDesc;
+    FMOD.Studio.PARAMETER_ID stageOne, stageTwo, stageThree, lose, win, outro;
+    FMOD.Studio.EventDescription stageOneDesc, stageTwoDesc, stageThreeDesc, loseDesc, winDesc, outroDesc;
 
     // Start is called before the first frame update
     void Start()
@@ -31,17 +31,22 @@ public class MusicFMOD : MonoBehaviour
         musicEvent.getDescription(out winDesc);
         FMOD.Studio.PARAMETER_DESCRIPTION winParamDesc;
 
+        musicEvent.getDescription(out outroDesc);
+        FMOD.Studio.PARAMETER_DESCRIPTION outroParamDesc;
+
         stageOneDesc.getParameterDescriptionByName("MusicStage1", out stageOneParamDesc);
         stageTwoDesc.getParameterDescriptionByName("MusicStage2", out stageTwoParamDesc);
         stageThreeDesc.getParameterDescriptionByName("MusicStage3", out stageThreeParamDesc);
         loseDesc.getParameterDescriptionByName("Lose", out loseParamDesc);
         winDesc.getParameterDescriptionByName("Win", out winParamDesc);
+        outroDesc.getParameterDescriptionByName("ReturnMenu", out outroParamDesc);
 
         stageOne = stageOneParamDesc.id;
         stageTwo = stageTwoParamDesc.id;
         stageThree = stageThreeParamDesc.id;
         lose = loseParamDesc.id;
         win = winParamDesc.id;
+        outro = outroParamDesc.id;
 
         musicEvent.start();
         DontDestroyOnLoad(this);
@@ -52,6 +57,7 @@ public class MusicFMOD : MonoBehaviour
     {
         musicEvent.setParameterByID(lose, 0f);
         musicEvent.setParameterByID(win, 0f);
+        musicEvent.setParameterByID(outro, 0f);
         musicEvent.setParameterByID(stageOne, 1f);
     }
 
@@ -85,6 +91,14 @@ public class MusicFMOD : MonoBehaviour
         musicEvent.setParameterByID(stageTwo, 0f);
         musicEvent.setParameterByID(stageThree, 0f);
         musicEvent.setParameterByID(win, 1f);
+    }
+
+    public void OutroMusic()
+    {
+        musicEvent.setParameterByID(stageOne, 0f);
+        musicEvent.setParameterByID(stageTwo, 0f);
+        musicEvent.setParameterByID(stageThree, 0f);
+        musicEvent.setParameterByID(outro, 1f);
     }
 
     // Close the class.

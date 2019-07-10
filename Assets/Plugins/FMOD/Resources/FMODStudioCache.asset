@@ -15,17 +15,47 @@ MonoBehaviour:
   EditorBanks:
   - {fileID: 114534783520657260}
   - {fileID: 114264502293643854}
-  - {fileID: 114110599660094236}
-  - {fileID: 114737178721013088}
+  - {fileID: 114689280140960532}
   EditorEvents:
-  - {fileID: 114305506849767224}
+  - {fileID: 114311611520042286}
+  - {fileID: 114365701837301446}
+  - {fileID: 114010710737903050}
+  - {fileID: 114273615231927778}
+  - {fileID: 114615333238442186}
+  - {fileID: 114760647143785294}
+  - {fileID: 114770240595362716}
+  - {fileID: 114995887139109910}
+  - {fileID: 114054952458456048}
   EditorParameters: []
   MasterBanks:
   - {fileID: 114264502293643854}
   StringsBanks:
   - {fileID: 114534783520657260}
-  stringsBankWriteTime: 636982751550935844
+  stringsBankWriteTime: 636982912364455256
   cacheVersion: 3
+--- !u!114 &114010710737903050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/3D-BuildingDestroyed
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/3D-BuildingDestroyed
+  guid: 1d4b7d9f8098a442a928d350cab92aef
+  Banks:
+  - {fileID: 114264502293643854}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3287
 --- !u!114 &114033732526172038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,6 +135,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 319726
+--- !u!114 &114054952458456048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/3D-BuildingDamaged
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/3D-BuildingDamaged
+  guid: ce32d3595e621048a7d8da428aedcfe8
+  Banks:
+  - {fileID: 114264502293643854}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3287
 --- !u!114 &114068472793821138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +209,40 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 1
+--- !u!114 &114098586485386238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/Lose
+  m_EditorClassIdentifier: 
+  Name: Lose
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &114104456811931948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/ReturnMenu
+  m_EditorClassIdentifier: 
+  Name: ReturnMenu
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &114106047893458818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +279,23 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 470
+  Exists: 1
+--- !u!114 &114128547445837034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage3
+  m_EditorClassIdentifier: 
+  Name: MusicStage3
+  Min: 0
+  Max: 1
+  Default: 0
   Exists: 1
 --- !u!114 &114159519530271246
 MonoBehaviour:
@@ -326,12 +430,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.bank
   SubDir: 
-  lastModified: 636982751550686580
+  lastModified: 636982912364176013
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 4718912
+    Value: 5036640
   Exists: 1
+--- !u!114 &114273615231927778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/2D-Win
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/2D-Win
+  guid: 3ce8438a2cb1a74095412aa4db2ac7c2
+  Banks:
+  - {fileID: 114264502293643854}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 6575
 --- !u!114 &114278449955493112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,6 +556,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 414234
+--- !u!114 &114311611520042286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/3D-Sting_3
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/3D-Sting_3
+  guid: 1426e3509640ec41a884ae1ea04e93a2
+  Banks:
+  - {fileID: 114264502293643854}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3287
 --- !u!114 &114333601430726622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,6 +596,29 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &114365701837301446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/3D-BuildingBuilt
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/3D-BuildingBuilt
+  guid: 1b4321179b64b547829df47052a6f978
+  Banks:
+  - {fileID: 114264502293643854}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2465
 --- !u!114 &114369876719762282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -520,6 +693,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &114435372153910350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage1
+  m_EditorClassIdentifier: 
+  Name: MusicStage1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &114440610858397036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,11 +882,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.strings.bank
   SubDir: 
-  lastModified: 636982751550935844
+  lastModified: 636982912364455256
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1088
+    Value: 1440
   Exists: 1
 --- !u!114 &114543978023473328
 MonoBehaviour:
@@ -805,6 +995,29 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 1
+--- !u!114 &114615333238442186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/3D-BatteryFull
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/3D-BatteryFull
+  guid: 89fc9d339243d046a41b46125b691edb
+  Banks:
+  - {fileID: 114264502293643854}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3287
 --- !u!114 &114667740030218288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -821,6 +1034,26 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+  Exists: 1
+--- !u!114 &114689280140960532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Music.bank
+  m_EditorClassIdentifier: 
+  Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Music.bank
+  SubDir: 
+  lastModified: 636982912364684201
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 470
   Exists: 1
 --- !u!114 &114706841665229098
 MonoBehaviour:
@@ -844,6 +1077,23 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 6575
+--- !u!114 &114712155666640124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/Win
+  m_EditorClassIdentifier: 
+  Name: Win
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &114720743099043468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,6 +1165,29 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 1
+--- !u!114 &114760647143785294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/3D-Sting_1
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/3D-Sting_1
+  guid: 9e5b276440bdb74dbd638eaf3c93c043
+  Banks:
+  - {fileID: 114264502293643854}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2465
 --- !u!114 &114763495500769086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -932,6 +1205,52 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &114770240595362716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/MUSIC/MusicMix
+  m_EditorClassIdentifier: 
+  Path: event:/MUSIC/MusicMix
+  guid: a7d35a824488734ab15fb1510c728600
+  Banks:
+  - {fileID: 114264502293643854}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 114098586485386238}
+  - {fileID: 114783743805408974}
+  - {fileID: 114104456811931948}
+  - {fileID: 114712155666640124}
+  - {fileID: 114435372153910350}
+  - {fileID: 114128547445837034}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 414234
+--- !u!114 &114783743805408974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage2
+  m_EditorClassIdentifier: 
+  Name: MusicStage2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &114805714436440164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,3 +1385,26 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2465
+--- !u!114 &114995887139109910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/3D-GridOverload
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/3D-GridOverload
+  guid: b9e77110fc44f848a009ddd77cf04802
+  Banks:
+  - {fileID: 114264502293643854}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3287
