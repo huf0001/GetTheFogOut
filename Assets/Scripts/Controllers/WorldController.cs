@@ -46,7 +46,7 @@ public class WorldController : MonoBehaviour
 
     [Header("Public variable?")]
     public bool InBuildMode;
-    public GameObject pause;
+    public GameObject pauseMenu;
 
     //Non-Serialized Fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
@@ -101,7 +101,7 @@ public class WorldController : MonoBehaviour
 
         InBuildMode = false;
         Instance = this;
-        SetPause(false);
+        //SetPause(false);
 
         tm = FindObjectOfType<TowerManager>();
 
@@ -387,8 +387,7 @@ public class WorldController : MonoBehaviour
 
         if (Input.GetButtonDown("Pause"))
         {
-            pause.SetActive(!pause.activeSelf);
-            SetPause(pause.activeSelf);
+            SetPause(!pauseMenu.activeSelf);
         }
 
         if (Input.GetKeyDown("c"))
@@ -407,6 +406,8 @@ public class WorldController : MonoBehaviour
 
     public void SetPause(bool pause)
     {
+        pauseMenu.SetActive(!pauseMenu.activeSelf);
+
         if (pause)
         {
             Time.timeScale = 0.0f;
