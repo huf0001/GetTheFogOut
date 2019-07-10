@@ -47,6 +47,7 @@ public class WorldController : MonoBehaviour
     [Header("Public variable?")]
     public bool InBuildMode;
     public GameObject pause;
+    public MusicFMOD musicfmod;
 
     //Non-Serialized Fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
@@ -58,6 +59,7 @@ public class WorldController : MonoBehaviour
     private ResourceController resourceController;
     private UIController uiController;
     private CameraController cameraController;
+    private MusicFMOD musicFMOD;
 
     private List<TileData> ThrusterList = new List<TileData>();
 
@@ -112,6 +114,18 @@ public class WorldController : MonoBehaviour
         cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
+
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
+        else
+        {
+            Instantiate(musicfmod);
+            musicFMOD = musicfmod;
+        }
+
+        musicFMOD.StageOneMusic();
     }
 
     private void Start()
