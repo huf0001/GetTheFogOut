@@ -6,11 +6,8 @@ using UnityEngine;
 public enum FogSphereState
 {
     None,
-    Filling,
     Damaged,
-    Full,
-    Throwing,
-    //Attacking,
+    MovingAndGrowing,
     Spilling
 }
 
@@ -62,10 +59,7 @@ public class FogSphere : MonoBehaviour
 
     private TileData spawningTile;
     private Vector3 startPosition;
-    private Vector3 hubPos;
-    //private Vector3 attackTarget;
-    private Vector3 spillTarget;
-    private float moveProgress = 0;
+    private Vector3 hubPosition;
 
     [Header("Exposed During Testing")]
     [SerializeField] private float movementSpeed;
@@ -83,9 +77,9 @@ public class FogSphere : MonoBehaviour
     public float FogUnitMaxHealth {  get => fogUnitMaxHealth; set => fogUnitMaxHealth = value; }
     public float FogUnitMinHealth {  get => fogUnitMinHealth; set => fogUnitMinHealth = value; }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
     public FogSphereState State { get => state; set => state = value; }
-    public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
 
     //Altered Public Properties
     public float Health
@@ -104,7 +98,6 @@ public class FogSphere : MonoBehaviour
                 if (health >= maxHealth)
                 {
                     health = maxHealth;
-                    state = FogSphereState.Full;
                 }
                 else if (health <= 0)
                 {
@@ -124,6 +117,8 @@ public class FogSphere : MonoBehaviour
         fogRenderer = gameObject.GetComponentInChildren<Renderer>();
         colour = Shader.PropertyToID("_Colour");
         alpha = Shader.PropertyToID("_Alpha");
+        hubPosition = GameObject.Find("Hub").transform.position;
+        hubPosition.y = maxHeight;
     }
 
     //Sets the starting values for fog damage health variables
@@ -147,36 +142,28 @@ public class FogSphere : MonoBehaviour
         movementSpeed = Random.Range(minMovementSpeed, maxMovementSpeed);
     }
 
-    //Recurring Methods - Movement and Spill---------------------------------------------------------------------------------------------------------
-    
-    //Lerps height according to health/maxHealth
-    public void UpdateHeight()
-    {
-        Vector3 pos = transform.position;
-        pos.y = Mathf.Lerp(minHeight, maxHeight, Mathf.Min(health / maxHealth, 1));
-        transform.position = pos;
-    }
+    //Recurring Methods - MovingAndGrowing and Growing---------------------------------------------------------------------------------------------------------
 
-    // Sets the fog sphere moving towards the target position
-    public void Throw()
+    //Updates how much health the fog unit has
+    public void Grow(float increment)
     {
-        startPosition = transform.position;
-        hubPos = GameObject.Find("Hub").transform.position;
-        spillTarget = hubPos;
-        spillTarget.y = minHeight;
-        state = FogSphereState.Throwing;
+        if (health < maxHealth)
+        {
+            Health += increment;
+            UpdateHeight();
+            RenderOpacity();
+        }
     }
 
     //Change so it moves in a vertical quarter circle from the base of the circle to one side.
     public void Move(float interval)
     {
-        transform.position = Vector3.MoveTowards(transform.position, hubPos, movementSpeed * interval);
+        hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateHeight()
+        transform.position = Vector3.MoveTowards(transform.position, hubPosition, movementSpeed * interval);
 
-        if (transform.position == hubPos)
+        if (transform.position == hubPosition)
         {
-            moveProgress = 0;
             state = FogSphereState.Spilling;
-            hubPos = transform.position;  //Accounts for overshoot
 
             if (WorldController.Instance.TileExistsAt(transform.position))
             {
@@ -201,55 +188,46 @@ public class FogSphere : MonoBehaviour
         }
     }
 
+    ////Returns +1 or -1 depending on how much fog is available to fuel the fog sphere.
+    //private int GetFillMultiplier()
+    //{
+    //    //Shrivels if the spawning tile's fog unit hasn't spilt; one fog unit isn't enough.
+    //    if (spawningTile.FogUnit == null || !spawningTile.FogUnit.Spill)
+    //    {
+    //        return -1;
+    //    }
+
+    //    //Shrivels if any of the adjacent tile's FogUnits aren't present or strong enough.
+    //    foreach (TileData t in spawningTile.AdjacentTiles)
+    //    {
+    //        if (t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.33)
+    //        {
+    //            return -1;
+    //        }
+    //    }
+
+    //    return 1;
+    //}
+
+    //Recurring Methods - Spilling-------------------------------------------------------------------------------------------------------------------
+
     //Fog sphere spills into fog tiles that it finds.
     public void Spill(float increment)
     {
-        moveProgress += increment;
-        transform.position = Vector3.Lerp(hubPos, spillTarget, moveProgress);
+        Health -= increment;
+        UpdateHeight();
+        RenderColour();
+        RenderOpacity();
 
         foreach (FogUnit f in spiltFog)
         {
-            f.Health = Mathf.Max(f.Health, Mathf.Lerp(fogUnitMinHealth, fogUnitMaxHealth, moveProgress));
+            f.Health += increment;
             f.RenderColour();
             f.RenderOpacity();
         }
-
-        if (moveProgress >= 1)
-        {
-            ReturnToFogPool();
-        }
     }
 
-    //Recurring Methods - Health and Appearance------------------------------------------------------------------------------------------------------
-
-    //Updates how much health the fog unit has
-    public void UpdateFill(float increment)
-    {
-        Health += increment * GetFillMultiplier();
-        UpdateHeight();
-        RenderOpacity();
-    }
-
-    //Returns +1 or -1 depending on how much fog is available to fuel the fog sphere.
-    private int GetFillMultiplier()
-    {
-        //Shrivels if the spawning tile's fog unit hasn't spilt; one fog unit isn't enough.
-        if (spawningTile.FogUnit == null || !spawningTile.FogUnit.Spill)
-        {
-            return -1;
-        }
-
-        //Shrivels if any of the adjacent tile's FogUnits aren't present or strong enough.
-        foreach (TileData t in spawningTile.AdjacentTiles)
-        {
-            if (t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.33)
-            {
-                return -1;
-            }
-        }
-
-        return 1;
-    }
+    //Recurring Methods - Taking Damage--------------------------------------------------------------------------------------------------------------
 
     //Updates the damage dealt to the fog unit
     public void UpdateDamageToFogSphere(float damageInterval)
@@ -259,7 +237,7 @@ public class FogSphere : MonoBehaviour
         if (health <= targetHealth)
         {
             health = targetHealth;
-            state = FogSphereState.Filling;
+            state = FogSphereState.MovingAndGrowing;
         }
         else
         {
@@ -277,6 +255,8 @@ public class FogSphere : MonoBehaviour
         }
     }
 
+    //Triggered/Utility Methods - Appearance---------------------------------------------------------------------------------------------------------
+    
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
     {
@@ -330,7 +310,15 @@ public class FogSphere : MonoBehaviour
         fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / MaxHealth));
     }
 
-    //Triggered/Utility Methods----------------------------------------------------------------------------------------------------------------------
+    //Lerps height according to health/maxHealth
+    public void UpdateHeight()
+    {
+        Vector3 pos = transform.position;
+        pos.y = Mathf.Lerp(minHeight, maxHeight, Mathf.Min(health / maxHealth, 1));
+        transform.position = pos;
+    }
+
+    //Triggered/Utility Methods - Other--------------------------------------------------------------------------------------------------------------
 
     //A defence has dealt damage to the fog unit
     public void DealDamageToFogSphere(float damage)
@@ -359,4 +347,5 @@ public class FogSphere : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
 }

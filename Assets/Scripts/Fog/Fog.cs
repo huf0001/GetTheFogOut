@@ -95,7 +95,7 @@ public class Fog : MonoBehaviour
     public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
     public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
 
-    //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+    //Setup Methods - General------------------------------------------------------------------------------------------------------------------------
 
     //Fog's awake method sets the static instance of Fog
     private void Awake()
@@ -111,6 +111,7 @@ public class Fog : MonoBehaviour
         {
             Difficulty = (Difficulty)GlobalVars.Difficulty;
         }
+
         SetDifficulty();
     }
 
@@ -131,6 +132,8 @@ public class Fog : MonoBehaviour
                 break;
         }
     }
+
+    //Spawning Methods - All Fog---------------------------------------------------------------------------------------------------------------------
 
     //Spawns the starting fog on the board with the configuration set in the inspector
     public void SpawnStartingFog()
@@ -262,6 +265,8 @@ public class Fog : MonoBehaviour
         }
     }
 
+    //Spawning Methods - Fog Units-------------------------------------------------------------------------------------------------------------------
+
     //Instantiates a fog unit that isn't on the board or in the pool
     private FogUnit CreateFogUnit()
     {
@@ -330,6 +335,8 @@ public class Fog : MonoBehaviour
         f.RenderOpacity();
     }
 
+    //Spawning Methods - Fog Spheres-----------------------------------------------------------------------------------------------------------------
+
     //Instantiates a fog sphere that isn't on the board or in the pool
     private FogSphere CreateFogSphere()
     {
@@ -376,7 +383,7 @@ public class Fog : MonoBehaviour
             s.Health = minHealth;
             s.FogUnitMinHealth = minHealth;
             s.FogUnitMaxHealth = maxHealth;
-            s.State = FogSphereState.Filling;
+            s.State = FogSphereState.MovingAndGrowing;
             s.SetStartEmotion(angry);
             s.RandomiseMovementSpeed();
             fogSpheresInPlay.Add(s);
@@ -419,14 +426,16 @@ public class Fog : MonoBehaviour
         return f;
     }
 
-    //Invokes the ActivateFog method according to the parameter passed to it.
-    public void InvokeActivateFog(int delay)
+    //Activating the Fog-----------------------------------------------------------------------------------------------------------------------------
+
+    //Invokes the WakeUpFog method according to the parameter passed to it.
+    public void InvokeWakeUpFog(int delay)
     {
-        Invoke(nameof(ActivateFog), delay);
+        Invoke(nameof(WakeUpFog), delay);
     }
 
     //Invokes the "update" methods of Fog according to the intervals set in the inspector
-    public void ActivateFog()
+    public void WakeUpFog()
     {
         InvokeRepeating(nameof(UpdateFogUnitFill), 0.1f, fogFillInterval);
         InvokeRepeating(nameof(CheckExpandFog), 0.3f, fogExpansionInterval);
@@ -597,20 +606,12 @@ public class Fog : MonoBehaviour
                     case FogSphereState.Damaged:
                         f.UpdateDamageToFogSphere(fogSphereInterval);
                         break;
-                    case FogSphereState.Filling:
-                        f.UpdateFill(fogSphereInterval * fogGrowth * 0.5f);
+                    case FogSphereState.MovingAndGrowing:
+                        f.Move(fogSphereInterval * 0.5f);
+                        f.Grow(fogSphereInterval * fogGrowth * 0.75f);
                         break;
-                    case FogSphereState.Full:
-                        f.Throw();
-                        break;
-                    case FogSphereState.Throwing:
-                        f.Move(fogSphereInterval);
-                        break;
-                    //case FogSphereState.Attacking:
-                    //    f.Attack(fogSphereInterval * 0.75f);
-                    //    break;
                     case FogSphereState.Spilling:
-                        f.Spill(fogSphereInterval * 0.5f);
+                        f.Spill(fogSphereInterval * fogGrowth * 2f);
                         break;
                 }
             }
@@ -630,8 +631,6 @@ public class Fog : MonoBehaviour
         {
             SpawnFogSphere();
         }
-
-        
     }
 
     //Re-Pooling Methods-----------------------------------------------------------------------------------------------------------------------------
