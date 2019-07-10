@@ -61,7 +61,7 @@ public class FogSphere : MonoBehaviour
 
     private TileData spawningTile;
     private Vector3 startPosition;
-    private Vector3 throwTarget;
+    private Vector3 hubPos;
     //private Vector3 attackTarget;
     private Vector3 spillTarget;
     private float moveProgress = 0;
@@ -69,8 +69,6 @@ public class FogSphere : MonoBehaviour
     private List<FogUnit> spiltFog = new List<FogUnit>();
     private float fogUnitMinHealth;
     private float fogUnitMaxHealth;
-
-    private List<TileData> tilesInRange = new List<TileData>();
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -84,7 +82,6 @@ public class FogSphere : MonoBehaviour
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
     public FogSphereState State { get => state; set => state = value; }
     public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
-    public List<TileData> TilesInRange { get => tilesInRange; set => tilesInRange = value; }
 
     //Altered Public Properties
     public float Health
@@ -156,115 +153,109 @@ public class FogSphere : MonoBehaviour
     public void Throw()
     {
         startPosition = transform.position;
-        Vector3 target = CalculateTarget();
-
-        throwTarget = target;
-        throwTarget.y = maxHeight * 2;
-        //attackTarget = target;
-        //attackTarget.y = 0;
-        spillTarget = throwTarget;
+        hubPos = GameObject.Find("Hub").transform.position;
+        spillTarget = hubPos;
         spillTarget.y = minHeight;
-
         state = FogSphereState.Throwing;
     }
 
     //Calculates the target of the fog sphere
-    private Vector3 CalculateTarget()
-    {
-        Vector3 target = startPosition;     //set to startPosition initially in case there are no valid targets; otherwise the code complains it could be unassigned when it is returned.
-        bool finished = false;
-        bool valid = true;
+    //private Vector3 CalculateTarget()
+    //{
+    //    Vector3 target = startPosition;     //set to startPosition initially in case there are no valid targets; otherwise the code complains it could be unassigned when it is returned.
+    //    bool finished = false;
+    //    bool valid = true;
 
-        List<TileData> targets = new List<TileData>();
-        Vector3 hPos = GameObject.Find("Hub").transform.position;
-        Vector3 sPos = transform.position;
+    //    List<TileData> targets = new List<TileData>();
+    //    Vector3 hPos = GameObject.Find("Hub").transform.position;
+    //    Vector3 sPos = transform.position;
 
-        //Find all tiles where none of it or its neighbours have fog units on them
-        foreach (TileData t in tilesInRange)
-        {
-            if (t.FogUnit == null)
-            {
-                foreach (TileData a in t.AdjacentTiles)
-                {
-                    if (a.FogUnit != null)
-                    {
-                        valid = false;
-                        break;
-                    }
-                }
+    //    //Find all tiles where none of it or its neighbours have fog units on them
+    //    foreach (TileData t in tilesInRange)
+    //    {
+    //        if (t.FogUnit == null)
+    //        {
+    //            foreach (TileData a in t.AdjacentTiles)
+    //            {
+    //                if (a.FogUnit != null)
+    //                {
+    //                    valid = false;
+    //                    break;
+    //                }
+    //            }
 
-                if (valid)
-                {
-                    targets.Add(t);
-                }
-                else
-                {
-                    valid = true;
-                }
-            }
-        }
+    //            if (valid)
+    //            {
+    //                targets.Add(t);
+    //            }
+    //            else
+    //            {
+    //                valid = true;
+    //            }
+    //        }
+    //    }
 
-        //If none, find all tiles where none of it or its neighbours have fog units with full health, and either they're closer to the tile than they are to the hub or they're closer to the hub than the tile is 
-        if (targets.Count == 0)
-        {
-            foreach (TileData t in tilesInRange)
-            {
-                Vector3 tPos = new Vector3(t.X, 0, t.Z);
-                float selfToHub = Vector3.Distance(sPos, hPos);
+    //    //If none, find all tiles where none of it or its neighbours have fog units with full health, and either they're closer to the tile than they are to the hub or they're closer to the hub than the tile is 
+    //    if (targets.Count == 0)
+    //    {
+    //        foreach (TileData t in tilesInRange)
+    //        {
+    //            Vector3 tPos = new Vector3(t.X, 0, t.Z);
+    //            float selfToHub = Vector3.Distance(sPos, hPos);
 
-                if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth) && (Vector3.Distance(sPos, tPos) < selfToHub || Vector3.Distance(tPos, hPos) > selfToHub))
-                {
-                    foreach (TileData a in t.AdjacentTiles)
-                    {
-                        if (a.FogUnit != null && a.FogUnit.Health >= a.FogUnit.MaxHealth)
-                        {
-                            valid = false;
-                            break;
-                        }
-                    }
+    //            if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth) && (Vector3.Distance(sPos, tPos) < selfToHub || Vector3.Distance(tPos, hPos) > selfToHub))
+    //            {
+    //                foreach (TileData a in t.AdjacentTiles)
+    //                {
+    //                    if (a.FogUnit != null && a.FogUnit.Health >= a.FogUnit.MaxHealth)
+    //                    {
+    //                        valid = false;
+    //                        break;
+    //                    }
+    //                }
 
-                    if (valid)
-                    {
-                        targets.Add(t);
-                    }
-                    else
-                    {
-                        valid = true;
-                    }
-                }
-            }
+    //                if (valid)
+    //                {
+    //                    targets.Add(t);
+    //                }
+    //                else
+    //                {
+    //                    valid = true;
+    //                }
+    //            }
+    //        }
 
-            //If none, return start position.
-            if (targets.Count == 0)
-            {
-                finished = true;
-            }
-        }
+    //        //If none, return start position.
+    //        if (targets.Count == 0)
+    //        {
+    //            finished = true;
+    //        }
+    //    }
 
-        while (!finished)
-        {
-            TileData tile = targets[Random.Range(0, targets.Count)];
-            target = new Vector3(tile.X, 0, tile.Z);
+    //    while (!finished)
+    //    {
+    //        TileData tile = targets[Random.Range(0, targets.Count)];
+    //        target = new Vector3(tile.X, 0, tile.Z);
 
-            finished = Vector3.Distance(transform.position, target) < Vector3.Distance(transform.position, hPos);
-        }
+    //        finished = Vector3.Distance(transform.position, target) < Vector3.Distance(transform.position, hPos);
+    //    }
 
-        return target;
-    }
+    //    return target;
+    //}
 
     //Change so it moves in a vertical quarter circle from the base of the circle to one side.
     public void Move(float interval)
     {
         //moveProgress += increment;
-        transform.position = Vector3.MoveTowards(transform.position, throwTarget, movementSpeed * interval);
+        transform.position = Vector3.MoveTowards(transform.position, hubPos, movementSpeed * interval);
         //transform.position = Vector3.Lerp(startPosition, throwTarget, moveProgress);
         //TODO: change to move at the same speed regardless of distance.
 
-        if (transform.position == throwTarget)
+        if (transform.position == hubPos)
         {
             moveProgress = 0;
             state = FogSphereState.Spilling;
-            throwTarget = transform.position;  //Accounts for overshoot
+            hubPos = transform.position;  //Accounts for overshoot
 
             if (WorldController.Instance.TileExistsAt(transform.position))
             {
@@ -327,7 +318,7 @@ public class FogSphere : MonoBehaviour
     public void Spill(float increment)
     {
         moveProgress += increment;
-        transform.position = Vector3.Lerp(throwTarget, spillTarget, moveProgress);
+        transform.position = Vector3.Lerp(hubPos, spillTarget, moveProgress);
 
         foreach (FogUnit f in spiltFog)
         {
