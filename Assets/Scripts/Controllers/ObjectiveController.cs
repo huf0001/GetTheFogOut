@@ -67,16 +67,16 @@ public class ObjectiveController : DialogueBoxController
             Debug.LogError("There should never be 2 or more objective managers.");
         }
 
-        Instance = this;
-
         if (GameObject.Find("MusicFMOD") != null)
         {
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         }
         else
         {
-            Debug.LogError("ERROR: MusicFMOD not found for Objective Controller.");
+            Debug.Log("FMOD not found in Objective's Awake.");
         }
+
+        Instance = this;
     }
 
     // Start is called before the first frame update
@@ -93,6 +93,11 @@ public class ObjectiveController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
+        if (!musicFMOD && WorldController.Instance.musicFMOD)
+        {
+            musicFMOD = WorldController.Instance.musicFMOD;
+        }
+
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
