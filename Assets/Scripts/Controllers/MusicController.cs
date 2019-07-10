@@ -23,7 +23,6 @@ public class MusicController : MonoBehaviour
 
 
     //Non-Serialized Fields
-    //private AudioSource audioSource;
     private AudioClip nextTrack;
     float tracklength;
     float timeUntilChange;
@@ -46,7 +45,6 @@ public class MusicController : MonoBehaviour
     {
         audioSource.DOFade(1, 20).SetUpdate(true);
     }
-
 
 
     public void SkipTutorial()
@@ -88,16 +86,6 @@ public class MusicController : MonoBehaviour
         }
     }
 
-    /*
-    private void ChangeTrack(AudioClip transition, AudioClip track)
-    {
-        doubleAudioSource.CrossFade(transition, 1, 10f);
-        nextTrack = track;
-        tracklength = transition.length - 5;
-        timeUntilChange = 0;
-        changeTrack = true;
-    }*/
-
     private void ChangeTrack(AudioClip transition, AudioClip track)
     {
         doubleAudioSource.CrossFade(transition, 1, 3f);
@@ -106,18 +94,4 @@ public class MusicController : MonoBehaviour
 
         doubleAudioSource.CrossFade(track, 1, 1f, tracklength - 2f);
     }
-
-    /*
-    private void Update()
-    {
-        if (changeTrack)
-        {
-            timeUntilChange += Time.deltaTime;
-            if (timeUntilChange >= tracklength)
-            {
-                doubleAudioSource.CrossFade(nextTrack, 1, 3f);
-                changeTrack = false;
-            }
-        }
-    }*/
 }

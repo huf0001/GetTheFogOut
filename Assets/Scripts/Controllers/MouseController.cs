@@ -126,7 +126,7 @@ public class MouseController : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")))
             {
                 //Check if a valid tile was clicked
                 if (WorldController.Instance.TileExistsAt(hit.point))
