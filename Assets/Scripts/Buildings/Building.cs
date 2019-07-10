@@ -27,12 +27,9 @@ public abstract class Building : Entity
 
     //Non-serialized fields
     private Animator animator;
-<<<<<<< HEAD
     //protected AudioSource audioSource;
-=======
+
     protected float shieldTime;
-    protected AudioSource audioSource;
->>>>>>> master
     private bool damagingNotified = false;
     private bool damagedNotified = false;
     private float buildHealth;
