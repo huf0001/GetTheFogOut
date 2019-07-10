@@ -6,6 +6,8 @@ public class Harvester : Building
 {
     [SerializeField] private int harvestAmt = +5;
     [SerializeField] private Canvas noMineralCanvas;
+    [SerializeField] private Light offLight;
+    [SerializeField] public ParticleSystem hvtProgress;
 
     public int HarvestAmt { get => harvestAmt; }
 
@@ -29,27 +31,38 @@ public class Harvester : Building
     public void TurnOnMineralIndicator()
     {
         noMineralCanvas.gameObject.SetActive(true);
+        
+        offLight.GetComponent<Light>().enabled = true; //turn the red light on 
+        hvtProgress.Stop(); // stop the particle
     }
-
-    //public override void PowerUp()
-    //{
-    //    //if (location.Resource.ResourceType == Resource.Mineral)
-    //    //{ 
-    //    base.PowerUp();
+    
+    public override void PowerUp()
+    {
+        //    //if (location.Resource.ResourceType == Resource.Mineral)
+        //    //{ 
+        base.PowerUp();
+        if (hvtProgress.isStopped)
+        {
+            hvtProgress.Play();
+        }
 
     //    //if (!WorldController.Instance.Hub.Harvesters.Contains(this))
     //    //{
     //    //    WorldController.Instance.Hub.Harvesters.Add(this);
     //    //}
-    //}
+    }
+    
+    public override void PowerDown()
+    {
+        if (hvtProgress.isPlaying)
+        {
+            hvtProgress.Stop();
+        }
+            base.PowerDown();
 
-    //public override void PowerDown()
-    //{
-    //    base.PowerDown();
-
-    //    //if (WorldController.Instance.Hub.Harvesters.Contains(this))
-    //    //{
-    //    //    WorldController.Instance.Hub.Harvesters.Remove(this);
-    //    //}
-    //}
+        //    //if (WorldController.Instance.Hub.Harvesters.Contains(this))
+        //    //{
+        //    //    WorldController.Instance.Hub.Harvesters.Remove(this);
+        //    //}
+    }
 }
