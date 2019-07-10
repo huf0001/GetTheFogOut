@@ -185,7 +185,7 @@ public class AbilityController : MonoBehaviour
             WorldController.Instance.TileExistsAt(hit.point))
         {
             TileData tile = WorldController.Instance.GetTileAt(hit.point);
-            rangeIndicatorGO.transform.position = new Vector3(tile.X, 0, tile.Z);
+            rangeIndicatorGO.transform.position = new Vector3(tile.X, 0.2f, tile.Z);
             selectedTile = tile;
         }
     } 
