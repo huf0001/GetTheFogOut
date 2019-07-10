@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0baaac276e6f4ed4bd7f9ddd61f6c015, type: 3}
   m_Name: Sonar
   m_EditorClassIdentifier: 
+  collectibleName: Sonar
+  abilityType: 0
   sound: {fileID: 0}
   sprite: {fileID: 0}
   baseCoolDown: 1
-  targetRadius: 10
+  targetRadius: 9999
+  powerCost: 5
+  duration: 10

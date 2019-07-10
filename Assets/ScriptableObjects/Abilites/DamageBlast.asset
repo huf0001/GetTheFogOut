@@ -12,7 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4042ba2e33c54f5eb6ee8a43771f8dd2, type: 3}
   m_Name: DamageBlast
   m_EditorClassIdentifier: 
+  collectibleName: DamageBlast
+  abilityType: 0
   sound: {fileID: 0}
   sprite: {fileID: 0}
   baseCoolDown: 1
-  targetRadius: 10
+  targetRadius: 5
+  powerCost: 50
+  duration: 0
+  fullDamageRange: 3
+  fullDamage: 100
+  fallOffDamage: 50

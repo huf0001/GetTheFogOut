@@ -35,6 +35,7 @@ public class WorldController : MonoBehaviour
 
     [Header("Prefab/Gameobject assignment")]
     [SerializeField] private GameObject ground;
+    public Collider groundCollider;
 
     [SerializeField] GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
 
@@ -60,6 +61,7 @@ public class WorldController : MonoBehaviour
     private CameraController cameraController;
     private MusicFMOD musicFMOD;
 
+    private List<TileData> ThrusterList = new List<TileData>();
 
     private List<TileData> activeTiles = new List<TileData>();
     public List<TileData> ActiveTiles { get => activeTiles; }
@@ -75,6 +77,8 @@ public class WorldController : MonoBehaviour
     private bool hubDestroyed = false;
 
     private int index;
+    private bool thrusterToggle = true;
+    public PowerSource tempPower;
 
     //Public Properties
     // public static WorldController used to get the instance of the WorldManager from anywhere.
@@ -132,6 +136,7 @@ public class WorldController : MonoBehaviour
         SetResourcesToTiles();
         SetBuildingsToTiles();
         SetLandmarksToTiles();
+        groundCollider = ground.GetComponent<Collider>();
         TutorialController.Instance.StartTutorial();
     }
 
@@ -369,8 +374,18 @@ public class WorldController : MonoBehaviour
         }
         showActiveTiles();
         
+        if (ObjectiveController.Instance.ShipComponent.activeSelf)
+        {
+            thrusterTilesOn();
 
-        if (Input.GetButtonDown("Cancel"))
+        }
+        
+        if(GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
+        {
+            thrusterTilesOff();
+        }
+        
+            if (Input.GetButtonDown("Cancel"))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -488,41 +503,35 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    public bool TileExistsAt(Vector3 pos)
+    public bool TileExistsAt(Vector2 position)
     {
-        return TileExistsAt(new Vector2(pos.x, pos.z));
+        return TileExistsAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
     }
 
-    public bool TileExistsAt(Vector2 pos)
+    public bool TileExistsAt(Vector3 position)
     {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.y);
-
-        return !(x >= width || x < 0 || y >= length || y < 0);
-
-        //if (x >= width || x < 0 || y >= length || y < 0)    //with by length array, the last value will be at position (width - 1, length - 1) cause arrays love 0s.
-        //{
-        //    return false;
-        //}
-        //else
-        //{
-        //    return true;
-        //}
+        return TileExistsAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
     }
 
-    public TileData GetTileAt(Vector3 pos)
+    public bool TileExistsAt(int x, int y)
     {
-        return GetTileAt(new Vector2(pos.x, pos.z));
+        return x < width && x >= 0 && y < length && y >= 0;
     }
 
-    public TileData GetTileAt(Vector2 pos)
+    public TileData GetTileAt(Vector2 position)
     {
-        int x = Mathf.RoundToInt(pos.x);
-        int y = Mathf.RoundToInt(pos.y);
+        return GetTileAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
+    }
 
-        if (x >= width || x < 0 || y >= length || y < 0)    //width by length array, the last value will be at position (width - 1, length - 1) 'cause arrays love 0s.
+    public TileData GetTileAt(Vector3 position)
+    {
+        return GetTileAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
+    }
+
+    public TileData GetTileAt(int x, int y)
+    {
+        if (x >= width || x < 0 || y >= length || y < 0)
         {
-            Debug.LogError("Tile (" + x + "," + y + ") is out of range.");
             return null;
         }
 
@@ -568,7 +577,7 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) - new Vector3(Screen.width / 63, -Screen.height / 25);
+        uiController.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
         UIController.instance.buildingSelector.CurrentTile = tile;
     }
 
@@ -609,6 +618,7 @@ public class WorldController : MonoBehaviour
     public void showActiveTiles()
     {
         GameObject grids = GameObject.Find("Grids");
+        
         if (index != activeTiles.Count)
         {
             hideActiveTiles();
@@ -623,9 +633,55 @@ public class WorldController : MonoBehaviour
             }
             index = activeTiles.Count;
         }
-
     }
 
+    public void thrusterTilesOff()
+    {
+        if (!thrusterToggle)
+        {
+            List<TileData> tempDisable = new List<TileData>(DisableTiles);
+            foreach (TileData tile in tempDisable)
+            {
+                if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
+                {
+                    if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
+                    {
+                        activeTiles.Add(tile);
+                        DisableTiles.Remove(tile);
+                        tile.PowerUp(tempPower);
+                    }
+                }
+            }
+            Debug.Log("off");
+            thrusterToggle = true;
+        }
+    }
+    public void thrusterTilesOn()
+    {
+        if (thrusterToggle)
+        {
+            List<TileData> tempActive = new List<TileData>(activeTiles);
+            foreach (TileData tile in tempActive)
+            {
+                if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
+                {
+                    if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
+                    {
+                        DisableTiles.Add(tile);
+                        activeTiles.Remove(tile);
+                        if (tile.getself().Building)
+                        {
+                            MouseController.Instance.RemoveBulding(MouseController.Instance.ReturnCost(tile.getself()));
+                        }
+                        tempPower = tile.getself().PowerSource;
+                        tile.PowerDown(tempPower);
+                    }
+                }
+            }
+            Debug.Log("on");
+            thrusterToggle = false;
+        }
+    }
     public void QuitGame()
     {
         #if UNITY_EDITOR
@@ -640,3 +696,4 @@ public class WorldController : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 }
+

@@ -5,15 +5,22 @@ using UnityEngine;
 
 public abstract class Ability : ScriptableObject, ICollectible
 {
-    [SerializeField] private string collectibleName = "New Ability";
+    [SerializeField] protected string collectibleName = "New Ability";
+    [SerializeField] protected AbilityEnum abilityType;
     public AudioClip sound;
     public Sprite sprite;
     public float baseCoolDown = 1f;
-    public float targetRadius = 10f;
+    public int targetRadius = 10;
+    public int powerCost;
+    public int duration;
 
     public string CollectibleName { get => collectibleName; }
-    
-    public abstract void Initialize(GameObject obj);
-    public abstract void TriggerAbility();
 
+    public AbilityEnum AbilityType
+    {
+        get { return abilityType; }
+    }
+
+    public abstract void Initialize(GameObject obj);
+    public abstract void TriggerAbility(TileData tile);
 }

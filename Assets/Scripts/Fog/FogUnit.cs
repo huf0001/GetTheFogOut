@@ -5,17 +5,23 @@ using UnityEngine;
 public class FogUnit : Entity
 {
     //Serialized Fields
-    [SerializeField] private float lerpToMaxInterval;
-    [SerializeField] private float rapidLerpMultiplier = 3f;
-    [SerializeField] private float damage = 0.1f;
+    [Header("Opacity")]
     [SerializeField] private float startOpacity = 0f;
     [SerializeField] private float endOpacity = 0.90f;
 
+    [Header("Colour")]
+    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
-    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
 
+    [Header("Damage to Fog Unit")]
+    [SerializeField] private float damageLerpMultiplier = 3f;
+
+    [Header("Damage to Buildings")]
+    [SerializeField] private float damage = 0.1f;
+
+    [Header("VFX")]
     [SerializeField] private GameObject angryFogEvaporation;
 
     //Non-Serialized Fields
@@ -38,13 +44,17 @@ public class FogUnit : Entity
     private bool spill = false;
     private bool neighboursFull = false;
 
+    private bool fillingFromFogSphere = false;
+
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
+    public bool Angry { get => angry; set => angry = value; }
     public float Damage { get => damage; set => damage = value; }
+    public bool FillingFromFogSphere {  get => fillingFromFogSphere; set => fillingFromFogSphere = value; }
+    public Renderer FogRenderer { get => fogRenderer; set => fogRenderer = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
     public bool Spill { get => spill; set => spill = value; }
     public bool TakingDamage { get => takingDamage; }
-    public bool Angry { get => angry; set => angry = value; }
 
     //Altered Public Properties
     public override float Health
@@ -66,6 +76,7 @@ public class FogUnit : Entity
                 }
                 else if (base.Health <= 0)
                 {
+                    Debug.Log($"{name}.Health is {base.Health}. Returning to fog pool.");
                     ReturnToFogPool();
                 }
 
@@ -118,23 +129,24 @@ public class FogUnit : Entity
     public void DealDamageToFogUnit(float damage)
     {
         //Run angry fog evaporation effect here
-
-        takingDamage = true;
-
-        startHealth = base.Health;
-        targetHealth -= damage;
-        healthProgress = 0;
-
-        if (targetHealth < 0)
+        if (!fillingFromFogSphere)
         {
-            targetHealth = 0;
-        }
+            takingDamage = true;
+            startHealth = base.Health;
+            targetHealth -= damage;
+            healthProgress = 0;
 
-        foreach (TileData t in Location.AdjacentTiles)
-        {
-            if (t.FogUnit != null)
+            if (targetHealth < 0)
             {
-                t.FogUnit.NeighboursFull = false;
+                targetHealth = 0;
+            }
+
+            foreach (TileData t in Location.AdjacentTiles)
+            {
+                if (t.FogUnit != null)
+                {
+                    t.FogUnit.NeighboursFull = false;
+                }
             }
         }
     }
@@ -151,7 +163,7 @@ public class FogUnit : Entity
         }
         else
         {
-            healthProgress += damageInterval * rapidLerpMultiplier;
+            healthProgress += damageInterval * damageLerpMultiplier;
         }
 
         if (base.Health <= 0)
