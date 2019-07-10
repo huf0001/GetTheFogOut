@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TechArt_Effects_NormalRefraction
+  m_Name: ArtilleryEffect
   m_Shader: {fileID: 4800000, guid: 2804f7b141b729843a63342bb87c753d, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -32,9 +32,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _ChromaticAberration: 0.1
+    - _ChromaticAberration: 0.3
     - _IndexofRefraction: 4
-    - _NormalScale: 0.1
+    - _NormalScale: 1
     - _Opacity: 0
     - __dirty: 0
     m_Colors: []
