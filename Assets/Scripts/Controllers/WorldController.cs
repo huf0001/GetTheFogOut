@@ -59,7 +59,8 @@ public class WorldController : MonoBehaviour
     private ResourceController resourceController;
     private UIController uiController;
     private CameraController cameraController;
-    private MusicFMOD musicFMOD;
+
+    public MusicFMOD musicFMOD;
 
     private List<TileData> ThrusterList = new List<TileData>();
 
