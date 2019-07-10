@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public abstract class Building : Entity
 {
     //Serialized fields
+    [SerializeField] protected float shield;
     [SerializeField] protected float visibilityRange;
     [SerializeField] protected int upkeep;
     [SerializeField] protected PowerSource powerSource = null;
@@ -26,11 +27,13 @@ public abstract class Building : Entity
 
     //Non-serialized fields
     private Animator animator;
+    protected float shieldTime;
     protected AudioSource audioSource;
     private bool damagingNotified = false;
     private bool damagedNotified = false;
     private float buildHealth;
     private float regenWait;
+    public bool isShieldOn = false;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -43,6 +46,9 @@ public abstract class Building : Entity
     public int PowerCost { get => powerCost; }
     public int FuelCost { get => fuelCost; }
     public int OrganicCost { get => organicCost; }
+    public float Shield { get => shield; set => shield = value; }
+    public float ShieldTime { get => shieldTime; set => shieldTime = value; }
+
     public bool TakingDamage { get; private set; }
 
     //public Hub Hub
@@ -113,21 +119,23 @@ public abstract class Building : Entity
             CancelInvoke("RepairBuilding");
             regenWait = 5;
         }
+        
+        // Process shield decay
+        if (isShieldOn)
+        {
+            shieldTime -= Time.deltaTime;
+            if (shieldTime <= 0 || shield <= 0)
+            {
+                shield = 0;
+                isShieldOn = false;
+            }
+        }
 
         if (GotNoHealth())
         {
-            //Debug.Log(buildingType + " is being dismantled. Called from Building.Update() using Entity.GotNoHealth()");
             DismantleBuilding();
         }
-        //if (TakingDamage)
-        //{
-        //    StartCoroutine(CheckStillDamaging());
-        //}
-        //else if (Health < MaxHealth && !damagedNotified)
-        //{
-        //    damagedNotified = true;
-        //    StartCoroutine(MouseController.Instance.WarningScript.ShowMessage(MouseController.Instance.WarningScript.Warning + $"A building is damaged"));
-        //}
+
     }
 
     private void UpdateHealthBar()
@@ -193,6 +201,7 @@ public abstract class Building : Entity
         }
 
         ResourceController.Instance.AddBuilding(this);
+        gameObject.layer = LayerMask.NameToLayer("Buildings");
         placed = true;
 
         /*
@@ -437,7 +446,22 @@ public abstract class Building : Entity
         {
             damagedNotified = false;
         }
-        Health -= damageVal;
+
+        // If shield is on, take damage from shield first.
+        if (isShieldOn)
+        {
+            shield -= damageVal;
+            if (shield <= 0f)
+            {
+                Health += shield;
+                shield = 0f;
+            }
+        }
+        else
+        {
+            Health -= damageVal;
+        }
+        
         TakingDamage = true;
 
         if (!damagingNotified)

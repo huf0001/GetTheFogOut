@@ -44,10 +44,14 @@ public class AbilityController : MonoBehaviour
 
     private bool IsAbilitySelected
     {
-        get { return isAbilitySelected; }
+        get
+        {
+            return isAbilitySelected;
+        }
         set
         {
             rangeIndicatorGO.SetActive(value);
+            MouseController.Instance.isBuildAvaliable = !value;
             isAbilitySelected = value;
         }
     }
@@ -137,7 +141,7 @@ public class AbilityController : MonoBehaviour
     {
         selectedAbility = ability;
         IsAbilitySelected = true;
-        
+
         // Set correct range for the range indicator
         Vector3 scale = new Vector3(ability.targetRadius * 2, 0.01f, ability.targetRadius * 2);
         rangeIndicatorGO.transform.localScale = scale;
@@ -158,6 +162,8 @@ public class AbilityController : MonoBehaviour
                     ResourceController.Instance.StoredPower -= selectedAbility.powerCost;
                     // TODO: Play sound effect
                     // TODO: Start visual cooldown stuff
+                    IsAbilitySelected = false;
+                    selectedAbility = null;
                 }
             } 
             // Cancel ability

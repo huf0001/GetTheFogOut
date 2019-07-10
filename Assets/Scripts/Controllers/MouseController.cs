@@ -23,6 +23,7 @@ public class MouseController : MonoBehaviour
     List<GameObject> collisionList = new List<GameObject>();
     private bool reportTutorialClick = false;
     private TileData hoveredTile;
+    public bool isBuildAvaliable = true;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -187,8 +188,8 @@ public class MouseController : MonoBehaviour
         //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
 
             UIController.instance.buildingSelector.freezeCam();
-            
-        if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject())
+
+            if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject() && isBuildAvaliable == true)
         {
             TileData tile;
             RaycastHit hit;
