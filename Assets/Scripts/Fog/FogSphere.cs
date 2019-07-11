@@ -40,6 +40,13 @@ public class FogSphere : MonoBehaviour
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
 
+    [Header("Spilling")]
+    [SerializeField] private int maxSpiltFogCount;
+
+    [Header("Size")]
+    [SerializeField] private float minSizeScale;
+    [SerializeField] private float maxSizeScale;
+
     //Non-Serialized Fields
     private Fog fog;
     private bool angry = false;
@@ -61,8 +68,8 @@ public class FogSphere : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 hubPosition;
 
-    [Header("Exposed During Testing")]
-    [SerializeField] private float movementSpeed;
+    //[Header("Exposed During Testing")]
+    /*[SerializeField]*/ private float movementSpeed;
 
     private List<FogUnit> spiltFog = new List<FogUnit>();
     private float fogUnitMinHealth;
@@ -186,35 +193,94 @@ public class FogSphere : MonoBehaviour
                 }
             }
         }
+        else if (GetTilesToFill())    //TODO: have this method check if not full tiles are under the fog sphere, and another method get those tiles.
+        {
+            state = FogSphereState.Spilling;
+        }
     }
 
-    ////Returns +1 or -1 depending on how much fog is available to fuel the fog sphere.
-    //private int GetFillMultiplier()
-    //{
-    //    //Shrivels if the spawning tile's fog unit hasn't spilt; one fog unit isn't enough.
-    //    if (spawningTile.FogUnit == null || !spawningTile.FogUnit.Spill)
-    //    {
-    //        return -1;
-    //    }
+    private bool GetTilesToFill()
+    {
+        WorldController wc = WorldController.Instance;
+        bool result = false;
 
-    //    //Shrivels if any of the adjacent tile's FogUnits aren't present or strong enough.
-    //    foreach (TileData t in spawningTile.AdjacentTiles)
-    //    {
-    //        if (t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.33)
-    //        {
-    //            return -1;
-    //        }
-    //    }
+        if (wc.TileExistsAt(transform.position))
+        {
+            TileData t = wc.GetTileAt(transform.position);
+            List<TileData> emptyTiles = new List<TileData>();
 
-    //    return 1;
-    //}
+            //Find all tiles in range
+            List<TileData> tilesInRadius = t.CollectTilesInRange(t.X, t.Z, Mathf.RoundToInt(transform.localScale.x));
+
+            //Find all empty tiles in range
+            foreach (TileData a in tilesInRadius)
+            {
+                if (a.FogUnit == null || a.FogUnit.Health < fogUnitMaxHealth)
+                {
+                    emptyTiles.Add(a);
+                }
+            }
+            
+            //If empty tiles in range 
+            if (emptyTiles.Count > 0)
+            {
+                result = true;
+
+                //If haven't maxed out on empty tiles already
+                if (emptyTiles.Count < maxSpiltFogCount)
+                {
+                    List<TileData> edgeTiles = new List<TileData>(emptyTiles);
+                    bool finished;
+
+                    do
+                    {
+                        List<TileData> temp = new List<TileData>();
+
+                        //For each edge tile, look for new empty tiles beyond the current edge tiles
+                        foreach (TileData e in edgeTiles)
+                        {
+                            foreach (TileData a in e.AdjacentTiles)
+                            {
+                                if ((a.FogUnit == null || a.FogUnit.Health < fogUnitMaxHealth) && !emptyTiles.Contains(a))
+                                {
+                                    temp.Add(a);
+                                }
+                            }
+                        }
+
+                        //If found new tiles
+                        if (temp.Count > 0)
+                        {
+                            emptyTiles.AddRange(temp);
+                            edgeTiles = temp;
+                            finished = emptyTiles.Count >= maxSpiltFogCount;
+                        }
+                        else    //No more not-full stuff to spill into
+                        {
+                            finished = true;
+                        }
+                    } while (!finished);
+                }
+
+                //TODO: order by distance from fog sphere so that it flows from closest to farthest when spilling out, rather than filling everything uniformly.
+                foreach (TileData e in emptyTiles)
+                {
+                    fog.SpawnFogUnitWithMinHealth(e);
+                    spiltFog.Add(e.FogUnit);
+                }
+            }
+        }
+
+        return result;
+    }
 
     //Recurring Methods - Spilling-------------------------------------------------------------------------------------------------------------------
-
+    
+    //TODO: have fog filling flow from closest fog unit to farthest fog unit when spilling out, rather than filling everything uniformly.
     //Fog sphere spills into fog tiles that it finds.
     public void Spill(float increment)
     {
-        Health -= increment;
+        Health -= increment;    //TODO: scale by the no of fog units currently being filled / max spilt fog capacity
         UpdateHeight();
         RenderColour();
         RenderOpacity();
