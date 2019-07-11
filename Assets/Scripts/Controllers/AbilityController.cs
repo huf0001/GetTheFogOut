@@ -181,7 +181,7 @@ public class AbilityController : MonoBehaviour
         // Visually display the targeted area
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (WorldController.Instance.groundCollider.Raycast(ray, out hit, Mathf.Infinity) &&
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")) &&
             WorldController.Instance.TileExistsAt(hit.point))
         {
             TileData tile = WorldController.Instance.GetTileAt(hit.point);
