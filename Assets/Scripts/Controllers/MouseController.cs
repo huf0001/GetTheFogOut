@@ -23,6 +23,7 @@ public class MouseController : MonoBehaviour
     List<GameObject> collisionList = new List<GameObject>();
     private bool reportTutorialClick = false;
     private TileData hoveredTile;
+    public bool isBuildAvaliable = true;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -100,7 +101,7 @@ public class MouseController : MonoBehaviour
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")))
         {
             if (WorldController.Instance.TileExistsAt(hit.point))
             {
@@ -125,7 +126,7 @@ public class MouseController : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")))
             {
                 //Check if a valid tile was clicked
                 if (WorldController.Instance.TileExistsAt(hit.point))
@@ -187,15 +188,15 @@ public class MouseController : MonoBehaviour
         //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
 
             UIController.instance.buildingSelector.freezeCam();
-            
-        if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject())
+
+            if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject() && isBuildAvaliable == true)
         {
             TileData tile;
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             //Check if a valid tile was clicked
-            if (WorldController.Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && WorldController.Instance.TileExistsAt(hit.point))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")) && WorldController.Instance.TileExistsAt(hit.point))
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {

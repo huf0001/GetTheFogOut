@@ -44,10 +44,14 @@ public class AbilityController : MonoBehaviour
 
     private bool IsAbilitySelected
     {
-        get { return isAbilitySelected; }
+        get
+        {
+            return isAbilitySelected;
+        }
         set
         {
             rangeIndicatorGO.SetActive(value);
+            MouseController.Instance.isBuildAvaliable = !value;
             isAbilitySelected = value;
         }
     }
@@ -137,7 +141,7 @@ public class AbilityController : MonoBehaviour
     {
         selectedAbility = ability;
         IsAbilitySelected = true;
-        
+
         // Set correct range for the range indicator
         Vector3 scale = new Vector3(ability.targetRadius * 2, 0.01f, ability.targetRadius * 2);
         rangeIndicatorGO.transform.localScale = scale;
@@ -158,6 +162,8 @@ public class AbilityController : MonoBehaviour
                     ResourceController.Instance.StoredPower -= selectedAbility.powerCost;
                     // TODO: Play sound effect
                     // TODO: Start visual cooldown stuff
+                    IsAbilitySelected = false;
+                    selectedAbility = null;
                 }
             } 
             // Cancel ability
@@ -175,11 +181,11 @@ public class AbilityController : MonoBehaviour
         // Visually display the targeted area
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (WorldController.Instance.groundCollider.Raycast(ray, out hit, Mathf.Infinity) &&
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")) &&
             WorldController.Instance.TileExistsAt(hit.point))
         {
             TileData tile = WorldController.Instance.GetTileAt(hit.point);
-            rangeIndicatorGO.transform.position = new Vector3(tile.X, 0, tile.Z);
+            rangeIndicatorGO.transform.position = new Vector3(tile.X, 0.2f, tile.Z);
             selectedTile = tile;
         }
     } 
