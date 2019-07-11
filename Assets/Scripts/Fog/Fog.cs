@@ -48,13 +48,14 @@ public class Fog : MonoBehaviour
     [SerializeField] private bool fogAccelerates;
     [SerializeField] private bool fogUnitsGrow;
     [SerializeField] private bool fogSpheresGrow;
-    [SerializeField] private float minSphereDistanceFromHub;
-    [SerializeField] private float minFogSphereRange;
-    [SerializeField] private float maxFogSphereRange;
     [SerializeField] private float fogGrowth;
     [SerializeField] private float fogSpillThreshold;
-    [SerializeField] private float minHealth;
-    [SerializeField] private float maxHealth;
+
+    [Header("Health")]
+    [SerializeField] private float fogUnitMinHealth;
+    [SerializeField] private float fogUnitMaxHealth;
+    [SerializeField] private float fogSphereMinHealth;
+    [SerializeField] private float fogSphereMaxHealth;
 
     [Header("Update Intervals")]
     [SerializeField] private float fogFillInterval;
@@ -76,7 +77,6 @@ public class Fog : MonoBehaviour
     //Private Collection Fields
     private List<TileData>  fogCoveredTiles = new List<TileData>();                 //i.e. tiles currently covered by fog
     private List<TileData>  fogFreeTiles = new List<TileData>();                    //i.e. tiles not currently covered by fog
-    private List<TileData>  noSpheresSpawning;
 
     private List<FogUnit>   fogUnitsInPlay = new List<FogUnit>();                   //i.e. currently active fog units on the board
     private List<FogUnit>   borderFogUnitsInPlay = new List<FogUnit>();             //i.e. currentlt active fog units around the edge of the board
@@ -148,7 +148,6 @@ public class Fog : MonoBehaviour
         xMax = WorldController.Instance.Width;
         zMax = WorldController.Instance.Length;
         hubPosition = GameObject.Find("Hub").transform.position;
-        noSpheresSpawning = WorldController.Instance.GetTileAt(hubPosition).CollectTilesInRange((int)hubPosition.x, (int)hubPosition.z, (int)minSphereDistanceFromHub);
 
         foreach (TileData t in WorldController.Instance.Tiles)
         {
@@ -183,58 +182,58 @@ public class Fog : MonoBehaviour
                 //Spawns fog on one side of the board.
                 for (int i = 0; i < xMax; i++)
                 {
-                    SpawnFogUnit(i, zMax - 1, maxHealth);
+                    SpawnFogUnit(i, zMax - 1, fogUnitMaxHealth);
                 }
 
                 break;
             case StartConfiguration.Corners:
                 //Corner spaces
-                SpawnFogUnit(0, 0, maxHealth);
-                SpawnFogUnit(0, zMax - 1, maxHealth);
-                SpawnFogUnit(xMax - 1, 0, maxHealth);
-                SpawnFogUnit(xMax - 1, zMax - 1, maxHealth);
+                SpawnFogUnit(0, 0, fogUnitMaxHealth);
+                SpawnFogUnit(0, zMax - 1, fogUnitMaxHealth);
+                SpawnFogUnit(xMax - 1, 0, fogUnitMaxHealth);
+                SpawnFogUnit(xMax - 1, zMax - 1, fogUnitMaxHealth);
                 break;
 
             case StartConfiguration.FourCompassPoints:
                 //Four compass points
-                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), 0, maxHealth);
-                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), zMax - 1, maxHealth);
-                SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2), maxHealth);
-                SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2), maxHealth);
+                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), 0, fogUnitMaxHealth);
+                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), zMax - 1, fogUnitMaxHealth);
+                SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2), fogUnitMaxHealth);
+                SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2), fogUnitMaxHealth);
                 break;
             case StartConfiguration.EightCompassPoints:
                 //Corner spaces
-                SpawnFogUnit(0, 0, maxHealth);
-                SpawnFogUnit(0, zMax - 1, maxHealth);
-                SpawnFogUnit(xMax - 1, 0, maxHealth);
-                SpawnFogUnit(xMax - 1, zMax - 1, maxHealth);
+                SpawnFogUnit(0, 0, fogUnitMaxHealth);
+                SpawnFogUnit(0, zMax - 1, fogUnitMaxHealth);
+                SpawnFogUnit(xMax - 1, 0, fogUnitMaxHealth);
+                SpawnFogUnit(xMax - 1, zMax - 1, fogUnitMaxHealth);
 
                 //Four compass points
-                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), 0, maxHealth);
-                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), zMax - 1, maxHealth);
-                SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2), maxHealth);
-                SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2), maxHealth);
+                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), 0, fogUnitMaxHealth);
+                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), zMax - 1, fogUnitMaxHealth);
+                SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2), fogUnitMaxHealth);
+                SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2), fogUnitMaxHealth);
 
                 break;
             case StartConfiguration.FourSides:
                 //Each side
                 for (int i = 1; i < xMax - 1; i++)
                 {
-                    SpawnFogUnit(i, 0, maxHealth);
-                    SpawnFogUnit(i, zMax - 1, maxHealth);
+                    SpawnFogUnit(i, 0, fogUnitMaxHealth);
+                    SpawnFogUnit(i, zMax - 1, fogUnitMaxHealth);
                 }
 
                 for (int i = 1; i < zMax - 1; i++)
                 {
-                    SpawnFogUnit(0, i, maxHealth);
-                    SpawnFogUnit(xMax - 1, i, maxHealth);
+                    SpawnFogUnit(0, i, fogUnitMaxHealth);
+                    SpawnFogUnit(xMax - 1, i, fogUnitMaxHealth);
                 }
 
                 //Corner spaces
-                SpawnFogUnit(0, 0, maxHealth);
-                SpawnFogUnit(0, zMax - 1, maxHealth);
-                SpawnFogUnit(xMax - 1, 0, maxHealth);
-                SpawnFogUnit(xMax - 1, zMax - 1, maxHealth);
+                SpawnFogUnit(0, 0, fogUnitMaxHealth);
+                SpawnFogUnit(0, zMax - 1, fogUnitMaxHealth);
+                SpawnFogUnit(xMax - 1, 0, fogUnitMaxHealth);
+                SpawnFogUnit(xMax - 1, zMax - 1, fogUnitMaxHealth);
 
                 break;
             case StartConfiguration.SurroundingHub:
@@ -246,7 +245,7 @@ public class Fog : MonoBehaviour
                         //Except those within a specified range of the hub
                         if (Vector3.Distance(hubPosition, new Vector3(i, hubPosition.y, j)) > surroundingHubRange)
                         {
-                            SpawnFogUnit(i, j, maxHealth);
+                            SpawnFogUnit(i, j, fogUnitMaxHealth);
                         }
                     }
                 }
@@ -258,7 +257,7 @@ public class Fog : MonoBehaviour
                 {
                     for (int j = 0; j < zMax; j++)
                     {
-                        SpawnFogUnit(i, j, maxHealth);
+                        SpawnFogUnit(i, j, fogUnitMaxHealth);
                     }
                 }
                 break;
@@ -272,7 +271,7 @@ public class Fog : MonoBehaviour
     {
         FogUnit f = Instantiate<FogUnit>(fogUnitPrefab, transform, true);
         f.transform.position = transform.position;
-        f.MaxHealth = maxHealth;
+        f.MaxHealth = fogUnitMaxHealth;
         f.Damage = fogDamage;
         f.Fog = this;
         return f;
@@ -300,7 +299,7 @@ public class Fog : MonoBehaviour
     //Take a fog unit and puts it on the board with minimum health
     public void SpawnFogUnitWithMinHealth(TileData t)
     {
-        SpawnFogUnit(t.X, t.Z, minHealth);
+        SpawnFogUnit(t.X, t.Z, fogUnitMinHealth);
     }
 
     //Takes a fog unit and puts it on the board
@@ -342,7 +341,7 @@ public class Fog : MonoBehaviour
     {
         FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, transform, true);
         f.transform.position = transform.position;
-        f.MaxHealth = maxHealth;
+        f.MaxHealth = fogSphereMaxHealth;
         f.Fog = this;
         return f;
     }
@@ -380,9 +379,9 @@ public class Fog : MonoBehaviour
             o.transform.position = u.transform.position;
             s.SpawningTile = u.Location;
             s.FogRenderer.material = visibleMaterial;
-            s.Health = minHealth;
-            s.FogUnitMinHealth = minHealth;
-            s.FogUnitMaxHealth = maxHealth;
+            s.Health = fogSphereMinHealth;
+            s.FogUnitMinHealth = fogUnitMinHealth;
+            s.FogUnitMaxHealth = fogUnitMaxHealth;
             s.State = FogSphereState.MovingAndGrowing;
             s.SetStartEmotion(angry);
             s.RandomiseMovementSpeed();
@@ -524,7 +523,7 @@ public class Fog : MonoBehaviour
                                     toRenderOpacity.Add(af);
                                 }
                             }
-                            else if (af.Health >= maxHealth)
+                            else if (af.Health >= fogUnitMaxHealth)
                             {
                                 fullCount++;
                             }
@@ -587,7 +586,7 @@ public class Fog : MonoBehaviour
         {
             foreach (TileData n in newTiles)
             {
-                SpawnFogUnit(n.X, n.Z, minHealth);
+                SpawnFogUnit(n.X, n.Z, fogUnitMinHealth);
             }
         }
     }

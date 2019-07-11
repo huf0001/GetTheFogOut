@@ -307,7 +307,7 @@ public class FogSphere : MonoBehaviour
     //Updates the fog unit's shader opacity according to its health
     public void RenderOpacity()
     {
-        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / MaxHealth));
+        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / maxHealth));
     }
 
     //Lerps height according to health/maxHealth
