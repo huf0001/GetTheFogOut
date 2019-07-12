@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Schema;
 using Cinemachine;
 using UnityEngine;
 
@@ -71,7 +73,7 @@ public class FogSphere : MonoBehaviour
     //[Header("Exposed During Testing")]
     /*[SerializeField]*/ private float movementSpeed;
 
-    private List<FogUnit> spiltFog = new List<FogUnit>();
+    private List<List<FogUnit>> spiltFog = new List<List<FogUnit>>() {new List<FogUnit>()};
     private float fogUnitMinHealth;
     private float fogUnitMaxHealth;
 
@@ -85,7 +87,7 @@ public class FogSphere : MonoBehaviour
     public float FogUnitMinHealth {  get => fogUnitMinHealth; set => fogUnitMinHealth = value; }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
     public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
-    public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
+    public List<List<FogUnit>> SpiltFog { get => spiltFog; set => spiltFog = value; }
     public FogSphereState State { get => state; set => state = value; }
 
     //Altered Public Properties
@@ -174,11 +176,11 @@ public class FogSphere : MonoBehaviour
 
             if (WorldController.Instance.TileExistsAt(transform.position))
             {
-                spiltFog = new List<FogUnit>();
+                spiltFog = new List<List<FogUnit>>() {new List<FogUnit>()};
                 TileData t = WorldController.Instance.GetTileAt(transform.position);
 
                 Fog.Instance.SpawnFogUnitWithMinHealth(t);
-                spiltFog.Add(t.FogUnit);
+                spiltFog[0].Add(t.FogUnit);
                 t.FogUnit.FillingFromFogSphere = true;
 
                 foreach (TileData a in t.AdjacentTiles)
@@ -188,72 +190,143 @@ public class FogSphere : MonoBehaviour
                         Fog.Instance.SpawnFogUnitWithMinHealth(a);
                     }
 
-                    spiltFog.Add(a.FogUnit);
+                    spiltFog[0].Add(a.FogUnit);
                     a.FogUnit.FillingFromFogSphere = true;
                 }
             }
         }
-        else if (GetTilesToFill())    //TODO: have this method check if not full tiles are under the fog sphere, and another method get those tiles.
+        else if (CheckTilesToFill())    //have this method check if not full tiles are under the fog sphere, and another method get those tiles.
         {
+            GetTilesToFill();
             state = FogSphereState.Spilling;
         }
     }
 
-    private bool GetTilesToFill()
+    private bool CheckTilesToFill()
     {
         WorldController wc = WorldController.Instance;
-        bool result = false;
+        float radius = fogRenderer.bounds.extents.magnitude * 0.5f;
+
+        for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
+        {
+            for (int j = Mathf.RoundToInt(Mathf.Max(0, transform.position.z - radius)); j < Mathf.Min(fog.ZMax, transform.position.z + radius); j++)
+            {
+                if (wc.TileExistsAt(i, j))
+                {
+                    TileData t = wc.GetTileAt(i, j);
+
+                    if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void GetTilesToFill()
+    {
+        bool EmptyTilesDoesNotContain(List<List<TileData>> list, TileData tile)
+        {
+            foreach (List<TileData> l in list)
+            {
+                if (l.Contains(tile))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        WorldController wc = WorldController.Instance;
 
         if (wc.TileExistsAt(transform.position))
         {
-            TileData t = wc.GetTileAt(transform.position);
-            List<TileData> emptyTiles = new List<TileData>();
-
-            //Find all tiles in range
-            List<TileData> tilesInRadius = t.CollectTilesInRange(t.X, t.Z, Mathf.RoundToInt(transform.localScale.x));
+            TileData c = wc.GetTileAt(transform.position);
+            List<List<TileData>> emptyTiles = new List<List<TileData>> {new List<TileData>()};
 
             //Find all empty tiles in range
-            foreach (TileData a in tilesInRadius)
+            //List<TileData> tilesInRadius = new List<TileData>(); // t.CollectTilesInRange(t.X, t.Z, Mathf.RoundToInt(transform.localScale.x));
+
+            float radius = fogRenderer.bounds.extents.magnitude * 0.5f;
+            int count = 0;
+
+            for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
             {
-                if (a.FogUnit == null || a.FogUnit.Health < fogUnitMaxHealth)
+                for (int j = Mathf.RoundToInt(Mathf.Max(0, transform.position.z - radius)); j < Mathf.Min(fog.ZMax, transform.position.z + radius); j++)
                 {
-                    emptyTiles.Add(a);
+                    if (wc.TileExistsAt(i, j))
+                    {
+                        TileData t = wc.GetTileAt(i, j);
+
+                        if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                        {
+                            if (t.FogUnit == null)
+                            {
+                                fog.SpawnFogUnitWithMinHealth(t);
+                            }
+
+                            emptyTiles[0].Add(t);
+                            spiltFog[0].Add(t.FogUnit);
+                            //t.FogUnit.Distance = 0;
+                            count++;
+                        }
+                    }
                 }
             }
+
+            ////Find all empty tiles in range
+            //foreach (TileData a in tilesInRadius)
+            //{
+            //    if (a.FogUnit == null || a.FogUnit.Health < fogUnitMaxHealth)
+            //    {
+            //        emptyTiles.Add(a);
+            //    }
+            //}
             
             //If empty tiles in range 
-            if (emptyTiles.Count > 0)
+            if (count > 0)
             {
-                result = true;
-
                 //If haven't maxed out on empty tiles already
-                if (emptyTiles.Count < maxSpiltFogCount)
+                if (count < maxSpiltFogCount)
                 {
-                    List<TileData> edgeTiles = new List<TileData>(emptyTiles);
+                    int distance = 1;
+                    List<TileData> edgeTiles = new List<TileData>(emptyTiles[0]);
                     bool finished;
 
                     do
                     {
-                        List<TileData> temp = new List<TileData>();
+                        emptyTiles.Add(new List<TileData>());
+                        spiltFog.Add(new List<FogUnit>());
 
                         //For each edge tile, look for new empty tiles beyond the current edge tiles
                         foreach (TileData e in edgeTiles)
                         {
                             foreach (TileData a in e.AdjacentTiles)
                             {
-                                if ((a.FogUnit == null || a.FogUnit.Health < fogUnitMaxHealth) && !emptyTiles.Contains(a))
+                                if ((a.FogUnit == null || a.FogUnit.Health < fogUnitMaxHealth) && EmptyTilesDoesNotContain(emptyTiles, a))
                                 {
-                                    temp.Add(a);
+                                    if (a.FogUnit == null)
+                                    {
+                                        fog.SpawnFogUnitWithMinHealth(a);
+                                    }
+
+                                    emptyTiles[0].Add(a);
+                                    spiltFog[0].Add(a.FogUnit);
+                                    count++;
                                 }
                             }
                         }
 
                         //If found new tiles
-                        if (temp.Count > 0)
+                        if (emptyTiles[distance].Count > 0)
                         {
-                            emptyTiles.AddRange(temp);
-                            edgeTiles = temp;
-                            finished = emptyTiles.Count >= maxSpiltFogCount;
+                            edgeTiles = emptyTiles[distance];
+                            finished = count >= maxSpiltFogCount;
+                            distance++;
                         }
                         else    //No more not-full stuff to spill into
                         {
@@ -263,15 +336,26 @@ public class FogSphere : MonoBehaviour
                 }
 
                 //TODO: order by distance from fog sphere so that it flows from closest to farthest when spilling out, rather than filling everything uniformly.
-                foreach (TileData e in emptyTiles)
-                {
-                    fog.SpawnFogUnitWithMinHealth(e);
-                    spiltFog.Add(e.FogUnit);
-                }
+                //foreach (TileData e in emptyTiles)
+                //{
+                //    fog.SpawnFogUnitWithMinHealth(e);
+                //    spiltFog.Add(e.FogUnit);
+                //    e.FogUnit.Distance = Vector3.Distance(transform.position, e.FogUnit.transform.position);
+                //}
+
+                //spiltFog.Sort(new FogUnitDistanceComparison());
+
+                //foreach (FogUnit f in spiltFog)
+                //{
+                //    Debug.Log($"{f.name}.Distance: {f.Distance}");
+                //}
             }
         }
 
-        return result;
+        if (spiltFog.Count == 0)
+        {
+            Debug.Log("FogSphere.GetTilesToFill was called, but didn't find any tiles even though FogSphere.CheckTilesToFill found some.");
+        }
     }
 
     //Recurring Methods - Spilling-------------------------------------------------------------------------------------------------------------------
@@ -285,12 +369,35 @@ public class FogSphere : MonoBehaviour
         RenderColour();
         RenderOpacity();
 
-        foreach (FogUnit f in spiltFog)
+        //bool overThreshold = true;        //TODO: once the threshold is triggered, instead of using the List<List<FogUnit>>, have the contents of the list check for
+                                            //further adjacent tiles that aren't in the list or full, and add them to a single List<FogUnit>.
+                                            //List<FogUnit> full = new List<FogUnit>();
+
+        foreach (List<FogUnit> l in spiltFog)//Remove this loop once List<List<X>> works for uniform filling
         {
-            f.Health += increment;
-            f.RenderColour();
-            f.RenderOpacity();
+            foreach (FogUnit f in l)//spiltFog[0])
+            {
+                f.Health += increment;
+                f.RenderColour();
+                f.RenderOpacity();
+
+                //if (f.Health < f.MaxHealth * 0.5f)
+                //{
+                //    overThreshold = false;
+                //}
+                //else if (f.Health >= f.MaxHealth)
+                //{
+                //    full.Add(f);
+                //}
+            }
         }
+
+        //if (overThreshold && spiltFog.Count > 1)
+        //{
+        //    spiltFog[0].AddRange(spiltFog[1]);
+        //    spiltFog.Remove(spiltFog[1]);
+        //}
+        
     }
 
     //Recurring Methods - Taking Damage--------------------------------------------------------------------------------------------------------------
@@ -414,4 +521,27 @@ public class FogSphere : MonoBehaviour
         }
     }
 
+    public bool SpiltFogContains(FogUnit f)
+    {
+        foreach (List<FogUnit> l in spiltFog)
+        {
+            if (l.Contains(f))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void SpiltFogRemove(FogUnit f)
+    {
+        foreach (List<FogUnit> l in spiltFog)
+        {
+            if (l.Contains(f))
+            {
+                l.Remove(f);
+            }
+        }
+    }
 }

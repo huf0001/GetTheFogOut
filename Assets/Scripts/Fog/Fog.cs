@@ -69,6 +69,8 @@ public class Fog : MonoBehaviour
     [SerializeField] private float surroundingHubRange;
 
     //Private Value Fields
+    private int xCount;
+    private int zCount;
     private int xMax;
     private int zMax;
     private float fogDamage;
@@ -76,10 +78,10 @@ public class Fog : MonoBehaviour
 
     //Private Collection Fields
     private List<TileData>  fogCoveredTiles = new List<TileData>();                 //i.e. tiles currently covered by fog
-    private List<TileData>  fogFreeTiles = new List<TileData>();                    //i.e. tiles not currently covered by fog
+    //private List<TileData>  fogFreeTiles = new List<TileData>();                    //i.e. tiles not currently covered by fog
 
     private List<FogUnit>   fogUnitsInPlay = new List<FogUnit>();                   //i.e. currently active fog units on the board
-    private List<FogUnit>   borderFogUnitsInPlay = new List<FogUnit>();             //i.e. currentlt active fog units around the edge of the board
+    [SerializeField] private List<FogUnit>   borderFogUnitsInPlay = new List<FogUnit>();             //i.e. currentlt active fog units around the edge of the board
     private List<FogUnit>   fogUnitsToReturnToPool = new List<FogUnit>();           //i.e. currently waiting to be re-pooled
     private List<FogUnit>   fogUnitsInPool = new List<FogUnit>();                   //i.e. currently inactive fog units waiting for spawning
 
@@ -91,9 +93,11 @@ public class Fog : MonoBehaviour
     public static Fog            Instance { get; protected set; }
     public bool                  DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
-    public List<TileData>        FogFreeTiles { get => fogFreeTiles; }
+    //public List<TileData>        FogFreeTiles { get => fogFreeTiles; }
     public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
     public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
+    public int                   XMax { get => xMax; }
+    public int                   ZMax { get => zMax; }
 
     //Setup Methods - General------------------------------------------------------------------------------------------------------------------------
 
@@ -145,22 +149,24 @@ public class Fog : MonoBehaviour
     private void SpawnStartingFog(StartConfiguration startConfiguration)
     {
         //Get dimensions of tile array
-        xMax = WorldController.Instance.Width;
-        zMax = WorldController.Instance.Length;
+        xCount = WorldController.Instance.Width;
+        zCount = WorldController.Instance.Length;
+        xMax = xCount - 1;
+        zMax = zCount - 1;
         hubPosition = GameObject.Find("Hub").transform.position;
 
-        foreach (TileData t in WorldController.Instance.Tiles)
-        {
-            if (t != null)
-            {
-                fogFreeTiles.Add(t);
-            }
-        }
+        //foreach (TileData t in WorldController.Instance.Tiles)
+        //{
+        //    if (t != null)
+        //    {
+        //        fogFreeTiles.Add(t);
+        //    }
+        //}
 
         //Populate fog unit pool with fog units
         if (fogUnitsInPool.Count == 0)
         {
-            for (int i = 0; i < xMax * zMax; i++)
+            for (int i = 0; i < xCount * zCount; i++)
             {
                 fogUnitsInPool.Add(CreateFogUnit());
             }
@@ -180,67 +186,67 @@ public class Fog : MonoBehaviour
         {
             case StartConfiguration.OneSide:
                 //Spawns fog on one side of the board.
-                for (int i = 0; i < xMax; i++)
+                for (int i = 0; i < xCount; i++)
                 {
-                    SpawnFogUnit(i, zMax - 1, fogUnitMaxHealth);
+                    SpawnFogUnit(i, zMax, fogUnitMaxHealth);
                 }
 
                 break;
             case StartConfiguration.Corners:
                 //Corner spaces
                 SpawnFogUnit(0, 0, fogUnitMaxHealth);
-                SpawnFogUnit(0, zMax - 1, fogUnitMaxHealth);
-                SpawnFogUnit(xMax - 1, 0, fogUnitMaxHealth);
-                SpawnFogUnit(xMax - 1, zMax - 1, fogUnitMaxHealth);
+                SpawnFogUnit(0, zMax, fogUnitMaxHealth);
+                SpawnFogUnit(xMax, 0, fogUnitMaxHealth);
+                SpawnFogUnit(xMax, zMax, fogUnitMaxHealth);
                 break;
 
             case StartConfiguration.FourCompassPoints:
                 //Four compass points
-                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), 0, fogUnitMaxHealth);
-                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), zMax - 1, fogUnitMaxHealth);
-                SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2), fogUnitMaxHealth);
-                SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2), fogUnitMaxHealth);
+                SpawnFogUnit(Mathf.RoundToInt(xCount / 2), 0, fogUnitMaxHealth);
+                SpawnFogUnit(Mathf.RoundToInt(xCount / 2), zMax, fogUnitMaxHealth);
+                SpawnFogUnit(0, Mathf.RoundToInt(zCount / 2), fogUnitMaxHealth);
+                SpawnFogUnit(xMax, Mathf.RoundToInt(zCount / 2), fogUnitMaxHealth);
                 break;
             case StartConfiguration.EightCompassPoints:
                 //Corner spaces
                 SpawnFogUnit(0, 0, fogUnitMaxHealth);
-                SpawnFogUnit(0, zMax - 1, fogUnitMaxHealth);
-                SpawnFogUnit(xMax - 1, 0, fogUnitMaxHealth);
-                SpawnFogUnit(xMax - 1, zMax - 1, fogUnitMaxHealth);
+                SpawnFogUnit(0, zMax, fogUnitMaxHealth);
+                SpawnFogUnit(xMax, 0, fogUnitMaxHealth);
+                SpawnFogUnit(xMax, zMax, fogUnitMaxHealth);
 
                 //Four compass points
-                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), 0, fogUnitMaxHealth);
-                SpawnFogUnit(Mathf.RoundToInt(xMax / 2), zMax - 1, fogUnitMaxHealth);
-                SpawnFogUnit(0, Mathf.RoundToInt(zMax / 2), fogUnitMaxHealth);
-                SpawnFogUnit(xMax - 1, Mathf.RoundToInt(zMax / 2), fogUnitMaxHealth);
+                SpawnFogUnit(Mathf.RoundToInt(xCount / 2), 0, fogUnitMaxHealth);
+                SpawnFogUnit(Mathf.RoundToInt(xCount / 2), zMax, fogUnitMaxHealth);
+                SpawnFogUnit(0, Mathf.RoundToInt(zCount / 2), fogUnitMaxHealth);
+                SpawnFogUnit(xMax, Mathf.RoundToInt(zCount / 2), fogUnitMaxHealth);
 
                 break;
             case StartConfiguration.FourSides:
                 //Each side
-                for (int i = 1; i < xMax - 1; i++)
+                for (int i = 1; i < xMax; i++)
                 {
                     SpawnFogUnit(i, 0, fogUnitMaxHealth);
-                    SpawnFogUnit(i, zMax - 1, fogUnitMaxHealth);
+                    SpawnFogUnit(i, zMax, fogUnitMaxHealth);
                 }
 
-                for (int i = 1; i < zMax - 1; i++)
+                for (int i = 1; i < zMax; i++)
                 {
                     SpawnFogUnit(0, i, fogUnitMaxHealth);
-                    SpawnFogUnit(xMax - 1, i, fogUnitMaxHealth);
+                    SpawnFogUnit(xMax, i, fogUnitMaxHealth);
                 }
 
                 //Corner spaces
                 SpawnFogUnit(0, 0, fogUnitMaxHealth);
-                SpawnFogUnit(0, zMax - 1, fogUnitMaxHealth);
-                SpawnFogUnit(xMax - 1, 0, fogUnitMaxHealth);
-                SpawnFogUnit(xMax - 1, zMax - 1, fogUnitMaxHealth);
+                SpawnFogUnit(0, zMax, fogUnitMaxHealth);
+                SpawnFogUnit(xMax, 0, fogUnitMaxHealth);
+                SpawnFogUnit(xMax, zMax, fogUnitMaxHealth);
 
                 break;
             case StartConfiguration.SurroundingHub:
                 //Every space on the board
-                for (int i = 0; i < xMax; i++)
+                for (int i = 0; i < xCount; i++)
                 {
-                    for (int j = 0; j < zMax; j++)
+                    for (int j = 0; j < zCount; j++)
                     {
                         //Except those within a specified range of the hub
                         if (Vector3.Distance(hubPosition, new Vector3(i, hubPosition.y, j)) > surroundingHubRange)
@@ -253,9 +259,9 @@ public class Fog : MonoBehaviour
                 break;
             case StartConfiguration.FullBoard:
                 //Every space on the board
-                for (int i = 0; i < xMax; i++)
+                for (int i = 0; i < xCount; i++)
                 {
-                    for (int j = 0; j < zMax; j++)
+                    for (int j = 0; j < zCount; j++)
                     {
                         SpawnFogUnit(i, j, fogUnitMaxHealth);
                     }
@@ -324,7 +330,7 @@ public class Fog : MonoBehaviour
 
         fogUnitsInPlay.Add(f);
         fogCoveredTiles.Add(t);
-        fogFreeTiles.Remove(t);
+        //fogFreeTiles.Remove(t);
 
         if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
         {
@@ -368,7 +374,6 @@ public class Fog : MonoBehaviour
     //Takes a fog unit and puts it on the board
     private void SpawnFogSphere()
     {
-
         FogUnit u = GetBorderFogUnit();
 
         if (u != null)
@@ -551,11 +556,11 @@ public class Fog : MonoBehaviour
         {
             ExpandFog();
         }
-        else if (fogUnitsInPlay.Count < xMax * zMax)
+        else if (fogUnitsInPlay.Count < xCount * zCount)
         {
             Debug.Log("Ran out of fog units. If the board isn't full, there must be some overlapping.");
         }
-        else if (fogUnitsInPlay.Count > xMax * zMax)
+        else if (fogUnitsInPlay.Count > xCount * zCount)
         {
             Debug.Log("More fog units than board tiles. There must be some overlapping.");
         }
@@ -669,10 +674,10 @@ public class Fog : MonoBehaviour
 
         foreach (FogSphere s in fogSpheresInPlay)
         {
-            if (s.SpiltFog.Contains(f))
-            {
-                s.SpiltFog.Remove(f);
-            }
+            //if (s.SpiltFogContains(f))
+            //{
+                s.SpiltFogRemove(f);
+            //}
         }
 
         f.FillingFromFogSphere = false;
@@ -684,7 +689,7 @@ public class Fog : MonoBehaviour
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f);
         fogCoveredTiles.Remove(f.Location);
-        fogFreeTiles.Add(f.Location);
+        //fogFreeTiles.Add(f.Location);
     }
 
     //Puts the fog sphere in the list of fog spheres to be put back in the pool
@@ -701,13 +706,15 @@ public class Fog : MonoBehaviour
         f.FogRenderer.material = invisibleMaterial;
         f.transform.position = transform.position;
 
-        foreach (FogUnit u in f.SpiltFog)
+        foreach (List<FogUnit> l in f.SpiltFog)
         {
-            u.FillingFromFogSphere = false;
+            foreach (FogUnit u in l)
+            {
+                u.FillingFromFogSphere = false;
+            }
         }
 
-        f.SpiltFog = new List<FogUnit>();
-
+        f.SpiltFog = new List<List<FogUnit>>() { new List<FogUnit>() };
         fogSpheresInPool.Add(f);
         fogSpheresInPlay.Remove(f);
     }

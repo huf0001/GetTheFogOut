@@ -49,10 +49,13 @@ public class FogUnit : Entity
 
     private bool fillingFromFogSphere = false;
 
+    private float distance = 9999;
+
     //Public Properties
     public Fog Fog { get => fog; set => fog = value; }
     public bool Angry { get => angry; set => angry = value; }
     public float Damage { get => damage; set => damage = value; }
+    public float Distance { get => distance; set => distance = value; }
     public bool FillingFromFogSphere {  get => fillingFromFogSphere; set => fillingFromFogSphere = value; }
     public Renderer FogRenderer { get => fogRenderer; set => fogRenderer = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
