@@ -674,10 +674,10 @@ public class Fog : MonoBehaviour
 
         foreach (FogSphere s in fogSpheresInPlay)
         {
-            //if (s.SpiltFogContains(f))
-            //{
-                s.SpiltFogRemove(f);
-            //}
+            if (s.SpiltFog.Contains(f))
+            {
+                s.SpiltFog.Remove(f);
+            }
         }
 
         f.FillingFromFogSphere = false;
@@ -706,15 +706,12 @@ public class Fog : MonoBehaviour
         f.FogRenderer.material = invisibleMaterial;
         f.transform.position = transform.position;
 
-        foreach (List<FogUnit> l in f.SpiltFog)
+        foreach (FogUnit u in f.SpiltFog)
         {
-            foreach (FogUnit u in l)
-            {
-                u.FillingFromFogSphere = false;
-            }
+            u.FillingFromFogSphere = false;
         }
 
-        f.SpiltFog = new List<List<FogUnit>>() { new List<FogUnit>() };
+        f.SpiltFog = new List<FogUnit>();
         fogSpheresInPool.Add(f);
         fogSpheresInPlay.Remove(f);
     }
