@@ -81,7 +81,7 @@ public class FogSphere : MonoBehaviour
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
-    //Basic Properties
+    //Basic Public Properties
     public Fog Fog { get => fog; set => fog = value; }
     public bool Angry { get => angry; set => angry = value; }
     public Renderer FogRenderer {  get => fogRenderer; }
@@ -141,7 +141,7 @@ public class FogSphere : MonoBehaviour
     }
 
     //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
-    //so that newly spawned fog units don't look docile when the fog is angry.
+    //so that newly spawned fog units don't look docile when the fog is angry
     public void SetStartEmotion(bool a)
     {
         angry = a;
@@ -196,7 +196,7 @@ public class FogSphere : MonoBehaviour
                 }
             }
         }
-        else if (CheckFogToFill())    //have this method check if not full tiles are under the fog sphere, and another method get those tiles.
+        else if (CheckFogToFill())    
         {
             GetFogToFill();
             state = FogSphereState.Spilling;
@@ -232,28 +232,13 @@ public class FogSphere : MonoBehaviour
     //Gets the tiles within range that the fog sphere can spill into
     private void GetFogToFill()
     {
-        //bool EmptyTilesDoesNotContain(List<List<TileData>> list, TileData tile)
-        //{
-        //    foreach (List<TileData> l in list)
-        //    {
-        //        if (l.Contains(tile))
-        //        {
-        //            return false;
-        //        }
-        //    }
-
-        //    return true;
-        //}
-
         WorldController wc = WorldController.Instance;
 
         if (wc.TileExistsAt(transform.position))
         {
             TileData c = wc.GetTileAt(transform.position);
-            //List<TileData> emptyTiles = new List<TileData>();
 
             float radius = fogRenderer.bounds.extents.magnitude * 0.5f;
-            //int count = 0;
 
             for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
             {
@@ -270,87 +255,11 @@ public class FogSphere : MonoBehaviour
                                 fog.SpawnFogUnitWithMinHealth(t);
                             }
 
-                            //emptyTiles.Add(t);
                             spiltFog.Add(t.FogUnit);
-                            //t.FogUnit.Distance = 0;
-                            //count++;
                         }
                     }
                 }
             }
-
-            ////Find all empty tiles in range
-            //foreach (TileData a in tilesInRadius)
-            //{
-            //    if (a.FogUnit == null || a.FogUnit.Health < fogUnitMaxHealth)
-            //    {
-            //        emptyTiles.Add(a);
-            //    }
-            //}
-            
-            //If empty tiles in range 
-            //if (count > 0)
-            //{
-            //    //If haven't maxed out on empty tiles already
-            //    if (count < maxSpiltFogCount)
-            //    {
-            //        int distance = 1;
-            //        List<TileData> edgeTiles = new List<TileData>(emptyTiles[0]);
-            //        bool finished;
-
-            //        do
-            //        {
-            //            emptyTiles.Add(new List<TileData>());
-            //            spiltFog.Add(new List<FogUnit>());
-
-            //            //For each edge tile, look for new empty tiles beyond the current edge tiles
-            //            foreach (TileData e in edgeTiles)
-            //            {
-            //                foreach (TileData a in e.AdjacentTiles)
-            //                {
-            //                    if ((a.FogUnit == null || a.FogUnit.Health < fogUnitMaxHealth) && EmptyTilesDoesNotContain(emptyTiles, a))
-            //                    {
-            //                        if (a.FogUnit == null)
-            //                        {
-            //                            fog.SpawnFogUnitWithMinHealth(a);
-            //                        }
-
-            //                        emptyTiles[0].Add(a);
-            //                        spiltFog[0].Add(a.FogUnit);
-            //                        count++;
-            //                    }
-            //                }
-            //            }
-
-            //            //If found new tiles
-            //            if (emptyTiles[distance].Count > 0)
-            //            {
-            //                edgeTiles = emptyTiles[distance];
-            //                finished = count >= maxSpiltFogCount;
-            //                distance++;
-            //            }
-            //            else    //No more not-full stuff to spill into
-            //            {
-            //                finished = true;
-            //            }
-            //        } while (!finished);
-            //    }
-
-            //    //TODO: order by distance from fog sphere so that it flows from closest to farthest when spilling out, rather than filling everything uniformly.
-            //    //foreach (TileData e in emptyTiles)
-            //    //{
-            //    //    fog.SpawnFogUnitWithMinHealth(e);
-            //    //    spiltFog.Add(e.FogUnit);
-            //    //    e.FogUnit.Distance = Vector3.Distance(transform.position, e.FogUnit.transform.position);
-            //    //}
-
-            //    //spiltFog.Sort(new FogUnitDistanceComparison());
-
-            //    //foreach (FogUnit f in spiltFog)
-            //    //{
-            //    //    Debug.Log($"{f.name}.Distance: {f.Distance}");
-            //    //}
-            //}
         }
 
         if (spiltFog.Count == 0)
@@ -361,21 +270,20 @@ public class FogSphere : MonoBehaviour
 
     //Recurring Methods - Spilling-------------------------------------------------------------------------------------------------------------------
     
-    //TODO: have fog filling flow from closest fog unit to farthest fog unit when spilling out, rather than filling everything uniformly.
     //Fog sphere spills into fog tiles that it finds.
     public void Spill(float increment)
     {
         bool readyToSpillFurther = true;
         List<FogUnit> full = new List<FogUnit>();
 
-        Health -= increment * (spiltFog.Count / maxSpiltFogCount);    //TODO: scale by the no of fog units currently being filled / max spilt fog capacity
+        Health -= increment * (spiltFog.Count / maxSpiltFogCount);  //Try -= increment
         UpdateHeight();
         RenderColour();
         RenderOpacity();
 
         foreach (FogUnit f in spiltFog)
         {
-            f.Health += increment;
+            f.Health += increment;      //Try += increment * (maxSpillFogCount / spiltFog.Count)
             f.RenderColour();
             f.RenderOpacity();
 
@@ -405,7 +313,7 @@ public class FogSphere : MonoBehaviour
         }
     }
 
-    //Fog has reached a spilling threshold, spills over into even more tiles.
+    //Fog has reached a spilling threshold, spills over into even more tiles
     private bool GetMoreFogToFill()
     {
         List<FogUnit> newFog = new List<FogUnit>();
@@ -550,28 +458,4 @@ public class FogSphere : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    //public bool SpiltFogContains(FogUnit f)
-    //{
-    //    foreach (List<FogUnit> l in spiltFog)
-    //    {
-    //        if (l.Contains(f))
-    //        {
-    //            return true;
-    //        }
-    //    }
-
-    //    return false;
-    //}
-
-    //public void SpiltFogRemove(FogUnit f)
-    //{
-    //    foreach (List<FogUnit> l in spiltFog)
-    //    {
-    //        if (l.Contains(f))
-    //        {
-    //            l.Remove(f);
-    //        }
-    //    }
-    //}
 }

@@ -78,10 +78,9 @@ public class Fog : MonoBehaviour
 
     //Private Collection Fields
     private List<TileData>  fogCoveredTiles = new List<TileData>();                 //i.e. tiles currently covered by fog
-    //private List<TileData>  fogFreeTiles = new List<TileData>();                    //i.e. tiles not currently covered by fog
 
     private List<FogUnit>   fogUnitsInPlay = new List<FogUnit>();                   //i.e. currently active fog units on the board
-    [SerializeField] private List<FogUnit>   borderFogUnitsInPlay = new List<FogUnit>();             //i.e. currentlt active fog units around the edge of the board
+    private List<FogUnit>   borderFogUnitsInPlay = new List<FogUnit>();             //i.e. currently active fog units around the edge of the board
     private List<FogUnit>   fogUnitsToReturnToPool = new List<FogUnit>();           //i.e. currently waiting to be re-pooled
     private List<FogUnit>   fogUnitsInPool = new List<FogUnit>();                   //i.e. currently inactive fog units waiting for spawning
 
@@ -89,11 +88,12 @@ public class Fog : MonoBehaviour
     private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
     private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
 
-    //Public Properties
+    //Public Properties------------------------------------------------------------------------------------------------------------------------------
+
+    //Basic Public Properties
     public static Fog            Instance { get; protected set; }
     public bool                  DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
-    //public List<TileData>        FogFreeTiles { get => fogFreeTiles; }
     public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
     public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
     public int                   XMax { get => xMax; }
@@ -154,14 +154,6 @@ public class Fog : MonoBehaviour
         xMax = xCount - 1;
         zMax = zCount - 1;
         hubPosition = GameObject.Find("Hub").transform.position;
-
-        //foreach (TileData t in WorldController.Instance.Tiles)
-        //{
-        //    if (t != null)
-        //    {
-        //        fogFreeTiles.Add(t);
-        //    }
-        //}
 
         //Populate fog unit pool with fog units
         if (fogUnitsInPool.Count == 0)
@@ -330,7 +322,6 @@ public class Fog : MonoBehaviour
 
         fogUnitsInPlay.Add(f);
         fogCoveredTiles.Add(t);
-        //fogFreeTiles.Remove(t);
 
         if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
         {
@@ -432,7 +423,7 @@ public class Fog : MonoBehaviour
 
     //Activating the Fog-----------------------------------------------------------------------------------------------------------------------------
 
-    //Invokes the WakeUpFog method according to the parameter passed to it.
+    //Invokes the WakeUpFog method according to the parameter passed to it
     public void InvokeWakeUpFog(int delay)
     {
         Invoke(nameof(WakeUpFog), delay);
@@ -689,7 +680,6 @@ public class Fog : MonoBehaviour
         fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f);
         fogCoveredTiles.Remove(f.Location);
-        //fogFreeTiles.Add(f.Location);
     }
 
     //Puts the fog sphere in the list of fog spheres to be put back in the pool
