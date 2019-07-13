@@ -676,10 +676,6 @@ MonoBehaviour:
   generatorLimit: 5
   audioCompleteObjective: {fileID: 8300000, guid: 829473fd5b1ed95469182e2d546272f3,
     type: 3}
-  fogGrowth: 0000000000000000
-  fogGrowthEasy: 10
-  fogGrowthMedium: 25
-  fogGrowthHard: 50
   thrusterCamera: {fileID: 0}
 --- !u!114 &3646138034780775634
 MonoBehaviour:
@@ -719,21 +715,29 @@ MonoBehaviour:
   visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
   angry: 0
-  damageOn: 0
+  damageOn: 1
   configuration: 5
   difficulty: 1
   expansionDirection: 0
   surroundingHubRange: 9
   fogAccelerates: 0
-  fogUnitsGrow: 0
+  fogUnitsGrow: 1
   fogSpheresGrow: 1
   maxFogSpheresCount: 3
   fogGrowth: 10
   fogSpillThreshold: 50
+  fogGrowthEasy: 10
+  fogGrowthMedium: 25
+  fogGrowthHard: 50
+  fogSphereEasyMaxHealth: 100
+  fogSphereMediumMaxHealth: 150
+  fogSphereHardMaxHealth: 200
+  fogSphereEasyMaxSizeScale: 2.3
+  fogSphereMediumMaxSizeScale: 3.45
+  fogSphereHardMaxSizeScale: 4.6
+  fogSphereMinHealth: 0.001
   fogUnitMinHealth: 0.001
   fogUnitMaxHealth: 100
-  fogSphereMinHealth: 0.001
-  fogSphereMaxHealth: 100
   fogFillInterval: 0.2
   fogDamageInterval: 0.02
   fogExpansionInterval: 0.5

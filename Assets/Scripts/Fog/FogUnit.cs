@@ -8,20 +8,20 @@ public class FogUnit : Entity
 
     //Serialized Fields
     [Header("Opacity")]
-    [SerializeField] private float startOpacity = 0f;
-    [SerializeField] private float endOpacity = 0.90f;
+    [SerializeField] private float startOpacity;
+    [SerializeField] private float endOpacity;
 
     [Header("Colour")]
-    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
+    [SerializeField] private float colourLerpSpeedMultiplier;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
 
     [Header("Damage to Fog Unit")]
-    [SerializeField] private float damageLerpMultiplier = 3f;
+    [SerializeField] private float damageLerpMultiplier;
 
     [Header("Damage to Buildings")]
-    [SerializeField] private float damage = 0.1f;
+    [SerializeField] private float damage;
 
     [Header("VFX")]
     [SerializeField] private GameObject angryFogEvaporation;

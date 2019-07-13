@@ -24,32 +24,35 @@ public class FogSphere : MonoBehaviour
     [SerializeField] private FogSphereState state;
 
     [Header("Health")]
-    [SerializeField] private float health = 1f;
-    [SerializeField] private float maxHealth = 1f;
-    [SerializeField] private float damageLerpMultiplier = 3f;
+    [SerializeField] private float health;
+    [SerializeField] private float maxHealth;
+    [SerializeField] private float damageLerpMultiplier;
 
     [Header("Movement")]
-    [SerializeField] private float minHeight;
-    [SerializeField] private float maxHeight;
+    //[SerializeField] private float minHeight;
+    [SerializeField] private float height;
     [SerializeField] private float minMovementSpeed;
     [SerializeField] private float maxMovementSpeed;
 
+    [Header("Renderers")]
+    [SerializeField] private List<Renderer> renderers;
+
     [Header("Opacity")]
-    [SerializeField] private float startOpacity = 0f;
-    [SerializeField] private float endOpacity = 0.90f;
+    [SerializeField] private float startOpacity;
+    [SerializeField] private float endOpacity;
 
     [Header("Colour")]
-    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
+    [SerializeField] private float colourLerpSpeedMultiplier;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
 
-    [Header("Spilling")]
-    [SerializeField] private int maxSpiltFogCount;
-
     [Header("Size")]
     [SerializeField] private float minSizeScale;
     [SerializeField] private float maxSizeScale;
+
+    [Header("Spilling")]
+    [SerializeField] private int maxSpiltFogCount;
 
     [Header("Damage")]
     [SerializeField] private float damage;
@@ -58,7 +61,6 @@ public class FogSphere : MonoBehaviour
     private Fog fog;
     private bool angry = false;
 
-    private Renderer fogRenderer;
     private int colour;
     private int alpha;
 
@@ -75,8 +77,7 @@ public class FogSphere : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 hubPosition;
 
-    //[Header("Exposed During Testing")]
-    /*[SerializeField]*/ private float movementSpeed;
+    private float movementSpeed;
 
     private List<FogUnit> spiltFog = new List<FogUnit>();
     private float fogUnitMinHealth;
@@ -89,11 +90,13 @@ public class FogSphere : MonoBehaviour
     //Basic Public Properties
     public Fog Fog { get => fog; set => fog = value; }
     public bool Angry { get => angry; set => angry = value; }
-    public Renderer FogRenderer {  get => fogRenderer; }
     public float FogUnitMaxHealth {  get => fogUnitMaxHealth; set => fogUnitMaxHealth = value; }
     public float FogUnitMinHealth {  get => fogUnitMinHealth; set => fogUnitMinHealth = value; }
+    public float Height { get => height; }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
     public float MaxSizeScale { get => maxSizeScale; set => maxSizeScale = value; }
+    public float MinSizeScale { get => minSizeScale; set => minSizeScale = value; }
+    public List<Renderer> Renderers {  get => renderers; }
     public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
     public FogSphereState State { get => state; set => state = value; }
@@ -131,12 +134,11 @@ public class FogSphere : MonoBehaviour
     //Awake
     private void Awake()
     {
-        fogRenderer = gameObject.GetComponentInChildren<Renderer>();
         colour = Shader.PropertyToID("_Colour");
         alpha = Shader.PropertyToID("_Alpha");
         hub = GameObject.Find("Hub").GetComponent<Hub>();
         hubPosition = hub.transform.position;
-        hubPosition.y = maxHeight;
+        hubPosition.y = height;
     }
 
     //Sets the starting values for fog damage health variables
@@ -168,7 +170,7 @@ public class FogSphere : MonoBehaviour
         if (health < maxHealth)
         {
             Health += increment;
-            UpdateHeight();
+            UpdateSize();
             RenderOpacity();
         }
     }
@@ -176,32 +178,12 @@ public class FogSphere : MonoBehaviour
     //Moves the fog sphere towards the hub
     public void Move(float interval)
     {
-        hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateHeight()
+        hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateSize()
         transform.position = Vector3.MoveTowards(transform.position, hubPosition, movementSpeed * interval);
 
         if (transform.position == hubPosition)
         {
             state = FogSphereState.Attacking;
-
-            //if (WorldController.Instance.TileExistsAt(transform.position))
-            //{
-            //    TileData t = WorldController.Instance.GetTileAt(transform.position);
-
-            //    Fog.Instance.SpawnFogUnitWithMinHealth(t);
-            //    spiltFog.Add(t.FogUnit);
-            //    t.FogUnit.FillingFromFogSphere = true;
-
-            //    foreach (TileData a in t.AdjacentTiles)
-            //    {
-            //        if (a.FogUnit == null)
-            //        {
-            //            Fog.Instance.SpawnFogUnitWithMinHealth(a);
-            //        }
-
-            //        spiltFog.Add(a.FogUnit);
-            //        a.FogUnit.FillingFromFogSphere = true;
-            //    }
-            //}
         }
         else if (CheckFogToFill())    
         {
@@ -215,7 +197,7 @@ public class FogSphere : MonoBehaviour
     private bool CheckFogToFill()
     {
         WorldController wc = WorldController.Instance;
-        float radius = fogRenderer.bounds.extents.magnitude * 0.5f;
+        float radius = Renderers[0].bounds.extents.magnitude * 0.5f;
 
         for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
         {
@@ -245,7 +227,7 @@ public class FogSphere : MonoBehaviour
         {
             TileData c = wc.GetTileAt(transform.position);
 
-            float radius = fogRenderer.bounds.extents.magnitude * 0.5f;
+            float radius = Renderers[0].bounds.extents.magnitude * 0.5f;
 
             for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
             {
@@ -284,7 +266,7 @@ public class FogSphere : MonoBehaviour
         List<FogUnit> full = new List<FogUnit>();
 
         Health -= increment;
-        UpdateHeight();
+        UpdateSize();
         RenderColour();
         RenderOpacity();
 
@@ -351,7 +333,7 @@ public class FogSphere : MonoBehaviour
     {
         Health -= increment * 5;
 
-        if (/*fog.DamageOn &&*/ !WorldController.Instance.GameOver)
+        if (fog.DamageOn && !WorldController.Instance.GameOver)
         {
             hub.DealDamageToBuilding(damage * increment);
         }
@@ -362,7 +344,7 @@ public class FogSphere : MonoBehaviour
         }
         else
         {
-            UpdateHeight();
+            UpdateSize();
             RenderColour();
             RenderOpacity();
         }
@@ -391,7 +373,7 @@ public class FogSphere : MonoBehaviour
         }
         else
         {
-            UpdateHeight();
+            UpdateSize();
             RenderColour();
             RenderOpacity();
         }
@@ -402,7 +384,10 @@ public class FogSphere : MonoBehaviour
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
     {
-        fogRenderer.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
+        foreach (Renderer r in renderers)
+        {
+            r.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
+        }
 
         if (!angry && currentColours == angryColours || angry && currentColours == docileColours)
         {
@@ -449,15 +434,17 @@ public class FogSphere : MonoBehaviour
     //Updates the fog unit's shader opacity according to its health
     public void RenderOpacity()
     {
-        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / maxHealth));
+        foreach (Renderer r in renderers)
+        {
+            r.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / maxHealth));
+        }
     }
 
-    //Lerps height according to health/maxHealth
-    public void UpdateHeight()
+    //Lerps size according to health/maxHealth; also maintains height.
+    public void UpdateSize()
     {
-        Vector3 pos = transform.position;
-        pos.y = Mathf.Lerp(minHeight, maxHeight, Mathf.Min(health / maxHealth, 1));
-        transform.position = pos;
+        float scale = Mathf.Lerp(minSizeScale, maxSizeScale, Mathf.Min(health / maxHealth, 1));
+        transform.localScale = new Vector3(scale, scale, scale);
     }
 
     //Triggered/Utility Methods - Other--------------------------------------------------------------------------------------------------------------

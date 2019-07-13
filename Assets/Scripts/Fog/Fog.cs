@@ -65,6 +65,11 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogSphereMediumMaxHealth;
     [SerializeField] private float fogSphereHardMaxHealth;
 
+    [Header("Fog Size Over Time")]
+    [SerializeField] private float fogSphereEasyMaxSizeScale;
+    [SerializeField] private float fogSphereMediumMaxSizeScale;
+    [SerializeField] private float fogSphereHardMaxSizeScale;
+
     [Header("Health")]
     [SerializeField] private float fogSphereMinHealth;
     [SerializeField] private float fogUnitMinHealth;
@@ -84,6 +89,7 @@ public class Fog : MonoBehaviour
 
     private float fogDamage;
     private float fogSphereMaxHealth;
+    private float fogSphereMaxSizeScale;
     private int intensity;
 
     private Vector3 hubPosition;
@@ -130,7 +136,7 @@ public class Fog : MonoBehaviour
                     case 1:
                         fogGrowth = fogGrowthEasy;
                         fogSphereMaxHealth = fogSphereEasyMaxHealth;
-                        //fogSphereMaxSizeScale = fogSphereEasyMaxSizeScale;
+                        fogSphereMaxSizeScale = fogSphereEasyMaxSizeScale;
 
                         if (angry)
                         {
@@ -140,8 +146,8 @@ public class Fog : MonoBehaviour
                         break;
                     case 2:
                         fogGrowth = fogGrowthMedium;
-                        //fogSphereMaxHealth = fogSphereMediumMaxHealth;
-                        //fogSphereMaxSizeScale = fogSphereMediumMaxSizeScale;
+                        fogSphereMaxHealth = fogSphereMediumMaxHealth;
+                        fogSphereMaxSizeScale = fogSphereMediumMaxSizeScale;
 
                         if (angry)
                         {
@@ -151,8 +157,8 @@ public class Fog : MonoBehaviour
                         break;
                     case 3:
                         fogGrowth = fogGrowthHard;
-                        //fogSphereMaxHealth = fogSphereHardMaxHealth;
-                        //fogSphereMaxSizeScale = fogSphereHardMaxSizeScale;
+                        fogSphereMaxHealth = fogSphereHardMaxHealth;
+                        fogSphereMaxSizeScale = fogSphereHardMaxSizeScale;
 
                         if (!angry)
                         {
@@ -450,21 +456,28 @@ public class Fog : MonoBehaviour
         {
             GameObject o = GetFogSphere().gameObject;
             FogSphere s = o.GetComponent<FogSphere>();
+            Vector3 pos = u.transform.position;
+            pos.y = s.Height;
+            o.transform.position = pos;
             o.name = "FogSphereInPlay";
-            o.transform.position = u.transform.position;
+
+            foreach (Renderer r in s.Renderers)
+            {
+                r.material = visibleMaterial;
+            }
+
             s.SpawningTile = u.Location;
-            s.FogRenderer.material = visibleMaterial;
             s.Health = fogSphereMinHealth;
             s.MaxHealth = fogSphereMaxHealth;
-//s.MaxSizeScale = fogSphereMaxSizeScale;
+            s.MaxSizeScale = fogSphereMaxSizeScale;
             s.FogUnitMinHealth = fogUnitMinHealth;
             s.FogUnitMaxHealth = fogUnitMaxHealth;
             s.State = FogSphereState.MovingAndGrowing;
             s.SetStartEmotion(angry);
             s.RandomiseMovementSpeed();
-            fogSpheresInPlay.Add(s);
-            s.UpdateHeight();
+            s.UpdateSize();
             s.RenderOpacity();
+            fogSpheresInPlay.Add(s);
         }
     }
 
@@ -777,8 +790,12 @@ public class Fog : MonoBehaviour
     {
         f.gameObject.name = "FogSphereInPool";
         f.gameObject.SetActive(false);
-        f.FogRenderer.material = invisibleMaterial;
         f.transform.position = transform.position;
+
+        foreach(Renderer r in f.Renderers)
+        {
+            r.material = invisibleMaterial;
+        }
 
         foreach (FogUnit u in f.SpiltFog)
         {
