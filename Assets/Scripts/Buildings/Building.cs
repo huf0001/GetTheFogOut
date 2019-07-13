@@ -21,6 +21,7 @@ public abstract class Building : Entity
     [SerializeField] protected RectTransform healthBarCanvas;
     [SerializeField] protected Image healthBarImage;
     [SerializeField] protected Gradient healthGradient;
+    [SerializeField] protected GameObject damageIndicatorPrefab;
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
@@ -32,6 +33,8 @@ public abstract class Building : Entity
     private float buildHealth;
     private float regenWait;
     private MeshRenderer rend;
+    private GameObject damInd;
+    private DamageIndicator damIndScript;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -180,6 +183,7 @@ public abstract class Building : Entity
             {
                 TakingDamage = false;
                 damagingNotified = false;
+                damIndScript.Disable();
             }
             buildHealth = Health;
         }
@@ -373,6 +377,8 @@ public abstract class Building : Entity
     public void DismantleBuilding()
     {
         Debug.Log("Dismantling " + this.name);
+        if (damInd) Destroy(damInd.gameObject);
+
         if (buildingType == BuildingType.Hub)
         {
             WorldController.Instance.HubDestroyed = true;
@@ -450,10 +456,15 @@ public abstract class Building : Entity
             //    $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
             //    $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
 
-            if (!rend.isVisible)
+            Debug.Log("A building be damaged off-screen");
+            if (!damInd)
             {
-                Debug.Log("A building be damaged off-screen");
+                damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
+                damIndScript = damInd.GetComponent<DamageIndicator>();
             }
+            else damIndScript.Enable();
+            damInd.GetComponent<DamageIndicator>().Building = this;
+
             audioSource.PlayOneShot(audioDamage);
             damagingNotified = true;
         }
