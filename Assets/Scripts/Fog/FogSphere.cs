@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Xml.Schema;
 using Cinemachine;
 using UnityEngine;
@@ -10,7 +11,8 @@ public enum FogSphereState
     None,
     Damaged,
     MovingAndGrowing,
-    Spilling
+    Spilling,
+    Attacking
 }
 
 public class FogSphere : MonoBehaviour
@@ -49,6 +51,9 @@ public class FogSphere : MonoBehaviour
     [SerializeField] private float minSizeScale;
     [SerializeField] private float maxSizeScale;
 
+    [Header("Damage")]
+    [SerializeField] private float damage;
+
     //Non-Serialized Fields
     private Fog fog;
     private bool angry = false;
@@ -76,8 +81,8 @@ public class FogSphere : MonoBehaviour
     private List<FogUnit> spiltFog = new List<FogUnit>();
     private float fogUnitMinHealth;
     private float fogUnitMaxHealth;
-
     private bool canSpillFurther = true;
+    private Hub hub;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -128,7 +133,8 @@ public class FogSphere : MonoBehaviour
         fogRenderer = gameObject.GetComponentInChildren<Renderer>();
         colour = Shader.PropertyToID("_Colour");
         alpha = Shader.PropertyToID("_Alpha");
-        hubPosition = GameObject.Find("Hub").transform.position;
+        hub = GameObject.Find("Hub").GetComponent<Hub>();
+        hubPosition = hub.transform.position;
         hubPosition.y = maxHeight;
     }
 
@@ -174,27 +180,27 @@ public class FogSphere : MonoBehaviour
 
         if (transform.position == hubPosition)
         {
-            state = FogSphereState.Spilling;
+            state = FogSphereState.Attacking;
 
-            if (WorldController.Instance.TileExistsAt(transform.position))
-            {
-                TileData t = WorldController.Instance.GetTileAt(transform.position);
+            //if (WorldController.Instance.TileExistsAt(transform.position))
+            //{
+            //    TileData t = WorldController.Instance.GetTileAt(transform.position);
 
-                Fog.Instance.SpawnFogUnitWithMinHealth(t);
-                spiltFog.Add(t.FogUnit);
-                t.FogUnit.FillingFromFogSphere = true;
+            //    Fog.Instance.SpawnFogUnitWithMinHealth(t);
+            //    spiltFog.Add(t.FogUnit);
+            //    t.FogUnit.FillingFromFogSphere = true;
 
-                foreach (TileData a in t.AdjacentTiles)
-                {
-                    if (a.FogUnit == null)
-                    {
-                        Fog.Instance.SpawnFogUnitWithMinHealth(a);
-                    }
+            //    foreach (TileData a in t.AdjacentTiles)
+            //    {
+            //        if (a.FogUnit == null)
+            //        {
+            //            Fog.Instance.SpawnFogUnitWithMinHealth(a);
+            //        }
 
-                    spiltFog.Add(a.FogUnit);
-                    a.FogUnit.FillingFromFogSphere = true;
-                }
-            }
+            //        spiltFog.Add(a.FogUnit);
+            //        a.FogUnit.FillingFromFogSphere = true;
+            //    }
+            //}
         }
         else if (CheckFogToFill())    
         {
@@ -338,6 +344,29 @@ public class FogSphere : MonoBehaviour
         return newFog.Count > 0;
     }
 
+    //Recurring Methods - Attacking------------------------------------------------------------------------------------------------------------------
+
+    public void Attack(float increment)
+    {
+        Health -= increment * 5;
+
+        if (/*fog.DamageOn &&*/ !WorldController.Instance.GameOver)
+        {
+            hub.DealDamageToBuilding(damage * increment);
+        }
+
+        if (health <= 0)
+        {
+            ReturnToFogPool();
+        }
+        else
+        {
+            UpdateHeight();
+            RenderColour();
+            RenderOpacity();
+        }
+    }
+
     //Recurring Methods - Taking Damage--------------------------------------------------------------------------------------------------------------
 
     //Updates the damage dealt to the fog unit
@@ -362,6 +391,7 @@ public class FogSphere : MonoBehaviour
         else
         {
             UpdateHeight();
+            RenderColour();
             RenderOpacity();
         }
     }

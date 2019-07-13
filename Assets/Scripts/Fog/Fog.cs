@@ -39,15 +39,21 @@ public class Fog : MonoBehaviour
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
 
-    [Header("Settings")]
+    [Header("General Settings")]
+    [SerializeField] private bool angry;
+    [SerializeField] private bool damageOn;
+
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private Difficulty difficulty;
     [SerializeField] private FogExpansionDirection expansionDirection;
+
+    [SerializeField] private float surroundingHubRange;
 
     [Header("Fog Expansion")]
     [SerializeField] private bool fogAccelerates;
     [SerializeField] private bool fogUnitsGrow;
     [SerializeField] private bool fogSpheresGrow;
+    [SerializeField] private float maxFogSpheresCount;
     [SerializeField] private float fogGrowth;
     [SerializeField] private float fogSpillThreshold;
 
@@ -62,11 +68,6 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogDamageInterval;
     [SerializeField] private float fogExpansionInterval;
     [SerializeField] private float fogSphereInterval;
-
-    [Header("Other")]
-    [SerializeField] private bool angry;
-    [SerializeField] private bool damageOn;
-    [SerializeField] private float surroundingHubRange;
 
     //Private Value Fields
     private int xCount;
@@ -608,6 +609,9 @@ public class Fog : MonoBehaviour
                     case FogSphereState.Spilling:
                         f.Spill(fogSphereInterval * fogGrowth * 2f);
                         break;
+                    case FogSphereState.Attacking:
+                        f.Attack(fogSphereInterval * fogGrowth);
+                        break;
                 }
             }
                             
@@ -622,7 +626,7 @@ public class Fog : MonoBehaviour
             }
         }
 
-        if (fogSpheresInPlay.Count == 0)
+        if (fogSpheresInPlay.Count < maxFogSpheresCount && !WorldController.Instance.GameOver)
         {
             SpawnFogSphere();
         }
