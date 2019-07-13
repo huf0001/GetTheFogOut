@@ -16,8 +16,18 @@ public class DamageIndicator : MonoBehaviour
     private Rect screen;
     private CanvasGroup icon;
     private TextMeshProUGUI exclamationMark;
+    private bool on = true;
 
     public Building Building { get; set; }
+    public bool On
+    {
+        get => on;
+        set
+        {
+            on = value;
+            if (!value) icon.alpha = 0;
+        }
+    }
 
     private void Start()
     {
@@ -29,38 +39,31 @@ public class DamageIndicator : MonoBehaviour
 
     private void Update()
     {
-        Vector3 lookAtPos = Camera.main.WorldToScreenPoint(Building.transform.position);
-
-        if (!screen.Contains(lookAtPos))
+        if (On)
         {
-            if (icon.alpha == 0)
+            Vector3 lookAtPos = Camera.main.WorldToScreenPoint(Building.transform.position);
+
+            if (!screen.Contains(lookAtPos))
             {
-                icon.alpha = 1;
+                Vector3 newPos = lookAtPos;
+                newPos.x = Mathf.Clamp(newPos.x, leftEdgeBuffer, Screen.width - rightEdgeBuffer);
+                newPos.y = Mathf.Clamp(newPos.y, bottomEdgeBuffer, Screen.height - topEdgeBuffer);
+                transform.position = newPos;
+
+                Vector3 dir = -(lookAtPos - transform.position).normalized;
+                float rotZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                rectTransform.rotation = Quaternion.AngleAxis(rotZ + 180, Vector3.forward);
+                exclamationMark.rectTransform.rotation = Quaternion.identity;
+
+                if (icon.alpha == 0)
+                {
+                    icon.alpha = 1;
+                }
             }
-
-            Vector3 newPos = lookAtPos;
-            newPos.x = Mathf.Clamp(newPos.x, leftEdgeBuffer, Screen.width - rightEdgeBuffer);
-            newPos.y = Mathf.Clamp(newPos.y, bottomEdgeBuffer, Screen.height - topEdgeBuffer);
-            transform.position = newPos;
-
-            Vector3 dir = -(lookAtPos - transform.position).normalized;
-            float rotZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            rectTransform.rotation = Quaternion.AngleAxis(rotZ + 180, Vector3.forward);
-            exclamationMark.rectTransform.rotation = Quaternion.identity;
+            else if (icon.alpha == 1)
+            {
+                icon.alpha = 0;
+            }
         }
-        else if (icon.alpha == 1)
-        {
-            icon.alpha = 0;
-        }
-    }
-
-    public void Enable()
-    {
-        // enable indicator when building damaged and has ref already
-    }
-
-    public void Disable()
-    {
-        // disable indicator when building no longer being damaged
     }
 }

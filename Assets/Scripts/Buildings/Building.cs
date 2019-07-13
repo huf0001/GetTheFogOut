@@ -183,7 +183,7 @@ public abstract class Building : Entity
             {
                 TakingDamage = false;
                 damagingNotified = false;
-                damIndScript.Disable();
+                damIndScript.On = false;
             }
             buildHealth = Health;
         }
@@ -451,19 +451,21 @@ public abstract class Building : Entity
 
         if (!damagingNotified)
         {
-            //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-            //    MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
-            //    $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
-            //    $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
-
-            Debug.Log("A building be damaged off-screen");
-            if (!damInd)
+            if (BuildingType == BuildingType.Hub)
             {
-                damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
-                damIndScript = damInd.GetComponent<DamageIndicator>();
+                MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
+                    MouseController.Instance.WarningScript.Danger + $"<size=80%>The Ship is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
             }
-            else damIndScript.Enable();
-            damInd.GetComponent<DamageIndicator>().Building = this;
+            else
+            {
+                if (!damInd)
+                {
+                    damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
+                    damIndScript = damInd.GetComponent<DamageIndicator>();
+                }
+                else damIndScript.On = true;
+                damInd.GetComponent<DamageIndicator>().Building = this;
+            }
 
             audioSource.PlayOneShot(audioDamage);
             damagingNotified = true;
