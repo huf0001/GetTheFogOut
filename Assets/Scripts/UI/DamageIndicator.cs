@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public class DamageIndicator : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class DamageIndicator : MonoBehaviour
     private CanvasGroup icon;
     private TextMeshProUGUI exclamationMark;
     private bool on = true;
+    private Transform camTarget;
 
     public Building Building { get; set; }
     public bool On
@@ -25,7 +27,12 @@ public class DamageIndicator : MonoBehaviour
         set
         {
             on = value;
-            if (!value) icon.alpha = 0;
+            if (!value)
+            {
+                icon.alpha = 0;
+                icon.blocksRaycasts = false;
+                icon.interactable = false;
+            }
         }
     }
 
@@ -58,12 +65,22 @@ public class DamageIndicator : MonoBehaviour
                 if (icon.alpha == 0)
                 {
                     icon.alpha = 1;
+                    icon.blocksRaycasts = true;
+                    icon.interactable = true;
                 }
             }
             else if (icon.alpha == 1)
             {
                 icon.alpha = 0;
+                icon.blocksRaycasts = false;
+                icon.interactable = false;
             }
         }
+    }
+
+    public void MoveToBuilding()
+    {
+        if (!camTarget) camTarget = GameObject.Find("CameraTarget").transform;
+        camTarget.DOMove(new Vector3(Building.Location.X, camTarget.position.y, Building.Location.Z), 0.3f);
     }
 }
