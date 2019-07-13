@@ -168,7 +168,7 @@ public class Fog : MonoBehaviour
         //Populate fog sphere pool with fog spheres
         if (fogSpheresInPool.Count == 0)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < maxFogSpheresCount * 2; i++)
             {
                 fogSpheresInPool.Add(CreateFogSphere());
             }
