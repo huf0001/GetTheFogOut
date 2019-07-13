@@ -57,11 +57,18 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogGrowth;
     [SerializeField] private float fogSpillThreshold;
 
+    [Header("Fog Strength Over Time")]
+    [SerializeField] private float fogGrowthEasy;
+    [SerializeField] private float fogGrowthMedium;
+    [SerializeField] private float fogGrowthHard;
+    [SerializeField] private float fogSphereEasyMaxHealth;
+    [SerializeField] private float fogSphereMediumMaxHealth;
+    [SerializeField] private float fogSphereHardMaxHealth;
+
     [Header("Health")]
+    [SerializeField] private float fogSphereMinHealth;
     [SerializeField] private float fogUnitMinHealth;
     [SerializeField] private float fogUnitMaxHealth;
-    [SerializeField] private float fogSphereMinHealth;
-    [SerializeField] private float fogSphereMaxHealth;
 
     [Header("Update Intervals")]
     [SerializeField] private float fogFillInterval;
@@ -74,7 +81,11 @@ public class Fog : MonoBehaviour
     private int zCount;
     private int xMax;
     private int zMax;
+
     private float fogDamage;
+    private float fogSphereMaxHealth;
+    private int intensity;
+
     private Vector3 hubPosition;
 
     //Private Collection Fields
@@ -95,10 +106,72 @@ public class Fog : MonoBehaviour
     public static Fog            Instance { get; protected set; }
     public bool                  DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
-    public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
+    //public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
     public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
     public int                   XMax { get => xMax; }
     public int                   ZMax { get => zMax; }
+
+    //Altered Public Properties
+    public int Intensity
+    {
+        get
+        {
+            return intensity;
+        }
+
+        set
+        {
+            if (intensity != value && value >= 1 && value <= 3)
+            {
+                intensity = value;
+
+                switch (intensity)
+                {
+                    case 1:
+                        fogGrowth = fogGrowthEasy;
+                        fogSphereMaxHealth = fogSphereEasyMaxHealth;
+                        //fogSphereMaxSizeScale = fogSphereEasyMaxSizeScale;
+
+                        if (angry)
+                        {
+                            ToggleAnger();
+                        }
+
+                        break;
+                    case 2:
+                        fogGrowth = fogGrowthMedium;
+                        //fogSphereMaxHealth = fogSphereMediumMaxHealth;
+                        //fogSphereMaxSizeScale = fogSphereMediumMaxSizeScale;
+
+                        if (angry)
+                        {
+                            ToggleAnger();
+                        }
+
+                        break;
+                    case 3:
+                        fogGrowth = fogGrowthHard;
+                        //fogSphereMaxHealth = fogSphereHardMaxHealth;
+                        //fogSphereMaxSizeScale = fogSphereHardMaxSizeScale;
+
+                        if (!angry)
+                        {
+                            ToggleAnger();
+                        }
+
+                        break;
+                }
+            }
+            else if (value < 1)
+            {
+                Debug.Log("Fog.Instance.Intensity has to be >= 1 (and <= 3). Try again, you cabbage!");
+            }
+            else if (value > 3)
+            {
+                Debug.Log("Fog.Instance.Intensity has to be <= 3 (and >= 1). Try again, you cabbage!");
+            }
+        }
+    }
 
     //Setup Methods - General------------------------------------------------------------------------------------------------------------------------
 
@@ -129,11 +202,17 @@ public class Fog : MonoBehaviour
         {
             case Difficulty.Easy:
                 fogDamage /= 1.40f;
+                fogGrowthEasy /= 2;
+                fogGrowthMedium /= 2;
+                fogGrowthHard /= 2;
                 break;
             case Difficulty.Normal:
                 break;
             case Difficulty.Hard:
                 fogDamage *= 2f;
+                fogGrowthEasy *= 2;
+                fogGrowthMedium *= 2;
+                fogGrowthHard *= 2;
                 break;
         }
     }
@@ -339,7 +418,6 @@ public class Fog : MonoBehaviour
     {
         FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, transform, true);
         f.transform.position = transform.position;
-        f.MaxHealth = fogSphereMaxHealth;
         f.Fog = this;
         return f;
     }
@@ -377,6 +455,8 @@ public class Fog : MonoBehaviour
             s.SpawningTile = u.Location;
             s.FogRenderer.material = visibleMaterial;
             s.Health = fogSphereMinHealth;
+            s.MaxHealth = fogSphereMaxHealth;
+//s.MaxSizeScale = fogSphereMaxSizeScale;
             s.FogUnitMinHealth = fogUnitMinHealth;
             s.FogUnitMaxHealth = fogUnitMaxHealth;
             s.State = FogSphereState.MovingAndGrowing;
