@@ -71,10 +71,6 @@ public class ObjectiveController : DialogueBoxController
         {
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         }
-        else
-        {
-            Debug.Log("FMOD not found in Objective's Awake.");
-        }
 
         Instance = this;
     }
@@ -191,6 +187,7 @@ public class ObjectiveController : DialogueBoxController
         {
             case 0:
                 // Play music Var 1 soundtrack
+                musicFMOD.StageOneMusic();
                 // Set fog AI to 'Docile'
                 Fog.Instance.FogGrowth = fogGrowthEasy;
                 // Run AI text for stage
@@ -248,7 +245,7 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(0).gameObject.SetActive(false);
                 hub.transform.GetChild(1).gameObject.SetActive(true);
                 // Play music Var 2 soundtrack
-                MusicController.Instance.StartStage2();
+                musicFMOD.StageTwoMusic();
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.FogGrowth = fogGrowthMedium;
                 // Run AI completion text
@@ -307,7 +304,7 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(2).gameObject.SetActive(true);
 
                 // Play music Var 3 soundtrack
-                MusicController.Instance.StartStage3();
+                musicFMOD.StageThreeMusic();
 
                 // Set fog AI to 'Overly Aggressive'
                 Fog.Instance.FogGrowth = fogGrowthHard;

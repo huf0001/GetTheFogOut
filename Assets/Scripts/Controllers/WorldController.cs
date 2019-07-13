@@ -414,7 +414,7 @@ public class WorldController : MonoBehaviour
         if (resourceController.IsWin() || hubDestroyed)
         {
             Time.timeScale = 0.2f;
-            MusicController.Instance.StartOutroLose();
+            musicFMOD.GameLoseMusic();
             GameOver = true;
             InBuildMode = false;
         }

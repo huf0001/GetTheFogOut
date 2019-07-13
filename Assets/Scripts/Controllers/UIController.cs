@@ -25,6 +25,7 @@ public class UIController : MonoBehaviour
     private bool isCursorOn = false;
     private Image launchButtonImage;
     private Image launchBackground;
+    private MusicFMOD musicFMOD;
 
     [SerializeField] Image powerImg;
     [SerializeField] Sprite[] powerLevelSprites;
@@ -198,7 +199,7 @@ public class UIController : MonoBehaviour
     public void WinGame()
     {
         DOTween.Kill(launchButtonImage);
-        MusicController.Instance.StartOutroWin();
+        musicFMOD.GameWinMusic();
         WorldController.Instance.GameWin = true;
         WorldController.Instance.GameOver = true;
     }

@@ -7,9 +7,9 @@ public class MusicFMOD : MonoBehaviour
     [FMODUnity.EventRef]
     public string music = "event:/MUSIC/Music2D";
 
-    FMOD.Studio.EventInstance musicEvent;
-    FMOD.Studio.PARAMETER_ID stageOne, stageTwo, stageThree, lose, win, outro;
-    FMOD.Studio.EventDescription stageOneDesc, stageTwoDesc, stageThreeDesc, loseDesc, winDesc, outroDesc;
+    private FMOD.Studio.EventInstance musicEvent;
+    private FMOD.Studio.PARAMETER_ID stageOne, stageTwo, stageThree, lose, win, outro;
+    private FMOD.Studio.EventDescription stageOneDesc, stageTwoDesc, stageThreeDesc, loseDesc, winDesc, outroDesc;
 
     // Start is called before the first frame update
     void Start()
