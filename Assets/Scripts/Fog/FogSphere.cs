@@ -276,14 +276,14 @@ public class FogSphere : MonoBehaviour
         bool readyToSpillFurther = true;
         List<FogUnit> full = new List<FogUnit>();
 
-        Health -= increment * (spiltFog.Count / maxSpiltFogCount);  //Try -= increment
+        Health -= increment;
         UpdateHeight();
         RenderColour();
         RenderOpacity();
 
         foreach (FogUnit f in spiltFog)
         {
-            f.Health += increment;      //Try += increment * (maxSpillFogCount / spiltFog.Count)
+            f.Health += increment * (maxSpiltFogCount / spiltFog.Count);
             f.RenderColour();
             f.RenderOpacity();
 
