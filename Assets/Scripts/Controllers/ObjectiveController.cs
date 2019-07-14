@@ -31,11 +31,6 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int generatorLimit = 3;
     //[SerializeField] AudioClip audioCompleteObjective;
 
-    [SerializeField] int[] fogGrowth = new int[2];
-    [SerializeField] int fogGrowthEasy;
-    [SerializeField] int fogGrowthMedium;
-    [SerializeField] int fogGrowthHard;
-    
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     // Non-Serialized Fields
@@ -81,7 +76,6 @@ public class ObjectiveController : DialogueBoxController
         //audioSource = GetComponent<AudioSource>();
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
-        CheckDifficulty();
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -103,25 +97,6 @@ public class ObjectiveController : DialogueBoxController
         {
             UIController.instance.UpdateObjectiveText(currStage);
             CheckPowerOverloaded();
-        }
-    }
-
-    void CheckDifficulty()
-    {
-        switch (Fog.Instance.Difficulty)
-        {
-            case Difficulty.Easy:
-                fogGrowthEasy = fogGrowthEasy / 2;
-                fogGrowthMedium = fogGrowthMedium / 2;
-                fogGrowthHard = fogGrowthHard / 2;
-                break;
-            case Difficulty.Normal:
-                break;
-            case Difficulty.Hard:
-                fogGrowthEasy = fogGrowthEasy * 2;
-                fogGrowthMedium = fogGrowthMedium * 2;
-                fogGrowthHard = fogGrowthHard * 2;
-                break;
         }
     }
 
@@ -189,7 +164,7 @@ public class ObjectiveController : DialogueBoxController
                 // Play music Var 1 soundtrack
                 musicFMOD.StageOneMusic();
                 // Set fog AI to 'Docile'
-                Fog.Instance.FogGrowth = fogGrowthEasy;
+                Fog.Instance.Intensity = 1;
                 // Run AI text for stage
                 SendDialogue("start harvest stage", 1);
                 // Unlock 5 generators
@@ -247,7 +222,7 @@ public class ObjectiveController : DialogueBoxController
                 // Play music Var 2 soundtrack
                 musicFMOD.StageTwoMusic();
                 // Set fog AI to 'Moderate Aggression'
-                Fog.Instance.FogGrowth = fogGrowthMedium;
+                Fog.Instance.Intensity += 1;
                 // Run AI completion text
                 SendDialogue("end harvest stage", 1);
                 //Camera pans to the thruster
@@ -307,8 +282,7 @@ public class ObjectiveController : DialogueBoxController
                 musicFMOD.StageThreeMusic();
 
                 // Set fog AI to 'Overly Aggressive'
-                Fog.Instance.FogGrowth = fogGrowthHard;
-                Fog.Instance.ToggleAnger();
+                Fog.Instance.Intensity += 1;
 
                 //If already completed store power stage
                 if (ResourceController.Instance.StoredPower >= 500)

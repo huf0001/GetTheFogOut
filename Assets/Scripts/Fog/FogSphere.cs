@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Xml.Schema;
 using Cinemachine;
 using UnityEngine;
 
 public enum FogSphereState
 {
     None,
-    Filling,
     Damaged,
-    Full,
-    Throwing,
-    Attacking,
-    Spilling
+    MovingAndGrowing,
+    Spilling,
+    Attacking
 }
 
 public class FogSphere : MonoBehaviour
@@ -23,29 +24,43 @@ public class FogSphere : MonoBehaviour
     [SerializeField] private FogSphereState state;
 
     [Header("Health")]
-    [SerializeField] private float health = 1f;
-    [SerializeField] private float maxHealth = 1f;
-    [SerializeField] private float damageLerpMultiplier = 3f;
+    [SerializeField] private float health;
+    [SerializeField] private float maxHealth;
+    [SerializeField] private float damageLerpMultiplier;
 
-    [Header("Height")]
-    [SerializeField] private float minHeight;
-    [SerializeField] private float maxHeight;
+    [Header("Movement")]
+    //[SerializeField] private float minHeight;
+    [SerializeField] private float height;
+    [SerializeField] private float minMovementSpeed;
+    [SerializeField] private float maxMovementSpeed;
+
+    [Header("Renderers")]
+    [SerializeField] private List<Renderer> renderers;
 
     [Header("Opacity")]
-    [SerializeField] private float startOpacity = 0f;
-    [SerializeField] private float endOpacity = 0.90f;
+    [SerializeField] private float startOpacity;
+    [SerializeField] private float endOpacity;
 
     [Header("Colour")]
-    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
+    [SerializeField] private float colourLerpSpeedMultiplier;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
+
+    [Header("Size")]
+    [SerializeField] private float minSizeScale;
+    [SerializeField] private float maxSizeScale;
+
+    [Header("Spilling")]
+    [SerializeField] private int maxSpiltFogCount;
+
+    [Header("Damage")]
+    [SerializeField] private float damage;
 
     //Non-Serialized Fields
     private Fog fog;
     private bool angry = false;
 
-    private Renderer fogRenderer;
     private int colour;
     private int alpha;
 
@@ -58,30 +73,33 @@ public class FogSphere : MonoBehaviour
     private float targetHealth;
     private float damageLerpProgress = 0;
 
+    private TileData spawningTile;
     private Vector3 startPosition;
-    private Vector3 throwTarget;
-    private Vector3 attackTarget;
-    private Vector3 spillTarget;
-    private float moveProgress = 0;
+    private Vector3 hubPosition;
+
+    private float movementSpeed;
 
     private List<FogUnit> spiltFog = new List<FogUnit>();
     private float fogUnitMinHealth;
     private float fogUnitMaxHealth;
-
-    private List<TileData> tilesInRange = new List<TileData>();
+    private bool canSpillFurther = true;
+    private Hub hub;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
-    //Basic Properties
+    //Basic Public Properties
     public Fog Fog { get => fog; set => fog = value; }
     public bool Angry { get => angry; set => angry = value; }
-    public Renderer FogRenderer {  get => fogRenderer; }
     public float FogUnitMaxHealth {  get => fogUnitMaxHealth; set => fogUnitMaxHealth = value; }
     public float FogUnitMinHealth {  get => fogUnitMinHealth; set => fogUnitMinHealth = value; }
+    public float Height { get => height; }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public float MaxSizeScale { get => maxSizeScale; set => maxSizeScale = value; }
+    public float MinSizeScale { get => minSizeScale; set => minSizeScale = value; }
+    public List<Renderer> Renderers {  get => renderers; }
+    public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
     public FogSphereState State { get => state; set => state = value; }
-    public List<TileData> TilesInRange { get => tilesInRange; set => tilesInRange = value; }
 
     //Altered Public Properties
     public float Health
@@ -100,7 +118,6 @@ public class FogSphere : MonoBehaviour
                 if (health >= maxHealth)
                 {
                     health = maxHealth;
-                    state = FogSphereState.Full;
                 }
                 else if (health <= 0)
                 {
@@ -117,9 +134,11 @@ public class FogSphere : MonoBehaviour
     //Awake
     private void Awake()
     {
-        fogRenderer = gameObject.GetComponentInChildren<Renderer>();
         colour = Shader.PropertyToID("_Colour");
         alpha = Shader.PropertyToID("_Alpha");
+        hub = GameObject.Find("Hub").GetComponent<Hub>();
+        hubPosition = hub.transform.position;
+        hubPosition.y = height;
     }
 
     //Sets the starting values for fog damage health variables
@@ -131,191 +150,207 @@ public class FogSphere : MonoBehaviour
     }
 
     //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
-    //so that newly spawned fog units don't look docile when the fog is angry.
+    //so that newly spawned fog units don't look docile when the fog is angry
     public void SetStartEmotion(bool a)
     {
         angry = a;
-
         currentColours = angry ? angryColours : docileColours;
     }
 
-    //Recurring Methods - Movement and Spill---------------------------------------------------------------------------------------------------------
-    
-    //Lerps height according to health/maxHealth
-    public void UpdateHeight()
+    public void RandomiseMovementSpeed()
     {
-        Vector3 pos = transform.position;
-        pos.y = Mathf.Lerp(minHeight, maxHeight, Mathf.Min(health / maxHealth, 1));
-        transform.position = pos;
+        movementSpeed = Random.Range(minMovementSpeed, maxMovementSpeed);
     }
 
-    // Sets the fog sphere moving towards the target position
-    public void Throw()
+    //Recurring Methods - MovingAndGrowing and Growing---------------------------------------------------------------------------------------------------------
+
+    //Updates how much health the fog unit has
+    public void Grow(float increment)
     {
-        startPosition = transform.position;
-        Vector3 target = CalculateTarget();
-
-        throwTarget = target;
-        throwTarget.y = maxHeight * 2;
-        attackTarget = target;
-        attackTarget.y = 0;
-        spillTarget = attackTarget;
-        spillTarget.y = minHeight;
-
-        state = FogSphereState.Throwing;
+        if (health < maxHealth)
+        {
+            Health += increment;
+            UpdateSize();
+            RenderOpacity();
+        }
     }
 
-    //Calculates the target of the fog sphere
-    private Vector3 CalculateTarget()
+    //Moves the fog sphere towards the hub
+    public void Move(float interval)
     {
-        Vector3 target = startPosition;     //set to startPosition initially in case there are no valid targets; otherwise the code complains it could be unassigned when it is returned.
-        bool finished = false;
-        bool valid = true;
+        hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateSize()
+        transform.position = Vector3.MoveTowards(transform.position, hubPosition, movementSpeed * interval);
 
-        List<TileData> targets = new List<TileData>();
-        Vector3 hPos = GameObject.Find("Hub").transform.position;
-        Vector3 sPos = transform.position;
-
-        //Find all tiles where none of it or its neighbours have fog units on them
-        foreach (TileData t in tilesInRange)
+        if (transform.position == hubPosition)
         {
-            if (t.FogUnit == null)
-            {
-                foreach (TileData a in t.AdjacentTiles)
-                {
-                    if (a.FogUnit != null)
-                    {
-                        valid = false;
-                        break;
-                    }
-                }
-
-                if (valid)
-                {
-                    targets.Add(t);
-                }
-                else
-                {
-                    valid = true;
-                }
-            }
-        }
-
-        //If none, find all tiles where none of it or its neighbours have fog units with full health, and either they're closer to the tile than they are to the hub or they're closer to the hub than the tile is 
-        if (targets.Count == 0)
-        {
-            foreach (TileData t in tilesInRange)
-            {
-                Vector3 tPos = new Vector3(t.X, 0, t.Z);
-                float selfToHub = Vector3.Distance(sPos, hPos);
-
-                if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth) && (Vector3.Distance(sPos, tPos) < selfToHub || Vector3.Distance(tPos, hPos) > selfToHub))
-                {
-                    foreach (TileData a in t.AdjacentTiles)
-                    {
-                        if (a.FogUnit != null && a.FogUnit.Health >= a.FogUnit.MaxHealth)
-                        {
-                            valid = false;
-                            break;
-                        }
-                    }
-
-                    if (valid)
-                    {
-                        targets.Add(t);
-                    }
-                    else
-                    {
-                        valid = true;
-                    }
-                }
-            }
-
-            //If none, return start position.
-            if (targets.Count == 0)
-            {
-                finished = true;
-            }
-        }
-
-        while (!finished)
-        {
-            TileData tile = targets[Random.Range(0, targets.Count)];
-            target = new Vector3(tile.X, 0, tile.Z);
-
-            finished = Vector3.Distance(transform.position, target) < Vector3.Distance(transform.position, hPos);
-        }
-
-        return target;
-    }
-
-    //Change so it moves in a vertical quarter circle from the base of the circle to one side.
-    public void Move(float increment)
-    {
-        moveProgress += increment;
-        transform.position = MathParabola.Parabola(startPosition, throwTarget, maxHeight * 3f, moveProgress);
-
-        if (moveProgress >= 1)
-        {
-            moveProgress = 0;
             state = FogSphereState.Attacking;
         }
-    }
-
-    //Move up a bit, then drop down (parabolic)? Or keep as straight drop down?
-    public void Attack(float increment)
-    {
-        moveProgress += increment;
-        transform.position = MathParabola.Parabola(throwTarget, attackTarget, maxHeight * 4f, moveProgress);
-
-        if (moveProgress >= 1)
+        else if (CheckFogToFill())    
         {
-            moveProgress = 0;
+            GetFogToFill();
             state = FogSphereState.Spilling;
-            attackTarget = transform.position;  //Accounts for overshoot
-
-            if (WorldController.Instance.TileExistsAt(transform.position))
-            {
-                spiltFog = new List<FogUnit>();
-                TileData t = WorldController.Instance.GetTileAt(transform.position);
-
-                Fog.Instance.SpawnFogUnitWithMinHealth(t);
-                spiltFog.Add(t.FogUnit);
-                t.FogUnit.FillingFromFogSphere = true;
-
-                foreach (TileData a in t.AdjacentTiles)
-                {
-                    if (a.FogUnit == null)
-                    {
-                        Fog.Instance.SpawnFogUnitWithMinHealth(a);
-                    }
-                    
-                    spiltFog.Add(a.FogUnit);
-                    a.FogUnit.FillingFromFogSphere = true;
-                }
-            }
+            canSpillFurther = true;
         }
     }
 
+    //Checks that there are tiles within range that the fog sphere can spill into
+    private bool CheckFogToFill()
+    {
+        WorldController wc = WorldController.Instance;
+        float radius = Renderers[0].bounds.extents.magnitude * 0.5f;
+
+        for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
+        {
+            for (int j = Mathf.RoundToInt(Mathf.Max(0, transform.position.z - radius)); j < Mathf.Min(fog.ZMax, transform.position.z + radius); j++)
+            {
+                if (wc.TileExistsAt(i, j))
+                {
+                    TileData t = wc.GetTileAt(i, j);
+
+                    if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    //Gets the tiles within range that the fog sphere can spill into
+    private void GetFogToFill()
+    {
+        WorldController wc = WorldController.Instance;
+
+        if (wc.TileExistsAt(transform.position))
+        {
+            TileData c = wc.GetTileAt(transform.position);
+
+            float radius = Renderers[0].bounds.extents.magnitude * 0.5f;
+
+            for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
+            {
+                for (int j = Mathf.RoundToInt(Mathf.Max(0, transform.position.z - radius)); j < Mathf.Min(fog.ZMax, transform.position.z + radius); j++)
+                {
+                    if (wc.TileExistsAt(i, j))
+                    {
+                        TileData t = wc.GetTileAt(i, j);
+
+                        if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                        {
+                            if (t.FogUnit == null)
+                            {
+                                fog.SpawnFogUnitWithMinHealth(t);
+                            }
+
+                            spiltFog.Add(t.FogUnit);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (spiltFog.Count == 0)
+        {
+            Debug.Log("FogSphere.GetFogToFill was called, but didn't find any tiles even though FogSphere.CheckFogToFill found some.");
+        }
+    }
+
+    //Recurring Methods - Spilling-------------------------------------------------------------------------------------------------------------------
+    
+    //Fog sphere spills into fog tiles that it finds.
     public void Spill(float increment)
     {
-        moveProgress += increment;
-        transform.position = Vector3.Lerp(attackTarget, spillTarget, moveProgress);
+        bool readyToSpillFurther = true;
+        List<FogUnit> full = new List<FogUnit>();
+
+        Health -= increment;
+        UpdateSize();
+        RenderColour();
+        RenderOpacity();
 
         foreach (FogUnit f in spiltFog)
         {
-            f.Health = Mathf.Max(f.Health, Mathf.Lerp(fogUnitMinHealth, fogUnitMaxHealth, moveProgress));
+            f.Health += increment * (maxSpiltFogCount / spiltFog.Count);
             f.RenderColour();
             f.RenderOpacity();
+
+            if (f.Health < f.MaxHealth * 0.5f)
+            {
+                readyToSpillFurther = false;
+            }
+            else if (f.Health >= f.MaxHealth)
+            {
+                full.Add(f);
+            }
         }
 
-        if (moveProgress >= 1)
+        if (canSpillFurther && readyToSpillFurther)
         {
-            ReturnToFogPool();
+            canSpillFurther = GetMoreFogToFill();
+        }
+
+        foreach (FogUnit f in full)
+        {
+            spiltFog.Remove(f);
+        }
+
+        if (spiltFog.Count == 0)
+        {
+            state = FogSphereState.MovingAndGrowing;
         }
     }
 
-    //Recurring Methods - Health and Appearance------------------------------------------------------------------------------------------------------
+    //Fog has reached a spilling threshold, spills over into even more tiles
+    private bool GetMoreFogToFill()
+    {
+        List<FogUnit> newFog = new List<FogUnit>();
+
+        foreach(FogUnit f in spiltFog)
+        {
+            foreach (TileData t in f.Location.AdjacentTiles)
+            {
+                if (t.FogUnit == null || (t.FogUnit.Health < t.FogUnit.MaxHealth && !newFog.Contains(t.FogUnit) && !spiltFog.Contains(t.FogUnit)))
+                {
+                    if (t.FogUnit == null)
+                    {
+                        fog.SpawnFogUnitWithMinHealth(t);
+                    }
+                    
+                    newFog.Add(t.FogUnit);
+                }
+            }
+        }
+
+        spiltFog.AddRange(newFog);
+        return newFog.Count > 0;
+    }
+
+    //Recurring Methods - Attacking------------------------------------------------------------------------------------------------------------------
+
+    public void Attack(float increment)
+    {
+        Health -= increment * 5;
+
+        if (fog.DamageOn && !WorldController.Instance.GameOver)
+        {
+            hub.DealDamageToBuilding(damage * increment);
+        }
+
+        if (health <= 0)
+        {
+            ReturnToFogPool();
+        }
+        else
+        {
+            UpdateSize();
+            RenderColour();
+            RenderOpacity();
+        }
+    }
+
+    //Recurring Methods - Taking Damage--------------------------------------------------------------------------------------------------------------
 
     //Updates the damage dealt to the fog unit
     public void UpdateDamageToFogSphere(float damageInterval)
@@ -325,7 +360,7 @@ public class FogSphere : MonoBehaviour
         if (health <= targetHealth)
         {
             health = targetHealth;
-            state = FogSphereState.Filling;
+            state = FogSphereState.MovingAndGrowing;
         }
         else
         {
@@ -336,12 +371,23 @@ public class FogSphere : MonoBehaviour
         {
             ReturnToFogPool();
         }
+        else
+        {
+            UpdateSize();
+            RenderColour();
+            RenderOpacity();
+        }
     }
 
+    //Triggered/Utility Methods - Appearance---------------------------------------------------------------------------------------------------------
+    
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
     {
-        fogRenderer.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
+        foreach (Renderer r in renderers)
+        {
+            r.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
+        }
 
         if (!angry && currentColours == angryColours || angry && currentColours == docileColours)
         {
@@ -388,10 +434,20 @@ public class FogSphere : MonoBehaviour
     //Updates the fog unit's shader opacity according to its health
     public void RenderOpacity()
     {
-        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / MaxHealth));
+        foreach (Renderer r in renderers)
+        {
+            r.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, health / maxHealth));
+        }
     }
 
-    //Triggered/Utility Methods----------------------------------------------------------------------------------------------------------------------
+    //Lerps size according to health/maxHealth; also maintains height.
+    public void UpdateSize()
+    {
+        float scale = Mathf.Lerp(minSizeScale, maxSizeScale, Mathf.Min(health / maxHealth, 1));
+        transform.localScale = new Vector3(scale, scale, scale);
+    }
+
+    //Triggered/Utility Methods - Other--------------------------------------------------------------------------------------------------------------
 
     //A defence has dealt damage to the fog unit
     public void DealDamageToFogSphere(float damage)

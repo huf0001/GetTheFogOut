@@ -199,9 +199,9 @@ public class UIController : MonoBehaviour
     public void WinGame()
     {
         DOTween.Kill(launchButtonImage);
-        musicFMOD.GameWinMusic();
         WorldController.Instance.GameWin = true;
         WorldController.Instance.GameOver = true;
+        musicFMOD.GameWinMusic();
     }
 
     // End Game Method
