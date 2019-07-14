@@ -14,18 +14,28 @@ public class ShipComponent : Entity
     [Header("Component ID")]
     [SerializeField] private ShipComponentsEnum id;
 
+    private Material missingWingMaterial;
     public ShipComponentsEnum Id { get => id; set => id = value; }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Renderer rend = GetComponentInChildren<Renderer>();
+        missingWingMaterial = rend.material;
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        if (location.FogUnit == null)
+        {
+             missingWingMaterial.SetFloat("_Toggle", 0f);
+        }
+        if (location.FogUnit != null)
+        {
+            missingWingMaterial.SetFloat("_Toggle", 1f);
+        }
     }
 
     private void OnMouseDown()

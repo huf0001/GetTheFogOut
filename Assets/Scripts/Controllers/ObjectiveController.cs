@@ -29,18 +29,20 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
-    [SerializeField] AudioClip audioCompleteObjective;
+    //[SerializeField] AudioClip audioCompleteObjective;
 
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     // Non-Serialized Fields
     // bool stageComplete = false;
-    private AudioSource audioSource;
+    //private AudioSource audioSource;
+
     private bool powerOverloaded = false;
     private bool alertedAboutOverload = false;
     private bool powerOverloadedLastUpdate = false;
     private float lastOverload = -1f;
     private float lastOverloadDialogue = -1f;
+    private MusicFMOD musicFMOD;
 
     // Public Properties -------------------------------------------------------------------------------------
 
@@ -60,13 +62,18 @@ public class ObjectiveController : DialogueBoxController
             Debug.LogError("There should never be 2 or more objective managers.");
         }
 
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
+
         Instance = this;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
     }
@@ -76,6 +83,11 @@ public class ObjectiveController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
+        if (!musicFMOD && WorldController.Instance.musicFMOD)
+        {
+            musicFMOD = WorldController.Instance.musicFMOD;
+        }
+
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
@@ -93,12 +105,15 @@ public class ObjectiveController : DialogueBoxController
         switch (currStage)
         {
             case ObjectiveStage.HarvestMinerals:
+                musicFMOD.StageOneMusic();
                 HarvestMineralStage();
                 break;
             case ObjectiveStage.RecoverPart:
+                musicFMOD.StageTwoMusic();
                 RecoverPartStage();
                 break;
             case ObjectiveStage.StorePower:
+                musicFMOD.StageThreeMusic();
                 StorePowerStage();
                 break;
             case ObjectiveStage.Finished:
@@ -147,6 +162,7 @@ public class ObjectiveController : DialogueBoxController
         {
             case 0:
                 // Play music Var 1 soundtrack
+                musicFMOD.StageOneMusic();
                 // Set fog AI to 'Docile'
                 Fog.Instance.Intensity = 1;
                 // Run AI text for stage
@@ -204,7 +220,7 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(0).gameObject.SetActive(false);
                 hub.transform.GetChild(1).gameObject.SetActive(true);
                 // Play music Var 2 soundtrack
-                MusicController.Instance.StartStage2();
+                musicFMOD.StageTwoMusic();
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.Intensity += 1;
                 // Run AI completion text
@@ -263,7 +279,7 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(2).gameObject.SetActive(true);
 
                 // Play music Var 3 soundtrack
-                MusicController.Instance.StartStage3();
+                musicFMOD.StageThreeMusic();
 
                 // Set fog AI to 'Overly Aggressive'
                 Fog.Instance.Intensity += 1;
@@ -450,7 +466,8 @@ public class ObjectiveController : DialogueBoxController
         TextMeshProUGUI unlocksText = objCompImage.GetComponentInChildren<TextMeshProUGUI>();
         unlocksText.text = $"You can build a maximum of {generatorLimit} generators now!";
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad).SetUpdate(true);
-        audioSource.PlayOneShot(audioCompleteObjective);
+        //audioSource.PlayOneShot(audioCompleteObjective);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
         yield return new WaitForSecondsRealtime(5f);
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad).SetUpdate(true);
         yield return new WaitForSecondsRealtime(0.3f);

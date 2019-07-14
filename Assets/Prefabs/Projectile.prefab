@@ -107,6 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a6689423b74f84dbc3614eb87acfb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEffect: {fileID: 2673075285223715790, guid: 744cdbb68572daf4fb7fa4d5d58a7589,
+    type: 3}
 --- !u!54 &8018369732894911883
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -234,11 +236,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1328930614303709175}
     m_Modifications:
-    - target: {fileID: 3784513599095053864, guid: 0a624db2fadec474bb01c1ef9d14d4e9,
-        type: 3}
-      propertyPath: m_Name
-      value: Smoke
-      objectReference: {fileID: 0}
     - target: {fileID: 3788535124134507390, guid: 0a624db2fadec474bb01c1ef9d14d4e9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -308,6 +305,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3784513599095053864, guid: 0a624db2fadec474bb01c1ef9d14d4e9,
+        type: 3}
+      propertyPath: m_Name
+      value: Smoke
       objectReference: {fileID: 0}
     - target: {fileID: 3908157797951043430, guid: 0a624db2fadec474bb01c1ef9d14d4e9,
         type: 3}

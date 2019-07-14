@@ -46,7 +46,9 @@ public class WorldController : MonoBehaviour
 
     [Header("Public variable?")]
     public bool InBuildMode;
+    public GameObject pauseMenu;
     public GameObject pause;
+    public MusicFMOD musicfmod;
 
     //Non-Serialized Fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
@@ -58,6 +60,8 @@ public class WorldController : MonoBehaviour
     private ResourceController resourceController;
     private UIController uiController;
     private CameraController cameraController;
+
+    public MusicFMOD musicFMOD;
 
     private List<TileData> ThrusterList = new List<TileData>();
 
@@ -101,7 +105,7 @@ public class WorldController : MonoBehaviour
 
         InBuildMode = false;
         Instance = this;
-        SetPause(false);
+        //SetPause(false);
 
         tm = FindObjectOfType<TowerManager>();
 
@@ -112,6 +116,18 @@ public class WorldController : MonoBehaviour
         cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
+
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
+        else
+        {
+            Instantiate(musicfmod);
+            musicFMOD = musicfmod;
+        }
+
+        musicFMOD.StageOneMusic();
     }
 
     private void Start()
@@ -387,8 +403,7 @@ public class WorldController : MonoBehaviour
 
         if (Input.GetButtonDown("Pause"))
         {
-            pause.SetActive(!pause.activeSelf);
-            SetPause(pause.activeSelf);
+            SetPause(!pauseMenu.activeSelf);
         }
 
         if (Input.GetKeyDown("c"))
@@ -399,7 +414,7 @@ public class WorldController : MonoBehaviour
         if (resourceController.IsWin() || hubDestroyed)
         {
             Time.timeScale = 0.2f;
-            MusicController.Instance.StartOutroLose();
+            musicFMOD.GameLoseMusic();
             GameOver = true;
             InBuildMode = false;
         }
@@ -407,6 +422,8 @@ public class WorldController : MonoBehaviour
 
     public void SetPause(bool pause)
     {
+        pauseMenu.SetActive(!pauseMenu.activeSelf);
+
         if (pause)
         {
             Time.timeScale = 0.0f;
