@@ -192,7 +192,7 @@ public abstract class Building : Entity
             {
                 TakingDamage = false;
                 damagingNotified = false;
-                damIndScript.On = false;
+                if (damIndScript) damIndScript.On = false;
             }
             buildHealth = Health;
         }
