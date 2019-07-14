@@ -7,7 +7,7 @@ namespace Abilities
     {
         public override void TriggerAbility(TileData tile)
         {
-            throw new System.NotImplementedException();
+            Fog.Instance.PauseFogGrowth(duration);
         }
     }
 }

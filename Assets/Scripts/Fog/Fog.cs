@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum FogExpansionDirection
 {
@@ -93,6 +96,9 @@ public class Fog : MonoBehaviour
     private int intensity;
 
     private Vector3 hubPosition;
+
+    private bool isGrowthPaused;
+    private float pauseTime;
 
     //Private Collection Fields
     private List<TileData>  fogCoveredTiles = new List<TileData>();                 //i.e. tiles currently covered by fog
@@ -808,6 +814,29 @@ public class Fog : MonoBehaviour
     }
 
     //Other Methods----------------------------------------------------------------------------------------------------------------------------------
+
+    private void Update()
+    {
+        if (isGrowthPaused)
+        {
+            pauseTime -= Time.deltaTime;
+            if (pauseTime <= 0)
+            {
+                fogUnitsGrow = true;
+                fogSpheresGrow = true;
+                isGrowthPaused = false;
+            }
+        }
+    }
+    
+    //Pauses the fog growth for a specified amount of time
+    public void PauseFogGrowth(float time)
+    {
+        isGrowthPaused = true;
+        fogUnitsGrow = false;
+        fogSpheresGrow = false;
+        pauseTime = time;
+    }
 
     //Switches the fog between angry and not angry
     public void ToggleAnger()
