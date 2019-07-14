@@ -1183,6 +1183,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 302d2169eeaaae0478c826a2183c45de,
         type: 2}
+    - target: {fileID: 2880133560169335019, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: abilityDescription
+      value: Launches powerful projectiles into the air that come crashing down, clearing
+        a substantial amount of the fog.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4110233546365997080, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: abilityDescription
+      value: All buildings in a selected area will gain extra health for 30 seconds.
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0d96ef103d08e4429542615f2b52508, type: 3}
 --- !u!114 &326070611 stripped
@@ -5858,6 +5869,10 @@ PrefabInstance:
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 101069077}
+    - target: {fileID: 1235823549, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
+      propertyPath: rangeIndicatorGO
+      value: 
+      objectReference: {fileID: 903804443}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow
@@ -5988,10 +6003,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1235823549, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
-      propertyPath: rangeIndicatorGO
-      value: 
-      objectReference: {fileID: 903804443}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
 --- !u!1001 &1722427476
