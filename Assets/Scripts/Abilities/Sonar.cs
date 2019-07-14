@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 namespace Abilities
@@ -5,14 +6,34 @@ namespace Abilities
     [CreateAssetMenu (menuName = "Abilities/Sonar")]
     public class Sonar : Ability
     {
-        public override void Initialize(GameObject obj)
-        {
-            throw new System.NotImplementedException();
-        }
+        private SphereCollider collider;
+        private GameObject colliderGo;
+        private bool isActive;
+
+        public float sonarSpeed;
+        public GameObject colliderPrefab;
 
         public override void TriggerAbility(TileData tile)
         {
-            throw new System.NotImplementedException();
+            if (!collider)
+            {
+                colliderGo = Instantiate(colliderPrefab);
+                collider = colliderGo.GetComponent<SphereCollider>();
+            }
+            
+            if (!isActive)
+            {
+                // Set starting values
+                isActive = true;
+                colliderGo.transform.position = tile.Position;
+                collider.radius = 0;
+                
+                // Tween the collider
+                Sequence sequence = DOTween.Sequence();
+                sequence.Append(DOTween.To(() => collider.radius, x => collider.radius = x, targetRadius, sonarSpeed))
+                    .OnComplete(() => isActive = false);
+                // TODO: visual effect
+            }
         }
     }
 }

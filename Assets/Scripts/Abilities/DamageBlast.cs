@@ -11,11 +11,6 @@ namespace Abilities
         public int fullDamageRange;
         public int fullDamage;
         public int fallOffDamage;
-        
-        public override void Initialize(GameObject obj)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override void TriggerAbility(TileData tile)
         {

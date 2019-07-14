@@ -79,6 +79,14 @@ public class TileData
             }
         }
     }
+
+    public Vector3 Position
+    {
+        get
+        {
+            return new Vector3(x, 0, z);
+        }
+    }
    
     public TileData(int x, int z)
     {

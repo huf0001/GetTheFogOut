@@ -156,14 +156,21 @@ public class AbilityController : MonoBehaviour
             {
                 if (!abilityTriggered[selectedAbility.AbilityType])
                 {
-                    selectedAbility.TriggerAbility(selectedTile);
-                    abilityTriggered[selectedAbility.AbilityType] = true;
-                    abilityCooldowns[selectedAbility.AbilityType] = selectedAbility.baseCoolDown;
-                    ResourceController.Instance.StoredPower -= selectedAbility.powerCost;
-                    // TODO: Play sound effect
-                    // TODO: Start visual cooldown stuff
-                    IsAbilitySelected = false;
-                    selectedAbility = null;
+                    if (ResourceController.Instance.StoredPower >= selectedAbility.powerCost)
+                    {
+                        selectedAbility.TriggerAbility(selectedTile);
+                        abilityTriggered[selectedAbility.AbilityType] = true;
+                        abilityCooldowns[selectedAbility.AbilityType] = selectedAbility.baseCoolDown;
+                        ResourceController.Instance.StoredPower -= selectedAbility.powerCost;
+                        // TODO: Play sound effect
+                        // TODO: Start visual cooldown stuff
+                        IsAbilitySelected = false;
+                        selectedAbility = null;
+                    }
+                    else
+                    {
+                        // TODO: tell the user they don't have enough power
+                    }
                 }
             } 
             // Cancel ability

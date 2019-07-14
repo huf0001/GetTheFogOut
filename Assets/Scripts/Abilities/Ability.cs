@@ -21,6 +21,5 @@ public abstract class Ability : ScriptableObject, ICollectible
         get { return abilityType; }
     }
 
-    public abstract void Initialize(GameObject obj);
     public abstract void TriggerAbility(TileData tile);
 }
