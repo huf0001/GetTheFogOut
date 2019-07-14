@@ -22,6 +22,7 @@ public abstract class Building : Entity
     [SerializeField] protected RectTransform healthBarCanvas;
     [SerializeField] protected Image healthBarImage;
     [SerializeField] protected Gradient healthGradient;
+    [SerializeField] protected GameObject damageIndicatorPrefab;
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
@@ -34,6 +35,9 @@ public abstract class Building : Entity
     private bool damagedNotified = false;
     private float buildHealth;
     private float regenWait;
+    private MeshRenderer rend;
+    private GameObject damInd;
+    private DamageIndicator damIndScript;
     public bool isShieldOn = false;
 
     //Public properties
@@ -86,6 +90,8 @@ public abstract class Building : Entity
         InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
         buildHealth = health;
         InvokeRepeating("CheckStillDamaging", 1, 5);
+
+        rend = GetComponentInChildren<MeshRenderer>();
     }
 
     private void CheckForDamage()
@@ -186,6 +192,7 @@ public abstract class Building : Entity
             {
                 TakingDamage = false;
                 damagingNotified = false;
+                damIndScript.On = false;
             }
             buildHealth = Health;
         }
@@ -380,6 +387,8 @@ public abstract class Building : Entity
     public void DismantleBuilding()
     {
         Debug.Log("Dismantling " + this.name);
+        if (damInd) Destroy(damInd.gameObject);
+
         if (buildingType == BuildingType.Hub)
         {
             WorldController.Instance.HubDestroyed = true;
@@ -467,10 +476,26 @@ public abstract class Building : Entity
 
         if (!damagingNotified)
         {
-            MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-                MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
-                $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
-                $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+            if (BuildingType == BuildingType.Hub)
+            {
+                MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
+                    MouseController.Instance.WarningScript.Danger + $"<size=80%>The Ship is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+            }
+            else
+            {
+                if (!damInd)
+                {
+                    damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
+                    damIndScript = damInd.GetComponent<DamageIndicator>();
+                }
+                else damIndScript.On = true;
+                damInd.GetComponent<DamageIndicator>().Building = this;
+            }
+            
+//            MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
+//                MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
+//                $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
+//                $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
             //audioSource.PlayOneShot(audioDamage);
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
             damagingNotified = true;
