@@ -11,6 +11,8 @@ public class Projectile : MonoBehaviour
     bool isLanded;
     private Rigidbody rigidbody;
 
+    public GameObject hitEffect;
+
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -72,6 +74,9 @@ public class Projectile : MonoBehaviour
             {
                 //Debug.Log("Dealing damage to " + tileHit.FogUnit);
                 tileHit.FogUnit.DealDamageToFogUnit(damage);
+                
+                //Spawns the
+                Destroy((Instantiate(hitEffect, transform.position, transform.rotation)), 1f);
 
                 foreach (TileData tile in tileHit.AllAdjacentTiles)
                 {
