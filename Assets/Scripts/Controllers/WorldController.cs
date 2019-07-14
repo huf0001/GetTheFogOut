@@ -47,7 +47,6 @@ public class WorldController : MonoBehaviour
     [Header("Public variable?")]
     public bool InBuildMode;
     public GameObject pauseMenu;
-    public GameObject pause;
     public MusicFMOD musicfmod;
 
     //Non-Serialized Fields
