@@ -87,14 +87,17 @@ public class ResourceController : MonoBehaviour
         powerChange += hub.Upkeep;
 
         //Get connected generators, account for the power they supply
-        List<Generator> connectedGenerators = hub.GetGenerators();// hub.GetGenerators();
-        //Debug.Log("ConnectedGenerators.Count is " + connectedGenerators.Count);
-
+        List<Generator> connectedGenerators = hub.GetGenerators();
+        
+        foreach (Generator generator in connectedGenerators)
+        {
+            storedPower += generator.Upkeep * generator.OverclockValue;
+            powerChange += generator.Upkeep * generator.OverclockValue;
+        }
+        
         if (connectedGenerators.Count > 0)
         {
-            storedPower += connectedGenerators[0].Upkeep * connectedGenerators.Count;
-            powerChange += connectedGenerators[0].Upkeep * connectedGenerators.Count;
-            //    Debug.Log(generators.Count + " ge " + connectedGenerators.Count + " conge");
+
             foreach (Generator g in generators)
             {
                 if (connectedGenerators.Contains(g))
@@ -196,8 +199,8 @@ public class ResourceController : MonoBehaviour
                                     organicChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
                                     break;
                                 case Resource.Mineral:
-                                    mineralChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
-                                    h.Location.Resource.Health -= h.HarvestAmt;
+                                    mineralChange += h.HarvestAmt * h.OverclockValue * (int)h.Location.Resource.ResMultiplier;
+                                    h.Location.Resource.Health -= h.HarvestAmt * h.OverclockValue;
                                     if (h.Location.Resource.Health == 0)
                                     {
                                         ResourceNode.Destroy(h.Location.Resource.gameObject);

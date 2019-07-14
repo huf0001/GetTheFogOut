@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,7 @@ public abstract class Building : Entity
     [SerializeField] protected Image healthBarImage;
     [SerializeField] protected Gradient healthGradient;
     [SerializeField] protected GameObject damageIndicatorPrefab;
+    
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
@@ -39,6 +41,8 @@ public abstract class Building : Entity
     private GameObject damInd;
     private DamageIndicator damIndScript;
     public bool isShieldOn = false;
+    protected bool isOverclockOn = false;
+    public float overclockTimer;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -56,31 +60,20 @@ public abstract class Building : Entity
 
     public bool TakingDamage { get; private set; }
 
-    //public Hub Hub
-    //{
-    //    get => resourceController;
-    //    set
-    //    {
-    //        Debug.Log("Building.Hub changed");
-    //        hub = value;
-    //    }
-    //}
+    public int OverclockValue
+    {
+        get { return IsOverclockOn ? 3 : 1; }
+    }
+
+    public virtual bool IsOverclockOn
+    {
+        get { return isOverclockOn; }
+        set { isOverclockOn = value; }
+    }
 
     protected virtual void Awake()
     {
-        //MakeTilesVisible();
-        //FindToolTip();
 
-        //audioSource = GetComponent<AudioSource>();
-
-        //if (placed)
-        //{
-        //    GetComponent<Renderer>().material.shader = buildingShader;
-        //}
-        //else
-        //{
-        //    GetComponent<Renderer>().material.shader = hologramShader;
-        //}
     }
 
     // Start is called before the first frame update
@@ -297,17 +290,7 @@ public abstract class Building : Entity
 
     private void MakeTilesVisible()
     {
-        //Collider[] tilesToActivate = Physics.OverlapSphere(transform.position, visibilityRange);
-
-        //foreach (Collider c in tilesToActivate)
-        //{
-        //    if (c.gameObject.GetComponent<TileData>() != null)
-        //    {
-        //        c.gameObject.GetComponent<TileData>().AddObserver(this as Building);
-        //    }
-        //}
-
-        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)visibilityRange);
+        List<TileData> tiles = location.CollectTilesInRange((int)visibilityRange);
 
         foreach (TileData t in tiles)
         {
@@ -317,17 +300,7 @@ public abstract class Building : Entity
 
     private void MakeTilesNotVisible()
     {
-        //Collider[] tilesToDeactivate = Physics.OverlapSphere(transform.position, visibilityRange);
-
-        //foreach (Collider c in tilesToDeactivate)
-        //{
-        //    if (c.gameObject.GetComponent<TileData>() != null)
-        //    {
-        //        c.gameObject.GetComponent<TileData>().RemoveObserver(this as Building);
-        //    }
-        //}
-
-        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)visibilityRange);
+        List<TileData> tiles = location.CollectTilesInRange((int)visibilityRange);
 
         foreach (TileData t in tiles)
         {

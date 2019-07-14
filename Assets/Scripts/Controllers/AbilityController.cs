@@ -15,7 +15,7 @@ public enum AbilityEnum
 public class AbilityController : MonoBehaviour
 {
     // Private variables -----------------------------------------------------------------------------------------------
-    private AbilityController instance;
+    private static AbilityController instance;
     private List<CollectibleObject> collectedObjects = new List<CollectibleObject>();
     private Ability selectedAbility;
     private bool isAbilitySelected = false;
@@ -36,7 +36,7 @@ public class AbilityController : MonoBehaviour
         }
     }
 
-    public AbilityController Instance
+    public static AbilityController Instance
     {
         get { return instance; }
         set { instance = value; }

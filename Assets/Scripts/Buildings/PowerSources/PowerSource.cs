@@ -188,7 +188,7 @@ public abstract class PowerSource : Building
 
     public void ActivateTiles()
     {
-        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)powerRange);
+        List<TileData> tiles = location.CollectTilesInRange((int)powerRange);
 
         foreach (TileData tile in tiles)
         {
@@ -250,7 +250,7 @@ public abstract class PowerSource : Building
 
     public void DeactivateTiles()
     {
-        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)powerRange);
+        List<TileData> tiles = location.CollectTilesInRange((int)powerRange);
 
         foreach (TileData tile in tiles)
         {

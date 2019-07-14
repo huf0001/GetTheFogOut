@@ -5,12 +5,6 @@ using UnityEngine.Experimental.VFX;
 
 public class RepelFan : Defence
 {
-    [SerializeField] private int directDamage = 50;
-    [SerializeField] private int aoeDamage = 25;
-    [SerializeField] private float rateOfFire = 1f;
-    [SerializeField] private bool placedInEditor = false;
-   // private VisualEffect myeffect;
-
     protected override void Awake()
     {
         base.Awake();
@@ -38,7 +32,7 @@ public class RepelFan : Defence
         this.gameObject.GetComponentInChildren<ParticleSystem>().Play();
         if (!IsInvoking("FirePulse"))
         {
-            InvokeRepeating("FirePulse", 1f, rateOfFire);
+            InvokeRepeating("FirePulse", rateOfFire / OverclockValue, rateOfFire / OverclockValue);
         }
     }
 
@@ -49,6 +43,15 @@ public class RepelFan : Defence
         CancelInvoke("FirePulse");
     }
 
+    protected override void ResetFire()
+    {
+        if (IsInvoking("FirePulse"))
+        {
+            CancelInvoke("FirePulse");
+            InvokeRepeating("FirePulse", rateOfFire / OverclockValue, rateOfFire / OverclockValue);
+        }
+    }
+    
     void FirePulse()
     {
         List<TileData> directTarget = location.AllAdjacentTiles;
@@ -78,7 +81,7 @@ public class RepelFan : Defence
 
     List<TileData> GetTarget(int range)
     {
-        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, range);
+        List<TileData> tiles = location.CollectTilesInRange(range);
 
         return tiles;
     }
