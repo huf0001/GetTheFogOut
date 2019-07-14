@@ -123,7 +123,7 @@ public class TutorialController : DialogueBoxController
 
         if (skipTutorial)
         {
-            Fog.Instance.InvokeActivateFog(5);
+            Fog.Instance.InvokeWakeUpFog(5);
             tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
             //MusicController.Instance.SkipTutorial();
@@ -656,7 +656,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                Fog.Instance.ActivateFog();
+                Fog.Instance.WakeUpFog();
                 SendDialogue("build air cannon", 1);
                 //Invoke("ActivateTarget", 1);
                 ActivateTarget(airCannonLandmark);

@@ -4,25 +4,30 @@ using UnityEngine;
 
 public class FogUnit : Entity
 {
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
+
     //Serialized Fields
     [Header("Opacity")]
-    [SerializeField] private float startOpacity = 0f;
-    [SerializeField] private float endOpacity = 0.90f;
+    [SerializeField] private float startOpacity;
+    [SerializeField] private float endOpacity;
 
     [Header("Colour")]
-    [SerializeField] private float colourLerpSpeedMultiplier = 1f;
+    [SerializeField] private float colourLerpSpeedMultiplier;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
 
     [Header("Damage to Fog Unit")]
-    [SerializeField] private float damageLerpMultiplier = 3f;
+    [SerializeField] private float damageLerpMultiplier;
 
     [Header("Damage to Buildings")]
-    [SerializeField] private float damage = 0.1f;
+    [SerializeField] private float damage;
 
     [Header("VFX")]
     [SerializeField] private GameObject angryFogEvaporation;
+
+    [Header("For Testing")]
+    [SerializeField] private bool returnToPool;
 
     //Non-Serialized Fields
     private Fog fog;
@@ -45,14 +50,17 @@ public class FogUnit : Entity
     private bool neighboursFull = false;
 
     private bool fillingFromFogSphere = false;
+    
+    //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
-    //Public Properties
+    //Basic Public Properties
     public Fog Fog { get => fog; set => fog = value; }
     public bool Angry { get => angry; set => angry = value; }
     public float Damage { get => damage; set => damage = value; }
     public bool FillingFromFogSphere {  get => fillingFromFogSphere; set => fillingFromFogSphere = value; }
     public Renderer FogRenderer { get => fogRenderer; set => fogRenderer = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }
+    public bool ReturnToPool { get => returnToPool; set => returnToPool = value; }
     public bool Spill { get => spill; set => spill = value; }
     public bool TakingDamage { get => takingDamage; }
 
@@ -85,6 +93,8 @@ public class FogUnit : Entity
         }
     }
     
+    //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
+
     //Awake
     private void Awake()
     {
@@ -102,19 +112,14 @@ public class FogUnit : Entity
     }
 
     //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
-    //so that newly spawned fog units don't look docile when the fog is angry.
+    //so that newly spawned fog units don't look docile when the fog is angry
     public void SetStartEmotion(bool a)
     {
         angry = a;
-
         currentColours = angry ? angryColours : docileColours;
     }
 
-    //Verifies that (x, z) is the fog unit's position
-    public bool PositionIs(int x, int z)
-    {
-        return transform.position.x == x && transform.position.z == z;
-    }
+    //Recurring Methods - Updating Damage------------------------------------------------------------------------------------------------------------
 
     //Fog unit deals damage to the building on its tile
     public void DealDamageToBuilding()
@@ -125,32 +130,6 @@ public class FogUnit : Entity
         }
     }
 
-    //A defence has dealt damage to the fog unit
-    public void DealDamageToFogUnit(float damage)
-    {
-        //Run angry fog evaporation effect here
-        if (!fillingFromFogSphere)
-        {
-            takingDamage = true;
-            startHealth = base.Health;
-            targetHealth -= damage;
-            healthProgress = 0;
-
-            if (targetHealth < 0)
-            {
-                targetHealth = 0;
-            }
-
-            foreach (TileData t in Location.AdjacentTiles)
-            {
-                if (t.FogUnit != null)
-                {
-                    t.FogUnit.NeighboursFull = false;
-                }
-            }
-        }
-    }
- 
     //Updates the damage dealt to the fog unit
     public void UpdateDamageToFogUnit(float damageInterval)
     {
@@ -171,6 +150,8 @@ public class FogUnit : Entity
             ReturnToFogPool();
         }
     }
+
+    //Recurring Methods - Appearance-----------------------------------------------------------------------------------------------------------------
 
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
@@ -223,6 +204,34 @@ public class FogUnit : Entity
     public void RenderOpacity()
     {
         fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, base.Health / MaxHealth));
+    }
+
+    //Triggered Methods------------------------------------------------------------------------------------------------------------------------------
+
+    //A defence has dealt damage to the fog unit
+    public void DealDamageToFogUnit(float damage)
+    {
+        //Run angry fog evaporation effect here
+        if (!fillingFromFogSphere)
+        {
+            takingDamage = true;
+            startHealth = base.Health;
+            targetHealth -= damage;
+            healthProgress = 0;
+
+            if (targetHealth < 0)
+            {
+                targetHealth = 0;
+            }
+
+            foreach (TileData t in Location.AdjacentTiles)
+            {
+                if (t.FogUnit != null)
+                {
+                    t.FogUnit.NeighboursFull = false;
+                }
+            }
+        }
     }
 
     //Tells Fog to put the fog unit back in the pool

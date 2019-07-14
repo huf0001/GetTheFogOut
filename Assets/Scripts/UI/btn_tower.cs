@@ -10,11 +10,14 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 {
     [SerializeField] private GameObject holo_prefab;
     [SerializeField] private GameObject build_prefab;
-    private Button button;
     [SerializeField] private BuildingType towerType = BuildingType.None;
+    [SerializeField] private Image buildingDescBG;
     [SerializeField] TextMeshProUGUI buildingDesc;
     [SerializeField] TextMeshProUGUI buildingCost;
     [SerializeField, Tooltip("Building flavour text"), TextArea] string descText;
+
+    private Button button;
+    private Color buttonColour;
 
     //private WorldController WC;
     public KeyCode _key;
@@ -26,6 +29,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private void Awake()
     {
         button = GetComponent<Button>();
+        buttonColour = GetComponent<Image>().color;
     }
 
     void Update()
@@ -34,6 +38,11 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             button.onClick.Invoke();
         }
+    }
+
+    public void ChangeDescColour()
+    {
+        buildingDescBG.color = buttonColour;
     }
 
     public void OnSelect(BaseEventData eventData)

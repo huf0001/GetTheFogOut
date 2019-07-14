@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 1899903245264256486}
   - component: {fileID: 7305178377255849301}
   - component: {fileID: 1869141249}
+  - component: {fileID: 1235823549}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -416,10 +417,6 @@ MonoBehaviour:
   mineralTarget: 500
   powerTarget: 500
   generatorLimit: 5
-  fogGrowth: 0000000000000000
-  fogGrowthEasy: 10
-  fogGrowthMedium: 25
-  fogGrowthHard: 50
   thrusterCamera: {fileID: 0}
 --- !u!114 &3646138034780775634
 MonoBehaviour:
@@ -458,26 +455,34 @@ MonoBehaviour:
     type: 3}
   visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
+  angry: 0
+  damageOn: 1
   configuration: 5
   difficulty: 1
   expansionDirection: 0
+  surroundingHubRange: 9
   fogAccelerates: 0
   fogUnitsGrow: 1
   fogSpheresGrow: 1
-  minSphereDistanceFromHub: 6
-  minFogSphereRange: 5
-  maxFogSphereRange: 8
+  maxFogSpheresCount: 3
   fogGrowth: 10
   fogSpillThreshold: 50
-  minHealth: 0.01
-  maxHealth: 100
+  fogGrowthEasy: 10
+  fogGrowthMedium: 25
+  fogGrowthHard: 50
+  fogSphereEasyMaxHealth: 100
+  fogSphereMediumMaxHealth: 150
+  fogSphereHardMaxHealth: 200
+  fogSphereEasyMaxSizeScale: 2.3
+  fogSphereMediumMaxSizeScale: 3.45
+  fogSphereHardMaxSizeScale: 4.6
+  fogSphereMinHealth: 0.001
+  fogUnitMinHealth: 0.001
+  fogUnitMaxHealth: 100
   fogFillInterval: 0.2
   fogDamageInterval: 0.02
   fogExpansionInterval: 0.5
   fogSphereInterval: 0.05
-  angry: 0
-  damageOn: 1
-  surroundingHubRange: 9
 --- !u!114 &7305178377255849301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,6 +498,19 @@ MonoBehaviour:
   popupText: {fileID: 2224538830913006596, guid: 94d300174e596ea4093ea21d7b68b406,
     type: 3}
 --- !u!114 &1869141249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899903245264256479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e48213f3d9444adbb2162f247477eb5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rangeIndicatorGO: {fileID: 0}
+--- !u!114 &1235823549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
