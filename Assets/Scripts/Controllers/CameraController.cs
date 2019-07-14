@@ -9,7 +9,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera serialCameraCutscene;
     [SerializeField] bool runCameraPan;
     private CinemachineFollowZoom zoom;
-    public GameObject buildingSelector;
 
     [SerializeField] float moveSpeed = 20f;
     [SerializeField] float rotationSpeed = 40f;
