@@ -7,11 +7,6 @@ namespace Abilities
     public class BuildingDefence : Ability
     {
         public float shieldAmount;
-        
-        public override void Initialize(GameObject obj)    
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override void TriggerAbility(TileData tile)
         {
