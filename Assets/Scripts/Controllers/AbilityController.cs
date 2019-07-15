@@ -22,6 +22,7 @@ public class AbilityController : MonoBehaviour
     private Dictionary<AbilityEnum, bool> abilityTriggered = new Dictionary<AbilityEnum, bool>();
     private Dictionary<AbilityEnum, float> abilityCooldowns = new Dictionary<AbilityEnum, float>();
     private TileData selectedTile;
+    private int cooldownsRunning = 0;
 
     [SerializeField] private GameObject rangeIndicatorGO;
 
@@ -84,8 +85,13 @@ public class AbilityController : MonoBehaviour
     // Update functions ------------------------------------------------------------------------------------------------
     void Update()
     {
-        UpdateButtonCooldowns();
+        if (cooldownsRunning > 0)
+        {
+            UpdateButtonCooldowns();
+        }
+        
         ProcessInput();
+        
         if (IsAbilitySelected)
         {
             DisplayTarget();
@@ -119,6 +125,8 @@ public class AbilityController : MonoBehaviour
 
     void UpdateButtonCooldowns()
     {
+        List<AbilityEnum> cooldownsToUpdate = new List<AbilityEnum>();
+        
         // Loop through each ability and if it is triggered, run its cooldown
         foreach (KeyValuePair<AbilityEnum, bool> trigger in abilityTriggered)
         {
@@ -130,10 +138,18 @@ public class AbilityController : MonoBehaviour
                 
                 if (abilityCooldowns[trigger.Key] <= 0f)
                 {
-                    abilityTriggered[trigger.Key] = false;
+                    cooldownsToUpdate.Add(trigger.Key);
                 }
             }   
         }
+
+        foreach (AbilityEnum abilityEnum in cooldownsToUpdate)
+        {
+            abilityTriggered[abilityEnum] = false;
+            cooldownsRunning--;
+        }
+        
+        cooldownsToUpdate.Clear();
     }
 
     // Button Management -----------------------------------------------------------------------------------------------
@@ -141,6 +157,7 @@ public class AbilityController : MonoBehaviour
     {
         selectedAbility = ability;
         IsAbilitySelected = true;
+        MouseController.Instance.isBuildAvaliable = false;
 
         // Set correct range for the range indicator
         Vector3 scale = new Vector3(ability.targetRadius * 2, 0.01f, ability.targetRadius * 2);
@@ -161,11 +178,14 @@ public class AbilityController : MonoBehaviour
                         selectedAbility.TriggerAbility(selectedTile);
                         abilityTriggered[selectedAbility.AbilityType] = true;
                         abilityCooldowns[selectedAbility.AbilityType] = selectedAbility.baseCoolDown;
+                        cooldownsRunning++;
                         ResourceController.Instance.StoredPower -= selectedAbility.powerCost;
                         // TODO: Play sound effect
                         // TODO: Start visual cooldown stuff
                         IsAbilitySelected = false;
                         selectedAbility = null;
+                        MouseController.Instance.isBuildAvaliable = true;
+
                     }
                     else
                     {
@@ -174,10 +194,11 @@ public class AbilityController : MonoBehaviour
                 }
             } 
             // Cancel ability
-            else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
+            else if (Input.GetButtonDown("Cancel"))
             {
                 IsAbilitySelected = false;
                 selectedAbility = null;
+                MouseController.Instance.isBuildAvaliable = true;
             }
         }
     }
