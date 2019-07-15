@@ -255,7 +255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8464761400181889506
 Transform:
   m_ObjectHideFlags: 0
@@ -1620,6 +1620,7 @@ MonoBehaviour:
     plane: {fileID: 0}
   health: 37
   maxHealth: 0
+  shield: 0
   visibilityRange: 7
   upkeep: 0
   powerSource: {fileID: 0}
@@ -1666,6 +1667,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   damageIndicatorPrefab: {fileID: 8599427647162027438, guid: d157f3b0eefcb6743985ca736438dcff,
     type: 3}
+  isShieldOn: 0
+  overclockTimer: 0
   powerRange: 5
   suppliedBuildings: []
 --- !u!82 &3453695148158886297
