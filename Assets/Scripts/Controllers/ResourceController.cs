@@ -201,7 +201,7 @@ public class ResourceController : MonoBehaviour
                                 case Resource.Mineral:
                                     mineralChange += h.HarvestAmt * h.OverclockValue * (int)h.Location.Resource.ResMultiplier;
                                     h.Location.Resource.Health -= h.HarvestAmt * h.OverclockValue;
-                                    if (h.Location.Resource.Health == 0)
+                                    if (h.Location.Resource.Health <= 0)
                                     {
                                         ResourceNode.Destroy(h.Location.Resource.gameObject);
                                         h.TurnOnMineralIndicator();
