@@ -199,17 +199,37 @@ public class FogSphere : MonoBehaviour
         WorldController wc = WorldController.Instance;
         float radius = renderers[0].bounds.extents.magnitude * 0.5f;
 
-        for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
-        {
-            for (int j = Mathf.RoundToInt(Mathf.Max(0, transform.position.z - radius)); j < Mathf.Min(fog.ZMax, transform.position.z + radius); j++)
-            {
-                if (wc.TileExistsAt(i, j))
-                {
-                    TileData t = wc.GetTileAt(i, j);
+        int iMin = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius));
+        int jMin = Mathf.RoundToInt(Mathf.Max(0, transform.position.z - radius));
+        float iMax = Mathf.Min(fog.XMax, transform.position.x + radius);
+        float jMax = Mathf.Min(fog.ZMax, transform.position.z + radius);
 
-                    if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+        if (iMin > iMax || jMin > jMax) //Tiny radius --> effective search area of 0 if using loops.
+        {
+            if (wc.TileExistsAt(transform.position))
+            {
+                TileData t = wc.GetTileAt(transform.position);
+
+                if (t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f)
+                {
+                    return true;
+                }
+            }
+        }
+        else
+        { 
+            for (int i = iMin; i < iMax; i++)
+            {
+                for (int j = jMin; j < jMax; j++)
+                {
+                    if (wc.TileExistsAt(i, j))
                     {
-                        return true;
+                        TileData t = wc.GetTileAt(i, j);
+
+                        if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -229,22 +249,47 @@ public class FogSphere : MonoBehaviour
 
             float radius = renderers[0].bounds.extents.magnitude * 0.5f;
 
-            for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
+            int iMin = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius));
+            int jMin = Mathf.RoundToInt(Mathf.Max(0, transform.position.z - radius));
+            float iMax = Mathf.Min(fog.XMax, transform.position.x + radius);
+            float jMax = Mathf.Min(fog.ZMax, transform.position.z + radius);
+
+            if (iMin > iMax || jMin > jMax) //Tiny radius --> effective search area of 0 if using loops.
             {
-                for (int j = Mathf.RoundToInt(Mathf.Max(0, transform.position.z - radius)); j < Mathf.Min(fog.ZMax, transform.position.z + radius); j++)
+                if (wc.TileExistsAt(transform.position))
                 {
-                    if (wc.TileExistsAt(i, j))
+                    TileData t = wc.GetTileAt(transform.position);
+
+                    if (t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth)
                     {
-                        TileData t = wc.GetTileAt(i, j);
-
-                        if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                        if (t.FogUnit == null)
                         {
-                            if (t.FogUnit == null)
-                            {
-                                fog.SpawnFogUnitWithMinHealth(t);
-                            }
+                            fog.SpawnFogUnitWithMinHealth(t);
+                        }
 
-                            spiltFog.Add(t.FogUnit);
+                        spiltFog.Add(t.FogUnit);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = iMin; i < iMax; i++)
+                {
+                    for (int j = jMin; j < jMax; j++)
+                    {
+                        if (wc.TileExistsAt(i, j))
+                        {
+                            TileData t = wc.GetTileAt(i, j);
+
+                            if ((t.FogUnit == null || t.FogUnit.Health < t.FogUnit.MaxHealth) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                            {
+                                if (t.FogUnit == null)
+                                {
+                                    fog.SpawnFogUnitWithMinHealth(t);
+                                }
+
+                                spiltFog.Add(t.FogUnit);
+                            }
                         }
                     }
                 }
@@ -329,6 +374,7 @@ public class FogSphere : MonoBehaviour
 
     //Recurring Methods - Attacking------------------------------------------------------------------------------------------------------------------
 
+    //Attacks the hub
     public void Attack(float increment)
     {
         Health -= increment * 5;

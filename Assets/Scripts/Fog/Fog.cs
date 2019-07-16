@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 //using UnityEditorInternal;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -431,6 +432,7 @@ public class Fog : MonoBehaviour
     {
         FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, transform, true);
         f.transform.position = transform.position;
+        f.State = FogSphereState.None;
         f.Fog = this;
         return f;
     }
@@ -798,6 +800,7 @@ public class Fog : MonoBehaviour
         f.gameObject.name = "FogSphereInPool";
         f.gameObject.SetActive(false);
         f.transform.position = transform.position;
+        f.State = FogSphereState.None;
 
         foreach(Renderer r in f.Renderers)
         {
