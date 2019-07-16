@@ -22,7 +22,7 @@ public class FogSphere : MonoBehaviour
     //Serialized Fields
     [Header("Fog Sphere State")]
     [SerializeField] private FogSphereState state;
-
+    
     [Header("Health")]
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
@@ -33,6 +33,14 @@ public class FogSphere : MonoBehaviour
     [SerializeField] private float height;
     [SerializeField] private float minMovementSpeed;
     [SerializeField] private float maxMovementSpeed;
+    [SerializeField] private float minSpeedWhileSpilling;
+    [SerializeField] private float acceleration;
+
+    [Header("Spilling")]
+    [SerializeField] private int maxSpiltFogCount;
+
+    [Header("Damage")]
+    [SerializeField] private float damage;
 
     [Header("Renderers")]
     [SerializeField] private List<Renderer> renderers;
@@ -50,12 +58,6 @@ public class FogSphere : MonoBehaviour
     [Header("Size")]
     [SerializeField] private float minSizeScale;
     [SerializeField] private float maxSizeScale;
-
-    [Header("Spilling")]
-    [SerializeField] private int maxSpiltFogCount;
-
-    [Header("Damage")]
-    [SerializeField] private float damage;
 
     //Non-Serialized Fields
     private Fog fog;
@@ -77,7 +79,10 @@ public class FogSphere : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 hubPosition;
 
-    private float movementSpeed;
+    private float normalMovementSpeed;
+
+    [Header("Testing")]
+    [SerializeField] private float currentMovementSpeed;
 
     private List<FogUnit> spiltFog = new List<FogUnit>();
     private float fogUnitMinHealth;
@@ -159,7 +164,8 @@ public class FogSphere : MonoBehaviour
 
     public void RandomiseMovementSpeed()
     {
-        movementSpeed = Random.Range(minMovementSpeed, maxMovementSpeed);
+        normalMovementSpeed = Random.Range(minMovementSpeed, maxMovementSpeed);
+        currentMovementSpeed = normalMovementSpeed;
     }
 
     //Recurring Methods - MovingAndGrowing and Growing---------------------------------------------------------------------------------------------------------
@@ -178,9 +184,24 @@ public class FogSphere : MonoBehaviour
     //Moves the fog sphere towards the hub
     public void Move(float interval)
     {
-        hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateSize()
-        transform.position = Vector3.MoveTowards(transform.position, hubPosition, movementSpeed * interval);
+        if (state == FogSphereState.Spilling)
+        {
+            if (currentMovementSpeed > minSpeedWhileSpilling)
+            {
+                currentMovementSpeed = Mathf.Max(minSpeedWhileSpilling, currentMovementSpeed - acceleration);
+            }
+        }
+        else if (state == FogSphereState.MovingAndGrowing)
+        {
+            if (currentMovementSpeed < normalMovementSpeed)
+            {
+                currentMovementSpeed = Mathf.Min(normalMovementSpeed, currentMovementSpeed + acceleration);
+            }
+        }
 
+        hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateSize()
+        transform.position = Vector3.MoveTowards(transform.position, hubPosition, currentMovementSpeed * interval);
+        
         if (transform.position == hubPosition)
         {
             state = FogSphereState.Attacking;

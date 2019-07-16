@@ -84,7 +84,6 @@ public class FogUnit : Entity
                 }
                 else if (base.Health <= 0)
                 {
-                    Debug.Log($"{name}.Health is {base.Health}. Returning to fog pool.");
                     ReturnToFogPool();
                 }
 

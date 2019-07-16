@@ -709,6 +709,7 @@ public class Fog : MonoBehaviour
                         f.Grow(fogSphereInterval * fogGrowth * 0.75f);
                         break;
                     case FogSphereState.Spilling:
+                        f.Move(fogSphereInterval * 0.5f);
                         f.Spill(fogSphereInterval * fogGrowth * 2f);
                         break;
                     case FogSphereState.Attacking:
