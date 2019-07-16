@@ -203,6 +203,7 @@ public class Fog : MonoBehaviour
         }
 
         SetDifficulty();
+        Intensity = 1;  //Sets the intensity-derived values to the default of their "Easy" values.
     }
 
     //Sets the difficulty according to what the player selects
