@@ -158,14 +158,23 @@ public class DialogueBox : MonoBehaviour
 
         deactivationSubmitted = false;
 
-        if (nextDialogueSetReady)
+        if (nextDialogueSetReady && contentToDisplay.Count > 0)
         {
             DisplayNext();
             nextDialogueSetReady = false;
         }
-        else if (clickable && (dialogueRead || Input.GetButtonDown("Jump")))// || Input.GetButtonDown("Submit")))
+        else
         {
-            RegisterDialogueRead();
+            if (nextDialogueSetReady && contentToDisplay.Count == 0)
+            {
+                nextDialogueSetReady = false;
+                Debug.Log("Warning: nextDialogueSetReady was set to true, but contentToDisplay was empty.");
+            }
+
+            if (clickable && (dialogueRead || Input.GetButtonDown("Jump")))// || Input.GetButtonDown("Submit")))
+            {
+                RegisterDialogueRead();
+            }
         }
         
         if (!lerpFinished)
