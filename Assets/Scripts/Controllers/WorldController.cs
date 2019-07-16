@@ -121,6 +121,10 @@ public class WorldController : MonoBehaviour
         {
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         }
+        else if (GameObject.Find("MusicFMOD(Clone)") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD(Clone)").GetComponent<MusicFMOD>();
+        }
         else
         {
             Instantiate(musicfmod);
