@@ -216,7 +216,7 @@ public class UIController : MonoBehaviour
         cursor.SetActive(isOn);
     }
 
-    public void changeColor(Color newColor, bool flash)
+    private void ChangeColor(Color newColor, bool flash)
     {
         /*
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
@@ -239,12 +239,12 @@ public class UIController : MonoBehaviour
         }
         else
         {
-            tile.sharedMaterial.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
+            tile.sharedMaterial.SetColor("_BaseColor", GetAlpha(newColor, 0.1f));
             tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
-        }
+        } 
     }
 
-    public Color getAlpha(Color color,float avalue)
+    private Color GetAlpha(Color color,float avalue)
     {
         Color current = color;
         current.a = avalue;
@@ -310,7 +310,7 @@ public class UIController : MonoBehaviour
                 }
                 if (index == 1)
                 {
-                    changeColor(powerCurrent,true);
+                    ChangeColor(powerCurrent,true);
                  //   StartCoroutine(coroutine);
                 }
                 else
@@ -318,15 +318,15 @@ public class UIController : MonoBehaviour
                     //   StopCoroutine(coroutine);
                     //DOTween.KillAll();
                     DOTween.Kill("tile");
-                    changeColor(powerCurrent,false);
+                    ChangeColor(powerCurrent,false);
                 }
             }
             
 
             // update text values
-            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "/" + resourceController.MaxPower + "\n<color=" + colour + powerChange + "</color>";
+            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
 
-            float powerCheck = float.Parse(powerText.text.Split('/')[0]) / resourceController.MaxPower;
+            float powerCheck = float.Parse(powerText.text.Split('%')[0]) * 0.01f;/// resourceController.MaxPower;
 
             if (powerCheck > 0 && powerCheck <= .25f && powerImg.sprite != powerLevelSprites[1])
             {

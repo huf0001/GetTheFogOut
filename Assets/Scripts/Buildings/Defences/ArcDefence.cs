@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class ArcDefence : Defence
 {
-
-    [SerializeField] private int directDamage = 50;
-    [SerializeField] private int aoeDamage = 25;
-    [SerializeField] private float rateOfFire = 0.25f;
-    [SerializeField] private bool placedInEditor = false;
-
     protected override void Awake()
     {
         base.Awake();
@@ -37,7 +31,7 @@ public class ArcDefence : Defence
 
         if (!IsInvoking("Fire"))
         {
-            InvokeRepeating("Fire", 0.25f, rateOfFire);
+            InvokeRepeating("Fire", rateOfFire / OverclockValue, rateOfFire / OverclockValue);
         }
     }
 
@@ -47,11 +41,15 @@ public class ArcDefence : Defence
         CancelInvoke("Fire");
     }
 
-    //protected override void OnDestroy()
-    //{
-    //    base.OnDestroy();
-    //}
-
+    protected override void ResetFire()
+    {
+        if (IsInvoking("Fire"))
+        {
+            CancelInvoke("Fire");
+            InvokeRepeating("Fire", rateOfFire / OverclockValue, rateOfFire / OverclockValue);
+        }
+    }
+    
     void Fire()
     {
         TileData target = GetTarget();
@@ -72,7 +70,7 @@ public class ArcDefence : Defence
     {
         // Get the tile with the highest fog concentration.
         List<TileData> fogTiles = new List<TileData>();
-        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)visibilityRange);
+        List<TileData> tiles = location.CollectTilesInRange((int)visibilityRange);
 
         foreach (TileData tile in tiles)
         {

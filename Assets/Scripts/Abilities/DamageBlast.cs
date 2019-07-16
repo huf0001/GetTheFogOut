@@ -15,8 +15,8 @@ namespace Abilities
         public override void TriggerAbility(TileData tile)
         {
             // Gets the required tiles to damage
-            List<TileData> fullDamageTiles = tile.CollectTilesInRange(tile.X, tile.Z, fullDamageRange);
-            List<TileData> allDamageTiles = tile.CollectTilesInRange(tile.X, tile.Z, targetRadius);
+            List<TileData> fullDamageTiles = tile.CollectTilesInRange(fullDamageRange);
+            List<TileData> allDamageTiles = tile.CollectTilesInRange(targetRadius);
             List<TileData> lowDamageTiles = allDamageTiles.Except(fullDamageTiles).ToList();
 
             // Deals full damage to short range tiles

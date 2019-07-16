@@ -176,10 +176,12 @@ public class TileData
         }
     }
 
-    public List<TileData> CollectTilesInRange(int xc, int yc, int r)
+    public List<TileData> CollectTilesInRange(int r)
     {
         if (r < 1) return null;
 
+        int xc = X;
+        int yc = Z;
         List<TileData> tiles = new List<TileData>();
         TileData[,] worldTiles = WorldController.Instance.Tiles;
         int width = WorldController.Instance.Width;

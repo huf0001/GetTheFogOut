@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -20,6 +21,7 @@ public abstract class Building : Entity
     [SerializeField] protected Image healthBarImage;
     [SerializeField] protected Gradient healthGradient;
     [SerializeField] protected GameObject damageIndicatorPrefab;
+
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
@@ -35,6 +37,8 @@ public abstract class Building : Entity
     private GameObject damInd;
     private DamageIndicator damIndScript;
     public bool isShieldOn = false;
+    protected bool isOverclockOn = false;
+    public float overclockTimer;
 
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
@@ -52,29 +56,20 @@ public abstract class Building : Entity
 
     public bool TakingDamage { get; private set; }
 
-    //public Hub Hub
-    //{
-    //    get => resourceController;
-    //    set
-    //    {
-    //        Debug.Log("Building.Hub changed");
-    //        hub = value;
-    //    }
-    //}
+    public int OverclockValue
+    {
+        get { return IsOverclockOn ? 3 : 1; }
+    }
+
+    public virtual bool IsOverclockOn
+    {
+        get { return isOverclockOn; }
+        set { isOverclockOn = value; }
+    }
 
     protected virtual void Awake()
     {
-        //MakeTilesVisible();
-        //FindToolTip();
 
-        //if (placed)
-        //{
-        //    GetComponent<Renderer>().material.shader = buildingShader;
-        //}
-        //else
-        //{
-        //    GetComponent<Renderer>().material.shader = hologramShader;
-        //}
     }
 
     // Start is called before the first frame update
@@ -120,7 +115,7 @@ public abstract class Building : Entity
             CancelInvoke("RepairBuilding");
             regenWait = 5;
         }
-        
+
         // Process shield decay
         if (isShieldOn)
         {
@@ -148,15 +143,16 @@ public abstract class Building : Entity
                 healthBarCanvas.gameObject.SetActive(true);
             }
 
-            healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
             healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
             if (buildingType != BuildingType.Hub)
             {
+                healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
                 healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
                 healthBarCanvas.Rotate(0, 135, 0);
             }
             else
             {
+                healthBarImage.fillAmount = Health / MaxHealth;
                 healthBarCanvas.LookAt(Camera.main.transform);
             }
         }
@@ -290,17 +286,7 @@ public abstract class Building : Entity
 
     private void MakeTilesVisible()
     {
-        //Collider[] tilesToActivate = Physics.OverlapSphere(transform.position, visibilityRange);
-
-        //foreach (Collider c in tilesToActivate)
-        //{
-        //    if (c.gameObject.GetComponent<TileData>() != null)
-        //    {
-        //        c.gameObject.GetComponent<TileData>().AddObserver(this as Building);
-        //    }
-        //}
-
-        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)visibilityRange);
+        List<TileData> tiles = location.CollectTilesInRange((int)visibilityRange);
 
         foreach (TileData t in tiles)
         {
@@ -310,17 +296,7 @@ public abstract class Building : Entity
 
     private void MakeTilesNotVisible()
     {
-        //Collider[] tilesToDeactivate = Physics.OverlapSphere(transform.position, visibilityRange);
-
-        //foreach (Collider c in tilesToDeactivate)
-        //{
-        //    if (c.gameObject.GetComponent<TileData>() != null)
-        //    {
-        //        c.gameObject.GetComponent<TileData>().RemoveObserver(this as Building);
-        //    }
-        //}
-
-        List<TileData> tiles = location.CollectTilesInRange(location.X, location.Z, (int)visibilityRange);
+        List<TileData> tiles = location.CollectTilesInRange((int)visibilityRange);
 
         foreach (TileData t in tiles)
         {
@@ -464,7 +440,7 @@ public abstract class Building : Entity
         {
             Health -= damageVal;
         }
-        
+
         TakingDamage = true;
 
         if (!damagingNotified)
@@ -484,11 +460,20 @@ public abstract class Building : Entity
                 else damIndScript.On = true;
                 damInd.GetComponent<DamageIndicator>().Building = this;
             }
+<<<<<<< HEAD
             
 //            MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
 //                MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
 //                $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
 //                $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+=======
+
+            //            MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
+            //                MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
+            //                $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
+            //                $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+            //audioSource.PlayOneShot(audioDamage);
+>>>>>>> master
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
             damagingNotified = true;
         }

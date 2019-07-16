@@ -20,7 +20,6 @@ GameObject:
   - component: {fileID: 1899903245264256486}
   - component: {fileID: 7305178377255849301}
   - component: {fileID: 1869141249}
-  - component: {fileID: 1235823549}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -88,6 +87,7 @@ MonoBehaviour:
     collected: 0
   serialCamera: {fileID: 0}
   InBuildMode: 1
+  pauseMenu: {fileID: 0}
   pause: {fileID: 0}
   musicfmod: {fileID: 4407398185932732860, guid: 5c819ef072426864db6435e12ba6cc4c,
     type: 3}
@@ -498,19 +498,6 @@ MonoBehaviour:
   popupText: {fileID: 2224538830913006596, guid: 94d300174e596ea4093ea21d7b68b406,
     type: 3}
 --- !u!114 &1869141249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899903245264256479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e48213f3d9444adbb2162f247477eb5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rangeIndicatorGO: {fileID: 0}
---- !u!114 &1235823549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

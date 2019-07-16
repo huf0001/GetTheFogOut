@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 2806858559833760697}
   - component: {fileID: 4115245697691354472}
   - component: {fileID: 2954351009330926599}
+  - component: {fileID: 6489673519661367700}
   m_Layer: 0
   m_Name: Fog Repeller
   m_TagString: Building
@@ -314,13 +315,33 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  isShieldOn: 0
   damageIndicatorPrefab: {fileID: 8599427647162027438, guid: d157f3b0eefcb6743985ca736438dcff,
     type: 3}
+  isShieldOn: 0
+  overclockTimer: 0
   directDamage: 5
   aoeDamage: 5
   rateOfFire: 0.1
   placedInEditor: 0
+--- !u!95 &6489673519661367700
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287015554435316756}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fac8720e23480e9499b6353b5a7f89c9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &977126030051355956
 GameObject:
   m_ObjectHideFlags: 0
@@ -6402,7 +6423,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
       cycleCount: 1
-      repeatInterval: 0.01
+      repeatInterval: 0.5
       probability: 1
   SizeModule:
     enabled: 1
