@@ -15,7 +15,6 @@ public enum TutorialStage
     MoveCamera,
     BuildGenerator,
     BuildExtender,
-    BuildBattery,
     IncreasePowerGeneration,
     BuildHarvesters,
     BuildAirCannon,
@@ -183,9 +182,6 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.BuildExtender:
                 BuildExtender();
-                break;
-            case TutorialStage.BuildBattery:
-                BuildBattery();
                 break;
             case TutorialStage.IncreasePowerGeneration:
                 IncreasePowerGeneration();
@@ -431,70 +427,11 @@ public class TutorialController : DialogueBoxController
                 break;
             case 6:
                 //Turn off UI element prompting player to build a relay on the prompted tile
-                tutorialStage = TutorialStage.BuildBattery;
-                currentlyBuilding = BuildingType.Battery;
-                ResetSubStage();
-                DeactivateTarget();
-
-                break;
-            default:
-                SendDialogue("error", 1);
-                Debug.Log("inaccurate sub stage");
-                break;
-        }
-    }
-
-    //Player learns about and places a battery
-    private void BuildBattery()
-    {
-        switch (subStage)
-        {
-            case 1:
-                SendDialogue("build battery target", 1);
-                //Invoke("ActivateTarget", 1);
-
-                ActivateTarget(batteryLandmark);
-
-                if (!objWindowVisible)
-                {
-                    ToggleObjWindow();
-                }
-
-                break;
-            case 2:
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    SkipTutorialAhead(4);
-                }
-
-                break;
-            case 3:
-                if (tileClicked)
-                {
-                    DismissMouse();
-                }
-
-                break;
-            case 4:
-                currentlyLerping = ButtonType.Battery;
-                IncrementSubStage();
-                break;
-            case 5:
-                if (BuiltCurrentlyBuilding())
-                {
-                    IncrementSubStage();
-                }
-
-                break;
-            case 6:
                 tutorialStage = TutorialStage.IncreasePowerGeneration;
                 currentlyBuilding = BuildingType.Generator;
                 ResetSubStage();
                 DeactivateTarget();
+
                 break;
             default:
                 SendDialogue("error", 1);
@@ -906,9 +843,6 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.BuildExtender:
                 l = extenderLandmark;
-                break;
-            case TutorialStage.BuildBattery:
-                l = batteryLandmark;
                 break;
             case TutorialStage.BuildHarvesters:
                 l = harvesterResource;

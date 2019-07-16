@@ -228,13 +228,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfbb638ee21a98042846fd6f7a02bad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 1
+  state: 0
   health: 0.1
   maxHealth: 1
   damageLerpMultiplier: 3
   height: -0.1
   minMovementSpeed: 2
   maxMovementSpeed: 5
+  minSpeedWhileSpilling: 1
+  acceleration: 0.3
+  maxSpiltFogCount: 9
+  damage: 1
   renderers:
   - {fileID: 3064332006645821903}
   - {fileID: 1185493136554821821}
@@ -330,8 +334,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   minSizeScale: 0.2
   maxSizeScale: 2.3
-  maxSpiltFogCount: 9
-  damage: 1
+  currentMovementSpeed: 0
 --- !u!1 &3064332006645821888
 GameObject:
   m_ObjectHideFlags: 0

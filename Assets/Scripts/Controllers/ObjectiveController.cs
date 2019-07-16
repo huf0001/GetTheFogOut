@@ -164,7 +164,7 @@ public class ObjectiveController : DialogueBoxController
                 // Play music Var 1 soundtrack
                 musicFMOD.StageOneMusic();
                 // Set fog AI to 'Docile'
-                Fog.Instance.Intensity = 1;
+                //Fog.Instance.Intensity = 1;   //Default of Intensity = 1 set in Fog.Awake()
                 // Run AI text for stage
                 SendDialogue("start harvest stage", 1);
                 // Unlock 5 generators

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 //using UnityEditorInternal;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -203,6 +204,7 @@ public class Fog : MonoBehaviour
         }
 
         SetDifficulty();
+        Intensity = 1;  //Sets the intensity-derived values to the default of their "Easy" values.
     }
 
     //Sets the difficulty according to what the player selects
@@ -430,6 +432,7 @@ public class Fog : MonoBehaviour
     {
         FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, transform, true);
         f.transform.position = transform.position;
+        f.State = FogSphereState.None;
         f.Fog = this;
         return f;
     }
@@ -706,6 +709,7 @@ public class Fog : MonoBehaviour
                         f.Grow(fogSphereInterval * fogGrowth * 0.75f);
                         break;
                     case FogSphereState.Spilling:
+                        f.Move(fogSphereInterval * 0.5f);
                         f.Spill(fogSphereInterval * fogGrowth * 2f);
                         break;
                     case FogSphereState.Attacking:
@@ -797,6 +801,7 @@ public class Fog : MonoBehaviour
         f.gameObject.name = "FogSphereInPool";
         f.gameObject.SetActive(false);
         f.transform.position = transform.position;
+        f.State = FogSphereState.None;
 
         foreach(Renderer r in f.Renderers)
         {
