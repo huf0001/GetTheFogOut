@@ -136,7 +136,7 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator Load()
     {
-        DontDestroyOnLoad(musicFMOD);
+        //DontDestroyOnLoad(musicFMOD);
         yield return null;
         AsyncOperation loading = SceneManager.LoadSceneAsync(gameScene);
         loadingMessageBox.text = loadingMessages[Random.Range(0, loadingMessages.Length)];

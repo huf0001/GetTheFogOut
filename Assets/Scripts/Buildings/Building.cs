@@ -460,20 +460,11 @@ public abstract class Building : Entity
                 else damIndScript.On = true;
                 damInd.GetComponent<DamageIndicator>().Building = this;
             }
-<<<<<<< HEAD
-            
-//            MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-//                MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
-//                $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
-//                $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
-=======
 
-            //            MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-            //                MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
-            //                $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
-            //                $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
-            //audioSource.PlayOneShot(audioDamage);
->>>>>>> master
+            //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
+            //MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
+            //$" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
+            //$" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
             damagingNotified = true;
         }
