@@ -452,11 +452,6 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Build Power Extender</b>\n\n" +
                     "<size=75%>Build a Power Extender to extend your range.\n\n";
                 break;
-            case TutorialStage.BuildBattery:
-                hudObjText.text = "Objective: Build Battery";
-                objWindowText.text = "<b>Build Battery</b>\n\n" +
-                    "<size=75%>Build a Battery to increase your stored power.\n\n";
-                break;
             case TutorialStage.IncreasePowerGeneration:
                 hudObjText.text = "Objective: More Power Generation";
                 objWindowText.text = "<b>More Power Generation</b>\n\n" +

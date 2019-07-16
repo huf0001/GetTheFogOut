@@ -139,8 +139,6 @@ public class FogSphere : MonoBehaviour
         hub = GameObject.Find("Hub").GetComponent<Hub>();
         hubPosition = hub.transform.position;
         hubPosition.y = height;
-
-        Debug.Log($"Awake() renderers.Count = {renderers.Count}");
     }
 
     //Sets the starting values for fog damage health variables
@@ -149,8 +147,6 @@ public class FogSphere : MonoBehaviour
         startHealth = health;
         targetHealth = health;
         currentColours = docileColours;
-
-        Debug.Log($"Start() renderers.Count = {renderers.Count}");
     }
 
     //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
@@ -201,7 +197,6 @@ public class FogSphere : MonoBehaviour
     private bool CheckFogToFill()
     {
         WorldController wc = WorldController.Instance;
-        Debug.Log($"CheckFogToFill() renderers.Count = {renderers.Count}");
         float radius = renderers[0].bounds.extents.magnitude * 0.5f;
 
         for (int i = Mathf.RoundToInt(Mathf.Max(0, transform.position.x - radius)); i < Mathf.Min(fog.XMax, transform.position.x + radius); i++)
