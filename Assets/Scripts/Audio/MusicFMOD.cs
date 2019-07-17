@@ -61,12 +61,10 @@ public class MusicFMOD : MonoBehaviour
         lose = loseParamDesc.id;
         win = winParamDesc.id;
         outro = outroParamDesc.id;
-
-        musicEvent.start();
     }
 
     // Player begins the game from Menu, onto Stage 1 of Game. Will start here on Prototype Milestone 2 scene.
-    public void MusicStart()
+    public void StartMusic()
     {
         musicEvent.start();
     }

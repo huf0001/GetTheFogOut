@@ -27,27 +27,38 @@ public class MainMenu : MonoBehaviour
     private bool skipTutorial = false;
     private int difficulty = 1;
 
-    private MusicFMOD musicFMOD;
+    [Header("FMOD")]
     public MusicFMOD musicfmod;
+    private MusicFMOD musicFMOD;
+
+    private void Awake()
+    {
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            Debug.Log("MusicFMOD Found from Prototype Scene.");
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            return;
+        }
+        else if (GameObject.Find("MusicFMOD(Clone)") != null)
+        {
+            Debug.Log("MusicFMOD(Clone) Found from Prototype Scene.");
+            musicFMOD = GameObject.Find("MusicFMOD(Clone)").GetComponent<MusicFMOD>();
+            return;
+        }
+        else
+        {
+            Debug.Log("Main Menu FMOD Instantiation.");
+            Instantiate(musicfmod);
+            musicFMOD = musicfmod;
+        }
+
+        DontDestroyOnLoad(musicFMOD);
+        musicFMOD.StartMusic();
+    }
 
     private void Start()
     {
         Time.timeScale = 1;
-
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-        else if (GameObject.Find("MusicFMOD(Clone)") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD(Clone)").GetComponent<MusicFMOD>();
-        }
-        else
-        {
-            Instantiate(musicfmod);
-            musicFMOD = musicfmod;
-        }
-        //musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
     }
 
     private void Update()
@@ -136,7 +147,6 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator Load()
     {
-        //DontDestroyOnLoad(musicFMOD);
         yield return null;
         AsyncOperation loading = SceneManager.LoadSceneAsync(gameScene);
         loadingMessageBox.text = loadingMessages[Random.Range(0, loadingMessages.Length)];
