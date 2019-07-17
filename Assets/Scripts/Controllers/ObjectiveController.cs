@@ -42,17 +42,19 @@ public class ObjectiveController : DialogueBoxController
     private float lastOverload = -1f;
     private float lastOverloadDialogue = -1f;
     private MusicFMOD musicFMOD;
-    private float countdown = 60;
+    private float tick = 0;
+    private int countdown = 60;
 
     // Public Properties -------------------------------------------------------------------------------------
 
     // Basic Public Properties
     public static ObjectiveController Instance { get; protected set; }
-    public int PowerTarget { get => powerTarget; }
-    public int MineralTarget { get => mineralTarget; }
+    public int Countdown { get => countdown; set => countdown = value; }
     public int CurrStage { get => (int)currStage; }
     public int GeneratorLimit { get => generatorLimit; }
+    public int MineralTarget { get => mineralTarget; }
     public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
+    public int PowerTarget { get => powerTarget; }
 
     // Start functions -------------------------------------------------------------------------------------
 
@@ -283,22 +285,8 @@ public class ObjectiveController : DialogueBoxController
                 // Play music Var 3 soundtrack
                 musicFMOD.StageThreeMusic();
 
-                // Set fog AI to 'Overly Aggressive'
-                Fog.Instance.Intensity += 1;
-
-                //If already completed store power stage
-                if (ResourceController.Instance.StoredPower >= 500)
-                {
-                    //Advance stage and substage to the point where the launch button appears
-                    currStage = ObjectiveStage.SurvivalStage;
-                    subStage = 5;
-                }
-                //Otherwise
-                else
-                {
-                    //Go to next stage
-                    IncrementStage();
-                }
+                //Go to next stage
+                IncrementStage();
 
                 break;
             default:
@@ -311,18 +299,22 @@ public class ObjectiveController : DialogueBoxController
         switch (subStage)
         {
             case 0:
+                // Set fog AI to 'Overly Aggressive'
+                Fog.Instance.Intensity += 1;
+
                 // Run AI completion text
                 SendDialogue("end part stage", 1);
                 IncrementSubStage();
                 break;
             case 1:
                 //Survival countdown
-                countdown -= Time.deltaTime;
+                Tick();
+
                 Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
                 {
-                    countdown = 0;
+                    tick = 0;
                     ChangeToSubStage(5);
                 }
                 else if (dialogueRead)
@@ -337,12 +329,13 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 3:
                 //Survival countdown
-                countdown -= Time.deltaTime;
+                Tick();
+
                 Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
                 {
-                    countdown = 0;
+                    tick = 0;
                     ChangeToSubStage(5);
                 }
                 else if (dialogueRead)
@@ -353,18 +346,19 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 4:
                 //Survival countdown
-                countdown -= Time.deltaTime;
+                Tick();
+
                 Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
                 {
-                    countdown = 0;
-                    ChangeToSubStage(5);
+                    tick = 0;
+                    IncrementSubStage();
                 }
 
                 break;
             case 5:
-                // Run AI completetion text
+                // Run AI completion text
                 SendDialogue("end power stage", 1);
                 IncrementSubStage();
                 break;
@@ -376,29 +370,6 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            //case 7:
-            //    if (ResourceController.Instance.StoredPower < 500)
-            //    {
-            //        UIController.instance.CloseButton();
-            //        SendDialogue("maintain power", 1);
-            //        ChangeToSubStage(3);
-            //    }
-            //    else if (dialogueRead)
-            //    {
-            //        DismissDialogue();
-            //        IncrementSubStage();
-            //    }
-
-            //    break;
-            //case 8:
-            //    if (ResourceController.Instance.StoredPower < 500)
-            //    {
-            //        UIController.instance.CloseButton();
-            //        SendDialogue("maintain power", 1);
-            //        ChangeToSubStage(3);
-            //    }
-
-            //    break;
             default:
                 // Note: if more stages are added to the objective controller, when the last one is fulfilled, you can't just 
                 // reset the substage, or it'll loop back to the start of the stage rather than finishing and that will
@@ -408,6 +379,17 @@ public class ObjectiveController : DialogueBoxController
     }
 
     // Utility Functions ------------------------------------------------------------------------------------------
+
+    private void Tick()
+    {
+        tick += Time.deltaTime;
+
+        if (tick >= 1)
+        {
+            tick -= 1;
+            countdown -= 1;
+        }
+    }
 
     protected override void SendDialogue(string dialogueKey, float invokeDelay)
     {
