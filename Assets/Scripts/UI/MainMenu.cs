@@ -27,6 +27,35 @@ public class MainMenu : MonoBehaviour
     private bool skipTutorial = false;
     private int difficulty = 1;
 
+    [Header("FMOD")]
+    public MusicFMOD musicfmod;
+    private MusicFMOD musicFMOD;
+
+    private void Awake()
+    {
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            Debug.Log("MusicFMOD Found from Prototype Scene.");
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            return;
+        }
+        else if (GameObject.Find("MusicFMOD(Clone)") != null)
+        {
+            Debug.Log("MusicFMOD(Clone) Found from Prototype Scene.");
+            musicFMOD = GameObject.Find("MusicFMOD(Clone)").GetComponent<MusicFMOD>();
+            return;
+        }
+        else
+        {
+            Debug.Log("Main Menu FMOD Instantiation.");
+            Instantiate(musicfmod);
+            musicFMOD = musicfmod;
+        }
+
+        DontDestroyOnLoad(musicFMOD);
+        musicFMOD.StartMusic();
+    }
+
     private void Start()
     {
         Time.timeScale = 1;
