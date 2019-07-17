@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEditorInternal;
 //using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum FogExpansionDirection
@@ -42,6 +44,7 @@ public class Fog : MonoBehaviour
     [Header("Materials")]
     [SerializeField] private Material visibleMaterial;
     [SerializeField] private Material invisibleMaterial;
+    [SerializeField] private Material fogEffect;
 
     [Header("General Settings")]
     [SerializeField] private bool angry;
@@ -830,6 +833,10 @@ public class Fog : MonoBehaviour
                 fogUnitsGrow = true;
                 fogSpheresGrow = true;
                 isGrowthPaused = false;
+                foreach (var fogUnit in fogUnitsInPlay)
+                {
+                    fogUnit.GetComponent<Renderer>().material.SetFloat("_FPS", 16f);
+                }
             }
         }
     }
@@ -840,6 +847,10 @@ public class Fog : MonoBehaviour
         isGrowthPaused = true;
         fogUnitsGrow = false;
         fogSpheresGrow = false;
+        foreach (var fogUnit in fogUnitsInPlay)
+        {
+            fogUnit.GetComponent<Renderer>().material.SetFloat("_FPS", 0f);
+        }
         pauseTime = time;
     }
 
