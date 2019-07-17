@@ -11,7 +11,7 @@ public enum ObjectiveStage
     None,
     HarvestMinerals,
     RecoverPart,
-    StorePower,
+    SurvivalStage,
     Finished
 }
 
@@ -42,9 +42,11 @@ public class ObjectiveController : DialogueBoxController
     private float lastOverload = -1f;
     private float lastOverloadDialogue = -1f;
     private MusicFMOD musicFMOD;
+    private float countdown = 60;
 
     // Public Properties -------------------------------------------------------------------------------------
 
+    // Basic Public Properties
     public static ObjectiveController Instance { get; protected set; }
     public int PowerTarget { get => powerTarget; }
     public int MineralTarget { get => mineralTarget; }
@@ -112,9 +114,9 @@ public class ObjectiveController : DialogueBoxController
                 musicFMOD.StageTwoMusic();
                 RecoverPartStage();
                 break;
-            case ObjectiveStage.StorePower:
+            case ObjectiveStage.SurvivalStage:
                 musicFMOD.StageThreeMusic();
-                StorePowerStage();
+                SurvivalStage();
                 break;
             case ObjectiveStage.Finished:
                 //End of game
@@ -288,7 +290,7 @@ public class ObjectiveController : DialogueBoxController
                 if (ResourceController.Instance.StoredPower >= 500)
                 {
                     //Advance stage and substage to the point where the launch button appears
-                    currStage = ObjectiveStage.StorePower;
+                    currStage = ObjectiveStage.SurvivalStage;
                     subStage = 5;
                 }
                 //Otherwise
@@ -304,7 +306,7 @@ public class ObjectiveController : DialogueBoxController
         }
     }
 
-    void StorePowerStage()
+    void SurvivalStage()
     {
         switch (subStage)
         {
@@ -314,9 +316,13 @@ public class ObjectiveController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 1:
-                // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
-                if (ResourceController.Instance.StoredPower >= 500)
+                //Survival countdown
+                countdown -= Time.deltaTime;
+                Debug.Log($"Countdown: {countdown}");
+
+                if (countdown <= 0)
                 {
+                    countdown = 0;
                     ChangeToSubStage(5);
                 }
                 else if (dialogueRead)
@@ -330,9 +336,13 @@ public class ObjectiveController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 3:
-                // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
-                if (ResourceController.Instance.StoredPower >= 500)
+                //Survival countdown
+                countdown -= Time.deltaTime;
+                Debug.Log($"Countdown: {countdown}");
+
+                if (countdown <= 0)
                 {
+                    countdown = 0;
                     ChangeToSubStage(5);
                 }
                 else if (dialogueRead)
@@ -342,10 +352,14 @@ public class ObjectiveController : DialogueBoxController
 
                 break;
             case 4:
-                // Update objective window to 100-5000 power gauge, and button for escape when gauge is filled
-                if (ResourceController.Instance.StoredPower >= 500)
+                //Survival countdown
+                countdown -= Time.deltaTime;
+                Debug.Log($"Countdown: {countdown}");
+
+                if (countdown <= 0)
                 {
-                    IncrementSubStage();
+                    countdown = 0;
+                    ChangeToSubStage(5);
                 }
 
                 break;
@@ -362,29 +376,29 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 7:
-                if (ResourceController.Instance.StoredPower < 500)
-                {
-                    UIController.instance.CloseButton();
-                    SendDialogue("maintain power", 1);
-                    ChangeToSubStage(3);
-                }
-                else if (dialogueRead)
-                {
-                    DismissDialogue();
-                    IncrementSubStage();
-                }
+            //case 7:
+            //    if (ResourceController.Instance.StoredPower < 500)
+            //    {
+            //        UIController.instance.CloseButton();
+            //        SendDialogue("maintain power", 1);
+            //        ChangeToSubStage(3);
+            //    }
+            //    else if (dialogueRead)
+            //    {
+            //        DismissDialogue();
+            //        IncrementSubStage();
+            //    }
 
-                break;
-            case 8:
-                if (ResourceController.Instance.StoredPower < 500)
-                {
-                    UIController.instance.CloseButton();
-                    SendDialogue("maintain power", 1);
-                    ChangeToSubStage(3);
-                }
+            //    break;
+            //case 8:
+            //    if (ResourceController.Instance.StoredPower < 500)
+            //    {
+            //        UIController.instance.CloseButton();
+            //        SendDialogue("maintain power", 1);
+            //        ChangeToSubStage(3);
+            //    }
 
-                break;
+            //    break;
             default:
                 // Note: if more stages are added to the objective controller, when the last one is fulfilled, you can't just 
                 // reset the substage, or it'll loop back to the start of the stage rather than finishing and that will
