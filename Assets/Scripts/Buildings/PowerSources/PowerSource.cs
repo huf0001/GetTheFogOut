@@ -35,25 +35,25 @@ public abstract class PowerSource : Building
         ActivateTiles();
     }
 
-    public List<Battery> GetBatteries()
-    {
-        List<Battery> batteries = new List<Battery>();
+    //public List<Battery> GetBatteries()
+    //{
+    //    List<Battery> batteries = new List<Battery>();
 
-        foreach (Building b in suppliedBuildings)
-        {
-            if (b.BuildingType == BuildingType.Battery)
-            {
-                batteries.Add(b as Battery);
-            }
-            else if (b.BuildingType == BuildingType.Extender)
-            {
-                Relay r = b as Relay;
-                batteries.AddRange(r.GetBatteries());
-            }
-        }
+    //    foreach (Building b in suppliedBuildings)
+    //    {
+    //        if (b.BuildingType == BuildingType.Battery)
+    //        {
+    //            batteries.Add(b as Battery);
+    //        }
+    //        else if (b.BuildingType == BuildingType.Extender)
+    //        {
+    //            Extender r = b as Extender;
+    //            batteries.AddRange(r.GetBatteries());
+    //        }
+    //    }
 
-        return batteries;
-    }
+    //    return batteries;
+    //}
 
     public List<Generator> GetGenerators()
     {
@@ -92,7 +92,7 @@ public abstract class PowerSource : Building
         return relays;
     }
 
-    public List<ArcDefence> GetArcDefences()
+    public List<ArcDefence> GetMortars()
     {
         List<ArcDefence> arcDefences = new List<ArcDefence>();
 
@@ -105,14 +105,14 @@ public abstract class PowerSource : Building
             else if (b.BuildingType == BuildingType.Extender)
             {
                 Relay r = b as Relay;
-                arcDefences.AddRange(r.GetArcDefences());
+                arcDefences.AddRange(r.GetMortars());
             }
         }
 
         return arcDefences;
     }
 
-    public List<RepelFan> GetRepelFans()
+    public List<RepelFan> GetPulseDefences()
     {
         List<RepelFan> repelFans = new List<RepelFan>();
 
@@ -125,7 +125,7 @@ public abstract class PowerSource : Building
             else if (b.BuildingType == BuildingType.Extender)
             {
                 Relay r = b as Relay;
-                repelFans.AddRange(r.GetRepelFans());
+                repelFans.AddRange(r.GetPulseDefences());
             }
         }
 

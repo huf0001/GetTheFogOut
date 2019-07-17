@@ -16,7 +16,7 @@ public abstract class Building : Entity
     [SerializeField] protected bool powered = false;
     [SerializeField] protected bool placed = false;
     [SerializeField] protected BuildingType buildingType;
-    [SerializeField] protected int mineralCost, powerCost, fuelCost, organicCost;
+    [SerializeField] protected int mineralCost, powerCost;
     [SerializeField] protected AudioClip audioSpawn;
     [SerializeField] protected AudioClip audioDamage;
     [SerializeField] protected AudioClip audioDestroy;
@@ -53,8 +53,6 @@ public abstract class Building : Entity
     public bool Placed { get => placed; }
     public int MineralCost { get => mineralCost; }
     public int PowerCost { get => powerCost; }
-    public int FuelCost { get => fuelCost; }
-    public int OrganicCost { get => organicCost; }
     public float Shield { get => shield; set => shield = value; }
     public float ShieldTime { get => shieldTime; set => shieldTime = value; }
 
