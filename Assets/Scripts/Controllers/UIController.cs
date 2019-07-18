@@ -436,38 +436,34 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Move Nex</b>\n\n" +
                     "<size=75%>Learn how to move your Nexus Drone.\n\n";
                 break;
-            //case TutorialStage.BuildGenerator:
-            //    hudObjText.text = "Objective: Build Generator";
-            //    objWindowText.text = "<b>Build Generator</b>\n\n" +
-            //        "<size=75%>Build a Power Generator to increase your available power generation.\n\n";
-            //    break;
-            //case TutorialStage.BuildExtender:
-            //    hudObjText.text = "Objective: Build Power Extender";
-            //    objWindowText.text = "<b>Build Power Extender</b>\n\n" +
-            //        "<size=75%>Build a Power Extender to extend your range.\n\n";
-            //    break;
-            //case TutorialStage.IncreasePowerGeneration:
-            //    hudObjText.text = "Objective: More Power Generation";
-            //    objWindowText.text = "<b>More Power Generation</b>\n\n" +
-            //        $"<size=75%>Build more Power Generators and increase your power output to +{TutorialController.Instance.PowerGainGoal}.\n\n" +
-            //        $"Target: +{powerChange} / +{TutorialController.Instance.PowerGainGoal} <size=90%><sprite=\"all_icons\" index=0>";
-            //    break;
-            //case TutorialStage.BuildHarvesters:
-            //    hudObjText.text = "Objective: Build Harvesters";
-            //    objWindowText.text = "<b>Build Harvesters</b>\n\n" +
-            //        $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to replenish your building materials.\n\n" +
-            //        $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
-            //    break;
-            //case TutorialStage.BuildMortar:
-            //    hudObjText.text = "Objective: Build Air Cannon";
-            //    objWindowText.text = "<b>Build Air Cannon</b>\n\n" +
-            //        "<size=75%>Build an Air Cannon to protect yourself from the Fog!\n\n";
-            //    break;
-            //case TutorialStage.BuildFogRepeller:
-            //    hudObjText.text = "Objective: Build Fog Repeller";
-            //    objWindowText.text = "<b>Build Fog Repeller</b>\n\n" +
-            //        "<size=75%>Build a Fog Repeller to protect yourself from the Fog!\n\n";
-            //    break;
+            case TutorialStage.ExtendToMinerals:
+                hudObjText.text = "Objective: Build Power Extender";
+                objWindowText.text = "<b>Build Power Extender</b>\n\n" +
+                    "<size=75%>Build a Power Extender to reach the mineral nodes.\n\n";
+                break;
+                //case TutorialStage.BuildHarvesters:
+                //    hudObjText.text = "Objective: Build Harvesters";
+                //    objWindowText.text = "<b>Build Harvesters</b>\n\n" +
+                //        $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to replenish your building materials.\n\n" +
+                //        $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
+                //    break;
+
+                // //case TutorialStage.BuildGenerator:
+                //    hudObjText.text = "Objective: Build Generator";
+                //    objWindowText.text = "<b>Build Generator</b>\n\n" +
+                //        "<size=75%>Build a Power Generator to increase your available power generation.\n\n";
+                //    break;
+
+                //case TutorialStage.BuildMortar:
+                //    hudObjText.text = "Objective: Build Air Cannon";
+                //    objWindowText.text = "<b>Build Air Cannon</b>\n\n" +
+                //        "<size=75%>Build an Air Cannon to protect yourself from the Fog!\n\n";
+                //    break;
+                //case TutorialStage.BuildFogRepeller:
+                //    hudObjText.text = "Objective: Build Fog Repeller";
+                //    objWindowText.text = "<b>Build Fog Repeller</b>\n\n" +
+                //        "<size=75%>Build a Fog Repeller to protect yourself from the Fog!\n\n";
+                //    break;
         }
     }
 

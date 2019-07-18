@@ -176,9 +176,7 @@ public class TutorialController : DialogueBoxController
                 CameraControls();
                 break;
             case TutorialStage.ExtendToMinerals:
-                Debug.Log("ExtendToMinerals");
-                tutorialStage = TutorialStage.Finished;
-                //ExtendToMinerals();
+                ExtendToMinerals();
                 break;
             case TutorialStage.BuildHarvesters:
                 //BuildHarvesters();
@@ -219,7 +217,6 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                     tutorialStage = TutorialStage.ExplainMinerals;
                     ResetSubStage();
-                    Debug.Log($"dialogueRead is {dialogueRead}");
                 }
 
                 break;
@@ -236,7 +233,6 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                Debug.Log($"dialogueRead is {dialogueRead}");
                 SendDialogue("explain minerals", 1);
                 mineralDepositCamera.gameObject.SetActive(true);
                 break;
@@ -245,7 +241,6 @@ public class TutorialController : DialogueBoxController
                 {
                     mineralDepositCamera.gameObject.SetActive(false);
                     DismissDialogue();
-                    Debug.Log("dialogueRead");
                 }
 
                 break;
@@ -312,13 +307,13 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player builds out to the mineral deposit, learning about and placing extenders
-    //TODO: reform BuildExtender() into ExtendToMinerals()
-    private void BuildExtender()
+    private void ExtendToMinerals()
     {
         switch (subStage)
         {
             case 1:
                 SendDialogue("build extender target", 1);
+                UIController.instance.UpdateObjectiveText(tutorialStage);
                 //Invoke("ActivateTarget", 1);
                 ActivateTarget(extenderLandmark);
 
@@ -360,7 +355,7 @@ public class TutorialController : DialogueBoxController
             case 6:
                 //Turn off UI element prompting player to build a relay on the prompted tile
                 tutorialStage = TutorialStage.BuildHarvesters;
-                currentlyBuilding = BuildingType.Generator;
+                currentlyBuilding = BuildingType.Harvester;
                 ResetSubStage();
                 DeactivateTarget();
 
@@ -788,36 +783,36 @@ public class TutorialController : DialogueBoxController
     //Tutorial Utility Methods - (Targeted) Building-------------------------------------------------------------------------------------------------
 
     //(Invokably) activate the building target based on the current stage rather than passing a parameter
-    private void ActivateTarget()
-    {
-        Locatable l = null;
+    //private void ActivateTarget()
+    //{
+    //    Locatable l = null;
 
-        switch (tutorialStage)
-        {
-            //case TutorialStage.BuildGenerator:
-            //    l = generatorLandmark;
-            //    break;
-            //case TutorialStage.BuildExtender:
-            //    l = extenderLandmark;
-            //    break;
-            case TutorialStage.BuildHarvesters:
-                l = harvesterResource;
-                break;
-            default:
-                Debug.Log($"Why are you activating a target during stage {tutorialStage}?");
-                break;
-        }
+    //    switch (tutorialStage)
+    //    {
+    //        //case TutorialStage.BuildGenerator:
+    //        //    l = generatorLandmark;
+    //        //    break;
+    //        //case TutorialStage.BuildExtender:
+    //        //    l = extenderLandmark;
+    //        //    break;
+    //        case TutorialStage.BuildHarvesters:
+    //            l = harvesterResource;
+    //            break;
+    //        default:
+    //            Debug.Log($"Why are you activating a target during stage {tutorialStage}?");
+    //            break;
+    //    }
 
-        if (l != null)
-        {
-            ActivateTarget(l);
-        }
-        else
-        {
-            Debug.Log("Locatable l in TutorialController.ActivateTarget() is null");
-        }
+    //    if (l != null)
+    //    {
+    //        ActivateTarget(l);
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Locatable l in TutorialController.ActivateTarget() is null");
+    //    }
 
-    }
+    //}
 
     //Activate the building target at the locatable's location
     private void ActivateTarget(Locatable l)

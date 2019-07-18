@@ -106,21 +106,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxPower: 100
   maxMineral: 9999
-  maxOrganic: 100
-  maxFuel: 100
   storedPower: 0
   storedMineral: 200
-  storedOrganic: 0
-  storedFuel: 0
   powerChange: 0
   mineralChange: 0
-  organicChange: 0
-  fuelChange: 0
-  batteries: []
-  defences: []
+  mortars: []
+  pulseDefences: []
   generators: []
   harvesters: []
-  relays: []
+  extenders: []
   hvtSelfDestroy: 0
 --- !u!114 &1899903245264256476
 MonoBehaviour:
@@ -243,6 +237,10 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: Your ship comes equipped with important blueprints, should the need
         arise to use them.
+  - key: explain minerals
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "\rexplain minerals \r\n"
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
@@ -309,7 +307,7 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: "Now that you know how to use these buildings, I would suggest trying
         to find your ship\u2019s thruster. "
-  skipTutorial: 1
+  skipTutorial: 0
   airCannonLandmark: {fileID: 0}
   batteryLandmark: {fileID: 0}
   generatorLandmark: {fileID: 0}
@@ -321,6 +319,7 @@ MonoBehaviour:
   aKey: {fileID: 0}
   sKey: {fileID: 0}
   dKey: {fileID: 0}
+  mineralDepositCamera: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
   powerGainGoal: 15
