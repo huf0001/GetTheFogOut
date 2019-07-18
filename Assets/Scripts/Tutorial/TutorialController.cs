@@ -166,6 +166,8 @@ public class TutorialController : DialogueBoxController
                 ExplainSituation();
                 break;
             case TutorialStage.PanToMinerals:
+                Debug.Log("PanToMinerals()");
+                tutorialStage = TutorialStage.Finished;
                 //PanToMinerals();
                 break;
             case TutorialStage.CameraControls:
