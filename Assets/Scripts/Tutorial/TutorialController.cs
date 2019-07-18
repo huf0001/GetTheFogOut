@@ -63,8 +63,8 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Color uiHighlightColour;
 
     [Header("Goals")]
-    [SerializeField] private int powerGainGoal = 15;
-    [SerializeField] private int builtHarvestersGoal = 3;
+    [SerializeField] private int powerGainGoal;
+    [SerializeField] private int builtHarvestersGoal;
 
     //Non-Serialized Fields
     private TutorialStage tutorialStage = TutorialStage.ExplainSituation;
@@ -179,7 +179,7 @@ public class TutorialController : DialogueBoxController
                 ExtendToMinerals();
                 break;
             case TutorialStage.BuildHarvesters:
-                //BuildHarvesters();
+                BuildHarvesters();
                 break;
             case TutorialStage.PowerAndBuildGenerator:
                 //PowerAndBuildGenerator();
@@ -375,7 +375,6 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("build harvester target", 1);
-                //Invoke("ActivateTarget", 1);
                 ActivateTarget(harvesterResource);
 
                 if (!objWindowVisible)
@@ -693,7 +692,7 @@ public class TutorialController : DialogueBoxController
     public bool TileAllowed(TileData tile)
     {
         lastTileChecked = tile;
-        return tutorialStage == TutorialStage.Finished || tile == currentTile;
+        return tutorialStage == TutorialStage.Finished || tile == currentTile || (tutorialStage == TutorialStage.BuildHarvesters && subStage > 6 && tile.Resource != null);
     }
 
     //Checking if a button is acceptable

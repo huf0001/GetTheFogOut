@@ -441,12 +441,12 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Build Power Extender</b>\n\n" +
                     "<size=75%>Build a Power Extender to reach the mineral nodes.\n\n";
                 break;
-                //case TutorialStage.BuildHarvesters:
-                //    hudObjText.text = "Objective: Build Harvesters";
-                //    objWindowText.text = "<b>Build Harvesters</b>\n\n" +
-                //        $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to replenish your building materials.\n\n" +
-                //        $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
-                //    break;
+            case TutorialStage.BuildHarvesters:
+                hudObjText.text = "Objective: Build Harvesters";
+                objWindowText.text = "<b>Build Harvesters</b>\n\n" +
+                    $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to collect building materials.\n\n" +
+                    $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
+                break;
 
                 // //case TutorialStage.BuildGenerator:
                 //    hudObjText.text = "Objective: Build Generator";
