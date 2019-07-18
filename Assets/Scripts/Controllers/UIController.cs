@@ -168,11 +168,7 @@ public class UIController : MonoBehaviour
             {
                 launchButton.enabled = true;
                 launchButton.onClick.AddListener(delegate {
-                    if (ResourceController.Instance.StoredPower >= 500)
-                    {
-                        ResourceController.Instance.StoredPower -= 500;
-                        WinGame();
-                    }
+                    WinGame();
                 });
                 launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
                 buttonClosed = false;
@@ -201,7 +197,7 @@ public class UIController : MonoBehaviour
         DOTween.Kill(launchButtonImage);
         WorldController.Instance.GameWin = true;
         WorldController.Instance.GameOver = true;
-        musicFMOD.GameWinMusic();
+        //musicFMOD.GameWinMusic();
     }
 
     // End Game Method
@@ -415,7 +411,7 @@ public class UIController : MonoBehaviour
                     "<size=75%>Push your way through the fog to find the missing thruster from your ship.\n\n" +
                     "Thrusters: " + (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected ? f : nf);
                 break;
-            case ObjectiveStage.StorePower:
+            case ObjectiveStage.SurvivalStage:
                 hudObjText.text = "Objective: Leave the Planet";
                 objWindowText.text = "<b>Leave the Planet</b>\n\n" +
                     "<size=75%>The fog is out to get you! Hurry and gather enough power to leave this wretched planet behind!\n\n" +
