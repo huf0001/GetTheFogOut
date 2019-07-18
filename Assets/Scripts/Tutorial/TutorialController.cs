@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -9,9 +10,9 @@ public enum TutorialStage
 {
     None,
     ExplainSituation,
-    PanToMinerals,
+    ExplainMinerals,
     CameraControls,
-    BuildToMinerals,
+    ExtendToMinerals,
     BuildHarvesters,
     PowerAndBuildGenerator,
     CollectMinerals,
@@ -53,6 +54,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraKey aKey;
     [SerializeField] private CameraKey sKey;
     [SerializeField] private CameraKey dKey;
+
+    [Header("Camera Panning")]
+    [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
 
     [Header("Colours")]
     [SerializeField] private Color uiNormalColour;
@@ -165,16 +169,16 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.ExplainSituation:
                 ExplainSituation();
                 break;
-            case TutorialStage.PanToMinerals:
-                Debug.Log("PanToMinerals()");
-                tutorialStage = TutorialStage.Finished;
-                //PanToMinerals();
+            case TutorialStage.ExplainMinerals:
+                ExplainMinerals();
                 break;
             case TutorialStage.CameraControls:
-                //CameraControls();
+                CameraControls();
                 break;
-            case TutorialStage.BuildToMinerals:
-                //BuildToMinerals();
+            case TutorialStage.ExtendToMinerals:
+                Debug.Log("ExtendToMinerals");
+                tutorialStage = TutorialStage.Finished;
+                //ExtendToMinerals();
                 break;
             case TutorialStage.BuildHarvesters:
                 //BuildHarvesters();
@@ -201,7 +205,6 @@ public class TutorialController : DialogueBoxController
     //Stage-Specific Recurring Methods - Player Completes Tutorial-----------------------------------------------------------------------------------
 
     //Nexy explains the situation to the player
-    //TODO: ExplainSituation()
     private void ExplainSituation()
     {
         switch (subStage)
@@ -214,8 +217,9 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    tutorialStage = TutorialStage.PanToMinerals;
+                    tutorialStage = TutorialStage.ExplainMinerals;
                     ResetSubStage();
+                    Debug.Log($"dialogueRead is {dialogueRead}");
                 }
 
                 break;
@@ -227,28 +231,37 @@ public class TutorialController : DialogueBoxController
     }
 
     //Nexy pans to a mineral deposit and explains it to the player
-    //TODO: PanToMinerals()
+    private void ExplainMinerals()
+    {
+        switch (subStage)
+        {
+            case 1:
+                Debug.Log($"dialogueRead is {dialogueRead}");
+                SendDialogue("explain minerals", 1);
+                mineralDepositCamera.gameObject.SetActive(true);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    mineralDepositCamera.gameObject.SetActive(false);
+                    DismissDialogue();
+                    Debug.Log("dialogueRead");
+                }
+
+                break;
+            case 3:
+                tutorialStage = TutorialStage.CameraControls;
+                ResetSubStage();
+                break;
+        }
+    }
 
     //Player learns camera controls
-    //TODO: cut "explain situation" out of camera controls stage
     private void CameraControls()
     {
         switch (subStage)
         {
             case 1:
-                //Fog.Instance.SpawnStartingFog();
-                UIController.instance.UpdateObjectiveText(tutorialStage);
-                SendDialogue("explain situation", 2);
-                break;
-            case 2:
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                    tutorialStage = TutorialStage.CameraControls;
-                }
-
-                break;
-            case 3:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("move camera", 1);
 
@@ -262,7 +275,7 @@ public class TutorialController : DialogueBoxController
                 sKey.LerpIn();
                 dKey.LerpIn();
                 break;
-            case 4:
+            case 2:
                 GetCameraMovementInput();
 
                 if (dialogueRead)
@@ -271,11 +284,11 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
-                    SkipTutorialAhead(6);
+                    SkipTutorialAhead(4);
                 }
 
                 break;
-            case 5:
+            case 3:
                 GetCameraMovementInput();
 
                 if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
@@ -284,9 +297,9 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 6:
-                tutorialStage = TutorialStage.BuildToMinerals;
-                currentlyBuilding = BuildingType.Generator;
+            case 4:
+                tutorialStage = TutorialStage.ExtendToMinerals;
+                currentlyBuilding = BuildingType.Extender;
                 ResetSubStage();
                 wKey.transform.parent.gameObject.SetActive(false);
 
@@ -299,7 +312,7 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player builds out to the mineral deposit, learning about and placing extenders
-    //TODO: reform BuildExtender() into BuildToMinerals()
+    //TODO: reform BuildExtender() into ExtendToMinerals()
     private void BuildExtender()
     {
         switch (subStage)

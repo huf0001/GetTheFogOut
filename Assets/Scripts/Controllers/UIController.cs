@@ -426,7 +426,7 @@ public class UIController : MonoBehaviour
         {
             case TutorialStage.None:
             case TutorialStage.ExplainSituation:
-            case TutorialStage.PanToMinerals:
+            case TutorialStage.ExplainMinerals:
                 hudObjText.text = "Objective: Complete the Tutorial";
                 objWindowText.text = "<b>Complete the Tutorial</b>\n\n" +
                     "<size=75%>Complete the tutorial and learn to play the game!\n\n";

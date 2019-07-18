@@ -3581,6 +3581,16 @@ PrefabInstance:
       propertyPath: buildingSelector
       value: 
       objectReference: {fileID: 1868347800}
+    - target: {fileID: 4573253878672626690, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 1857498247}
+    - target: {fileID: 4573253878672626690, guid: 802ddf5b63779fb4db83761d2eb4550a,
+        type: 3}
+      propertyPath: m_LookAt
+      value: 
+      objectReference: {fileID: 1857498247}
     m_RemovedComponents:
     - {fileID: 4455723523956921977, guid: 802ddf5b63779fb4db83761d2eb4550a, type: 3}
     - {fileID: 0}
@@ -3780,6 +3790,18 @@ MonoBehaviour:
   m_FocusTracksTarget: 0
   m_FocusOffset: 0
   m_Profile: {fileID: 11400000, guid: 274e836dc78a858488c1684c9bbb5ccc, type: 2}
+--- !u!114 &934556519 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4573253878672626690, guid: 802ddf5b63779fb4db83761d2eb4550a,
+    type: 3}
+  m_PrefabInstance: {fileID: 934556504}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174548842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &934556527 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4455723525889744487, guid: 802ddf5b63779fb4db83761d2eb4550a,
@@ -4534,6 +4556,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b73f147f6fafb3242895252f4e5718fb, type: 3}
+--- !u!1 &1174548842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6991680420272007457, guid: 802ddf5b63779fb4db83761d2eb4550a,
+    type: 3}
+  m_PrefabInstance: {fileID: 934556504}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1174548844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174548842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 729aad4491e915a41bda2b8325cf757a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusOffset: 0
+  m_Profile: {fileID: 11400000, guid: 274e836dc78a858488c1684c9bbb5ccc, type: 2}
 --- !u!1001 &1206139292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7549,6 +7592,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e3a4254109bae4c93336cad9171069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1857498247 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3575913343396146165, guid: b73f147f6fafb3242895252f4e5718fb,
+    type: 3}
+  m_PrefabInstance: {fileID: 863224237}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1868347795
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8579,6 +8628,61 @@ PrefabInstance:
       objectReference: {fileID: 1868347807}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
+      propertyPath: dialogue.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[3].expressionDialoguePairs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].expressionDialoguePairs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].expressionDialoguePairs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].expressionDialoguePairs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].expressionDialoguePairs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].expressionDialoguePairs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[11].expressionDialoguePairs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[13].expressionDialoguePairs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
       propertyPath: objectiveWindow
       value: 
       objectReference: {fileID: 1868347802}
@@ -8651,6 +8755,288 @@ PrefabInstance:
         type: 3}
       propertyPath: skipTutorial
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: mineralDepositCamera
+      value: 
+      objectReference: {fileID: 934556519}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].key
+      value: explain minerals
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[0].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[0].dialogue
+      value: "\rexplain minerals \r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[3].key
+      value: move camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[3].expressionDialoguePairs.Array.data[0].dialogue
+      value: 'WASD moves me around. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].key
+      value: build generator target
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].expressionDialoguePairs.Array.data[0].dialogue
+      value: Since the backup generator will not be sufficient, you will have to place
+        [POWER GENERATORS].
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].key
+      value: build generator icon
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[0].dialogue
+      value: 'Now, click on the [POWER GENERATOR] icon. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].key
+      value: build extender target
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].expressionDialoguePairs.Array.data[0].dialogue
+      value: "\rNext are [POWER EXTENDERS]. These will extend the power range from
+        your ship and allow you to place buildings further out. \r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].expressionDialoguePairs.Array.data[1].dialogue
+      value: 'Place one there. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].key
+      value: build battery target
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].expressionDialoguePairs.Array.data[0].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].expressionDialoguePairs.Array.data[0].dialogue
+      value: 'The final power related building is a [BATTERY]. When you place it,
+        it will increase your power capacity. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].key
+      value: increase power generation
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].expressionDialoguePairs.Array.data[0].aiExpression
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[8].expressionDialoguePairs.Array.data[0].dialogue
+      value: 'Now that you have these skills, increase your [POWER GENERATION]. Do
+        not forget to try more [POWER EXTENDERS] and [BATTERIES] later. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].key
+      value: build harvester target
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].expressionDialoguePairs.Array.data[0].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].expressionDialoguePairs.Array.data[0].dialogue
+      value: The next important building you have access to is a {HARVESTER}. When
+        placed on a {MINERAL}, it will collect its contents for you.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].key
+      value: build more harvesters
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].expressionDialoguePairs.Array.data[0].aiExpression
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[10].expressionDialoguePairs.Array.data[0].dialogue
+      value: Good, you're learning. Now build two more to speed up your {MINERAL}
+        collection.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[11].key
+      value: build air cannon
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[11].expressionDialoguePairs.Array.data[0].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[11].expressionDialoguePairs.Array.data[0].dialogue
+      value: "Your final and most important buildings are the >AIR CANNON< and >FOG
+        REPELLER<. \r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[12].key
+      value: build fog repeller
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[12].expressionDialoguePairs.Array.data[0].aiExpression
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[12].expressionDialoguePairs.Array.data[0].dialogue
+      value: 'Great. Now, a >FOG REPELLER< will push the fog away from a small area
+        around it when placed. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[1].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[1].dialogue
+      value: 'Let me run a scan for you to see the extent of the damage. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[2].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[2].dialogue
+      value: 'Scanning... '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[3].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[3].dialogue
+      value: 'The hull has sustained copious damage and a thruster is missing. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[4].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[4].dialogue
+      value: The scan also picked up hostility coming from the surrounding fog. It
+        may be sentient. What are the chances?
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[5].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[2].expressionDialoguePairs.Array.data[5].dialogue
+      value: Your ship comes equipped with important blueprints, should the need arise
+        to use them.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].expressionDialoguePairs.Array.data[1].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[4].expressionDialoguePairs.Array.data[1].dialogue
+      value: Click there to place a generator.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].expressionDialoguePairs.Array.data[1].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[7].expressionDialoguePairs.Array.data[1].dialogue
+      value: 'Now place a [BATTERY] there. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].expressionDialoguePairs.Array.data[1].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[9].expressionDialoguePairs.Array.data[1].dialogue
+      value: Place a {HARVESTER} on the {MINERAL}.
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[11].expressionDialoguePairs.Array.data[1].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[11].expressionDialoguePairs.Array.data[1].dialogue
+      value: 'An >AIR CANNON< will discharge an intense ball of air that will dissipate
+        the fog. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[11].expressionDialoguePairs.Array.data[2].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[11].expressionDialoguePairs.Array.data[2].dialogue
+      value: 'Try placing one. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[13].key
+      value: finished
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[13].expressionDialoguePairs.Array.data[0].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogue.Array.data[13].expressionDialoguePairs.Array.data[0].dialogue
+      value: "Now that you know how to use these buildings, I would suggest trying
+        to find your ship\u2019s thruster. "
       objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256477, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
