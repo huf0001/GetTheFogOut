@@ -14,6 +14,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     [SerializeField] private Image buildingDescBG;
     [SerializeField] TextMeshProUGUI buildingDesc;
     [SerializeField] TextMeshProUGUI buildingCost;
+    [SerializeField] string buildingName;
     [SerializeField, Tooltip("Building flavour text"), TextArea] string descText;
 
     private Button button;
@@ -89,32 +90,32 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             switch (gameObject.name)
             {
                 case "btn_battery":
-                    buildingDesc.text = $"<b>Battery</b>\n" +
+                    buildingDesc.text = $"<b>{buildingName}</b>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Battery>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_generator":
-                    buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{build_prefab.GetComponentInChildren<Generator>().Upkeep}<sprite=\"all_icons\" index=0>\n" +
+                    buildingDesc.text = $"<b>{buildingName}</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{build_prefab.GetComponentInChildren<Generator>().Upkeep}<sprite=\"all_icons\" index=0>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Generator>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_harvester":
-                    buildingDesc.text = $"<b>Elemental Harvester</b>\n" +
+                    buildingDesc.text = $"<b>{buildingName}</b>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Harvester>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_arc_defence":
-                    buildingDesc.text = $"<b>Air Cannon</b>\n" +
+                    buildingDesc.text = $"<b>{buildingName}</b>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<ArcDefence>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_repel_fan":
-                    buildingDesc.text = $"<b>Fog Repeller</b>\n" +
+                    buildingDesc.text = $"<b>{buildingName}</b>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<RepelFan>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;
                 case "btn_relay":
-                    buildingDesc.text = $"<b>Power Extender</b>\n" +
+                    buildingDesc.text = $"<b>{buildingName}</b>\n" +
                         "<line-height=80% size=65%>" + descText;
                     buildingCost.text = $"{build_prefab.GetComponentInChildren<Relay>().MineralCost} <sprite=\"all_icons\" index=2>";
                     break;

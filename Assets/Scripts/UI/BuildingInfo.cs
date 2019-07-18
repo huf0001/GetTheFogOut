@@ -97,7 +97,7 @@ public class BuildingInfo : MonoBehaviour
         {
             bg.color = new Color32(113, 66, 236, 237);
         }
-        InvokeRepeating("UpdateText", 0, 0.1f);
+        UpdateText();
 
         Transform range = b.transform.Find("Range");
         if (range)
@@ -110,6 +110,7 @@ public class BuildingInfo : MonoBehaviour
         transform.position = Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
         gameObject.SetActive(true);
         Visible = true;
+        InvokeRepeating("UpdateText", 0.1f, 0.1f);
     }
 
     public void ShowInfo(ShipComponent shipComponent)
