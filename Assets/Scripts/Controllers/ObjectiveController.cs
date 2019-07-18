@@ -160,6 +160,7 @@ public class ObjectiveController : DialogueBoxController
 
     // Stage Functions ----------------------------------------------------------------------------------------
 
+    //TODO: remove harvest mineral stage, and skip straight to recover part stage
     void HarvestMineralStage()
     {
         switch (subStage)

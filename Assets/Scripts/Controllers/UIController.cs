@@ -436,23 +436,29 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Move Nex</b>\n\n" +
                     "<size=75%>Learn how to move your Nexus Drone.\n\n";
                 break;
-            case TutorialStage.ExtendToMinerals:
-                hudObjText.text = "Objective: Build Power Extender";
-                objWindowText.text = "<b>Build Power Extender</b>\n\n" +
-                    "<size=75%>Build a Power Extender to reach the mineral nodes.\n\n";
-                break;
             case TutorialStage.BuildHarvesters:
+            case TutorialStage.BuildHarvestersExtended:
                 hudObjText.text = "Objective: Build Harvesters";
                 objWindowText.text = "<b>Build Harvesters</b>\n\n" +
-                    $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to collect building materials.\n\n" +
-                    $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
+                    $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersExtendedGoal} mineral Harvesters to collect building materials.\n\n" +
+                    $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersExtendedGoal} Harvesters";
                 break;
-
-                // //case TutorialStage.BuildGenerator:
-                //    hudObjText.text = "Objective: Build Generator";
-                //    objWindowText.text = "<b>Build Generator</b>\n\n" +
-                //        "<size=75%>Build a Power Generator to increase your available power generation.\n\n";
-                //    break;
+            case TutorialStage.BuildExtender:
+                hudObjText.text = "Objective: Build Power Extender";
+                objWindowText.text = "<b>Build Power Extender</b>\n\n" +
+                    "<size=75%>Build a Power Extender to reach additional mineral nodes.\n\n";
+                break;
+            case TutorialStage.BuildGenerator:
+                hudObjText.text = "Objective: Build Generator";
+                objWindowText.text = "<b>Build Generator</b>\n\n" +
+                    "<size=75%>Build a Power Generator to increase your available power generation.\n\n";
+                break;
+            case TutorialStage.BuildMoreGenerators:
+                hudObjText.text = "Objective: Build Generators";
+                objWindowText.text = "<b>Build Generators</b>\n\n" +
+                     $"<size=75%>Build {TutorialController.Instance.BuiltGeneratorsGoal} Generators to increase your available power generation.\n\n" +
+                     $"Target: {ResourceController.Instance.Generators.Count} / {TutorialController.Instance.BuiltGeneratorsGoal} Generators";
+                break;
 
                 //case TutorialStage.BuildMortar:
                 //    hudObjText.text = "Objective: Build Air Cannon";

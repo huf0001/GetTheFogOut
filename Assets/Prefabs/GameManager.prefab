@@ -245,48 +245,44 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: 'WASD moves me around. '
-  - key: build generator target
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Since the backup generator will not be sufficient, you will have to
-        place [POWER GENERATORS].
-    - aiExpression: 2
-      dialogue: Click there to place a generator.
-  - key: build generator icon
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: 'Now, click on the [POWER GENERATOR] icon. '
-  - key: build extender target
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: "\rNext are [POWER EXTENDERS]. These will extend the power range from
-        your ship and allow you to place buildings further out. \r\n"
-    - aiExpression: 2
-      dialogue: 'Place one there. '
-  - key: build battery target
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: 'The final power related building is a [BATTERY]. When you place it,
-        it will increase your power capacity. '
-    - aiExpression: 2
-      dialogue: 'Now place a [BATTERY] there. '
-  - key: increase power generation
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: 'Now that you have these skills, increase your [POWER GENERATION].
-        Do not forget to try more [POWER EXTENDERS] and [BATTERIES] later. '
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: The next important building you have access to is a {HARVESTER}. When
         placed on a {MINERAL}, it will collect its contents for you.
     - aiExpression: 2
-      dialogue: Place a {HARVESTER} on the {MINERAL}.
+      dialogue: Click on the {MINERAL} to place a {HARVESTER}.
+  - key: build harvester icon
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: 'Now, click on the {Harvester} icon. '
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
       dialogue: Good, you're learning. Now build two more to speed up your {MINERAL}
         collection.
+  - key: build extender target
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "\rNext are [POWER EXTENDERS]. These will extend the power range from
+        your ship and allow you to place buildings further out. \r"
+    - aiExpression: 2
+      dialogue: Place one there.
+  - key: build more harvesters extended
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: build more harvesters extended
+  - key: build generator target
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Since the backup generator will not be sufficient, you will have to
+        place [POWER GENERATORS].
+    - aiExpression: 2
+      dialogue: Place a generator there.
+  - key: build more generators
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: build more generators
   - key: build air cannon
     expressionDialoguePairs:
     - aiExpression: 2
@@ -308,11 +304,14 @@ MonoBehaviour:
       dialogue: "Now that you know how to use these buildings, I would suggest trying
         to find your ship\u2019s thruster. "
   skipTutorial: 0
-  airCannonLandmark: {fileID: 0}
-  batteryLandmark: {fileID: 0}
-  generatorLandmark: {fileID: 0}
+  tutorialStage: 1
+  subStage: 1
+  currentlyBuilding: 0
   harvesterResource: {fileID: 0}
   extenderLandmark: {fileID: 0}
+  extendedHarvesterResource: {fileID: 0}
+  generatorLandmark: {fileID: 0}
+  airCannonLandmark: {fileID: 0}
   fogRepellerLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
   wKey: {fileID: 0}
@@ -322,8 +321,9 @@ MonoBehaviour:
   mineralDepositCamera: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
-  powerGainGoal: 15
-  builtHarvestersGoal: 7
+  builtHarvestersGoal: 4
+  builtHarvestersExtendedGoal: 7
+  builtGeneratorsGoal: 3
 --- !u!114 &4019818891569145385
 MonoBehaviour:
   m_ObjectHideFlags: 0
