@@ -229,16 +229,35 @@ public class MouseController : MonoBehaviour
     // Returns the building that should be destroyed.
     public Building ReturnCost(TileData tile)
     {
+        int returnCost;
         if (tile.Building != null)
         {
             Building building = tile.Building;
             if (building.BuildingType != BuildingType.Hub)
             {
+                returnCost = building.MineralCost;
+                if (building.BuildingType != BuildingType.Extender)
+                {
+                    if (building.Health != building.MaxHealth)
+                    {
+                        if (building.Health < 40 && building.Health > 25)
+                        {
+                            returnCost = Mathf.RoundToInt(returnCost / 1.4f);
+                            Debug.Log(building.Health + " NNNNNN" + returnCost);
+                        }
+
+                        if (building.Health < 20 && building.Health > 5)
+                        {
+                            returnCost = Mathf.RoundToInt(returnCost / 2f);
+                            Debug.Log(building.Health +  " YYY" + returnCost);
+                        }
+                    }
+                }
+
                 // add required resources
                 resourceController.StoredPower += building.PowerCost;
-                resourceController.StoredMineral += building.MineralCost;
-
-                StartCoroutine(FloatText(building.transform, building.MineralCost));
+                resourceController.StoredMineral += returnCost;
+                StartCoroutine(FloatText(building.transform, returnCost));
                 return building;
             }
         }
