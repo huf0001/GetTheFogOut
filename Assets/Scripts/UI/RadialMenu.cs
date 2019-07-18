@@ -31,6 +31,11 @@ public class RadialMenu : MonoBehaviour
         }
     }
 
+    public void AddButton(RectTransform button)
+    {
+        // code to adjust radial menu to fit button and also reparent the button
+    }
+
     private void AdjustPositions()
     {
         for (int i = 0; i < transform.childCount; i++)
