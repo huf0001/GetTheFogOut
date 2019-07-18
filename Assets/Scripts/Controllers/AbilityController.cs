@@ -6,7 +6,7 @@ using Abilities;
 public enum AbilityEnum
 {
     BuildingDefence,
-    DamageBlast,
+    Artillery,
     FreezeFog,
     Overclock,
     Sonar
@@ -72,13 +72,13 @@ public class AbilityController : MonoBehaviour
         abilityCooldowns[AbilityEnum.Overclock] = 0f;
         abilityCooldowns[AbilityEnum.Sonar] = 0f;
         abilityCooldowns[AbilityEnum.BuildingDefence] = 0f;
-        abilityCooldowns[AbilityEnum.DamageBlast] = 0f;
+        abilityCooldowns[AbilityEnum.Artillery] = 0f;
         abilityCooldowns[AbilityEnum.FreezeFog] = 0f;
 
         abilityTriggered[AbilityEnum.Overclock] = false;
         abilityTriggered[AbilityEnum.Sonar] = false;
         abilityTriggered[AbilityEnum.BuildingDefence] = false;
-        abilityTriggered[AbilityEnum.DamageBlast] = false;
+        abilityTriggered[AbilityEnum.Artillery] = false;
         abilityTriggered[AbilityEnum.FreezeFog] = false;
     }
 

@@ -7,42 +7,45 @@ public class ResourceController : MonoBehaviour
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
-    [SerializeField] private int maxPower = 100, maxMineral = 100, maxOrganic = 100, maxFuel = 100;
-    [SerializeField] private int storedPower = 0, storedMineral = 0, storedOrganic = 0, storedFuel = 0;
-    [SerializeField] private int powerChange = 0, mineralChange = 0, organicChange = 0, fuelChange = 0;
+    [SerializeField] private int maxPower;
+    [SerializeField] private int maxMineral;
+    [SerializeField] private int storedPower;
+    [SerializeField] private int storedMineral;
+    [SerializeField] private int powerChange;
+    [SerializeField] private int mineralChange;
 
-    [SerializeField] private List<Battery> batteries = new List<Battery>();
-    [SerializeField] private List<Defence> defences = new List<Defence>();
+    [SerializeField] private List<ArcDefence> mortars = new List<ArcDefence>();
+    [SerializeField] private List<RepelFan> pulseDefences = new List<RepelFan>();
     [SerializeField] private List<Generator> generators = new List<Generator>();
     [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
-    [SerializeField] private List<Relay> relays = new List<Relay>();
+    [SerializeField] private List<Relay> extenders = new List<Relay>();
+
     [SerializeField] private bool hvtSelfDestroy = false;
-    private List<Building> buildings = new List<Building>();
 
     //Non-serialized fields
     private Hub hub = null;
-    private bool powerFull = false, mineralFull = false, organicFull = false, fuelFull = false;
+    private bool powerFull = false;
+    private bool mineralFull = false;
 
-    //Public peroperties
+    private List<Building> buildings = new List<Building>();
+
+    //Public Properties------------------------------------------------------------------------------------------------------------------------------
+
+    //Basic Public Properties
     public static ResourceController Instance { get; protected set; }
-    public int MaxPower { get => maxPower; set => maxPower = value; }
 
+    //public int MaxPower { get => maxPower; set => maxPower = value; }
     public int StoredPower { get => storedPower; set => storedPower = value; }
     public int StoredMineral { get => storedMineral; set => storedMineral = value; }
-    public int StoredOrganic { get => storedOrganic; set => storedOrganic = value; }
-    public int StoredFuel { get => storedFuel; set => storedFuel = value; }
-
     public int PowerChange { get => powerChange; set => powerChange = value; }
     public int MineralChange { get => mineralChange; set => mineralChange = value; }
-    public int OrganicChange { get => organicChange; set => organicChange = value; }
-    public int FuelChange { get => fuelChange; set => fuelChange = value; }
 
-    public List<Battery> Batteries { get => batteries; set => batteries = value; }
-    public List<Defence> Defences { get => defences; set => defences = value; }
+    public List<Building> Buildings { get => buildings; set => buildings = value; }
+    //public List<Relay> Extenders { get => extenders; set => extenders = value; }
     public List<Generator> Generators { get => generators; set => generators = value; }
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
-    public List<Relay> Relays { get => relays; set => relays = value; }
-    public List<Building> Buildings { get => buildings; set => buildings = value; }
+    //public List<ArcDefence> Mortars { get => mortars; set => mortars = value; }
+    //public List<RepelFan> PulseDefences { get => pulseDefences; set => pulseDefences = value; }
 
 
     // [SerializeField] protected AudioSource audioMaxPower;
@@ -69,35 +72,48 @@ public class ResourceController : MonoBehaviour
         InvokeRepeating("ProcessUpkeep", 1f, 1f);
     }
 
-    //Primary Logic of ResourceController------------------------------------------------------------------------------------------------------------
+    //Recurring Methods - Processing Upkeep----------------------------------------------------------------------------------------------------------
 
+    //Manages the buildings, calculating power supply and supplying it as needed
     private void ProcessUpkeep()
     {
         //Reset resource changes
         powerChange = 0;
-        fuelChange = 0;
-        organicChange = 0;
         mineralChange = 0;
 
-        // Process batteries
-        maxPower = (hub.GetBatteries().Count * 50) + 100;
+        //Get connected buildings
+        List<Generator> connectedGenerators = hub.GetGenerators();
+        List<Relay> connectedRelays = hub.GetRelays();
+        List<ArcDefence> connectedMortars = hub.GetMortars();
+        List<RepelFan> connectedPulseDefences = hub.GetPulseDefences();
+        List<Harvester> connectedHarvesters = hub.GetHarvesters();
+        
+        //Process power and power supplying
+        CalculatePowerSupply(connectedGenerators, connectedRelays);
+        CalculateUpkeep(connectedMortars, connectedPulseDefences, connectedHarvesters);
+        SupplyPower(connectedMortars, connectedPulseDefences, connectedHarvesters);        
+        
+        //Makes sure power and minerals don't exceed their maximum values
+        CheckLimits();
+    }
 
+    //Calculates how much power is supplied by all buildings
+    private void CalculatePowerSupply(List<Generator> connectedGenerators, List<Relay> connectedExtenders)
+    {
         //Provide hub's power contribution
         storedPower += hub.Upkeep;
         powerChange += hub.Upkeep;
-
-        //Get connected generators, account for the power they supply
-        List<Generator> connectedGenerators = hub.GetGenerators();
         
+        //Get Generators' power contributions
         foreach (Generator generator in connectedGenerators)
         {
             storedPower += generator.Upkeep * generator.OverclockValue;
             powerChange += generator.Upkeep * generator.OverclockValue;
         }
-        
+
+        //Supply power to connected generators
         if (connectedGenerators.Count > 0)
         {
-
             foreach (Generator g in generators)
             {
                 if (connectedGenerators.Contains(g))
@@ -106,20 +122,17 @@ public class ResourceController : MonoBehaviour
                 }
                 else
                 {
-                    //Debug.Log("Powering Down Generator from Hub.ProcessUpkeep");
                     g.PowerDown();
                 }
             }
         }
 
-        //Get connected relays, account for the power they consume
-        List<Relay> connectedRelays = hub.GetRelays();
-
-        if (connectedRelays.Count > 0)
+        //Supply power to connected extenders
+        if (connectedExtenders.Count > 0)
         {
-            foreach (Relay r in relays)
+            foreach (Relay r in extenders)
             {
-                if (connectedRelays.Contains(r))
+                if (connectedExtenders.Contains(r))
                 {
                     storedPower += r.Upkeep;
                     powerChange += r.Upkeep;
@@ -139,41 +152,38 @@ public class ResourceController : MonoBehaviour
                 }
             }
         }
+    }
 
-        //Get connected defences, account for the power they consume
-        List<Defence> connectedDefences = hub.GetDefences();
-
-        if (connectedDefences.Count > 0)
+    //Calculates how much power is used by all buildings
+    private void CalculateUpkeep(List<ArcDefence> connectedMortars, List<RepelFan> connectedPulseDefences, List<Harvester> connectedHarvesters)
+    {
+        //Gets the power drain by the mortars
+        if (connectedMortars.Count > 0)
         {
-            foreach (Defence d in defences)
+            foreach (ArcDefence m in mortars)
             {
-                if (connectedDefences.Contains(d))
+                if (connectedMortars.Contains(m))
                 {
-                    storedPower += d.Upkeep;
-                    powerChange += d.Upkeep;
-
-                    if (storedPower >= 0)
-                    {
-                        d.PowerUp();
-                    }
-                    else
-                    {
-                        d.PowerDown();
-                    }
-                }
-                else
-                {
-                    d.PowerDown();
+                    storedPower += m.Upkeep;
+                    powerChange += m.Upkeep;
                 }
             }
         }
 
-        //Get connected harvesters, account for power they consume, store the resources they collect
-        List<Harvester> connectedHarvesters = hub.GetHarvesters();
-        //Debug.Log("ConnectedHarvesters.Count is " + connectedHarvesters.Count);
+        //Gets the power drain by the pulse defences
+        if (connectedPulseDefences.Count > 0)
+        {
+            foreach (RepelFan pd in pulseDefences)
+            {
+                if (connectedPulseDefences.Contains(pd))
+                {
+                    storedPower += pd.Upkeep;
+                    powerChange += pd.Upkeep;
+                }
+            }
+        }
 
-        bool needDestroy = false;
-
+        //Gets the power drain by the harvesters
         if (connectedHarvesters.Count > 0)
         {
             foreach (Harvester h in harvesters)
@@ -181,9 +191,77 @@ public class ResourceController : MonoBehaviour
                 if (connectedHarvesters.Contains(h))
                 {
                     storedPower += h.Upkeep;
-                    powerChange += h.Upkeep;
+                    powerChange += h.Upkeep;                    
+                }
+            }
+        }
+    }
 
-                    if (storedPower >= 0)
+    //Supplies powers to buildings based on the current stored power
+    private void SupplyPower(List<ArcDefence> connectedMortars, List<RepelFan> connectedPulseDefences, List<Harvester> connectedHarvesters)
+    {
+        //Powers mortars
+        if (connectedMortars.Count > 0)
+        {
+            if (storedPower > 0)
+            {
+                foreach (ArcDefence ac in mortars)
+                {
+                    if (connectedMortars.Contains(ac))
+                    {
+                        ac.PowerUp();
+                    }
+                    else
+                    {
+                        ac.PowerDown();
+                    }
+                }
+            }
+            else
+            {
+                foreach (ArcDefence ac in mortars)
+                {
+                    ac.PowerDown();
+                }
+            }
+        }
+
+        //Powers pulse defences
+        if (connectedPulseDefences.Count > 0)
+        {
+            if (storedPower > 25)
+            {
+                foreach (RepelFan pd in pulseDefences)
+                {
+                    if (connectedPulseDefences.Contains(pd))
+                    {
+                        pd.PowerUp();
+                    }
+                    else
+                    {
+                        pd.PowerDown();
+                    }
+                }
+            }
+            else
+            {
+                foreach (RepelFan pd in pulseDefences)
+                {
+                    pd.PowerDown();
+                }
+            }
+        }
+
+        //Powers harvesters
+        if (connectedHarvesters.Count > 0)
+        {
+            bool needDestroy = false;
+
+            if (storedPower > 75)
+            {
+                foreach (Harvester h in harvesters)
+                {
+                    if (connectedHarvesters.Contains(h))
                     {
                         h.PowerUp();
 
@@ -195,12 +273,10 @@ public class ResourceController : MonoBehaviour
                                     storedPower += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
                                     powerChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
                                     break;
-                                case Resource.Organic:
-                                    organicChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
-                                    break;
                                 case Resource.Mineral:
                                     mineralChange += h.HarvestAmt * h.OverclockValue * (int)h.Location.Resource.ResMultiplier;
                                     h.Location.Resource.Health -= h.HarvestAmt * h.OverclockValue;
+
                                     if (h.Location.Resource.Health <= 0)
                                     {
                                         ResourceNode.Destroy(h.Location.Resource.gameObject);
@@ -209,9 +285,7 @@ public class ResourceController : MonoBehaviour
                                         needDestroy = true;
                                         //    h.Location.Building.ShutdownBuilding();   // if you dont want to destroy, this line, insteat, will turn power off
                                     }
-                                    break;
-                                case Resource.Fuel:
-                                    fuelChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
+
                                     break;
                             }
                         }
@@ -221,53 +295,85 @@ public class ResourceController : MonoBehaviour
                         h.PowerDown();
                     }
                 }
-                else
+                
+                storedMineral += mineralChange;
+            }
+            else
+            {
+                foreach (Harvester h in harvesters)
                 {
                     h.PowerDown();
                 }
             }
+
             if (hvtSelfDestroy)
             {
                 if (needDestroy)
                 {
                     MouseController.Instance.ReturnCost(harvesters[0].Location);
                     MouseController.Instance.RemoveBulding(harvesters[0]);
-                //    harvesters[0].Location.Building.DismantleBuilding();  //alternatively
+                    //    harvesters[0].Location.Building.DismantleBuilding();  //alternatively
                 }
             }
-
         }
-
-        storedFuel += fuelChange;
-        storedOrganic += organicChange;
-        StoredMineral += mineralChange;
-
-        //if (powerChange < 0)
-        //{
-        //    // if (!overloadPlayed)
-        //    // {
-        //    //     audioOverload.Play();
-        //    //     overloadPlayed = true;
-        //    // }
-        //}
-        //// else
-        //// {
-        ////     overloadPlayed = false;
-        //// }
-        CheckLimits();
     }
 
+    //Checks that power and minerals are within their maximum values
+    public void CheckLimits()
+    {
+        if (storedPower >= maxPower)
+        {
+            storedPower = maxPower;
+            powerFull = true;
+            // if (!maxPowPlayed)
+            // {
+            //     audioMaxPower.Play();
+            //     maxPowPlayed = true;
+            // }
+        }
+        else
+        {
+            powerFull = false;
+            // maxPowPlayed = false;
+
+            if (storedPower < 0)
+            {
+                storedPower = 0;
+            }
+        }
+
+        if (storedMineral >= maxMineral)
+        {
+            storedMineral = maxMineral;
+            mineralFull = true;
+            // if (!maxMinPlayed)
+            // {
+            //     audioMaxMineral.Play();
+            //     maxMinPlayed = true;
+            // }
+        }
+        else
+        {
+            mineralFull = false;
+            // maxMinPlayed = false;
+
+            if (storedMineral < 0)
+            {
+                storedMineral = 0;
+            }
+        }
+    }
+
+    //Triggered Methods------------------------------------------------------------------------------------------------------------------------------
+
+    //Adds a building to the list of its type of building
     public void AddBuilding(Building b)
     {
         buildings.Add(b);
         switch (b.BuildingType)
         {
-            case BuildingType.Battery:
-                batteries.Add(b as Battery);
-                //maxPower += 10;
-                break;
             case BuildingType.AirCannon:
-                defences.Add(b as Defence);
+                mortars.Add(b as ArcDefence);
                 break;
             case BuildingType.Generator:
                 generators.Add(b as Generator);
@@ -276,18 +382,19 @@ public class ResourceController : MonoBehaviour
                 harvesters.Add(b as Harvester);
                 break;
             case BuildingType.Extender:
-                relays.Add(b as Relay);
+                extenders.Add(b as Relay);
                 break;
             case BuildingType.FogRepeller:
-                defences.Add(b as Defence);
+                pulseDefences.Add(b as RepelFan);
                 break;
         }
     }
 
+    //Removes a building from the list of its type of building
     public void RemoveBuilding(Building b)
     {
         Debug.Log("Removing building");
-        Buildings.Remove(b);
+        buildings.Remove(b);
 
         if (b.Location.PowerSource != null)
         {
@@ -296,17 +403,9 @@ public class ResourceController : MonoBehaviour
 
         switch (b.BuildingType)
         {
-            case BuildingType.Battery:
-                batteries.Remove(b as Battery);
-                if (batteries.Contains(b as Battery))
-                {
-                    Debug.Log("Battery removal failed");
-                }
-                //maxPower -= 10;
-                break;
             case BuildingType.AirCannon:
-                defences.Remove(b as Defence);
-                if (defences.Contains(b as Defence))
+                mortars.Remove(b as ArcDefence);
+                if (mortars.Contains(b as ArcDefence))
                 {
                     Debug.Log("Defence removal failed");
                 }
@@ -326,15 +425,15 @@ public class ResourceController : MonoBehaviour
                 }
                 break;
             case BuildingType.Extender:
-                relays.Remove(b as Relay);
-                if (relays.Contains(b as Relay))
+                extenders.Remove(b as Relay);
+                if (extenders.Contains(b as Relay))
                 {
                     Debug.Log("Relay removal failed");
                 }
                 break;
             case BuildingType.FogRepeller:
-                defences.Remove(b as Defence);
-                if (defences.Contains(b as Defence))
+                pulseDefences.Remove(b as RepelFan);
+                if (pulseDefences.Contains(b as RepelFan))
                 {
                     Debug.Log("Defence removal failed");
                 }
@@ -345,90 +444,9 @@ public class ResourceController : MonoBehaviour
         }
     }
 
-    public void CheckLimits()
-    {
-        if (storedPower >= maxPower)
-        {
-            storedPower = maxPower;
-            powerFull = true;
-            // if (!maxPowPlayed)
-            // {
-            //     audioMaxPower.Play();
-            //     maxPowPlayed = true;
-            // }
-        }
-        else
-        {
-            powerFull = false;
-            // maxPowPlayed = false;
-        }
-
-        if (storedFuel >= maxFuel)
-        {
-            storedFuel = maxFuel;
-            fuelFull = true;
-        }
-        else
-        {
-            fuelFull = false;
-        }
-
-        if (storedMineral >= maxMineral)
-        {
-            storedMineral = maxMineral;
-            mineralFull = true;
-            // if (!maxMinPlayed)
-            // {
-            //     audioMaxMineral.Play();
-            //     maxMinPlayed = true;
-            // }
-        }
-        else
-        {
-            mineralFull = false;
-            // maxMinPlayed = false;
-        }
-
-        if (storedOrganic >= maxOrganic)
-        {
-            storedOrganic = maxOrganic;
-            organicFull = true;
-        }
-        else
-        {
-            organicFull = false;
-        }
-
-        if (storedPower < 0)
-        {
-            storedPower = 0;
-        }
-
-        if (storedFuel < 0)
-        {
-            storedFuel = 0;
-        }
-
-        if (storedMineral < 0)
-        {
-            storedMineral = 0;
-        }
-
-        if (storedOrganic < 0)
-        {
-            storedOrganic = 0;
-        }
-    }
-
+    //Returns whether or not the player has won
     public bool IsWin()
     {
-        if (powerFull && mineralFull && organicFull && fuelFull)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return powerFull && mineralFull;
     }
 }
