@@ -17,6 +17,21 @@ namespace Abilities
                 if (t.Building)
                 {
                     t.Building.IsOverclockOn = true;
+                    t.Building.GetComponentInChildren<Renderer>().material.SetFloat("_Overclock", 1f);
+                    
+                    switch (t.Building.BuildingType)
+                    {
+                        case BuildingType.Harvester:
+                            t.Building.GetComponentInChildren<ParticleSystem>().startSpeed = 8f;
+                            t.Building.GetComponentInChildren<ParticleSystem>().startLifetime = 1.25f;
+
+                            break;
+                        case BuildingType.FogRepeller:
+                            t.Building.GetComponentInChildren<ParticleSystem>().emission.
+                                SetBurst(0 , new ParticleSystem.Burst(0f, 2, 10, 0.5f));
+                            break;
+                    }
+                    
                     timer = duration;
                     AbilityController.Instance.StartCoroutine(TurnOffOverclock(t.Building));
                 }
@@ -34,6 +49,20 @@ namespace Abilities
             }
             
             b.IsOverclockOn = false;
+            b.GetComponentInChildren<Renderer>().material.SetFloat("_Overclock", 0f);
+            
+            switch (b.BuildingType)
+            {
+                case BuildingType.Harvester:
+                    b.GetComponentInChildren<ParticleSystem>().startSpeed = 2f;
+                    b.GetComponentInChildren<ParticleSystem>().startLifetime = 5f;
+
+                    break;
+                case BuildingType.FogRepeller:
+                    b.GetComponentInChildren<ParticleSystem>().emission.
+                        SetBurst(0 , new ParticleSystem.Burst(0f, 2, 1, 0.5f));
+                    break;
+            }
         }
     }
 }

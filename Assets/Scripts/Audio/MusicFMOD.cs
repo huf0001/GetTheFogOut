@@ -11,23 +11,37 @@ public class MusicFMOD : MonoBehaviour
     private FMOD.Studio.PARAMETER_ID stageOne, stageTwo, stageThree, lose, win, outro;
     private FMOD.Studio.EventDescription stageOneDesc, stageTwoDesc, stageThreeDesc, loseDesc, winDesc, outroDesc;
 
+    private static MusicFMOD _instance = new MusicFMOD();
+    public static MusicFMOD Instance { get { return _instance; } }
+
     // Start is called before the first frame update
     void Start()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
         musicEvent = FMODUnity.RuntimeManager.CreateInstance(music);
 
         musicEvent.getDescription(out stageOneDesc);
         FMOD.Studio.PARAMETER_DESCRIPTION stageOneParamDesc;
-        
+
         musicEvent.getDescription(out stageTwoDesc);
         FMOD.Studio.PARAMETER_DESCRIPTION stageTwoParamDesc;
-        
+
         musicEvent.getDescription(out stageThreeDesc);
         FMOD.Studio.PARAMETER_DESCRIPTION stageThreeParamDesc;
-        
+
         musicEvent.getDescription(out loseDesc);
         FMOD.Studio.PARAMETER_DESCRIPTION loseParamDesc;
-        
+
         musicEvent.getDescription(out winDesc);
         FMOD.Studio.PARAMETER_DESCRIPTION winParamDesc;
 
@@ -47,12 +61,14 @@ public class MusicFMOD : MonoBehaviour
         lose = loseParamDesc.id;
         win = winParamDesc.id;
         outro = outroParamDesc.id;
-
-        musicEvent.start();
-        DontDestroyOnLoad(this);
     }
 
     // Player begins the game from Menu, onto Stage 1 of Game. Will start here on Prototype Milestone 2 scene.
+    public void StartMusic()
+    {
+        musicEvent.start();
+    }
+
     public void StageOneMusic()
     {
         musicEvent.setParameterByID(lose, 0f);

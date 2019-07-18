@@ -35,7 +35,6 @@ public class ObjectiveController : DialogueBoxController
 
     // Non-Serialized Fields
     // bool stageComplete = false;
-    //private AudioSource audioSource;
 
     private bool powerOverloaded = false;
     private bool alertedAboutOverload = false;
@@ -86,6 +85,7 @@ public class ObjectiveController : DialogueBoxController
         if (!musicFMOD && WorldController.Instance.musicFMOD)
         {
             musicFMOD = WorldController.Instance.musicFMOD;
+            musicFMOD.StageOneMusic();
         }
 
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
@@ -466,7 +466,6 @@ public class ObjectiveController : DialogueBoxController
         TextMeshProUGUI unlocksText = objCompImage.GetComponentInChildren<TextMeshProUGUI>();
         unlocksText.text = $"You can build a maximum of {generatorLimit} generators now!";
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad).SetUpdate(true);
-        //audioSource.PlayOneShot(audioCompleteObjective);
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
         yield return new WaitForSecondsRealtime(5f);
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad).SetUpdate(true);

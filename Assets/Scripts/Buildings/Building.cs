@@ -30,7 +30,6 @@ public abstract class Building : Entity
 
     //Non-serialized fields
     private Animator animator;
-    //protected AudioSource audioSource;
 
     protected float shieldTime;
     private bool damagingNotified = false;
@@ -204,11 +203,10 @@ public abstract class Building : Entity
         gameObject.layer = LayerMask.NameToLayer("Buildings");
         placed = true;
 
-        /*
         if (this.buildingType != BuildingType.Hub)
         {
-            audioSource.PlayOneShot(audioSpawn);
-        }*/
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingBuilt", GetComponent<Transform>().position);
+        }
         //GetComponent<Renderer>().material.shader = buildingShader;
     }
 
@@ -392,7 +390,7 @@ public abstract class Building : Entity
 
         //Debug.Log("Should be removed from ResourceController's list of my building type");
 
-        AudioSource.PlayClipAtPoint(audioDestroy, this.transform.position, 1f);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_3", GetComponent<Transform>().position);
 
         if (this.transform.parent != null)
         {
@@ -464,11 +462,10 @@ public abstract class Building : Entity
                 damInd.GetComponent<DamageIndicator>().Building = this;
             }
 
-            //            MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-            //                MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
-            //                $" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
-            //                $" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
-            //audioSource.PlayOneShot(audioDamage);
+            //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
+            //MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
+            //$" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
+            //$" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
             damagingNotified = true;
         }
