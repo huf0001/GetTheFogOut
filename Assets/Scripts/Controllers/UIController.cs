@@ -433,7 +433,7 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Complete the Tutorial</b>\n\n" +
                     "<size=75%>Complete the tutorial and learn to play the game!\n\n";
                 break;
-            case TutorialStage.MoveCamera:
+            case TutorialStage.CameraControls:
                 hudObjText.text = "Objective: Move Nex";
                 objWindowText.text = "<b>Move Nex</b>\n\n" +
                     "<size=75%>Learn how to move your Nexus Drone.\n\n";
@@ -460,7 +460,7 @@ public class UIController : MonoBehaviour
                     $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to replenish your building materials.\n\n" +
                     $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
                 break;
-            case TutorialStage.BuildAirCannon:
+            case TutorialStage.BuildMortar:
                 hudObjText.text = "Objective: Build Air Cannon";
                 objWindowText.text = "<b>Build Air Cannon</b>\n\n" +
                     "<size=75%>Build an Air Cannon to protect yourself from the Fog!\n\n";
