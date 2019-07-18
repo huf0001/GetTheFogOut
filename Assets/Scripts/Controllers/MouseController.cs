@@ -237,8 +237,6 @@ public class MouseController : MonoBehaviour
                 // add required resources
                 resourceController.StoredPower += building.PowerCost;
                 resourceController.StoredMineral += building.MineralCost;
-                resourceController.StoredOrganic += building.OrganicCost;
-                resourceController.StoredFuel += building.FuelCost;
 
                 StartCoroutine(FloatText(building.transform, building.MineralCost));
                 return building;
@@ -273,19 +271,13 @@ public class MouseController : MonoBehaviour
         {
             int pcost = building.PowerCost;
             int mcost = building.MineralCost;
-            int ocost = building.OrganicCost;
-            int fcost = building.FuelCost;
 
             if (pcost <= resourceController.StoredPower &&
-                mcost <= resourceController.StoredMineral &&
-                ocost <= resourceController.StoredOrganic &&
-                fcost <= resourceController.StoredFuel)
+                mcost <= resourceController.StoredMineral)
             {
                 // Remove required resources
                 resourceController.StoredPower -= pcost;
                 resourceController.StoredMineral -= mcost;
-                resourceController.StoredOrganic -= ocost;
-                resourceController.StoredFuel -= fcost;
 
                 // Place new building
                 Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);

@@ -627,7 +627,7 @@ public class TutorialController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 5:
-                if (Hub.Instance.GetArcDefences().Count == 1)
+                if (Hub.Instance.GetMortars().Count == 1)
                 {
                     IncrementSubStage();
                 }
@@ -685,7 +685,7 @@ public class TutorialController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 5:
-                if (Hub.Instance.GetRepelFans().Count == 1)
+                if (Hub.Instance.GetPulseDefences().Count == 1)
                 {
                     IncrementSubStage();
                 }
