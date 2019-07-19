@@ -79,6 +79,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private int builtGeneratorsGoal;
     [SerializeField] private int collectedMineralsGoal;
 
+    //[Header("Prefabs")]
+    //[SerializeField] private GameObject pulseDefencePrefab;
+
     //Non-Serialized Fields
 
 
@@ -151,10 +154,12 @@ public class TutorialController : DialogueBoxController
             defencesOn = true;
             //MusicController.Instance.SkipTutorial();
             wKey.transform.parent.gameObject.SetActive(false);
+            //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = true;
         }
         else
         {
             targetRenderer = buildingTarget.GetComponent<MeshRenderer>();
+            //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = false;
         }
     }
 
@@ -859,7 +864,6 @@ public class TutorialController : DialogueBoxController
 
     //Player learns about and builds a pulse defence
     private void BuildPulseDefence()
-    //TODO: pulse defence animation needs to be off until defences are switched on
     {
         switch (subStage)
         {
@@ -915,6 +919,7 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player turns the defences on, waking the fog
+    //TODO: pulse defence animation needs to be off until defences are switched on
     private void DefenceActivation()
     {
         switch (subStage)
@@ -935,9 +940,16 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            //case 3:
-            //    break;
+            case 3:
+                //Waiting for the big button to be pressed
+                break;
             case 4:
+                //foreach (RepelFan pd in ResourceController.Instance.PulseDefences)
+                //{
+                //    pd.GetComponentInChildren<Animator>().enabled = true;
+                //}
+
+                //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = true;
                 defencesOn = true;
                 Fog.Instance.BeginUpdatingDamage();
                 IncrementSubStage();
