@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,6 +52,8 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
 
     [Header("Objects on Game Board")]
+    [SerializeField] private Hub hub;
+    [SerializeField] public GameObject thruster;
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark extenderLandmark;
     [SerializeField] private ResourceNode extendedHarvesterResource;
@@ -66,8 +69,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraKey sKey;
     [SerializeField] private CameraKey dKey;
 
-    [Header("Camera Panning")]
+    [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
+    [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     [Header("Colours")]
     [SerializeField] private Color uiNormalColour;
@@ -133,10 +137,10 @@ public class TutorialController : DialogueBoxController
             skipTutorial = GlobalVars.SkipTut;
         }
 
-        //if (GameObject.Find("MusicFMOD") != null)
-        //{
-        //    musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        //}
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
@@ -152,7 +156,6 @@ public class TutorialController : DialogueBoxController
             tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
             defencesOn = true;
-            //MusicController.Instance.SkipTutorial();
             wKey.transform.parent.gameObject.SetActive(false);
             //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = true;
         }
@@ -172,15 +175,14 @@ public class TutorialController : DialogueBoxController
 
         if (tutorialStage != TutorialStage.Finished)
         {
-            //TODO: determine which part of the final tutorial stage would best serve the conditions here.
-            //if (tutorialStage == TutorialStage.BuildFogRepeller && subStage > 5)
-            //{
-            //    UIController.instance.UpdateObjectiveText(TutorialStage.None);
-            //}
-            //else
-            //{
+            if (tutorialStage == TutorialStage.DefenceActivation && subStage > 5)
+            {
+                UIController.instance.UpdateObjectiveText(TutorialStage.None);
+            }
+            else
+            {
                 UIController.instance.UpdateObjectiveText(tutorialStage);
-            //}
+            }
 
             if (targetRenderer.enabled)
             {
@@ -569,6 +571,7 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player learns about the power system and builds generators
+    //TODO: mouse over power generation diagram in UI, triggers substage progression, rather than just having information in dialogue box
     private void BuildGenerator()
     {
         switch (subStage)
@@ -750,10 +753,33 @@ public class TutorialController : DialogueBoxController
     {
         switch (subStage)
         {
+            //TODO: pan to thruster, enable it
             case 1:
+                // Update Hub model to fixed ship without thrusters / Particle effects
+                hub.transform.GetChild(0).gameObject.SetActive(false);
+                hub.transform.GetChild(1).gameObject.SetActive(true);
+                // Play music Var 2 soundtrack
+                //musicFMOD.StageTwoMusic();
+                // Set fog AI to 'Moderate Aggression'
+                //Fog.Instance.Intensity += 1;
+                // Run AI completion text
+                SendDialogue("extend to thruster", 1);
+                //Camera pans to the thruster
+                thruster.SetActive(true);
+                thrusterCamera.gameObject.SetActive(true);
+                //Time.timeScale = 0.25f;
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    thrusterCamera.gameObject.SetActive(false);
+                }
+
+                break;
+            case 3:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build extender in fog", 1);
-                ActivateTarget(extenderInFogLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -761,37 +787,58 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 2:
+            case 4:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (tileClicked)
                 {
-                    GoToSubStage(4);
+                    GoToSubStage(6);
                 }
 
                 break;
-            case 3:
+            case 5:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 4:
-                extendersGoal = Hub.Instance.GetExtenders().Count + 1;
+            case 6:
                 currentlyLerping = ButtonType.Extender;
                 IncrementSubStage();
                 break;
-            case 5:
-                if (Hub.Instance.GetExtenders().Count == extendersGoal)
+            case 7:
+                if (dialogueRead)
                 {
-                    IncrementSubStage();
+                    DismissDialogue();
+                }
+                else
+                {
+                    foreach (Relay e in ResourceController.Instance.Extenders)
+                    {
+                        if (e.TakingDamage)
+                        {
+                            GoToSubStage(8);
+                            break;
+                        }
+                    }
                 }
 
                 break;
-            case 6:
+            case 8:
+                foreach (Relay e in ResourceController.Instance.Extenders)
+                {
+                    if (e.TakingDamage)
+                    {
+                        GoToSubStage(8);
+                        break;
+                    }
+                }
+
+                break;
+            case 9:
                 tutorialStage = TutorialStage.BuildMortar;
                 currentlyBuilding = BuildingType.AirCannon;
                 ResetSubStage();
@@ -812,7 +859,7 @@ public class TutorialController : DialogueBoxController
             case 1:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build mortar", 1);    //also explains "fog bad"
-                ActivateTarget(mortarLandmark);
+                //ActivateTarget(mortarLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -870,7 +917,7 @@ public class TutorialController : DialogueBoxController
             case 1:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build pulse defence", 1);
-                ActivateTarget(pulseDefenceLandmark);
+                //ActivateTarget(pulseDefenceLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -1029,8 +1076,11 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildHarvestersExtended:
                 return tile.Resource != null;
             case TutorialStage.BuildMoreGenerators:
+            case TutorialStage.BuildExtenderInFog:
                 return tile.Resource == null;
             case TutorialStage.CollectMinerals:
+            case TutorialStage.BuildMortar:
+            case TutorialStage.BuildPulseDefence:
                 return tile.FogUnit == null;
             case TutorialStage.Finished:
                 return true;

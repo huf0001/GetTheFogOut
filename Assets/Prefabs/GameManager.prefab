@@ -287,6 +287,10 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: collect minerals
+  - key: extend to thruster
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: extend to fog
   - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
@@ -317,6 +321,8 @@ MonoBehaviour:
   tutorialStage: 1
   subStage: 1
   currentlyBuilding: 0
+  hub: {fileID: 0}
+  thruster: {fileID: 0}
   harvesterResource: {fileID: 0}
   extenderLandmark: {fileID: 0}
   extendedHarvesterResource: {fileID: 0}
@@ -330,6 +336,7 @@ MonoBehaviour:
   sKey: {fileID: 0}
   dKey: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
+  thrusterCamera: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
   builtHarvestersGoal: 4

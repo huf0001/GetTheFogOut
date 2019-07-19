@@ -41,11 +41,11 @@ public class ResourceController : MonoBehaviour
     public int MineralChange { get => mineralChange; set => mineralChange = value; }
 
     public List<Building> Buildings { get => buildings; set => buildings = value; }
-    //public List<Relay> Extenders { get => extenders; set => extenders = value; }
+    public List<Relay> Extenders { get => extenders; }
     public List<Generator> Generators { get => generators; set => generators = value; }
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     //public List<ArcDefence> Mortars { get => mortars; set => mortars = value; }
-    public List<RepelFan> PulseDefences { get => pulseDefences; set => pulseDefences = value; }
+    //public List<RepelFan> PulseDefences { get => pulseDefences; set => pulseDefences = value; }
 
 
     // [SerializeField] protected AudioSource audioMaxPower;
