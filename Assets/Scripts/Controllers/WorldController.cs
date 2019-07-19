@@ -659,13 +659,17 @@ public class WorldController : MonoBehaviour
                 {
                     if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
                     {
-                        activeTiles.Add(tile);
+                        if (!activeTiles.Contains(tile))
+                        {
+                            activeTiles.Add(tile);
+                        }
                         DisableTiles.Remove(tile);
                         tile.PowerUp(tempPower);
+           //             Debug.Log(tile.Name);
                     }
                 }
             }
-            Debug.Log("off");
+        //    Debug.Log("off");
             thrusterToggle = true;
         }
     }
@@ -688,10 +692,11 @@ public class WorldController : MonoBehaviour
                         }
                         tempPower = tile.getself().PowerSource;
                         tile.PowerDown(tempPower);
+                   //     Debug.Log(tile.Name);
                     }
                 }
             }
-            Debug.Log("on");
+        //    Debug.Log("on");
             thrusterToggle = false;
         }
     }

@@ -24,7 +24,6 @@ public class UIController : MonoBehaviour
     private float powerTime = 0.0f, mineralTime = 0.0f;
     private bool isCursorOn = false;
     private Image launchButtonImage;
-    private Image launchBackground;
     private MusicFMOD musicFMOD;
 
     [SerializeField] private Image powerImg;
@@ -38,11 +37,16 @@ public class UIController : MonoBehaviour
     [SerializeField] private Color powerHigh;
     [SerializeField] private Color powerCurrent;
     [SerializeField] private GameObject launchCanvas;
+    [SerializeField] private Image launchButtonBG;
     [SerializeField] private Button launchButton;
     [SerializeField] private Sprite[] objectiveButtonSprites;
+    [SerializeField] private Image countdownSliderBG;
+    [SerializeField] private CanvasGroup countdownSliderCG;
+    [SerializeField] private Slider countdownSlider;
+    [SerializeField] private TextMeshProUGUI countdownText;
 
     ResourceController resourceController = null;
-    private int index,temp;
+    private int index, temp;
 
     // Start is called before the first frame update
     void Awake()
@@ -94,7 +98,7 @@ public class UIController : MonoBehaviour
         sequence.Insert(0, powerThresholdsBg.DOFillAmount(1, 0.3f));
         sequence.Insert(0.05f, powerThresholds.DOFillAmount(1, 0.25f));
     }
-    
+
     public void HidePowerThresholds()
     {
         powerThresholdsBg.DOFillAmount(0, 0.3f);
@@ -105,12 +109,11 @@ public class UIController : MonoBehaviour
     public void ShowRepairButton()
     {
         launchCanvas.SetActive(true);
-        launchBackground = launchCanvas.GetComponentInChildren<Image>();
         launchButtonImage = launchButton.image;
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+        showLaunch.Append(launchButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
@@ -118,7 +121,8 @@ public class UIController : MonoBehaviour
                 launchButton.enabled = true;
                 buttonClosed = false;
                 launchButton.onClick.AddListener(
-                    delegate {
+                    delegate
+                    {
                         if (ResourceController.Instance.StoredMineral >= 500)
                         {
                             ResourceController.Instance.StoredMineral -= 500;
@@ -137,7 +141,7 @@ public class UIController : MonoBehaviour
         launchButtonImage.sprite = objectiveButtonSprites[1];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+        showLaunch.Append(launchButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
@@ -145,7 +149,8 @@ public class UIController : MonoBehaviour
                 launchButton.enabled = true;
                 buttonClosed = false;
                 launchButton.onClick.AddListener(
-                    delegate {
+                    delegate
+                    {
                         launchButton.enabled = false;
                         ObjectiveController.Instance.IncrementSubStage();
                         CloseButton();
@@ -154,19 +159,54 @@ public class UIController : MonoBehaviour
             });
     }
 
+    public void ShowCountdownSlider()
+    {
+        countdownSlider.maxValue = ObjectiveController.Instance.Countdown;
+        Sequence sequence = DOTween.Sequence();
+        sequence.Insert(1.5f, countdownSliderBG.DOFillAmount(1, 1))
+            .Append(countdownSliderCG.DOFade(1, 0.5f).OnComplete(
+                delegate
+                {
+                    countdownSliderCG.blocksRaycasts = true;
+                    countdownText.DOFade(0.3f, 0.7f).SetLoops(-1, LoopType.Yoyo);
+                }));
+    }
+
+    public void UpdateCountdownSlider()
+    {
+        if (countdownSlider.value < countdownSlider.maxValue)
+        {
+            countdownSlider.value += Time.deltaTime;
+            if (countdownSlider.value > countdownSlider.maxValue)
+            {
+                countdownSlider.value = countdownSlider.maxValue;
+            }
+        }
+    }
+
+    public void HideCountdownSlider()
+    {
+        DOTween.Kill(countdownText);
+        //Sequence sequence = DOTween.Sequence();
+        //sequence.Append()
+        countdownSliderCG.alpha = 0;
+        countdownSliderBG.fillAmount = 0;
+    }
+
     public void ShowLaunchButton()
     {
         launchCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[2];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+        showLaunch.Append(launchButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
             {
                 launchButton.enabled = true;
-                launchButton.onClick.AddListener(delegate {
+                launchButton.onClick.AddListener(delegate
+                {
                     WinGame();
                 });
                 launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
@@ -179,16 +219,19 @@ public class UIController : MonoBehaviour
         DOTween.Kill(launchButtonImage);
 
         Sequence showLaunch = DOTween.Sequence();
-            showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
-            .Append(launchBackground.DOFillAmount(0, 1))
-            .OnComplete(
-            delegate
+        showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
+        .Append(launchButtonBG.DOFillAmount(0, 1))
+        .OnComplete(
+        delegate
+        {
+            launchButton.onClick.RemoveAllListeners();
+            launchButton.enabled = false;
+            if (ObjectiveController.Instance.CurrStage != (int)ObjectiveStage.SurvivalStage)
             {
-                launchButton.onClick.RemoveAllListeners();
-                launchButton.enabled = false;
                 launchCanvas.SetActive(false);
-                buttonClosed = true;
-            });
+            }
+            buttonClosed = true;
+        });
     }
 
     public void WinGame()
@@ -222,10 +265,10 @@ public class UIController : MonoBehaviour
         {
             tile.sharedMaterial.SetColor("_BaseColor", GetAlpha(newColor, 0.1f));
             tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
-        } 
+        }
     }
 
-    private Color GetAlpha(Color color,float avalue)
+    private Color GetAlpha(Color color, float avalue)
     {
         Color current = color;
         current.a = avalue;
@@ -265,7 +308,7 @@ public class UIController : MonoBehaviour
                 colour = "#006273>±";
             }
 
-            if(temp != index)
+            if (temp != index)
             {
                 temp = index;
                 switch (index)
@@ -282,15 +325,15 @@ public class UIController : MonoBehaviour
                 }
                 if (index == 1)
                 {
-                    ChangeColor(powerCurrent,true);
+                    ChangeColor(powerCurrent, true);
                 }
                 else
                 {
                     DOTween.Kill("tile");
-                    ChangeColor(powerCurrent,false);
+                    ChangeColor(powerCurrent, false);
                 }
             }
-            
+
 
             // update text values
             powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
