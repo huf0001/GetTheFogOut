@@ -222,25 +222,17 @@ MonoBehaviour:
         say that they were perfectly normal, thank you very much. '
   - key: explain situation
     expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: "\rHello. I am your very own Nexus Drone. You may call me Nex for
-        short. I am an emergency drone that you can control from your ship. \r\n"
     - aiExpression: 2
-      dialogue: 'Let me run a scan for you to see the extent of the damage. '
+      dialogue: Hello, I am your very own...- Ah, no, I'm not fooling anyone with
+        that. I'm a Nexus Drone, an emergency drone that you'll be controlling from
+        your ship.
     - aiExpression: 2
-      dialogue: 'Scanning... '
-    - aiExpression: 2
-      dialogue: 'The hull has sustained copious damage and a thruster is missing. '
-    - aiExpression: 2
-      dialogue: The scan also picked up hostility coming from the surrounding fog.
-        It may be sentient. What are the chances?
-    - aiExpression: 2
-      dialogue: Your ship comes equipped with important blueprints, should the need
-        arise to use them.
+      dialogue: Since we appear to be in a predicament, I'm going to teach you how
+        to survive. You see that deposit of minerals over there?
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "\rexplain minerals \r\n"
+      dialogue: You can collect them, which will be highly beneficial to your existence.
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
@@ -248,14 +240,16 @@ MonoBehaviour:
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: The next important building you have access to is a {HARVESTER}. When
+      dialogue: You currently have access to a building called a {HARVESTER}. When
         placed on a {MINERAL}, it will collect its contents for you.
     - aiExpression: 2
-      dialogue: Click on the {MINERAL} to place a {HARVESTER}.
-  - key: build harvester icon
-    expressionDialoguePairs:
+      dialogue: Click on this mineral and select the {HARVESTER} from the building
+        menu.
     - aiExpression: 2
-      dialogue: 'Now, click on the {Harvester} icon. '
+      dialogue: The harvester will show the -insert sprite here- when it has completed
+        its collection.
+  - key: build harvester icon
+    expressionDialoguePairs: []
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
@@ -264,21 +258,27 @@ MonoBehaviour:
   - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "\rNext are [POWER EXTENDERS]. These will extend the power range from
-        your ship and allow you to place buildings further out. \r"
-    - aiExpression: 2
-      dialogue: Place one there.
+      dialogue: You see the green grid around your ship? It represents the area that
+        you can place buildings on. Right now it's too small to reach those minerals.I
+        showed you earlier. You will need to place a [POWER EXTENDER]
   - key: build more harvesters extended
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: build more harvesters extended
+      dialogue: See how your grid range has now increased? Now you can place some
+        more {HARVESTERS}.
   - key: build generator target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Since the backup generator will not be sufficient, you will have to
-        place [POWER GENERATORS].
+      dialogue: Oh, well....that isn't good. It appears the harvesters have put some
+        strain on the power system.
     - aiExpression: 2
-      dialogue: Place a generator there.
+      dialogue: 'When buildings are placed, they consume power. Basically, if you
+        have too many buildings your power system will struggle and they will gradually
+        shut down. To avoid this, you can place power generators. '
+    - aiExpression: 2
+      dialogue: They will increase the amount of power you can regenerate, allowing
+        you to place more buildings. Be wary, they can only handle so much. Hover
+        over the battery icon at the top of the screen for more information.
   - key: build more generators
     expressionDialoguePairs:
     - aiExpression: 2
@@ -311,8 +311,9 @@ MonoBehaviour:
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Now that you know how to use these buildings, I would suggest trying
-        to find your ship\u2019s thruster. "
+      dialogue: Well, now that you know the basics, the rest is up to you. I will
+        aid you where I can. I would suggest exploring your surroundings and collecting
+        some more minerals, maybe even find your ship's missing thruster.
   skipTutorial: 0
   tutorialStage: 1
   subStage: 1
