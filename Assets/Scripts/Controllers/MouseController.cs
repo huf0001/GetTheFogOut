@@ -24,6 +24,7 @@ public class MouseController : MonoBehaviour
     private bool reportTutorialClick = false;
     private TileData hoveredTile;
     public bool isBuildAvaliable = true;
+    private bool hovertoggle = true;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -53,14 +54,13 @@ public class MouseController : MonoBehaviour
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
         tutorialController = GetComponent<TutorialController>();
-        InvokeRepeating("UpdateQuadVisability", 0.1f, 0.1f);
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdatePlacingAlt();
-        //UpdateQuadVisability();
+        UpdateHoveredTile();
     }
 
     void UpdateTileAppearance()
@@ -96,18 +96,40 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    void UpdateQuadVisability()
+    void UpdateHoveredTile()
     {
         RaycastHit hit;
+        TileData temp;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
         {
             if (WorldController.Instance.TileExistsAt(hit.point))
             {
-                hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                if (hovertoggle)
+                {
+                    hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                    hoveredTile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
+                    hovertoggle = false;
+                }
+                else
+                {
+                    if (!hoveredTile.Equals(WorldController.Instance.GetTileAt(hit.point)))
+                    {
+                        hoveredTile.plane.GetComponent<Renderer>().material = WorldController.Instance.normalTile;
+                        hovertoggle = true;
+                    }
+                }
             }
         }
+        else
+        {
+            if (hoveredTile != null)
+            {
+                hoveredTile.plane.GetComponent<Renderer>().material = WorldController.Instance.normalTile;
+            }
+        }
+
     }
 
     // Mouse Building Placement -----------------------------------------------------------------
@@ -118,13 +140,12 @@ public class MouseController : MonoBehaviour
         //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
 
         UIController.instance.buildingSelector.freezeCam();
-
+        
         if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject() && isBuildAvaliable == true)
         {
             TileData tile;
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
             //Check if a valid tile was clicked
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")) && WorldController.Instance.TileExistsAt(hit.point))
             {
