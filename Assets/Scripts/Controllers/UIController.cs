@@ -27,23 +27,22 @@ public class UIController : MonoBehaviour
     private Image launchBackground;
     private MusicFMOD musicFMOD;
 
-    [SerializeField] Image powerImg;
-    [SerializeField] Sprite[] powerLevelSprites;
-    [SerializeField] TextMeshProUGUI objWindowText;
-    [SerializeField] TextMeshProUGUI hudObjText;
-    [SerializeField] Color powerLow;
-    [SerializeField] Color powerMedium;
-    [SerializeField] Color powerHigh;
-    [SerializeField] Color powerCurrent;
-    [SerializeField] GameObject launchCanvas;
-    [SerializeField] Button launchButton;
-    [SerializeField] Sprite[] objectiveButtonSprites;
+    [SerializeField] private Image powerImg;
+    [SerializeField] private Sprite[] powerLevelSprites;
+    [SerializeField] private Image powerThresholdsBg;
+    [SerializeField] private Image powerThresholds;
+    [SerializeField] private TextMeshProUGUI objWindowText;
+    [SerializeField] private TextMeshProUGUI hudObjText;
+    [SerializeField] private Color powerLow;
+    [SerializeField] private Color powerMedium;
+    [SerializeField] private Color powerHigh;
+    [SerializeField] private Color powerCurrent;
+    [SerializeField] private GameObject launchCanvas;
+    [SerializeField] private Button launchButton;
+    [SerializeField] private Sprite[] objectiveButtonSprites;
 
     ResourceController resourceController = null;
-//    private MeshRenderer MeshRend;
     private int index,temp;
-
-    //private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
 
     // Start is called before the first frame update
     void Awake()
@@ -61,13 +60,6 @@ public class UIController : MonoBehaviour
         temp = 2;
 
         FindSliders();
-
-        //cursor = GameObject.Find("Cursor");
-        //cursor.SetActive(false);
-        //Invoke("FindTile", 5);
-        //Tweens in the UI for a smooth bounce in from outside the canvas
-        //hudBar = GameObject.Find("HUD");// "HudBar");
-        //hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
     }
 
     // Update is called once per frame
@@ -95,12 +87,19 @@ public class UIController : MonoBehaviour
         powerText = GameObject.Find("PowerLevel").GetComponent<TextMeshProUGUI>();
         mineralText = GameObject.Find("MineralLevel").GetComponent<TextMeshProUGUI>();
     }
-    /*
-    void FindTile()
-    {
-        mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-    }*/
 
+    public void ShowPowerThresholds()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.Insert(0, powerThresholdsBg.DOFillAmount(1, 0.3f));
+        sequence.Insert(0.05f, powerThresholds.DOFillAmount(1, 0.25f));
+    }
+    
+    public void HidePowerThresholds()
+    {
+        powerThresholdsBg.DOFillAmount(0, 0.3f);
+        powerThresholds.DOFillAmount(0, 0.2f);
+    }
 
     // Functions dealing with the drop down objective button
     public void ShowRepairButton()
@@ -168,11 +167,7 @@ public class UIController : MonoBehaviour
             {
                 launchButton.enabled = true;
                 launchButton.onClick.AddListener(delegate {
-                    if (ResourceController.Instance.StoredPower >= 500)
-                    {
-                        ResourceController.Instance.StoredPower -= 500;
-                        WinGame();
-                    }
+                    WinGame();
                 });
                 launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
                 buttonClosed = false;
@@ -201,7 +196,7 @@ public class UIController : MonoBehaviour
         DOTween.Kill(launchButtonImage);
         WorldController.Instance.GameWin = true;
         WorldController.Instance.GameOver = true;
-        musicFMOD.GameWinMusic();
+        //musicFMOD.GameWinMusic();
     }
 
     // End Game Method
@@ -218,20 +213,6 @@ public class UIController : MonoBehaviour
 
     private void ChangeColor(Color newColor, bool flash)
     {
-        /*
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
-        foreach (GameObject tile in gameObjects)
-        {
-            MeshRend = tile.GetComponent<MeshRenderer>();
-            if (!flash)
-            {
-                MeshRend.material.DOColor(newColor, "_BaseColor", 1);
-            }else
-            {
-                MeshRend.material.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
-                MeshRend.material.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
-            }
-        }*/
         MeshRenderer tile = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
         if (!flash)
         {
@@ -267,27 +248,18 @@ public class UIController : MonoBehaviour
             string colour;
             if (powerChange > 0)
             {
-
-                //    WorldController.Instance.changePowerTIle(Color.green);
-
                 index = 0;
 
                 colour = "#009900>+";
             }
             else if (powerChange < 0)
             {
-
-                //   WorldController.Instance.changePowerTIle(Color.red);
-
                 index = 1;
 
                 colour = "\"red\">";
             }
             else
             {
-
-                //  WorldController.Instance.changePowerTIle(Color.yellow);
-
                 index = 2;
 
                 colour = "#006273>±";
@@ -311,12 +283,9 @@ public class UIController : MonoBehaviour
                 if (index == 1)
                 {
                     ChangeColor(powerCurrent,true);
-                 //   StartCoroutine(coroutine);
                 }
                 else
                 {
-                    //   StopCoroutine(coroutine);
-                    //DOTween.KillAll();
                     DOTween.Kill("tile");
                     ChangeColor(powerCurrent,false);
                 }
@@ -330,24 +299,10 @@ public class UIController : MonoBehaviour
 
             if (powerCheck > 0 && powerCheck <= .25f && powerImg.sprite != powerLevelSprites[1])
             {
-
-                //  mat.DOColor(powerHigh, 1);
-                //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-                //mr.material.SetColor("_BaseColor",Color.white);
-
-                // mat = GameObject.FindGameObjectWithTag("Tile").GetComponent<Material>();
-                //       powerCurrent = powerHigh;
-                //       Debug.Log(mr.material.name);
-
                 powerImg.sprite = powerLevelSprites[1];
             }
             else if (powerCheck > .25f && powerCheck <= .50f && powerImg.sprite != powerLevelSprites[2])
             {
-
-                //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-                //mr.material.DOColor(Color.white, 1);
-                //      powerCurrent = powerMedium;
-
                 powerImg.sprite = powerLevelSprites[2];
             }
             else if (powerCheck > .50f && powerCheck <= .75f && powerImg.sprite != powerLevelSprites[3])
@@ -362,9 +317,6 @@ public class UIController : MonoBehaviour
             {
                 powerImg.sprite = powerLevelSprites[0];
             }
-
-
-            //       mr.material.SetColor("_BaseColor", powerCurrent); //Color.Lerp(prev, new Color(r, g, b, a), 0.5f)
 
             if (resourceController.StoredMineral != mineral)
             {
@@ -415,7 +367,7 @@ public class UIController : MonoBehaviour
                     "<size=75%>Push your way through the fog to find the missing thruster from your ship.\n\n" +
                     "Thrusters: " + (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected ? f : nf);
                 break;
-            case ObjectiveStage.StorePower:
+            case ObjectiveStage.SurvivalStage:
                 hudObjText.text = "Objective: Leave the Planet";
                 objWindowText.text = "<b>Leave the Planet</b>\n\n" +
                     "<size=75%>The fog is out to get you! Hurry and gather enough power to leave this wretched planet behind!\n\n" +

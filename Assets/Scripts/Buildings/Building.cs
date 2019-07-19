@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public abstract class Building : Entity
 {
@@ -16,10 +17,15 @@ public abstract class Building : Entity
     [SerializeField] protected bool powered = false;
     [SerializeField] protected bool placed = false;
     [SerializeField] protected BuildingType buildingType;
-    [SerializeField] protected int mineralCost, powerCost, fuelCost, organicCost;
+    [SerializeField] protected int mineralCost, powerCost;
+    [SerializeField] protected AudioClip audioSpawn;
+    [SerializeField] protected AudioClip audioDamage;
+    [SerializeField] protected AudioClip audioDestroy;
     [SerializeField] protected RectTransform healthBarCanvas;
     [SerializeField] protected Image healthBarImage;
     [SerializeField] protected Gradient healthGradient;
+    [SerializeField, FormerlySerializedAs("shieldBarCanvas")] protected RectTransform shieldBarTransform;
+    [SerializeField] protected Image shieldBarImage;
     [SerializeField] protected GameObject damageIndicatorPrefab;
 
     //[SerializeField] private Shader hologramShader;
@@ -49,8 +55,6 @@ public abstract class Building : Entity
     public bool Placed { get => placed; }
     public int MineralCost { get => mineralCost; }
     public int PowerCost { get => powerCost; }
-    public int FuelCost { get => fuelCost; }
-    public int OrganicCost { get => organicCost; }
     public float Shield { get => shield; set => shield = value; }
     public float ShieldTime { get => shieldTime; set => shieldTime = value; }
 
@@ -130,30 +134,32 @@ public abstract class Building : Entity
         if (GotNoHealth())
         {
             DismantleBuilding();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDestroyed", GetComponent<Transform>().position);
         }
 
     }
 
     private void UpdateHealthBar()
     {
-        if (Health < MaxHealth)
+        if (isShieldOn)
         {
-            if (!healthBarCanvas.gameObject.activeSelf)
-            {
-                healthBarCanvas.gameObject.SetActive(true);
-            }
+            FillHealthBar();
 
-            healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
             if (buildingType != BuildingType.Hub)
             {
-                healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
-                healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
-                healthBarCanvas.Rotate(0, 135, 0);
+                shieldBarImage.fillAmount = (shield / 50) * 0.75f;
             }
             else
             {
-                healthBarImage.fillAmount = Health / MaxHealth;
-                healthBarCanvas.LookAt(Camera.main.transform);
+                shieldBarImage.fillAmount = shield / 50;
+            }
+        }
+        else if (Health < MaxHealth)
+        {
+            FillHealthBar();
+            if (shieldBarImage.fillAmount > 0)
+            {
+                shieldBarImage.fillAmount = 0;
             }
         }
         else
@@ -162,6 +168,31 @@ public abstract class Building : Entity
             {
                 healthBarCanvas.gameObject.SetActive(false);
             }
+            if (shieldBarImage.fillAmount > 0)
+            {
+                shieldBarImage.fillAmount = 0;
+            }
+        }
+    }
+
+    private void FillHealthBar()
+    {
+        if (!healthBarCanvas.gameObject.activeSelf)
+        {
+            healthBarCanvas.gameObject.SetActive(true);
+        }
+
+        healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
+        if (buildingType != BuildingType.Hub)
+        {
+            healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
+            healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
+            healthBarCanvas.Rotate(0, 135, 0);
+        }
+        else
+        {
+            healthBarImage.fillAmount = Health / MaxHealth;
+            healthBarCanvas.LookAt(Camera.main.transform);
         }
     }
 
@@ -388,8 +419,6 @@ public abstract class Building : Entity
         ResourceController.Instance.RemoveBuilding(this);
 
         //Debug.Log("Should be removed from ResourceController's list of my building type");
-
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_3", GetComponent<Transform>().position);
 
         if (this.transform.parent != null)
         {

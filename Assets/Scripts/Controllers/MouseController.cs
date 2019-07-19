@@ -135,76 +135,6 @@ public class MouseController : MonoBehaviour
 
     // Mouse Building Placement -----------------------------------------------------------------
 
-    // THIS FUNCTION NOT BEING USED ANYMORE, CAN PROBABLY BE REMOVED
-    // Place a building based on mouse / controller input
-    void UpdatePlacing()
-    {
-        // code based somewhat off:
-        //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
-
-        if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject())
-        {
-            TileData tile;
-
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")))
-            {
-                //Check if a valid tile was clicked
-                if (WorldController.Instance.TileExistsAt(hit.point))
-                {
-                    tile = WorldController.Instance.GetTileAt(hit.point);
-
-                    if (CheckIfTileOkay(tile, towerManager.GetBuildingType()))
-                    {
-                        //If tile has power, place building. Otherwise, don't place building.
-                        if (tile.PowerSource != null)
-                        {
-                            GameObject toBuild = towerManager.GetTower("build");
-
-                            // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
-                            if (toBuild.name != "Empty")
-                            {
-                                //Debug.Log(toBuild.name);
-                                if (toBuild.GetComponent<Building>() != null)
-                                {
-                                    Building b = toBuild.GetComponent<Building>();
-                                }
-                                else
-                                {
-                                    Debug.Log("toBuild's building component is non-existant");
-                                }
-
-                                if (tile.Building == null && (tile.Resource == null || towerManager.GetBuildingType() == BuildingType.Harvester))
-                                {
-
-                                    if (towerManager.GetBuildingType() == BuildingType.Generator)
-                                    {
-                                        if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * generatorInterval + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
-                                        {
-                                            Debug.Log("If you want to build more generators, collect more ship components first.");
-                                            return;
-                                        }
-                                    }
-
-                                    tile.PlacedTower = toBuild;
-                                    Build(tile.PlacedTower, tile, 0f);
-                                }
-                            }
-                            else
-                            {
-                                Building removeBuilding = ReturnCost(tile);
-                                RemoveBulding(removeBuilding);
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     void UpdatePlacingAlt()
     {
         // code based somewhat off:
@@ -259,8 +189,6 @@ public class MouseController : MonoBehaviour
                 // add required resources
                 resourceController.StoredPower += building.PowerCost;
                 resourceController.StoredMineral += building.MineralCost;
-                resourceController.StoredOrganic += building.OrganicCost;
-                resourceController.StoredFuel += building.FuelCost;
 
                 StartCoroutine(FloatText(building.transform, building.MineralCost));
                 return building;
@@ -295,19 +223,13 @@ public class MouseController : MonoBehaviour
         {
             int pcost = building.PowerCost;
             int mcost = building.MineralCost;
-            int ocost = building.OrganicCost;
-            int fcost = building.FuelCost;
 
             if (pcost <= resourceController.StoredPower &&
-                mcost <= resourceController.StoredMineral &&
-                ocost <= resourceController.StoredOrganic &&
-                fcost <= resourceController.StoredFuel)
+                mcost <= resourceController.StoredMineral)
             {
                 // Remove required resources
                 resourceController.StoredPower -= pcost;
                 resourceController.StoredMineral -= mcost;
-                resourceController.StoredOrganic -= ocost;
-                resourceController.StoredFuel -= fcost;
 
                 // Place new building
                 Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
