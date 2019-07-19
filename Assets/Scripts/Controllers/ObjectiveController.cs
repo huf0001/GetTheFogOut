@@ -108,9 +108,12 @@ public class ObjectiveController : DialogueBoxController
     {
         switch (currStage)
         {
+            //case ObjectiveStage.HarvestMinerals:
+            //    musicFMOD.StageOneMusic();
+            //    HarvestMineralStage();
+            //    break;
             case ObjectiveStage.HarvestMinerals:
-                musicFMOD.StageOneMusic();
-                HarvestMineralStage();
+                currStage = ObjectiveStage.RecoverPart;
                 break;
             case ObjectiveStage.RecoverPart:
                 musicFMOD.StageTwoMusic();
@@ -161,60 +164,60 @@ public class ObjectiveController : DialogueBoxController
     // Stage Functions ----------------------------------------------------------------------------------------
 
     //TODO: remove harvest mineral stage, and skip straight to recover part stage
-    void HarvestMineralStage()
-    {
-        switch (subStage)
-        {
-            case 0:
-                // Play music Var 1 soundtrack
-                musicFMOD.StageOneMusic();
-                // Set fog AI to 'Docile'
-                //Fog.Instance.Intensity = 1;   //Default of Intensity = 1 set in Fog.Awake()
-                // Run AI text for stage
-                SendDialogue("start harvest stage", 1);
-                // Unlock 5 generators
-                IncrementSubStage();
-                break;
-            case 1:
-                // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
-                if (ResourceController.Instance.StoredMineral >= 500)
-                { 
-                    ChangeToSubStage(3);
-                }
-                else if (dialogueRead)
-                {
-                    DismissDialogue();
-                }
+    //void HarvestMineralStage()
+    //{
+    //    switch (subStage)
+    //    {
+    //        case 0:
+    //            // Play music Var 1 soundtrack
+    //            musicFMOD.StageOneMusic();
+    //            // Set fog AI to 'Docile'
+    //            //Fog.Instance.Intensity = 1;   //Default of Intensity = 1 set in Fog.Awake()
+    //            // Run AI text for stage
+    //            SendDialogue("start harvest stage", 1);
+    //            // Unlock 5 generators
+    //            IncrementSubStage();
+    //            break;
+    //        case 1:
+    //            // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
+    //            if (ResourceController.Instance.StoredMineral >= 500)
+    //            { 
+    //                ChangeToSubStage(3);
+    //            }
+    //            else if (dialogueRead)
+    //            {
+    //                DismissDialogue();
+    //            }
 
-                break;
-            case 2:
-                if (ResourceController.Instance.StoredMineral >= 500)
-                {
-                    IncrementSubStage();
-                }
+    //            break;
+    //        case 2:
+    //            if (ResourceController.Instance.StoredMineral >= 500)
+    //            {
+    //                IncrementSubStage();
+    //            }
 
-                break;
-            case 3:
-                if (UIController.instance.buttonClosed)
-                {
-                    UIController.instance.ShowRepairButton();
-                    IncrementSubStage();
-                }
+    //            break;
+    //        case 3:
+    //            if (UIController.instance.buttonClosed)
+    //            {
+    //                UIController.instance.ShowRepairButton("O");
+    //                IncrementSubStage();
+    //            }
 
-                break;
-            case 4:
-                if (ResourceController.Instance.StoredMineral < 500)
-                {
-                    UIController.instance.CloseButton();
-                    SendDialogue("maintain minerals", 1);
-                    ChangeToSubStage(1);
-                }
+    //            break;
+    //        case 4:
+    //            if (ResourceController.Instance.StoredMineral < 500)
+    //            {
+    //                UIController.instance.CloseButton();
+    //                SendDialogue("maintain minerals", 1);
+    //                ChangeToSubStage(1);
+    //            }
 
-                break;
-            default:
-                break;
-        }
-    }
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
 
     void RecoverPartStage()
     {

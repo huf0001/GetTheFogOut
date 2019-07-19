@@ -283,6 +283,10 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: build more generators
+  - key: collect minerals
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: collect minerals
   - key: build air cannon
     expressionDialoguePairs:
     - aiExpression: 2
@@ -324,6 +328,7 @@ MonoBehaviour:
   builtHarvestersGoal: 4
   builtHarvestersExtendedGoal: 7
   builtGeneratorsGoal: 3
+  collectedMineralsGoal: 500
 --- !u!114 &4019818891569145385
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -103,7 +103,7 @@ public class UIController : MonoBehaviour
 
 
     // Functions dealing with the drop down objective button
-    public void ShowRepairButton()
+    public void ShowRepairButton(string controller)
     {
         launchCanvas.SetActive(true);
         launchBackground = launchCanvas.GetComponentInChildren<Image>();
@@ -124,7 +124,15 @@ public class UIController : MonoBehaviour
                         {
                             ResourceController.Instance.StoredMineral -= 500;
                             launchButton.enabled = false;
-                            ObjectiveController.Instance.IncrementStage();
+                            if (controller == "O")
+                            {
+                                ObjectiveController.Instance.IncrementStage();
+                            }
+                            else
+                            {
+                                TutorialController.Instance.CompleteMineralCollection();
+                            }
+
                             CloseButton();
                         }
                     });
@@ -458,6 +466,12 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Build Generators</b>\n\n" +
                      $"<size=75%>Build {TutorialController.Instance.BuiltGeneratorsGoal} Generators to increase your available power generation.\n\n" +
                      $"Target: {ResourceController.Instance.Generators.Count} / {TutorialController.Instance.BuiltGeneratorsGoal} Generators";
+                break;
+            case TutorialStage.CollectMinerals:
+                hudObjText.text = "Objective: Repair the Hull";
+                objWindowText.text = "<b>Repair the Hull</b>\n\n" +
+                                     "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
+                                     $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {ObjectiveController.Instance.MineralTarget} <size=90%><sprite=\"all_icons\" index=2>";
                 break;
 
                 //case TutorialStage.BuildMortar:

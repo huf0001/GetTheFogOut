@@ -73,6 +73,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private int builtHarvestersGoal;
     [SerializeField] private int builtHarvestersExtendedGoal;
     [SerializeField] private int builtGeneratorsGoal;
+    [SerializeField] private int collectedMineralsGoal;
 
     //Non-Serialized Fields
 
@@ -89,6 +90,8 @@ public class TutorialController : DialogueBoxController
     private float lerpProgress = 0f;
     private bool lerpForward = true;
 
+    private MusicFMOD musicFMOD;
+    
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
@@ -118,6 +121,11 @@ public class TutorialController : DialogueBoxController
         {
             skipTutorial = GlobalVars.SkipTut;
         }
+
+        //if (GameObject.Find("MusicFMOD") != null)
+        //{
+        //    musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        //}
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
@@ -194,7 +202,7 @@ public class TutorialController : DialogueBoxController
                 BuildGenerator();
                 break;
             case TutorialStage.CollectMinerals:
-                //CollectMinerals();
+                CollectMinerals();
                 break;
             case TutorialStage.ClearFog:
                 //ClearFog();
@@ -288,7 +296,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -337,7 +345,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -360,7 +368,7 @@ public class TutorialController : DialogueBoxController
                 else if (BuiltCurrentlyBuilding())
                 {
                     DeactivateTarget();
-                    SkipTutorialAhead(7);
+                    GoToSubStage(7);
                 }
 
                 break;
@@ -383,7 +391,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(10);
+                    GoToSubStage(10);
                 }
 
                 break;
@@ -440,7 +448,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -500,7 +508,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -560,7 +568,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -583,7 +591,7 @@ public class TutorialController : DialogueBoxController
                 else if (BuiltCurrentlyBuilding())
                 {
                     DeactivateTarget();
-                    SkipTutorialAhead(7);
+                    GoToSubStage(7);
                 }
 
                 break;
@@ -614,7 +622,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(10);
+                    GoToSubStage(10);
                 }
 
                 break;
@@ -650,7 +658,67 @@ public class TutorialController : DialogueBoxController
     }
 
     //Checks that player has collected the required minerals.
-    //TODO: CollectMinerals()
+    //Note: allow harvesters and extenders, have a couple of nodes leftover away from the cluster already explored
+    private void CollectMinerals()
+    {
+        switch (subStage)
+        {
+            case 1:
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("collect minerals", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
+                break;
+            case 2:
+                // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
+                if (ResourceController.Instance.StoredMineral >= collectedMineralsGoal)
+                {
+                    GoToSubStage(4);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 3:
+                if (ResourceController.Instance.StoredMineral >= collectedMineralsGoal)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 4:
+                if (UIController.instance.buttonClosed)
+                {
+                    UIController.instance.ShowRepairButton("T");
+                    IncrementSubStage();
+                }
+
+                break;
+            case 5:
+                if (ResourceController.Instance.StoredMineral < collectedMineralsGoal)
+                {
+                    UIController.instance.CloseButton();
+                    SendDialogue("maintain minerals", 1);
+                    GoToSubStage(2);
+                }
+
+                break;
+            case 6:
+                tutorialStage = TutorialStage.ClearFog;
+                currentlyBuilding = BuildingType.Extender;
+                currentlyLerping = ButtonType.None;
+                ResetSubStage();
+                break;
+            default:
+                break;
+        }
+    }
 
     //Player clears fog away from further minerals with defences
     //TODO: ClearFog()
@@ -680,7 +748,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -738,7 +806,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -810,16 +878,48 @@ public class TutorialController : DialogueBoxController
     public bool TileAllowed(TileData tile)
     {
         lastTileChecked = tile;
-        return tutorialStage == TutorialStage.Finished 
-            || tile == currentTile 
-            || (tile.Resource != null && ((tutorialStage == TutorialStage.BuildHarvesters && subStage > 6) || tutorialStage == TutorialStage.BuildHarvestersExtended))
-            || (tile.Resource == null && tutorialStage == TutorialStage.BuildMoreGenerators);
+
+        switch (tutorialStage)
+        {
+            case TutorialStage.BuildHarvesters:
+                if (subStage > 6)
+                {
+                    return tile.Resource != null;
+                }
+                else
+                {
+                    return tile == currentTile;
+                }
+            case TutorialStage.BuildHarvestersExtended:
+                return tile.Resource != null;
+            case TutorialStage.BuildMoreGenerators:
+                return tile.Resource == null;
+            case TutorialStage.CollectMinerals:
+                return tile.FogUnit == null;
+            case TutorialStage.Finished:
+                return true;
+            default:
+                return tile == currentTile;
+        }
     }
 
     //Checking if a button is acceptable
     public bool ButtonAllowed(ButtonType button)
     {
-        return (tutorialStage == TutorialStage.Finished || button == currentlyLerping || button == ButtonType.Destroy) && ButtonsNormallyAllowed(lastTileChecked).Contains(button);
+        if (ButtonsNormallyAllowed(lastTileChecked).Contains(button))
+        {
+            switch (tutorialStage)
+            {
+                case TutorialStage.CollectMinerals:
+                    return button == ButtonType.Extender || button == ButtonType.Harvester;
+                case TutorialStage.Finished:
+                    return true;
+                default:
+                    return button == currentlyLerping || button == ButtonType.Destroy;
+            }
+        }
+
+        return false;
     }
 
     //Getting the normally acceptable buttons for a tile
@@ -862,8 +962,8 @@ public class TutorialController : DialogueBoxController
         IncrementSubStage();
     }
 
-    //Dismisses dialogue and the mouse and skips the tutorial ahead appropriately
-    private void SkipTutorialAhead(int nextSubStage)
+    //Dismisses dialogue and the mouse and advances/retreats to the specified sub-stage appropriately appropriately
+    private void GoToSubStage(int nextSubStage)
     {
         MouseController.Instance.ReportTutorialClick = false;
         tileClicked = false;
@@ -900,39 +1000,13 @@ public class TutorialController : DialogueBoxController
         subStage = 1;
     }
 
+    //Called to advance the collect minerals stage to sub-stage 6
+    public void CompleteMineralCollection()
+    {
+        GoToSubStage(6);
+    }
+
     //Tutorial Utility Methods - (Targeted) Building-------------------------------------------------------------------------------------------------
-
-    //(Invokably) activate the building target based on the current stage rather than passing a parameter
-    //private void ActivateTarget()
-    //{
-    //    Locatable l = null;
-
-    //    switch (tutorialStage)
-    //    {
-    //        //case TutorialStage.BuildGenerator:
-    //        //    l = generatorLandmark;
-    //        //    break;
-    //        //case TutorialStage.BuildExtender:
-    //        //    l = extenderLandmark;
-    //        //    break;
-    //        case TutorialStage.BuildHarvesters:
-    //            l = harvesterResource;
-    //            break;
-    //        default:
-    //            Debug.Log($"Why are you activating a target during stage {tutorialStage}?");
-    //            break;
-    //    }
-
-    //    if (l != null)
-    //    {
-    //        ActivateTarget(l);
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Locatable l in TutorialController.ActivateTarget() is null");
-    //    }
-
-    //}
 
     //Activate the building target at the locatable's location
     private void ActivateTarget(Locatable l)
