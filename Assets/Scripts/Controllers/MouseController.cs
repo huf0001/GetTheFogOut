@@ -54,14 +54,13 @@ public class MouseController : MonoBehaviour
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
         tutorialController = GetComponent<TutorialController>();
-        InvokeRepeating("UpdateQuadVisability", 0.1f, 0.1f);
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdatePlacingAlt();
-        //UpdateQuadVisability();
+        UpdateHoveredTile();
     }
 
     void UpdateTileAppearance()
@@ -97,7 +96,7 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    void UpdateQuadVisability()
+    void UpdateHoveredTile()
     {
         RaycastHit hit;
         TileData temp;
