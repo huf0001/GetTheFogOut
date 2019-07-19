@@ -37,7 +37,8 @@ public class WorldController : MonoBehaviour
     [SerializeField] private GameObject ground;
     public Collider groundCollider;
 
-    [SerializeField] GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
+    [SerializeField] public GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
+    [SerializeField] public Material normalTile, hoverTile;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
