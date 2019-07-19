@@ -75,7 +75,7 @@ public abstract class PowerSource : Building
         return generators;
     }
 
-    public List<Relay> GetRelays()
+    public List<Relay> GetExtenders()
     {
         List<Relay> relays = new List<Relay>();
 
@@ -85,7 +85,7 @@ public abstract class PowerSource : Building
             {
                 Relay r = b as Relay;
                 relays.Add(r);
-                relays.AddRange(r.GetRelays());
+                relays.AddRange(r.GetExtenders());
             }
         }
 

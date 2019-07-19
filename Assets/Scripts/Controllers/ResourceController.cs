@@ -83,7 +83,7 @@ public class ResourceController : MonoBehaviour
 
         //Get connected buildings
         List<Generator> connectedGenerators = hub.GetGenerators();
-        List<Relay> connectedRelays = hub.GetRelays();
+        List<Relay> connectedRelays = hub.GetExtenders();
         List<ArcDefence> connectedMortars = hub.GetMortars();
         List<RepelFan> connectedPulseDefences = hub.GetPulseDefences();
         List<Harvester> connectedHarvesters = hub.GetHarvesters();

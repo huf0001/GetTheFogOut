@@ -15,6 +15,7 @@ public enum TutorialStage
     BuildHarvesters,
     BuildExtender,
     BuildHarvestersExtended,
+    WaitingForPowerDrop,
     BuildGenerator,
     BuildMoreGenerators,
     CollectMinerals,
@@ -95,6 +96,7 @@ public class TutorialController : DialogueBoxController
 
     private MusicFMOD musicFMOD;
 
+    private int extendersGoal;
     private bool defencesOn = false;
     
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
@@ -205,6 +207,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildHarvestersExtended:
                 BuildHarvestersExtended();
                 break;
+            case TutorialStage.WaitingForPowerDrop:
             case TutorialStage.BuildGenerator:
             case TutorialStage.BuildMoreGenerators:
                 BuildGenerator();
@@ -548,9 +551,10 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                tutorialStage = TutorialStage.BuildGenerator;
+                tutorialStage = TutorialStage.WaitingForPowerDrop;
                 currentlyBuilding = BuildingType.Generator;
                 ResetSubStage();
+                UIController.instance.UpdateObjectiveText(tutorialStage);
                 break;
             default:
                 SendDialogue("error", 1);
@@ -567,6 +571,7 @@ public class TutorialController : DialogueBoxController
             case 1:
                 if (ResourceController.Instance.StoredPower < 75)
                 {
+                    tutorialStage = TutorialStage.BuildGenerator;
                     UIController.instance.UpdateObjectiveText(tutorialStage);
                     SendDialogue("build generator target", 1);
                     ActivateTarget(generatorLandmark);
@@ -663,7 +668,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 12:
                 tutorialStage = TutorialStage.CollectMinerals;
-                currentlyBuilding = BuildingType.Extender;
+                currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
                 break;
@@ -674,8 +679,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Checks that player has collected the required minerals.
-    //Note: allow harvesters and extenders, have a couple of nodes leftover away from the cluster already explored
+    //Checks that player has collected the required minerals
     private void CollectMinerals()
     {
         switch (subStage)
@@ -729,7 +733,6 @@ public class TutorialController : DialogueBoxController
             case 6:
                 tutorialStage = TutorialStage.BuildExtenderInFog;
                 currentlyBuilding = BuildingType.Extender;
-                currentlyLerping = ButtonType.None;
                 ResetSubStage();
                 break;
             default:
@@ -737,9 +740,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Player clears fog away from further minerals with defences
-    //TODO: ClearFog()
-    //Note: incorporate BuildMortar() and BuildPulseDefence() content into ClearFog()
+    //Player builds an extender in the fog to see what happens
     private void BuildExtenderInFog()
     {
         switch (subStage)
@@ -774,11 +775,12 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                extendersGoal = Hub.Instance.GetExtenders().Count + 1;
                 currentlyLerping = ButtonType.Extender;
                 IncrementSubStage();
                 break;
             case 5:
-                if (Hub.Instance.GetMortars().Count == 1)
+                if (Hub.Instance.GetExtenders().Count == extendersGoal)
                 {
                     IncrementSubStage();
                 }
@@ -797,7 +799,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Player learns about and builds an arc defence
+    //Player learns about and builds a mortar
     private void BuildMortar()
     {
         switch (subStage)
@@ -855,8 +857,9 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Player learns about and builds a repel fan
+    //Player learns about and builds a pulse defence
     private void BuildPulseDefence()
+    //TODO: pulse defence animation needs to be off until defences are switched on
     {
         switch (subStage)
         {
@@ -911,7 +914,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Player turns the defences on, wakes the fog.
+    //Player turns the defences on, waking the fog
     private void ActivateDefences()
     {
         switch (subStage)
@@ -936,6 +939,7 @@ public class TutorialController : DialogueBoxController
                     {
                         Fog.Instance.WakeUpFog();
                         IncrementSubStage();
+                        break;
                     }
                 }
 
