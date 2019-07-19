@@ -473,17 +473,26 @@ public class UIController : MonoBehaviour
                                      "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
                                      $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {ObjectiveController.Instance.MineralTarget} <size=90%><sprite=\"all_icons\" index=2>";
                 break;
-
-                //case TutorialStage.BuildMortar:
-                //    hudObjText.text = "Objective: Build Air Cannon";
-                //    objWindowText.text = "<b>Build Air Cannon</b>\n\n" +
-                //        "<size=75%>Build an Air Cannon to protect yourself from the Fog!\n\n";
-                //    break;
-                //case TutorialStage.BuildFogRepeller:
-                //    hudObjText.text = "Objective: Build Fog Repeller";
-                //    objWindowText.text = "<b>Build Fog Repeller</b>\n\n" +
-                //        "<size=75%>Build a Fog Repeller to protect yourself from the Fog!\n\n";
-                //    break;
+            case TutorialStage.BuildExtenderInFog:
+                hudObjText.text = "Objective: Build Power Extender";
+                objWindowText.text = "<b>Build Power Extender</b>\n\n" +
+                                     "<size=75%>Build a Power Extender in the fog to search for ship parts.\n\n";
+                break;
+            case TutorialStage.BuildMortar:
+                hudObjText.text = "Objective: Build Mortar";
+                objWindowText.text = "<b>Build Mortar</b>\n\n" +
+                    "<size=75%>Build a Mortar to clear the fog away.\n\n";
+                break;
+            case TutorialStage.BuildPulseDefence:
+                hudObjText.text = "Objective: Build Pulse Defence";
+                objWindowText.text = "<b>Build Pulse Defence</b>\n\n" +
+                    "<size=75%>Build a Pulse Defence to clear the fog away.\n\n";
+                break;
+            case TutorialStage.ActivateDefences:
+                hudObjText.text = "Objective: Activate Defences";
+                objWindowText.text = "<b>Activate Defences</b>\n\n" +
+                    "<size=75%>Activate the defences to clear the fog away.\n\n";
+                break;
         }
     }
 

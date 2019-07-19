@@ -287,21 +287,27 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: collect minerals
-  - key: build air cannon
+  - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Your final and most important buildings are the >AIR CANNON< and
-        >FOG REPELLER<. \r\n"
+      dialogue: find ship parts, can't see them, build extender in fog and see what
+        happens
+  - key: build mortar
+    expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'An >AIR CANNON< will discharge an intense ball of air that will dissipate
-        the fog. '
+      dialogue: fog bad
     - aiExpression: 2
-      dialogue: 'Try placing one. '
-  - key: build fog repeller
+      dialogue: build mortar
+  - key: build pulse defence
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: 'Great. Now, a >FOG REPELLER< will push the fog away from a small
+      dialogue: 'Great. Now, a >Pulse Defence< will push the fog away from a small
         area around it when placed. '
+  - key: activate defences
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: Click this dialogue box to activate the defences (supposed to be a
+        big button, but not up to that yet).
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
@@ -315,6 +321,7 @@ MonoBehaviour:
   extenderLandmark: {fileID: 0}
   extendedHarvesterResource: {fileID: 0}
   generatorLandmark: {fileID: 0}
+  extenderInFogLandmark: {fileID: 0}
   airCannonLandmark: {fileID: 0}
   fogRepellerLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}

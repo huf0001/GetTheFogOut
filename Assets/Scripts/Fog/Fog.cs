@@ -123,6 +123,7 @@ public class Fog : MonoBehaviour
     public bool                  DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     //public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
+    public List<FogUnit>         FogUnitsInPlay { get => fogUnitsInPlay; }
     public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
     public int                   XMax { get => xMax; }
     public int                   ZMax { get => zMax; }
@@ -529,6 +530,18 @@ public class Fog : MonoBehaviour
 
     //Activating the Fog-----------------------------------------------------------------------------------------------------------------------------
 
+    //Invokes BeginUpdatingDamge according to the parameter passed to it
+    public void InvokeBeginUpdatingDamage(int delay)
+    {
+        Invoke(nameof(BeginUpdatingDamage), delay);
+    }
+
+    //Invokes the damage to fog "update" method according to the interval set in the inspector
+    public void BeginUpdatingDamage()
+    {
+        InvokeRepeating(nameof(UpdateDamageToFogUnits), 0.5f, fogDamageInterval);
+    }
+
     //Invokes the WakeUpFog method according to the parameter passed to it
     public void InvokeWakeUpFog(int delay)
     {
@@ -540,7 +553,6 @@ public class Fog : MonoBehaviour
     {
         InvokeRepeating(nameof(UpdateFogUnitFill), 0.1f, fogFillInterval);
         InvokeRepeating(nameof(CheckExpandFog), 0.3f, fogExpansionInterval);
-        InvokeRepeating(nameof(UpdateDamageToFogUnits), 0.5f, fogDamageInterval);
         InvokeRepeating(nameof(UpdateFogSpheres), 1f, fogSphereInterval);
     }
 

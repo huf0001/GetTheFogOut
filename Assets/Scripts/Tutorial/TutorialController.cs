@@ -18,7 +18,10 @@ public enum TutorialStage
     BuildGenerator,
     BuildMoreGenerators,
     CollectMinerals,
-    ClearFog,
+    BuildExtenderInFog,
+    BuildMortar,
+    BuildPulseDefence,
+    ActivateDefences,
     Finished
 }
 
@@ -26,7 +29,6 @@ public enum ButtonType
 {
     None,
     AirCannon,
-    //Battery,
     Generator,
     Harvester,
     Extender,
@@ -52,8 +54,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark extenderLandmark;
     [SerializeField] private ResourceNode extendedHarvesterResource;
     [SerializeField] private Landmark generatorLandmark;
-    [SerializeField] private Landmark airCannonLandmark;
-    [SerializeField] private Landmark fogRepellerLandmark;
+    [SerializeField] private Landmark extenderInFogLandmark;
+    [SerializeField] private Landmark mortarLandmark;
+    [SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [Header("Movement Keys")]
@@ -91,6 +94,8 @@ public class TutorialController : DialogueBoxController
     private bool lerpForward = true;
 
     private MusicFMOD musicFMOD;
+
+    private bool defencesOn = false;
     
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -101,6 +106,7 @@ public class TutorialController : DialogueBoxController
     public TileData CurrentTile { get => currentTile; }
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
+    public bool DefencesOn { get => defencesOn; }
     public TutorialStage TutorialStage { get => tutorialStage; }
     public Color UIHighlightColour { get => uiHighlightColour; }
     public Color UINormalColour { get => uiNormalColour; }
@@ -137,8 +143,10 @@ public class TutorialController : DialogueBoxController
         if (skipTutorial)
         {
             Fog.Instance.InvokeWakeUpFog(5);
+            Fog.Instance.InvokeBeginUpdatingDamage(5);
             tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
+            defencesOn = true;
             //MusicController.Instance.SkipTutorial();
             wKey.transform.parent.gameObject.SetActive(false);
         }
@@ -204,8 +212,17 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.CollectMinerals:
                 CollectMinerals();
                 break;
-            case TutorialStage.ClearFog:
-                //ClearFog();
+            case TutorialStage.BuildExtenderInFog:
+                BuildExtenderInFog();
+                break;
+            case TutorialStage.BuildMortar:
+                BuildMortar();
+                break;
+            case TutorialStage.BuildPulseDefence:
+                BuildPulseDefence();
+                break;
+            case TutorialStage.ActivateDefences:
+                ActivateDefences();
                 break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
@@ -710,7 +727,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                tutorialStage = TutorialStage.ClearFog;
+                tutorialStage = TutorialStage.BuildExtenderInFog;
                 currentlyBuilding = BuildingType.Extender;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
@@ -723,6 +740,62 @@ public class TutorialController : DialogueBoxController
     //Player clears fog away from further minerals with defences
     //TODO: ClearFog()
     //Note: incorporate BuildMortar() and BuildPulseDefence() content into ClearFog()
+    private void BuildExtenderInFog()
+    {
+        switch (subStage)
+        {
+            case 1:
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("build extender in fog", 1);
+                ActivateTarget(extenderInFogLandmark);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    GoToSubStage(4);
+                }
+
+                break;
+            case 3:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
+
+                break;
+            case 4:
+                currentlyLerping = ButtonType.Extender;
+                IncrementSubStage();
+                break;
+            case 5:
+                if (Hub.Instance.GetMortars().Count == 1)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 6:
+                tutorialStage = TutorialStage.BuildMortar;
+                currentlyBuilding = BuildingType.AirCannon;
+                ResetSubStage();
+                DeactivateTarget();
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
 
     //Player learns about and builds an arc defence
     private void BuildMortar()
@@ -730,10 +803,9 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                Fog.Instance.WakeUpFog();
-                SendDialogue("build air cannon", 1);
-                //Invoke("ActivateTarget", 1);
-                ActivateTarget(airCannonLandmark);
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("build mortar", 1);    //also explains "fog bad"
+                ActivateTarget(mortarLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -771,7 +843,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                //tutorialStage = TutorialStage.BuildFogRepeller;
+                tutorialStage = TutorialStage.BuildPulseDefence;
                 currentlyBuilding = BuildingType.FogRepeller;
                 ResetSubStage();
                 DeactivateTarget();
@@ -789,9 +861,9 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                SendDialogue("build fog repeller", 1);
-                //Invoke("ActivateTarget", 1);
-                ActivateTarget(fogRepellerLandmark);
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("build pulse defence", 1);
+                ActivateTarget(pulseDefenceLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -824,16 +896,54 @@ public class TutorialController : DialogueBoxController
             case 5:
                 if (Hub.Instance.GetPulseDefences().Count == 1)
                 {
-                    IncrementSubStage();
+                    tutorialStage = TutorialStage.ActivateDefences;
+                    currentlyBuilding = BuildingType.None;
+                    ResetSubStage();
+                    DeactivateTarget();
                 }
 
                 break;
-            case 6:
-                currentlyBuilding = BuildingType.None;
-                SendDialogue("finished", 1);
-                DeactivateTarget();
+
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
                 break;
-            case 7:
+        }
+    }
+
+    //Player turns the defences on, wakes the fog.
+    private void ActivateDefences()
+    {
+        switch (subStage)
+        {
+            case 1:
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("activate defences", 1);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    defencesOn = true;
+                    Fog.Instance.BeginUpdatingDamage();
+                }
+
+                break;
+            case 3:
+                foreach (FogUnit f in Fog.Instance.FogUnitsInPlay)
+                {
+                    if (f.TakingDamage)
+                    {
+                        Fog.Instance.WakeUpFog();
+                        IncrementSubStage();
+                    }
+                }
+
+                break;
+            case 4:
+                SendDialogue("finished", 1);
+                break;
+            case 5:
                 if (dialogueRead)
                 {
                     tutorialStage = TutorialStage.Finished;

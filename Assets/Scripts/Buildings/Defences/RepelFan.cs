@@ -54,29 +54,31 @@ public class RepelFan : Defence
     
     void FirePulse()
     {
-        List<TileData> directTarget = location.AllAdjacentTiles;
-        List<TileData> notDirectTarget = GetTarget(2);
-
-        if ((directTarget != null) || notDirectTarget != null)
+        if (TutorialController.Instance.DefencesOn)
         {
-            foreach (TileData dir in directTarget)
-            {
-                if ((dir.FogUnit != null && !dir.FogUnit.TakingDamage))
-                {
-                    dir.FogUnit.DealDamageToFogUnit(directDamage);
-                }
-            }
+            List<TileData> directTarget = location.AllAdjacentTiles;
+            List<TileData> notDirectTarget = GetTarget(2);
 
-            foreach (TileData ndir in notDirectTarget)
+            if ((directTarget != null) || notDirectTarget != null)
             {
-                if (ndir.FogUnit != null && !ndir.FogUnit.TakingDamage)
+                foreach (TileData dir in directTarget)
                 {
-                    ndir.FogUnit.DealDamageToFogUnit(aoeDamage);
+                    if ((dir.FogUnit != null && !dir.FogUnit.TakingDamage))
+                    {
+                        dir.FogUnit.DealDamageToFogUnit(directDamage);
+                    }
                 }
-            }
 
+                foreach (TileData ndir in notDirectTarget)
+                {
+                    if (ndir.FogUnit != null && !ndir.FogUnit.TakingDamage)
+                    {
+                        ndir.FogUnit.DealDamageToFogUnit(aoeDamage);
+                    }
+                }
+
+            }
         }
-
     }
 
     List<TileData> GetTarget(int range)
