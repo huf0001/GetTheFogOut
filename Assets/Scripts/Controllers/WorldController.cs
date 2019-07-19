@@ -37,7 +37,8 @@ public class WorldController : MonoBehaviour
     [SerializeField] private GameObject ground;
     public Collider groundCollider;
 
-    [SerializeField] GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
+    [SerializeField] public GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
+    [SerializeField] public Material normalTile, hoverTile;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
@@ -422,7 +423,6 @@ public class WorldController : MonoBehaviour
         if (resourceController.IsWin() || hubDestroyed)
         {
             Time.timeScale = 0.2f;
-            musicFMOD.GameLoseMusic();
             GameOver = true;
             InBuildMode = false;
         }
@@ -463,10 +463,12 @@ public class WorldController : MonoBehaviour
     {
         if (GameWin)
         {
+            musicFMOD.GameWinMusic();
             uiController.EndGameDisplay("You win!"); //Display win UI
         }
         else
         {
+            musicFMOD.GameLoseMusic();
             uiController.EndGameDisplay("You lose!"); //Display lose UI
         }
     }
