@@ -22,7 +22,7 @@ public enum TutorialStage
     BuildExtenderInFog,
     BuildMortar,
     BuildPulseDefence,
-    ActivateDefences,
+    DefenceActivation,
     Finished
 }
 
@@ -224,8 +224,8 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildPulseDefence:
                 BuildPulseDefence();
                 break;
-            case TutorialStage.ActivateDefences:
-                ActivateDefences();
+            case TutorialStage.DefenceActivation:
+                DefenceActivation();
                 break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
@@ -899,7 +899,7 @@ public class TutorialController : DialogueBoxController
             case 5:
                 if (Hub.Instance.GetPulseDefences().Count == 1)
                 {
-                    tutorialStage = TutorialStage.ActivateDefences;
+                    tutorialStage = TutorialStage.DefenceActivation;
                     currentlyBuilding = BuildingType.None;
                     ResetSubStage();
                     DeactivateTarget();
@@ -915,11 +915,16 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player turns the defences on, waking the fog
-    private void ActivateDefences()
+    private void DefenceActivation()
     {
         switch (subStage)
         {
             case 1:
+                if (UIController.instance.buttonClosed)
+                {
+                    UIController.instance.ShowActivateButton();
+                }
+
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("activate defences", 1);
                 break;
@@ -927,12 +932,17 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    defencesOn = true;
-                    Fog.Instance.BeginUpdatingDamage();
                 }
 
                 break;
-            case 3:
+            //case 3:
+            //    break;
+            case 4:
+                defencesOn = true;
+                Fog.Instance.BeginUpdatingDamage();
+                IncrementSubStage();
+                break;
+            case 5:
                 foreach (FogUnit f in Fog.Instance.FogUnitsInPlay)
                 {
                     if (f.TakingDamage)
@@ -944,10 +954,10 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 4:
+            case 6:
                 SendDialogue("finished", 1);
                 break;
-            case 5:
+            case 7:
                 if (dialogueRead)
                 {
                     tutorialStage = TutorialStage.Finished;
@@ -1118,6 +1128,12 @@ public class TutorialController : DialogueBoxController
     public void CompleteMineralCollection()
     {
         GoToSubStage(6);
+    }
+
+    //Called to advance the defence activation stage to sub-stage 4
+    public void ActivateDefences()
+    {
+        GoToSubStage(4);
     }
 
     //Tutorial Utility Methods - (Targeted) Building-------------------------------------------------------------------------------------------------

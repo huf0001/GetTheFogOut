@@ -183,6 +183,29 @@ public class UIController : MonoBehaviour
             });
     }
 
+    public void ShowActivateButton()
+    {
+        launchCanvas.SetActive(true);
+        launchButtonImage.sprite = objectiveButtonSprites[1];
+
+        Sequence showLaunch = DOTween.Sequence();
+        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+            .Append(launchButtonImage.DOFade(1, 0.5f))
+            .OnComplete(
+                delegate
+                {
+                    launchButton.enabled = true;
+                    buttonClosed = false;
+                    launchButton.onClick.AddListener(
+                        delegate {
+                            launchButton.enabled = false;
+                            TutorialController.Instance.ActivateDefences();
+                            CloseButton();
+                        });
+                    launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+                });
+    }
+
     public void CloseButton()
     {
         DOTween.Kill(launchButtonImage);
@@ -488,7 +511,7 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Build Pulse Defence</b>\n\n" +
                     "<size=75%>Build a Pulse Defence to clear the fog away.\n\n";
                 break;
-            case TutorialStage.ActivateDefences:
+            case TutorialStage.DefenceActivation:
                 hudObjText.text = "Objective: Activate Defences";
                 objWindowText.text = "<b>Activate Defences</b>\n\n" +
                     "<size=75%>Activate the defences to clear the fog away.\n\n";
