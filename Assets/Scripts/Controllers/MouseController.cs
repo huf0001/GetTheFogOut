@@ -60,7 +60,7 @@ public class MouseController : MonoBehaviour
     void Update()
     {
         UpdatePlacingAlt();
-        UpdateHoveredTile();
+        selectedTile();
     }
 
     void UpdateTileAppearance()
@@ -96,42 +96,69 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    void UpdateHoveredTile()
+    void UpdateHoveredTile(bool toggle)
     {
-        RaycastHit hit;
-        TileData temp;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
+        if (toggle)
         {
-            if (WorldController.Instance.TileExistsAt(hit.point))
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
             {
-                if (hovertoggle)
+                if (WorldController.Instance.TileExistsAt(hit.point))
                 {
-                    hoveredTile = WorldController.Instance.GetTileAt(hit.point);
-                    hoveredTile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
-                    hovertoggle = false;
-                }
-                else
-                {
-                    if (!hoveredTile.Equals(WorldController.Instance.GetTileAt(hit.point)))
+                    if (hovertoggle)
                     {
-                        hoveredTile.plane.GetComponent<Renderer>().material = WorldController.Instance.normalTile;
-                        hovertoggle = true;
+                        hovertoggle = false;
+                        hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                        changeTileMaterial(WorldController.Instance.hoverTile);
                     }
+                    else
+                    {
+                        if (!hoveredTile.Equals(WorldController.Instance.GetTileAt(hit.point)))
+                        {
+                            hovertoggle = true;
+                            if (hoveredTile.plane == null)
+                            {
+                                hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                                changeTileMaterial(WorldController.Instance.hoverTile);
+                            }
+                            else
+                                changeTileMaterial(WorldController.Instance.normalTile);
+                        }
+                    }
+
                 }
             }
-        }
-        else
-        {
-            if (hoveredTile != null)
+            else
             {
-                hoveredTile.plane.GetComponent<Renderer>().material = WorldController.Instance.normalTile;
+                changeTileMaterial(WorldController.Instance.normalTile);
             }
         }
-
     }
 
+    void changeTileMaterial(Material mat)
+    {
+        if (hoveredTile != null)
+        {
+            if (hoveredTile.plane != null)
+            {
+                hoveredTile.plane.GetComponent<Renderer>().material = mat;
+            }
+        }
+    }
+
+    void selectedTile()
+    {
+        if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
+        {
+            UpdateHoveredTile(false);
+        }
+        else
+        { 
+            UpdateHoveredTile(true);
+        }
+    }
     // Mouse Building Placement -----------------------------------------------------------------
 
     void UpdatePlacingAlt()
@@ -140,8 +167,8 @@ public class MouseController : MonoBehaviour
         //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
 
         UIController.instance.buildingSelector.freezeCam();
-        
-        if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject() && isBuildAvaliable == true)
+
+        if (Time.timeScale == 1f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject() && isBuildAvaliable == true)
         {
             TileData tile;
             RaycastHit hit;
@@ -151,12 +178,12 @@ public class MouseController : MonoBehaviour
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
+                    changeTileMaterial(WorldController.Instance.normalTile);
                     towerManager.CancelBuild();
                 }
                 else
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
-
                     if (tile.PowerSource != null && TutorialController.Instance.TileAllowed(tile))
                     {
                         if (!UIController.instance.buildingSelector.Visible)
@@ -170,6 +197,15 @@ public class MouseController : MonoBehaviour
                         }
 
                         towerManager.CurrentTile = tile;
+
+                        changeTileMaterial(WorldController.Instance.normalTile);
+
+                        if (!tile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
+                        {
+                            tile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
+                        }
+                        hoveredTile = tile;
+                        //    towerManager.CurrentTile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
                     }
                 }
             }
@@ -277,7 +313,7 @@ public class MouseController : MonoBehaviour
 
                 //Tell the building to do things it should do when placed
                 building.Place();
-
+                changeTileMaterial(WorldController.Instance.normalTile);
                 StartCoroutine(FloatText(buildingGo.transform, -building.MineralCost));
             }
             else
