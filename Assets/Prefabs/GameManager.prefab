@@ -223,9 +223,9 @@ MonoBehaviour:
   - key: explain situation
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Hello, I am your very own...- Ah, no, I'm not fooling anyone with
-        that. I'm a Nexus Drone, an emergency drone that you'll be controlling from
-        your ship.
+      dialogue: Hello, I am your very own...Ah, no, I'm not fooling anyone with that.
+        I'm a Nexus Drone, an emergency drone that you'll be controlling from your
+        ship.
     - aiExpression: 2
       dialogue: Since we appear to be in a predicament, I'm going to teach you how
         to survive. You see that deposit of minerals over there?
@@ -236,7 +236,7 @@ MonoBehaviour:
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'WASD moves me around. '
+      dialogue: Press the WASD keys to move me around.
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
@@ -250,7 +250,7 @@ MonoBehaviour:
   - key: build harvester icon
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Click on the {HARVESTER}.
+      dialogue: Click on the {HARVESTER} icon in the building menu.
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
@@ -259,9 +259,11 @@ MonoBehaviour:
   - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: You see the green grid around your ship? It represents the area that
-        you can place buildings on. Right now it's too small to reach those minerals.I
-        showed you earlier. You will need to place a [POWER EXTENDER]
+      dialogue: 'You see the green grid around your ship? It represents the area that
+        you can place buildings on. '
+    - aiExpression: 2
+      dialogue: Right now it's too small to reach those minerals I showed you earlier.
+        You will need to place a [POWER EXTENDER]
   - key: build more harvesters extended
     expressionDialoguePairs:
     - aiExpression: 1
@@ -273,52 +275,58 @@ MonoBehaviour:
       dialogue: Oh, well....that isn't good. It appears the harvesters have put some
         strain on the power system.
     - aiExpression: 2
-      dialogue: 'When buildings are placed, they consume power. Basically, if you
-        have too many buildings your power system will struggle and they will gradually
-        shut down. To avoid this, you can place power generators. '
+      dialogue: 'When buildings are placed, they consume power. Too many buildings
+        consuming power will cause some to shut down. To avoid this, you can place
+        power generators. '
     - aiExpression: 2
-      dialogue: They will increase the amount of power you can regenerate, allowing
-        you to place more buildings. Be wary, they can only handle so much. Hover
-        over the battery icon at the top of the screen for more information.
+      dialogue: They will increase the amount of power you can regenerate. Be wary,
+        they can only handle so much. Hover over the battery icon at the top of the
+        screen for more information.
+    - aiExpression: 2
+      dialogue: Try placing a generator here.
   - key: build more generators
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: build more generators
+      dialogue: 'It appears to have helped. Try placing more for safekeeping. '
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: collect minerals
+      dialogue: Your ship is in pretty bad shape, I would try and collect some minerals
+        to get it fixed.
   - key: extend to thruster
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next
+      dialogue: "Great, you\u2019ve repaired your ship. Don't relax just yet. Next
         step, attaching the ship's missing thruster.\r\n"
   - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: build extender in fog and see what happens
+      dialogue: 'Hey...this thick miasma seems to be in the way of the thruster. '
+    - aiExpression: 2
+      dialogue: Try placing an extender in it and see what happens.
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: fog bad
+      dialogue: As if crash landing wasn't enough...now we're surrounded by a man
+        dissolving fog? Great!
     - aiExpression: 2
-      dialogue: build mortar
+      dialogue: Your ship comes equipped with some defences called Mortar and Pulse
+        Tower. Try placing a Mortar.
   - key: build pulse defence
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: 'Great. Now, a >Pulse Defence< will push the fog away from a small
-        area around it when placed. '
+      dialogue: Next, place a Pulse Tower.
   - key: activate defences
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Click this dialogue box to activate the defences (supposed to be a
-        big button, but not up to that yet).
+      dialogue: Perfect, defences are at the ready. Click the attach button to activate
+        them because I don't make the rules, I follow them.
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: Well, now that you know the basics, the rest is up to you. I will
         aid you where I can. I would suggest exploring your surroundings and collecting
-        some more minerals, maybe even find your ship's missing thruster.
+        some more minerals, maybe even get to your ships thruster.
   skipTutorial: 0
   tutorialStage: 1
   subStage: 1
