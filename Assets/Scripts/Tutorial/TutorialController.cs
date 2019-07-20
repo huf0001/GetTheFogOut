@@ -50,6 +50,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private TutorialStage tutorialStage = TutorialStage.ExplainSituation;
     [SerializeField] private int subStage = 1;
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
+    [SerializeField] private ButtonType currentlyLerping;
+    [SerializeField] private TileData currentTile = null;
+    [SerializeField] private TileData lastTileChecked;
 
     [Header("Objects on Game Board")]
     [SerializeField] private Hub hub;
@@ -89,10 +92,7 @@ public class TutorialController : DialogueBoxController
     //Non-Serialized Fields
 
 
-    private TileData currentTile = null;
-    private TileData lastTileChecked;
 
-    private ButtonType currentlyLerping;
 
     private MeshRenderer targetRenderer = null;
     private float decalMin = 1.5f;
@@ -767,6 +767,7 @@ public class TutorialController : DialogueBoxController
                 //Camera pans to the thruster
                 thruster.SetActive(true);
                 thrusterCamera.gameObject.SetActive(true);
+                ActivateMouse();
                 //Time.timeScale = 0.25f;
                 break;
             case 2:
@@ -820,7 +821,7 @@ public class TutorialController : DialogueBoxController
                     {
                         if (e.TakingDamage)
                         {
-                            GoToSubStage(8);
+                            GoToSubStage(9);
                             break;
                         }
                     }
@@ -832,7 +833,7 @@ public class TutorialController : DialogueBoxController
                 {
                     if (e.TakingDamage)
                     {
-                        GoToSubStage(8);
+                        IncrementSubStage();
                         break;
                     }
                 }
@@ -860,6 +861,7 @@ public class TutorialController : DialogueBoxController
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build mortar", 1);    //also explains "fog bad"
                 //ActivateTarget(mortarLandmark);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
@@ -918,6 +920,7 @@ public class TutorialController : DialogueBoxController
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build pulse defence", 1);
                 //ActivateTarget(pulseDefenceLandmark);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
