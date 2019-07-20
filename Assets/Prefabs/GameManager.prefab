@@ -277,13 +277,13 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: 'When buildings are placed, they consume power. Too many buildings
         consuming power will cause some to shut down. To avoid this, you can place
-        power generators. '
+        [POWER GENERATORS]. '
     - aiExpression: 2
       dialogue: They will increase the amount of power you can regenerate. Be wary,
         they can only handle so much. Hover over the battery icon at the top of the
-        screen for more information.
+        screen for more information. (Hover over seems to be disabled at the moment)
     - aiExpression: 2
-      dialogue: Try placing a generator here.
+      dialogue: Try placing a [POWER GENERATOR] here.
   - key: build more generators
     expressionDialoguePairs:
     - aiExpression: 2
@@ -291,7 +291,7 @@ MonoBehaviour:
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Your ship is in pretty bad shape, I would try and collect some minerals
+      dialogue: Your ship is in pretty bad shape, I would try and collect some {MINERALS}
         to get it fixed.
   - key: extend to thruster
     expressionDialoguePairs:
@@ -303,19 +303,23 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: 'Hey...this thick miasma seems to be in the way of the thruster. '
     - aiExpression: 2
-      dialogue: Try placing an extender in it and see what happens.
+      dialogue: Try placing a [POWER EXTENDER] in it and see what happens.
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: As if crash landing wasn't enough...now we're surrounded by a man
         dissolving fog? Great!
     - aiExpression: 2
-      dialogue: Your ship comes equipped with some defences called Mortar and Pulse
-        Tower. Try placing a Mortar.
+      dialogue: 'Your ship comes equipped with some defences called >MORTAR< and >PULSE
+        TOWER<. '
+    - aiExpression: 2
+      dialogue: Since its attacks are long range, try placing a >MORTAR< just outside
+        the fog.
   - key: build pulse defence
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Next, place a Pulse Tower.
+      dialogue: Next, place a >PULSE TOWER< a bit closer to the fog, since it does
+        damage at close range.
   - key: activate defences
     expressionDialoguePairs:
     - aiExpression: 1
