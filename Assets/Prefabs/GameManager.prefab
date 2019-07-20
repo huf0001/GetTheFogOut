@@ -291,12 +291,12 @@ MonoBehaviour:
   - key: extend to thruster
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: extend to fog
+      dialogue: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next
+        step, attaching the ship's missing thruster.\r\n"
   - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: find ship parts, can't see them, build extender in fog and see what
-        happens
+      dialogue: build extender in fog and see what happens
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 2
@@ -403,6 +403,12 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next
         step, attaching the ship's missing thruster.\r\n"
+  - key: finish finding thruster
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: 'finish finding thruster
+
+'
   - key: start part stage
     expressionDialoguePairs:
     - aiExpression: 1

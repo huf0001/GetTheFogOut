@@ -224,21 +224,30 @@ public class ObjectiveController : DialogueBoxController
         switch (subStage)
         {
             case 0:
-                // Update Hub model to fixed ship without thrusters / Particle effects
-                hub.transform.GetChild(0).gameObject.SetActive(false);
-                hub.transform.GetChild(1).gameObject.SetActive(true);
-                // Play music Var 2 soundtrack
-                musicFMOD.StageTwoMusic();
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.Intensity += 1;
-                // Run AI completion text
-                SendDialogue("end harvest stage", 1);
-                //Camera pans to the thruster
-                ShipComponent.SetActive(true);
-                
-                thrusterCamera.gameObject.SetActive(true);
-                Time.timeScale = 0.25f;
-                IncrementSubStage();
+                // Play music Var 2 soundtrack
+                musicFMOD.StageTwoMusic();
+
+                if (TutorialController.Instance.SkipTutorial)
+                {
+                    hub.transform.GetChild(0).gameObject.SetActive(false);
+                    hub.transform.GetChild(1).gameObject.SetActive(true);
+                    // Run AI completion text
+                    SendDialogue("end harvest stage", 1);
+                    //Camera pans to the thruster
+                    ShipComponent.SetActive(true);
+                    thrusterCamera.gameObject.SetActive(true);
+                    Time.timeScale = 0.25f;
+                    IncrementSubStage();
+                }
+                else
+                { 
+                    SendDialogue("finish finding thruster", 1);
+                    generatorLimit += 4;    //Would normally be incremented in IncrementStage()
+                    ChangeToSubStage(4);
+                }
+
                 break;
             case 1:
                 if (dialogueRead)
@@ -258,6 +267,7 @@ public class ObjectiveController : DialogueBoxController
                     Time.timeScale = 1f;
                     thrusterCamera.gameObject.SetActive(false);
                     DismissDialogue();
+                    ChangeToSubStage(5);
                 }
 
                 break;
@@ -267,11 +277,25 @@ public class ObjectiveController : DialogueBoxController
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
                     ShipComponent.SetActive(false);
-                    IncrementSubStage();
+                    ChangeToSubStage(6);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
                 }
 
                 break;
             case 5:
+                // Update objectives window to 'Recover ship thrusters'
+                // End stage if the part is collected
+                if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
+                {
+                    ShipComponent.SetActive(false);
+                    IncrementSubStage();
+                }
+
+                break;
+            case 6:
                 if (UIController.instance.buttonClosed)
                 {
                     UIController.instance.ShowAttachButton();
@@ -279,9 +303,9 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 6:
-                break;
             case 7:
+                break;
+            case 8:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
                 hub.transform.GetChild(2).gameObject.SetActive(true);

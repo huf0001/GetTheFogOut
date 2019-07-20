@@ -116,6 +116,7 @@ public class TutorialController : DialogueBoxController
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
     public bool DefencesOn { get => defencesOn; }
+    public bool SkipTutorial { get => skipTutorial; }
     public TutorialStage TutorialStage { get => tutorialStage; }
     public Color UIHighlightColour { get => uiHighlightColour; }
     public Color UINormalColour { get => uiNormalColour; }
@@ -760,15 +761,13 @@ public class TutorialController : DialogueBoxController
                 hub.transform.GetChild(1).gameObject.SetActive(true);
                 // Play music Var 2 soundtrack
                 //musicFMOD.StageTwoMusic();
-                // Set fog AI to 'Moderate Aggression'
-                //Fog.Instance.Intensity += 1;
                 // Run AI completion text
                 SendDialogue("extend to thruster", 1);
                 //Camera pans to the thruster
-                thruster.SetActive(true);
                 thrusterCamera.gameObject.SetActive(true);
+                //Enable thruster to be clicked and collected for attaching
+                thruster.SetActive(true);
                 ActivateMouse();
-                //Time.timeScale = 0.25f;
                 break;
             case 2:
                 if (dialogueRead)
