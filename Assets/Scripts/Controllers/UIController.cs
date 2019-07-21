@@ -514,7 +514,7 @@ public class UIController : MonoBehaviour
             case TutorialStage.DefenceActivation:
                 hudObjText.text = "Objective: Activate Defences";
                 objWindowText.text = "<b>Activate Defences</b>\n\n" +
-                    "<size=75%>Activate the defences to clear the fog away.\n\n";
+                    "<size=75%>Activate the defences to clear the fog away. You may like to build more before doing so, however.\n\n";
                 break;
         }
     }

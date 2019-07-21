@@ -1084,6 +1084,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildMortar:
             case TutorialStage.BuildPulseDefence:
                 return tile.FogUnit == null;
+            case TutorialStage.DefenceActivation:
             case TutorialStage.Finished:
                 return true;
             default:
@@ -1100,6 +1101,7 @@ public class TutorialController : DialogueBoxController
             {
                 case TutorialStage.CollectMinerals:
                     return button == ButtonType.Extender || button == ButtonType.Harvester;
+                case TutorialStage.DefenceActivation:
                 case TutorialStage.Finished:
                     return true;
                 default:
