@@ -147,6 +147,7 @@ public class WorldController : MonoBehaviour
         SetResourcesToTiles();
         SetBuildingsToTiles();
         SetLandmarksToTiles();
+        SetCollectablesToTiles();
         groundCollider = ground.GetComponent<Collider>();
         TutorialController.Instance.StartTutorial();
     }
@@ -219,6 +220,25 @@ public class WorldController : MonoBehaviour
             s.Location = tile;
             ShipComponents.Add(new ShipComponentState(s.Id, false));
             s.gameObject.SetActive(false);
+        }
+    }
+
+    void SetCollectablesToTiles()
+    {
+        Collectable[] collectables = FindObjectsOfType<Collectable>();
+        foreach (Collectable c in collectables)
+        {
+            var position = c.transform.position;
+            TileData tile = GetTileAt(position);
+            tile.Collectible = c;
+            c.Location = tile;
+            
+            // Centre on tile
+            Vector3 pos = position;
+            pos.x = Mathf.Round(pos.x);
+            pos.z = Mathf.Round(pos.z);
+            position = pos;
+            c.transform.position = position;
         }
     }
 

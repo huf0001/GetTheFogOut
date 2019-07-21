@@ -1,14 +1,19 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Abilities
 {
     public class SonarCollisions : MonoBehaviour
     {
-        private void OnCollisionEnter(Collision other)
+        // Ping the collectable
+        private void OnTriggerEnter(Collider other)
         {
-            // TODO: Ping the collectible
             Debug.Log(other.gameObject.name + " pinged.");
+            Collectable collectable = other.GetComponent<Collectable>();
+            collectable.sonarPing.Play(true);
+            collectable.isTriggered = true;
+            collectable.pingTime = 5f;
         }
     }
 }
