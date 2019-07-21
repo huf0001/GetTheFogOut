@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using DG.Tweening;
 
 public abstract class Building : Entity
 {
@@ -27,6 +28,7 @@ public abstract class Building : Entity
     [SerializeField, FormerlySerializedAs("shieldBarCanvas")] protected RectTransform shieldBarTransform;
     [SerializeField] protected Image shieldBarImage;
     [SerializeField] protected GameObject damageIndicatorPrefab;
+    [SerializeField] protected GameObject shieldObj;
 
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
@@ -45,7 +47,10 @@ public abstract class Building : Entity
     public bool isShieldOn = false;
     protected bool isOverclockOn = false;
     public float overclockTimer;
+    private Material shieldMat;
 
+    private float toLerp = 1f;
+    private float ShieldCheck = 50f;
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
     public int Upkeep { get => upkeep; }
@@ -83,7 +88,11 @@ public abstract class Building : Entity
         InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
         buildHealth = health;
         InvokeRepeating("CheckStillDamaging", 1, 5);
+        if (shieldObj != null)
+        {
+            shieldMat = shieldObj.GetComponent<Renderer>().material;
 
+        }
         rend = GetComponentInChildren<MeshRenderer>();
     }
 
@@ -123,12 +132,7 @@ public abstract class Building : Entity
         // Process shield decay
         if (isShieldOn)
         {
-            shieldTime -= Time.deltaTime;
-            if (shieldTime <= 0 || shield <= 0)
-            {
-                shield = 0;
-                isShieldOn = false;
-            }
+            checkShieldAbility();
         }
 
         if (GotNoHealth())
@@ -139,38 +143,71 @@ public abstract class Building : Entity
 
     }
 
+    private void checkShieldAbility()
+    {
+        if (shieldObj)
+        {
+            shieldTime -= Time.deltaTime;
+            if (shield != 0 && shield >= 0)
+            {
+                if (toLerp == 0 || shield == 50f)
+                {
+                    toLerp = 1f;
+                    ShieldCheck = 50f;
+                }
+                shieldMat.DOFloat(toLerp, "_LERP", 2f);
+                if (shield < (ShieldCheck - 10f))
+                {
+                    toLerp -= 0.2f;
+                    ShieldCheck -= 10f;
+                }
+            }
+            if (shieldTime <= 0 || shield <= 0)
+            {
+                toLerp = 1f;
+                ShieldCheck = 50f;
+                shield = 0;
+                isShieldOn = false;
+                shieldMat.DOFloat(0.1f, "_LERP", 2f);
+            }
+        }
+    }
+
     private void UpdateHealthBar()
     {
-        if (isShieldOn)
+        if(shieldObj)
         {
-            FillHealthBar();
-
-            if (buildingType != BuildingType.Hub)
+            if (isShieldOn)
             {
-                shieldBarImage.fillAmount = (shield / 50) * 0.75f;
+                FillHealthBar();
+
+                if (buildingType != BuildingType.Hub)
+                {
+                    shieldBarImage.fillAmount = (shield / 50) * 0.75f;
+                }
+                else
+                {
+                    shieldBarImage.fillAmount = shield / 50;
+                }
+            }
+            else if (Health < MaxHealth)
+            {
+                FillHealthBar();
+                if (shieldBarImage.fillAmount > 0)
+                {
+                    shieldBarImage.fillAmount = 0;
+                }
             }
             else
             {
-                shieldBarImage.fillAmount = shield / 50;
-            }
-        }
-        else if (Health < MaxHealth)
-        {
-            FillHealthBar();
-            if (shieldBarImage.fillAmount > 0)
-            {
-                shieldBarImage.fillAmount = 0;
-            }
-        }
-        else
-        {
-            if (healthBarCanvas.gameObject.activeSelf)
-            {
-                healthBarCanvas.gameObject.SetActive(false);
-            }
-            if (shieldBarImage.fillAmount > 0)
-            {
-                shieldBarImage.fillAmount = 0;
+                if (healthBarCanvas.gameObject.activeSelf)
+                {
+                    healthBarCanvas.gameObject.SetActive(false);
+                }
+                if (shieldBarImage.fillAmount > 0)
+                {
+                    shieldBarImage.fillAmount = 0;
+                }
             }
         }
     }
