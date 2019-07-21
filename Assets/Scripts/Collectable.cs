@@ -6,12 +6,32 @@ using UnityEngine;
 public class Collectable : Locatable, ICollectible
 {
     public string collectibleName = "Collectable";
+    public ParticleSystem sonarPing;
     public Ability ability;
     public string CollectableName { get => collectibleName; }
+    public bool isTriggered;
+    public float pingTime;
 
     private void Start()
     {
         collectibleName = ability.name;
+    }
+    
+    private void Update()
+    {
+        if (isTriggered)
+        {
+            pingTime -= Time.deltaTime;
+            if (pingTime <= 0)
+            {
+                if (sonarPing.isPlaying)
+                {
+                    sonarPing.Stop(true);
+                }
+
+                isTriggered = false;
+            }
+        }
     }
 
     private void OnMouseDown()
