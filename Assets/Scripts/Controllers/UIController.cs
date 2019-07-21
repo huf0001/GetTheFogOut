@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 using DG.Tweening;
 
 public class UIController : MonoBehaviour
@@ -32,18 +33,29 @@ public class UIController : MonoBehaviour
     [SerializeField] private Image powerThresholds;
     [SerializeField] private TextMeshProUGUI objWindowText;
     [SerializeField] private TextMeshProUGUI hudObjText;
+    [Header("Tile Colours")]
     [SerializeField] private Color powerLow;
     [SerializeField] private Color powerMedium;
     [SerializeField] private Color powerHigh;
     [SerializeField] private Color powerCurrent;
-    [SerializeField] private GameObject launchCanvas;
-    [SerializeField] private Image launchButtonBG;
-    [SerializeField] private Button launchButton;
+    [Header("Objective Buttons")]
+    [SerializeField, FormerlySerializedAs("launchCanvas")] private GameObject objectiveProceedCanvas;
+    [SerializeField, FormerlySerializedAs("launchButtonBG")] private Image objectiveButtonBG;
+    [SerializeField, FormerlySerializedAs("launchButton")] private Button objectiveButton;
     [SerializeField] private Sprite[] objectiveButtonSprites;
+    [Header("Countdown Slider")]
     [SerializeField] private Image countdownSliderBG;
     [SerializeField] private CanvasGroup countdownSliderCG;
     [SerializeField] private Slider countdownSlider;
     [SerializeField] private TextMeshProUGUI countdownText;
+    [Header("Ability Unlock")]
+    [SerializeField] private Canvas abilityUnlockCanvas;
+    [SerializeField] private Image abilityImage;
+    [SerializeField] private Sprite[] abilitySprites;
+    [SerializeField] private Button[] abilityButtons;
+    [SerializeField] private TextMeshProUGUI abilityNameText;
+    [SerializeField] private TextMeshProUGUI abilityDescText;
+    [SerializeField, TextArea] private string[] abilityDescriptions;
 
     ResourceController resourceController = null;
     private int index, temp;
@@ -92,6 +104,7 @@ public class UIController : MonoBehaviour
         mineralText = GameObject.Find("MineralLevel").GetComponent<TextMeshProUGUI>();
     }
 
+    // Power Threshold image show and hide methods
     public void ShowPowerThresholds()
     {
         Sequence sequence = DOTween.Sequence();
@@ -108,25 +121,25 @@ public class UIController : MonoBehaviour
     // Functions dealing with the drop down objective button
     public void ShowRepairButton()
     {
-        launchCanvas.SetActive(true);
-        launchButtonImage = launchButton.image;
+        objectiveProceedCanvas.SetActive(true);
+        launchButtonImage = objectiveButton.image;
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchButtonBG.DOFillAmount(1, 1))
+        showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
             {
-                launchButton.enabled = true;
+                objectiveButton.enabled = true;
                 buttonClosed = false;
-                launchButton.onClick.AddListener(
+                objectiveButton.onClick.AddListener(
                     delegate
                     {
                         if (ResourceController.Instance.StoredMineral >= 500)
                         {
                             ResourceController.Instance.StoredMineral -= 500;
-                            launchButton.enabled = false;
+                            objectiveButton.enabled = false;
                             ObjectiveController.Instance.IncrementStage();
                             CloseButton();
                         }
@@ -137,21 +150,21 @@ public class UIController : MonoBehaviour
 
     public void ShowAttachButton()
     {
-        launchCanvas.SetActive(true);
+        objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[1];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchButtonBG.DOFillAmount(1, 1))
+        showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
             {
-                launchButton.enabled = true;
+                objectiveButton.enabled = true;
                 buttonClosed = false;
-                launchButton.onClick.AddListener(
+                objectiveButton.onClick.AddListener(
                     delegate
                     {
-                        launchButton.enabled = false;
+                        objectiveButton.enabled = false;
                         ObjectiveController.Instance.IncrementSubStage();
                         CloseButton();
                     });
@@ -195,17 +208,17 @@ public class UIController : MonoBehaviour
 
     public void ShowLaunchButton()
     {
-        launchCanvas.SetActive(true);
+        objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[2];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchButtonBG.DOFillAmount(1, 1))
+        showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
             {
-                launchButton.enabled = true;
-                launchButton.onClick.AddListener(delegate
+                objectiveButton.enabled = true;
+                objectiveButton.onClick.AddListener(delegate
                 {
                     WinGame();
                 });
@@ -220,18 +233,57 @@ public class UIController : MonoBehaviour
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
-        .Append(launchButtonBG.DOFillAmount(0, 1))
+        .Append(objectiveButtonBG.DOFillAmount(0, 1))
         .OnComplete(
         delegate
         {
-            launchButton.onClick.RemoveAllListeners();
-            launchButton.enabled = false;
+            objectiveButton.onClick.RemoveAllListeners();
+            objectiveButton.enabled = false;
             if (ObjectiveController.Instance.CurrStage != (int)ObjectiveStage.SurvivalStage)
             {
-                launchCanvas.SetActive(false);
+                objectiveProceedCanvas.SetActive(false);
             }
             buttonClosed = true;
         });
+    }
+
+    // Ability unlock screen
+    public void AbilityUnlock(Ability ability)
+    {
+        abilityUnlockCanvas.gameObject.SetActive(true);
+        switch (ability.AbilityType)
+        {
+            case AbilityEnum.Artillery:
+                abilityImage.sprite = abilitySprites[0];
+                abilityNameText.text = "Artillery Blast";
+                abilityDescText.text = abilityDescriptions[0];
+                abilityButtons[0].interactable = true;
+                break;
+            case AbilityEnum.BuildingDefence:
+                abilityImage.sprite = abilitySprites[1];
+                abilityNameText.text = "Defence Mode";
+                abilityDescText.text = abilityDescriptions[1];
+                abilityButtons[1].interactable = true;
+                break;
+            case AbilityEnum.FreezeFog:
+                abilityImage.sprite = abilitySprites[2];
+                abilityNameText.text = "Freeze Fog";
+                abilityDescText.text = abilityDescriptions[2];
+                abilityButtons[2].interactable = true;
+                break;
+            case AbilityEnum.Overclock:
+                abilityImage.sprite = abilitySprites[3];
+                abilityNameText.text = "Overclock";
+                abilityDescText.text = abilityDescriptions[3];
+                abilityButtons[3].interactable = true;
+                break;
+            case AbilityEnum.Sonar:
+                abilityImage.sprite = abilitySprites[4];
+                abilityNameText.text = "Sonar";
+                abilityDescText.text = abilityDescriptions[4];
+                abilityButtons[4].interactable = true;
+                break;
+        }
     }
 
     public void WinGame()

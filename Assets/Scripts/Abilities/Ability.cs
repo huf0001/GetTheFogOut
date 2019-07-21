@@ -14,7 +14,7 @@ public abstract class Ability : ScriptableObject, ICollectible
     public int powerCost;
     public int duration;
 
-    public string CollectibleName { get => collectibleName; }
+    public string CollectableName { get => collectibleName; }
 
     public AbilityEnum AbilityType
     {

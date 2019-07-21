@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3318148520141281333}
   m_Layer: 0
-  m_Name: Holo Repel Fan
+  m_Name: Holo Pulse Defence
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,11 +190,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6294392594893851595, guid: 2d895031020596c479eb2ccec102688b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3195696280684266230, guid: 2d895031020596c479eb2ccec102688b,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: f8b97cb1c40b7a2469a118af737a3098, type: 2}
+    - target: {fileID: 2954351009330926599, guid: 2d895031020596c479eb2ccec102688b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d895031020596c479eb2ccec102688b, type: 3}
 --- !u!4 &6702093415584584124 stripped

@@ -2,9 +2,11 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Abilities;
+using UnityEngine.UI;
 
 public enum AbilityEnum
 {
+    None,
     BuildingDefence,
     Artillery,
     FreezeFog,
@@ -16,9 +18,10 @@ public class AbilityController : MonoBehaviour
 {
     // Private variables -----------------------------------------------------------------------------------------------
     private static AbilityController instance;
-    private List<CollectibleObject> collectedObjects = new List<CollectibleObject>();
+    private List<Collectable> collectedObjects = new List<Collectable>();
     private Ability selectedAbility;
     private bool isAbilitySelected = false;
+    private Dictionary<AbilityEnum, bool> abilityCollected = new Dictionary<AbilityEnum, bool>();
     private Dictionary<AbilityEnum, bool> abilityTriggered = new Dictionary<AbilityEnum, bool>();
     private Dictionary<AbilityEnum, float> abilityCooldowns = new Dictionary<AbilityEnum, float>();
     private TileData selectedTile;
@@ -27,7 +30,9 @@ public class AbilityController : MonoBehaviour
     [SerializeField] private GameObject rangeIndicatorGO;
 
     // Public Properties -----------------------------------------------------------------------------------------------
-    public List<CollectibleObject> CollectedObjects
+    public Button[] abilityButtons; 
+    
+    public List<Collectable> CollectedObjects
     {
         get => collectedObjects;
         set
@@ -57,6 +62,15 @@ public class AbilityController : MonoBehaviour
         }
     }
 
+    public Dictionary<AbilityEnum, bool> AbilityCollected
+    {
+        get { return abilityCollected; }
+        set
+        {
+            abilityCollected = value;
+        }
+    }
+
     // Start up --------------------------------------------------------------------------------------------------------
     private void Awake()
     {
@@ -80,6 +94,12 @@ public class AbilityController : MonoBehaviour
         abilityTriggered[AbilityEnum.BuildingDefence] = false;
         abilityTriggered[AbilityEnum.Artillery] = false;
         abilityTriggered[AbilityEnum.FreezeFog] = false;
+        
+        AbilityCollected[AbilityEnum.Overclock] = false;
+        AbilityCollected[AbilityEnum.Sonar] = false;
+        AbilityCollected[AbilityEnum.BuildingDefence] = false;
+        AbilityCollected[AbilityEnum.Artillery] = false;
+        AbilityCollected[AbilityEnum.FreezeFog] = false;
     }
 
     // Update functions ------------------------------------------------------------------------------------------------
@@ -101,9 +121,9 @@ public class AbilityController : MonoBehaviour
     void UpdateButtons()
     {
         // Update buttons when the related objects are collected, @Liam
-        foreach (CollectibleObject collectibleObject in collectedObjects)
+        foreach (Collectable collectibleObject in collectedObjects)
         {
-            switch (collectibleObject.collectible.CollectibleName)
+            switch (collectibleObject.CollectableName)
             {
                 case "BuildingDefence":
                     // If button not enabled, enable
