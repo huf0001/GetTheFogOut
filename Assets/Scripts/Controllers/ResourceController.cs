@@ -41,7 +41,7 @@ public class ResourceController : MonoBehaviour
     public int MineralChange { get => mineralChange; set => mineralChange = value; }
 
     public List<Building> Buildings { get => buildings; set => buildings = value; }
-    //public List<Relay> Extenders { get => extenders; set => extenders = value; }
+    public List<Relay> Extenders { get => extenders; }
     public List<Generator> Generators { get => generators; set => generators = value; }
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     //public List<ArcDefence> Mortars { get => mortars; set => mortars = value; }
@@ -83,7 +83,7 @@ public class ResourceController : MonoBehaviour
 
         //Get connected buildings
         List<Generator> connectedGenerators = hub.GetGenerators();
-        List<Relay> connectedRelays = hub.GetRelays();
+        List<Relay> connectedRelays = hub.GetExtenders();
         List<ArcDefence> connectedMortars = hub.GetMortars();
         List<RepelFan> connectedPulseDefences = hub.GetPulseDefences();
         List<Harvester> connectedHarvesters = hub.GetHarvesters();

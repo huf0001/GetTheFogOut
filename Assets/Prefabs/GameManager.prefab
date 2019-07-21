@@ -108,7 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxPower: 100
   maxMineral: 9999
-  storedPower: 0
+  storedPower: 100
   storedMineral: 200
   powerChange: 0
   mineralChange: 0
@@ -250,103 +250,166 @@ MonoBehaviour:
         say that they were perfectly normal, thank you very much. '
   - key: explain situation
     expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: "\rHello. I am your very own Nexus Drone. You may call me Nex for
-        short. I am an emergency drone that you can control from your ship. \r\n"
     - aiExpression: 2
-      dialogue: 'Let me run a scan for you to see the extent of the damage. '
+      dialogue: Hello, I am your very own...Ah, no, I'm not fooling anyone with that.
+        I'm a Nexus Drone, an emergency drone that you'll be controlling from your
+        ship.
     - aiExpression: 2
-      dialogue: 'Scanning... '
+      dialogue: Since we appear to be in a predicament, I'm going to teach you how
+        to survive. You see that deposit of {MINERALS} over there?
+  - key: explain minerals
+    expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'The hull has sustained copious damage and a thruster is missing. '
-    - aiExpression: 2
-      dialogue: The scan also picked up hostility coming from the surrounding fog.
-        It may be sentient. What are the chances?
-    - aiExpression: 2
-      dialogue: Your ship comes equipped with important blueprints, should the need
-        arise to use them.
+      dialogue: You can collect them, which will be highly beneficial to your existence.
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'WASD moves me around. '
-  - key: build generator target
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Since the backup generator will not be sufficient, you will have to
-        place [POWER GENERATORS].
-    - aiExpression: 2
-      dialogue: Click there to place a generator.
-  - key: build generator icon
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: 'Now, click on the [POWER GENERATOR] icon. '
-  - key: build extender target
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: "\rNext are [POWER EXTENDERS]. These will extend the power range from
-        your ship and allow you to place buildings further out. \r\n"
-    - aiExpression: 2
-      dialogue: 'Place one there. '
-  - key: build battery target
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: 'The final power related building is a [BATTERY]. When you place it,
-        it will increase your power capacity. '
-    - aiExpression: 2
-      dialogue: 'Now place a [BATTERY] there. '
-  - key: increase power generation
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: 'Now that you have these skills, increase your [POWER GENERATION].
-        Do not forget to try more [POWER EXTENDERS] and [BATTERIES] later. '
+      dialogue: Press the WASD keys to move me around.
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: The next important building you have access to is a {HARVESTER}. When
+      dialogue: You currently have access to a building called a {HARVESTER}. When
         placed on a {MINERAL}, it will collect its contents for you.
     - aiExpression: 2
-      dialogue: Place a {HARVESTER} on the {MINERAL}.
+      dialogue: The {HARVESTER} will show this -insert X sprite here- when it has
+        exhausted its {MINERALS}.
+    - aiExpression: 2
+      dialogue: Click on this {MINERAL}.
+  - key: build harvester icon
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Click on the {HARVESTER} icon in the building menu.
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Good, you're learning. Now build two more to speed up your {MINERAL}
+      dialogue: Good, you're learning.  Now build two more to speed up your {MINERAL}
         collection.
-  - key: build air cannon
+  - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Your final and most important buildings are the >AIR CANNON< and
-        >FOG REPELLER<. \r\n"
+      dialogue: 'You see the green grid around your ship? It represents the area that
+        you can place buildings on. '
     - aiExpression: 2
-      dialogue: 'An >AIR CANNON< will discharge an intense ball of air that will dissipate
-        the fog. '
-    - aiExpression: 2
-      dialogue: 'Try placing one. '
-  - key: build fog repeller
+      dialogue: Right now it's too small to reach those minerals I showed you earlier.
+        You will need to place a [POWER EXTENDER]
+  - key: build more harvesters extended
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: 'Great. Now, a >FOG REPELLER< will push the fog away from a small
-        area around it when placed. '
+      dialogue: See how your grid range has now increased? Now you can place some
+        more {HARVESTERS}.
+  - key: build generator target
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Oh, well....that isn't good. It appears the harvesters have put some
+        strain on the power system.
+    - aiExpression: 2
+      dialogue: 'When buildings are placed, they consume power. Too many buildings
+        consuming power will cause some to shut down. To avoid this, you can place
+        [POWER GENERATORS]. '
+    - aiExpression: 2
+      dialogue: They will increase the amount of power you can regenerate. Be wary,
+        they can only handle so much. Hover over the battery icon at the top of the
+        screen for more information. (Hover over seems to be disabled at the moment)
+    - aiExpression: 2
+      dialogue: Try placing a [POWER GENERATOR] here.
+  - key: build more generators
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: It appears to have helped. Check the battery icon at the top of your
+        screen, the [POWER GENERATION] number should have changed.
+  - key: collect minerals
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Your ship is in pretty bad shape, I would try and collect some {MINERALS}
+        to get it fixed.
+  - key: extend to thruster
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "Great, you\u2019ve repaired your ship. Don't relax just yet. Next
+        step, attaching the ship's missing thruster.\r\n"
+  - key: build extender in fog
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: 'Hey...this thick miasma seems to be in the way of the thruster. '
+    - aiExpression: 2
+      dialogue: Try placing a [POWER EXTENDER] in it and see what happens.
+  - key: build mortar
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: As if crash landing wasn't enough...now we're surrounded by a man
+        dissolving fog? Great!
+    - aiExpression: 2
+      dialogue: 'Your ship comes equipped with some defences called >MORTAR< and >PULSE
+        TOWER<. '
+    - aiExpression: 2
+      dialogue: Since its attacks are long range, try placing a >MORTAR< just outside
+        the fog.
+  - key: build pulse defence
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: Next, place a >PULSE TOWER< a bit closer to the fog, since it does
+        damage at close range.
+  - key: activate defences
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: I would highly reccomend building some more defences before activating
+        them.
+    - aiExpression: 1
+      dialogue: Once you're ready click the attach button to activate them, because
+        I don't make the rules, I follow them.
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Now that you know how to use these buildings, I would suggest trying
-        to find your ship\u2019s thruster. "
-  skipTutorial: 1
-  airCannonLandmark: {fileID: 0}
-  batteryLandmark: {fileID: 0}
-  generatorLandmark: {fileID: 0}
+      dialogue: Well, now that you know the basics, the rest is up to you. I will
+        aid you where I can. I would suggest exploring your surroundings and collecting
+        some more minerals, maybe even get to your ships thruster.
+  skipTutorial: 0
+  tutorialStage: 1
+  subStage: 1
+  currentlyBuilding: 0
+  currentlyLerping: 0
+  currentTile:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
+  lastTileChecked:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
+  hub: {fileID: 0}
+  thruster: {fileID: 0}
   harvesterResource: {fileID: 0}
   extenderLandmark: {fileID: 0}
-  fogRepellerLandmark: {fileID: 0}
+  extendedHarvesterResource: {fileID: 0}
+  generatorLandmark: {fileID: 0}
+  extenderInFogLandmark: {fileID: 0}
+  mortarLandmark: {fileID: 0}
+  pulseDefenceLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
   wKey: {fileID: 0}
   aKey: {fileID: 0}
   sKey: {fileID: 0}
   dKey: {fileID: 0}
+  mineralDepositCamera: {fileID: 0}
+  thrusterCamera: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
-  powerGainGoal: 15
-  builtHarvestersGoal: 3
+  builtHarvestersGoal: 4
+  builtHarvestersExtendedGoal: 7
+  builtGeneratorsGoal: 3
+  collectedMineralsGoal: 500
 --- !u!114 &4019818891569145385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,6 +447,12 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next
         step, attaching the ship's missing thruster.\r\n"
+  - key: finish finding thruster
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: 'finish finding thruster
+
+'
   - key: start part stage
     expressionDialoguePairs:
     - aiExpression: 1

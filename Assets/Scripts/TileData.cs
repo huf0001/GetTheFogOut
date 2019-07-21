@@ -40,7 +40,6 @@ public class TileData
     public int X { get => x; set => x = value; }
     public int Z { get => z; set => z = value; }
 
-    public FogUnit FogUnit { get => fogUnit; set => fogUnit = value; }
     public GameObject PlacedTower { get => placedTower; set => placedTower = value; }
     public ResourceNode Resource { get => resource; set => resource = value; }
 
@@ -62,6 +61,22 @@ public class TileData
             if (Resource != null)
             {
                 UpdateResource();
+            }
+        }
+    }
+
+    public FogUnit FogUnit
+    {
+        get
+        {
+            return fogUnit;
+        }
+
+        set
+        {
+            if (fogUnit == null || value == null)
+            {
+                fogUnit = value;
             }
         }
     }

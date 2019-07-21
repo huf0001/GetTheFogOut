@@ -108,9 +108,12 @@ public class ObjectiveController : DialogueBoxController
     {
         switch (currStage)
         {
+            //case ObjectiveStage.HarvestMinerals:
+            //    musicFMOD.StageOneMusic();
+            //    HarvestMineralStage();
+            //    break;
             case ObjectiveStage.HarvestMinerals:
-                musicFMOD.StageOneMusic();
-                HarvestMineralStage();
+                currStage = ObjectiveStage.RecoverPart;
                 break;
             case ObjectiveStage.RecoverPart:
                 musicFMOD.StageTwoMusic();
@@ -160,81 +163,91 @@ public class ObjectiveController : DialogueBoxController
 
     // Stage Functions ----------------------------------------------------------------------------------------
 
-    void HarvestMineralStage()
-    {
-        switch (subStage)
-        {
-            case 0:
-                // Play music Var 1 soundtrack
-                musicFMOD.StageOneMusic();
-                // Set fog AI to 'Docile'
-                //Fog.Instance.Intensity = 1;   //Default of Intensity = 1 set in Fog.Awake()
-                // Run AI text for stage
-                SendDialogue("start harvest stage", 1);
-                // Unlock 5 generators
-                IncrementSubStage();
-                break;
-            case 1:
-                // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
-                if (ResourceController.Instance.StoredMineral >= 500)
-                { 
-                    ChangeToSubStage(3);
-                }
-                else if (dialogueRead)
-                {
-                    DismissDialogue();
-                }
+    //TODO: remove harvest mineral stage, and skip straight to recover part stage
+    //void HarvestMineralStage()
+    //{
+    //    switch (subStage)
+    //    {
+    //        case 0:
+    //            // Play music Var 1 soundtrack
+    //            musicFMOD.StageOneMusic();
+    //            // Set fog AI to 'Docile'
+    //            //Fog.Instance.Intensity = 1;   //Default of Intensity = 1 set in Fog.Awake()
+    //            // Run AI text for stage
+    //            SendDialogue("start harvest stage", 1);
+    //            // Unlock 5 generators
+    //            IncrementSubStage();
+    //            break;
+    //        case 1:
+    //            // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
+    //            if (ResourceController.Instance.StoredMineral >= 500)
+    //            { 
+    //                ChangeToSubStage(3);
+    //            }
+    //            else if (dialogueRead)
+    //            {
+    //                DismissDialogue();
+    //            }
 
-                break;
-            case 2:
-                if (ResourceController.Instance.StoredMineral >= 500)
-                {
-                    IncrementSubStage();
-                }
+    //            break;
+    //        case 2:
+    //            if (ResourceController.Instance.StoredMineral >= 500)
+    //            {
+    //                IncrementSubStage();
+    //            }
 
-                break;
-            case 3:
-                if (UIController.instance.buttonClosed)
-                {
-                    UIController.instance.ShowRepairButton();
-                    IncrementSubStage();
-                }
+    //            break;
+    //        case 3:
+    //            if (UIController.instance.buttonClosed)
+    //            {
+    //                UIController.instance.ShowRepairButton("O");
+    //                IncrementSubStage();
+    //            }
 
-                break;
-            case 4:
-                if (ResourceController.Instance.StoredMineral < 500)
-                {
-                    UIController.instance.CloseButton();
-                    SendDialogue("maintain minerals", 1);
-                    ChangeToSubStage(1);
-                }
+    //            break;
+    //        case 4:
+    //            if (ResourceController.Instance.StoredMineral < 500)
+    //            {
+    //                UIController.instance.CloseButton();
+    //                SendDialogue("maintain minerals", 1);
+    //                ChangeToSubStage(1);
+    //            }
 
-                break;
-            default:
-                break;
-        }
-    }
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
 
     void RecoverPartStage()
     {
         switch (subStage)
         {
             case 0:
-                // Update Hub model to fixed ship without thrusters / Particle effects
-                hub.transform.GetChild(0).gameObject.SetActive(false);
-                hub.transform.GetChild(1).gameObject.SetActive(true);
-                // Play music Var 2 soundtrack
-                musicFMOD.StageTwoMusic();
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.Intensity += 1;
-                // Run AI completion text
-                SendDialogue("end harvest stage", 1);
-                //Camera pans to the thruster
-                ShipComponent.SetActive(true);
-                
-                thrusterCamera.gameObject.SetActive(true);
-                Time.timeScale = 0.25f;
-                IncrementSubStage();
+                // Play music Var 2 soundtrack
+                musicFMOD.StageTwoMusic();
+
+                if (TutorialController.Instance.SkipTutorial)
+                {
+                    hub.transform.GetChild(0).gameObject.SetActive(false);
+                    hub.transform.GetChild(1).gameObject.SetActive(true);
+                    // Run AI completion text
+                    SendDialogue("end harvest stage", 1);
+                    //Camera pans to the thruster
+                    ShipComponent.SetActive(true);
+                    thrusterCamera.gameObject.SetActive(true);
+                    Time.timeScale = 0.25f;
+                    IncrementSubStage();
+                }
+                else
+                { 
+                    SendDialogue("finish finding thruster", 1);
+                    generatorLimit += 4;    //Would normally be incremented in IncrementStage()
+                    ChangeToSubStage(4);
+                }
+
                 break;
             case 1:
                 if (dialogueRead)
@@ -254,6 +267,7 @@ public class ObjectiveController : DialogueBoxController
                     Time.timeScale = 1f;
                     thrusterCamera.gameObject.SetActive(false);
                     DismissDialogue();
+                    ChangeToSubStage(5);
                 }
 
                 break;
@@ -263,11 +277,25 @@ public class ObjectiveController : DialogueBoxController
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
                     ShipComponent.SetActive(false);
-                    IncrementSubStage();
+                    ChangeToSubStage(6);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
                 }
 
                 break;
             case 5:
+                // Update objectives window to 'Recover ship thrusters'
+                // End stage if the part is collected
+                if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
+                {
+                    ShipComponent.SetActive(false);
+                    IncrementSubStage();
+                }
+
+                break;
+            case 6:
                 if (UIController.instance.buttonClosed)
                 {
                     UIController.instance.ShowAttachButton();
@@ -275,9 +303,9 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 6:
-                break;
             case 7:
+                break;
+            case 8:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
                 hub.transform.GetChild(2).gameObject.SetActive(true);

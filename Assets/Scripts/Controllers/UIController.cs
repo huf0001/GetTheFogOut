@@ -77,8 +77,16 @@ public class UIController : MonoBehaviour
 
         index = 0;
         temp = 2;
+        
+        objectiveButtonBG = objectiveProceedCanvas.GetComponentInChildren<Image>();
+        launchButtonImage = objectiveButton.image;
 
-
+        //cursor = GameObject.Find("Cursor");
+        //cursor.SetActive(false);
+        //Invoke("FindTile", 5);
+        //Tweens in the UI for a smooth bounce in from outside the canvas
+        //hudBar = GameObject.Find("HUD");// "HudBar");
+        //hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
         FindSliders();
     }
 
@@ -123,10 +131,9 @@ public class UIController : MonoBehaviour
     }
 
     // Functions dealing with the drop down objective button
-    public void ShowRepairButton()
+    public void ShowRepairButton(string controller)
     {
         objectiveProceedCanvas.SetActive(true);
-        launchButtonImage = objectiveButton.image;
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
         Sequence showLaunch = DOTween.Sequence();
@@ -144,7 +151,15 @@ public class UIController : MonoBehaviour
                         {
                             ResourceController.Instance.StoredMineral -= 500;
                             objectiveButton.enabled = false;
-                            ObjectiveController.Instance.IncrementStage();
+                            if (controller == "O")
+                            {
+                                ObjectiveController.Instance.IncrementStage();
+                            }
+                            else
+                            {
+                                TutorialController.Instance.CompleteMineralCollection();
+                            }
+                            
                             CloseButton();
                         }
                     });
@@ -229,6 +244,29 @@ public class UIController : MonoBehaviour
                 launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
                 buttonClosed = false;
             });
+    }
+
+    public void ShowActivateButton()
+    {
+        objectiveProceedCanvas.SetActive(true);
+        launchButtonImage.sprite = objectiveButtonSprites[1];
+
+        Sequence showLaunch = DOTween.Sequence();
+        showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
+            .Append(launchButtonImage.DOFade(1, 0.5f))
+            .OnComplete(
+                delegate
+                {
+                    objectiveButton.enabled = true;
+                    buttonClosed = false;
+                    objectiveButton.onClick.AddListener(
+                        delegate {
+                            objectiveButton.enabled = false;
+                            TutorialController.Instance.ActivateDefences();
+                            CloseButton();
+                        });
+                    launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+                });
     }
 
     public void CloseButton()
@@ -485,50 +523,65 @@ public class UIController : MonoBehaviour
         switch (stage)
         {
             case TutorialStage.None:
-            case TutorialStage.CrashLanding:
-            case TutorialStage.ShipPartsCrashing:
-            case TutorialStage.ZoomBackToShip:
             case TutorialStage.ExplainSituation:
+            case TutorialStage.ExplainMinerals:
                 hudObjText.text = "Objective: Complete the Tutorial";
                 objWindowText.text = "<b>Complete the Tutorial</b>\n\n" +
                     "<size=75%>Complete the tutorial and learn to play the game!\n\n";
                 break;
-            case TutorialStage.MoveCamera:
+            case TutorialStage.CameraControls:
                 hudObjText.text = "Objective: Move Nex";
                 objWindowText.text = "<b>Move Nex</b>\n\n" +
                     "<size=75%>Learn how to move your Nexus Drone.\n\n";
+                break;
+            case TutorialStage.BuildHarvesters:
+            case TutorialStage.BuildHarvestersExtended:
+                hudObjText.text = "Objective: Build Harvesters";
+                objWindowText.text = "<b>Build Harvesters</b>\n\n" +
+                    $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersExtendedGoal} mineral Harvesters to collect building materials.\n\n" +
+                    $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersExtendedGoal} Harvesters";
+                break;
+            case TutorialStage.BuildExtender:
+                hudObjText.text = "Objective: Build Power Extender";
+                objWindowText.text = "<b>Build Power Extender</b>\n\n" +
+                    "<size=75%>Build a Power Extender to reach additional mineral nodes.\n\n";
                 break;
             case TutorialStage.BuildGenerator:
                 hudObjText.text = "Objective: Build Generator";
                 objWindowText.text = "<b>Build Generator</b>\n\n" +
                     "<size=75%>Build a Power Generator to increase your available power generation.\n\n";
                 break;
-            case TutorialStage.BuildExtender:
+            case TutorialStage.BuildMoreGenerators:
+                hudObjText.text = "Objective: Build Generators";
+                objWindowText.text = "<b>Build Generators</b>\n\n" +
+                     $"<size=75%>Build {TutorialController.Instance.BuiltGeneratorsGoal} Generators to increase your available power generation.\n\n" +
+                     $"Target: {ResourceController.Instance.Generators.Count} / {TutorialController.Instance.BuiltGeneratorsGoal} Generators";
+                break;
+            case TutorialStage.CollectMinerals:
+                hudObjText.text = "Objective: Repair the Hull";
+                objWindowText.text = "<b>Repair the Hull</b>\n\n" +
+                                     "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
+                                     $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {ObjectiveController.Instance.MineralTarget} <size=90%><sprite=\"all_icons\" index=2>";
+                break;
+            case TutorialStage.BuildExtenderInFog:
                 hudObjText.text = "Objective: Build Power Extender";
                 objWindowText.text = "<b>Build Power Extender</b>\n\n" +
-                    "<size=75%>Build a Power Extender to extend your range.\n\n";
+                                     "<size=75%>Build a Power Extender in the fog to search for ship parts.\n\n";
                 break;
-            case TutorialStage.IncreasePowerGeneration:
-                hudObjText.text = "Objective: More Power Generation";
-                objWindowText.text = "<b>More Power Generation</b>\n\n" +
-                    $"<size=75%>Build more Power Generators and increase your power output to +{TutorialController.Instance.PowerGainGoal}.\n\n" +
-                    $"Target: +{powerChange} / +{TutorialController.Instance.PowerGainGoal} <size=90%><sprite=\"all_icons\" index=0>";
+            case TutorialStage.BuildMortar:
+                hudObjText.text = "Objective: Build Mortar";
+                objWindowText.text = "<b>Build Mortar</b>\n\n" +
+                    "<size=75%>Build a Mortar to clear the fog away.\n\n";
                 break;
-            case TutorialStage.BuildHarvesters:
-                hudObjText.text = "Objective: Build Harvesters";
-                objWindowText.text = "<b>Build Harvesters</b>\n\n" +
-                    $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} Mineral Harvesters to replenish your building materials.\n\n" +
-                    $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
+            case TutorialStage.BuildPulseDefence:
+                hudObjText.text = "Objective: Build Pulse Defence";
+                objWindowText.text = "<b>Build Pulse Defence</b>\n\n" +
+                    "<size=75%>Build a Pulse Defence to clear the fog away.\n\n";
                 break;
-            case TutorialStage.BuildAirCannon:
-                hudObjText.text = "Objective: Build Air Cannon";
-                objWindowText.text = "<b>Build Air Cannon</b>\n\n" +
-                    "<size=75%>Build an Air Cannon to protect yourself from the Fog!\n\n";
-                break;
-            case TutorialStage.BuildFogRepeller:
-                hudObjText.text = "Objective: Build Fog Repeller";
-                objWindowText.text = "<b>Build Fog Repeller</b>\n\n" +
-                    "<size=75%>Build a Fog Repeller to protect yourself from the Fog!\n\n";
+            case TutorialStage.DefenceActivation:
+                hudObjText.text = "Objective: Activate Defences";
+                objWindowText.text = "<b>Activate Defences</b>\n\n" +
+                    "<size=75%>Activate the defences to clear the fog away. You may like to build more before doing so, however.\n\n";
                 break;
         }
     }

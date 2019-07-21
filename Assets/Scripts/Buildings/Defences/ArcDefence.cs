@@ -52,17 +52,20 @@ public class ArcDefence : Defence
     
     void Fire()
     {
-        TileData target = GetTarget();
-
-        if (target != null)
+        if (TutorialController.Instance.DefencesOn)
         {
-            // Get a projectile from the pool and send it on its way
-            Projectile p = ProjectilePool.Instance.GetFromPool();
+            TileData target = GetTarget();
 
-            Vector3 origin = transform.position;
-            origin.y += 0.4f;
-            Vector3 targetPos = new Vector3(target.X, 0, target.Z);
-            p.Fire(origin, targetPos, directDamage, aoeDamage);
+            if (target != null)
+            {
+                // Get a projectile from the pool and send it on its way
+                Projectile p = ProjectilePool.Instance.GetFromPool();
+
+                Vector3 origin = transform.position;
+                origin.y += 0.4f;
+                Vector3 targetPos = new Vector3(target.X, 0, target.Z);
+                p.Fire(origin, targetPos, directDamage, aoeDamage);
+            }
         }
     }
 

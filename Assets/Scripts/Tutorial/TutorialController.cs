@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -8,17 +10,20 @@ using UnityEngine.SceneManagement;
 public enum TutorialStage
 {
     None,
-    CrashLanding,
-    ShipPartsCrashing,
-    ZoomBackToShip,
     ExplainSituation,
-    MoveCamera,
-    BuildGenerator,
-    BuildExtender,
-    IncreasePowerGeneration,
+    ExplainMinerals,
+    CameraControls,
     BuildHarvesters,
-    BuildAirCannon,
-    BuildFogRepeller,
+    BuildExtender,
+    BuildHarvestersExtended,
+    WaitingForPowerDrop,
+    BuildGenerator,
+    BuildMoreGenerators,
+    CollectMinerals,
+    BuildExtenderInFog,
+    BuildMortar,
+    BuildPulseDefence,
+    DefenceActivation,
     Finished
 }
 
@@ -26,7 +31,6 @@ public enum ButtonType
 {
     None,
     AirCannon,
-    Battery,
     Generator,
     Harvester,
     Extender,
@@ -42,13 +46,24 @@ public class TutorialController : DialogueBoxController
     [Header("Skip Tutorial")]
     [SerializeField] private bool skipTutorial = true;
 
+    [Header("Tutorial Game State (Testing)")]
+    [SerializeField] private TutorialStage tutorialStage = TutorialStage.ExplainSituation;
+    [SerializeField] private int subStage = 1;
+    [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
+    [SerializeField] private ButtonType currentlyLerping;
+    [SerializeField] private TileData currentTile = null;
+    [SerializeField] private TileData lastTileChecked;
+
     [Header("Objects on Game Board")]
-    [SerializeField] private Landmark airCannonLandmark;
-    [SerializeField] private Landmark batteryLandmark;
-    [SerializeField] private Landmark generatorLandmark;
+    [SerializeField] private Hub hub;
+    [SerializeField] public GameObject thruster;
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark extenderLandmark;
-    [SerializeField] private Landmark fogRepellerLandmark;
+    [SerializeField] private ResourceNode extendedHarvesterResource;
+    [SerializeField] private Landmark generatorLandmark;
+    [SerializeField] private Landmark extenderInFogLandmark;
+    [SerializeField] private Landmark mortarLandmark;
+    [SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [Header("Movement Keys")]
@@ -57,23 +72,27 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraKey sKey;
     [SerializeField] private CameraKey dKey;
 
+    [Header("Cameras")]
+    [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
+    [SerializeField] private CinemachineVirtualCamera thrusterCamera;
+
     [Header("Colours")]
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
 
     [Header("Goals")]
-    [SerializeField] private int powerGainGoal = 15;
-    [SerializeField] private int builtHarvestersGoal = 3;
+    [SerializeField] private int builtHarvestersGoal;
+    [SerializeField] private int builtHarvestersExtendedGoal;
+    [SerializeField] private int builtGeneratorsGoal;
+    [SerializeField] private int collectedMineralsGoal;
+
+    //[Header("Prefabs")]
+    //[SerializeField] private GameObject pulseDefencePrefab;
 
     //Non-Serialized Fields
-    private TutorialStage tutorialStage = TutorialStage.CrashLanding;
-    private int subStage = 1;
-    private BuildingType currentlyBuilding = BuildingType.None;
 
-    private TileData currentTile = null;
-    private TileData lastTileChecked;
 
-    private ButtonType currentlyLerping;
+
 
     private MeshRenderer targetRenderer = null;
     private float decalMin = 1.5f;
@@ -82,19 +101,25 @@ public class TutorialController : DialogueBoxController
     private float lerpProgress = 0f;
     private bool lerpForward = true;
 
-    //Public Properties
-    public static TutorialController Instance { get; protected set; }
+    private MusicFMOD musicFMOD;
 
-    public TutorialStage TutorialStage { get => tutorialStage; }
+    private int extendersGoal;
+    private bool defencesOn = false;
+    
+    //Public Properties------------------------------------------------------------------------------------------------------------------------------
+
+    //Basic Public Properties
+    public static TutorialController Instance { get; protected set; }
+    public int BuiltGeneratorsGoal { get => builtGeneratorsGoal; }
+    public int BuiltHarvestersExtendedGoal { get => builtHarvestersExtendedGoal; }
     public TileData CurrentTile { get => currentTile; }
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
-
-    public Color UINormalColour { get => uiNormalColour; }
+    public bool DefencesOn { get => defencesOn; }
+    public bool SkipTutorial { get => skipTutorial; }
+    public TutorialStage TutorialStage { get => tutorialStage; }
     public Color UIHighlightColour { get => uiHighlightColour; }
-
-    public int PowerGainGoal { get => powerGainGoal; }
-    public int BuiltHarvestersGoal { get => builtHarvestersGoal; }
+    public Color UINormalColour { get => uiNormalColour; }
 
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
 
@@ -112,6 +137,11 @@ public class TutorialController : DialogueBoxController
         {
             skipTutorial = GlobalVars.SkipTut;
         }
+
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
@@ -123,14 +153,17 @@ public class TutorialController : DialogueBoxController
         if (skipTutorial)
         {
             Fog.Instance.InvokeWakeUpFog(5);
+            Fog.Instance.InvokeBeginUpdatingDamage(5);
             tutorialStage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
-            //MusicController.Instance.SkipTutorial();
+            defencesOn = true;
             wKey.transform.parent.gameObject.SetActive(false);
+            //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = true;
         }
         else
         {
             targetRenderer = buildingTarget.GetComponent<MeshRenderer>();
+            //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = false;
         }
     }
 
@@ -143,7 +176,7 @@ public class TutorialController : DialogueBoxController
 
         if (tutorialStage != TutorialStage.Finished)
         {
-            if (tutorialStage == TutorialStage.BuildFogRepeller && subStage > 5)
+            if (tutorialStage == TutorialStage.DefenceActivation && subStage > 5)
             {
                 UIController.instance.UpdateObjectiveText(TutorialStage.None);
             }
@@ -164,36 +197,43 @@ public class TutorialController : DialogueBoxController
     {
         switch (tutorialStage)
         {
-            case TutorialStage.CrashLanding:
-                CrashLanding();
-                break;
-            case TutorialStage.ShipPartsCrashing:
-                ShipPartsCrashing();
-                break;
-            case TutorialStage.ZoomBackToShip:
-                ZoomBackToShip();
-                break;
             case TutorialStage.ExplainSituation:
-            case TutorialStage.MoveCamera:
+                ExplainSituation();
+                break;
+            case TutorialStage.ExplainMinerals:
+                ExplainMinerals();
+                break;
+            case TutorialStage.CameraControls:
                 CameraControls();
-                break;
-            case TutorialStage.BuildGenerator:
-                BuildGenerator();
-                break;
-            case TutorialStage.BuildExtender:
-                BuildExtender();
-                break;
-            case TutorialStage.IncreasePowerGeneration:
-                IncreasePowerGeneration();
                 break;
             case TutorialStage.BuildHarvesters:
                 BuildHarvesters();
                 break;
-            case TutorialStage.BuildAirCannon:
-                BuildAirCannon();
+            case TutorialStage.BuildExtender:
+                BuildExtender();
                 break;
-            case TutorialStage.BuildFogRepeller:
-                BuildFogRepeller();
+            case TutorialStage.BuildHarvestersExtended:
+                BuildHarvestersExtended();
+                break;
+            case TutorialStage.WaitingForPowerDrop:
+            case TutorialStage.BuildGenerator:
+            case TutorialStage.BuildMoreGenerators:
+                BuildGenerator();
+                break;
+            case TutorialStage.CollectMinerals:
+                CollectMinerals();
+                break;
+            case TutorialStage.BuildExtenderInFog:
+                BuildExtenderInFog();
+                break;
+            case TutorialStage.BuildMortar:
+                BuildMortar();
+                break;
+            case TutorialStage.BuildPulseDefence:
+                BuildPulseDefence();
+                break;
+            case TutorialStage.DefenceActivation:
+                DefenceActivation();
                 break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
@@ -205,48 +245,14 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Stage-Specific Recurring Methods - Animations--------------------------------------------------------------------------------------------------
-
-    //Ship crash lands, intro scene
-    private void CrashLanding()
-    {
-        //Run animation for the ship crash landing
-
-        tutorialStage = TutorialStage.ShipPartsCrashing;
-    }
-
-    //Ship parts crash, x3 different scenes
-    private void ShipPartsCrashing()
-    {
-        //Run animation / camera movement for showing the different ship parts crashing
-        // change stage to get top down view
-        tutorialStage = TutorialStage.ZoomBackToShip;
-    }
-
-    //Drone zooms out of ship to get a top-down view of it
-    private void DroneLeavesShipToGetTopDownView()
-    {
-        //Run animation / camera movement for watching a drone leaving the ship
-        tutorialStage = TutorialStage.ZoomBackToShip;
-    }
-
-    //Zoom back to ship
-    private void ZoomBackToShip()
-    {
-        //Run camera movement to move camera back to the hub
-
-        tutorialStage = TutorialStage.ExplainSituation;
-    }
-
     //Stage-Specific Recurring Methods - Player Completes Tutorial-----------------------------------------------------------------------------------
 
-    //Player learns camera controls
-    private void CameraControls()
+    //Nexy explains the situation to the player
+    private void ExplainSituation()
     {
         switch (subStage)
         {
             case 1:
-                //Fog.Instance.SpawnStartingFog();
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("explain situation", 2);
                 break;
@@ -254,11 +260,48 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    tutorialStage = TutorialStage.MoveCamera;
+                    tutorialStage = TutorialStage.ExplainMinerals;
+                    ResetSubStage();
+                }
+
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("Inaccurate sub stage");
+                break;
+        }
+    }
+
+    //Nexy pans to a mineral deposit and explains it to the player
+    private void ExplainMinerals()
+    {
+        switch (subStage)
+        {
+            case 1:
+                SendDialogue("explain minerals", 1);
+                mineralDepositCamera.gameObject.SetActive(true);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    mineralDepositCamera.gameObject.SetActive(false);
+                    DismissDialogue();
                 }
 
                 break;
             case 3:
+                tutorialStage = TutorialStage.CameraControls;
+                ResetSubStage();
+                break;
+        }
+    }
+
+    //Player learns camera controls
+    private void CameraControls()
+    {
+        switch (subStage)
+        {
+            case 1:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("move camera", 1);
 
@@ -272,7 +315,7 @@ public class TutorialController : DialogueBoxController
                 sKey.LerpIn();
                 dKey.LerpIn();
                 break;
-            case 4:
+            case 2:
                 GetCameraMovementInput();
 
                 if (dialogueRead)
@@ -281,11 +324,11 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
-                    SkipTutorialAhead(6);
+                    GoToSubStage(4);
                 }
 
                 break;
-            case 5:
+            case 3:
                 GetCameraMovementInput();
 
                 if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
@@ -294,9 +337,9 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 6:
-                tutorialStage = TutorialStage.BuildGenerator;
-                currentlyBuilding = BuildingType.Generator;
+            case 4:
+                tutorialStage = TutorialStage.BuildHarvesters;
+                currentlyBuilding = BuildingType.Harvester;
                 ResetSubStage();
                 wKey.transform.parent.gameObject.SetActive(false);
 
@@ -308,16 +351,14 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Player learns about and places a generator
-    private void BuildGenerator()
+    //Player learns about and builds a harvester
+    private void BuildHarvesters()
     {
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(tutorialStage);
-                SendDialogue("build generator target", 1);
-                //Invoke("ActivateTarget", 1);
-                ActivateTarget(generatorLandmark);
+                SendDialogue("build harvester target", 1);
+                ActivateTarget(harvesterResource);
 
                 if (!objWindowVisible)
                 {
@@ -332,7 +373,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -344,8 +385,8 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                currentlyLerping = ButtonType.Generator;
-                SendDialogue("build generator icon", 1);
+                currentlyLerping = ButtonType.Harvester;
+                SendDialogue("build harvester icon", 1);
                 break;
             case 5:
                 if (dialogueRead)
@@ -354,40 +395,72 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (BuiltCurrentlyBuilding())
                 {
-                    SkipTutorialAhead(7);
+                    DeactivateTarget();
+                    GoToSubStage(7);
                 }
 
                 break;
             case 6:
                 if (BuiltCurrentlyBuilding())
                 {
+                    DeactivateTarget();
                     IncrementSubStage();
                 }
 
                 break;
             case 7:
+                SendDialogue("build more harvesters", 1);
+                ActivateMouse();
+                break;
+            case 8:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    GoToSubStage(10);
+                }
+
+                break;
+            case 9:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
+
+                break;
+            case 10:
+                currentlyLerping = ButtonType.Harvester;
+                IncrementSubStage();
+                break;
+            case 11:
+                if (ResourceController.Instance.Harvesters.Count == builtHarvestersGoal)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 12:
                 tutorialStage = TutorialStage.BuildExtender;
                 currentlyBuilding = BuildingType.Extender;
-                currentlyLerping = ButtonType.None;
                 ResetSubStage();
-                DeactivateTarget();
-
                 break;
             default:
                 SendDialogue("error", 1);
-                Debug.Log("Inaccurate sub stage");
+                Debug.Log("inaccurate sub stage");
                 break;
         }
     }
 
-    //Player learns about and places a relay
+    //Player learns about and builds a power extender to reach additional mineral nodes
     private void BuildExtender()
     {
         switch (subStage)
         {
             case 1:
                 SendDialogue("build extender target", 1);
-                //Invoke("ActivateTarget", 1);
+                UIController.instance.UpdateObjectiveText(tutorialStage);
                 ActivateTarget(extenderLandmark);
 
                 if (!objWindowVisible)
@@ -403,7 +476,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -427,8 +500,8 @@ public class TutorialController : DialogueBoxController
                 break;
             case 6:
                 //Turn off UI element prompting player to build a relay on the prompted tile
-                tutorialStage = TutorialStage.IncreasePowerGeneration;
-                currentlyBuilding = BuildingType.Generator;
+                tutorialStage = TutorialStage.BuildHarvestersExtended;
+                currentlyBuilding = BuildingType.Harvester;
                 ResetSubStage();
                 DeactivateTarget();
 
@@ -440,14 +513,15 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Player increases their power generation
-    private void IncreasePowerGeneration()
+    //Player learns about and builds a harvester
+    private void BuildHarvestersExtended()
     {
         switch (subStage)
         {
             case 1:
-                SendDialogue("increase power generation", 1);
-                Invoke(nameof(ActivateMouse), 1);
+                SendDialogue("build more harvesters extended", 1);
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
@@ -462,7 +536,70 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
+                }
+
+                break;
+            case 3:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
+
+                break;
+            case 4:
+                currentlyLerping = ButtonType.Harvester;
+                IncrementSubStage();
+                break;
+            case 5:
+                if (ResourceController.Instance.Harvesters.Count == builtHarvestersExtendedGoal)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 6:
+                tutorialStage = TutorialStage.WaitingForPowerDrop;
+                currentlyBuilding = BuildingType.Generator;
+                ResetSubStage();
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
+
+    //Player learns about the power system and builds generators
+    //TODO: mouse over power generation diagram in UI, triggers substage progression, rather than just having information in dialogue box
+    private void BuildGenerator()
+    {
+        switch (subStage)
+        {
+            case 1:
+                if (ResourceController.Instance.StoredPower < 75)
+                {
+                    tutorialStage = TutorialStage.BuildGenerator;
+                    UIController.instance.UpdateObjectiveText(tutorialStage);
+                    SendDialogue("build generator target", 1);
+                    ActivateTarget(generatorLandmark);
+
+                    if (!objWindowVisible)
+                    {
+                        ToggleObjWindow();
+                    }
+                }
+
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -478,63 +615,18 @@ public class TutorialController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 5:
-                if (ResourceController.Instance.PowerChange >= powerGainGoal)
-                {
-                    IncrementSubStage();
-                }
-
-                break;
-            case 6:
-                tutorialStage = TutorialStage.BuildHarvesters;
-                currentlyBuilding = BuildingType.Harvester;
-                ResetSubStage();
-                break;
-            default:
-                SendDialogue("error", 1);
-                Debug.Log("inaccurate sub stage");
-                break;
-        }
-    }
-
-    //Player learns about and builds a harvester
-    private void BuildHarvesters()
-    {
-        switch (subStage)
-        {
-            case 1:
-                SendDialogue("build harvester target", 1);
-                //Invoke("ActivateTarget", 1);
-                ActivateTarget(harvesterResource);
-
-                if (!objWindowVisible)
-                {
-                    ToggleObjWindow();
-                }
-
-                break;
-            case 2:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
-                else if (tileClicked)
+                else if (BuiltCurrentlyBuilding())
                 {
-                    SkipTutorialAhead(4);
+                    DeactivateTarget();
+                    GoToSubStage(7);
                 }
 
                 break;
-            case 3:
-                if (tileClicked)
-                {
-                    DismissMouse();
-                }
-
-                break;
-            case 4:
-                currentlyLerping = ButtonType.Harvester;
-                IncrementSubStage();
-                break;
-            case 5:
+            case 6:
                 if (BuiltCurrentlyBuilding())
                 {
                     DeactivateTarget();
@@ -542,43 +634,215 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 6:
-                SendDialogue("build more harvesters", 1);
-                Invoke(nameof(ActivateMouse), 1);
-                break;
             case 7:
+                SendDialogue("build more generators", 1);
+                ActivateMouse();
+                tutorialStage = TutorialStage.BuildMoreGenerators;
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
+                break;
+            case 8:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(9);
+                    GoToSubStage(10);
                 }
 
                 break;
-            case 8:
+            case 9:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 9:
-                currentlyLerping = ButtonType.Harvester;
+            case 10:
+                currentlyLerping = ButtonType.Generator;
                 IncrementSubStage();
                 break;
-            case 10:
-                if (ResourceController.Instance.Harvesters.Count == builtHarvestersGoal)
+            case 11:
+                if (ResourceController.Instance.Generators.Count == builtGeneratorsGoal)
                 {
                     IncrementSubStage();
                 }
 
                 break;
-            case 11:
-                tutorialStage = TutorialStage.BuildAirCannon;
+            case 12:
+                tutorialStage = TutorialStage.CollectMinerals;
+                currentlyBuilding = BuildingType.None;
+                currentlyLerping = ButtonType.None;
+                ResetSubStage();
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("Inaccurate sub stage");
+                break;
+        }
+    }
+
+    //Checks that player has collected the required minerals
+    private void CollectMinerals()
+    {
+        switch (subStage)
+        {
+            case 1:
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("collect minerals", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
+                break;
+            case 2:
+                // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
+                if (ResourceController.Instance.StoredMineral >= collectedMineralsGoal)
+                {
+                    GoToSubStage(4);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 3:
+                if (ResourceController.Instance.StoredMineral >= collectedMineralsGoal)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 4:
+                if (UIController.instance.buttonClosed)
+                {
+                    UIController.instance.ShowRepairButton("T");
+                    IncrementSubStage();
+                }
+
+                break;
+            case 5:
+                if (ResourceController.Instance.StoredMineral < collectedMineralsGoal)
+                {
+                    UIController.instance.CloseButton();
+                    SendDialogue("maintain minerals", 1);
+                    GoToSubStage(2);
+                }
+
+                break;
+            case 6:
+                tutorialStage = TutorialStage.BuildExtenderInFog;
+                currentlyBuilding = BuildingType.Extender;
+                ResetSubStage();
+                break;
+            default:
+                break;
+        }
+    }
+
+    //Player builds an extender in the fog to see what happens
+    private void BuildExtenderInFog()
+    {
+        switch (subStage)
+        {
+            //TODO: pan to thruster, enable it
+            case 1:
+                // Update Hub model to fixed ship without thrusters / Particle effects
+                hub.transform.GetChild(0).gameObject.SetActive(false);
+                hub.transform.GetChild(1).gameObject.SetActive(true);
+                // Play music Var 2 soundtrack
+                //musicFMOD.StageTwoMusic();
+                // Run AI completion text
+                SendDialogue("extend to thruster", 1);
+                //Camera pans to the thruster
+                thrusterCamera.gameObject.SetActive(true);
+                //Enable thruster to be clicked and collected for attaching
+                thruster.SetActive(true);
+                ActivateMouse();
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    thrusterCamera.gameObject.SetActive(false);
+                }
+
+                break;
+            case 3:
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("build extender in fog", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
+                break;
+            case 4:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    GoToSubStage(6);
+                }
+
+                break;
+            case 5:
+                if (tileClicked)
+                {
+                    DismissMouse();
+                }
+
+                break;
+            case 6:
+                currentlyLerping = ButtonType.Extender;
+                IncrementSubStage();
+                break;
+            case 7:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else
+                {
+                    foreach (Relay e in ResourceController.Instance.Extenders)
+                    {
+                        if (e.TakingDamage)
+                        {
+                            GoToSubStage(9);
+                            break;
+                        }
+                    }
+                }
+
+                break;
+            case 8:
+                foreach (Relay e in ResourceController.Instance.Extenders)
+                {
+                    if (e.TakingDamage)
+                    {
+                        IncrementSubStage();
+                        break;
+                    }
+                }
+
+                break;
+            case 9:
+                tutorialStage = TutorialStage.BuildMortar;
                 currentlyBuilding = BuildingType.AirCannon;
                 ResetSubStage();
+                DeactivateTarget();
                 break;
             default:
                 SendDialogue("error", 1);
@@ -587,16 +851,16 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Player learns about and builds an arc defence
-    private void BuildAirCannon()
+    //Player learns about and builds a mortar
+    private void BuildMortar()
     {
         switch (subStage)
         {
             case 1:
-                Fog.Instance.WakeUpFog();
-                SendDialogue("build air cannon", 1);
-                //Invoke("ActivateTarget", 1);
-                ActivateTarget(airCannonLandmark);
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("build mortar", 1);    //also explains "fog bad"
+                //ActivateTarget(mortarLandmark);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
@@ -611,7 +875,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -634,7 +898,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                tutorialStage = TutorialStage.BuildFogRepeller;
+                tutorialStage = TutorialStage.BuildPulseDefence;
                 currentlyBuilding = BuildingType.FogRepeller;
                 ResetSubStage();
                 DeactivateTarget();
@@ -646,15 +910,16 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Player learns about and builds a repel fan
-    private void BuildFogRepeller()
+    //Player learns about and builds a pulse defence
+    private void BuildPulseDefence()
     {
         switch (subStage)
         {
             case 1:
-                SendDialogue("build fog repeller", 1);
-                //Invoke("ActivateTarget", 1);
-                ActivateTarget(fogRepellerLandmark);
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("build pulse defence", 1);
+                //ActivateTarget(pulseDefenceLandmark);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
@@ -669,7 +934,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
-                    SkipTutorialAhead(4);
+                    GoToSubStage(4);
                 }
 
                 break;
@@ -687,14 +952,71 @@ public class TutorialController : DialogueBoxController
             case 5:
                 if (Hub.Instance.GetPulseDefences().Count == 1)
                 {
-                    IncrementSubStage();
+                    tutorialStage = TutorialStage.DefenceActivation;
+                    currentlyBuilding = BuildingType.None;
+                    ResetSubStage();
+                    DeactivateTarget();
+                }
+
+                break;
+
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
+
+    //Player turns the defences on, waking the fog
+    //TODO: pulse defence animation needs to be off until defences are switched on
+    private void DefenceActivation()
+    {
+        switch (subStage)
+        {
+            case 1:
+                if (UIController.instance.buttonClosed)
+                {
+                    UIController.instance.ShowActivateButton();
+                }
+
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("activate defences", 1);
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 3:
+                //Waiting for the big button to be pressed
+                break;
+            case 4:
+                //foreach (RepelFan pd in ResourceController.Instance.PulseDefences)
+                //{
+                //    pd.GetComponentInChildren<Animator>().enabled = true;
+                //}
+
+                //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = true;
+                defencesOn = true;
+                Fog.Instance.BeginUpdatingDamage();
+                IncrementSubStage();
+                break;
+            case 5:
+                foreach (FogUnit f in Fog.Instance.FogUnitsInPlay)
+                {
+                    if (f.TakingDamage)
+                    {
+                        Fog.Instance.WakeUpFog();
+                        IncrementSubStage();
+                        break;
+                    }
                 }
 
                 break;
             case 6:
-                currentlyBuilding = BuildingType.None;
                 SendDialogue("finished", 1);
-                DeactivateTarget();
                 break;
             case 7:
                 if (dialogueRead)
@@ -741,13 +1063,53 @@ public class TutorialController : DialogueBoxController
     public bool TileAllowed(TileData tile)
     {
         lastTileChecked = tile;
-        return tutorialStage == TutorialStage.Finished || (tutorialStage == TutorialStage.IncreasePowerGeneration && tile.Resource == null) || (tutorialStage == TutorialStage.BuildHarvesters && subStage > 5 && tile.Resource != null) || tile == currentTile;
+
+        switch (tutorialStage)
+        {
+            case TutorialStage.BuildHarvesters:
+                if (subStage > 6)
+                {
+                    return tile.Resource != null;
+                }
+                else
+                {
+                    return tile == currentTile;
+                }
+            case TutorialStage.BuildHarvestersExtended:
+                return tile.Resource != null;
+            case TutorialStage.BuildMoreGenerators:
+            case TutorialStage.BuildExtenderInFog:
+                return tile.Resource == null;
+            case TutorialStage.CollectMinerals:
+            case TutorialStage.BuildMortar:
+            case TutorialStage.BuildPulseDefence:
+                return tile.FogUnit == null;
+            case TutorialStage.DefenceActivation:
+            case TutorialStage.Finished:
+                return true;
+            default:
+                return tile == currentTile;
+        }
     }
 
     //Checking if a button is acceptable
     public bool ButtonAllowed(ButtonType button)
     {
-        return (tutorialStage == TutorialStage.Finished || button == currentlyLerping || button == ButtonType.Destroy) && ButtonsNormallyAllowed(lastTileChecked).Contains(button);
+        if (ButtonsNormallyAllowed(lastTileChecked).Contains(button))
+        {
+            switch (tutorialStage)
+            {
+                case TutorialStage.CollectMinerals:
+                    return button == ButtonType.Extender || button == ButtonType.Harvester;
+                case TutorialStage.DefenceActivation:
+                case TutorialStage.Finished:
+                    return true;
+                default:
+                    return button == currentlyLerping || button == ButtonType.Destroy;
+            }
+        }
+
+        return false;
     }
 
     //Getting the normally acceptable buttons for a tile
@@ -767,7 +1129,6 @@ public class TutorialController : DialogueBoxController
             }
 
             result.Add(ButtonType.AirCannon);
-            result.Add(ButtonType.Battery);
             result.Add(ButtonType.Extender);
             result.Add(ButtonType.FogRepeller);
         }
@@ -791,8 +1152,8 @@ public class TutorialController : DialogueBoxController
         IncrementSubStage();
     }
 
-    //Dismisses dialogue and the mouse and skips the tutorial ahead appropriately
-    private void SkipTutorialAhead(int nextSubStage)
+    //Dismisses dialogue and the mouse and advances/retreats to the specified sub-stage appropriately appropriately
+    private void GoToSubStage(int nextSubStage)
     {
         MouseController.Instance.ReportTutorialClick = false;
         tileClicked = false;
@@ -829,39 +1190,19 @@ public class TutorialController : DialogueBoxController
         subStage = 1;
     }
 
-    //Tutorial Utility Methods - (Targeted) Building-------------------------------------------------------------------------------------------------
-
-    //(Invokably) activate the building target based on the current stage rather than passing a parameter
-    private void ActivateTarget()
+    //Called to advance the collect minerals stage to sub-stage 6
+    public void CompleteMineralCollection()
     {
-        Locatable l = null;
-
-        switch (tutorialStage)
-        {
-            case TutorialStage.BuildGenerator:
-                l = generatorLandmark;
-                break;
-            case TutorialStage.BuildExtender:
-                l = extenderLandmark;
-                break;
-            case TutorialStage.BuildHarvesters:
-                l = harvesterResource;
-                break;
-            default:
-                Debug.Log($"Why are you activating a target during stage {tutorialStage}?");
-                break;
-        }
-
-        if (l != null)
-        {
-            ActivateTarget(l);
-        }
-        else
-        {
-            Debug.Log("Locatable l in TutorialController.ActivateTarget() is null");
-        }
-
+        GoToSubStage(6);
     }
+
+    //Called to advance the defence activation stage to sub-stage 4
+    public void ActivateDefences()
+    {
+        GoToSubStage(4);
+    }
+
+    //Tutorial Utility Methods - (Targeted) Building-------------------------------------------------------------------------------------------------
 
     //Activate the building target at the locatable's location
     private void ActivateTarget(Locatable l)
