@@ -62,6 +62,19 @@ public class Collectable : Locatable, ICollectible
             UIController.instance.AbilityUnlock(ability);
             Destroy(gameObject);
         }
+        
+        if (location.FogUnit)
+        {
+            if (location.FogUnit.Health >= 0 && location.PowerSource)
+            {
+                if (ability.AbilityType != AbilityEnum.None)
+                {
+                    AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
+                }
+                UIController.instance.AbilityUnlock(ability);
+                Destroy(gameObject);
+            }
+        } 
     }
 
     AbilityEnum ConvertCollectableName(string name)
