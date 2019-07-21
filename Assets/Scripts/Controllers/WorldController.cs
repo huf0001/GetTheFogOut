@@ -37,7 +37,8 @@ public class WorldController : MonoBehaviour
     [SerializeField] private GameObject ground;
     public Collider groundCollider;
 
-    [SerializeField] GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
+    [SerializeField] public GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
+    [SerializeField] public Material normalTile, hoverTile;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
@@ -146,6 +147,7 @@ public class WorldController : MonoBehaviour
         SetResourcesToTiles();
         SetBuildingsToTiles();
         SetLandmarksToTiles();
+        SetCollectablesToTiles();
         groundCollider = ground.GetComponent<Collider>();
         TutorialController.Instance.StartTutorial();
     }
@@ -218,6 +220,25 @@ public class WorldController : MonoBehaviour
             s.Location = tile;
             ShipComponents.Add(new ShipComponentState(s.Id, false));
             s.gameObject.SetActive(false);
+        }
+    }
+
+    void SetCollectablesToTiles()
+    {
+        Collectable[] collectables = FindObjectsOfType<Collectable>();
+        foreach (Collectable c in collectables)
+        {
+            var position = c.transform.position;
+            TileData tile = GetTileAt(position);
+            tile.Collectible = c;
+            c.Location = tile;
+            
+            // Centre on tile
+            Vector3 pos = position;
+            pos.x = Mathf.Round(pos.x);
+            pos.z = Mathf.Round(pos.z);
+            position = pos;
+            c.transform.position = position;
         }
     }
 
@@ -422,7 +443,6 @@ public class WorldController : MonoBehaviour
         if (resourceController.IsWin() || hubDestroyed)
         {
             Time.timeScale = 0.2f;
-            musicFMOD.GameLoseMusic();
             GameOver = true;
             InBuildMode = false;
         }
@@ -463,10 +483,12 @@ public class WorldController : MonoBehaviour
     {
         if (GameWin)
         {
+            musicFMOD.GameWinMusic();
             uiController.EndGameDisplay("You win!"); //Display win UI
         }
         else
         {
+            musicFMOD.GameLoseMusic();
             uiController.EndGameDisplay("You lose!"); //Display lose UI
         }
     }
@@ -657,13 +679,17 @@ public class WorldController : MonoBehaviour
                 {
                     if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
                     {
-                        activeTiles.Add(tile);
+                        if (!activeTiles.Contains(tile))
+                        {
+                            activeTiles.Add(tile);
+                        }
                         DisableTiles.Remove(tile);
                         tile.PowerUp(tempPower);
+           //             Debug.Log(tile.Name);
                     }
                 }
             }
-            Debug.Log("off");
+        //    Debug.Log("off");
             thrusterToggle = true;
         }
     }
@@ -686,10 +712,11 @@ public class WorldController : MonoBehaviour
                         }
                         tempPower = tile.getself().PowerSource;
                         tile.PowerDown(tempPower);
+                   //     Debug.Log(tile.Name);
                     }
                 }
             }
-            Debug.Log("on");
+        //    Debug.Log("on");
             thrusterToggle = false;
         }
     }

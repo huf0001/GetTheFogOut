@@ -15,6 +15,7 @@ public class TileData
 
     [SerializeField] private ResourceNode resource = null;
     [SerializeField] private Building building = null;
+    [SerializeField] private Collectable collectible = null;
 
     [SerializeField] private Material onMaterial;
     [SerializeField] private Material visibleMaterial;
@@ -93,6 +94,12 @@ public class TileData
                 return powerSources[0];
             }
         }
+    }
+
+    public Collectable Collectible
+    {
+        get => collectible;
+        set => collectible = value;
     }
 
     public Vector3 Position

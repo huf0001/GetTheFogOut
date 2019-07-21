@@ -53,21 +53,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510717633977975396}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03a14715ed09368478781018b9d1f10e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location:
-    powerSources: []
-    resource: {fileID: 0}
-    building: {fileID: 0}
-    onMaterial: {fileID: 0}
-    visibleMaterial: {fileID: 0}
-    startMaterial: {fileID: 0}
-    x: 0
-    z: 0
-    plane: {fileID: 0}
   health: 50
   maxHealth: 1
   shield: 0
@@ -79,8 +69,6 @@ MonoBehaviour:
   buildingType: 1
   mineralCost: 0
   powerCost: 0
-  fuelCost: 0
-  organicCost: 0
   audioSpawn: {fileID: 0}
   audioDamage: {fileID: 0}
   audioDestroy: {fileID: 0}
@@ -115,6 +103,8 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  shieldBarTransform: {fileID: 0}
+  shieldBarImage: {fileID: 0}
   damageIndicatorPrefab: {fileID: 0}
   isShieldOn: 0
   overclockTimer: 0
@@ -240,7 +230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3318148520141281333}
   m_Layer: 0
-  m_Name: Holo Motor
+  m_Name: Holo Mortar
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

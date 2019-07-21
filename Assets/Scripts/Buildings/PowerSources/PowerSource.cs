@@ -220,7 +220,7 @@ public abstract class PowerSource : Building
                     }
                 }
             }
-            
+            /*
             if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
             {
                 if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
@@ -231,7 +231,7 @@ public abstract class PowerSource : Building
                         Debug.Log("collected");
                     }
                 }
-            }
+            }*/
             
             if (!WorldController.Instance.ActiveTiles.Contains(tile))
             {

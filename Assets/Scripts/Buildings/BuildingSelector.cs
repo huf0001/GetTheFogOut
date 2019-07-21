@@ -51,11 +51,10 @@ public class BuildingSelector : MonoBehaviour
 
     private void OpenMenu()
     {
+        visible = true;
         selectParent.alpha = 1;
-        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).SetEase(Ease.OutBack).
-            OnComplete(delegate
+        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).SetEase(Ease.OutBack).OnComplete(delegate
             {
-                visible = true;
                 selectParent.interactable = true;
                 selectParent.blocksRaycasts = true;
             });
@@ -72,13 +71,12 @@ public class BuildingSelector : MonoBehaviour
                 b.DeactivateLerping();
             }
         }
-
+        visible = false;
         selectParent.interactable = false;
         selectParent.blocksRaycasts = false;
         DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, 0, 0.3f).SetEase(Ease.InBack).
             OnComplete(delegate
             {
-                visible = false;
                 selectParent.alpha = 0;
             });
     }

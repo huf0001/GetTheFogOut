@@ -7,7 +7,7 @@ namespace Abilities
     public interface ICollectible 
     {
         // Name to be checked against when identifying what is being collected.
-        string CollectibleName
+        string CollectableName
         {
             get;
         }

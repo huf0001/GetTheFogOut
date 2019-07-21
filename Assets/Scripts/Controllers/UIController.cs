@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 using DG.Tweening;
 
 public class UIController : MonoBehaviour
@@ -24,26 +26,42 @@ public class UIController : MonoBehaviour
     private float powerTime = 0.0f, mineralTime = 0.0f;
     private bool isCursorOn = false;
     private Image launchButtonImage;
-    private Image launchBackground;
     private MusicFMOD musicFMOD;
 
-    [SerializeField] Image powerImg;
-    [SerializeField] Sprite[] powerLevelSprites;
-    [SerializeField] TextMeshProUGUI objWindowText;
-    [SerializeField] TextMeshProUGUI hudObjText;
-    [SerializeField] Color powerLow;
-    [SerializeField] Color powerMedium;
-    [SerializeField] Color powerHigh;
-    [SerializeField] Color powerCurrent;
-    [SerializeField] GameObject launchCanvas;
-    [SerializeField] Button launchButton;
-    [SerializeField] Sprite[] objectiveButtonSprites;
+    [SerializeField] private Image powerImg;
+    [SerializeField] private Sprite[] powerLevelSprites;
+    [SerializeField] private Image powerThresholdsBg;
+    [SerializeField] private Image powerThresholds;
+    [SerializeField] private TextMeshProUGUI objWindowText;
+    [SerializeField] private TextMeshProUGUI hudObjText;
+    [Header("Tile Colours")]
+    [SerializeField] private Color powerLow;
+    [SerializeField] private Color powerMedium;
+    [SerializeField] private Color powerHigh;
+    [SerializeField] private Color powerMax;
+    [SerializeField] private Color powerCurrent;
+    [Header("Objective Buttons")]
+    [SerializeField, FormerlySerializedAs("launchCanvas")] private GameObject objectiveProceedCanvas;
+    [SerializeField, FormerlySerializedAs("launchButtonBG")] private Image objectiveButtonBG;
+    [SerializeField, FormerlySerializedAs("launchButton")] private Button objectiveButton;
+    [SerializeField] private Sprite[] objectiveButtonSprites;
+    [Header("Countdown Slider")]
+    [SerializeField] private Image countdownSliderBG;
+    [SerializeField] private CanvasGroup countdownSliderCG;
+    [SerializeField] private Slider countdownSlider;
+    [SerializeField] private TextMeshProUGUI countdownText;
+    [Header("Ability Unlock")]
+    [SerializeField] private Canvas abilityUnlockCanvas;
+    [SerializeField] private Image abilityImage;
+    [SerializeField] private Sprite[] abilitySprites;
+    [SerializeField] private Button[] abilityButtons;
+    [SerializeField] private TextMeshProUGUI abilityNameText;
+    [SerializeField] private TextMeshProUGUI abilityDescText;
+    [SerializeField, TextArea] private string[] abilityDescriptions;
 
     ResourceController resourceController = null;
-//    private MeshRenderer MeshRend;
-    private int index,temp;
-
-    //private GameObject objtest = GameObject.FindGameObjectWithTag("Tile");//.GetComponent<Material>();
+    private int index, temp;
+    private MeshRenderer tile;
 
     // Start is called before the first frame update
     void Awake()
@@ -59,11 +77,9 @@ public class UIController : MonoBehaviour
 
         index = 0;
         temp = 2;
-
-        FindSliders();
-
-        launchBackground = launchCanvas.GetComponentInChildren<Image>();
-        launchButtonImage = launchButton.image;
+        
+        objectiveButtonBG = objectiveProceedCanvas.GetComponentInChildren<Image>();
+        launchButtonImage = objectiveButton.image;
 
         //cursor = GameObject.Find("Cursor");
         //cursor.SetActive(false);
@@ -71,6 +87,7 @@ public class UIController : MonoBehaviour
         //Tweens in the UI for a smooth bounce in from outside the canvas
         //hudBar = GameObject.Find("HUD");// "HudBar");
         //hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
+        FindSliders();
     }
 
     // Update is called once per frame
@@ -98,33 +115,42 @@ public class UIController : MonoBehaviour
         powerText = GameObject.Find("PowerLevel").GetComponent<TextMeshProUGUI>();
         mineralText = GameObject.Find("MineralLevel").GetComponent<TextMeshProUGUI>();
     }
-    /*
-    void FindTile()
-    {
-        mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-    }*/
 
+    // Power Threshold image show and hide methods
+    public void ShowPowerThresholds()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.Insert(0, powerThresholdsBg.DOFillAmount(1, 0.3f));
+        sequence.Insert(0.05f, powerThresholds.DOFillAmount(1, 0.25f));
+    }
+
+    public void HidePowerThresholds()
+    {
+        powerThresholdsBg.DOFillAmount(0, 0.3f);
+        powerThresholds.DOFillAmount(0, 0.2f);
+    }
 
     // Functions dealing with the drop down objective button
     public void ShowRepairButton(string controller)
     {
-        launchCanvas.SetActive(true);
+        objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+        showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
             {
-                launchButton.enabled = true;
+                objectiveButton.enabled = true;
                 buttonClosed = false;
-                launchButton.onClick.AddListener(
-                    delegate {
+                objectiveButton.onClick.AddListener(
+                    delegate
+                    {
                         if (ResourceController.Instance.StoredMineral >= 500)
                         {
                             ResourceController.Instance.StoredMineral -= 500;
-                            launchButton.enabled = false;
+                            objectiveButton.enabled = false;
                             if (controller == "O")
                             {
                                 ObjectiveController.Instance.IncrementStage();
@@ -133,7 +159,7 @@ public class UIController : MonoBehaviour
                             {
                                 TutorialController.Instance.CompleteMineralCollection();
                             }
-
+                            
                             CloseButton();
                         }
                     });
@@ -143,20 +169,21 @@ public class UIController : MonoBehaviour
 
     public void ShowAttachButton()
     {
-        launchCanvas.SetActive(true);
+        objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[1];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+        showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
             {
-                launchButton.enabled = true;
+                objectiveButton.enabled = true;
                 buttonClosed = false;
-                launchButton.onClick.AddListener(
-                    delegate {
-                        launchButton.enabled = false;
+                objectiveButton.onClick.AddListener(
+                    delegate
+                    {
+                        objectiveButton.enabled = false;
                         ObjectiveController.Instance.IncrementSubStage();
                         CloseButton();
                     });
@@ -164,19 +191,54 @@ public class UIController : MonoBehaviour
             });
     }
 
+    public void ShowCountdownSlider()
+    {
+        countdownSlider.maxValue = ObjectiveController.Instance.Countdown;
+        Sequence sequence = DOTween.Sequence();
+        sequence.Insert(1.5f, countdownSliderBG.DOFillAmount(1, 1))
+            .Append(countdownSliderCG.DOFade(1, 0.5f).OnComplete(
+                delegate
+                {
+                    countdownSliderCG.blocksRaycasts = true;
+                    countdownText.DOFade(0.3f, 0.7f).SetLoops(-1, LoopType.Yoyo);
+                }));
+    }
+
+    public void UpdateCountdownSlider()
+    {
+        if (countdownSlider.value < countdownSlider.maxValue)
+        {
+            countdownSlider.value += Time.deltaTime;
+            if (countdownSlider.value > countdownSlider.maxValue)
+            {
+                countdownSlider.value = countdownSlider.maxValue;
+            }
+        }
+    }
+
+    public void HideCountdownSlider()
+    {
+        DOTween.Kill(countdownText);
+        //Sequence sequence = DOTween.Sequence();
+        //sequence.Append()
+        countdownSliderCG.alpha = 0;
+        countdownSliderBG.fillAmount = 0;
+    }
+
     public void ShowLaunchButton()
     {
-        launchCanvas.SetActive(true);
+        objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[2];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+        showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
             delegate
             {
-                launchButton.enabled = true;
-                launchButton.onClick.AddListener(delegate {
+                objectiveButton.enabled = true;
+                objectiveButton.onClick.AddListener(delegate
+                {
                     WinGame();
                 });
                 launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
@@ -186,20 +248,20 @@ public class UIController : MonoBehaviour
 
     public void ShowActivateButton()
     {
-        launchCanvas.SetActive(true);
+        objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[1];
 
         Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchBackground.DOFillAmount(1, 1))
+        showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
             .OnComplete(
                 delegate
                 {
-                    launchButton.enabled = true;
+                    objectiveButton.enabled = true;
                     buttonClosed = false;
-                    launchButton.onClick.AddListener(
+                    objectiveButton.onClick.AddListener(
                         delegate {
-                            launchButton.enabled = false;
+                            objectiveButton.enabled = false;
                             TutorialController.Instance.ActivateDefences();
                             CloseButton();
                         });
@@ -212,16 +274,58 @@ public class UIController : MonoBehaviour
         DOTween.Kill(launchButtonImage);
 
         Sequence showLaunch = DOTween.Sequence();
-            showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
-            .Append(launchBackground.DOFillAmount(0, 1))
-            .OnComplete(
-            delegate
+        showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
+        .Append(objectiveButtonBG.DOFillAmount(0, 1))
+        .OnComplete(
+        delegate
+        {
+            objectiveButton.onClick.RemoveAllListeners();
+            objectiveButton.enabled = false;
+            if (ObjectiveController.Instance.CurrStage != (int)ObjectiveStage.SurvivalStage)
             {
-                launchButton.onClick.RemoveAllListeners();
-                launchButton.enabled = false;
-                launchCanvas.SetActive(false);
-                buttonClosed = true;
-            });
+                objectiveProceedCanvas.SetActive(false);
+            }
+            buttonClosed = true;
+        });
+    }
+
+    // Ability unlock screen
+    public void AbilityUnlock(Ability ability)
+    {
+        abilityUnlockCanvas.gameObject.SetActive(true);
+        switch (ability.AbilityType)
+        {
+            case AbilityEnum.Artillery:
+                abilityImage.sprite = abilitySprites[0];
+                abilityNameText.text = "Artillery Blast";
+                abilityDescText.text = abilityDescriptions[0];
+                abilityButtons[0].interactable = true;
+                break;
+            case AbilityEnum.BuildingDefence:
+                abilityImage.sprite = abilitySprites[1];
+                abilityNameText.text = "Defence Mode";
+                abilityDescText.text = abilityDescriptions[1];
+                abilityButtons[1].interactable = true;
+                break;
+            case AbilityEnum.FreezeFog:
+                abilityImage.sprite = abilitySprites[2];
+                abilityNameText.text = "Freeze Fog";
+                abilityDescText.text = abilityDescriptions[2];
+                abilityButtons[2].interactable = true;
+                break;
+            case AbilityEnum.Overclock:
+                abilityImage.sprite = abilitySprites[3];
+                abilityNameText.text = "Overclock";
+                abilityDescText.text = abilityDescriptions[3];
+                abilityButtons[3].interactable = true;
+                break;
+            case AbilityEnum.Sonar:
+                abilityImage.sprite = abilitySprites[4];
+                abilityNameText.text = "Sonar";
+                abilityDescText.text = abilityDescriptions[4];
+                abilityButtons[4].interactable = true;
+                break;
+        }
     }
 
     public void WinGame()
@@ -246,33 +350,23 @@ public class UIController : MonoBehaviour
 
     private void ChangeColor(Color newColor, bool flash)
     {
-        /*
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Tile");
-        foreach (GameObject tile in gameObjects)
+        tile = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
+        if (tile != null)
         {
-            MeshRend = tile.GetComponent<MeshRenderer>();
             if (!flash)
             {
-                MeshRend.material.DOColor(newColor, "_BaseColor", 1);
-            }else
-            {
-                MeshRend.material.SetColor("_BaseColor", getAlpha(newColor, 0.1f));
-                MeshRend.material.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
+                tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1);
             }
-        }*/
-        MeshRenderer tile = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-        if (!flash)
-        {
-            tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1);
+            else
+            {
+                tile.sharedMaterial.SetColor("_BaseColor", GetAlpha(newColor, 0.1f));
+                tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased()
+                    .SetId("tile");
+            }
         }
-        else
-        {
-            tile.sharedMaterial.SetColor("_BaseColor", GetAlpha(newColor, 0.1f));
-            tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
-        } 
     }
 
-    private Color GetAlpha(Color color,float avalue)
+    private Color GetAlpha(Color color, float avalue)
     {
         Color current = color;
         current.a = avalue;
@@ -295,33 +389,49 @@ public class UIController : MonoBehaviour
             string colour;
             if (powerChange > 0)
             {
-
-                //    WorldController.Instance.changePowerTIle(Color.green);
-
-                index = 0;
-
                 colour = "#009900>+";
             }
             else if (powerChange < 0)
             {
-
-                //   WorldController.Instance.changePowerTIle(Color.red);
-
-                index = 1;
-
                 colour = "\"red\">";
             }
             else
             {
-
-                //  WorldController.Instance.changePowerTIle(Color.yellow);
-
-                index = 2;
-
                 colour = "#006273>±";
             }
+            
 
-            if(temp != index)
+            // update text values
+            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
+
+            float powerCheck = float.Parse(powerText.text.Split('%')[0]) * 0.01f;/// resourceController.MaxPower;
+
+            if (powerCheck > 0 && powerCheck <= .25f && powerImg.sprite != powerLevelSprites[1])
+            {
+                powerImg.sprite = powerLevelSprites[1];
+                index = 1;
+            }
+            else if (powerCheck > .25f && powerCheck <= .50f && powerImg.sprite != powerLevelSprites[2])
+            {
+                powerImg.sprite = powerLevelSprites[2];
+                index = 2;
+            }
+            else if (powerCheck > .50f && powerCheck <= .75f && powerImg.sprite != powerLevelSprites[3])
+            {
+                powerImg.sprite = powerLevelSprites[3];
+                index = 0;
+            }
+            else if (powerCheck > .75f && powerImg.sprite != powerLevelSprites[4])
+            {
+                powerImg.sprite = powerLevelSprites[4];
+                index = 3;
+            }
+            else if (powerCheck == 0 && powerImg.sprite != powerLevelSprites[0])
+            {
+                powerImg.sprite = powerLevelSprites[0];
+            }
+            
+            if (temp != index)
             {
                 temp = index;
                 switch (index)
@@ -335,64 +445,20 @@ public class UIController : MonoBehaviour
                     case 2: // yellow
                         powerCurrent = powerMedium;
                         break;
+                    case 3:
+                        powerCurrent = powerMax;
+                        break;
                 }
                 if (index == 1)
                 {
-                    ChangeColor(powerCurrent,true);
-                 //   StartCoroutine(coroutine);
+                    ChangeColor(powerCurrent, true);
                 }
                 else
                 {
-                    //   StopCoroutine(coroutine);
-                    //DOTween.KillAll();
                     DOTween.Kill("tile");
-                    ChangeColor(powerCurrent,false);
+                    ChangeColor(powerCurrent, false);
                 }
             }
-            
-
-            // update text values
-            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
-
-            float powerCheck = float.Parse(powerText.text.Split('%')[0]) * 0.01f;/// resourceController.MaxPower;
-
-            if (powerCheck > 0 && powerCheck <= .25f && powerImg.sprite != powerLevelSprites[1])
-            {
-
-                //  mat.DOColor(powerHigh, 1);
-                //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-                //mr.material.SetColor("_BaseColor",Color.white);
-
-                // mat = GameObject.FindGameObjectWithTag("Tile").GetComponent<Material>();
-                //       powerCurrent = powerHigh;
-                //       Debug.Log(mr.material.name);
-
-                powerImg.sprite = powerLevelSprites[1];
-            }
-            else if (powerCheck > .25f && powerCheck <= .50f && powerImg.sprite != powerLevelSprites[2])
-            {
-
-                //mr = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-                //mr.material.DOColor(Color.white, 1);
-                //      powerCurrent = powerMedium;
-
-                powerImg.sprite = powerLevelSprites[2];
-            }
-            else if (powerCheck > .50f && powerCheck <= .75f && powerImg.sprite != powerLevelSprites[3])
-            {
-                powerImg.sprite = powerLevelSprites[3];
-            }
-            else if (powerCheck > .75f && powerImg.sprite != powerLevelSprites[4])
-            {
-                powerImg.sprite = powerLevelSprites[4];
-            }
-            else if (powerCheck == 0 && powerImg.sprite != powerLevelSprites[0])
-            {
-                powerImg.sprite = powerLevelSprites[0];
-            }
-
-
-            //       mr.material.SetColor("_BaseColor", powerCurrent); //Color.Lerp(prev, new Color(r, g, b, a), 0.5f)
 
             if (resourceController.StoredMineral != mineral)
             {

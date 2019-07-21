@@ -335,6 +335,7 @@ public class ObjectiveController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 1:
+                UIController.instance.ShowCountdownSlider();
                 //Survival countdown
                 Tick();
 
@@ -386,6 +387,7 @@ public class ObjectiveController : DialogueBoxController
 
                 break;
             case 5:
+                UIController.instance.HideCountdownSlider();
                 // Run AI completion text
                 SendDialogue("end power stage", 1);
                 IncrementSubStage();
@@ -410,6 +412,7 @@ public class ObjectiveController : DialogueBoxController
 
     private void Tick()
     {
+        UIController.instance.UpdateCountdownSlider();
         tick += Time.deltaTime;
 
         if (tick >= 1)

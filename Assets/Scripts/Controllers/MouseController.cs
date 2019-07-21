@@ -24,6 +24,7 @@ public class MouseController : MonoBehaviour
     private bool reportTutorialClick = false;
     private TileData hoveredTile;
     public bool isBuildAvaliable = true;
+    private bool hovertoggle = true;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -53,14 +54,13 @@ public class MouseController : MonoBehaviour
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
         tutorialController = GetComponent<TutorialController>();
-        InvokeRepeating("UpdateQuadVisability", 0.1f, 0.1f);
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdatePlacingAlt();
-        //UpdateQuadVisability();
+        selectedTile();
     }
 
     void UpdateTileAppearance()
@@ -96,91 +96,70 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    void UpdateQuadVisability()
+    void UpdateHoveredTile(bool toggle)
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")))
+        if (toggle)
         {
-            if (WorldController.Instance.TileExistsAt(hit.point))
-            {
-                hoveredTile = WorldController.Instance.GetTileAt(hit.point);
-            }
-        }
-    }
-
-    // Mouse Building Placement -----------------------------------------------------------------
-
-    // THIS FUNCTION NOT BEING USED ANYMORE, CAN PROBABLY BE REMOVED
-    // Place a building based on mouse / controller input
-    void UpdatePlacing()
-    {
-        // code based somewhat off:
-        //"https://forum.unity.com/threads/click-object-behind-other-object.480815/"
-
-        if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject())
-        {
-            TileData tile;
-
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
             {
-                //Check if a valid tile was clicked
                 if (WorldController.Instance.TileExistsAt(hit.point))
                 {
-                    tile = WorldController.Instance.GetTileAt(hit.point);
-
-                    if (CheckIfTileOkay(tile, towerManager.GetBuildingType()))
+                    if (hovertoggle)
                     {
-                        //If tile has power, place building. Otherwise, don't place building.
-                        if (tile.PowerSource != null)
+                        hovertoggle = false;
+                        hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                        changeTileMaterial(WorldController.Instance.hoverTile);
+                    }
+                    else
+                    {
+                        if (!hoveredTile.Equals(WorldController.Instance.GetTileAt(hit.point)))
                         {
-                            GameObject toBuild = towerManager.GetTower("build");
-
-                            // If there is a building, delete it if deletion is selected. Otherwise, place one if the tile is empty.
-                            if (toBuild.name != "Empty")
+                            hovertoggle = true;
+                            if (hoveredTile.plane == null)
                             {
-                                //Debug.Log(toBuild.name);
-                                if (toBuild.GetComponent<Building>() != null)
-                                {
-                                    Building b = toBuild.GetComponent<Building>();
-                                }
-                                else
-                                {
-                                    Debug.Log("toBuild's building component is non-existant");
-                                }
-
-                                if (tile.Building == null && (tile.Resource == null || towerManager.GetBuildingType() == BuildingType.Harvester))
-                                {
-
-                                    if (towerManager.GetBuildingType() == BuildingType.Generator)
-                                    {
-                                        if (FindObjectsOfType<Generator>().Length >= (WorldController.Instance.GetRecoveredComponentCount() + 1) * generatorInterval + 1) // the +1 accounts for the fact that the generator hologram, which has the buildingtype generator, will be on the board with the actual generators
-                                        {
-                                            Debug.Log("If you want to build more generators, collect more ship components first.");
-                                            return;
-                                        }
-                                    }
-
-                                    tile.PlacedTower = toBuild;
-                                    Build(tile.PlacedTower, tile, 0f);
-                                }
+                                hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                                changeTileMaterial(WorldController.Instance.hoverTile);
                             }
                             else
-                            {
-                                Building removeBuilding = ReturnCost(tile);
-                                RemoveBulding(removeBuilding);
-
-                            }
+                                changeTileMaterial(WorldController.Instance.normalTile);
                         }
                     }
+
                 }
+            }
+            else
+            {
+                changeTileMaterial(WorldController.Instance.normalTile);
             }
         }
     }
+
+    void changeTileMaterial(Material mat)
+    {
+        if (hoveredTile != null)
+        {
+            if (hoveredTile.plane != null)
+            {
+                hoveredTile.plane.GetComponent<Renderer>().material = mat;
+            }
+        }
+    }
+
+    void selectedTile()
+    {
+        if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
+        {
+            UpdateHoveredTile(false);
+        }
+        else
+        { 
+            UpdateHoveredTile(true);
+        }
+    }
+    // Mouse Building Placement -----------------------------------------------------------------
 
     void UpdatePlacingAlt()
     {
@@ -189,23 +168,22 @@ public class MouseController : MonoBehaviour
 
         UIController.instance.buildingSelector.freezeCam();
 
-        if (Time.timeScale == 1.0f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject() && isBuildAvaliable == true)
+        if (Time.timeScale == 1f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject() && isBuildAvaliable == true)
         {
             TileData tile;
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
             //Check if a valid tile was clicked
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")) && WorldController.Instance.TileExistsAt(hit.point))
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
+                    changeTileMaterial(WorldController.Instance.normalTile);
                     towerManager.CancelBuild();
                 }
                 else
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
-
                     if (tile.PowerSource != null && TutorialController.Instance.TileAllowed(tile))
                     {
                         if (!UIController.instance.buildingSelector.Visible)
@@ -219,6 +197,15 @@ public class MouseController : MonoBehaviour
                         }
 
                         towerManager.CurrentTile = tile;
+
+                        changeTileMaterial(WorldController.Instance.normalTile);
+
+                        if (!tile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
+                        {
+                            tile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
+                        }
+                        hoveredTile = tile;
+                        //    towerManager.CurrentTile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
                     }
                 }
             }
@@ -229,16 +216,35 @@ public class MouseController : MonoBehaviour
     // Returns the building that should be destroyed.
     public Building ReturnCost(TileData tile)
     {
+        int returnCost;
         if (tile.Building != null)
         {
             Building building = tile.Building;
             if (building.BuildingType != BuildingType.Hub)
             {
+                returnCost = building.MineralCost;
+                if (building.BuildingType != BuildingType.Extender)
+                {
+                    if (building.Health != building.MaxHealth)
+                    {
+                        if (building.Health < 40 && building.Health > 25)
+                        {
+                            returnCost = Mathf.RoundToInt(returnCost / 1.4f);
+                            Debug.Log(building.Health + " NNNNNN" + returnCost);
+                        }
+
+                        if (building.Health < 20 && building.Health > 5)
+                        {
+                            returnCost = Mathf.RoundToInt(returnCost / 2f);
+                            Debug.Log(building.Health +  " YYY" + returnCost);
+                        }
+                    }
+                }
+
                 // add required resources
                 resourceController.StoredPower += building.PowerCost;
-                resourceController.StoredMineral += building.MineralCost;
-
-                StartCoroutine(FloatText(building.transform, building.MineralCost));
+                resourceController.StoredMineral += returnCost;
+                StartCoroutine(FloatText(building.transform, returnCost));
                 return building;
             }
         }
@@ -307,7 +313,7 @@ public class MouseController : MonoBehaviour
 
                 //Tell the building to do things it should do when placed
                 building.Place();
-
+                changeTileMaterial(WorldController.Instance.normalTile);
                 StartCoroutine(FloatText(buildingGo.transform, -building.MineralCost));
             }
             else
