@@ -2,6 +2,7 @@
 using System;
 using Abilities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Collectable : Locatable, ICollectible
 {
@@ -53,7 +54,7 @@ public class Collectable : Locatable, ICollectible
 
     private void OnMouseDown()
     {
-        if (!location.FogUnit && location.PowerSource)
+        if (!location.FogUnit && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
         {
             if (ability.AbilityType != AbilityEnum.None)
             {
@@ -65,7 +66,7 @@ public class Collectable : Locatable, ICollectible
         
         if (location.FogUnit)
         {
-            if (location.FogUnit.Health >= 0 && location.PowerSource)
+            if (location.FogUnit.Health >= 0 && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (ability.AbilityType != AbilityEnum.None)
                 {
