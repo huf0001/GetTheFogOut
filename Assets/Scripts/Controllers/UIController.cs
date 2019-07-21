@@ -78,7 +78,6 @@ public class UIController : MonoBehaviour
         index = 0;
         temp = 2;
         
-        objectiveButtonBG = objectiveProceedCanvas.GetComponentInChildren<Image>();
         launchButtonImage = objectiveButton.image;
 
         //cursor = GameObject.Find("Cursor");
