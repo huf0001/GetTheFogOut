@@ -8,6 +8,7 @@ public class Collectable : Locatable, ICollectible
     public string collectibleName = "Collectable";
     public ParticleSystem sonarPing;
     public Ability ability;
+    public MeshRenderer meshRenderer;
     public string CollectableName { get => collectibleName; }
     public bool isTriggered;
     public float pingTime;
@@ -32,11 +33,27 @@ public class Collectable : Locatable, ICollectible
                 isTriggered = false;
             }
         }
+
+        if (location.FogUnit)
+        {
+            if (location.FogUnit.Health == 100)
+            {
+                meshRenderer.enabled = false;
+            }
+            else
+            {
+                meshRenderer.enabled = true;
+            }
+        } 
+        else if (!meshRenderer.enabled)
+        {
+            meshRenderer.enabled = true;
+        }
     }
 
     private void OnMouseDown()
     {
-        if (!location.FogUnit)
+        if (!location.FogUnit && location.PowerSource)
         {
             if (ability.AbilityType != AbilityEnum.None)
             {

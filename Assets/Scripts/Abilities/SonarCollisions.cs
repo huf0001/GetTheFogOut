@@ -13,7 +13,7 @@ namespace Abilities
             Collectable collectable = other.GetComponent<Collectable>();
             collectable.sonarPing.Play(true);
             collectable.isTriggered = true;
-            collectable.pingTime = 3f;
+            collectable.pingTime = 5f;
         }
     }
 }

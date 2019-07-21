@@ -132,6 +132,7 @@ MonoBehaviour:
   collectibleName: Collectable
   sonarPing: {fileID: 4724523647232296428}
   ability: {fileID: 0}
+  meshRenderer: {fileID: 3568812037981903151}
   isTriggered: 0
   pingTime: 0
 --- !u!65 &1884942432695330359
@@ -274,7 +275,7 @@ PrefabInstance:
     - target: {fileID: 9204338145882502146, guid: 05a7e69c87023124c8f076892be74f2a,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5734313572993951044, guid: 05a7e69c87023124c8f076892be74f2a,
         type: 3}
@@ -285,6 +286,11 @@ PrefabInstance:
         type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080879712612360188, guid: 05a7e69c87023124c8f076892be74f2a,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05a7e69c87023124c8f076892be74f2a, type: 3}
