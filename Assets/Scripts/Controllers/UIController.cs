@@ -62,6 +62,9 @@ public class UIController : MonoBehaviour
 
         FindSliders();
 
+        launchBackground = launchCanvas.GetComponentInChildren<Image>();
+        launchButtonImage = launchButton.image;
+
         //cursor = GameObject.Find("Cursor");
         //cursor.SetActive(false);
         //Invoke("FindTile", 5);
@@ -106,8 +109,6 @@ public class UIController : MonoBehaviour
     public void ShowRepairButton(string controller)
     {
         launchCanvas.SetActive(true);
-        launchBackground = launchCanvas.GetComponentInChildren<Image>();
-        launchButtonImage = launchButton.image;
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
         Sequence showLaunch = DOTween.Sequence();
