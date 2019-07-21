@@ -228,7 +228,7 @@ MonoBehaviour:
         ship.
     - aiExpression: 2
       dialogue: Since we appear to be in a predicament, I'm going to teach you how
-        to survive. You see that deposit of minerals over there?
+        to survive. You see that deposit of {MINERALS} over there?
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -287,7 +287,8 @@ MonoBehaviour:
   - key: build more generators
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'It appears to have helped. Try placing more for safekeeping. '
+      dialogue: It appears to have helped. Check the battery icon at the top of your
+        screen, the [POWER GENERATION] number should have changed.
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -323,8 +324,11 @@ MonoBehaviour:
   - key: activate defences
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Perfect, defences are at the ready. Click the attach button to activate
-        them because I don't make the rules, I follow them.
+      dialogue: I would highly reccomend building some more defences before activating
+        them.
+    - aiExpression: 1
+      dialogue: Once you're ready click the attach button to activate them, because
+        I don't make the rules, I follow them.
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
