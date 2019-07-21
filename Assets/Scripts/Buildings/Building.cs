@@ -133,8 +133,8 @@ public abstract class Building : Entity
 
         if (GotNoHealth())
         {
-            DismantleBuilding();
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDestroyed", GetComponent<Transform>().position);
+            DismantleBuilding();
         }
 
     }
@@ -416,6 +416,14 @@ public abstract class Building : Entity
             UIController.instance.buildingInfo.HideInfo();
         }
 
+        if (GotNoHealth())
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDestroyed", GetComponent<Transform>().position);
+        }
+        else
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_3", GetComponent<Transform>().position);
+        }
         ResourceController.Instance.RemoveBuilding(this);
 
         //Debug.Log("Should be removed from ResourceController's list of my building type");
