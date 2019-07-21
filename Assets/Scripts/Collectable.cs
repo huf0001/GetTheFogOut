@@ -22,6 +22,7 @@ public class Collectable : Locatable, ICollectible
             {
                 AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
             }
+            UIController.instance.AbilityUnlock(ability);
             Destroy(gameObject);
         }
     }
