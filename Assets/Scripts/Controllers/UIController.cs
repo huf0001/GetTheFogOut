@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -37,6 +38,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private Color powerLow;
     [SerializeField] private Color powerMedium;
     [SerializeField] private Color powerHigh;
+    [SerializeField] private Color powerMax;
     [SerializeField] private Color powerCurrent;
     [Header("Objective Buttons")]
     [SerializeField, FormerlySerializedAs("launchCanvas")] private GameObject objectiveProceedCanvas;
@@ -59,6 +61,7 @@ public class UIController : MonoBehaviour
 
     ResourceController resourceController = null;
     private int index, temp;
+    private MeshRenderer tile;
 
     // Start is called before the first frame update
     void Awake()
@@ -74,6 +77,7 @@ public class UIController : MonoBehaviour
 
         index = 0;
         temp = 2;
+
 
         FindSliders();
     }
@@ -308,15 +312,19 @@ public class UIController : MonoBehaviour
 
     private void ChangeColor(Color newColor, bool flash)
     {
-        MeshRenderer tile = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-        if (!flash)
+        tile = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
+        if (tile != null)
         {
-            tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1);
-        }
-        else
-        {
-            tile.sharedMaterial.SetColor("_BaseColor", GetAlpha(newColor, 0.1f));
-            tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetId("tile");
+            if (!flash)
+            {
+                tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1);
+            }
+            else
+            {
+                tile.sharedMaterial.SetColor("_BaseColor", GetAlpha(newColor, 0.1f));
+                tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1).SetLoops(-1, LoopType.Yoyo).SetSpeedBased()
+                    .SetId("tile");
+            }
         }
     }
 
@@ -343,23 +351,48 @@ public class UIController : MonoBehaviour
             string colour;
             if (powerChange > 0)
             {
-                index = 0;
-
                 colour = "#009900>+";
             }
             else if (powerChange < 0)
             {
-                index = 1;
-
                 colour = "\"red\">";
             }
             else
             {
-                index = 2;
-
                 colour = "#006273>±";
             }
+            
 
+            // update text values
+            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
+
+            float powerCheck = float.Parse(powerText.text.Split('%')[0]) * 0.01f;/// resourceController.MaxPower;
+
+            if (powerCheck > 0 && powerCheck <= .25f && powerImg.sprite != powerLevelSprites[1])
+            {
+                powerImg.sprite = powerLevelSprites[1];
+                index = 1;
+            }
+            else if (powerCheck > .25f && powerCheck <= .50f && powerImg.sprite != powerLevelSprites[2])
+            {
+                powerImg.sprite = powerLevelSprites[2];
+                index = 2;
+            }
+            else if (powerCheck > .50f && powerCheck <= .75f && powerImg.sprite != powerLevelSprites[3])
+            {
+                powerImg.sprite = powerLevelSprites[3];
+                index = 0;
+            }
+            else if (powerCheck > .75f && powerImg.sprite != powerLevelSprites[4])
+            {
+                powerImg.sprite = powerLevelSprites[4];
+                index = 3;
+            }
+            else if (powerCheck == 0 && powerImg.sprite != powerLevelSprites[0])
+            {
+                powerImg.sprite = powerLevelSprites[0];
+            }
+            
             if (temp != index)
             {
                 temp = index;
@@ -374,6 +407,9 @@ public class UIController : MonoBehaviour
                     case 2: // yellow
                         powerCurrent = powerMedium;
                         break;
+                    case 3:
+                        powerCurrent = powerMax;
+                        break;
                 }
                 if (index == 1)
                 {
@@ -384,33 +420,6 @@ public class UIController : MonoBehaviour
                     DOTween.Kill("tile");
                     ChangeColor(powerCurrent, false);
                 }
-            }
-
-
-            // update text values
-            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
-
-            float powerCheck = float.Parse(powerText.text.Split('%')[0]) * 0.01f;/// resourceController.MaxPower;
-
-            if (powerCheck > 0 && powerCheck <= .25f && powerImg.sprite != powerLevelSprites[1])
-            {
-                powerImg.sprite = powerLevelSprites[1];
-            }
-            else if (powerCheck > .25f && powerCheck <= .50f && powerImg.sprite != powerLevelSprites[2])
-            {
-                powerImg.sprite = powerLevelSprites[2];
-            }
-            else if (powerCheck > .50f && powerCheck <= .75f && powerImg.sprite != powerLevelSprites[3])
-            {
-                powerImg.sprite = powerLevelSprites[3];
-            }
-            else if (powerCheck > .75f && powerImg.sprite != powerLevelSprites[4])
-            {
-                powerImg.sprite = powerLevelSprites[4];
-            }
-            else if (powerCheck == 0 && powerImg.sprite != powerLevelSprites[0])
-            {
-                powerImg.sprite = powerLevelSprites[0];
             }
 
             if (resourceController.StoredMineral != mineral)
