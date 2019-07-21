@@ -145,16 +145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdab7d0ec7e790e4193934deeedbe67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location:
-    powerSources: []
-    resource: {fileID: 0}
-    building: {fileID: 0}
-    onMaterial: {fileID: 0}
-    visibleMaterial: {fileID: 0}
-    startMaterial: {fileID: 0}
-    x: 0
-    z: 0
-    plane: {fileID: 0}
   health: 37
   maxHealth: 0
   shield: 0
@@ -204,6 +194,7 @@ MonoBehaviour:
   shieldBarImage: {fileID: 1513273541985139945}
   damageIndicatorPrefab: {fileID: 8599427647162027438, guid: d157f3b0eefcb6743985ca736438dcff,
     type: 3}
+  shieldObj: {fileID: 8682824223198245041}
   isShieldOn: 0
   overclockTimer: 0
   powerRange: 5
