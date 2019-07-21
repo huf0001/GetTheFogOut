@@ -52,6 +52,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private Canvas abilityUnlockCanvas;
     [SerializeField] private Image abilityImage;
     [SerializeField] private Sprite[] abilitySprites;
+    [SerializeField] private Button[] abilityButtons;
     [SerializeField] private TextMeshProUGUI abilityNameText;
     [SerializeField] private TextMeshProUGUI abilityDescText;
     [SerializeField, TextArea] private string[] abilityDescriptions;
@@ -256,26 +257,31 @@ public class UIController : MonoBehaviour
                 abilityImage.sprite = abilitySprites[0];
                 abilityNameText.text = "Artillery Blast";
                 abilityDescText.text = abilityDescriptions[0];
+                abilityButtons[0].interactable = true;
                 break;
             case AbilityEnum.BuildingDefence:
                 abilityImage.sprite = abilitySprites[1];
                 abilityNameText.text = "Defence Mode";
                 abilityDescText.text = abilityDescriptions[1];
+                abilityButtons[1].interactable = true;
                 break;
             case AbilityEnum.FreezeFog:
                 abilityImage.sprite = abilitySprites[2];
                 abilityNameText.text = "Freeze Fog";
                 abilityDescText.text = abilityDescriptions[2];
+                abilityButtons[2].interactable = true;
                 break;
             case AbilityEnum.Overclock:
                 abilityImage.sprite = abilitySprites[3];
                 abilityNameText.text = "Overclock";
                 abilityDescText.text = abilityDescriptions[3];
+                abilityButtons[3].interactable = true;
                 break;
             case AbilityEnum.Sonar:
                 abilityImage.sprite = abilitySprites[4];
                 abilityNameText.text = "Sonar";
                 abilityDescText.text = abilityDescriptions[4];
+                abilityButtons[4].interactable = true;
                 break;
         }
     }
