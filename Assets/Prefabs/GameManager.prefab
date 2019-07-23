@@ -224,11 +224,13 @@ MonoBehaviour:
   abilityNameText: {fileID: 0}
   abilityDescText: {fileID: 0}
   abilityDescriptions:
-  - Artillery Blast Desc
-  - Defence Mode Desc
-  - Freeze Fog Desc
-  - Overclock Desc
-  - Sonar Desc
+  - Powerful projeciles are launched into the air and do substantial damage to the
+    fog when they come crashing down.
+  - A shield that spawns around buildings to keep the fog from dissolving them.
+  - An icy cold blast that will freeze any fog in its way.
+  - An intense surge of electricity that causes buildings to temporarily perform better.
+  - A small, short blip that will reveal the locations of useful items with a specific
+    radius.
 --- !u!114 &334475222590731063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,12 +262,13 @@ MonoBehaviour:
         I'm a Nexus Drone, an emergency drone that you'll be controlling from your
         ship.
     - aiExpression: 2
-      dialogue: Since we appear to be in a predicament, I'm going to teach you how
-        to survive. You see that deposit of {MINERALS} over there?
+      dialogue: 'Since we appear to be in a predicament, I''m going to teach you how
+        to survive. '
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: You can collect them, which will be highly beneficial to your existence.
+      dialogue: You see these minerals? You can collect them, which will be highly
+        beneficial to your existence.
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
@@ -287,7 +290,7 @@ MonoBehaviour:
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Good, you're learning.  Now build two more to speed up your {MINERAL}
+      dialogue: Good, you're learning. Now build two more to speed up your {MINERAL}
         collection.
   - key: build extender target
     expressionDialoguePairs:
