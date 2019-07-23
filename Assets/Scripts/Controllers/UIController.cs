@@ -146,10 +146,11 @@ public class UIController : MonoBehaviour
                 objectiveButton.onClick.AddListener(
                     delegate
                     {
-                        if (ResourceController.Instance.StoredMineral >= 500)
+                        if (ResourceController.Instance.StoredMineral >= TutorialController.Instance.CollectedMineralsGoal)
                         {
-                            ResourceController.Instance.StoredMineral -= 500;
+                            ResourceController.Instance.StoredMineral -= TutorialController.Instance.CollectedMineralsGoal;
                             objectiveButton.enabled = false;
+
                             if (controller == "O")
                             {
                                 ObjectiveController.Instance.IncrementStage();
@@ -565,7 +566,7 @@ public class UIController : MonoBehaviour
                 hudObjText.text = "Objective: Repair the Hull";
                 objWindowText.text = "<b>Repair the Hull</b>\n\n" +
                                      "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
-                                     $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {ObjectiveController.Instance.MineralTarget} <size=90%><sprite=\"all_icons\" index=2>";
+                                     $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {TutorialController.Instance.CollectedMineralsGoal} <size=90%><sprite=\"all_icons\" index=2>";
                 break;
             case TutorialStage.BuildExtenderInFog:
                 hudObjText.text = "Objective: Build Power Extender";

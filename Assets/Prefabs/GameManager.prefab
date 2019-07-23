@@ -346,8 +346,8 @@ MonoBehaviour:
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: As if crash landing wasn't enough...now we're surrounded by a man
-        dissolving fog? Great!
+      dialogue: As if crash landing wasn't enough...now we're surrounded by a man-dissolving
+        fog? Great!
     - aiExpression: 2
       dialogue: 'Your ship comes equipped with some defences called >MORTAR< and >PULSE
         TOWER<. '
@@ -367,6 +367,16 @@ MonoBehaviour:
     - aiExpression: 1
       dialogue: Once you're ready click the attach button to activate them, because
         I don't make the rules, I follow them.
+  - key: maybe dont build in fog
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: I don't think you should build that there. We don't know what the
+        fog will do to it. Best play it safe for now.
+  - key: definitely dont build in fog
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Weren't you paying attention? If you build something there, the fog
+        will just destroy it.
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2

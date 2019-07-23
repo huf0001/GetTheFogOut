@@ -25,6 +25,7 @@ public enum TutorialStage
     BuildMortar,
     BuildPulseDefence,
     DefenceActivation,
+    DontBuildInFog,
     Finished
 }
 
@@ -107,13 +108,17 @@ public class TutorialController : DialogueBoxController
 
     private int extendersGoal;
     private bool defencesOn = false;
-    
+
+    private TutorialStage savedTutorialStage;
+    private int savedSubStage;
+
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
     public static TutorialController Instance { get; protected set; }
     public int BuiltGeneratorsGoal { get => builtGeneratorsGoal; }
     public int BuiltHarvestersExtendedGoal { get => builtHarvestersExtendedGoal; }
+    public int CollectedMineralsGoal { get => collectedMineralsGoal; }
     public TileData CurrentTile { get => currentTile; }
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
@@ -237,6 +242,9 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.DefenceActivation:
                 DefenceActivation();
+                break;
+            case TutorialStage.DontBuildInFog:
+                DontBuildInFog();
                 break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
@@ -1066,6 +1074,40 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Reprimands the player if they try and build something in the fog after they find out it's dangerous.
+    private void DontBuildInFog()
+    {
+        switch (subStage)
+        {
+            case 1:
+                dialogueRead = false;
+
+                if (savedTutorialStage == TutorialStage.CollectMinerals)
+                {
+                    SendDialogue("maybe dont build in fog", 0);
+                }
+                else
+                {
+
+                    SendDialogue("definitely dont build in fog", 0);
+                }
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    tutorialStage = savedTutorialStage;
+                    subStage = savedSubStage;
+                }
+
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
+
     //Tutorial Utility Methods - Camera--------------------------------------------------------------------------------------------------------------
 
     //Checks inputs for camera movement part of the tutorial
@@ -1114,8 +1156,19 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.CollectMinerals:
             case TutorialStage.BuildMortar:
             case TutorialStage.BuildPulseDefence:
-                return tile.FogUnit == null;
             case TutorialStage.DefenceActivation:
+                bool tileOkay = tile.FogUnit == null || tile.Building != null;
+
+                if (!tileOkay && !aiText.Activated)
+                {
+                    savedTutorialStage = tutorialStage;
+                    savedSubStage = subStage;
+
+                    tutorialStage = TutorialStage.DontBuildInFog;
+                    subStage = 1;
+                }
+
+                return tileOkay;
             case TutorialStage.Finished:
                 return true;
             default:
