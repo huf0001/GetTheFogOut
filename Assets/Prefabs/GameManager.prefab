@@ -77,8 +77,8 @@ MonoBehaviour:
     type: 3}
   tilePrefab: {fileID: 1230523831537891005, guid: ae3c8c22e37954d42892aa77c874a272,
     type: 3}
-  normalTile: {fileID: 0}
-  hoverTile: {fileID: 0}
+  normalTile: {fileID: 2100000, guid: cd289d025dea78640a61133498b826c3, type: 2}
+  hoverTile: {fileID: 2100000, guid: dd292b7936937f946aa9f72bffca81bd, type: 2}
   hub: {fileID: 0}
   shipComponents:
   - component: 0
@@ -215,7 +215,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8e9f9705b82ec4f4fb74ccac0da017ca, type: 3}
   - {fileID: 21300000, guid: d77b81d3ea035e04db208e972d9e7dcb, type: 3}
   - {fileID: 21300000, guid: 6bfb12368a76c8a468e854e60b3c6d32, type: 3}
-  abilityButtons: []
+  abilityButtons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   abilityNameText: {fileID: 0}
   abilityDescText: {fileID: 0}
   abilityDescriptions:
@@ -372,6 +377,7 @@ MonoBehaviour:
     powerSources: []
     resource: {fileID: 0}
     building: {fileID: 0}
+    collectible: {fileID: 0}
     onMaterial: {fileID: 0}
     visibleMaterial: {fileID: 0}
     startMaterial: {fileID: 0}
@@ -382,6 +388,7 @@ MonoBehaviour:
     powerSources: []
     resource: {fileID: 0}
     building: {fileID: 0}
+    collectible: {fileID: 0}
     onMaterial: {fileID: 0}
     visibleMaterial: {fileID: 0}
     startMaterial: {fileID: 0}
@@ -406,10 +413,10 @@ MonoBehaviour:
   thrusterCamera: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
-  builtHarvestersGoal: 4
-  builtHarvestersExtendedGoal: 7
+  builtHarvestersGoal: 3
+  builtHarvestersExtendedGoal: 5
   builtGeneratorsGoal: 3
-  collectedMineralsGoal: 500
+  collectedMineralsGoal: 300
 --- !u!114 &4019818891569145385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,4 +608,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rangeIndicatorGO: {fileID: 0}
-  abilityButtons: []
+  abilityButtons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
