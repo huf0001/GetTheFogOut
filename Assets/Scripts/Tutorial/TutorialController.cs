@@ -144,16 +144,15 @@ public class TutorialController : DialogueBoxController
         {
             skipTutorial = GlobalVars.SkipTut;
         }
-
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
     public void StartTutorial()
     {
+        //Setup music
+        WorldController.Instance.musicFMOD.StageOneMusic();
+
+        //Setup fog
         Fog.Instance.enabled = true;
         Fog.Instance.SpawnStartingFog();
 
@@ -798,14 +797,17 @@ public class TutorialController : DialogueBoxController
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.transform.GetChild(0).gameObject.SetActive(false);
                 hub.transform.GetChild(1).gameObject.SetActive(true);
-                // Play music Var 2 soundtrack
-                //musicFMOD.StageTwoMusic();
-                // Run AI completion text
-                SendDialogue("extend to thruster", 1);
-                //Camera pans to the thruster
-                thrusterCamera.gameObject.SetActive(true);
+
                 //Enable thruster to be clicked and collected for attaching
                 thruster.SetActive(true);
+ 
+                // Play music Var 2 soundtrack
+                WorldController.Instance.musicFMOD.StageTwoMusic();
+
+                //Camera pans to the thruster
+                thrusterCamera.gameObject.SetActive(true);
+                
+                SendDialogue("extend to thruster", 1);
                 ActivateMouse();
                 break;
             case 2:
@@ -897,8 +899,7 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
-                SendDialogue("build mortar", 1);    //also explains "fog bad"
-                //ActivateTarget(mortarLandmark);
+                SendDialogue("build mortar", 1);
                 ActivateMouse();
 
                 if (!objWindowVisible)
@@ -957,7 +958,6 @@ public class TutorialController : DialogueBoxController
             case 1:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build pulse defence", 1);
-                //ActivateTarget(pulseDefenceLandmark);
                 ActivateMouse();
 
                 if (!objWindowVisible)
