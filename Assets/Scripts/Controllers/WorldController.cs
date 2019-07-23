@@ -53,6 +53,9 @@ public class WorldController : MonoBehaviour
     public MusicFMOD musicfmod;
     public MusicFMOD musicFMOD;
 
+    private FMOD.Studio.Bus musicBus;
+    private float musicVolume = 1f;
+
     //Non-Serialized Fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
     private GameObject[] objs;
@@ -134,6 +137,7 @@ public class WorldController : MonoBehaviour
             Instantiate(musicfmod);
             musicFMOD = musicfmod;
         }
+        musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
 
         musicFMOD.StartMusic();
         musicFMOD.StageOneMusic();
@@ -416,7 +420,7 @@ public class WorldController : MonoBehaviour
             thrusterTilesOff();
         }
         
-            if (Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel"))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -455,12 +459,15 @@ public class WorldController : MonoBehaviour
         if (pause)
         {
             Time.timeScale = 0.0f;
+            musicVolume = 0.3f;
         }
         else
         {
             Time.timeScale = 1.0f;
+            musicVolume = 1f;
         }
 
+        musicBus.setVolume(musicVolume);
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
     }
 
@@ -731,6 +738,7 @@ public class WorldController : MonoBehaviour
 
     public void ResetGame()
     {
+        musicBus.setVolume(1f);
         musicFMOD.OutroMusic();
         SceneManager.LoadScene("Menu");
     }
