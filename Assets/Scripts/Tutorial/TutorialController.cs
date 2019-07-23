@@ -368,7 +368,6 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("build harvester target", 1);
-                ActivateTarget(harvesterResource);
 
                 if (!objWindowVisible)
                 {
@@ -380,10 +379,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(harvesterResource);
                 }
 
                 break;
@@ -471,7 +467,6 @@ public class TutorialController : DialogueBoxController
             case 1:
                 SendDialogue("build extender target", 1);
                 UIController.instance.UpdateObjectiveText(tutorialStage);
-                ActivateTarget(extenderLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -483,10 +478,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(extenderLandmark);
                 }
 
                 break;
@@ -622,7 +614,6 @@ public class TutorialController : DialogueBoxController
                 tutorialStage = TutorialStage.BuildGenerator;
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build generator target", 1);
-                ActivateTarget(generatorLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -634,10 +625,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(7);
+                    ActivateTarget(generatorLandmark);
                 }
 
                 break;
