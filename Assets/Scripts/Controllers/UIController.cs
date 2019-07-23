@@ -545,6 +545,11 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Build Power Extender</b>\n\n" +
                     "<size=75%>Build a Power Extender to reach additional mineral nodes.\n\n";
                 break;
+            case TutorialStage.MouseOverPowerDiagram:
+                hudObjText.text = "Objective: Look at Power Diagram";
+                objWindowText.text = "<b>Look at Power Diagram</b>\n\n" +
+                                     "<size=75%>Move the mouse over the power icon to view the diagram explaining how power works.\n\n";
+                break;
             case TutorialStage.BuildGenerator:
                 hudObjText.text = "Objective: Build Generator";
                 objWindowText.text = "<b>Build Generator</b>\n\n" +

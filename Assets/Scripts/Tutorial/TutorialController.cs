@@ -17,6 +17,7 @@ public enum TutorialStage
     BuildExtender,
     BuildHarvestersExtended,
     WaitingForPowerDrop,
+    MouseOverPowerDiagram,
     BuildGenerator,
     BuildMoreGenerators,
     CollectMinerals,
@@ -66,11 +67,12 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
 
-    [Header("Movement Keys")]
+    [Header("UI Elements")]
     [SerializeField] private CameraKey wKey;
     [SerializeField] private CameraKey aKey;
     [SerializeField] private CameraKey sKey;
     [SerializeField] private CameraKey dKey;
+    [SerializeField] private Image powerDiagram;
 
     [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
@@ -216,6 +218,7 @@ public class TutorialController : DialogueBoxController
                 BuildHarvestersExtended();
                 break;
             case TutorialStage.WaitingForPowerDrop:
+            case TutorialStage.MouseOverPowerDiagram:
             case TutorialStage.BuildGenerator:
             case TutorialStage.BuildMoreGenerators:
                 BuildGenerator();
@@ -572,7 +575,6 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player learns about the power system and builds generators
-    //TODO: mouse over power generation diagram in UI, triggers substage progression, rather than just having information in dialogue box
     private void BuildGenerator()
     {
         switch (subStage)
@@ -580,10 +582,9 @@ public class TutorialController : DialogueBoxController
             case 1:
                 if (ResourceController.Instance.StoredPower < 75)
                 {
-                    tutorialStage = TutorialStage.BuildGenerator;
+                    tutorialStage = TutorialStage.MouseOverPowerDiagram;
                     UIController.instance.UpdateObjectiveText(tutorialStage);
-                    SendDialogue("build generator target", 1);
-                    ActivateTarget(generatorLandmark);
+                    SendDialogue("explain power", 1);
 
                     if (!objWindowVisible)
                     {
@@ -597,24 +598,54 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissDialogue();
                 }
-                else if (tileClicked)
+                else if (powerDiagram.fillAmount == 1)
                 {
                     GoToSubStage(4);
                 }
 
                 break;
             case 3:
+                if (powerDiagram.fillAmount == 1)
+                {
+                    GoToSubStage(4);
+                }
+
+                break;
+            case 4:
+                tutorialStage = TutorialStage.BuildGenerator;
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("build generator target", 1);
+                ActivateTarget(generatorLandmark);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
+                break;
+            case 5:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    GoToSubStage(7);
+                }
+
+                break;
+            case 6:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 4:
+            case 7:
                 currentlyLerping = ButtonType.Generator;
                 IncrementSubStage();
                 break;
-            case 5:
+            case 8:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -622,11 +653,11 @@ public class TutorialController : DialogueBoxController
                 else if (BuiltCurrentlyBuilding())
                 {
                     DeactivateTarget();
-                    GoToSubStage(7);
+                    GoToSubStage(10);
                 }
 
                 break;
-            case 6:
+            case 9:
                 if (BuiltCurrentlyBuilding())
                 {
                     DeactivateTarget();
@@ -634,7 +665,7 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 7:
+            case 10:
                 SendDialogue("build more generators", 1);
                 ActivateMouse();
                 tutorialStage = TutorialStage.BuildMoreGenerators;
@@ -646,36 +677,36 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 8:
+            case 11:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (tileClicked)
                 {
-                    GoToSubStage(10);
+                    GoToSubStage(13);
                 }
 
                 break;
-            case 9:
+            case 12:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 10:
+            case 13:
                 currentlyLerping = ButtonType.Generator;
                 IncrementSubStage();
                 break;
-            case 11:
+            case 14:
                 if (ResourceController.Instance.Generators.Count == builtGeneratorsGoal)
                 {
                     IncrementSubStage();
                 }
 
                 break;
-            case 12:
+            case 15:
                 tutorialStage = TutorialStage.CollectMinerals;
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;

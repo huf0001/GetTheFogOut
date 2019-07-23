@@ -302,26 +302,31 @@ MonoBehaviour:
     - aiExpression: 1
       dialogue: See how your grid range has now increased? Now you can place some
         more {HARVESTERS}.
+  - key: explain power
+    expressionDialoguePairs:
+    - aiExpression: 3
+      dialogue: Oh, well . . . that isn't good. It appears the harvesters have put
+        some strain on the power system. When buildings are placed, they consume power.
+    - aiExpression: 2
+      dialogue: Too many buildings consuming power will cause some to shut down. Move
+        your mouse over the battery icon at the top of the screen to see how that
+        works.
   - key: build generator target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Oh, well....that isn't good. It appears the harvesters have put some
-        strain on the power system.
+      dialogue: 'To avoid losing power, you can place [POWER GENERATORS]. They will
+        increase the amount of power you can regenerate. Be wary, though; they can
+        only handle so much. '
     - aiExpression: 2
-      dialogue: 'When buildings are placed, they consume power. Too many buildings
-        consuming power will cause some to shut down. To avoid this, you can place
-        [POWER GENERATORS]. '
-    - aiExpression: 2
-      dialogue: They will increase the amount of power you can regenerate. Be wary,
-        they can only handle so much. Hover over the battery icon at the top of the
-        screen for more information. (Hover over seems to be disabled at the moment)
-    - aiExpression: 2
-      dialogue: Try placing a [POWER GENERATOR] here.
+      dialogue: 'Try placing a [POWER GENERATOR] here. '
   - key: build more generators
     expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: It appears to have helped. If you look at the battery icon at the
+        top of your screen, the [POWER GENERATION] number should have changed.
     - aiExpression: 2
-      dialogue: It appears to have helped. Check the battery icon at the top of your
-        screen, the [POWER GENERATION] number should have changed.
+      dialogue: Even so, you might want to place a few more [POWER GENERATORS] just
+        to be safe.
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -409,6 +414,7 @@ MonoBehaviour:
   aKey: {fileID: 0}
   sKey: {fileID: 0}
   dKey: {fileID: 0}
+  powerDiagram: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
   thrusterCamera: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
