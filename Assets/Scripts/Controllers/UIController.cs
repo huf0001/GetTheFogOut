@@ -515,8 +515,8 @@ public class UIController : MonoBehaviour
             case ObjectiveStage.SurvivalStage:
                 hudObjText.text = "Objective: Leave the Planet";
                 objWindowText.text = "<b>Leave the Planet</b>\n\n" +
-                    "<size=75%>The fog is out to get you! Hurry and gather enough power to leave this wretched planet behind!\n\n" +
-                    $"Target: {Mathf.Round(Mathf.Lerp(powerVal, power, powerTime))} / {ObjectiveController.Instance.PowerTarget} <size=90%><sprite=\"all_icons\" index=0>";
+                    "<size=75%>Your ship is undergoing repairs. Protect yourself from the fog until you are ready to leave, then blast off this wretched planet!\n\n" +
+                    $"Target: Wait for the ship to finish repairing";
                 break;
         }
     }
