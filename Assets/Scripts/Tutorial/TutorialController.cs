@@ -101,8 +101,6 @@ public class TutorialController : DialogueBoxController
     private float lerpProgress = 0f;
     private bool lerpForward = true;
 
-    private MusicFMOD musicFMOD;
-
     private int extendersGoal;
     private bool defencesOn = false;
 
@@ -175,10 +173,6 @@ public class TutorialController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (!musicFMOD && WorldController.Instance.musicFMOD)
-        {
-            musicFMOD = WorldController.Instance.musicFMOD;
-        }
         CheckTutorialStage();
 
         if (tutorialStage != TutorialStage.Finished)

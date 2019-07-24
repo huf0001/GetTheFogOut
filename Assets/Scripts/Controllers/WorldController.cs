@@ -121,19 +121,12 @@ public class WorldController : MonoBehaviour
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
 
-        if (GameObject.Find("MusicFMOD") != null)
+        if (GameObject.Find("MusicFMOD(Clone)") != null)
         {
-            Debug.Log("MusicFMOD Found from Menu Scene.");
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-        else if (GameObject.Find("MusicFMOD(Clone)") != null)
-        {
-            Debug.Log("MusicFMOD(Clone) Found from Menu Scene.");
             musicFMOD = GameObject.Find("MusicFMOD(Clone)").GetComponent<MusicFMOD>();
         }
         else
         {
-            Debug.Log("WorldController FMOD Instantiation.");
             Instantiate(musicfmod);
             musicFMOD = musicfmod;
         }
