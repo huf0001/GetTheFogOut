@@ -102,8 +102,6 @@ public class TutorialController : DialogueBoxController
     private float lerpProgress = 0f;
     private bool lerpForward = true;
 
-    private MusicFMOD musicFMOD;
-
     private int extendersGoal;
     private bool defencesOn = false;
 
@@ -814,8 +812,9 @@ public class TutorialController : DialogueBoxController
 
                 //Enable thruster to be clicked and collected for attaching
                 thruster.SetActive(true);
- 
+
                 // Play music Var 2 soundtrack
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
                 WorldController.Instance.musicFMOD.StageTwoMusic();
 
                 //Camera pans to the thruster

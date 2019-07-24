@@ -17,7 +17,12 @@ namespace Abilities
                 if (t.Building)
                 {
                     t.Building.IsOverclockOn = true;
-                    t.Building.GetComponentInChildren<Renderer>().material.SetFloat("_Overclock", 1f);
+                    
+                    Renderer[] renderers = t.Building.GetComponentsInChildren<Renderer>();
+                    foreach (Renderer renderer in renderers)
+                    {
+                        renderer.material.SetFloat("_Overclock", 1f);
+                    }
                     
                     switch (t.Building.BuildingType)
                     {
@@ -49,7 +54,11 @@ namespace Abilities
             }
             
             b.IsOverclockOn = false;
-            b.GetComponentInChildren<Renderer>().material.SetFloat("_Overclock", 0f);
+            Renderer[] renderers = b.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.material.SetFloat("_Overclock", 0f);
+            }
             
             switch (b.BuildingType)
             {

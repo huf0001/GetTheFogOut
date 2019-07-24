@@ -41,7 +41,6 @@ public class ObjectiveController : DialogueBoxController
     private bool powerOverloadedLastUpdate = false;
     private float lastOverload = -1f;
     private float lastOverloadDialogue = -1f;
-    private MusicFMOD musicFMOD;
     private float tick = 0;
     private int countdown = 60;
 
@@ -65,11 +64,6 @@ public class ObjectiveController : DialogueBoxController
             Debug.LogError("There should never be 2 or more objective managers.");
         }
 
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-
         Instance = this;
     }
 
@@ -80,8 +74,7 @@ public class ObjectiveController : DialogueBoxController
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
 
-        musicFMOD = WorldController.Instance.musicFMOD;
-        musicFMOD.StageOneMusic();
+        WorldController.Instance.musicFMOD.StageOneMusic();
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -220,7 +213,7 @@ public class ObjectiveController : DialogueBoxController
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.Intensity += 1;
                 // Play music Var 2 soundtrack
-                musicFMOD.StageTwoMusic();
+                WorldController.Instance.musicFMOD.StageTwoMusic();
 
                 if (TutorialController.Instance.SkipTutorial)
                 {
@@ -304,7 +297,7 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(2).gameObject.SetActive(true);
 
                 // Play music Var 3 soundtrack
-                musicFMOD.StageThreeMusic();
+                WorldController.Instance.musicFMOD.StageThreeMusic();
 
                 //Go to next stage
                 IncrementStage();
@@ -322,11 +315,10 @@ public class ObjectiveController : DialogueBoxController
             case 0:
                 SendDialogue("end part stage", 1);
                 Fog.Instance.Intensity += 1;
-                musicFMOD.StageThreeMusic();
+                UIController.instance.ShowCountdownSlider();
                 IncrementSubStage();
                 break;
             case 1:
-                UIController.instance.ShowCountdownSlider();
                 Tick();
                 //Debug.Log($"Countdown: {countdown}");
 
@@ -346,9 +338,7 @@ public class ObjectiveController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 3:
-                //Survival countdown
                 Tick();
-
                 //Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
@@ -363,9 +353,7 @@ public class ObjectiveController : DialogueBoxController
 
                 break;
             case 4:
-                //Survival countdown
                 Tick();
-
                 //Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
@@ -377,7 +365,6 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 5:
                 UIController.instance.HideCountdownSlider();
-                // Run AI completion text
                 SendDialogue("end power stage", 1);
                 IncrementSubStage();
                 break;
