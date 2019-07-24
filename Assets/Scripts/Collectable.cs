@@ -66,7 +66,7 @@ public class Collectable : Locatable, ICollectible
         
         if (location.FogUnit)
         {
-            if (location.FogUnit.Health >= 0 && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
+            if (location.FogUnit.Health <= 0 && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (ability.AbilityType != AbilityEnum.None)
                 {

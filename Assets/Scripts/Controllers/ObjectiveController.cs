@@ -332,10 +332,10 @@ public class ObjectiveController : DialogueBoxController
 
                 // Run AI completion text
                 SendDialogue("end part stage", 1);
+                UIController.instance.ShowCountdownSlider();
                 IncrementSubStage();
                 break;
             case 1:
-                UIController.instance.ShowCountdownSlider();
                 //Survival countdown
                 Tick();
 
