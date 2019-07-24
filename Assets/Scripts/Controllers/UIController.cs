@@ -575,6 +575,11 @@ public class UIController : MonoBehaviour
                                      "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
                                      $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {TutorialController.Instance.CollectedMineralsGoal} <size=90%><sprite=\"all_icons\" index=2>";
                 break;
+            case TutorialStage.CollectSonar:
+                hudObjText.text = "Objective: Recover Canister";
+                objWindowText.text = "<b>Recover Canister</b>\n\n" +
+                                     "<size=75%>Retrieve that canister lying near the ship.<size=90%><sprite=\"all_icons\" index=2>";
+                break;
             case TutorialStage.BuildExtenderInFog:
                 hudObjText.text = "Objective: Build Power Extender";
                 objWindowText.text = "<b>Build Power Extender</b>\n\n" +

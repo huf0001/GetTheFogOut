@@ -114,6 +114,8 @@ public class TutorialController : DialogueBoxController
     private TutorialStage savedTutorialStage;
     private int savedSubStage;
 
+    private TileData sonarLandmarkTile;
+
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
@@ -170,6 +172,7 @@ public class TutorialController : DialogueBoxController
         }
         else
         {
+            sonarLandmarkTile = WorldController.Instance.GetTileAt(sonarLandmark.transform.position);
             targetRenderer = buildingTarget.GetComponent<MeshRenderer>();
             //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = false;
         }
@@ -791,6 +794,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
+                UIController.instance.UpdateObjectiveText(stage);
                 FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
                 WorldController.Instance.musicFMOD.StageTwoMusic();
                 sonarCamera.gameObject.SetActive(true);
@@ -912,6 +916,7 @@ public class TutorialController : DialogueBoxController
             case 1:
                 UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build extender in fog", 1);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
@@ -926,6 +931,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)
                 {
+                    DismissMouse();
                     GoToSubStage(4);
                 }
 
@@ -1350,6 +1356,11 @@ public class TutorialController : DialogueBoxController
     public bool TileAllowed(TileData tile)
     {
         lastTileChecked = tile;
+
+        if (stage <= TutorialStage.CollectSonar && tile == sonarLandmarkTile)
+        {
+            return false;
+        }
 
         switch (stage)
         {
