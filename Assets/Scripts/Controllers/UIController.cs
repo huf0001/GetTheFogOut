@@ -146,10 +146,11 @@ public class UIController : MonoBehaviour
                 objectiveButton.onClick.AddListener(
                     delegate
                     {
-                        if (ResourceController.Instance.StoredMineral >= 500)
+                        if (ResourceController.Instance.StoredMineral >= TutorialController.Instance.CollectedMineralsGoal)
                         {
-                            ResourceController.Instance.StoredMineral -= 500;
+                            ResourceController.Instance.StoredMineral -= TutorialController.Instance.CollectedMineralsGoal;
                             objectiveButton.enabled = false;
+
                             if (controller == "O")
                             {
                                 ObjectiveController.Instance.IncrementStage();
@@ -548,6 +549,11 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Build Power Extender</b>\n\n" +
                     "<size=75%>Build a Power Extender to reach additional mineral nodes.\n\n";
                 break;
+            case TutorialStage.MouseOverPowerDiagram:
+                hudObjText.text = "Objective: Look at Power Diagram";
+                objWindowText.text = "<b>Look at Power Diagram</b>\n\n" +
+                                     "<size=75%>Move the mouse over the power icon to view the diagram explaining how power works.\n\n";
+                break;
             case TutorialStage.BuildGenerator:
                 hudObjText.text = "Objective: Build Generator";
                 objWindowText.text = "<b>Build Generator</b>\n\n" +
@@ -563,7 +569,7 @@ public class UIController : MonoBehaviour
                 hudObjText.text = "Objective: Repair the Hull";
                 objWindowText.text = "<b>Repair the Hull</b>\n\n" +
                                      "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
-                                     $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {ObjectiveController.Instance.MineralTarget} <size=90%><sprite=\"all_icons\" index=2>";
+                                     $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {TutorialController.Instance.CollectedMineralsGoal} <size=90%><sprite=\"all_icons\" index=2>";
                 break;
             case TutorialStage.BuildExtenderInFog:
                 hudObjText.text = "Objective: Build Power Extender";

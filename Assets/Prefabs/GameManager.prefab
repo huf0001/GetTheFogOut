@@ -279,10 +279,9 @@ MonoBehaviour:
       dialogue: You currently have access to a building called a {HARVESTER}. When
         placed on a {MINERAL}, it will collect its contents for you.
     - aiExpression: 2
-      dialogue: The {HARVESTER} will show this -insert X sprite here- when it has
-        exhausted its {MINERALS}.
+      dialogue: The {HARVESTER} will show an >X< when it has exhausted its {MINERALS}.
     - aiExpression: 2
-      dialogue: Click on this {MINERAL}.
+      dialogue: I'll show you where to put the {HARVESTER}.
   - key: build harvester icon
     expressionDialoguePairs:
     - aiExpression: 2
@@ -291,40 +290,45 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 1
       dialogue: Good, you're learning. Now build two more to speed up your {MINERAL}
-        collection.
+        collection. This time, I'll let you place them wherever you like.
   - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: 'You see the green grid around your ship? It represents the area that
         you can place buildings on. '
     - aiExpression: 2
-      dialogue: Right now it's too small to reach those minerals I showed you earlier.
+      dialogue: Right now it's too small to reach those {MINERALS} I showed you earlier.
         You will need to place a [POWER EXTENDER]
   - key: build more harvesters extended
     expressionDialoguePairs:
     - aiExpression: 1
       dialogue: See how your grid range has now increased? Now you can place some
         more {HARVESTERS}.
+  - key: explain power
+    expressionDialoguePairs:
+    - aiExpression: 3
+      dialogue: Oh, well . . . that isn't good. It appears the {HARVESTERS} have put
+        some strain on the power system. When buildings are placed, they consume power.
+    - aiExpression: 2
+      dialogue: Too many buildings consuming power will cause some to shut down. Move
+        your mouse over the [BATTERY ICON] at the top of the screen to see how that
+        works.
   - key: build generator target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Oh, well....that isn't good. It appears the harvesters have put some
-        strain on the power system.
+      dialogue: 'To avoid losing power, you can place [POWER GENERATORS]. They will
+        increase the amount of power you can regenerate. Be wary, though; they can
+        only handle so much. '
     - aiExpression: 2
-      dialogue: 'When buildings are placed, they consume power. Too many buildings
-        consuming power will cause some to shut down. To avoid this, you can place
-        [POWER GENERATORS]. '
-    - aiExpression: 2
-      dialogue: They will increase the amount of power you can regenerate. Be wary,
-        they can only handle so much. Hover over the battery icon at the top of the
-        screen for more information. (Hover over seems to be disabled at the moment)
-    - aiExpression: 2
-      dialogue: Try placing a [POWER GENERATOR] here.
+      dialogue: 'Try placing a [POWER GENERATOR]. '
   - key: build more generators
     expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: It appears to have helped. If you look at the [BATTERY ICON] at the
+        top of your screen, the [POWER GENERATION] number should have changed.
     - aiExpression: 2
-      dialogue: It appears to have helped. Check the battery icon at the top of your
-        screen, the [POWER GENERATION] number should have changed.
+      dialogue: I think you should place a few more [POWER GENERATORS] just to be
+        safe.
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -338,14 +342,13 @@ MonoBehaviour:
   - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'Hey...this thick miasma seems to be in the way of the thruster. '
-    - aiExpression: 2
-      dialogue: Try placing a [POWER EXTENDER] in it and see what happens.
+      dialogue: Hey . . . this thick miasma seems to be in the way of the thruster.
+        Try placing a [POWER EXTENDER] in it and see what happens.
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: As if crash landing wasn't enough...now we're surrounded by a man
-        dissolving fog? Great!
+      dialogue: As if crash landing wasn't enough . . . now we're surrounded by a
+        man-dissolving fog? Great!
     - aiExpression: 2
       dialogue: 'Your ship comes equipped with some defences called >MORTAR< and >PULSE
         TOWER<. '
@@ -360,17 +363,27 @@ MonoBehaviour:
   - key: activate defences
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: I would highly reccomend building some more defences before activating
-        them.
+      dialogue: Now that you know all the buildings, I'll let you build what you like
+        for a bit. When you're ready, activate the >DEFENCES< and clear that fog away.
     - aiExpression: 1
       dialogue: Once you're ready click the attach button to activate them, because
         I don't make the rules, I follow them.
+  - key: maybe dont build in fog
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: I don't think you should build that there. We don't know what the
+        fog will do to it. Best play it safe for now.
+  - key: definitely dont build in fog
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Weren't you paying attention? If you build something there, the fog
+        will just destroy it.
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: Well, now that you know the basics, the rest is up to you. I will
         aid you where I can. I would suggest exploring your surroundings and collecting
-        some more minerals, maybe even get to your ships thruster.
+        some more {MINERALS}, maybe even get to your ships thruster.
   skipTutorial: 0
   tutorialStage: 1
   subStage: 1
@@ -412,6 +425,7 @@ MonoBehaviour:
   aKey: {fileID: 0}
   sKey: {fileID: 0}
   dKey: {fileID: 0}
+  powerDiagram: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
   thrusterCamera: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
