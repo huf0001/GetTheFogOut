@@ -48,7 +48,7 @@ public class AbilityController : MonoBehaviour
         set { instance = value; }
     }
 
-    private bool IsAbilitySelected
+    public bool IsAbilitySelected
     {
         get
         {
@@ -69,6 +69,11 @@ public class AbilityController : MonoBehaviour
         {
             abilityCollected = value;
         }
+    }
+
+    public Dictionary<AbilityEnum, bool> AbilityTriggered
+    {
+        get { return abilityTriggered; }
     }
 
     // Start up --------------------------------------------------------------------------------------------------------
