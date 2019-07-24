@@ -61,6 +61,7 @@ public class Collectable : Locatable, ICollectible
                 AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
             }
             UIController.instance.AbilityUnlock(ability);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
             Destroy(gameObject);
         }
         
@@ -73,6 +74,7 @@ public class Collectable : Locatable, ICollectible
                     AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
                 }
                 UIController.instance.AbilityUnlock(ability);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
                 Destroy(gameObject);
             }
         } 
