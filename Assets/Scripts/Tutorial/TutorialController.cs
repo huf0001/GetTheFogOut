@@ -61,11 +61,12 @@ public class TutorialController : DialogueBoxController
     [SerializeField] public GameObject thruster;
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark extenderLandmark;
-    [SerializeField] private ResourceNode extendedHarvesterResource;
+    //[SerializeField] private ResourceNode extendedHarvesterResource;
     [SerializeField] private Landmark generatorLandmark;
-    [SerializeField] private Landmark extenderInFogLandmark;
-    [SerializeField] private Landmark mortarLandmark;
-    [SerializeField] private Landmark pulseDefenceLandmark;
+    [SerializeField] private Landmark sonarLandmark;
+    //[SerializeField] private Landmark extenderInFogLandmark;
+    //[SerializeField] private Landmark mortarLandmark;
+    //[SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [Header("UI Elements")]
@@ -93,10 +94,6 @@ public class TutorialController : DialogueBoxController
     //[SerializeField] private GameObject pulseDefencePrefab;
 
     //Non-Serialized Fields
-
-
-
-
     private MeshRenderer targetRenderer = null;
     private float decalMin = 1.5f;
     private float decalMax = 3f;
@@ -780,7 +777,6 @@ public class TutorialController : DialogueBoxController
     {
         switch (subStage)
         {
-            //TODO: pan to thruster, enable it
             case 1:
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.transform.GetChild(0).gameObject.SetActive(false);
@@ -1209,36 +1205,12 @@ public class TutorialController : DialogueBoxController
         return result;
     }
 
-    //Tutorial Utility Methods - Stage Progression---------------------------------------------------------------------------------------------------
+    //Tutorial Utility Methods - Stage Progression - General-----------------------------------------------------------------------------------------
 
     //Tells MouseController to report clicks to TutorialController
     private void ActivateMouse()
     {
         MouseController.Instance.ReportTutorialClick = true;
-    }
-
-    //Override of SendDialogue that calls IncrementSubStage once dialogue is sent
-    protected override void SendDialogue(string dialogueKey, float invokeDelay)
-    {
-        base.SendDialogue(dialogueKey, invokeDelay);
-        IncrementSubStage();
-    }
-
-    //Dismisses dialogue and the mouse and advances/retreats to the specified sub-stage appropriately appropriately
-    private void GoToSubStage(int nextSubStage)
-    {
-        MouseController.Instance.ReportTutorialClick = false;
-        tileClicked = false;
-        currentlyLerping = ButtonType.None;
-        ResetDialogueRead();
-        subStage = nextSubStage;
-    }
-
-    //Dismisses the dialogue and increments the substage
-    private void DismissDialogue()
-    {
-        ResetDialogueRead();
-        IncrementSubStage();
     }
 
     //Dismisses the mouse and increments the substage
@@ -1250,17 +1222,43 @@ public class TutorialController : DialogueBoxController
         IncrementSubStage();
     }
 
+    //Override of SendDialogue that calls IncrementSubStage once dialogue is sent
+    protected override void SendDialogue(string dialogueKey, float invokeDelay)
+    {
+        base.SendDialogue(dialogueKey, invokeDelay);
+        IncrementSubStage();
+    }
+    
+    //Dismisses the dialogue and increments the substage
+    private void DismissDialogue()
+    {
+        ResetDialogueRead();
+        IncrementSubStage();
+    }
+    
     //Increments the substage by 1
     private void IncrementSubStage()
     {
         subStage++;
     }
-
+   
+    //Dismisses dialogue and the mouse and advances/retreats to the specified sub-stage appropriately appropriately
+    private void GoToSubStage(int nextSubStage)
+    {
+        MouseController.Instance.ReportTutorialClick = false;
+        tileClicked = false;
+        currentlyLerping = ButtonType.None;
+        ResetDialogueRead();
+        subStage = nextSubStage;
+    }
+    
     //Resets the substage to 1
     private void ResetSubStage()
     {
         subStage = 1;
     }
+
+    //Tutorial Utility Methods - Stage Progression - Specific----------------------------------------------------------------------------------------
 
     //Called to advance the collect minerals stage to sub-stage 6
     public void CompleteMineralCollection()
