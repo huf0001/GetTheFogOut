@@ -48,7 +48,7 @@ public class AbilityController : MonoBehaviour
         set { instance = value; }
     }
 
-    private bool IsAbilitySelected
+    public bool IsAbilitySelected
     {
         get
         {

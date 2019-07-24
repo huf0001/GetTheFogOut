@@ -77,6 +77,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraKey sKey;
     [SerializeField] private CameraKey dKey;
     [SerializeField] private Image powerDiagram;
+    [SerializeField] private GameObject abilityUnlockCanvas;
 
     [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
@@ -817,30 +818,62 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                SendDialogue("activate sonar", 1);
+                SendDialogue("select sonar", 1);
                 break;
             case 5:
-                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                if (AbilityController.Instance.IsAbilitySelected)
                 {
-                    artilleryCamera.gameObject.SetActive(true);
-                    SendDialogue("explain abilities", 1);
+                    abilityUnlockCanvas.SetActive(false);
                     GoToSubStage(7);
                 }
                 else if (dialogueRead)
                 {
                     DismissDialogue();
+                    abilityUnlockCanvas.SetActive(false);
                 }
 
                 break;
             case 6:
-                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                if (AbilityController.Instance.IsAbilitySelected)
                 {
-                    artilleryCamera.gameObject.SetActive(true);
-                    SendDialogue("explain abilities", 1);
+                    IncrementSubStage();
                 }
 
                 break;
             case 7:
+                SendDialogue("activate sonar", 1);
+                break;
+            case 8:
+                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                {
+                    GoToSubStage(10);
+                }
+                else if (dialogueRead)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 9:
+                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                {
+                    IncrementSubStage();
+
+                }
+
+                break;
+            case 10:
+                // Update Hub model to fixed ship without thrusters / Particle effects
+                hub.transform.GetChild(0).gameObject.SetActive(false);
+                hub.transform.GetChild(1).gameObject.SetActive(true);
+
+                //Enable thruster to be clicked and collected for attaching
+                thruster.SetActive(true);
+
+                artilleryCamera.gameObject.SetActive(true);
+                SendDialogue("explain abilities", 1);
+                break;
+            case 11:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -848,12 +881,12 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 8:
+            case 12:
                 SendDialogue("explain thruster", 1);
                 artilleryCamera.gameObject.SetActive(false);
                 thrusterCamera.gameObject.SetActive(true);
                 break;
-            case 9:
+            case 13:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -868,33 +901,6 @@ public class TutorialController : DialogueBoxController
                 SendDialogue("error", 1);
                 Debug.Log("inaccurate sub stage");
                 break;
-
-                //case 1:
-                //    // Update Hub model to fixed ship without thrusters / Particle effects
-                //    hub.transform.GetChild(0).gameObject.SetActive(false);
-                //    hub.transform.GetChild(1).gameObject.SetActive(true);
-
-                //    //Enable thruster to be clicked and collected for attaching
-                //    thruster.SetActive(true);
-
-                //    // Play music Var 2 soundtrack
-                //    FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
-                //    WorldController.Instance.musicFMOD.StageTwoMusic();
-
-                //    //Camera pans to the thruster
-                //    thrusterCamera.gameObject.SetActive(true);
-
-                //    SendDialogue("extend to thruster", 1);
-                //    ActivateMouse();
-                //    break;
-                //case 2:
-                //    if (dialogueRead)
-                //    {
-                //        DismissDialogue();
-                //        thrusterCamera.gameObject.SetActive(false);
-                //    }
-
-                //    break;
         }
     }
 

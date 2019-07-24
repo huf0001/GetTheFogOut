@@ -54,28 +54,33 @@ public class Collectable : Locatable, ICollectible
 
     private void OnMouseDown()
     {
-        if (!location.FogUnit && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
+        if (TutorialController.Instance.Stage == TutorialStage.Finished || (TutorialController.Instance.Stage == TutorialStage.CollectSonar && ability.AbilityType == AbilityEnum.Sonar))
         {
-            if (ability.AbilityType != AbilityEnum.None)
-            {
-                AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
-            }
-            UIController.instance.AbilityUnlock(ability);
-            Destroy(gameObject);
-        }
-        
-        if (location.FogUnit)
-        {
-            if (location.FogUnit.Health <= 0 && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
+            if (!location.FogUnit && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (ability.AbilityType != AbilityEnum.None)
                 {
                     AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
                 }
+
                 UIController.instance.AbilityUnlock(ability);
                 Destroy(gameObject);
             }
-        } 
+
+            if (location.FogUnit)
+            {
+                if (location.FogUnit.Health <= 0 && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    if (ability.AbilityType != AbilityEnum.None)
+                    {
+                        AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
+                    }
+
+                    UIController.instance.AbilityUnlock(ability);
+                    Destroy(gameObject);
+                }
+            }
+        }
     }
 
     AbilityEnum ConvertCollectableName(string name)

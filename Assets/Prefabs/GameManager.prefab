@@ -341,20 +341,26 @@ MonoBehaviour:
       dialogue: "Great, you\u2019ve repaired your ship. Although, some parts still
         seem to be missing. I think this canister over here is one. Pick it up so
         we can see what it is."
-  - key: activate sonar
+  - key: select sonar
     expressionDialoguePairs:
     - aiExpression: 1
       dialogue: Oh! It's the sonar. This will help us find all the rest of the missing
-        pieces of the ship. Click the button in the bottom right corner and give it
-        a spin.
+        pieces of the ship. Click the button in the bottom right corner and select
+        it.
+  - key: activate sonar
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Now click somewhere on the ground to activate it. That will be the
+        centre of the sonar's ping.
   - key: explain abilities
     expressionDialoguePairs:
     - aiExpression: 3
       dialogue: Ugh . . . I . . . forgot how . . . much power . . . the sonar drains
         . . . don't go overboard, okay?
     - aiExpression: 2
-      dialogue: Anyway, it seems we've found another canister with functionality from
-        the ship. You should recover it, as well as any others we find.
+      dialogue: Anyway, it seems we've found something over here . . . maybe with
+        functionality from the ship. You should see what it is, and recover it if
+        it's another canister like the sonar's.
   - key: explain thruster
     expressionDialoguePairs:
     - aiExpression: 1
@@ -458,6 +464,7 @@ MonoBehaviour:
   sKey: {fileID: 0}
   dKey: {fileID: 0}
   powerDiagram: {fileID: 0}
+  abilityUnlockCanvas: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
   sonarCamera: {fileID: 0}
   artilleryCamera: {fileID: 0}
