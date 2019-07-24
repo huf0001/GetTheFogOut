@@ -268,7 +268,7 @@ MonoBehaviour:
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: You see these minerals? You can collect them, which will be highly
+      dialogue: You see these {MINERALS}? You can collect them, which will be highly
         beneficial to your existence.
   - key: move camera
     expressionDialoguePairs:
@@ -290,8 +290,8 @@ MonoBehaviour:
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Good, you're learning. Now build two more to speed up your {MINERAL}
-        collection. This time, I'll let you place them wherever you like.
+      dialogue: 'Good, you''re learning. Now build two more to speed up your {MINERAL}
+        collection. '
   - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
@@ -299,7 +299,7 @@ MonoBehaviour:
         you can place buildings on. '
     - aiExpression: 2
       dialogue: Right now it's too small to reach those {MINERALS} I showed you earlier.
-        You will need to place a [POWER EXTENDER]
+        You will need to place a [POWER EXTENDER].
   - key: build more harvesters extended
     expressionDialoguePairs:
     - aiExpression: 1
@@ -318,7 +318,7 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: 'To avoid losing power, you can place [POWER GENERATORS]. They will
-        increase the amount of power you can regenerate. Be wary, though; they can
+        increase the amount of power you can regenerate. Be wary, though,  they can
         only handle so much. '
     - aiExpression: 2
       dialogue: 'Try placing a [POWER GENERATOR]. '
@@ -335,11 +335,6 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: Your ship is in pretty bad shape, I would try and collect some {MINERALS}
         to get it fixed.
-  - key: maintain minerals
-    expressionDialoguePairs:
-    - aiExpression: 3
-      dialogue: Come on, what are you doing? You can't repair your ship without enough
-        minerals. You had them  and you wasted them.
   - key: extend to thruster
     expressionDialoguePairs:
     - aiExpression: 2
@@ -369,8 +364,11 @@ MonoBehaviour:
   - key: activate defences
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Now that you know all the buildings, I'll let you build what you like
-        for a bit. When you're ready, activate the >DEFENCES< and clear that fog away.
+      dialogue: Now that you know how to place buildings, I would suggest placing
+        some more, we wouldn't want the fog seeping into your ship.
+    - aiExpression: 1
+      dialogue: Once you're prepared, press the >ACTIVATE< button at the top of your
+        screen to boot up your >DEFENCES<.
   - key: activate defences in range
     expressionDialoguePairs:
     - aiExpression: 1
@@ -379,13 +377,12 @@ MonoBehaviour:
   - key: maybe dont build in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: I don't think you should build that there. We don't know what the
-        fog will do to it. Best play it safe for now.
+      dialogue: Let's not go that way yet, we don't know what's out there.
   - key: definitely dont build in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Weren't you paying attention? If you build something there, the fog
-        will just destroy it.
+      dialogue: Hey, weren't you paying attention? If you build something there, the fog
+        will just destroy it. Let's pay attention to the task at hand.
   - key: need defences
     expressionDialoguePairs:
     - aiExpression: 2
@@ -395,7 +392,8 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: Well, now that you know the basics, the rest is up to you. I will
-        aid you where I can.
+        aid you where I can. I would suggest exploring your surroundings and collecting
+        some more {MINERALS}, maybe even get to your ships thruster.
   skipTutorial: 0
   stage: 1
   subStage: 1
@@ -483,15 +481,7 @@ MonoBehaviour:
   - key: finish finding thruster
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'Don''t forget that you need to go and collect the thruster; this
-        ship isn''t going anywhere without it.
-
-'
-    - aiExpression: 2
-      dialogue: 'I would also suggest exploring your surroundings and collecting some
-        more {MINERALS} while you''re at it.
-
-'
+      dialogue: You're going to need to get to your thruster.
   - key: start part stage
     expressionDialoguePairs:
     - aiExpression: 1
@@ -500,18 +490,15 @@ MonoBehaviour:
   - key: end part stage
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Oh\u2026 I thought I should let you know that fog you\u2019ve been
-        fighting through is showing extreme signs of aggression. "
+      dialogue: The fog...it seems to be showing signs of severe aggression.
   - key: start power stage
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Quick, if you save some power there should be enough to get out of
-        here!
+      dialogue: The ship needs time to repair, keep the fog away from it!
   - key: end power stage
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "\rFinally, enough power! Quick, push the launch button and get out
-        of here!\r\n"
+      dialogue: "\rFinally! Quick, push the launch button and get out of here!\r\n"
   - key: power overloaded
     expressionDialoguePairs:
     - aiExpression: 3

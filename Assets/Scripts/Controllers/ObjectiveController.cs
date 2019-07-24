@@ -11,7 +11,7 @@ public enum ObjectiveStage
     None,
     HarvestMinerals,
     RecoverPart,
-    Survival,
+    SurvivalStage,
     Finished
 }
 
@@ -73,8 +73,6 @@ public class ObjectiveController : DialogueBoxController
         //audioSource = GetComponent<AudioSource>();
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
-
-        WorldController.Instance.musicFMOD.StageOneMusic();
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -82,7 +80,7 @@ public class ObjectiveController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (objectivesOn)
+        if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
         }
@@ -98,13 +96,19 @@ public class ObjectiveController : DialogueBoxController
     {
         switch (currStage)
         {
+            //case ObjectiveStage.HarvestMinerals:
+            //    WorldController.Instance.musicFMOD.StageOneMusic();
+            //    HarvestMineralStage();
+            //    break;
             case ObjectiveStage.HarvestMinerals:
-                HarvestMineralStage();
+                currStage = ObjectiveStage.RecoverPart;
                 break;
             case ObjectiveStage.RecoverPart:
+                WorldController.Instance.musicFMOD.StageTwoMusic();
                 RecoverPartStage();
                 break;
-            case ObjectiveStage.Survival:
+            case ObjectiveStage.SurvivalStage:
+                WorldController.Instance.musicFMOD.StageThreeMusic();
                 SurvivalStage();
                 break;
             case ObjectiveStage.Finished:
@@ -147,63 +151,61 @@ public class ObjectiveController : DialogueBoxController
 
     // Stage Functions ----------------------------------------------------------------------------------------
 
-    void HarvestMineralStage()
-    {
-        switch (subStage)
-        {
-            case 0:
-                if (TutorialController.Instance.SkipTutorial)
-                {
-                    SendDialogue("start harvest stage", 1);
-                    IncrementSubStage();
-                }
-                else
-                {
-                    currStage = ObjectiveStage.RecoverPart;
-                    RecoverPartStage();
-                }
-                
-                break;
-            case 1:
-                // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
-                if (ResourceController.Instance.StoredMineral >= mineralTarget)
-                {
-                    ChangeToSubStage(3);
-                }
-                else if (dialogueRead)
-                {
-                    DismissDialogue();
-                }
+    //TODO: remove harvest mineral stage, and skip straight to recover part stage
+    //void HarvestMineralStage()
+    //{
+    //    switch (subStage)
+    //    {
+    //        case 0:
+    //            // Play music Var 1 soundtrack
+    //            WorldController.Instance.musicFMOD.StageOneMusic();
+    //            // Set fog AI to 'Docile'
+    //            //Fog.Instance.Intensity = 1;   //Default of Intensity = 1 set in Fog.Awake()
+    //            // Run AI text for stage
+    //            SendDialogue("start harvest stage", 1);
+    //            // Unlock 5 generators
+    //            IncrementSubStage();
+    //            break;
+    //        case 1:
+    //            // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
+    //            if (ResourceController.Instance.StoredMineral >= 500)
+    //            { 
+    //                ChangeToSubStage(3);
+    //            }
+    //            else if (dialogueRead)
+    //            {
+    //                DismissDialogue();
+    //            }
 
-                break;
-            case 2:
-                if (ResourceController.Instance.StoredMineral >= mineralTarget)
-                {
-                    IncrementSubStage();
-                }
+    //            break;
+    //        case 2:
+    //            if (ResourceController.Instance.StoredMineral >= 500)
+    //            {
+    //                IncrementSubStage();
+    //            }
 
-                break;
-            case 3:
-                if (UIController.instance.buttonClosed)
-                {
-                    UIController.instance.ShowRepairButton("O");
-                    IncrementSubStage();
-                }
+    //            break;
+    //        case 3:
+    //            if (UIController.instance.buttonClosed)
+    //            {
+    //                UIController.instance.ShowRepairButton("O");
+    //                IncrementSubStage();
+    //            }
 
-                break;
-            case 4:
-                if (ResourceController.Instance.StoredMineral < mineralTarget)
-                {
-                    UIController.instance.CloseButton();
-                    SendDialogue("maintain minerals", 1);
-                    ChangeToSubStage(1);
-                }
+    //            break;
+    //        case 4:
+    //            if (ResourceController.Instance.StoredMineral < 500)
+    //            {
+    //                UIController.instance.CloseButton();
+    //                SendDialogue("maintain minerals", 1);
+    //                ChangeToSubStage(1);
+    //            }
 
-                break;
-            default:
-                break;
-        }
-    }
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
 
     void RecoverPartStage()
     {
@@ -313,14 +315,19 @@ public class ObjectiveController : DialogueBoxController
         switch (subStage)
         {
             case 0:
-                SendDialogue("end part stage", 1);
+                // Set fog AI to 'Overly Aggressive'
                 Fog.Instance.Intensity += 1;
+
+                // Run AI completion text
+                SendDialogue("end part stage", 1);
                 UIController.instance.ShowCountdownSlider();
                 IncrementSubStage();
                 break;
             case 1:
+                //Survival countdown
                 Tick();
-                //Debug.Log($"Countdown: {countdown}");
+
+                Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
                 {
@@ -338,8 +345,10 @@ public class ObjectiveController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 3:
+                //Survival countdown
                 Tick();
-                //Debug.Log($"Countdown: {countdown}");
+
+                Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
                 {
@@ -353,8 +362,10 @@ public class ObjectiveController : DialogueBoxController
 
                 break;
             case 4:
+                //Survival countdown
                 Tick();
-                //Debug.Log($"Countdown: {countdown}");
+
+                Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
                 {
@@ -365,6 +376,7 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 5:
                 UIController.instance.HideCountdownSlider();
+                // Run AI completion text
                 SendDialogue("end power stage", 1);
                 IncrementSubStage();
                 break;

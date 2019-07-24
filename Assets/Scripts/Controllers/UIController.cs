@@ -285,7 +285,7 @@ public class UIController : MonoBehaviour
         {
             objectiveButton.onClick.RemoveAllListeners();
             objectiveButton.enabled = false;
-            if (ObjectiveController.Instance.CurrStage != (int)ObjectiveStage.Survival)
+            if (ObjectiveController.Instance.CurrStage != (int)ObjectiveStage.SurvivalStage)
             {
                 objectiveProceedCanvas.SetActive(false);
             }
@@ -516,7 +516,7 @@ public class UIController : MonoBehaviour
                     "<size=75%>Push your way through the fog to find the missing thruster from your ship.\n\n" +
                     "Thrusters: " + (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected ? f : nf);
                 break;
-            case ObjectiveStage.Survival:
+            case ObjectiveStage.SurvivalStage:
                 hudObjText.text = "Objective: Leave the Planet";
                 objWindowText.text = "<b>Leave the Planet</b>\n\n" +
                     "<size=75%>Your ship is undergoing repairs. Protect yourself from the fog until you are ready to leave, then blast off this wretched planet!\n\n" +
