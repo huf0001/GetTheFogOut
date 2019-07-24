@@ -471,9 +471,7 @@ MonoBehaviour:
   - key: finish finding thruster
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'finish finding thruster
-
-'
+      dialogue: You're going to need to get to your thruster.
   - key: start part stage
     expressionDialoguePairs:
     - aiExpression: 1
@@ -482,18 +480,15 @@ MonoBehaviour:
   - key: end part stage
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Oh\u2026 I thought I should let you know that fog you\u2019ve been
-        fighting through is showing extreme signs of aggression. "
+      dialogue: The fog...it seems to be showing signs of severe aggression.
   - key: start power stage
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Quick, if you save some power there should be enough to get out of
-        here!
+      dialogue: The ship needs time to repair, keep the fog away from it!
   - key: end power stage
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "\rFinally, enough power! Quick, push the launch button and get out
-        of here!\r\n"
+      dialogue: "\rFinally! Quick, push the launch button and get out of here!\r\n"
   - key: power overloaded
     expressionDialoguePairs:
     - aiExpression: 3
