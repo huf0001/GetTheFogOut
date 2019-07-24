@@ -261,8 +261,12 @@ public class UIController : MonoBehaviour
                     buttonClosed = false;
                     objectiveButton.onClick.AddListener(
                         delegate {
+                            if (TutorialController.Instance.DefencesOperable())     //If returns false, DefencesOperable() sets up the BuildDefencesInRange() stage
+                            {
+                                TutorialController.Instance.ActivateDefences();
+                            }
+
                             objectiveButton.enabled = false;
-                            TutorialController.Instance.ActivateDefences();
                             CloseButton();
                         });
                     launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);

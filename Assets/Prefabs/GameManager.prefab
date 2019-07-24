@@ -371,9 +371,11 @@ MonoBehaviour:
     - aiExpression: 1
       dialogue: Now that you know all the buildings, I'll let you build what you like
         for a bit. When you're ready, activate the >DEFENCES< and clear that fog away.
+  - key: activate defences in range
+    expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Once you're ready click the attach button to activate them, because
-        I don't make the rules, I follow them.
+      dialogue: Now that you've built a >DEFENCE< in range of the fog, when you're
+        ready, activate the >DEFENCES< and clear it away.
   - key: maybe dont build in fog
     expressionDialoguePairs:
     - aiExpression: 2
@@ -384,13 +386,18 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: Weren't you paying attention? If you build something there, the fog
         will just destroy it.
+  - key: need defences
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Hold on, you need to build defences within striking distance of the
+        fog. Their range isn't infinite, you know.
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: Well, now that you know the basics, the rest is up to you. I will
         aid you where I can.
   skipTutorial: 0
-  tutorialStage: 1
+  stage: 1
   subStage: 1
   currentlyBuilding: 0
   currentlyLerping: 0

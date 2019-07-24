@@ -105,4 +105,19 @@ public class ArcDefence : Defence
             return null;
         }
     }
+
+    public override bool TargetInRange()
+    {
+        List<TileData> tiles = location.CollectTilesInRange((int)visibilityRange);
+
+        foreach (TileData tile in tiles)
+        {
+            if (tile.FogUnit != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

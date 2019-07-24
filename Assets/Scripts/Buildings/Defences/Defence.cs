@@ -20,4 +20,6 @@ public abstract class Defence : Building
     }
 
     protected abstract void ResetFire();
+
+    public abstract bool TargetInRange();
 }

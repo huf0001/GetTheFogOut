@@ -527,7 +527,7 @@ public class WorldController : MonoBehaviour
         }
 
         if ((Input.GetButtonDown("Cancel"))
-            && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.TutorialStage == TutorialStage.Finished))
+            && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.Stage == TutorialStage.Finished))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);

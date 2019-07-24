@@ -359,7 +359,7 @@ public class MouseController : MonoBehaviour
     // Returns if a tile is OK to be built on.
     private bool CheckIfTileOkay(TileData tile, BuildingType building)
     {
-        if (tutorialController.TutorialStage == TutorialStage.Finished || (tile == tutorialController.CurrentTile && building == tutorialController.CurrentlyBuilding))
+        if (tutorialController.Stage == TutorialStage.Finished || (tile == tutorialController.CurrentTile && building == tutorialController.CurrentlyBuilding))
         {
             return true;
         }

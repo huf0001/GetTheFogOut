@@ -87,4 +87,19 @@ public class RepelFan : Defence
 
         return tiles;
     }
+
+    public override bool TargetInRange()
+    {
+        List<TileData> tiles = GetTarget(2);
+
+        foreach (TileData t in tiles)
+        {
+            if (t.FogUnit != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

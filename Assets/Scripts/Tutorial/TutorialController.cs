@@ -27,6 +27,7 @@ public enum TutorialStage
     BuildPulseDefence,
     DefenceActivation,
     DontBuildInFog,
+    BuildDefencesInRange,
     Finished
 }
 
@@ -50,7 +51,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private bool skipTutorial = true;
 
     [Header("Tutorial Game State (Testing)")]
-    [SerializeField] private TutorialStage tutorialStage = TutorialStage.ExplainSituation;
+    [SerializeField] private TutorialStage stage = TutorialStage.ExplainSituation;
     [SerializeField] private int subStage = 1;
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
     [SerializeField] private ButtonType currentlyLerping;
@@ -104,6 +105,8 @@ public class TutorialController : DialogueBoxController
 
     private int extendersGoal;
     private bool defencesOn = false;
+    private int mortarsGoal;
+    private int pulseDefencesGoal;
 
     private TutorialStage savedTutorialStage;
     private int savedSubStage;
@@ -120,7 +123,7 @@ public class TutorialController : DialogueBoxController
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
     public bool DefencesOn { get => defencesOn; }
     public bool SkipTutorial { get => skipTutorial; }
-    public TutorialStage TutorialStage { get => tutorialStage; }
+    public TutorialStage Stage { get => stage; }
     public Color UIHighlightColour { get => uiHighlightColour; }
     public Color UINormalColour { get => uiNormalColour; }
 
@@ -156,7 +159,7 @@ public class TutorialController : DialogueBoxController
         {
             Fog.Instance.InvokeWakeUpFog(5);
             Fog.Instance.InvokeBeginUpdatingDamage(5);
-            tutorialStage = TutorialStage.Finished;
+            stage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
             defencesOn = true;
             wKey.transform.parent.gameObject.SetActive(false);
@@ -176,15 +179,15 @@ public class TutorialController : DialogueBoxController
     {
         CheckTutorialStage();
 
-        if (tutorialStage != TutorialStage.Finished)
+        if (stage != TutorialStage.Finished)
         {
-            if (tutorialStage == TutorialStage.DefenceActivation && subStage > 5)
+            if (stage == TutorialStage.DefenceActivation && subStage > 5)
             {
                 UIController.instance.UpdateObjectiveText(TutorialStage.None);
             }
             else
             {
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
             }
 
             if (targetRenderer.enabled)
@@ -197,7 +200,7 @@ public class TutorialController : DialogueBoxController
     //Calls the appropriate stage method depending on the current stage
     private void CheckTutorialStage()
     {
-        switch (tutorialStage)
+        switch (stage)
         {
             case TutorialStage.ExplainSituation:
                 ExplainSituation();
@@ -244,6 +247,9 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.DontBuildInFog:
                 DontBuildInFog();
                 break;
+            case TutorialStage.BuildDefencesInRange:
+                BuildDefencesInRange();
+                break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
                 break;
@@ -254,7 +260,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    //Stage-Specific Recurring Methods - Player Completes Tutorial-----------------------------------------------------------------------------------
+    //Recurring Methods - Tutorial Stage Methods-----------------------------------------------------------------------------------------------------
 
     //Nexy explains the situation to the player
     private void ExplainSituation()
@@ -262,14 +268,14 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("explain situation", 2);
                 break;
             case 2:
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    tutorialStage = TutorialStage.ExplainMinerals;
+                    stage = TutorialStage.ExplainMinerals;
                     ResetSubStage();
                 }
 
@@ -299,7 +305,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 3:
-                tutorialStage = TutorialStage.CameraControls;
+                stage = TutorialStage.CameraControls;
                 ResetSubStage();
                 break;
         }
@@ -311,7 +317,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("move camera", 1);
 
                 if (!objWindowVisible)
@@ -347,7 +353,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                tutorialStage = TutorialStage.BuildHarvesters;
+                stage = TutorialStage.BuildHarvesters;
                 currentlyBuilding = BuildingType.Harvester;
                 ResetSubStage();
                 wKey.transform.parent.gameObject.SetActive(false);
@@ -447,7 +453,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 12:
-                tutorialStage = TutorialStage.BuildExtender;
+                stage = TutorialStage.BuildExtender;
                 currentlyBuilding = BuildingType.Extender;
                 ResetSubStage();
                 break;
@@ -465,7 +471,7 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("build extender target", 1);
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
 
                 if (!objWindowVisible)
                 {
@@ -501,7 +507,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 6:
                 //Turn off UI element prompting player to build a relay on the prompted tile
-                tutorialStage = TutorialStage.BuildHarvestersExtended;
+                stage = TutorialStage.BuildHarvestersExtended;
                 currentlyBuilding = BuildingType.Harvester;
                 ResetSubStage();
                 DeactivateTarget();
@@ -521,7 +527,7 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("build more harvesters extended", 1);
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
                 ActivateMouse();
 
                 if (!objWindowVisible)
@@ -560,10 +566,10 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                tutorialStage = TutorialStage.WaitingForPowerDrop;
+                stage = TutorialStage.WaitingForPowerDrop;
                 currentlyBuilding = BuildingType.Generator;
                 ResetSubStage();
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
                 break;
             default:
                 SendDialogue("error", 1);
@@ -580,8 +586,8 @@ public class TutorialController : DialogueBoxController
             case 1:
                 if (ResourceController.Instance.StoredPower < 75)
                 {
-                    tutorialStage = TutorialStage.MouseOverPowerDiagram;
-                    UIController.instance.UpdateObjectiveText(tutorialStage);
+                    stage = TutorialStage.MouseOverPowerDiagram;
+                    UIController.instance.UpdateObjectiveText(stage);
                     SendDialogue("explain power", 1);
 
                     if (!objWindowVisible)
@@ -610,8 +616,8 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                tutorialStage = TutorialStage.BuildGenerator;
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                stage = TutorialStage.BuildGenerator;
+                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build generator target", 1);
 
                 if (!objWindowVisible)
@@ -662,8 +668,8 @@ public class TutorialController : DialogueBoxController
             case 10:
                 SendDialogue("build more generators", 1);
                 ActivateMouse();
-                tutorialStage = TutorialStage.BuildMoreGenerators;
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                stage = TutorialStage.BuildMoreGenerators;
+                UIController.instance.UpdateObjectiveText(stage);
 
                 if (!objWindowVisible)
                 {
@@ -701,7 +707,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 15:
-                tutorialStage = TutorialStage.CollectMinerals;
+                stage = TutorialStage.CollectMinerals;
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
@@ -719,7 +725,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("collect minerals", 1);
 
                 if (!objWindowVisible)
@@ -765,7 +771,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                tutorialStage = TutorialStage.BuildExtenderInFog;
+                stage = TutorialStage.BuildExtenderInFog;
                 currentlyBuilding = BuildingType.Extender;
                 ResetSubStage();
                 break;
@@ -832,7 +838,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 3:
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build extender in fog", 1);
 
                 if (!objWindowVisible)
@@ -893,7 +899,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 9:
-                tutorialStage = TutorialStage.BuildMortar;
+                stage = TutorialStage.BuildMortar;
                 currentlyBuilding = BuildingType.AirCannon;
                 ResetSubStage();
                 DeactivateTarget();
@@ -911,7 +917,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build mortar", 1);
                 ActivateMouse();
 
@@ -951,7 +957,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                tutorialStage = TutorialStage.BuildPulseDefence;
+                stage = TutorialStage.BuildPulseDefence;
                 currentlyBuilding = BuildingType.FogRepeller;
                 ResetSubStage();
                 DeactivateTarget();
@@ -969,7 +975,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build pulse defence", 1);
                 ActivateMouse();
 
@@ -1004,7 +1010,7 @@ public class TutorialController : DialogueBoxController
             case 5:
                 if (Hub.Instance.GetPulseDefences().Count == 1)
                 {
-                    tutorialStage = TutorialStage.DefenceActivation;
+                    stage = TutorialStage.DefenceActivation;
                     currentlyBuilding = BuildingType.None;
                     ResetSubStage();
                     DeactivateTarget();
@@ -1031,7 +1037,7 @@ public class TutorialController : DialogueBoxController
                     UIController.instance.ShowActivateButton();
                 }
 
-                UIController.instance.UpdateObjectiveText(tutorialStage);
+                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("activate defences", 1);
                 break;
             case 2:
@@ -1073,7 +1079,7 @@ public class TutorialController : DialogueBoxController
             case 7:
                 if (dialogueRead)
                 {
-                    tutorialStage = TutorialStage.Finished;
+                    stage = TutorialStage.Finished;
                     ResetSubStage();
                     ObjectiveController.Instance.IncrementStage();
                     //MusicController.Instance.StartStage1();
@@ -1086,6 +1092,8 @@ public class TutorialController : DialogueBoxController
                 break;
         }
     }
+
+    //Tutorial Utility Methods - "Error" Stages------------------------------------------------------------------------------------------------------
 
     //Reprimands the player if they try and build something in the fog after they find out it's dangerous.
     private void DontBuildInFog()
@@ -1109,7 +1117,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    tutorialStage = savedTutorialStage;
+                    stage = savedTutorialStage;
                     subStage = savedSubStage;
                 }
 
@@ -1119,6 +1127,126 @@ public class TutorialController : DialogueBoxController
                 Debug.Log("inaccurate sub stage");
                 break;
         }
+    }
+
+    //Checks that the defences built will be able to damage the fog and wake it up
+    public bool DefencesOperable()
+    {
+        bool result = false;
+        List<Defence> connectedDefences = new List<Defence>();
+        connectedDefences.AddRange(Hub.Instance.GetMortars());
+        connectedDefences.AddRange(Hub.Instance.GetPulseDefences());
+
+        foreach (Defence d in connectedDefences)
+        {
+            if (d.TargetInRange())
+            {
+                result = true;
+                break;
+            }
+        }
+
+        if (!result)
+        {
+            savedTutorialStage = stage;
+            savedSubStage = subStage;
+
+            stage = TutorialStage.BuildDefencesInRange;
+            subStage = 1;
+        }
+
+        return result;
+    }
+
+    //Tells the player they need to have defences positioned so they can damage the fog
+    private void BuildDefencesInRange()
+    {
+        switch (subStage)
+        {
+            case 1:
+                SendDialogue("need defences", 0);
+                mortarsGoal = Hub.Instance.GetMortars().Count + 1;
+                pulseDefencesGoal = Hub.Instance.GetPulseDefences().Count + 1;
+                break;
+            case 2:
+                if (DefencesInRange())
+                {
+                    GoToSubStage(4);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 3:
+                if (DefencesInRange())
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 4:
+                if (UIController.instance.buttonClosed)
+                {
+                    UIController.instance.ShowActivateButton();
+                }
+
+                UIController.instance.UpdateObjectiveText(stage);
+                SendDialogue("activate defences in range", 1);
+                stage = TutorialStage.DefenceActivation;
+                GoToSubStage(2);
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
+
+    //Checks if the player has built defences that are within striking distance of the fog
+    private bool DefencesInRange()
+    {
+        List<ArcDefence> connectedMortars = Hub.Instance.GetMortars();
+        List<RepelFan> connectedPulseDefences = Hub.Instance.GetPulseDefences();
+
+        if (connectedMortars.Count >= mortarsGoal)
+        {
+            foreach (ArcDefence m in connectedMortars)
+            {
+                if (m.TargetInRange())
+                {
+                    return true;
+                }
+            }
+
+            //Since none were built in range of the fog, increment goal
+            mortarsGoal = connectedMortars.Count + 1;
+        }
+        else if (connectedMortars.Count < mortarsGoal - 1)
+        {
+            mortarsGoal = connectedMortars.Count + 1;
+        }
+
+        if (connectedPulseDefences.Count >= pulseDefencesGoal)
+        {
+            foreach (RepelFan pd in connectedPulseDefences)
+            {
+                if (pd.TargetInRange())
+                {
+                    return true;
+                }
+            }
+
+            //Since none were built in range of the fog, increment goal
+            pulseDefencesGoal = connectedPulseDefences.Count + 1;
+        }
+        else if (connectedPulseDefences.Count < pulseDefencesGoal - 1)
+        {
+            pulseDefencesGoal = connectedPulseDefences.Count + 1;
+        }
+
+        return false;
     }
 
     //Tutorial Utility Methods - Camera--------------------------------------------------------------------------------------------------------------
@@ -1150,7 +1278,7 @@ public class TutorialController : DialogueBoxController
     {
         lastTileChecked = tile;
 
-        switch (tutorialStage)
+        switch (stage)
         {
             case TutorialStage.BuildHarvesters:
                 if (subStage > 6)
@@ -1170,14 +1298,15 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildMortar:
             case TutorialStage.BuildPulseDefence:
             case TutorialStage.DefenceActivation:
+            case TutorialStage.BuildDefencesInRange:
                 bool tileOkay = tile.FogUnit == null || tile.Building != null;
 
                 if (!tileOkay && !aiText.Activated)
                 {
-                    savedTutorialStage = tutorialStage;
+                    savedTutorialStage = stage;
                     savedSubStage = subStage;
 
-                    tutorialStage = TutorialStage.DontBuildInFog;
+                    stage = TutorialStage.DontBuildInFog;
                     subStage = 1;
                 }
 
@@ -1194,11 +1323,12 @@ public class TutorialController : DialogueBoxController
     {
         if (ButtonsNormallyAllowed(lastTileChecked).Contains(button))
         {
-            switch (tutorialStage)
+            switch (stage)
             {
                 case TutorialStage.CollectMinerals:
                     return button == ButtonType.Extender || button == ButtonType.Harvester;
                 case TutorialStage.DefenceActivation:
+                case TutorialStage.BuildDefencesInRange:
                 case TutorialStage.Finished:
                     return true;
                 default:
