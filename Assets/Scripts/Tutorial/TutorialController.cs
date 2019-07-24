@@ -21,6 +21,7 @@ public enum TutorialStage
     BuildGenerator,
     BuildMoreGenerators,
     CollectMinerals,
+    CollectSonar,
     BuildExtenderInFog,
     BuildMortar,
     BuildPulseDefence,
@@ -79,6 +80,8 @@ public class TutorialController : DialogueBoxController
 
     [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
+    [SerializeField] private CinemachineVirtualCamera sonarCamera;
+    [SerializeField] private CinemachineVirtualCamera artilleryCamera;
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     [Header("Colours")]
@@ -227,6 +230,9 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.CollectMinerals:
                 CollectMinerals();
+                break;
+            case TutorialStage.CollectSonar:
+                CollectSonar();
                 break;
             case TutorialStage.BuildExtenderInFog:
                 BuildExtenderInFog();
@@ -767,12 +773,128 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                stage = TutorialStage.BuildExtenderInFog;
-                currentlyBuilding = BuildingType.Extender;
+                stage = TutorialStage.CollectSonar;
+                currentlyBuilding = BuildingType.None;
                 ResetSubStage();
                 break;
             default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
                 break;
+        }
+    }
+
+    //Player collects the sonar ability canister, uses the sonar and is prompted to collect more ability canisters and the thruster
+    private void CollectSonar()
+    {
+        switch (subStage)
+        {
+            case 1:
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
+                WorldController.Instance.musicFMOD.StageTwoMusic();
+                sonarCamera.gameObject.SetActive(true);
+                SendDialogue("collect sonar", 1);
+                break;
+            case 2:
+                if (AbilityController.Instance.AbilityCollected[AbilityEnum.Sonar])
+                {
+                    sonarCamera.gameObject.SetActive(false);
+                    GoToSubStage(4);
+                }
+                else if (dialogueRead)
+                {
+                    sonarCamera.gameObject.SetActive(false);
+                    DismissDialogue();
+                }
+
+                break;
+            case 3:
+                if (AbilityController.Instance.AbilityCollected[AbilityEnum.Sonar])
+                {
+                    sonarCamera.gameObject.SetActive(false);
+                    IncrementSubStage();
+                }
+
+                break;
+            case 4:
+                SendDialogue("activate sonar", 1);
+                break;
+            case 5:
+                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                {
+                    artilleryCamera.gameObject.SetActive(true);
+                    SendDialogue("explain abilities", 1);
+                    GoToSubStage(7);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 6:
+                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                {
+                    artilleryCamera.gameObject.SetActive(true);
+                    SendDialogue("explain abilities", 1);
+                }
+
+                break;
+            case 7:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+
+                }
+
+                break;
+            case 8:
+                SendDialogue("explain thruster", 1);
+                artilleryCamera.gameObject.SetActive(false);
+                thrusterCamera.gameObject.SetActive(true);
+                break;
+            case 9:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    thrusterCamera.gameObject.SetActive(false);
+                    stage = TutorialStage.BuildExtenderInFog;
+                    currentlyBuilding = BuildingType.Extender;
+                    ResetSubStage();
+                }
+
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+
+                //case 1:
+                //    // Update Hub model to fixed ship without thrusters / Particle effects
+                //    hub.transform.GetChild(0).gameObject.SetActive(false);
+                //    hub.transform.GetChild(1).gameObject.SetActive(true);
+
+                //    //Enable thruster to be clicked and collected for attaching
+                //    thruster.SetActive(true);
+
+                //    // Play music Var 2 soundtrack
+                //    FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
+                //    WorldController.Instance.musicFMOD.StageTwoMusic();
+
+                //    //Camera pans to the thruster
+                //    thrusterCamera.gameObject.SetActive(true);
+
+                //    SendDialogue("extend to thruster", 1);
+                //    ActivateMouse();
+                //    break;
+                //case 2:
+                //    if (dialogueRead)
+                //    {
+                //        DismissDialogue();
+                //        thrusterCamera.gameObject.SetActive(false);
+                //    }
+
+                //    break;
         }
     }
 
@@ -782,32 +904,6 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                // Update Hub model to fixed ship without thrusters / Particle effects
-                hub.transform.GetChild(0).gameObject.SetActive(false);
-                hub.transform.GetChild(1).gameObject.SetActive(true);
-
-                //Enable thruster to be clicked and collected for attaching
-                thruster.SetActive(true);
-
-                // Play music Var 2 soundtrack
-                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
-                WorldController.Instance.musicFMOD.StageTwoMusic();
-
-                //Camera pans to the thruster
-                thrusterCamera.gameObject.SetActive(true);
-                
-                SendDialogue("extend to thruster", 1);
-                ActivateMouse();
-                break;
-            case 2:
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                    thrusterCamera.gameObject.SetActive(false);
-                }
-
-                break;
-            case 3:
                 UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build extender in fog", 1);
 
@@ -817,29 +913,29 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 4:
+            case 2:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (tileClicked)
                 {
-                    GoToSubStage(6);
+                    GoToSubStage(4);
                 }
 
                 break;
-            case 5:
+            case 3:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 6:
+            case 4:
                 currentlyLerping = ButtonType.Extender;
                 IncrementSubStage();
                 break;
-            case 7:
+            case 5:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -850,14 +946,14 @@ public class TutorialController : DialogueBoxController
                     {
                         if (e.TakingDamage)
                         {
-                            GoToSubStage(9);
+                            GoToSubStage(7);
                             break;
                         }
                     }
                 }
 
                 break;
-            case 8:
+            case 6:
                 foreach (Relay e in ResourceController.Instance.Extenders)
                 {
                     if (e.TakingDamage)
@@ -868,7 +964,7 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 9:
+            case 7:
                 stage = TutorialStage.BuildMortar;
                 currentlyBuilding = BuildingType.AirCannon;
                 ResetSubStage();
@@ -1265,6 +1361,8 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildMoreGenerators:
             case TutorialStage.BuildExtenderInFog:
                 return tile.Resource == null;
+            case TutorialStage.CollectSonar:
+                return false;
             case TutorialStage.CollectMinerals:
             case TutorialStage.BuildMortar:
             case TutorialStage.BuildPulseDefence:

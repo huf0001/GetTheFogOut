@@ -335,6 +335,31 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: Your ship is in pretty bad shape, I would try and collect some {MINERALS}
         to get it fixed.
+  - key: collect sonar
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: "Great, you\u2019ve repaired your ship. Although, some parts still
+        seem to be missing. I think this canister over here is one. Pick it up so
+        we can see what it is."
+  - key: activate sonar
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: Oh! It's the sonar. This will help us find all the rest of the missing
+        pieces of the ship. Click the button in the bottom right corner and give it
+        a spin.
+  - key: explain abilities
+    expressionDialoguePairs:
+    - aiExpression: 3
+      dialogue: Ugh . . . I . . . forgot how . . . much power . . . the sonar drains
+        . . . don't go overboard, okay?
+    - aiExpression: 2
+      dialogue: Anyway, it seems we've found another canister with functionality from
+        the ship. You should recover it, as well as any others we find.
+  - key: explain thruster
+    expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: Ooh! And here's the thruster. We'll be needing that too, if we want
+        to get off this planet.
   - key: extend to thruster
     expressionDialoguePairs:
     - aiExpression: 2
@@ -343,8 +368,8 @@ MonoBehaviour:
   - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Hey . . . this thick miasma seems to be in the way of the thruster.
-        Try placing a [POWER EXTENDER] in it and see what happens.
+      dialogue: Hey . . . this thick miasma seems to be in the way though. Try placing
+        a [POWER EXTENDER] in it and see what happens.
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 2
@@ -381,8 +406,8 @@ MonoBehaviour:
   - key: definitely dont build in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Hey, weren't you paying attention? If you build something there, the fog
-        will just destroy it. Let's pay attention to the task at hand.
+      dialogue: Hey, weren't you paying attention? If you build something there, the
+        fog will just destroy it. Let's pay attention to the task at hand.
   - key: need defences
     expressionDialoguePairs:
     - aiExpression: 2
@@ -434,6 +459,8 @@ MonoBehaviour:
   dKey: {fileID: 0}
   powerDiagram: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
+  sonarCamera: {fileID: 0}
+  artilleryCamera: {fileID: 0}
   thrusterCamera: {fileID: 0}
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}

@@ -71,6 +71,11 @@ public class AbilityController : MonoBehaviour
         }
     }
 
+    public Dictionary<AbilityEnum, bool> AbilityTriggered
+    {
+        get { return abilityTriggered; }
+    }
+
     // Start up --------------------------------------------------------------------------------------------------------
     private void Awake()
     {
