@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class ArcDefence : Defence
 {
+    public GameObject mortarBarrelGO;
+        
     protected override void Awake()
     {
         base.Awake();
@@ -58,13 +61,19 @@ public class ArcDefence : Defence
 
             if (target != null)
             {
-                // Get a projectile from the pool and send it on its way
-                Projectile p = ProjectilePool.Instance.GetFromPool();
+                Sequence sequence = DOTween.Sequence();
+                sequence.Append(mortarBarrelGO.transform.DOLookAt(target.Position, 0.5f, AxisConstraint.Y))
+                    .OnComplete(
+                        delegate
+                        {
+                            // Get a projectile from the pool and send it on its way
+                            Projectile p = ProjectilePool.Instance.GetFromPool();
 
-                Vector3 origin = transform.position;
-                origin.y += 0.4f;
-                Vector3 targetPos = new Vector3(target.X, 0, target.Z);
-                p.Fire(origin, targetPos, directDamage, aoeDamage);
+                            Vector3 origin = transform.position;
+                            origin.y += 0.8f;
+                            Vector3 targetPos = new Vector3(target.X, 0, target.Z);
+                            p.Fire(origin, targetPos, directDamage, aoeDamage);
+                        });
             }
         }
     }
