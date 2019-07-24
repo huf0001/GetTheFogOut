@@ -19,9 +19,6 @@ public abstract class Building : Entity
     [SerializeField] protected bool placed = false;
     [SerializeField] protected BuildingType buildingType;
     [SerializeField] protected int mineralCost, powerCost;
-    [SerializeField] protected AudioClip audioSpawn;
-    [SerializeField] protected AudioClip audioDamage;
-    [SerializeField] protected AudioClip audioDestroy;
     [SerializeField] protected RectTransform healthBarCanvas;
     [SerializeField] protected Image healthBarImage;
     [SerializeField] protected Gradient healthGradient;
