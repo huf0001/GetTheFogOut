@@ -41,7 +41,6 @@ public class ObjectiveController : DialogueBoxController
     private bool powerOverloadedLastUpdate = false;
     private float lastOverload = -1f;
     private float lastOverloadDialogue = -1f;
-    private MusicFMOD musicFMOD;
     private float tick = 0;
     private int countdown = 60;
 
@@ -65,11 +64,6 @@ public class ObjectiveController : DialogueBoxController
             Debug.LogError("There should never be 2 or more objective managers.");
         }
 
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-
         Instance = this;
     }
 
@@ -86,12 +80,6 @@ public class ObjectiveController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
-        if (!musicFMOD && WorldController.Instance.musicFMOD)
-        {
-            musicFMOD = WorldController.Instance.musicFMOD;
-            musicFMOD.StageOneMusic();
-        }
-
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
             CheckObjectiveStage();
@@ -109,18 +97,18 @@ public class ObjectiveController : DialogueBoxController
         switch (currStage)
         {
             //case ObjectiveStage.HarvestMinerals:
-            //    musicFMOD.StageOneMusic();
+            //    WorldController.Instance.musicFMOD.StageOneMusic();
             //    HarvestMineralStage();
             //    break;
             case ObjectiveStage.HarvestMinerals:
                 currStage = ObjectiveStage.RecoverPart;
                 break;
             case ObjectiveStage.RecoverPart:
-                musicFMOD.StageTwoMusic();
+                WorldController.Instance.musicFMOD.StageTwoMusic();
                 RecoverPartStage();
                 break;
             case ObjectiveStage.SurvivalStage:
-                musicFMOD.StageThreeMusic();
+                WorldController.Instance.musicFMOD.StageThreeMusic();
                 SurvivalStage();
                 break;
             case ObjectiveStage.Finished:
@@ -170,7 +158,7 @@ public class ObjectiveController : DialogueBoxController
     //    {
     //        case 0:
     //            // Play music Var 1 soundtrack
-    //            musicFMOD.StageOneMusic();
+    //            WorldController.Instance.musicFMOD.StageOneMusic();
     //            // Set fog AI to 'Docile'
     //            //Fog.Instance.Intensity = 1;   //Default of Intensity = 1 set in Fog.Awake()
     //            // Run AI text for stage
@@ -227,7 +215,7 @@ public class ObjectiveController : DialogueBoxController
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.Intensity += 1;
                 // Play music Var 2 soundtrack
-                musicFMOD.StageTwoMusic();
+                WorldController.Instance.musicFMOD.StageTwoMusic();
 
                 if (TutorialController.Instance.SkipTutorial)
                 {
@@ -311,7 +299,7 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(2).gameObject.SetActive(true);
 
                 // Play music Var 3 soundtrack
-                musicFMOD.StageThreeMusic();
+                WorldController.Instance.musicFMOD.StageThreeMusic();
 
                 //Go to next stage
                 IncrementStage();
