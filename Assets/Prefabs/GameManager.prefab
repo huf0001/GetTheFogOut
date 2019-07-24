@@ -268,7 +268,7 @@ MonoBehaviour:
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: You see these minerals? You can collect them, which will be highly
+      dialogue: You see these {MINERALS}? You can collect them, which will be highly
         beneficial to your existence.
   - key: move camera
     expressionDialoguePairs:
@@ -290,8 +290,8 @@ MonoBehaviour:
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Good, you're learning. Now build two more to speed up your {MINERAL}
-        collection. This time, I'll let you place them wherever you like.
+      dialogue: 'Good, you''re learning. Now build two more to speed up your {MINERAL}
+        collection. '
   - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
@@ -299,7 +299,7 @@ MonoBehaviour:
         you can place buildings on. '
     - aiExpression: 2
       dialogue: Right now it's too small to reach those {MINERALS} I showed you earlier.
-        You will need to place a [POWER EXTENDER]
+        You will need to place a [POWER EXTENDER].
   - key: build more harvesters extended
     expressionDialoguePairs:
     - aiExpression: 1
@@ -318,7 +318,7 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: 'To avoid losing power, you can place [POWER GENERATORS]. They will
-        increase the amount of power you can regenerate. Be wary, though; they can
+        increase the amount of power you can regenerate. Be wary, though,  they can
         only handle so much. '
     - aiExpression: 2
       dialogue: 'Try placing a [POWER GENERATOR]. '
@@ -364,21 +364,20 @@ MonoBehaviour:
   - key: activate defences
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Now that you know all the buildings, I'll let you build what you like
-        for a bit. When you're ready, activate the >DEFENCES< and clear that fog away.
+      dialogue: Now that you know how to place buildings, I would suggest placing
+        some more, we wouldn't want the fog seeping into your ship.
     - aiExpression: 1
-      dialogue: Once you're ready click the attach button to activate them, because
-        I don't make the rules, I follow them.
+      dialogue: Once you're prepared, press the >ACTIVATE< button at the top of your
+        screen to boot up your >DEFENCES<.
   - key: maybe dont build in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: I don't think you should build that there. We don't know what the
-        fog will do to it. Best play it safe for now.
+      dialogue: Let's not go that way yet, we don't know what's out there.
   - key: definitely dont build in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Weren't you paying attention? If you build something there, the fog
-        will just destroy it.
+      dialogue: Hey, weren't you paying attention? We don't know what's out there
+        yet. Let's pay attention to the task at hand.
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
