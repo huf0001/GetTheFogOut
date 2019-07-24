@@ -595,6 +595,11 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Activate Defences</b>\n\n" +
                     "<size=75%>Activate the defences to clear the fog away. You may like to build more before doing so, however.\n\n";
                 break;
+            case TutorialStage.BuildDefencesInRange:
+                hudObjText.text = "Objective: Build Defences In Range";
+                objWindowText.text = "<b>Build Defences In Range</b>\n\n" +
+                    "<size=75%>Build defences within striking range of the fog.\n\n";
+                break;
         }
     }
 

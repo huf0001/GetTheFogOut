@@ -1134,6 +1134,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
+                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("need defences", 0);
                 mortarsGoal = Hub.Instance.GetMortars().Count + 1;
                 pulseDefencesGoal = Hub.Instance.GetPulseDefences().Count + 1;
@@ -1157,15 +1158,15 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                SendDialogue("activate defences in range", 1);
+                stage = TutorialStage.DefenceActivation;
+                GoToSubStage(2);
+                UIController.instance.UpdateObjectiveText(stage);
+
                 if (UIController.instance.buttonClosed)
                 {
                     UIController.instance.ShowActivateButton();
                 }
-
-                UIController.instance.UpdateObjectiveText(stage);
-                SendDialogue("activate defences in range", 1);
-                stage = TutorialStage.DefenceActivation;
-                GoToSubStage(2);
                 break;
             default:
                 SendDialogue("error", 1);
