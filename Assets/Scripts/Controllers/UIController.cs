@@ -249,7 +249,7 @@ public class UIController : MonoBehaviour
     public void ShowActivateButton()
     {
         objectiveProceedCanvas.SetActive(true);
-        launchButtonImage.sprite = objectiveButtonSprites[1];
+        launchButtonImage.sprite = objectiveButtonSprites[3];
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
