@@ -89,7 +89,6 @@ public class ObjectiveController : DialogueBoxController
         if (!musicFMOD && WorldController.Instance.musicFMOD)
         {
             musicFMOD = WorldController.Instance.musicFMOD;
-            musicFMOD.StageOneMusic();
         }
 
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)

@@ -172,6 +172,10 @@ public class TutorialController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
+        if (!musicFMOD && WorldController.Instance.musicFMOD)
+        {
+            musicFMOD = WorldController.Instance.musicFMOD;
+        }
         CheckTutorialStage();
 
         if (tutorialStage != TutorialStage.Finished)
@@ -759,8 +763,9 @@ public class TutorialController : DialogueBoxController
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.transform.GetChild(0).gameObject.SetActive(false);
                 hub.transform.GetChild(1).gameObject.SetActive(true);
-                // Play music Var 2 soundtrack
-                //musicFMOD.StageTwoMusic();
+                // Play Win sound and then transition to Stage 2 soundtrack
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
+                musicFMOD.StageTwoMusic();
                 // Run AI completion text
                 SendDialogue("extend to thruster", 1);
                 //Camera pans to the thruster
