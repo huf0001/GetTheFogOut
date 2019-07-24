@@ -21,6 +21,7 @@ public enum TutorialStage
     BuildGenerator,
     BuildMoreGenerators,
     CollectMinerals,
+    //CollectSonar,
     BuildExtenderInFog,
     BuildMortar,
     BuildPulseDefence,
@@ -227,6 +228,9 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.CollectMinerals:
                 CollectMinerals();
                 break;
+            //case TutorialStage.CollectSonar:
+            //    CollectSonar();
+            //    break;
             case TutorialStage.BuildExtenderInFog:
                 BuildExtenderInFog();
                 break;
@@ -771,6 +775,32 @@ public class TutorialController : DialogueBoxController
                 break;
         }
     }
+
+    //Gets the player to collect the sonar ability, then introduces other abilities and prompts the player to collect them and the thruster.
+    //private void CollectSonar()
+    //{
+    //    switch (subStage)
+    //    {
+    //        case 1:
+    //            //Pan to sonar capsule
+    //            SendDialogue("collect sonar", 1);
+    //            //Update objective text
+    //            break;
+    //        case 2:
+    //            if (dialogueRead)
+    //            {
+    //                //pan back
+    //                DismissDialogue();
+    //                ActivateTarget(sonarLandmark);
+    //            }
+
+    //            break;
+    //        default:
+    //            SendDialogue("error", 1);
+    //            Debug.Log("inaccurate sub stage");
+    //            break;
+    //    }
+    //}
 
     //Player builds an extender in the fog to see what happens
     private void BuildExtenderInFog()
