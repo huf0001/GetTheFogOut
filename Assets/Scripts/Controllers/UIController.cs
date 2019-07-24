@@ -349,10 +349,12 @@ public class UIController : MonoBehaviour
     }
 
     private void ChangeColor(Color newColor, bool flash)
-    {
-        tile = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-        if (tile != null)
+    { 
+        GameObject tileObject = GameObject.FindGameObjectWithTag("Tile");
+
+        if (tileObject)
         {
+            tile = tileObject.GetComponent<MeshRenderer>();
             if (!flash)
             {
                 tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1);
@@ -449,15 +451,16 @@ public class UIController : MonoBehaviour
                         powerCurrent = powerMax;
                         break;
                 }
-                if (index == 1)
-                {
-                    ChangeColor(powerCurrent, true);
-                }
-                else
-                {
-                    DOTween.Kill("tile");
-                    ChangeColor(powerCurrent, false);
-                }
+                
+                    if (index == 1)
+                    {
+                        ChangeColor(powerCurrent, true);
+                    }
+                    else
+                    {
+                        DOTween.Kill("tile");
+                        ChangeColor(powerCurrent, false);
+                    }
             }
 
             if (resourceController.StoredMineral != mineral)
