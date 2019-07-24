@@ -146,10 +146,11 @@ public class UIController : MonoBehaviour
                 objectiveButton.onClick.AddListener(
                     delegate
                     {
-                        if (ResourceController.Instance.StoredMineral >= 500)
+                        if (ResourceController.Instance.StoredMineral >= TutorialController.Instance.CollectedMineralsGoal)
                         {
-                            ResourceController.Instance.StoredMineral -= 500;
+                            ResourceController.Instance.StoredMineral -= TutorialController.Instance.CollectedMineralsGoal;
                             objectiveButton.enabled = false;
+
                             if (controller == "O")
                             {
                                 ObjectiveController.Instance.IncrementStage();
@@ -248,7 +249,7 @@ public class UIController : MonoBehaviour
     public void ShowActivateButton()
     {
         objectiveProceedCanvas.SetActive(true);
-        launchButtonImage.sprite = objectiveButtonSprites[1];
+        launchButtonImage.sprite = objectiveButtonSprites[3];
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(objectiveButtonBG.DOFillAmount(1, 1))
@@ -348,10 +349,12 @@ public class UIController : MonoBehaviour
     }
 
     private void ChangeColor(Color newColor, bool flash)
-    {
-        tile = GameObject.FindGameObjectWithTag("Tile").GetComponent<MeshRenderer>();
-        if (tile != null)
+    { 
+        GameObject tileObject = GameObject.FindGameObjectWithTag("Tile");
+
+        if (tileObject)
         {
+            tile = tileObject.GetComponent<MeshRenderer>();
             if (!flash)
             {
                 tile.sharedMaterial.DOColor(newColor, "_BaseColor", 1);
@@ -448,15 +451,16 @@ public class UIController : MonoBehaviour
                         powerCurrent = powerMax;
                         break;
                 }
-                if (index == 1)
-                {
-                    ChangeColor(powerCurrent, true);
-                }
-                else
-                {
-                    DOTween.Kill("tile");
-                    ChangeColor(powerCurrent, false);
-                }
+                
+                    if (index == 1)
+                    {
+                        ChangeColor(powerCurrent, true);
+                    }
+                    else
+                    {
+                        DOTween.Kill("tile");
+                        ChangeColor(powerCurrent, false);
+                    }
             }
 
             if (resourceController.StoredMineral != mineral)
@@ -511,8 +515,8 @@ public class UIController : MonoBehaviour
             case ObjectiveStage.SurvivalStage:
                 hudObjText.text = "Objective: Leave the Planet";
                 objWindowText.text = "<b>Leave the Planet</b>\n\n" +
-                    "<size=75%>The fog is out to get you! Hurry and gather enough power to leave this wretched planet behind!\n\n" +
-                    $"Target: {Mathf.Round(Mathf.Lerp(powerVal, power, powerTime))} / {ObjectiveController.Instance.PowerTarget} <size=90%><sprite=\"all_icons\" index=0>";
+                    "<size=75%>Your ship is undergoing repairs. Protect yourself from the fog until you are ready to leave, then blast off this wretched planet!\n\n" +
+                    $"Target: Wait for the ship to finish repairing";
                 break;
         }
     }
@@ -545,6 +549,11 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<b>Build Power Extender</b>\n\n" +
                     "<size=75%>Build a Power Extender to reach additional mineral nodes.\n\n";
                 break;
+            case TutorialStage.MouseOverPowerDiagram:
+                hudObjText.text = "Objective: Look at Power Diagram";
+                objWindowText.text = "<b>Look at Power Diagram</b>\n\n" +
+                                     "<size=75%>Move the mouse over the power icon to view the diagram explaining how power works.\n\n";
+                break;
             case TutorialStage.BuildGenerator:
                 hudObjText.text = "Objective: Build Generator";
                 objWindowText.text = "<b>Build Generator</b>\n\n" +
@@ -560,7 +569,7 @@ public class UIController : MonoBehaviour
                 hudObjText.text = "Objective: Repair the Hull";
                 objWindowText.text = "<b>Repair the Hull</b>\n\n" +
                                      "<size=75%>Gather enough mineral resources to repair your ship's hull.\n\n" +
-                                     $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {ObjectiveController.Instance.MineralTarget} <size=90%><sprite=\"all_icons\" index=2>";
+                                     $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {TutorialController.Instance.CollectedMineralsGoal} <size=90%><sprite=\"all_icons\" index=2>";
                 break;
             case TutorialStage.BuildExtenderInFog:
                 hudObjText.text = "Objective: Build Power Extender";

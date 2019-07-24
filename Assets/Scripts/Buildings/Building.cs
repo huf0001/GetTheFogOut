@@ -40,7 +40,7 @@ public abstract class Building : Entity
     private bool damagingNotified = false;
     private bool damagedNotified = false;
     private float buildHealth;
-    private float regenWait;
+    private float regenWait = 5;
     private MeshRenderer rend;
     private GameObject damInd;
     private DamageIndicator damIndScript;
@@ -116,7 +116,8 @@ public abstract class Building : Entity
         {
             if (regenWait <= 0)
             {
-                InvokeRepeating("RepairBuilding", 5, 5f);
+                RepairBuilding();
+                regenWait = 5;
             }
             else
             {
@@ -125,7 +126,6 @@ public abstract class Building : Entity
         }
         else
         {
-            CancelInvoke("RepairBuilding");
             regenWait = 5;
         }
 

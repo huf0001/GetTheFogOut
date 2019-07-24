@@ -17,6 +17,7 @@ public enum TutorialStage
     BuildExtender,
     BuildHarvestersExtended,
     WaitingForPowerDrop,
+    MouseOverPowerDiagram,
     BuildGenerator,
     BuildMoreGenerators,
     CollectMinerals,
@@ -24,6 +25,7 @@ public enum TutorialStage
     BuildMortar,
     BuildPulseDefence,
     DefenceActivation,
+    DontBuildInFog,
     Finished
 }
 
@@ -59,18 +61,20 @@ public class TutorialController : DialogueBoxController
     [SerializeField] public GameObject thruster;
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark extenderLandmark;
-    [SerializeField] private ResourceNode extendedHarvesterResource;
+    //[SerializeField] private ResourceNode extendedHarvesterResource;
     [SerializeField] private Landmark generatorLandmark;
-    [SerializeField] private Landmark extenderInFogLandmark;
-    [SerializeField] private Landmark mortarLandmark;
-    [SerializeField] private Landmark pulseDefenceLandmark;
+    [SerializeField] private Landmark sonarLandmark;
+    //[SerializeField] private Landmark extenderInFogLandmark;
+    //[SerializeField] private Landmark mortarLandmark;
+    //[SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
 
-    [Header("Movement Keys")]
+    [Header("UI Elements")]
     [SerializeField] private CameraKey wKey;
     [SerializeField] private CameraKey aKey;
     [SerializeField] private CameraKey sKey;
     [SerializeField] private CameraKey dKey;
+    [SerializeField] private Image powerDiagram;
 
     [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
@@ -90,10 +94,6 @@ public class TutorialController : DialogueBoxController
     //[SerializeField] private GameObject pulseDefencePrefab;
 
     //Non-Serialized Fields
-
-
-
-
     private MeshRenderer targetRenderer = null;
     private float decalMin = 1.5f;
     private float decalMax = 3f;
@@ -105,13 +105,17 @@ public class TutorialController : DialogueBoxController
 
     private int extendersGoal;
     private bool defencesOn = false;
-    
+
+    private TutorialStage savedTutorialStage;
+    private int savedSubStage;
+
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
     public static TutorialController Instance { get; protected set; }
     public int BuiltGeneratorsGoal { get => builtGeneratorsGoal; }
     public int BuiltHarvestersExtendedGoal { get => builtHarvestersExtendedGoal; }
+    public int CollectedMineralsGoal { get => collectedMineralsGoal; }
     public TileData CurrentTile { get => currentTile; }
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
@@ -137,16 +141,15 @@ public class TutorialController : DialogueBoxController
         {
             skipTutorial = GlobalVars.SkipTut;
         }
-
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
     public void StartTutorial()
     {
+        //Setup music
+        WorldController.Instance.musicFMOD.StageOneMusic();
+
+        //Setup fog
         Fog.Instance.enabled = true;
         Fog.Instance.SpawnStartingFog();
 
@@ -220,6 +223,7 @@ public class TutorialController : DialogueBoxController
                 BuildHarvestersExtended();
                 break;
             case TutorialStage.WaitingForPowerDrop:
+            case TutorialStage.MouseOverPowerDiagram:
             case TutorialStage.BuildGenerator:
             case TutorialStage.BuildMoreGenerators:
                 BuildGenerator();
@@ -238,6 +242,9 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.DefenceActivation:
                 DefenceActivation();
+                break;
+            case TutorialStage.DontBuildInFog:
+                DontBuildInFog();
                 break;
             case TutorialStage.Finished:
                 //End tutorial, game is fully responsive to player's input.
@@ -362,7 +369,6 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("build harvester target", 1);
-                ActivateTarget(harvesterResource);
 
                 if (!objWindowVisible)
                 {
@@ -374,10 +380,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(harvesterResource);
                 }
 
                 break;
@@ -465,7 +468,6 @@ public class TutorialController : DialogueBoxController
             case 1:
                 SendDialogue("build extender target", 1);
                 UIController.instance.UpdateObjectiveText(tutorialStage);
-                ActivateTarget(extenderLandmark);
 
                 if (!objWindowVisible)
                 {
@@ -477,10 +479,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(extenderLandmark);
                 }
 
                 break;
@@ -576,7 +575,6 @@ public class TutorialController : DialogueBoxController
     }
 
     //Player learns about the power system and builds generators
-    //TODO: mouse over power generation diagram in UI, triggers substage progression, rather than just having information in dialogue box
     private void BuildGenerator()
     {
         switch (subStage)
@@ -584,10 +582,9 @@ public class TutorialController : DialogueBoxController
             case 1:
                 if (ResourceController.Instance.StoredPower < 75)
                 {
-                    tutorialStage = TutorialStage.BuildGenerator;
+                    tutorialStage = TutorialStage.MouseOverPowerDiagram;
                     UIController.instance.UpdateObjectiveText(tutorialStage);
-                    SendDialogue("build generator target", 1);
-                    ActivateTarget(generatorLandmark);
+                    SendDialogue("explain power", 1);
 
                     if (!objWindowVisible)
                     {
@@ -601,24 +598,50 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissDialogue();
                 }
-                else if (tileClicked)
+                else if (powerDiagram.fillAmount == 1)
                 {
                     GoToSubStage(4);
                 }
 
                 break;
             case 3:
+                if (powerDiagram.fillAmount == 1)
+                {
+                    GoToSubStage(4);
+                }
+
+                break;
+            case 4:
+                tutorialStage = TutorialStage.BuildGenerator;
+                UIController.instance.UpdateObjectiveText(tutorialStage);
+                SendDialogue("build generator target", 1);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
+                break;
+            case 5:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    ActivateTarget(generatorLandmark);
+                }
+
+                break;
+            case 6:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 4:
+            case 7:
                 currentlyLerping = ButtonType.Generator;
                 IncrementSubStage();
                 break;
-            case 5:
+            case 8:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -626,11 +649,11 @@ public class TutorialController : DialogueBoxController
                 else if (BuiltCurrentlyBuilding())
                 {
                     DeactivateTarget();
-                    GoToSubStage(7);
+                    GoToSubStage(10);
                 }
 
                 break;
-            case 6:
+            case 9:
                 if (BuiltCurrentlyBuilding())
                 {
                     DeactivateTarget();
@@ -638,7 +661,7 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 7:
+            case 10:
                 SendDialogue("build more generators", 1);
                 ActivateMouse();
                 tutorialStage = TutorialStage.BuildMoreGenerators;
@@ -650,36 +673,36 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 8:
+            case 11:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (tileClicked)
                 {
-                    GoToSubStage(10);
+                    GoToSubStage(13);
                 }
 
                 break;
-            case 9:
+            case 12:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 10:
+            case 13:
                 currentlyLerping = ButtonType.Generator;
                 IncrementSubStage();
                 break;
-            case 11:
+            case 14:
                 if (ResourceController.Instance.Generators.Count == builtGeneratorsGoal)
                 {
                     IncrementSubStage();
                 }
 
                 break;
-            case 12:
+            case 15:
                 tutorialStage = TutorialStage.CollectMinerals;
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
@@ -758,20 +781,22 @@ public class TutorialController : DialogueBoxController
     {
         switch (subStage)
         {
-            //TODO: pan to thruster, enable it
             case 1:
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.transform.GetChild(0).gameObject.SetActive(false);
                 hub.transform.GetChild(1).gameObject.SetActive(true);
-                // Play Win sound and then transition to Stage 2 soundtrack
-                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
-                musicFMOD.StageTwoMusic();
-                // Run AI completion text
-                SendDialogue("extend to thruster", 1);
-                //Camera pans to the thruster
-                thrusterCamera.gameObject.SetActive(true);
+
                 //Enable thruster to be clicked and collected for attaching
                 thruster.SetActive(true);
+
+                // Play music Var 2 soundtrack
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
+                WorldController.Instance.musicFMOD.StageTwoMusic();
+
+                //Camera pans to the thruster
+                thrusterCamera.gameObject.SetActive(true);
+                
+                SendDialogue("extend to thruster", 1);
                 ActivateMouse();
                 break;
             case 2:
@@ -863,8 +888,7 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
-                SendDialogue("build mortar", 1);    //also explains "fog bad"
-                //ActivateTarget(mortarLandmark);
+                SendDialogue("build mortar", 1);
                 ActivateMouse();
 
                 if (!objWindowVisible)
@@ -923,7 +947,6 @@ public class TutorialController : DialogueBoxController
             case 1:
                 UIController.instance.UpdateObjectiveText(tutorialStage);
                 SendDialogue("build pulse defence", 1);
-                //ActivateTarget(pulseDefenceLandmark);
                 ActivateMouse();
 
                 if (!objWindowVisible)
@@ -1040,6 +1063,40 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Reprimands the player if they try and build something in the fog after they find out it's dangerous.
+    private void DontBuildInFog()
+    {
+        switch (subStage)
+        {
+            case 1:
+                dialogueRead = false;
+
+                if (savedTutorialStage == TutorialStage.CollectMinerals)
+                {
+                    SendDialogue("maybe dont build in fog", 0);
+                }
+                else
+                {
+
+                    SendDialogue("definitely dont build in fog", 0);
+                }
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                    tutorialStage = savedTutorialStage;
+                    subStage = savedSubStage;
+                }
+
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
+
     //Tutorial Utility Methods - Camera--------------------------------------------------------------------------------------------------------------
 
     //Checks inputs for camera movement part of the tutorial
@@ -1088,8 +1145,19 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.CollectMinerals:
             case TutorialStage.BuildMortar:
             case TutorialStage.BuildPulseDefence:
-                return tile.FogUnit == null;
             case TutorialStage.DefenceActivation:
+                bool tileOkay = tile.FogUnit == null || tile.Building != null;
+
+                if (!tileOkay && !aiText.Activated)
+                {
+                    savedTutorialStage = tutorialStage;
+                    savedSubStage = subStage;
+
+                    tutorialStage = TutorialStage.DontBuildInFog;
+                    subStage = 1;
+                }
+
+                return tileOkay;
             case TutorialStage.Finished:
                 return true;
             default:
@@ -1142,36 +1210,12 @@ public class TutorialController : DialogueBoxController
         return result;
     }
 
-    //Tutorial Utility Methods - Stage Progression---------------------------------------------------------------------------------------------------
+    //Tutorial Utility Methods - Stage Progression - General-----------------------------------------------------------------------------------------
 
     //Tells MouseController to report clicks to TutorialController
     private void ActivateMouse()
     {
         MouseController.Instance.ReportTutorialClick = true;
-    }
-
-    //Override of SendDialogue that calls IncrementSubStage once dialogue is sent
-    protected override void SendDialogue(string dialogueKey, float invokeDelay)
-    {
-        base.SendDialogue(dialogueKey, invokeDelay);
-        IncrementSubStage();
-    }
-
-    //Dismisses dialogue and the mouse and advances/retreats to the specified sub-stage appropriately appropriately
-    private void GoToSubStage(int nextSubStage)
-    {
-        MouseController.Instance.ReportTutorialClick = false;
-        tileClicked = false;
-        currentlyLerping = ButtonType.None;
-        ResetDialogueRead();
-        subStage = nextSubStage;
-    }
-
-    //Dismisses the dialogue and increments the substage
-    private void DismissDialogue()
-    {
-        ResetDialogueRead();
-        IncrementSubStage();
     }
 
     //Dismisses the mouse and increments the substage
@@ -1183,17 +1227,43 @@ public class TutorialController : DialogueBoxController
         IncrementSubStage();
     }
 
+    //Override of SendDialogue that calls IncrementSubStage once dialogue is sent
+    protected override void SendDialogue(string dialogueKey, float invokeDelay)
+    {
+        base.SendDialogue(dialogueKey, invokeDelay);
+        IncrementSubStage();
+    }
+    
+    //Dismisses the dialogue and increments the substage
+    private void DismissDialogue()
+    {
+        ResetDialogueRead();
+        IncrementSubStage();
+    }
+    
     //Increments the substage by 1
     private void IncrementSubStage()
     {
         subStage++;
     }
-
+   
+    //Dismisses dialogue and the mouse and advances/retreats to the specified sub-stage appropriately appropriately
+    private void GoToSubStage(int nextSubStage)
+    {
+        MouseController.Instance.ReportTutorialClick = false;
+        tileClicked = false;
+        currentlyLerping = ButtonType.None;
+        ResetDialogueRead();
+        subStage = nextSubStage;
+    }
+    
     //Resets the substage to 1
     private void ResetSubStage()
     {
         subStage = 1;
     }
+
+    //Tutorial Utility Methods - Stage Progression - Specific----------------------------------------------------------------------------------------
 
     //Called to advance the collect minerals stage to sub-stage 6
     public void CompleteMineralCollection()
