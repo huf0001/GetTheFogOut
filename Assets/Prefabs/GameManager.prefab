@@ -230,7 +230,7 @@ MonoBehaviour:
   - A shield that spawns around buildings to keep the fog from dissolving them.
   - An icy cold blast that will freeze any fog in its way.
   - An intense surge of electricity that causes buildings to temporarily perform better.
-  - A small, short blip that will reveal the locations of useful items with a specific
+  - A small, short blip that will reveal the locations of useful items within a specific
     radius.
 --- !u!114 &334475222590731063
 MonoBehaviour:
@@ -318,7 +318,7 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: 'To avoid losing power, you can place [POWER GENERATORS]. They will
-        increase the amount of power you can regenerate. Be wary, though,  they can
+        increase the amount of power you can regenerate. Be wary though, they can
         only handle so much. '
     - aiExpression: 2
       dialogue: 'Try placing a [POWER GENERATOR]. '
@@ -338,15 +338,13 @@ MonoBehaviour:
   - key: collect sonar
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Great, you\u2019ve repaired your ship. Although, some parts still
-        seem to be missing. I think this canister over here is one. Pick it up so
-        we can see what it is."
+      dialogue: "Great, you\u2019ve repaired your ship. Now we need to find that thruster...hey,
+        what's that canister over there? Try picking it up."
   - key: select sonar
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Oh! It's the sonar. This will help us find all the rest of the missing
-        pieces of the ship. Click the button in the bottom right corner and select
-        it.
+      dialogue: Oh! It's the sonar. It must have fallen out of the ship when we landed.
+        Click the button in the bottom right corner and select it.
   - key: activate sonar
     expressionDialoguePairs:
     - aiExpression: 2
@@ -355,12 +353,11 @@ MonoBehaviour:
   - key: explain abilities
     expressionDialoguePairs:
     - aiExpression: 3
-      dialogue: Ugh . . . I . . . forgot how . . . much power . . . the sonar drains
-        . . . don't go overboard, okay?
+      dialogue: Oh boy, that drained some power. Let's be smart about how it's in
+        the future, okay?
     - aiExpression: 2
-      dialogue: Anyway, it seems we've found something over here . . . maybe with
-        functionality from the ship. You should see what it is, and recover it if
-        it's another canister like the sonar's.
+      dialogue: Anyway, it seems we've found some items over there. You should see
+        what it is, and recover it if it's another canister like the sonar's.
   - key: explain thruster
     expressionDialoguePairs:
     - aiExpression: 1
@@ -374,13 +371,13 @@ MonoBehaviour:
   - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Hey . . . this thick miasma seems to be in the way though. Try placing
+      dialogue: Hey...this thick miasma seems to be in the way though. Try placing
         a [POWER EXTENDER] in it and see what happens.
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: As if crash landing wasn't enough . . . now we're surrounded by a
-        man-dissolving fog? Great!
+      dialogue: As if crash landing wasn't enough... now we're surrounded by a man-dissolving
+        fog? Great!
     - aiExpression: 2
       dialogue: 'Your ship comes equipped with some defences called >MORTAR< and >PULSE
         TOWER<. '
@@ -424,7 +421,7 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: Well, now that you know the basics, the rest is up to you. I will
         aid you where I can. I would suggest exploring your surroundings and collecting
-        some more {MINERALS}, maybe even get to your ships thruster.
+        some more {MINERALS}, maybe even get to your ship's thruster.
   skipTutorial: 0
   stage: 1
   subStage: 1
@@ -510,7 +507,7 @@ MonoBehaviour:
   - key: end harvest stage
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Great, you\u2019ve repaired your hull. Do not relax just yet. Next
+      dialogue: "Great, you\u2019ve repaired your ship. Do not relax just yet. Next
         step, attaching the ship's missing thruster.\r\n"
   - key: finish finding thruster
     expressionDialoguePairs:
@@ -537,7 +534,7 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 3
       dialogue: Power generation exceeded! Try destroying some buildings or building
-        more generators
+        more generators.
   - key: maintain minerals
     expressionDialoguePairs:
     - aiExpression: 3
