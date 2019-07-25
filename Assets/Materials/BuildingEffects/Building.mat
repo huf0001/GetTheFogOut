@@ -69,6 +69,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 671dce8140b037743918a6d97d9f9090, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HologramLines:
+        m_Texture: {fileID: 2800000, guid: ce354b4bd1e12674eabd6c9757e85cec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Metallic:
         m_Texture: {fileID: 2800000, guid: 32b7308de6fa6c948ac7a9d40f5ecd9f, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -113,6 +117,7 @@ Material:
     - _Cutoff: 0.5
     - _EdgeWidth: 1
     - _EmmisionStrength: 1
+    - _FresnelPower: 1
     - _Metallic: 0
     - _MetallicStrength: 1
     - _NormalStrength: 1
@@ -121,6 +126,7 @@ Material:
     - _Range: 3.14159
     - _Reverse: 0
     - _RoughnessStrength: 1
+    - _ScrollSpeed: 0.5
     - _Slice: -3.7
     - _Smoothness: 0.5
     - _Speed: 1
