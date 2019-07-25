@@ -220,6 +220,7 @@ public abstract class PowerSource : Building
                     }
                 }
             }
+            
             /*
             if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
             {

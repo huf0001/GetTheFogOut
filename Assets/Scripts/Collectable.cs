@@ -37,6 +37,7 @@ public class Collectable : Locatable, ICollectible
 
         if (location.FogUnit)
         {
+           // Debug.Log(location.FogUnit.name + ability);
             if (location.FogUnit.Health == 100)
             {
                 meshRenderer.enabled = false;
@@ -50,6 +51,8 @@ public class Collectable : Locatable, ICollectible
         {
             meshRenderer.enabled = true;
         }
+
+        CollectedCheck();
     }
 
     private void OnMouseDown()
@@ -62,7 +65,6 @@ public class Collectable : Locatable, ICollectible
                 {
                     AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
                 }
-
                 UIController.instance.AbilityUnlock(ability);
                 Destroy(gameObject);
             }
@@ -79,6 +81,63 @@ public class Collectable : Locatable, ICollectible
                     UIController.instance.AbilityUnlock(ability);
                     Destroy(gameObject);
                 }
+            }
+        }
+    }
+
+    private void CollectedCheck()
+    {
+        if (!(AbilityController.Instance.AbilityCollected[AbilityEnum.Sonar] && AbilityController.Instance.AbilityCollected[AbilityEnum.Artillery] && AbilityController.Instance.AbilityCollected[AbilityEnum.BuildingDefence]
+            && AbilityController.Instance.AbilityCollected[AbilityEnum.FreezeFog] && AbilityController.Instance.AbilityCollected[AbilityEnum.Overclock]))
+        {
+            if (AbilityController.Instance.AbilityCollected[AbilityEnum.Sonar])
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(33, 19), false);
+                //33,19
+            }
+            else
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(33, 19), true);
+            }
+
+            if (AbilityController.Instance.AbilityCollected[AbilityEnum.Artillery])
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(30, 11), false);
+                //30,11
+            }
+            else
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(30, 11), true);
+            }
+
+            if (AbilityController.Instance.AbilityCollected[AbilityEnum.BuildingDefence])
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(20, 14), false);
+                //20,14
+            }
+            else
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(20, 14), true);
+            }
+
+            if (AbilityController.Instance.AbilityCollected[AbilityEnum.FreezeFog])
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(12, 14), false);
+                //12,14
+            }
+            else
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(12, 14), true);
+            }
+
+            if (AbilityController.Instance.AbilityCollected[AbilityEnum.Overclock])
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(32, 30), false);
+                //32,30
+            }
+            else
+            {
+                WorldController.Instance.abilityTilestoggle(WorldController.Instance.GetTileAt(32, 30), true);
             }
         }
     }

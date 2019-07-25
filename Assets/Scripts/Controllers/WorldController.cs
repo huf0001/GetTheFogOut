@@ -668,6 +668,38 @@ public class WorldController : MonoBehaviour
         }
     }
 
+    public void abilityTilestoggle(TileData Tile, bool toggle)
+    {
+        if (toggle)
+        {
+            List<TileData> tempActive = new List<TileData>(activeTiles);
+            foreach (TileData tile in tempActive)
+            {
+                if (Tile == tile)
+                {
+                    DisableTiles.Add(tile);
+                    activeTiles.Remove(tile);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            List<TileData> tempDisable = new List<TileData>(DisableTiles);
+            foreach (TileData tile in tempDisable)
+            {
+                if(Tile == tile)
+                {
+                    if (!activeTiles.Contains(tile))
+                    {
+                        activeTiles.Add(tile);
+                    }
+                    DisableTiles.Remove(tile);
+                    break;
+                }
+            }
+        }
+    }
     public void thrusterTilesOff()
     {
         if (!thrusterToggle)
