@@ -184,28 +184,31 @@ public class MouseController : MonoBehaviour
                 else
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
-                    if (tile.PowerSource != null && TutorialController.Instance.TileAllowed(tile))
+                    if (tile.isBuildable)
                     {
-                        if (!UIController.instance.buildingSelector.Visible)
+                        if (tile.PowerSource != null && TutorialController.Instance.TileAllowed(tile))
                         {
-                            WorldController.Instance.CheckTileContents(tile);
+                            if (!UIController.instance.buildingSelector.Visible)
+                            {
+                                WorldController.Instance.CheckTileContents(tile);
+                            }
+
+                            if (reportTutorialClick)
+                            {
+                                TutorialController.Instance.RegisterMouseClicked();
+                            }
+
+                            towerManager.CurrentTile = tile;
+
+                            changeTileMaterial(WorldController.Instance.normalTile);
+
+                            if (!tile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
+                            {
+                                tile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
+                            }
+                            hoveredTile = tile;
+                            //    towerManager.CurrentTile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
                         }
-
-                        if (reportTutorialClick)
-                        {
-                            TutorialController.Instance.RegisterMouseClicked();
-                        }
-
-                        towerManager.CurrentTile = tile;
-
-                        changeTileMaterial(WorldController.Instance.normalTile);
-
-                        if (!tile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
-                        {
-                            tile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
-                        }
-                        hoveredTile = tile;
-                        //    towerManager.CurrentTile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
                     }
                 }
             }

@@ -7,6 +7,12 @@ using UnityEngine.EventSystems;
 
 //TODO: replace a TILE object with an invinsible box and only show upon click on the button(tower)
 //TODO: add Null ref / exception :(
+public struct BuildingChecks
+{
+    public bool obstacle;
+    public bool collectable;
+}
+
 [Serializable]
 public class TileData
 {
@@ -47,8 +53,8 @@ public class TileData
     public bool Visited { get => visited; set => visited = value; }
     public List<TileData> AdjacentTiles { get => adjacentTiles; }
     public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
+    public BuildingChecks buildingChecks;
 
-    private bool buildable = true;
     //Altered public properties
     public Building Building
     {
@@ -109,7 +115,13 @@ public class TileData
             return new Vector3(x, 0, z);
         }
     }
-   
+
+
+    public bool isBuildable
+    {
+        get { return !buildingChecks.collectable && !buildingChecks.obstacle; }
+    }
+    
     public TileData(int x, int z)
     {
         this.x = x;
