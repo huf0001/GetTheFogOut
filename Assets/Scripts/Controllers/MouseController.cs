@@ -135,6 +135,17 @@ public class MouseController : MonoBehaviour
                 changeTileMaterial(WorldController.Instance.normalTile);
             }
         }
+        else
+        {
+            changeTileMaterial(WorldController.Instance.normalTile);
+            if (!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
+            {
+                Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
+                newColor.a = 0.8f;
+                towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
+            }
+            hoveredTile = towerManager.CurrentTile;
+        }
     }
 
     void changeTileMaterial(Material mat)
@@ -143,7 +154,15 @@ public class MouseController : MonoBehaviour
         {
             if (hoveredTile.plane != null)
             {
-                hoveredTile.plane.GetComponent<Renderer>().material = mat;
+                if (mat.Equals(WorldController.Instance.hoverTile))
+                {
+                    Color newColor = hoveredTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
+                    newColor.a = 0.8f;
+                    hoveredTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
+                }
+                else
+                    hoveredTile.plane.GetComponent<Renderer>().material = mat;
+                //    hoveredTile.plane.GetComponent<Renderer>().material
             }
         }
     }
@@ -199,15 +218,17 @@ public class MouseController : MonoBehaviour
                             }
 
                             towerManager.CurrentTile = tile;
-
+                            /*
                             changeTileMaterial(WorldController.Instance.normalTile);
-
                             if (!tile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
                             {
-                                tile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
+                                Color newColor = tile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
+                                newColor.a += 1f;
+                                tile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
                             }
                             hoveredTile = tile;
                             //    towerManager.CurrentTile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
+                            */
                         }
                     }
                 }
