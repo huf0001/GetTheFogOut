@@ -184,7 +184,7 @@ public class MouseController : MonoBehaviour
                 else
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
-                    if (WorldController.Instance.ActiveTiles.Contains(tile))
+                    if (tile.isBuildable)
                     {
                         if (tile.PowerSource != null && TutorialController.Instance.TileAllowed(tile))
                         {

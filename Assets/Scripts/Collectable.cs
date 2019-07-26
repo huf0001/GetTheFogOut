@@ -52,7 +52,7 @@ public class Collectable : Locatable, ICollectible
             meshRenderer.enabled = true;
         }
 
-        CollectedCheck();
+        //CollectedCheck();
     }
 
     private void OnMouseDown()
@@ -64,9 +64,9 @@ public class Collectable : Locatable, ICollectible
                 if (ability.AbilityType != AbilityEnum.None)
                 {
                     AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
+                    UIController.instance.AbilityUnlock(ability);
+                    Invoke(nameof(DestroyCollectable), 0.05f);
                 }
-                UIController.instance.AbilityUnlock(ability);
-                Destroy(gameObject);
             }
 
             if (location.FogUnit)
@@ -76,13 +76,18 @@ public class Collectable : Locatable, ICollectible
                     if (ability.AbilityType != AbilityEnum.None)
                     {
                         AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
+                        UIController.instance.AbilityUnlock(ability);
+                        Invoke(nameof(DestroyCollectable), 0.05f);
                     }
-
-                    UIController.instance.AbilityUnlock(ability);
-                    Destroy(gameObject);
                 }
             }
         }
+    }
+
+    private void DestroyCollectable()
+    {
+        location.buildingChecks.collectable = false;
+        Destroy(gameObject);
     }
 
     private void CollectedCheck()

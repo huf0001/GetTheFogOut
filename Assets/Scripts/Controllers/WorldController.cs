@@ -228,6 +228,7 @@ public class WorldController : MonoBehaviour
             var position = c.transform.position;
             TileData tile = GetTileAt(position);
             tile.Collectible = c;
+            tile.buildingChecks.collectable = true;
             c.Location = tile;
             
             // Centre on tile
@@ -700,6 +701,7 @@ public class WorldController : MonoBehaviour
             }
         }
     }
+    
     public void thrusterTilesOff()
     {
         if (!thrusterToggle)
