@@ -22,6 +22,8 @@ public enum TutorialStage
     BuildMoreGenerators,
     CollectMinerals,
     CollectSonar,
+    ActivateSonar,
+    SonarActivated,
     BuildExtenderInFog,
     BuildMortar,
     BuildPulseDefence,
@@ -236,6 +238,8 @@ public class TutorialController : DialogueBoxController
                 CollectMinerals();
                 break;
             case TutorialStage.CollectSonar:
+            case TutorialStage.ActivateSonar:
+            case TutorialStage.SonarActivated:
                 CollectSonar();
                 break;
             case TutorialStage.BuildExtenderInFog:
@@ -822,6 +826,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                stage = TutorialStage.ActivateSonar;
                 SendDialogue("select sonar", 1);
                 break;
             case 5:
@@ -875,6 +880,7 @@ public class TutorialController : DialogueBoxController
                 thruster.SetActive(true);
 
                 artilleryCamera.gameObject.SetActive(true);
+                stage = TutorialStage.SonarActivated;
                 SendDialogue("explain abilities", 1);
                 break;
             case 11:

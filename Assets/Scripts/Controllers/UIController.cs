@@ -532,6 +532,8 @@ public class UIController : MonoBehaviour
             case TutorialStage.None:
             case TutorialStage.ExplainSituation:
             case TutorialStage.ExplainMinerals:
+            case TutorialStage.WaitingForPowerDrop:
+            case TutorialStage.SonarActivated:
                 hudObjText.text = "Objective: Complete the Tutorial";
                 objWindowText.text = "<b>Complete the Tutorial</b>\n\n" +
                     "<size=75%>Complete the tutorial and learn to play the game!\n\n";
@@ -579,6 +581,11 @@ public class UIController : MonoBehaviour
                 hudObjText.text = "Objective: Recover Canister";
                 objWindowText.text = "<b>Recover Canister</b>\n\n" +
                                      "<size=75%>Retrieve that canister lying near the ship.<size=90%><sprite=\"all_icons\" index=2>";
+                break;
+            case TutorialStage.ActivateSonar:
+                hudObjText.text = "Objective: Activate Sonar";
+                objWindowText.text = "<b>Activate Sonar</b>\n\n" +
+                                     "<size=75%>Activate the Sonar and find the ship's remaining missing parts.<size=90%><sprite=\"all_icons\" index=2>";
                 break;
             case TutorialStage.BuildExtenderInFog:
                 hudObjText.text = "Objective: Build Power Extender";
