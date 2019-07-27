@@ -35,7 +35,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     void Update()
     {
-        if (Input.GetKeyDown(_key))
+        if (Input.GetKeyDown(_key) && !WorldController.Instance.pauseMenu.activeSelf)
         {
             button.onClick.Invoke();
         }
