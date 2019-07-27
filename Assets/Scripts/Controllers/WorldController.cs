@@ -767,6 +767,8 @@ public class WorldController : MonoBehaviour
     {
         musicBus.setVolume(1f);
         musicFMOD.OutroMusic();
+        Time.timeScale = 1.0f;
+        Time.fixedDeltaTime = 0.02f;
         SceneManager.LoadScene("Menu");
     }
 }
