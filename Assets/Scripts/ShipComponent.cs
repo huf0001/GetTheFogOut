@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum ShipComponentsEnum
 {
@@ -30,7 +31,7 @@ public class ShipComponent : Entity
 
         if (location.FogUnit == null)
         {
-             missingWingMaterial.SetFloat("_Toggle", 0f);
+            missingWingMaterial.SetFloat("_Toggle", 0f);
         }
         if (location.FogUnit != null)
         {
@@ -42,16 +43,23 @@ public class ShipComponent : Entity
     {
         Collect();
     }
+
     private void OnMouseEnter()
     {
         ShaderOnMethod();
-        UIController.instance.buildingInfo.ShowInfo(this);
+        if (!UIController.instance.buildingInfo.Visible && !EventSystem.current.IsPointerOverGameObject())
+        {
+            UIController.instance.buildingInfo.ShowInfo(this);
+        }
     }
 
     private void OnMouseExit()
     {
         ShaderOffMethod();
-        UIController.instance.buildingInfo.HideInfo();
+        if (!UIController.instance.buildingInfo.building)
+        {
+            UIController.instance.buildingInfo.HideInfo();
+        }
     }
 
     public void Collect()

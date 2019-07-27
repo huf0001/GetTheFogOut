@@ -98,56 +98,53 @@ public class MouseController : MonoBehaviour
 
     void UpdateHoveredTile(bool toggle)
     {
-        if (!WorldController.Instance.pauseMenu.activeSelf)
+        if (toggle)
         {
-            if (toggle)
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
             {
-                RaycastHit hit;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
+                if (WorldController.Instance.TileExistsAt(hit.point))
                 {
-                    if (WorldController.Instance.TileExistsAt(hit.point))
+                    if (hovertoggle)
                     {
-                        if (hovertoggle)
-                        {
-                            hovertoggle = false;
-                            hoveredTile = WorldController.Instance.GetTileAt(hit.point);
-                            changeTileMaterial(WorldController.Instance.hoverTile);
-                        }
-                        else
-                        {
-                            if (!hoveredTile.Equals(WorldController.Instance.GetTileAt(hit.point)))
-                            {
-                                hovertoggle = true;
-                                if (hoveredTile.plane == null)
-                                {
-                                    hoveredTile = WorldController.Instance.GetTileAt(hit.point);
-                                    changeTileMaterial(WorldController.Instance.hoverTile);
-                                }
-                                else
-                                    changeTileMaterial(WorldController.Instance.normalTile);
-                            }
-                        }
-
+                        hovertoggle = false;
+                        hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                        changeTileMaterial(WorldController.Instance.hoverTile);
                     }
-                }
-                else
-                {
-                    changeTileMaterial(WorldController.Instance.normalTile);
+                    else
+                    {
+                        if (!hoveredTile.Equals(WorldController.Instance.GetTileAt(hit.point)))
+                        {
+                            hovertoggle = true;
+                            if (hoveredTile.plane == null)
+                            {
+                                hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                                changeTileMaterial(WorldController.Instance.hoverTile);
+                            }
+                            else
+                                changeTileMaterial(WorldController.Instance.normalTile);
+                        }
+                    }
+
                 }
             }
             else
             {
                 changeTileMaterial(WorldController.Instance.normalTile);
-                if (!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
-                {
-                    Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
-                    newColor.a = 0.8f;
-                    towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
-                }
-                hoveredTile = towerManager.CurrentTile;
             }
+        }
+        else
+        {
+            changeTileMaterial(WorldController.Instance.normalTile);
+            if (!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
+            {
+                Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
+                newColor.a = 0.8f;
+                towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
+            }
+            hoveredTile = towerManager.CurrentTile;
         }
     }
 
@@ -177,7 +174,7 @@ public class MouseController : MonoBehaviour
             UpdateHoveredTile(false);
         }
         else
-        { 
+        {
             UpdateHoveredTile(true);
         }
     }
@@ -263,7 +260,7 @@ public class MouseController : MonoBehaviour
                         if (building.Health < 20 && building.Health > 5)
                         {
                             returnCost = Mathf.RoundToInt(returnCost / 2f);
-                            Debug.Log(building.Health +  " YYY" + returnCost);
+                            Debug.Log(building.Health + " YYY" + returnCost);
                         }
                     }
                 }
