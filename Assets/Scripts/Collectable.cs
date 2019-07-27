@@ -63,6 +63,7 @@ public class Collectable : Locatable, ICollectible
             {
                 if (ability.AbilityType != AbilityEnum.None)
                 {
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_1", GetComponent<Transform>().position);
                     AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
                     UIController.instance.AbilityUnlock(ability);
                     Invoke(nameof(DestroyCollectable), 0.05f);
@@ -75,6 +76,7 @@ public class Collectable : Locatable, ICollectible
                 {
                     if (ability.AbilityType != AbilityEnum.None)
                     {
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_1", GetComponent<Transform>().position);
                         AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
                         UIController.instance.AbilityUnlock(ability);
                         Invoke(nameof(DestroyCollectable), 0.05f);
