@@ -580,12 +580,12 @@ public class UIController : MonoBehaviour
             case TutorialStage.CollectSonar:
                 hudObjText.text = "Objective: Recover Canister";
                 objWindowText.text = "<b>Recover Canister</b>\n\n" +
-                                     "<size=75%>Retrieve that canister lying near the ship.<size=90%><sprite=\"all_icons\" index=2>";
+                                     "<size=75%>Retrieve that canister lying near the ship.\n\n";
                 break;
             case TutorialStage.ActivateSonar:
                 hudObjText.text = "Objective: Activate Sonar";
                 objWindowText.text = "<b>Activate Sonar</b>\n\n" +
-                                     "<size=75%>Activate the Sonar and find the ship's remaining missing parts.<size=90%><sprite=\"all_icons\" index=2>";
+                                     "<size=75%>Activate the Sonar and find the ship's remaining missing parts.\n\n";
                 break;
             case TutorialStage.BuildExtenderInFog:
                 hudObjText.text = "Objective: Build Power Extender";
