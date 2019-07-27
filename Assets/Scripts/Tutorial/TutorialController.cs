@@ -261,7 +261,6 @@ public class TutorialController : DialogueBoxController
                 BuildDefencesInRange();
                 break;
             case TutorialStage.Finished:
-                //End tutorial, game is fully responsive to player's input.
                 break;
             default:
                 SendDialogue("error", 1);
@@ -799,8 +798,6 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 UIController.instance.UpdateObjectiveText(stage);
-                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
-                WorldController.Instance.musicFMOD.StageTwoMusic();
                 sonarCamera.gameObject.SetActive(true);
                 SendDialogue("collect sonar", 1);
                 break;
@@ -1167,6 +1164,8 @@ public class TutorialController : DialogueBoxController
                     ResetSubStage();
                     ObjectiveController.Instance.IncrementStage();
                     //MusicController.Instance.StartStage1();
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
+                    WorldController.Instance.musicFMOD.StageTwoMusic();
                 }
 
                 break;
