@@ -26,9 +26,9 @@ public class NewInputs : IInputActionCollection
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Camera Pan Keyboard"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
-                    ""id"": ""76613869-5093-4486-9db5-bdb35be21341"",
+                    ""id"": ""67a2325a-d0ca-413f-8a6c-f1d902a4f9c2"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -53,7 +53,7 @@ public class NewInputs : IInputActionCollection
                     ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Camera Pan Keyboard"",
+                    ""action"": ""Camera Pan"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -64,7 +64,7 @@ public class NewInputs : IInputActionCollection
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Camera Pan Keyboard"",
+                    ""action"": ""Camera Pan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -75,7 +75,7 @@ public class NewInputs : IInputActionCollection
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Camera Pan Keyboard"",
+                    ""action"": ""Camera Pan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -86,7 +86,7 @@ public class NewInputs : IInputActionCollection
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Camera Pan Keyboard"",
+                    ""action"": ""Camera Pan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -97,9 +97,31 @@ public class NewInputs : IInputActionCollection
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Camera Pan Keyboard"",
+                    ""action"": ""Camera Pan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1eb6b520-048a-4ff3-a599-95a0d0a5bdb1"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb8792c0-f09d-4096-b4d0-7b310c385342"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -109,7 +131,7 @@ public class NewInputs : IInputActionCollection
         // Input Map
         m_InputMap = asset.GetActionMap("Input Map");
         m_InputMap_CameraPan = m_InputMap.GetAction("Camera Pan");
-        m_InputMap_CameraPanKeyboard = m_InputMap.GetAction("Camera Pan Keyboard");
+        m_InputMap_Pause = m_InputMap.GetAction("Pause");
     }
 
     ~NewInputs()
@@ -160,13 +182,13 @@ public class NewInputs : IInputActionCollection
     private readonly InputActionMap m_InputMap;
     private IInputMapActions m_InputMapActionsCallbackInterface;
     private readonly InputAction m_InputMap_CameraPan;
-    private readonly InputAction m_InputMap_CameraPanKeyboard;
+    private readonly InputAction m_InputMap_Pause;
     public struct InputMapActions
     {
         private NewInputs m_Wrapper;
         public InputMapActions(NewInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @CameraPan => m_Wrapper.m_InputMap_CameraPan;
-        public InputAction @CameraPanKeyboard => m_Wrapper.m_InputMap_CameraPanKeyboard;
+        public InputAction @Pause => m_Wrapper.m_InputMap_Pause;
         public InputActionMap Get() { return m_Wrapper.m_InputMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -179,9 +201,9 @@ public class NewInputs : IInputActionCollection
                 CameraPan.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraPan;
                 CameraPan.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraPan;
                 CameraPan.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraPan;
-                CameraPanKeyboard.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraPanKeyboard;
-                CameraPanKeyboard.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraPanKeyboard;
-                CameraPanKeyboard.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraPanKeyboard;
+                Pause.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnPause;
+                Pause.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnPause;
+                Pause.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_InputMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -189,9 +211,9 @@ public class NewInputs : IInputActionCollection
                 CameraPan.started += instance.OnCameraPan;
                 CameraPan.performed += instance.OnCameraPan;
                 CameraPan.canceled += instance.OnCameraPan;
-                CameraPanKeyboard.started += instance.OnCameraPanKeyboard;
-                CameraPanKeyboard.performed += instance.OnCameraPanKeyboard;
-                CameraPanKeyboard.canceled += instance.OnCameraPanKeyboard;
+                Pause.started += instance.OnPause;
+                Pause.performed += instance.OnPause;
+                Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -199,6 +221,6 @@ public class NewInputs : IInputActionCollection
     public interface IInputMapActions
     {
         void OnCameraPan(InputAction.CallbackContext context);
-        void OnCameraPanKeyboard(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

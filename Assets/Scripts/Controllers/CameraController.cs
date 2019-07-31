@@ -33,8 +33,6 @@ public class CameraController : MonoBehaviour
         inputs.Enable();
         inputs.InputMap.CameraPan.performed += ctx => move = ctx.ReadValue<Vector2>();
         inputs.InputMap.CameraPan.canceled += ctx => move = Vector2.zero;
-        inputs.InputMap.CameraPanKeyboard.performed += ctx => move = ctx.ReadValue<Vector2>();
-        inputs.InputMap.CameraPanKeyboard.canceled += ctx => move = Vector2.zero;
     }
 
     private void Start()

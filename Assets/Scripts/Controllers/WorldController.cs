@@ -61,6 +61,7 @@ public class WorldController : MonoBehaviour
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
+    private NewInputs inputs;
 
     //Other Controllers
     private ResourceController resourceController;
@@ -102,6 +103,10 @@ public class WorldController : MonoBehaviour
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
     private void Awake()
     {
+        inputs = new NewInputs();
+        inputs.Enable();
+        inputs.InputMap.Pause.performed += ctx => SetPause(!pauseMenu.activeSelf);
+
         if (Instance != null)
         {
             Debug.LogError("There should never be 2 or more world managers.");
@@ -428,10 +433,10 @@ public class WorldController : MonoBehaviour
             hub = FindObjectOfType<Hub>();
         }
 
-        if (Input.GetButtonDown("Pause"))
-        {
-            SetPause(!pauseMenu.activeSelf);
-        }
+        //if (Input.GetButtonDown("Pause"))
+        //{
+        //    SetPause(!pauseMenu.activeSelf);
+        //}
 
         if (Input.GetKeyDown("c"))
         {
