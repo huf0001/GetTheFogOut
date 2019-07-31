@@ -41,7 +41,7 @@ public class NewInputs : IInputActionCollection
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Controller"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -50,7 +50,7 @@ public class NewInputs : IInputActionCollection
                     ""name"": ""Keyboard"",
                     ""id"": ""5fbd3e36-264a-4e71-8116-280108621eca"",
                     ""path"": ""2DVector"",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Camera Pan"",
@@ -63,7 +63,7 @@ public class NewInputs : IInputActionCollection
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -74,7 +74,7 @@ public class NewInputs : IInputActionCollection
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -85,7 +85,7 @@ public class NewInputs : IInputActionCollection
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -96,7 +96,7 @@ public class NewInputs : IInputActionCollection
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -107,7 +107,7 @@ public class NewInputs : IInputActionCollection
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Controller"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -118,7 +118,7 @@ public class NewInputs : IInputActionCollection
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -126,7 +126,32 @@ public class NewInputs : IInputActionCollection
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Keyboard"",
+            ""basedOn"": """",
+            ""bindingGroup"": ""Keyboard"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Controller"",
+            ""basedOn"": """",
+            ""bindingGroup"": ""Controller"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Input Map
         m_InputMap = asset.GetActionMap("Input Map");
@@ -218,6 +243,24 @@ public class NewInputs : IInputActionCollection
         }
     }
     public InputMapActions @InputMap => new InputMapActions(this);
+    private int m_KeyboardSchemeIndex = -1;
+    public InputControlScheme KeyboardScheme
+    {
+        get
+        {
+            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.GetControlSchemeIndex("Keyboard");
+            return asset.controlSchemes[m_KeyboardSchemeIndex];
+        }
+    }
+    private int m_ControllerSchemeIndex = -1;
+    public InputControlScheme ControllerScheme
+    {
+        get
+        {
+            if (m_ControllerSchemeIndex == -1) m_ControllerSchemeIndex = asset.GetControlSchemeIndex("Controller");
+            return asset.controlSchemes[m_ControllerSchemeIndex];
+        }
+    }
     public interface IInputMapActions
     {
         void OnCameraPan(InputAction.CallbackContext context);
