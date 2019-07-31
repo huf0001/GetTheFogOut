@@ -24,6 +24,18 @@ public class CameraController : MonoBehaviour
     private Vector3 zMove;
     private float rMove;
     private Transform myTransform;
+    private NewInputs inputs;
+    private Vector3 move;
+
+    private void Awake()
+    {
+        inputs = new NewInputs();
+        inputs.Enable();
+        inputs.InputMap.CameraPan.performed += ctx => move = ctx.ReadValue<Vector2>();
+        inputs.InputMap.CameraPan.canceled += ctx => move = Vector2.zero;
+        inputs.InputMap.CameraPanKeyboard.performed += ctx => move = ctx.ReadValue<Vector2>();
+        inputs.InputMap.CameraPanKeyboard.canceled += ctx => move = Vector2.zero;
+    }
 
     private void Start()
     {
@@ -54,14 +66,14 @@ public class CameraController : MonoBehaviour
     {
         bool hasChanged = false;
         //Only run if player is moving left/right/up/down
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-        {
+        //if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        //{
             forward = myTransform.forward;
             right = myTransform.right;
 
             // Camera keyboard movement
-            xMove = moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal") * right;
-            zMove = moveSpeed * Time.deltaTime * Input.GetAxis("Vertical") * forward;
+            xMove = moveSpeed * Time.deltaTime * move.x * right;
+            zMove = moveSpeed * Time.deltaTime * move.y * forward;
             
             var position = myTransform.localPosition;
             position += xMove;
@@ -69,7 +81,7 @@ public class CameraController : MonoBehaviour
             myTransform.localPosition = position;
 
             hasChanged = true;
-        }
+        //}
 
         //Handle screen dragging if right click is held down
         if (Input.GetMouseButton(2) || Input.GetMouseButton(1))
