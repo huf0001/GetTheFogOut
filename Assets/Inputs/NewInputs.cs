@@ -1,7 +1,9 @@
 // GENERATED AUTOMATICALLY FROM 'Assets/Inputs/Input.inputactions'
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
@@ -19,19 +21,36 @@ public class NewInputs : IInputActionCollection
             ""actions"": [
                 {
                     ""name"": ""Camera Pan"",
-                    ""type"": ""Button"",
                     ""id"": ""7fd0b4f2-7f6b-4a78-9dbe-933c2b5cf472"",
-                    ""expectedControlType"": """",
+                    ""expectedControlLayout"": """",
+                    ""continuous"": false,
+                    ""passThrough"": false,
+                    ""initialStateCheck"": false,
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": """",
+                    ""bindings"": []
                 },
                 {
                     ""name"": ""Pause"",
-                    ""type"": ""Button"",
                     ""id"": ""67a2325a-d0ca-413f-8a6c-f1d902a4f9c2"",
-                    ""expectedControlType"": """",
+                    ""expectedControlLayout"": """",
+                    ""continuous"": false,
+                    ""passThrough"": false,
+                    ""initialStateCheck"": false,
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": """",
+                    ""bindings"": []
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""id"": ""bae499a2-ed5d-4f68-ab8f-cf98afbde622"",
+                    ""expectedControlLayout"": """",
+                    ""continuous"": false,
+                    ""passThrough"": false,
+                    ""initialStateCheck"": false,
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""bindings"": []
                 }
             ],
             ""bindings"": [
@@ -44,7 +63,8 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Controller"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
                 },
                 {
                     ""name"": ""Keyboard"",
@@ -55,7 +75,8 @@ public class NewInputs : IInputActionCollection
                     ""groups"": """",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": true,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
                 },
                 {
                     ""name"": ""up"",
@@ -66,7 +87,8 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": true,
+                    ""modifiers"": """"
                 },
                 {
                     ""name"": ""down"",
@@ -77,7 +99,8 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": true,
+                    ""modifiers"": """"
                 },
                 {
                     ""name"": ""left"",
@@ -88,7 +111,8 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": true,
+                    ""modifiers"": """"
                 },
                 {
                     ""name"": ""right"",
@@ -99,7 +123,8 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": true,
+                    ""modifiers"": """"
                 },
                 {
                     ""name"": """",
@@ -110,7 +135,8 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Controller"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
                 },
                 {
                     ""name"": """",
@@ -121,7 +147,56 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5034d39a-6f71-4045-ac95-928bcce35a5e"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
+                },
+                {
+                    ""name"": ""Controller"",
+                    ""id"": ""cb7f5ff1-f2b5-4db2-844e-74c9fb1f7bc7"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""dbb70058-e99e-4f83-a208-609012bb76e4"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Controller"",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true,
+                    ""modifiers"": """"
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""44da343b-4734-4908-9257-41d21c9acb6b"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Controller"",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true,
+                    ""modifiers"": """"
                 }
             ]
         }
@@ -157,6 +232,7 @@ public class NewInputs : IInputActionCollection
         m_InputMap = asset.GetActionMap("Input Map");
         m_InputMap_CameraPan = m_InputMap.GetAction("Camera Pan");
         m_InputMap_Pause = m_InputMap.GetAction("Pause");
+        m_InputMap_Zoom = m_InputMap.GetAction("Zoom");
     }
 
     ~NewInputs()
@@ -176,7 +252,10 @@ public class NewInputs : IInputActionCollection
         set => asset.devices = value;
     }
 
-    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+    public ReadOnlyArray<InputControlScheme> controlSchemes
+    {
+        get => asset.controlSchemes;
+    }
 
     public bool Contains(InputAction action)
     {
@@ -204,20 +283,23 @@ public class NewInputs : IInputActionCollection
     }
 
     // Input Map
-    private readonly InputActionMap m_InputMap;
+    private InputActionMap m_InputMap;
     private IInputMapActions m_InputMapActionsCallbackInterface;
-    private readonly InputAction m_InputMap_CameraPan;
-    private readonly InputAction m_InputMap_Pause;
+    private InputAction m_InputMap_CameraPan;
+    private InputAction m_InputMap_Pause;
+    private InputAction m_InputMap_Zoom;
     public struct InputMapActions
     {
         private NewInputs m_Wrapper;
         public InputMapActions(NewInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @CameraPan => m_Wrapper.m_InputMap_CameraPan;
-        public InputAction @Pause => m_Wrapper.m_InputMap_Pause;
+        public InputAction @CameraPan { get { return m_Wrapper.m_InputMap_CameraPan; } }
+        public InputAction @Pause { get { return m_Wrapper.m_InputMap_Pause; } }
+        public InputAction @Zoom { get { return m_Wrapper.m_InputMap_Zoom; } }
         public InputActionMap Get() { return m_Wrapper.m_InputMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
+        public bool enabled { get { return Get().enabled; } }
+        public InputActionMap Clone() { return Get().Clone(); }
         public static implicit operator InputActionMap(InputMapActions set) { return set.Get(); }
         public void SetCallbacks(IInputMapActions instance)
         {
@@ -229,6 +311,9 @@ public class NewInputs : IInputActionCollection
                 Pause.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnPause;
                 Pause.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnPause;
                 Pause.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnPause;
+                Zoom.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnZoom;
+                Zoom.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnZoom;
+                Zoom.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnZoom;
             }
             m_Wrapper.m_InputMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -239,10 +324,19 @@ public class NewInputs : IInputActionCollection
                 Pause.started += instance.OnPause;
                 Pause.performed += instance.OnPause;
                 Pause.canceled += instance.OnPause;
+                Zoom.started += instance.OnZoom;
+                Zoom.performed += instance.OnZoom;
+                Zoom.canceled += instance.OnZoom;
             }
         }
     }
-    public InputMapActions @InputMap => new InputMapActions(this);
+    public InputMapActions @InputMap
+    {
+        get
+        {
+            return new InputMapActions(this);
+        }
+    }
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -265,5 +359,6 @@ public class NewInputs : IInputActionCollection
     {
         void OnCameraPan(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
 }

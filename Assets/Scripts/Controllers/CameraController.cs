@@ -26,6 +26,7 @@ public class CameraController : MonoBehaviour
     private Transform myTransform;
     private NewInputs inputs;
     private Vector3 move;
+    private float zoomVal;
 
     private void Awake()
     {
@@ -33,6 +34,8 @@ public class CameraController : MonoBehaviour
         inputs.Enable();
         inputs.InputMap.CameraPan.performed += ctx => move = ctx.ReadValue<Vector2>();
         inputs.InputMap.CameraPan.canceled += ctx => move = Vector2.zero;
+        inputs.InputMap.Zoom.performed += ctx => zoomVal = ctx.ReadValue<float>();
+        inputs.InputMap.Zoom.canceled += ctx => zoomVal = 0;
     }
 
     private void Start()
@@ -94,14 +97,14 @@ public class CameraController : MonoBehaviour
         }
 
         // Zoom
-        if (Input.GetAxisRaw("Zoom") != 0)
-        {
+        //if (Input.GetAxisRaw("Zoom") != 0)
+        //{
             //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
             //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
 
-            zoom.m_Width -= Input.GetAxis("Zoom") * zoomMulti;
+            zoom.m_Width -= zoomVal * zoomMulti;
             zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
-        }
+        //}
 
         if (hasChanged)
         {
