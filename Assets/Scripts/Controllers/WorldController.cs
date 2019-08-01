@@ -405,11 +405,12 @@ public class WorldController : MonoBehaviour
     {
         if (Gamepad.all.Count > 0 && Gamepad.current.wasUpdatedThisFrame)
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.lockState = CursorLockMode.Locked;
+            Mouse.current.WarpCursorPosition(new Vector2(Screen.width / 2, Screen.height / 2));
         }
         else
         {
-            Cursor.lockState = CursorLockMode.None;
+            //Cursor.lockState = CursorLockMode.None;
         }
 
         if (InBuildMode)

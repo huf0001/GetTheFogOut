@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Cinemachine;
 
 public class CameraController : MonoBehaviour
@@ -62,6 +63,7 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         UpdateCameraMovement();
+        zoomVal = inputs.InputMap.Zoom.ReadValue<float>();
     }
 
     void UpdateCameraMovement()
@@ -70,19 +72,19 @@ public class CameraController : MonoBehaviour
         //Only run if player is moving left/right/up/down
         //if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         //{
-            forward = myTransform.forward;
-            right = myTransform.right;
+        forward = myTransform.forward;
+        right = myTransform.right;
 
-            // Camera keyboard movement
-            xMove = moveSpeed * Time.deltaTime * move.x * right;
-            zMove = moveSpeed * Time.deltaTime * move.y * forward;
-            
-            var position = myTransform.localPosition;
-            position += xMove;
-            position += zMove;
-            myTransform.localPosition = position;
+        // Camera keyboard movement
+        xMove = moveSpeed * Time.deltaTime * move.x * right;
+        zMove = moveSpeed * Time.deltaTime * move.y * forward;
 
-            hasChanged = true;
+        var position = myTransform.localPosition;
+        position += xMove;
+        position += zMove;
+        myTransform.localPosition = position;
+
+        hasChanged = true;
         //}
 
         //Handle screen dragging if right click is held down
@@ -94,17 +96,17 @@ public class CameraController : MonoBehaviour
             transform.Translate(h, 0, v, transform);
 
             hasChanged = true;
-            
+
         }
 
         // Zoom
         //if (Input.GetAxisRaw("Zoom") != 0)
         //{
-            //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
-            //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
+        //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
+        //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
 
-            zoom.m_Width -= zoomVal * zoomMulti;
-            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
+        zoom.m_Width -= zoomVal * zoomMulti;
+        zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
         //}
 
         if (hasChanged)
