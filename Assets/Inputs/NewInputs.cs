@@ -51,6 +51,17 @@ public class NewInputs : IInputActionCollection
                     ""processors"": """",
                     ""interactions"": """",
                     ""bindings"": []
+                },
+                {
+                    ""name"": ""Build"",
+                    ""id"": ""cdd347af-c4ed-403d-83ba-7f5a6e199507"",
+                    ""expectedControlLayout"": """",
+                    ""continuous"": false,
+                    ""passThrough"": false,
+                    ""initialStateCheck"": false,
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""bindings"": []
                 }
             ],
             ""bindings"": [
@@ -197,6 +208,30 @@ public class NewInputs : IInputActionCollection
                     ""isComposite"": false,
                     ""isPartOfComposite"": true,
                     ""modifiers"": """"
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3f49dc2-d547-4101-ad42-6a94eca5ad55"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Build"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3092dda6-f524-42d6-9fa2-de4ded86d4b6"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": "";Controller"",
+                    ""action"": ""Build"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
                 }
             ]
         }
@@ -233,6 +268,7 @@ public class NewInputs : IInputActionCollection
         m_InputMap_CameraPan = m_InputMap.GetAction("Camera Pan");
         m_InputMap_Pause = m_InputMap.GetAction("Pause");
         m_InputMap_Zoom = m_InputMap.GetAction("Zoom");
+        m_InputMap_Build = m_InputMap.GetAction("Build");
     }
 
     ~NewInputs()
@@ -288,6 +324,7 @@ public class NewInputs : IInputActionCollection
     private InputAction m_InputMap_CameraPan;
     private InputAction m_InputMap_Pause;
     private InputAction m_InputMap_Zoom;
+    private InputAction m_InputMap_Build;
     public struct InputMapActions
     {
         private NewInputs m_Wrapper;
@@ -295,6 +332,7 @@ public class NewInputs : IInputActionCollection
         public InputAction @CameraPan { get { return m_Wrapper.m_InputMap_CameraPan; } }
         public InputAction @Pause { get { return m_Wrapper.m_InputMap_Pause; } }
         public InputAction @Zoom { get { return m_Wrapper.m_InputMap_Zoom; } }
+        public InputAction @Build { get { return m_Wrapper.m_InputMap_Build; } }
         public InputActionMap Get() { return m_Wrapper.m_InputMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -314,6 +352,9 @@ public class NewInputs : IInputActionCollection
                 Zoom.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnZoom;
                 Zoom.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnZoom;
                 Zoom.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnZoom;
+                Build.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnBuild;
+                Build.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnBuild;
+                Build.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnBuild;
             }
             m_Wrapper.m_InputMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -327,6 +368,9 @@ public class NewInputs : IInputActionCollection
                 Zoom.started += instance.OnZoom;
                 Zoom.performed += instance.OnZoom;
                 Zoom.canceled += instance.OnZoom;
+                Build.started += instance.OnBuild;
+                Build.performed += instance.OnBuild;
+                Build.canceled += instance.OnBuild;
             }
         }
     }
@@ -360,5 +404,6 @@ public class NewInputs : IInputActionCollection
         void OnCameraPan(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnBuild(InputAction.CallbackContext context);
     }
 }

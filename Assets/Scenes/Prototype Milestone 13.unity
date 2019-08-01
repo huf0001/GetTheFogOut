@@ -4644,8 +4644,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1096976323}
   - component: {fileID: 1096976322}
-  - component: {fileID: 1096976321}
   - component: {fileID: 1096976320}
+  - component: {fileID: 1096976321}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -4674,16 +4674,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1096976319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: HorizontalUI
-  m_VerticalAxis: VerticalUI
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
+  m_RepeatRate: 0.1
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 2657f3c463ab7b148b9006864b32d940,
+    type: 3}
+  m_PointAction: {fileID: 1054132383583890850, guid: 2657f3c463ab7b148b9006864b32d940,
+    type: 3}
+  m_MoveAction: {fileID: 3710738434707379630, guid: 2657f3c463ab7b148b9006864b32d940,
+    type: 3}
+  m_SubmitAction: {fileID: 2064916234097673511, guid: 2657f3c463ab7b148b9006864b32d940,
+    type: 3}
+  m_CancelAction: {fileID: -1967631576421560919, guid: 2657f3c463ab7b148b9006864b32d940,
+    type: 3}
+  m_LeftClickAction: {fileID: 8056856818456041789, guid: 2657f3c463ab7b148b9006864b32d940,
+    type: 3}
+  m_MiddleClickAction: {fileID: 3279352641294131588, guid: 2657f3c463ab7b148b9006864b32d940,
+    type: 3}
+  m_RightClickAction: {fileID: 3837173908680883260, guid: 2657f3c463ab7b148b9006864b32d940,
+    type: 3}
+  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: 2657f3c463ab7b148b9006864b32d940,
+    type: 3}
+  m_Touches: []
+  m_TrackedDevices: []
 --- !u!114 &1096976322
 MonoBehaviour:
   m_ObjectHideFlags: 0

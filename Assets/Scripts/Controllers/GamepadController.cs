@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -52,7 +53,7 @@ public class GamepadController : MonoBehaviour
     public static Vector3 cursorCoords;
     public static bool button1Clicked;
     public static bool button2Clicked;
-    private static Vector3 previousMousePosition;
+    private static Vector2 previousMousePosition;
 
     //private FastLineRendererProperties propsFLR;
     private float cursorThickness = 0.5f;
@@ -70,7 +71,7 @@ public class GamepadController : MonoBehaviour
     {
         Cursor.visible = false;
         pointerPosition = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-        previousMousePosition = Input.mousePosition;
+        previousMousePosition = Mouse.current.position.ReadValue();
         cursorCoords = Camera.main.ScreenToWorldPoint(pointerPosition);
         button1Clicked = false;
         button2Clicked = false;
@@ -106,11 +107,11 @@ public class GamepadController : MonoBehaviour
 
         if (Input.mousePresent)
         {
-            if (Input.mousePosition != previousMousePosition)
+            if (Mouse.current.position.ReadValue() != previousMousePosition)
             {
                 cursorMoved = true;
-                pointerPosition = Input.mousePosition;
-                previousMousePosition = Input.mousePosition;
+                pointerPosition = Mouse.current.position.ReadValue();
+                previousMousePosition = Mouse.current.position.ReadValue();
             }
         }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public class ShipComponentState
@@ -61,7 +62,6 @@ public class WorldController : MonoBehaviour
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
-    private NewInputs inputs;
 
     //Other Controllers
     private ResourceController resourceController;
@@ -99,13 +99,14 @@ public class WorldController : MonoBehaviour
     public List<ShipComponentState> ShipComponents { get => shipComponents; }
     public bool GameWin { get => gameWin; set => gameWin = value; }
     public bool GameOver { get => gameOver; set => gameOver = value; }
+    public NewInputs Inputs { get; set; }
 
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
     private void Awake()
     {
-        inputs = new NewInputs();
-        inputs.Enable();
-        inputs.InputMap.Pause.performed += ctx => SetPause(!pauseMenu.activeSelf);
+        Inputs = new NewInputs();
+        Inputs.Enable();
+        Inputs.InputMap.Pause.performed += ctx => SetPause(!pauseMenu.activeSelf);
 
         if (Instance != null)
         {
@@ -451,6 +452,18 @@ public class WorldController : MonoBehaviour
         }
     }
 
+    // To replace EventSystem.current.IsPointerOverGameObject() since it is not compatible with the new Input System
+    public bool IsPointerOverGameObject()
+    {
+        PointerEventData pointer = new PointerEventData(EventSystem.current);
+        pointer.position = Mouse.current.position.ReadValue();
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointer, results);
+
+        return results.Count > 0 ? true : false;
+    }
+
     public void SetPause(bool pause)
     {
         pauseMenu.SetActive(!pauseMenu.activeSelf);
@@ -504,7 +517,7 @@ public class WorldController : MonoBehaviour
         TowerToSpawn = tm.GetTower("holo");
 
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         if (Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && !EventSystem.current.IsPointerOverGameObject())
         {

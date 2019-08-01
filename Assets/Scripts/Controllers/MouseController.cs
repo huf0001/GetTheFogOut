@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour
@@ -44,11 +45,13 @@ public class MouseController : MonoBehaviour
         }
 
         Instance = this;
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        WorldController.Instance.Inputs.InputMap.Build.performed += ctx => UpdatePlacingAlt();
         resourceController = ResourceController.Instance;
         hub = WorldController.Instance.Hub;
         towerManager = FindObjectOfType<TowerManager>();
@@ -59,7 +62,7 @@ public class MouseController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdatePlacingAlt();
+        //UpdatePlacingAlt();
         selectedTile();
     }
 
@@ -101,9 +104,9 @@ public class MouseController : MonoBehaviour
         if (toggle)
         {
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-            if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
+            if (!WorldController.Instance.IsPointerOverGameObject() && Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
             {
                 if (WorldController.Instance.TileExistsAt(hit.point))
                 {
@@ -187,11 +190,11 @@ public class MouseController : MonoBehaviour
 
         UIController.instance.buildingSelector.freezeCam();
 
-        if (Time.timeScale == 1f && Input.GetButtonDown("Submit") && !EventSystem.current.IsPointerOverGameObject() && isBuildAvaliable == true)
+        if (Time.timeScale == 1f && !WorldController.Instance.IsPointerOverGameObject() && isBuildAvaliable == true)
         {
             TileData tile;
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             //Check if a valid tile was clicked
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")) && WorldController.Instance.TileExistsAt(hit.point))
             {

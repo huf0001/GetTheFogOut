@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Abilities;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public enum AbilityEnum
 {
@@ -233,7 +234,7 @@ public class AbilityController : MonoBehaviour
     {
         // Visually display the targeted area
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")) &&
             WorldController.Instance.TileExistsAt(hit.point))
         {

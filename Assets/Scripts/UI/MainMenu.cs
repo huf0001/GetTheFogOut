@@ -22,10 +22,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField, TextArea] private string[] difficultyDescriptions;
     [SerializeField] private TextMeshProUGUI difficultyDescText;
     [SerializeField] private TMP_Dropdown dropdown;
-    [SerializeField] private Button dummyButton;
 
     private bool skipTutorial = false;
     private int difficulty = 1;
+    private Button playButton;
 
     [Header("FMOD")]
     public MusicFMOD musicfmod;
@@ -51,19 +51,11 @@ public class MainMenu : MonoBehaviour
 
         DontDestroyOnLoad(musicFMOD);
         musicFMOD.StartMusic();
-    }
 
-    private void Start()
-    {
         Time.timeScale = 1;
-    }
 
-    private void Update()
-    {
-        if (difficultySubmenu.alpha != 0 && !dropdown.IsExpanded && EventSystem.current.currentSelectedGameObject == dropdown.gameObject)
-        {
-            dummyButton.Select();
-        }
+        playButton = GameObject.Find("PlayButton").GetComponent<Button>();
+        EventSystem.current.firstSelectedGameObject = playButton.gameObject;
     }
 
     public void ToggleTutorial(bool tutorialOn)
@@ -94,6 +86,7 @@ public class MainMenu : MonoBehaviour
                 difficultySubmenu.DOFade(1, 0.5f);
                 difficultySubmenu.interactable = true;
                 difficultySubmenu.blocksRaycasts = true;
+                dropdown.Select();
             });
     }
 
@@ -126,6 +119,7 @@ public class MainMenu : MonoBehaviour
                 mainCanvasGroup.DOFade(1, 0.5f);
                 mainCanvasGroup.interactable = true;
                 mainCanvasGroup.blocksRaycasts = true;
+                playButton.Select();
             });
     }
 

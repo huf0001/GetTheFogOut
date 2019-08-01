@@ -24,22 +24,23 @@ public class CameraController : MonoBehaviour
     private Vector3 zMove;
     private float rMove;
     private Transform myTransform;
-    private NewInputs inputs;
     private Vector3 move;
     private float zoomVal;
+    private NewInputs inputs;
 
     private void Awake()
     {
-        inputs = new NewInputs();
-        inputs.Enable();
-        inputs.InputMap.CameraPan.performed += ctx => move = ctx.ReadValue<Vector2>();
-        inputs.InputMap.CameraPan.canceled += ctx => move = Vector2.zero;
-        inputs.InputMap.Zoom.performed += ctx => zoomVal = ctx.ReadValue<float>();
-        inputs.InputMap.Zoom.canceled += ctx => zoomVal = 0;
     }
 
     private void Start()
     {
+        inputs = WorldController.Instance.Inputs;
+
+        inputs.InputMap.CameraPan.performed += ctx => move = ctx.ReadValue<Vector2>();
+        inputs.InputMap.CameraPan.canceled += ctx => move = Vector2.zero;
+        inputs.InputMap.Zoom.performed += ctx => zoomVal = ctx.ReadValue<float>();
+        inputs.InputMap.Zoom.canceled += ctx => zoomVal = 0;
+
         myTransform = transform;
         zoom = FindObjectOfType<CinemachineFollowZoom>();
 
