@@ -48,7 +48,7 @@ public class NewInputs : IInputActionCollection
                     ""continuous"": false,
                     ""passThrough"": false,
                     ""initialStateCheck"": false,
-                    ""processors"": """",
+                    ""processors"": ""Scale(factor=0.5)"",
                     ""interactions"": """",
                     ""bindings"": []
                 },
@@ -166,7 +166,7 @@ public class NewInputs : IInputActionCollection
                     ""id"": ""5034d39a-6f71-4045-ac95-928bcce35a5e"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""Scale(factor=0.1)"",
                     ""groups"": "";Keyboard"",
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
