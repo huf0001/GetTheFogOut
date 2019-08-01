@@ -789,5 +789,11 @@ public class WorldController : MonoBehaviour
         Time.fixedDeltaTime = 0.02f;
         SceneManager.LoadScene("Menu");
     }
+
+    private void OnDisable()
+    {
+        Inputs.Disable();
+        Inputs = null;
+    }
 }
 

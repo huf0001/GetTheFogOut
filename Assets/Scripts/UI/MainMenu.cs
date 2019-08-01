@@ -31,7 +31,7 @@ public class MainMenu : MonoBehaviour
     public MusicFMOD musicfmod;
     private MusicFMOD musicFMOD;
 
-    private void Awake()
+    private void Start()
     {
         if (GameObject.Find("MusicFMOD") != null)
         {
@@ -56,6 +56,7 @@ public class MainMenu : MonoBehaviour
 
         playButton = GameObject.Find("PlayButton").GetComponent<Button>();
         EventSystem.current.firstSelectedGameObject = playButton.gameObject;
+        playButton.Select();
     }
 
     public void ToggleTutorial(bool tutorialOn)
