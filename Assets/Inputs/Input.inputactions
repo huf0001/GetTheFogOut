@@ -7,47 +7,35 @@
             "actions": [
                 {
                     "name": "Camera Pan",
+                    "type": "Value",
                     "id": "7fd0b4f2-7f6b-4a78-9dbe-933c2b5cf472",
-                    "expectedControlLayout": "",
-                    "continuous": false,
-                    "passThrough": false,
-                    "initialStateCheck": false,
+                    "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
-                    "bindings": []
+                    "interactions": ""
                 },
                 {
                     "name": "Pause",
+                    "type": "Value",
                     "id": "67a2325a-d0ca-413f-8a6c-f1d902a4f9c2",
-                    "expectedControlLayout": "",
-                    "continuous": false,
-                    "passThrough": false,
-                    "initialStateCheck": false,
+                    "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
-                    "bindings": []
+                    "interactions": ""
                 },
                 {
                     "name": "Zoom",
+                    "type": "Value",
                     "id": "bae499a2-ed5d-4f68-ab8f-cf98afbde622",
-                    "expectedControlLayout": "",
-                    "continuous": false,
-                    "passThrough": false,
-                    "initialStateCheck": false,
+                    "expectedControlType": "",
                     "processors": "Scale(factor=0.5)",
-                    "interactions": "",
-                    "bindings": []
+                    "interactions": ""
                 },
                 {
                     "name": "Build",
+                    "type": "Value",
                     "id": "cdd347af-c4ed-403d-83ba-7f5a6e199507",
-                    "expectedControlLayout": "",
-                    "continuous": false,
-                    "passThrough": false,
-                    "initialStateCheck": false,
+                    "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
-                    "bindings": []
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -60,20 +48,18 @@
                     "groups": ";Controller",
                     "action": "Camera Pan",
                     "isComposite": false,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "Keyboard",
                     "id": "5fbd3e36-264a-4e71-8116-280108621eca",
                     "path": "2DVector",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.01),Press(behavior=2)",
                     "processors": "",
                     "groups": "",
                     "action": "Camera Pan",
                     "isComposite": true,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "up",
@@ -84,8 +70,7 @@
                     "groups": ";Keyboard",
                     "action": "Camera Pan",
                     "isComposite": false,
-                    "isPartOfComposite": true,
-                    "modifiers": ""
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "down",
@@ -96,8 +81,7 @@
                     "groups": ";Keyboard",
                     "action": "Camera Pan",
                     "isComposite": false,
-                    "isPartOfComposite": true,
-                    "modifiers": ""
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "left",
@@ -108,8 +92,7 @@
                     "groups": ";Keyboard",
                     "action": "Camera Pan",
                     "isComposite": false,
-                    "isPartOfComposite": true,
-                    "modifiers": ""
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "right",
@@ -120,8 +103,7 @@
                     "groups": ";Keyboard",
                     "action": "Camera Pan",
                     "isComposite": false,
-                    "isPartOfComposite": true,
-                    "modifiers": ""
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -132,8 +114,7 @@
                     "groups": ";Controller",
                     "action": "Pause",
                     "isComposite": false,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -144,8 +125,7 @@
                     "groups": ";Keyboard",
                     "action": "Pause",
                     "isComposite": false,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -156,8 +136,7 @@
                     "groups": ";Keyboard",
                     "action": "Zoom",
                     "isComposite": false,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "Controller",
@@ -168,8 +147,7 @@
                     "groups": "",
                     "action": "Zoom",
                     "isComposite": true,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "negative",
@@ -180,8 +158,7 @@
                     "groups": ";Controller",
                     "action": "Zoom",
                     "isComposite": false,
-                    "isPartOfComposite": true,
-                    "modifiers": ""
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "positive",
@@ -192,8 +169,7 @@
                     "groups": ";Controller",
                     "action": "Zoom",
                     "isComposite": false,
-                    "isPartOfComposite": true,
-                    "modifiers": ""
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -204,8 +180,7 @@
                     "groups": ";Keyboard",
                     "action": "Build",
                     "isComposite": false,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -216,8 +191,7 @@
                     "groups": ";Controller",
                     "action": "Build",
                     "isComposite": false,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
+                    "isPartOfComposite": false
                 }
             ]
         }

@@ -461,7 +461,10 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    // To replace EventSystem.current.IsPointerOverGameObject() since it is not compatible with the new Input System
+    /// <summary>
+    /// To replace EventSystem.current.IsPointerOverGameObject() since it is not compatible with the new Input System
+    /// </summary>
+    /// <returns>Returns true if pointer over UI object</returns>
     public bool IsPointerOverGameObject()
     {
         PointerEventData pointer = new PointerEventData(EventSystem.current);

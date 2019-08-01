@@ -1,9 +1,7 @@
 // GENERATED AUTOMATICALLY FROM 'Assets/Inputs/Input.inputactions'
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
@@ -21,47 +19,35 @@ public class NewInputs : IInputActionCollection
             ""actions"": [
                 {
                     ""name"": ""Camera Pan"",
+                    ""type"": ""Value"",
                     ""id"": ""7fd0b4f2-7f6b-4a78-9dbe-933c2b5cf472"",
-                    ""expectedControlLayout"": """",
-                    ""continuous"": false,
-                    ""passThrough"": false,
-                    ""initialStateCheck"": false,
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
-                    ""bindings"": []
+                    ""interactions"": """"
                 },
                 {
                     ""name"": ""Pause"",
+                    ""type"": ""Value"",
                     ""id"": ""67a2325a-d0ca-413f-8a6c-f1d902a4f9c2"",
-                    ""expectedControlLayout"": """",
-                    ""continuous"": false,
-                    ""passThrough"": false,
-                    ""initialStateCheck"": false,
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
-                    ""bindings"": []
+                    ""interactions"": """"
                 },
                 {
                     ""name"": ""Zoom"",
+                    ""type"": ""Value"",
                     ""id"": ""bae499a2-ed5d-4f68-ab8f-cf98afbde622"",
-                    ""expectedControlLayout"": """",
-                    ""continuous"": false,
-                    ""passThrough"": false,
-                    ""initialStateCheck"": false,
+                    ""expectedControlType"": """",
                     ""processors"": ""Scale(factor=0.5)"",
-                    ""interactions"": """",
-                    ""bindings"": []
+                    ""interactions"": """"
                 },
                 {
                     ""name"": ""Build"",
+                    ""type"": ""Value"",
                     ""id"": ""cdd347af-c4ed-403d-83ba-7f5a6e199507"",
-                    ""expectedControlLayout"": """",
-                    ""continuous"": false,
-                    ""passThrough"": false,
-                    ""initialStateCheck"": false,
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
-                    ""bindings"": []
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -74,20 +60,18 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Controller"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""5fbd3e36-264a-4e71-8116-280108621eca"",
                     ""path"": ""2DVector"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.01),Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": true,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""up"",
@@ -98,8 +82,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""down"",
@@ -110,8 +93,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""left"",
@@ -122,8 +104,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""right"",
@@ -134,8 +115,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Camera Pan"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -146,8 +126,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Controller"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -158,8 +137,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -170,8 +148,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""Controller"",
@@ -182,8 +159,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": """",
                     ""action"": ""Zoom"",
                     ""isComposite"": true,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""negative"",
@@ -194,8 +170,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Controller"",
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""positive"",
@@ -206,8 +181,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Controller"",
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -218,8 +192,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Keyboard"",
                     ""action"": ""Build"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -230,8 +203,7 @@ public class NewInputs : IInputActionCollection
                     ""groups"": "";Controller"",
                     ""action"": ""Build"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -288,10 +260,7 @@ public class NewInputs : IInputActionCollection
         set => asset.devices = value;
     }
 
-    public ReadOnlyArray<InputControlScheme> controlSchemes
-    {
-        get => asset.controlSchemes;
-    }
+    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
 
     public bool Contains(InputAction action)
     {
@@ -319,25 +288,24 @@ public class NewInputs : IInputActionCollection
     }
 
     // Input Map
-    private InputActionMap m_InputMap;
+    private readonly InputActionMap m_InputMap;
     private IInputMapActions m_InputMapActionsCallbackInterface;
-    private InputAction m_InputMap_CameraPan;
-    private InputAction m_InputMap_Pause;
-    private InputAction m_InputMap_Zoom;
-    private InputAction m_InputMap_Build;
+    private readonly InputAction m_InputMap_CameraPan;
+    private readonly InputAction m_InputMap_Pause;
+    private readonly InputAction m_InputMap_Zoom;
+    private readonly InputAction m_InputMap_Build;
     public struct InputMapActions
     {
         private NewInputs m_Wrapper;
         public InputMapActions(NewInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @CameraPan { get { return m_Wrapper.m_InputMap_CameraPan; } }
-        public InputAction @Pause { get { return m_Wrapper.m_InputMap_Pause; } }
-        public InputAction @Zoom { get { return m_Wrapper.m_InputMap_Zoom; } }
-        public InputAction @Build { get { return m_Wrapper.m_InputMap_Build; } }
+        public InputAction @CameraPan => m_Wrapper.m_InputMap_CameraPan;
+        public InputAction @Pause => m_Wrapper.m_InputMap_Pause;
+        public InputAction @Zoom => m_Wrapper.m_InputMap_Zoom;
+        public InputAction @Build => m_Wrapper.m_InputMap_Build;
         public InputActionMap Get() { return m_Wrapper.m_InputMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
-        public bool enabled { get { return Get().enabled; } }
-        public InputActionMap Clone() { return Get().Clone(); }
+        public bool enabled => Get().enabled;
         public static implicit operator InputActionMap(InputMapActions set) { return set.Get(); }
         public void SetCallbacks(IInputMapActions instance)
         {
@@ -374,13 +342,7 @@ public class NewInputs : IInputActionCollection
             }
         }
     }
-    public InputMapActions @InputMap
-    {
-        get
-        {
-            return new InputMapActions(this);
-        }
-    }
+    public InputMapActions @InputMap => new InputMapActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
