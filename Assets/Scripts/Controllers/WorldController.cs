@@ -403,6 +403,15 @@ public class WorldController : MonoBehaviour
 
     private void GameUpdate()
     {
+        if (Gamepad.all.Count > 0 && Gamepad.current.wasUpdatedThisFrame)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+
         if (InBuildMode)
         {
             RenderTower();
