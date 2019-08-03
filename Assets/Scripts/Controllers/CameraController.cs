@@ -70,33 +70,32 @@ public class CameraController : MonoBehaviour
     {
         bool hasChanged = false;
         //Only run if player is moving left/right/up/down
-        //if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-        //{
-        forward = myTransform.forward;
-        right = myTransform.right;
+        if (move != Vector3.zero)
+        {
+            forward = myTransform.forward;
+            right = myTransform.right;
 
-        // Camera keyboard movement
-        xMove = moveSpeed * Time.deltaTime * move.x * right;
-        zMove = moveSpeed * Time.deltaTime * move.y * forward;
+            // Camera keyboard movement
+            xMove = moveSpeed * Time.deltaTime * move.x * right;
+            zMove = moveSpeed * Time.deltaTime * move.y * forward;
 
-        var position = myTransform.localPosition;
-        position += xMove;
-        position += zMove;
-        myTransform.localPosition = position;
+            var position = myTransform.localPosition;
+            position += xMove;
+            position += zMove;
+            myTransform.localPosition = position;
 
-        hasChanged = true;
-        //}
+            hasChanged = true;
+        }
 
         //Handle screen dragging if right click is held down
-        if (Input.GetMouseButton(2) || Input.GetMouseButton(1))
+        if (Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)
         {
             //Right or middle mouse
-            float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -(Input.GetAxis("MouseX"));
-            float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -(Input.GetAxis("MouseY"));
+            float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
+            float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;
             transform.Translate(h, 0, v, transform);
 
             hasChanged = true;
-
         }
 
         // Zoom

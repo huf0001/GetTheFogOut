@@ -48,6 +48,14 @@ public class NewInputs : IInputActionCollection
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Camera Drag"",
+                    ""type"": ""Value"",
+                    ""id"": ""08854b7a-0369-41db-ab3f-315098eed87a"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": ""Normalize(min=-1,max=1)"",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -204,6 +212,17 @@ public class NewInputs : IInputActionCollection
                     ""action"": ""Build"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b327438-7b7e-4f74-8da2-4a56b17b3035"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Camera Drag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -241,6 +260,7 @@ public class NewInputs : IInputActionCollection
         m_InputMap_Pause = m_InputMap.GetAction("Pause");
         m_InputMap_Zoom = m_InputMap.GetAction("Zoom");
         m_InputMap_Build = m_InputMap.GetAction("Build");
+        m_InputMap_CameraDrag = m_InputMap.GetAction("Camera Drag");
     }
 
     ~NewInputs()
@@ -294,6 +314,7 @@ public class NewInputs : IInputActionCollection
     private readonly InputAction m_InputMap_Pause;
     private readonly InputAction m_InputMap_Zoom;
     private readonly InputAction m_InputMap_Build;
+    private readonly InputAction m_InputMap_CameraDrag;
     public struct InputMapActions
     {
         private NewInputs m_Wrapper;
@@ -302,6 +323,7 @@ public class NewInputs : IInputActionCollection
         public InputAction @Pause => m_Wrapper.m_InputMap_Pause;
         public InputAction @Zoom => m_Wrapper.m_InputMap_Zoom;
         public InputAction @Build => m_Wrapper.m_InputMap_Build;
+        public InputAction @CameraDrag => m_Wrapper.m_InputMap_CameraDrag;
         public InputActionMap Get() { return m_Wrapper.m_InputMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -323,6 +345,9 @@ public class NewInputs : IInputActionCollection
                 Build.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnBuild;
                 Build.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnBuild;
                 Build.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnBuild;
+                CameraDrag.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraDrag;
+                CameraDrag.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraDrag;
+                CameraDrag.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraDrag;
             }
             m_Wrapper.m_InputMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -339,6 +364,9 @@ public class NewInputs : IInputActionCollection
                 Build.started += instance.OnBuild;
                 Build.performed += instance.OnBuild;
                 Build.canceled += instance.OnBuild;
+                CameraDrag.started += instance.OnCameraDrag;
+                CameraDrag.performed += instance.OnCameraDrag;
+                CameraDrag.canceled += instance.OnCameraDrag;
             }
         }
     }
@@ -367,5 +395,6 @@ public class NewInputs : IInputActionCollection
         void OnPause(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
         void OnBuild(InputAction.CallbackContext context);
+        void OnCameraDrag(InputAction.CallbackContext context);
     }
 }
