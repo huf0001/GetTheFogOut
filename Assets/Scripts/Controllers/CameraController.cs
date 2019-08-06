@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Cinemachine;
 
 public class CameraController : MonoBehaviour
@@ -24,9 +25,23 @@ public class CameraController : MonoBehaviour
     private Vector3 zMove;
     private float rMove;
     private Transform myTransform;
+    private Vector3 move;
+    private float zoomVal;
+    private NewInputs inputs;
+
+    private void Awake()
+    {
+    }
 
     private void Start()
     {
+        inputs = WorldController.Instance.Inputs;
+
+        inputs.InputMap.CameraPan.performed += ctx => move = ctx.ReadValue<Vector2>();
+        inputs.InputMap.CameraPan.canceled += ctx => move = Vector2.zero;
+        inputs.InputMap.Zoom.performed += ctx => zoomVal = ctx.ReadValue<float>();
+        inputs.InputMap.Zoom.canceled += ctx => zoomVal = 0;
+
         myTransform = transform;
         zoom = FindObjectOfType<CinemachineFollowZoom>();
 
@@ -48,21 +63,22 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         UpdateCameraMovement();
+        zoomVal = inputs.InputMap.Zoom.ReadValue<float>();
     }
 
     void UpdateCameraMovement()
     {
         bool hasChanged = false;
         //Only run if player is moving left/right/up/down
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        if (move != Vector3.zero)
         {
             forward = myTransform.forward;
             right = myTransform.right;
 
             // Camera keyboard movement
-            xMove = moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal") * right;
-            zMove = moveSpeed * Time.deltaTime * Input.GetAxis("Vertical") * forward;
-            
+            xMove = moveSpeed * Time.deltaTime * move.x * right;
+            zMove = moveSpeed * Time.deltaTime * move.y * forward;
+
             var position = myTransform.localPosition;
             position += xMove;
             position += zMove;
@@ -72,26 +88,25 @@ public class CameraController : MonoBehaviour
         }
 
         //Handle screen dragging if right click is held down
-        if (Input.GetMouseButton(2) || Input.GetMouseButton(1))
+        if (Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)
         {
             //Right or middle mouse
-            float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -(Input.GetAxis("MouseX"));
-            float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -(Input.GetAxis("MouseY"));
+            float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
+            float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;
             transform.Translate(h, 0, v, transform);
 
             hasChanged = true;
-            
         }
 
         // Zoom
-        if (Input.GetAxisRaw("Zoom") != 0)
-        {
-            //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
-            //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
+        //if (Input.GetAxisRaw("Zoom") != 0)
+        //{
+        //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
+        //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
 
-            zoom.m_Width -= Input.GetAxis("Zoom") * zoomMulti;
-            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
-        }
+        zoom.m_Width -= zoomVal * zoomMulti;
+        zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
+        //}
 
         if (hasChanged)
         {

@@ -47,7 +47,7 @@ public class ShipComponent : Entity
     private void OnMouseEnter()
     {
         ShaderOnMethod();
-        if (!UIController.instance.buildingInfo.Visible && !EventSystem.current.IsPointerOverGameObject())
+        if (!UIController.instance.buildingInfo.Visible && !WorldController.Instance.IsPointerOverGameObject())
         {
             UIController.instance.buildingInfo.ShowInfo(this);
         }

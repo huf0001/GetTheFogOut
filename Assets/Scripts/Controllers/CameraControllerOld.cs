@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Cinemachine;
 
 public class CameraControllerOld : MonoBehaviour
@@ -55,12 +56,12 @@ public class CameraControllerOld : MonoBehaviour
     {
         if (!isBuildingSelect)
         {
-            currFramePosition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+            currFramePosition = Camera.main.ScreenToViewportPoint (Mouse.current.position.ReadValue());
 		    //currFramePosition.z = 0;
 
             UpdateCameraMovement();
 
-            lastFramePostition = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+            lastFramePostition = Camera.main.ScreenToViewportPoint (Mouse.current.position.ReadValue());
             //lastFramePostition.z = 0;
             RotateCamera();
         }
@@ -155,23 +156,23 @@ public class CameraControllerOld : MonoBehaviour
         if (enableEdgePan)
         {
             //mouse scroll
-            if (Input.mousePosition.x >= Screen.width - 20)
+            if (Mouse.current.position.ReadValue().x >= Screen.width - 20)
             {
                 //scroll right
                 xMove = right * moveSpeed * Time.deltaTime * 1;
             }
-            if (Input.mousePosition.x <= 10)
+            if (Mouse.current.position.ReadValue().x <= 10)
             {
                 //scroll left
                 xMove = right * moveSpeed * Time.deltaTime * -1;
             }
 
-            if (Input.mousePosition.y >= Screen.height - 20)
+            if (Mouse.current.position.ReadValue().y >= Screen.height - 20)
             {
                 //scroll up
                 xMove = up * moveSpeed * Time.deltaTime * 1;
             }
-            if (Input.mousePosition.y <= 20)
+            if (Mouse.current.position.ReadValue().y <= 20)
             {
                 xMove = up * moveSpeed * Time.deltaTime * -1;
             }

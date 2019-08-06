@@ -1,4 +1,3 @@
-
 using System;
 using Abilities;
 using UnityEngine;
@@ -55,11 +54,11 @@ public class Collectable : Locatable, ICollectible
         //CollectedCheck();
     }
 
-    private void OnMouseDown()
+    public void CollectAbility()
     {
         if (TutorialController.Instance.Stage == TutorialStage.Finished || (TutorialController.Instance.Stage == TutorialStage.CollectSonar && ability.AbilityType == AbilityEnum.Sonar))
         {
-            if (!location.FogUnit && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
+            if (!location.FogUnit && location.PowerSource && !WorldController.Instance.IsPointerOverGameObject())
             {
                 if (ability.AbilityType != AbilityEnum.None)
                 {
@@ -72,7 +71,7 @@ public class Collectable : Locatable, ICollectible
 
             if (location.FogUnit)
             {
-                if (location.FogUnit.Health <= 0 && location.PowerSource && !EventSystem.current.IsPointerOverGameObject())
+                if (location.FogUnit.Health <= 0 && location.PowerSource && !WorldController.Instance.IsPointerOverGameObject())
                 {
                     if (ability.AbilityType != AbilityEnum.None)
                     {

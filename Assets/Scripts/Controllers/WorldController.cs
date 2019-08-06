@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public class ShipComponentState
@@ -98,10 +99,15 @@ public class WorldController : MonoBehaviour
     public List<ShipComponentState> ShipComponents { get => shipComponents; }
     public bool GameWin { get => gameWin; set => gameWin = value; }
     public bool GameOver { get => gameOver; set => gameOver = value; }
+    public NewInputs Inputs { get; set; }
 
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
     private void Awake()
     {
+        Inputs = new NewInputs();
+        Inputs.Enable();
+        Inputs.InputMap.Pause.performed += ctx => SetPause(!pauseMenu.activeSelf);
+
         if (Instance != null)
         {
             Debug.LogError("There should never be 2 or more world managers.");
@@ -397,6 +403,16 @@ public class WorldController : MonoBehaviour
 
     private void GameUpdate()
     {
+        if (Gamepad.all.Count > 0 && Gamepad.current.wasUpdatedThisFrame)
+        {
+            //Cursor.lockState = CursorLockMode.Locked;
+            Mouse.current.WarpCursorPosition(new Vector2(Screen.width / 2, Screen.height / 2));
+        }
+        else
+        {
+            //Cursor.lockState = CursorLockMode.None;
+        }
+
         if (InBuildMode)
         {
             RenderTower();
@@ -428,10 +444,10 @@ public class WorldController : MonoBehaviour
             hub = FindObjectOfType<Hub>();
         }
 
-        if (Input.GetButtonDown("Pause"))
-        {
-            SetPause(!pauseMenu.activeSelf);
-        }
+        //if (Input.GetButtonDown("Pause"))
+        //{
+        //    SetPause(!pauseMenu.activeSelf);
+        //}
 
         if (Input.GetKeyDown("c"))
         {
@@ -444,6 +460,21 @@ public class WorldController : MonoBehaviour
             GameOver = true;
             InBuildMode = false;
         }
+    }
+
+    /// <summary>
+    /// To replace EventSystem.current.IsPointerOverGameObject() since it is not compatible with the new Input System
+    /// </summary>
+    /// <returns>Returns true if pointer over UI object</returns>
+    public bool IsPointerOverGameObject()
+    {
+        PointerEventData pointer = new PointerEventData(EventSystem.current);
+        pointer.position = Mouse.current.position.ReadValue();
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointer, results);
+
+        return results.Count > 0 ? true : false;
     }
 
     public void SetPause(bool pause)
@@ -499,9 +530,9 @@ public class WorldController : MonoBehaviour
         TowerToSpawn = tm.GetTower("holo");
 
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-        if (Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && !EventSystem.current.IsPointerOverGameObject())
+        if (Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && !WorldController.Instance.IsPointerOverGameObject())
         {
             if (TileExistsAt(hit.point))
             {
@@ -770,6 +801,12 @@ public class WorldController : MonoBehaviour
         Time.timeScale = 1.0f;
         Time.fixedDeltaTime = 0.02f;
         SceneManager.LoadScene("Menu");
+    }
+
+    private void OnDisable()
+    {
+        Inputs.Disable();
+        Inputs = null;
     }
 }
 
