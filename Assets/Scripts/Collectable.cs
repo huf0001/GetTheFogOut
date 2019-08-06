@@ -54,7 +54,7 @@ public class Collectable : Locatable, ICollectible
         //CollectedCheck();
     }
 
-    private void OnMouseDown()
+    public void CollectAbility()
     {
         if (TutorialController.Instance.Stage == TutorialStage.Finished || (TutorialController.Instance.Stage == TutorialStage.CollectSonar && ability.AbilityType == AbilityEnum.Sonar))
         {

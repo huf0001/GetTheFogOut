@@ -90,7 +90,6 @@ public class CameraController : MonoBehaviour
         //Handle screen dragging if right click is held down
         if (Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)
         {
-            Debug.Log(inputs.InputMap.CameraDrag.ReadValue<Vector2>());
             //Right or middle mouse
             float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
             float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;

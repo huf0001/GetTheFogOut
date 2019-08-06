@@ -195,7 +195,7 @@ public class AbilityController : MonoBehaviour
         if (IsAbilitySelected)
         {
             // Use ability
-            if (Input.GetMouseButtonDown(0))
+            if (WorldController.Instance.Inputs.InputMap.Build.ReadValue<float>() > 0)
             {
                 if (!abilityTriggered[selectedAbility.AbilityType])
                 {

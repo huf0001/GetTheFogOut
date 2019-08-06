@@ -196,12 +196,17 @@ public class MouseController : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             //Check if a valid tile was clicked
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")) && WorldController.Instance.TileExistsAt(hit.point))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables" })) && WorldController.Instance.TileExistsAt(hit.point))
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
                     changeTileMaterial(WorldController.Instance.normalTile);
                     towerManager.CancelBuild();
+                }
+                else if (hit.collider.gameObject.layer == 15)
+                {
+                    hit.collider.GetComponent<Collectable>()?.CollectAbility();
+                    hit.collider.GetComponent<ShipComponent>()?.Collect();
                 }
                 else
                 {
