@@ -42,7 +42,15 @@
                     "type": "Value",
                     "id": "08854b7a-0369-41db-ab3f-315098eed87a",
                     "expectedControlType": "",
-                    "processors": "AutoWindowSpace,ScaleVector2(x=0.5,y=0.5)",
+                    "processors": "ScaleVector2(x=0.5,y=0.5)",
+                    "interactions": ""
+                },
+                {
+                    "name": "Proceed Dialogue",
+                    "type": "Value",
+                    "id": "b56f65d4-a5cd-4daf-ad5c-5bae9314c0f7",
+                    "expectedControlType": "",
+                    "processors": "",
                     "interactions": ""
                 }
             ],
@@ -209,6 +217,28 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "Camera Drag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14b11de7-01e3-4825-beee-98f017e6fb4d",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "Proceed Dialogue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3c7a7111-093e-4331-ac3e-48ecf2268ddf",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "Proceed Dialogue",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

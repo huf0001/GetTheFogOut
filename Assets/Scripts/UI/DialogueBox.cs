@@ -115,6 +115,11 @@ public class DialogueBox : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        WorldController.Instance.Inputs.InputMap.ProceedDialogue.performed += ctx => RegisterDialogueRead();
+    }
+
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
 
     //Checks for new dialogue, lerps text, checks if player wants to progress text
@@ -171,7 +176,7 @@ public class DialogueBox : MonoBehaviour
                 Debug.Log("Warning: nextDialogueSetReady was set to true, but contentToDisplay was empty.");
             }
 
-            if (clickable && (dialogueRead || Input.GetButtonDown("Jump")))// || Input.GetButtonDown("Submit")))
+            if (clickable && dialogueRead)
             {
                 RegisterDialogueRead();
             }

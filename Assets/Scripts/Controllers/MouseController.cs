@@ -226,17 +226,6 @@ public class MouseController : MonoBehaviour
                             }
 
                             towerManager.CurrentTile = tile;
-                            /*
-                            changeTileMaterial(WorldController.Instance.normalTile);
-                            if (!tile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
-                            {
-                                Color newColor = tile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
-                                newColor.a += 1f;
-                                tile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
-                            }
-                            hoveredTile = tile;
-                            //    towerManager.CurrentTile.plane.GetComponent<Renderer>().material = WorldController.Instance.hoverTile;
-                            */
                         }
                     }
                 }
