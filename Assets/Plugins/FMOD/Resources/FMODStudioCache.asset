@@ -111,6 +111,23 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1488
   Exists: 1
+--- !u!114 &-8498500603666112302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage3
+  m_EditorClassIdentifier: 
+  Name: MusicStage3
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-8367667499146021529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +249,23 @@ MonoBehaviour:
   m_Name: parameter:/MusicMix/Win
   m_EditorClassIdentifier: 
   Name: Win
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &-7451597102755070145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/Lose
+  m_EditorClassIdentifier: 
+  Name: Lose
   Min: 0
   Max: 1
   Default: 0
@@ -617,6 +651,26 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-4206218419215032078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Michael\Documents\CAPSTONE\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.strings.bank
+  SubDir: 
+  lastModified: 637007278357652045
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1488
+  Exists: 1
 --- !u!114 &-4104913829026858552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,6 +845,26 @@ MonoBehaviour:
   Path: C:\Users\Michael\Documents\CAPSTONE\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.bank
   SubDir: 
   lastModified: 636998339488114106
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 6536544
+  Exists: 1
+--- !u!114 &-2946883794120671829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: C:\Users\Michael\Documents\CAPSTONE\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.bank
+  SubDir: 
+  lastModified: 637007278358300312
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -1216,6 +1290,23 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1488
   Exists: 1
+--- !u!114 &-472907815975440885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage2
+  m_EditorClassIdentifier: 
+  Name: MusicStage2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-294331957833929827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1266,8 +1357,8 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: -7618980665849332129}
-  - {fileID: -3225147602645139272}
+  - {fileID: -4206218419215032078}
+  - {fileID: -2946883794120671829}
   EditorEvents:
   - {fileID: 114640158346749866}
   - {fileID: 114828448989649362}
@@ -1280,10 +1371,10 @@ MonoBehaviour:
   - {fileID: 114208456559180296}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -3225147602645139272}
+  - {fileID: -2946883794120671829}
   StringsBanks:
-  - {fileID: -7618980665849332129}
-  stringsBankWriteTime: 637007649709081914
+  - {fileID: -4206218419215032078}
+  stringsBankWriteTime: 637007278357652045
   cacheVersion: 3
 --- !u!114 &114000384853988394
 MonoBehaviour:
@@ -1586,6 +1677,7 @@ MonoBehaviour:
   - {fileID: -9025021829936713567}
   - {fileID: -5276179149294331486}
   - {fileID: 481147898156382256}
+  - {fileID: -2946883794120671829}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -2036,6 +2128,7 @@ MonoBehaviour:
   - {fileID: -9025021829936713567}
   - {fileID: -5276179149294331486}
   - {fileID: 481147898156382256}
+  - {fileID: -2946883794120671829}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -2185,6 +2278,7 @@ MonoBehaviour:
   - {fileID: -9025021829936713567}
   - {fileID: -5276179149294331486}
   - {fileID: 481147898156382256}
+  - {fileID: -2946883794120671829}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -2439,6 +2533,7 @@ MonoBehaviour:
   - {fileID: -9025021829936713567}
   - {fileID: -5276179149294331486}
   - {fileID: 481147898156382256}
+  - {fileID: -2946883794120671829}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -3915,6 +4010,7 @@ MonoBehaviour:
   - {fileID: -9025021829936713567}
   - {fileID: -5276179149294331486}
   - {fileID: 481147898156382256}
+  - {fileID: -2946883794120671829}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -4543,16 +4639,17 @@ MonoBehaviour:
   - {fileID: -9025021829936713567}
   - {fileID: -5276179149294331486}
   - {fileID: 481147898156382256}
+  - {fileID: -2946883794120671829}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 2796034034082718982}
-  - {fileID: 8503433039140194532}
-  - {fileID: 6260571327664748487}
-  - {fileID: 8250061388002073790}
-  - {fileID: 3519909876979981727}
-  - {fileID: 1765454648494262747}
+  - {fileID: -7451597102755070145}
+  - {fileID: -472907815975440885}
+  - {fileID: 8318103920700003369}
+  - {fileID: 7157787226377398518}
+  - {fileID: 4111929948875327940}
+  - {fileID: -8498500603666112302}
   MinDistance: 0
   MaxDistance: 0
   Length: 414234
@@ -5000,6 +5097,7 @@ MonoBehaviour:
   - {fileID: -9025021829936713567}
   - {fileID: -5276179149294331486}
   - {fileID: 481147898156382256}
+  - {fileID: -2946883794120671829}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -5030,6 +5128,7 @@ MonoBehaviour:
   - {fileID: -9025021829936713567}
   - {fileID: -5276179149294331486}
   - {fileID: 481147898156382256}
+  - {fileID: -2946883794120671829}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -6080,6 +6179,7 @@ MonoBehaviour:
   - {fileID: -9025021829936713567}
   - {fileID: -5276179149294331486}
   - {fileID: 481147898156382256}
+  - {fileID: -2946883794120671829}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -7148,6 +7248,23 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1488
   Exists: 1
+--- !u!114 &4111929948875327940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage1
+  m_EditorClassIdentifier: 
+  Name: MusicStage1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &4263538254365603866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7548,6 +7665,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &7157787226377398518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/Win
+  m_EditorClassIdentifier: 
+  Name: Win
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &7524172860516520428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7595,6 +7729,23 @@ MonoBehaviour:
   m_Name: parameter:/MusicMix/Win
   m_EditorClassIdentifier: 
   Name: Win
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &8318103920700003369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/ReturnMenu
+  m_EditorClassIdentifier: 
+  Name: ReturnMenu
   Min: 0
   Max: 1
   Default: 0
