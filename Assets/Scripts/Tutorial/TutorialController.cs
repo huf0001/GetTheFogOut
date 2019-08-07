@@ -82,6 +82,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private GameObject abilityUnlockCanvas;
 
     [Header("Cameras")]
+    [SerializeField] private CameraController cameraController;
     [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
     [SerializeField] private CinemachineVirtualCamera sonarCamera;
     [SerializeField] private CinemachineVirtualCamera artilleryCamera;
@@ -1345,11 +1346,22 @@ public class TutorialController : DialogueBoxController
     //Checks a specific camera input's input
     private void GetButtonInput(string input, CameraKey negativeKey, CameraKey positiveKey)
     {
-        if (Input.GetAxis(input) > 0.001 && !positiveKey.LerpOutCalled)
+        float inputValue;
+
+        if (input == "Vertical")
+        {
+            inputValue = cameraController.Move.y;
+        }
+        else
+        {
+            inputValue = cameraController.Move.x;
+        }
+
+        if (inputValue > 0 && !positiveKey.LerpOutCalled)
         {
             positiveKey.LerpOut();
         }
-        else if (Input.GetAxis(input) < -0.001 && !negativeKey.LerpOutCalled)
+        else if (inputValue < 0 && !negativeKey.LerpOutCalled)
         {
             negativeKey.LerpOut();
         }
