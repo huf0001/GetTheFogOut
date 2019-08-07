@@ -39,11 +39,6 @@ public class ShipComponent : Entity
         }
     }
 
-    private void OnMouseDown()
-    {
-        Collect();
-    }
-
     private void OnMouseEnter()
     {
         ShaderOnMethod();

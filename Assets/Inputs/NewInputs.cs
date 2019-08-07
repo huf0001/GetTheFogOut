@@ -54,7 +54,15 @@ public class NewInputs : IInputActionCollection
                     ""type"": ""Value"",
                     ""id"": ""08854b7a-0369-41db-ab3f-315098eed87a"",
                     ""expectedControlType"": """",
-                    ""processors"": ""AutoWindowSpace,ScaleVector2(x=0.5,y=0.5)"",
+                    ""processors"": ""ScaleVector2(x=0.5,y=0.5)"",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Proceed Dialogue"",
+                    ""type"": ""Value"",
+                    ""id"": ""b56f65d4-a5cd-4daf-ad5c-5bae9314c0f7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
                     ""interactions"": """"
                 }
             ],
@@ -223,6 +231,28 @@ public class NewInputs : IInputActionCollection
                     ""action"": ""Camera Drag"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14b11de7-01e3-4825-beee-98f017e6fb4d"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Proceed Dialogue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c7a7111-093e-4331-ac3e-48ecf2268ddf"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Controller"",
+                    ""action"": ""Proceed Dialogue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -261,6 +291,7 @@ public class NewInputs : IInputActionCollection
         m_InputMap_Zoom = m_InputMap.GetAction("Zoom");
         m_InputMap_Build = m_InputMap.GetAction("Build");
         m_InputMap_CameraDrag = m_InputMap.GetAction("Camera Drag");
+        m_InputMap_ProceedDialogue = m_InputMap.GetAction("Proceed Dialogue");
     }
 
     ~NewInputs()
@@ -315,6 +346,7 @@ public class NewInputs : IInputActionCollection
     private readonly InputAction m_InputMap_Zoom;
     private readonly InputAction m_InputMap_Build;
     private readonly InputAction m_InputMap_CameraDrag;
+    private readonly InputAction m_InputMap_ProceedDialogue;
     public struct InputMapActions
     {
         private NewInputs m_Wrapper;
@@ -324,6 +356,7 @@ public class NewInputs : IInputActionCollection
         public InputAction @Zoom => m_Wrapper.m_InputMap_Zoom;
         public InputAction @Build => m_Wrapper.m_InputMap_Build;
         public InputAction @CameraDrag => m_Wrapper.m_InputMap_CameraDrag;
+        public InputAction @ProceedDialogue => m_Wrapper.m_InputMap_ProceedDialogue;
         public InputActionMap Get() { return m_Wrapper.m_InputMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -348,6 +381,9 @@ public class NewInputs : IInputActionCollection
                 CameraDrag.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraDrag;
                 CameraDrag.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraDrag;
                 CameraDrag.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraDrag;
+                ProceedDialogue.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnProceedDialogue;
+                ProceedDialogue.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnProceedDialogue;
+                ProceedDialogue.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnProceedDialogue;
             }
             m_Wrapper.m_InputMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -367,6 +403,9 @@ public class NewInputs : IInputActionCollection
                 CameraDrag.started += instance.OnCameraDrag;
                 CameraDrag.performed += instance.OnCameraDrag;
                 CameraDrag.canceled += instance.OnCameraDrag;
+                ProceedDialogue.started += instance.OnProceedDialogue;
+                ProceedDialogue.performed += instance.OnProceedDialogue;
+                ProceedDialogue.canceled += instance.OnProceedDialogue;
             }
         }
     }
@@ -396,5 +435,6 @@ public class NewInputs : IInputActionCollection
         void OnZoom(InputAction.CallbackContext context);
         void OnBuild(InputAction.CallbackContext context);
         void OnCameraDrag(InputAction.CallbackContext context);
+        void OnProceedDialogue(InputAction.CallbackContext context);
     }
 }
