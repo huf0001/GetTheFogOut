@@ -42,7 +42,8 @@ public class Fog : MonoBehaviour
     [SerializeField] private FogUnit fogUnitPrefab;
 
     [Header("Materials")]
-    [SerializeField] private Material visibleMaterial;
+    [SerializeField] private Material fogUnitVisibleMaterial;
+    [SerializeField] private Material fogSphereVisibleMaterial;
     [SerializeField] private Material invisibleMaterial;
     [SerializeField] private Material fogEffect;
 
@@ -426,7 +427,7 @@ public class Fog : MonoBehaviour
             f.gameObject.SetActive(true);
             f.gameObject.name = $"FogUnit({x}, {z})";
 
-            f.FogRenderer.material = visibleMaterial;
+            f.FogRenderer.material = fogUnitVisibleMaterial;
             f.Location = t;
             f.Health = health;
             f.Spill = false;
@@ -495,7 +496,7 @@ public class Fog : MonoBehaviour
 
             foreach (Renderer r in s.Renderers)
             {
-                r.material = visibleMaterial;
+                r.material = fogSphereVisibleMaterial;
             }
 
             s.SpawningTile = u.Location;

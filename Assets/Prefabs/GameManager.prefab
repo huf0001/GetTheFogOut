@@ -422,7 +422,7 @@ MonoBehaviour:
       dialogue: Well, now that you know the basics, the rest is up to you. I will
         aid you where I can. I would suggest exploring your surroundings and collecting
         some more {MINERALS}, maybe even get to your ship's thruster.
-  skipTutorial: 0
+  skipTutorial: 1
   stage: 1
   subStage: 1
   currentlyBuilding: 0
@@ -462,6 +462,7 @@ MonoBehaviour:
   dKey: {fileID: 0}
   powerDiagram: {fileID: 0}
   abilityUnlockCanvas: {fileID: 0}
+  cameraController: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
   sonarCamera: {fileID: 0}
   artilleryCamera: {fileID: 0}
@@ -600,7 +601,10 @@ MonoBehaviour:
     type: 3}
   fogUnitPrefab: {fileID: 2516856455530505698, guid: 81ce07d50c91d3843b2866edb20d15f5,
     type: 3}
-  visibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264, type: 2}
+  fogUnitVisibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264,
+    type: 2}
+  fogSphereVisibleMaterial: {fileID: 2100000, guid: 0f85bc7ba0a833c41a8cad54d25286fa,
+    type: 2}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
   fogEffect: {fileID: 0}
   angry: 0
