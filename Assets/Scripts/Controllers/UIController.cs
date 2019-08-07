@@ -146,9 +146,20 @@ public class UIController : MonoBehaviour
                 objectiveButton.onClick.AddListener(
                     delegate
                     {
-                        if (ResourceController.Instance.StoredMineral >= TutorialController.Instance.CollectedMineralsGoal)
+                        int mineralGoal;
+
+                        if (controller == "O")
                         {
-                            ResourceController.Instance.StoredMineral -= TutorialController.Instance.CollectedMineralsGoal;
+                            mineralGoal = ObjectiveController.Instance.MineralTarget;
+                        }
+                        else
+                        {
+                            mineralGoal = TutorialController.Instance.CollectedMineralsGoal;
+                        }
+
+                        if (ResourceController.Instance.StoredMineral >= mineralGoal)
+                        {
+                            ResourceController.Instance.StoredMineral -= mineralGoal;
                             objectiveButton.enabled = false;
 
                             if (controller == "O")
