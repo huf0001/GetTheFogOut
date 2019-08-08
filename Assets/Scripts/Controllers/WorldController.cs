@@ -29,16 +29,17 @@ public class WorldController : MonoBehaviour
 
     //Serialized Fields
     [Header("World Spawning Rules")]
-    [SerializeField] private int width = 31;
+    [SerializeField]
+    private int width = 31;
     [SerializeField] private int length = 31;
-    [SerializeField] private bool spawnResources = false, gameWin = false, gameOver = false;
-    [SerializeField] int mineralSpawnChance = 5, fuelSpawnChance = 5, powerSpawnChance = 5, organSpawnChance = 5;
+    [SerializeField] private bool gameWin = false, gameOver = false;
 
     [Header("Prefab/Gameobject assignment")]
-    [SerializeField] private GameObject ground;
+    [SerializeField]
+    private GameObject ground;
     public Collider groundCollider;
 
-    [SerializeField] public GameObject planeGridprefab, hubPrefab, mineralPrefab, fuelPrefab, powerPrefab, organPrefab, tilePrefab;
+    [SerializeField] public GameObject planeGridprefab, hubPrefab, mineralPrefab, tilePrefab;
     [SerializeField] public Material normalTile, hoverTile;
 
     [SerializeField] private Hub hub = null;
@@ -151,6 +152,7 @@ public class WorldController : MonoBehaviour
         SetBuildingsToTiles();
         SetLandmarksToTiles();
         SetCollectablesToTiles();
+        CreateMinimapTiles();
         groundCollider = ground.GetComponent<Collider>();
         TutorialController.Instance.StartTutorial();
     }
@@ -236,7 +238,7 @@ public class WorldController : MonoBehaviour
             tile.Collectible = c;
             tile.buildingChecks.collectable = true;
             c.Location = tile;
-            
+
             // Centre on tile
             Vector3 pos = position;
             pos.x = Mathf.Round(pos.x);
@@ -271,43 +273,24 @@ public class WorldController : MonoBehaviour
                 GameObject tileObject = Instantiate(tilePrefab);
                 tileObject.transform.position = new Vector3(tile.X, 0.1f, tile.Z);
                 tileObject.transform.SetParent(quad.transform);
-
-                if (spawnResources)
-                {
-                    if (UnityEngine.Random.Range(1, 100) < mineralSpawnChance)
-                    {
-                        pos.y += 0.2f;
-                        GameObject mineral = Instantiate(mineralPrefab, pos, Quaternion.Euler(0f, 0f, 0f));
-                        tile.Resource = mineral.GetComponentInChildren<ResourceNode>();
-                        mineral.GetComponentInChildren<ResourceNode>().Location = tile;
-                        mineral.transform.SetParent(ground.transform, true);
-                    }
-                    else if (UnityEngine.Random.Range(1, 100) < fuelSpawnChance)
-                    {
-                        pos.y += 0.3f;
-                        GameObject fuel = Instantiate(fuelPrefab, pos, Quaternion.Euler(0, 0, 0));
-                        tile.Resource = fuel.GetComponentInChildren<ResourceNode>();
-                        fuel.GetComponentInChildren<ResourceNode>().Location = tile;
-                        fuel.transform.SetParent(ground.transform, true);
-                    }
-                    else if (UnityEngine.Random.Range(1, 100) < organSpawnChance)
-                    {
-                        pos.y += 0.3f;
-                        GameObject organ = Instantiate(organPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
-                        tile.Resource = organ.GetComponentInChildren<ResourceNode>();
-                        organ.GetComponentInChildren<ResourceNode>().Location = tile;
-                        organ.transform.SetParent(ground.transform, true);
-                    }
-                    else if (UnityEngine.Random.Range(1, 100) < powerSpawnChance)
-                    {
-                        pos.y += 0.2f;
-                        GameObject power = Instantiate(powerPrefab, pos, Quaternion.Euler(0f, 180f, 0f));
-                        tile.Resource = power.GetComponentInChildren<ResourceNode>();
-                        power.GetComponentInChildren<ResourceNode>().Location = tile;
-                        power.transform.SetParent(ground.transform, true);
-                    }
-                }
             }
+        }
+    }
+
+    private void CreateMinimapTiles()
+    {
+        GameObject grids = GameObject.Find("MinimapPlanes");
+        foreach (TileData tile in tiles)
+        {
+            Vector3 pos = Vector3.zero;
+            pos.x += tile.X;
+            pos.y = 0.033f;
+            pos.z += tile.Z;
+            GameObject minimapTile = Instantiate(planeGridprefab, pos, Quaternion.identity);
+            minimapTile.transform.SetParent(grids.transform);
+            minimapTile.name = "Minimap Tile";
+            minimapTile.layer = 17;
+            //minimapTile.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(0, 0, 255, 255));
         }
     }
 
@@ -418,18 +401,18 @@ public class WorldController : MonoBehaviour
             RenderTower();
         }
         showActiveTiles();
-        
+
         if (ObjectiveController.Instance.ShipComponent.activeSelf)
         {
             thrusterTilesOn();
 
         }
-        
-        if(GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
+
+        if (GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
         {
             thrusterTilesOff();
         }
-        
+
         if (Input.GetButtonDown("Cancel"))
         {
             Destroy(PlaneSpawn);
@@ -683,7 +666,7 @@ public class WorldController : MonoBehaviour
     public void showActiveTiles()
     {
         GameObject grids = GameObject.Find("Grids");
-        
+
         if (index != activeTiles.Count)
         {
             hideActiveTiles();
@@ -693,7 +676,7 @@ public class WorldController : MonoBehaviour
                 pos.x += tile.X;
                 pos.y = 0.033f;
                 pos.z += tile.Z;
-                tile.plane = Instantiate(WorldController.Instance.planeGridprefab, pos, Quaternion.identity);
+                tile.plane = Instantiate(planeGridprefab, pos, Quaternion.identity);
                 tile.plane.transform.SetParent(grids.transform);
             }
             index = activeTiles.Count;
@@ -720,7 +703,7 @@ public class WorldController : MonoBehaviour
             List<TileData> tempDisable = new List<TileData>(DisableTiles);
             foreach (TileData tile in tempDisable)
             {
-                if(Tile == tile)
+                if (Tile == tile)
                 {
                     if (!activeTiles.Contains(tile))
                     {
@@ -732,7 +715,7 @@ public class WorldController : MonoBehaviour
             }
         }
     }
-    
+
     public void thrusterTilesOff()
     {
         if (!thrusterToggle)
@@ -750,11 +733,11 @@ public class WorldController : MonoBehaviour
                         }
                         DisableTiles.Remove(tile);
                         tile.PowerUp(tempPower);
-           //             Debug.Log(tile.Name);
+                        //             Debug.Log(tile.Name);
                     }
                 }
             }
-        //    Debug.Log("off");
+            //    Debug.Log("off");
             thrusterToggle = true;
         }
     }
@@ -777,21 +760,21 @@ public class WorldController : MonoBehaviour
                         }
                         tempPower = tile.getself().PowerSource;
                         tile.PowerDown(tempPower);
-                   //     Debug.Log(tile.Name);
+                        //     Debug.Log(tile.Name);
                     }
                 }
             }
-        //    Debug.Log("on");
+            //    Debug.Log("on");
             thrusterToggle = false;
         }
     }
     public void QuitGame()
     {
-        #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-        #else
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
                 Application.Quit();
-        #endif
+#endif
     }
 
     public void ResetGame()
