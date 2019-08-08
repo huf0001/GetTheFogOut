@@ -49,6 +49,14 @@ public class TutorialController : DialogueBoxController
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
+    [Header("Tutorial UI Elements")]
+    [SerializeField] private CameraKey wKey;
+    [SerializeField] private CameraKey aKey;
+    [SerializeField] private CameraKey sKey;
+    [SerializeField] private CameraKey dKey;
+    [SerializeField] private Image powerDiagram;
+    [SerializeField] private GameObject abilityUnlockCanvas;
+
     [Header("Skip Tutorial")]
     [SerializeField] private bool skipTutorial = true;
 
@@ -73,14 +81,6 @@ public class TutorialController : DialogueBoxController
     //[SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
 
-    [Header("UI Elements")]
-    [SerializeField] private CameraKey wKey;
-    [SerializeField] private CameraKey aKey;
-    [SerializeField] private CameraKey sKey;
-    [SerializeField] private CameraKey dKey;
-    [SerializeField] private Image powerDiagram;
-    [SerializeField] private GameObject abilityUnlockCanvas;
-
     [Header("Cameras")]
     [SerializeField] private CameraController cameraController;
     [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
@@ -88,7 +88,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CinemachineVirtualCamera artilleryCamera;
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
-    [Header("Colours")]
+    [Header("UI Lerp Colours")]
     [SerializeField] private Color uiNormalColour;
     [SerializeField] private Color uiHighlightColour;
 

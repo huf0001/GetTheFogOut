@@ -6,50 +6,15 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
-//public enum AIExpression
-//{
-//    None,
-//    Happy,
-//    Neutral,
-//    Sad
-//}
-
-//[Serializable]
-//public class ExpressionDialoguePair
-//{
-//    //Serialized Fields
-//    [SerializeField] private AIExpression aiExpression = AIExpression.Neutral;
-//    [SerializeField, TextArea(15, 20)] private string dialogue;
-
-//    //Public Properties
-//    public AIExpression AIExpression { get => aiExpression; }
-//    public string Dialogue { get => dialogue; }
-//}
-
-//[Serializable]
-//public class DialogueSet
-//{
-//    //Serialized Fields
-//    [SerializeField] private string key;
-//    [SerializeField] private List<ExpressionDialoguePair> expressionDialoguePairs;
-
-//    //Public Properties
-//    public string Key { get => key; }
-//    public List<ExpressionDialoguePair> ExpressionDialoguePairs { get => expressionDialoguePairs; }
-//}
-
 public class DialogueBoxController : MonoBehaviour
 {
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
-    [Header("Objective Window")]
+    [Header("Objective UI Elements")]
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveWindowOpenArrows;
-
-    [Header("Dialogue")]
     [SerializeField] protected DialogueBox aiText;
-    [SerializeField] private List<DialogueSet> dialogue;
 
     //Non-Serialized fields
     protected bool dialogueRead = false;
