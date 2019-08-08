@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8377111147698654675}
   - component: {fileID: 8377111147698654672}
   - component: {fileID: 2516856455530505698}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Fog Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,16 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3ec4b42f60de624a89c4ba02a03a7d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location:
-    powerSources: []
-    resource: {fileID: 0}
-    building: {fileID: 0}
-    onMaterial: {fileID: 0}
-    visibleMaterial: {fileID: 0}
-    startMaterial: {fileID: 0}
-    x: 0
-    z: 0
-    plane: {fileID: 0}
   health: 0.1
   maxHealth: 1
   startOpacity: 0
@@ -210,3 +200,4 @@ MonoBehaviour:
   damageLerpMultiplier: 3
   damage: 1
   angryFogEvaporation: {fileID: 0}
+  returnToPool: 0
