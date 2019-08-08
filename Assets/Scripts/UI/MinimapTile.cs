@@ -9,8 +9,8 @@ public class MinimapTile : MonoBehaviour
 {
     public TileData Tile { get; set; }
 
-    private Color poweredTile = new Color(0, 0, 1);
-    private Color unpoweredTile = new Color(0.7f, 0.3f, 0.3f);
+    private Color poweredTile = new Color(0, 0.8f, 0);
+    private Color unpoweredTile = new Color(0.5f, 0, 0, 0.7f);
     private Material mat;
     private Color curColour;
 
