@@ -39,7 +39,7 @@ public class WorldController : MonoBehaviour
     private GameObject ground;
     public Collider groundCollider;
 
-    [SerializeField] public GameObject planeGridprefab, hubPrefab, mineralPrefab, tilePrefab;
+    [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab, hubPrefab, mineralPrefab, tilePrefab;
     [SerializeField] public Material normalTile, hoverTile;
 
     [SerializeField] private Hub hub = null;
@@ -286,11 +286,9 @@ public class WorldController : MonoBehaviour
             pos.x += tile.X;
             pos.y = 0.033f;
             pos.z += tile.Z;
-            GameObject minimapTile = Instantiate(planeGridprefab, pos, Quaternion.identity);
+            GameObject minimapTile = Instantiate(minimapPlanePrefab, pos, Quaternion.identity);
             minimapTile.transform.SetParent(grids.transform);
-            minimapTile.name = "Minimap Tile";
-            minimapTile.layer = 17;
-            //minimapTile.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(0, 0, 255, 255));
+            minimapTile.GetComponent<MinimapTile>().Tile = tile;
         }
     }
 
