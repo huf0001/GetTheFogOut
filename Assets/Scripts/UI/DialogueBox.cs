@@ -1,9 +1,42 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+
+public enum AIExpression
+{
+    None,
+    Happy,
+    Neutral,
+    Sad
+}
+
+[Serializable]
+public class ExpressionDialoguePair
+{
+    //Serialized Fields
+    [SerializeField] private AIExpression aiExpression = AIExpression.Neutral;
+    [SerializeField, TextArea(15, 20)] private string dialogue;
+
+    //Public Properties
+    public AIExpression AIExpression { get => aiExpression; }
+    public string Dialogue { get => dialogue; }
+}
+
+[Serializable]
+public class DialogueSet
+{
+    //Serialized Fields
+    [SerializeField] private string key;
+    [SerializeField] private List<ExpressionDialoguePair> expressionDialoguePairs;
+
+    //Public Properties
+    public string Key { get => key; }
+    public List<ExpressionDialoguePair> ExpressionDialoguePairs { get => expressionDialoguePairs; }
+}
 
 public class DialogueBox : MonoBehaviour
 {
@@ -18,12 +51,7 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] float popUpSpeed = 0.5f;
     [SerializeField] private int lerpTextInterval = 3;
 
-    [Header("Colours")]
-    [SerializeField] private string squareBracketColour;
-    [SerializeField] private string squigglyBracketColour;
-    [SerializeField] private string vBracketColour;
-
-    [Header("Expressions")]
+    [Header("Available Expressions")]
     [SerializeField] private AIExpression currentExpression;
     [SerializeField] private Sprite aiHappy;
     [SerializeField] private Sprite aiNeutral;
@@ -31,6 +59,14 @@ public class DialogueBox : MonoBehaviour
 
     [Header("Images")]
     [SerializeField] private Image continueArrow;
+
+    [Header("Colours")]
+    [SerializeField] private string squareBracketColour;
+    [SerializeField] private string squigglyBracketColour;
+    [SerializeField] private string vBracketColour;
+
+    [Header("Dialogue")]
+    [SerializeField] private List<DialogueSet> dialogue;
 
     //Non-Serialized Fields
     [Header("Temporarily Serialized")]
@@ -122,6 +158,7 @@ public class DialogueBox : MonoBehaviour
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
 
+    //TODO: needs to track dialogue set index, rather than loading a copy of a dialogue set and discarding chunks as they're displayed
     //Checks for new dialogue, lerps text, checks if player wants to progress text
     private void Update()
     {

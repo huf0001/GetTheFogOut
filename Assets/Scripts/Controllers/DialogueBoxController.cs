@@ -6,37 +6,37 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
-public enum AIExpression
-{
-    None,
-    Happy,
-    Neutral,
-    Sad
-}
+//public enum AIExpression
+//{
+//    None,
+//    Happy,
+//    Neutral,
+//    Sad
+//}
 
-[Serializable]
-public class ExpressionDialoguePair
-{
-    //Serialized Fields
-    [SerializeField] private AIExpression aiExpression = AIExpression.Neutral;
-    [SerializeField, TextArea(15, 20)] private string dialogue;
+//[Serializable]
+//public class ExpressionDialoguePair
+//{
+//    //Serialized Fields
+//    [SerializeField] private AIExpression aiExpression = AIExpression.Neutral;
+//    [SerializeField, TextArea(15, 20)] private string dialogue;
 
-    //Public Properties
-    public AIExpression AIExpression { get => aiExpression; }
-    public string Dialogue { get => dialogue; }
-}
+//    //Public Properties
+//    public AIExpression AIExpression { get => aiExpression; }
+//    public string Dialogue { get => dialogue; }
+//}
 
-[Serializable]
-public class DialogueSet
-{
-    //Serialized Fields
-    [SerializeField] private string key;
-    [SerializeField] private List<ExpressionDialoguePair> expressionDialoguePairs;
+//[Serializable]
+//public class DialogueSet
+//{
+//    //Serialized Fields
+//    [SerializeField] private string key;
+//    [SerializeField] private List<ExpressionDialoguePair> expressionDialoguePairs;
 
-    //Public Properties
-    public string Key { get => key; }
-    public List<ExpressionDialoguePair> ExpressionDialoguePairs { get => expressionDialoguePairs; }
-}
+//    //Public Properties
+//    public string Key { get => key; }
+//    public List<ExpressionDialoguePair> ExpressionDialoguePairs { get => expressionDialoguePairs; }
+//}
 
 public class DialogueBoxController : MonoBehaviour
 {
@@ -61,6 +61,7 @@ public class DialogueBoxController : MonoBehaviour
 
     //Utility Methods--------------------------------------------------------------------------------------------------------------------------------
 
+    //TODO: move to DialogueBox
     //Retrieves dialogue from the list using the dialogue key
     private DialogueSet GetDialogueSet(string key)
     {
@@ -76,6 +77,7 @@ public class DialogueBoxController : MonoBehaviour
         return null;
     }
 
+    //TODO: edit to only send the dialogue key; DialogueBox will access the dialogue set itself
     //Passes dialogue to the DialogueBox
     protected virtual void SendDialogue(string dialogueKey, float invokeDelay)
     {
