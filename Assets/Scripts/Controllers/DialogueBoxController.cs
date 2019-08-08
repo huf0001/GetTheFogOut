@@ -61,28 +61,11 @@ public class DialogueBoxController : MonoBehaviour
 
     //Utility Methods--------------------------------------------------------------------------------------------------------------------------------
 
-    //TODO: move to DialogueBox
-    //Retrieves dialogue from the list using the dialogue key
-    private DialogueSet GetDialogueSet(string key)
-    {
-        foreach (DialogueSet p in dialogue)
-        {
-            if (p.Key == key)
-            {
-                return p;
-            }
-        }
-
-        Debug.Log("Dialogue key '" + key + "' is invalid.");
-        return null;
-    }
-
-    //TODO: edit to only send the dialogue key; DialogueBox will access the dialogue set itself
     //Passes dialogue to the DialogueBox
     protected virtual void SendDialogue(string dialogueKey, float invokeDelay)
     {
         //Pass dialogue to DialogueBox for it to display during its next update
-        aiText.SubmitDialogueSet(GetDialogueSet(dialogueKey), invokeDelay);
+        aiText.SubmitDialogueSet(dialogueKey, invokeDelay);
     }
 
     //Called by btnTutorial to register that that button has been clicked
