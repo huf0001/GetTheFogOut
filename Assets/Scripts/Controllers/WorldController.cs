@@ -39,7 +39,7 @@ public class WorldController : MonoBehaviour
     private GameObject ground;
     public Collider groundCollider;
 
-    [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab, hubPrefab, mineralPrefab, tilePrefab;
+    [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab, minimapFogPlanePrefab, hubPrefab, mineralPrefab, tilePrefab;
     [SerializeField] public Material normalTile, hoverTile;
 
     [SerializeField] private Hub hub = null;
@@ -289,6 +289,10 @@ public class WorldController : MonoBehaviour
             GameObject minimapTile = Instantiate(minimapPlanePrefab, pos, minimapPlanePrefab.transform.localRotation);
             minimapTile.transform.SetParent(grids.transform);
             minimapTile.GetComponent<MinimapTile>().Tile = tile;
+            pos.y += 0.01f;
+            GameObject minimapFogTile = Instantiate(minimapFogPlanePrefab, pos, minimapFogPlanePrefab.transform.localRotation);
+            minimapFogTile.transform.SetParent(grids.transform);
+            minimapFogTile.GetComponent<MinimapFogTile>().Tile = tile;
         }
     }
 
