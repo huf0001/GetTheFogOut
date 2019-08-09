@@ -286,7 +286,7 @@ public class WorldController : MonoBehaviour
             pos.x += tile.X;
             pos.y = 0.033f;
             pos.z += tile.Z;
-            GameObject minimapTile = Instantiate(minimapPlanePrefab, pos, Quaternion.identity);
+            GameObject minimapTile = Instantiate(minimapPlanePrefab, pos, minimapPlanePrefab.transform.localRotation);
             minimapTile.transform.SetParent(grids.transform);
             minimapTile.GetComponent<MinimapTile>().Tile = tile;
         }
@@ -674,7 +674,8 @@ public class WorldController : MonoBehaviour
                 pos.x += tile.X;
                 pos.y = 0.033f;
                 pos.z += tile.Z;
-                tile.plane = Instantiate(planeGridprefab, pos, Quaternion.identity);
+                tile.plane = Instantiate(planeGridprefab, pos, planeGridprefab.transform.localRotation);
+
                 tile.plane.transform.SetParent(grids.transform);
             }
             index = activeTiles.Count;
