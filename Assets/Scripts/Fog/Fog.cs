@@ -113,7 +113,7 @@ public class Fog : MonoBehaviour
     private List<FogUnit>   fogUnitsInPlay = new List<FogUnit>();                   //i.e. currently active fog units on the board
     private List<FogUnit>   borderFogUnitsInPlay = new List<FogUnit>();             //i.e. currently active fog units around the edge of the board
     private List<FogUnit>   fogUnitsToReturnToPool = new List<FogUnit>();           //i.e. currently waiting to be re-pooled
-    private List<FogUnit>   fogUnitsInPool = new List<FogUnit>();                   //i.e. currently inactive fog units waiting for spawning
+    //private List<FogUnit>   fogUnitsInPool = new List<FogUnit>();                   //i.e. currently inactive fog units waiting for spawning
 
     private List<FogSphere> fogSpheresInPlay = new List<FogSphere>();               //i.e. currently active fog spheres on the board
     private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
@@ -260,18 +260,18 @@ public class Fog : MonoBehaviour
         fogUnits = new FogUnit[xCount, zCount];
 
         //Populate fog unit pool with fog units
-        if (fogUnitsInPool.Count == 0)
-        {
+        //if (fogUnitsInPool.Count == 0)
+        //{
             for (int i = 0; i < xCount; i++)
             {
                 for (int j = 0; j < zCount; j++)
                 {
                     FogUnit f = CreateFogUnit();
                     fogUnits[i, j] = f;
-                    fogUnitsInPool.Add(f);
+                    //fogUnitsInPool.Add(f);
                 }
             }
-        }
+        //}
 
         //Populate fog sphere pool with fog spheres
         if (fogSpheresInPool.Count == 0)
@@ -412,7 +412,7 @@ public class Fog : MonoBehaviour
     //Takes a fog unit and puts it on the board
     private void SpawnFogUnit(int x, int z, float health)
     {
-        if (fogUnitsInPool.Contains(fogUnits[x, z]))
+        if (!fogUnitsInPlay.Contains(fogUnits[x, z]))
         {
             FogUnit f = fogUnits[x,z];
             TileData t = WorldController.Instance.GetTileAt(new Vector2(x, z));
@@ -434,7 +434,7 @@ public class Fog : MonoBehaviour
             f.SetStartEmotion(angry);
             f.RenderOpacity();
 
-            fogUnitsInPool.Remove(f);
+            //fogUnitsInPool.Remove(f);
             fogUnitsInPlay.Add(f);
             fogCoveredTiles.Add(t);
 
@@ -682,15 +682,17 @@ public class Fog : MonoBehaviour
     //Checks if the fog is able to spill over into adjacent tiles
     private void CheckExpandFog()
     {
-        if (fogUnitsInPool.Count > 0)
-        {
+        //if (fogUnitsInPool.Count > 0)
+        //{
             ExpandFog();
-        }
-        else if (fogUnitsInPlay.Count < xCount * zCount)
-        {
-            Debug.Log("Ran out of fog units. If the board isn't full, there must be some overlapping.");
-        }
-        else if (fogUnitsInPlay.Count > xCount * zCount)
+        //}
+        //else if (fogUnitsInPlay.Count < xCount * zCount)
+        //{
+        //    Debug.Log("Ran out of fog units. If the board isn't full, there must be some overlapping.");
+        //}
+        //else 
+        
+        if (fogUnitsInPlay.Count > xCount * zCount)
         {
             Debug.Log("More fog units than board tiles. There must be some overlapping.");
         }
@@ -820,7 +822,7 @@ public class Fog : MonoBehaviour
         f.Spill = true;
         f.transform.position = transform.position;
 
-        fogUnitsInPool.Add(f);
+        //fogUnitsInPool.Add(f);
         fogUnitsInPlay.Remove(f);
         fogCoveredTiles.Remove(f.Location);
     }
