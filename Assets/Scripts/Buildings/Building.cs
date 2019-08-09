@@ -172,39 +172,36 @@ public abstract class Building : Entity
 
     private void UpdateHealthBar()
     {
-        if(shieldObj)
+        if (isShieldOn)
         {
-            if (isShieldOn)
-            {
-                FillHealthBar();
+            FillHealthBar();
 
-                if (buildingType != BuildingType.Hub)
-                {
-                    shieldBarImage.fillAmount = (shield / 50) * 0.75f;
-                }
-                else
-                {
-                    shieldBarImage.fillAmount = shield / 50;
-                }
-            }
-            else if (Health < MaxHealth)
+            if (buildingType != BuildingType.Hub)
             {
-                FillHealthBar();
-                if (shieldBarImage.fillAmount > 0)
-                {
-                    shieldBarImage.fillAmount = 0;
-                }
+                shieldBarImage.fillAmount = (shield / 50) * 0.75f;
             }
             else
             {
-                if (healthBarCanvas.gameObject.activeSelf)
-                {
-                    healthBarCanvas.gameObject.SetActive(false);
-                }
-                if (shieldBarImage.fillAmount > 0)
-                {
-                    shieldBarImage.fillAmount = 0;
-                }
+                shieldBarImage.fillAmount = shield / 50;
+            }
+        }
+        else if (Health < MaxHealth)
+        {
+            FillHealthBar();
+            if (shieldBarImage.fillAmount > 0)
+            {
+                shieldBarImage.fillAmount = 0;
+            }
+        }
+        else
+        {
+            if (healthBarCanvas.gameObject.activeSelf)
+            {
+                healthBarCanvas.gameObject.SetActive(false);
+            }
+            if (shieldBarImage.fillAmount > 0)
+            {
+                shieldBarImage.fillAmount = 0;
             }
         }
     }
@@ -518,8 +515,8 @@ public abstract class Building : Entity
         {
             if (BuildingType == BuildingType.Hub)
             {
-                MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-                    MouseController.Instance.WarningScript.Danger + $"<size=80%>The Ship is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+                //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
+                //    MouseController.Instance.WarningScript.Danger + $"<size=80%>The Ship is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
             }
             else
             {
@@ -531,11 +528,7 @@ public abstract class Building : Entity
                 else damIndScript.On = true;
                 damInd.GetComponent<DamageIndicator>().Building = this;
             }
-
-            //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-            //MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
-            //$" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
-            //$" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+            
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
             damagingNotified = true;
         }

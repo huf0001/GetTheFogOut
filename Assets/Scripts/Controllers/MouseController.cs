@@ -12,7 +12,7 @@ public class MouseController : MonoBehaviour
     // Serialized fields
     [SerializeField] private int generatorCount = 0;
     [SerializeField] private int generatorInterval = 5;
-    [SerializeField] private WarningScript warningScript;
+    //[SerializeField] private WarningScript warningScript;
 
     // Non-serialized fields
     private Hub hub = null;
@@ -33,7 +33,7 @@ public class MouseController : MonoBehaviour
     public static MouseController Instance { get; protected set; }
     public Hub Hub { get => hub; set => hub = value; }
     public bool ReportTutorialClick { get => reportTutorialClick; set => reportTutorialClick = value; }
-    public WarningScript WarningScript { get => warningScript; }
+    //public WarningScript WarningScript { get => warningScript; }
 
     // Start / Update Unity Methods ------------------------------------------------------
 
@@ -339,7 +339,7 @@ public class MouseController : MonoBehaviour
             }
             else
             {
-                warningScript.ShowMessage(WarningScript.WarningLevel.Warning, warningScript.Warning + "Not enough minerals to build!");
+                //warningScript.ShowMessage(WarningScript.WarningLevel.Warning, warningScript.Warning + "Not enough minerals to build!");
                 Debug.Log("Can't build, do not have the required resources.");
             }
         }
