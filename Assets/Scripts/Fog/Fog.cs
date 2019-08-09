@@ -578,6 +578,7 @@ public class Fog : MonoBehaviour
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
 
+    //TODO: look at how much of the fog pool can be removed / tidied up
     //Handles the damaging of fog units
     private void UpdateDamageToFogUnits()
     {
@@ -606,7 +607,7 @@ public class Fog : MonoBehaviour
                 ReturnFogUnitToPool(f);
             }
 
-            fogUnitsToReturnToPool = new List<FogUnit>();
+            fogUnitsToReturnToPool.Clear();
         }
 
         foreach (FogUnit f in toRender)
@@ -760,7 +761,7 @@ public class Fog : MonoBehaviour
                     ReturnFogSphereToPool(f);
                 }
 
-                fogSpheresToReturnToPool = new List<FogSphere>();
+                fogSpheresToReturnToPool.Clear();
             }
         }
 
@@ -848,7 +849,7 @@ public class Fog : MonoBehaviour
             u.FillingFromFogSphere = false;
         }
 
-        f.SpiltFog = new List<FogUnit>();
+        f.SpiltFog.Clear();
         fogSpheresInPool.Add(f);
         fogSpheresInPlay.Remove(f);
     }
