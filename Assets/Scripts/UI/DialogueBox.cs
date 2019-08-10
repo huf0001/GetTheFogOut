@@ -1,9 +1,42 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+
+public enum AIExpression
+{
+    None,
+    Happy,
+    Neutral,
+    Sad
+}
+
+[Serializable]
+public class ExpressionDialoguePair
+{
+    //Serialized Fields
+    [SerializeField] private AIExpression aiExpression = AIExpression.Neutral;
+    [SerializeField, TextArea(15, 20)] private string dialogue;
+
+    //Public Properties
+    public AIExpression AIExpression { get => aiExpression; }
+    public string Dialogue { get => dialogue; }
+}
+
+[Serializable]
+public class DialogueSet
+{
+    //Serialized Fields
+    [SerializeField] private string key;
+    [SerializeField] private List<ExpressionDialoguePair> expressionDialoguePairs;
+
+    //Public Properties
+    public string Key { get => key; }
+    public List<ExpressionDialoguePair> ExpressionDialoguePairs { get => expressionDialoguePairs; }
+}
 
 public class DialogueBox : MonoBehaviour
 {
@@ -18,12 +51,7 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] float popUpSpeed = 0.5f;
     [SerializeField] private int lerpTextInterval = 3;
 
-    [Header("Colours")]
-    [SerializeField] private string squareBracketColour;
-    [SerializeField] private string squigglyBracketColour;
-    [SerializeField] private string vBracketColour;
-
-    [Header("Expressions")]
+    [Header("Available Expressions")]
     [SerializeField] private AIExpression currentExpression;
     [SerializeField] private Sprite aiHappy;
     [SerializeField] private Sprite aiNeutral;
@@ -32,15 +60,26 @@ public class DialogueBox : MonoBehaviour
     [Header("Images")]
     [SerializeField] private Image continueArrow;
 
+    [Header("Colours")]
+    [SerializeField] private string squareBracketColour;
+    [SerializeField] private string squigglyBracketColour;
+    [SerializeField] private string vBracketColour;
+
+    [Header("Dialogue")]
+    [SerializeField] private List<DialogueSet> dialogue;
+
     //Non-Serialized Fields
     [Header("Temporarily Serialized")]
-    [SerializeField] private List<ExpressionDialoguePair> contentToDisplay = new List<ExpressionDialoguePair>();
+    //[SerializeField] private List<ExpressionDialoguePair> contentToDisplay = new List<ExpressionDialoguePair>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
     private Vector2 arrowInitialPosition;
     [SerializeField] private bool activated = false;
     [SerializeField] private bool clickable = false;
-    private string currentDialogueSet = "";
+
+    private Dictionary<string, List<ExpressionDialoguePair>> dialogueDictionary = new Dictionary<string, List<ExpressionDialoguePair>>();
+    private string currentDialogueKey = "";
+    private int dialogueIndex = 0;
     private string currentText = "";
     private string pendingText = "";
     private string pendingColouredText = "";
@@ -52,7 +91,8 @@ public class DialogueBox : MonoBehaviour
     private bool lerpFinished = true;
     private string textColourString;
 
-    private DialogueSet nextDialogueSet = null;
+    //private DialogueSet nextDialogueSet = null;
+    private string nextDialogueKey = "";
     private float nextInvokeDelay = 0f;
     private bool deactivationSubmitted = false;
     private bool nextDialogueSetReady = false;
@@ -62,9 +102,9 @@ public class DialogueBox : MonoBehaviour
 
     //Public Properties
     public bool Activated { get => activated; }
-    public int DialogueCount { get => contentToDisplay.Count; }
-    public string CurrentDialogueSet { get => currentDialogueSet; }
-    public bool Clickable { get => clickable; }
+    //public int DialogueCount { get => contentToDisplay.Count; }
+    public string CurrentDialogueSet { get => currentDialogueKey; }
+    //public bool Clickable { get => clickable; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -113,6 +153,19 @@ public class DialogueBox : MonoBehaviour
         {
             currentExpression = AIExpression.Sad;
         }
+
+        foreach (DialogueSet ds in dialogue)
+        {
+            if (dialogueDictionary.ContainsKey(ds.Key))
+            {
+                Debug.Log($"DialogueBox has multiple dialogue sets with the dialogue key {ds.Key}. Each dialogue key should be unique.");
+            }
+            else
+            {
+                //dialogueDictionary.Add(ds.Key, ds.ExpressionDialoguePairs);
+                dialogueDictionary[ds.Key] = ds.ExpressionDialoguePairs;
+            }
+        }
     }
 
     private void Start()
@@ -137,43 +190,51 @@ public class DialogueBox : MonoBehaviour
             continueArrow.enabled = false;
         }
 
-        if (nextDialogueSet != null && !deactivating)
+        if (nextDialogueKey != "" && !deactivating)
         {
             if (!activated)
             {
-                ActivateDialogueBox(nextDialogueSet, nextInvokeDelay);
+                ActivateDialogueBox(nextDialogueKey, nextInvokeDelay);
 
-                nextDialogueSet = null;
+                nextDialogueKey = "";
                 nextInvokeDelay = 0f;
             }
             else
             {
-                ChangeDialogue(nextDialogueSet);
+                ChangeDialogue(nextDialogueKey);
 
-                nextDialogueSet = null;
+                nextDialogueKey = "";
                 nextInvokeDelay = 0f;
             }
         }
         else if (deactivationSubmitted && activated)
         {
-            currentDialogueSet = "";
+            currentDialogueKey = "";
             clickable = false;
             DeactivateDialogueBox();
         }
 
         deactivationSubmitted = false;
 
-        if (nextDialogueSetReady && contentToDisplay.Count > 0)
+        if (nextDialogueSetReady && dialogueDictionary.ContainsKey(currentDialogueKey) && dialogueIndex < dialogueDictionary[currentDialogueKey].Count)
         {
             DisplayNext();
             nextDialogueSetReady = false;
         }
         else
         {
-            if (nextDialogueSetReady && contentToDisplay.Count == 0)
+            if (nextDialogueSetReady && (dialogueDictionary.ContainsKey(currentDialogueKey) || dialogueIndex >= dialogueDictionary[currentDialogueKey].Count))
             {
                 nextDialogueSetReady = false;
-                Debug.Log("Warning: nextDialogueSetReady was set to true, but contentToDisplay was empty.");
+
+                if (dialogueDictionary.ContainsKey(currentDialogueKey))
+                {
+                    Debug.Log($"Warning: nextDialogueSetReady was true, but dialogue key {currentDialogueKey} doesn't exist in dialogueDictionary.");
+                }
+                else
+                {
+                    Debug.Log($"Warning: nextDialogueSetReady was true and dialogue key {currentDialogueKey} exists, but dialogueIndex {dialogueIndex} is an invalid index, given dialogueDictionary[{currentDialogueKey}].Count ({dialogueDictionary[currentDialogueKey].Count}).");
+                }
             }
 
             if (clickable && dialogueRead)
@@ -187,6 +248,7 @@ public class DialogueBox : MonoBehaviour
             pendingText = "";
             pendingColouredText = "";
             coloured = false;
+
             foreach (char c in currentText.Substring(0, lerpTextMaxIndex))
             {
                 if (coloured)
@@ -246,23 +308,64 @@ public class DialogueBox : MonoBehaviour
     //Utility Methods - Changeover the dialogue list-------------------------------------------------------------------------------------------------
 
     //Submits a dialogue set and invoke delay to the DialogueBox to change over to during the next update
-    public void SubmitDialogueSet(DialogueSet dialogueSet, float invokeDelay)
+    public void SubmitDialogueSet(string key, float invokeDelay)
     {
-        nextDialogueSet = dialogueSet;
-        nextInvokeDelay = invokeDelay;
+        if (dialogueDictionary.ContainsKey(key))
+        {
+            nextDialogueKey = key;
+            nextInvokeDelay = invokeDelay;
+        }
+        else
+        {
+            Debug.Log("Dialogue key '" + key + "' is invalid.");
+        }
+
+        //nextDialogueSet = dialogueSet;
+        //nextInvokeDelay = invokeDelay;
     }
 
+    ////Retrieves dialogue from the list using the dialogue key
+    //private bool ValidDialogueKey(string key)
+    //{
+    //    foreach (DialogueSet p in dialogue)
+    //    {
+    //        if (p.Key == key)
+    //        {
+    //            return true;
+    //        }
+    //    }
+
+    //    Debug.Log("Dialogue key '" + key + "' is invalid.");
+    //    return false;
+    //}
+
+    ////Retrieves dialogue from the list using the dialogue key
+    //private DialogueSet GetDialogueSet(string key)
+    //{
+    //    foreach (DialogueSet p in dialogue)
+    //    {
+    //        if (p.Key == key)
+    //        {
+    //            return p;
+    //        }
+    //    }
+
+    //    Debug.Log("Dialogue key '" + key + "' is invalid.");
+    //    return null;
+    //}
+
     //Activates the dialogue box; takes a list of strings
-    private void ActivateDialogueBox(DialogueSet dialogueSet, float invokeDelay)
+    private void ActivateDialogueBox(string key, float invokeDelay)
     {
-        if (dialogueSet.ExpressionDialoguePairs.Count > 0)
+        if (dialogueDictionary.ContainsKey(key) && dialogueDictionary[key].Count > 0)
         {
             //Caches required tweening information for performance saving
             dialogueRectTransform = GetComponent<RectTransform>();
             originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
 
-            contentToDisplay = new List<ExpressionDialoguePair>(dialogueSet.ExpressionDialoguePairs);
-            currentDialogueSet = dialogueSet.Key;
+            //contentToDisplay = new List<ExpressionDialoguePair>(dialogueSet.ExpressionDialoguePairs);
+            dialogueIndex = 0;
+            currentDialogueKey = key;
 
             activated = true;
             nextDialogueSetReady = false;
@@ -271,7 +374,7 @@ public class DialogueBox : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No text to display in dialogue box");
+            Debug.LogError($"dialogueDictionary[{key}] contains no dialogue set for DialogueBox to display.");
         }
     }
 
@@ -288,17 +391,18 @@ public class DialogueBox : MonoBehaviour
     }
 
     //Changes over the dialogue in the list; used instead of ActivateDialogueBox when the dialogue box is already active
-    private void ChangeDialogue(DialogueSet dialogueSet)
+    private void ChangeDialogue(string key)
     {
-        if (dialogueSet.ExpressionDialoguePairs.Count > 0)
+        if (dialogueDictionary.ContainsKey(key) && dialogueDictionary[key].Count > 0)
         {
-            contentToDisplay = new List<ExpressionDialoguePair>(dialogueSet.ExpressionDialoguePairs);
-            currentDialogueSet = dialogueSet.Key;
+            //contentToDisplay = new List<ExpressionDialoguePair>(dialogueSet.ExpressionDialoguePairs);
+            currentDialogueKey = key;
+            dialogueIndex = 0;
             LerpNext();
         }
         else
         {
-            Debug.LogError("No text to display in dialogue box");
+            Debug.LogError($"dialogueDictionary[{key}] contains no dialogue set for DialogueBox to display.");
         }
     }
 
@@ -309,14 +413,14 @@ public class DialogueBox : MonoBehaviour
     {
         lerpFinished = false;
         textBox.text = "";
-        currentText = contentToDisplay[0].Dialogue;
+        currentText = dialogueDictionary[currentDialogueKey][dialogueIndex].Dialogue;
 
-        if (contentToDisplay[0].AIExpression != currentExpression)
+        if (dialogueDictionary[currentDialogueKey][dialogueIndex].AIExpression != currentExpression)
         {
-            ChangeAIExpression(contentToDisplay[0].AIExpression);
+            ChangeAIExpression(dialogueDictionary[currentDialogueKey][dialogueIndex].AIExpression);
         }
 
-        contentToDisplay.Remove(contentToDisplay[0]);
+        dialogueIndex++;
         lerpTextMaxIndex = currentText.Length - 1;
     }
 
@@ -326,14 +430,14 @@ public class DialogueBox : MonoBehaviour
         //Debug.Log("LerpingNext");
         lerpFinished = false;
         textBox.text = "";
-        currentText = contentToDisplay[0].Dialogue;
+        currentText = dialogueDictionary[currentDialogueKey][dialogueIndex].Dialogue;
 
-        if (contentToDisplay[0].AIExpression != currentExpression)
+        if (dialogueDictionary[currentDialogueKey][dialogueIndex].AIExpression != currentExpression)
         {
-            ChangeAIExpression(contentToDisplay[0].AIExpression);
+            ChangeAIExpression(dialogueDictionary[currentDialogueKey][dialogueIndex].AIExpression);
         }
 
-        contentToDisplay.Remove(contentToDisplay[0]);
+        dialogueIndex++;
         lerpTextMaxIndex = 0;
     }
 
@@ -367,13 +471,13 @@ public class DialogueBox : MonoBehaviour
     {
         if (clickable)
         {
-            if (contentToDisplay.Count > 0)
+            if (dialogueIndex < dialogueDictionary[currentDialogueKey].Count)
             {
                 LerpNext();
             }
             else if (activated)
             {
-                currentDialogueSet = "";
+                currentDialogueKey = "";
                 clickable = false;
                 DeactivateDialogueBox();
             }

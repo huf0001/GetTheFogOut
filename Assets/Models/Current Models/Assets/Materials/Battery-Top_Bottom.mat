@@ -8,8 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Battery-Top_Bottom
-  m_Shader: {fileID: 4800000, guid: 0e58a1a2c193f27458a9f52a6e45a8ce, type: 3}
-  m_ShaderKeywords: _METALLICGLOSSMAP _NORMALMAP_TANGENT_SPACE _NORMALMAP_TANGENT_SPACE0
+  m_Shader: {fileID: 4800000, guid: b4e3b3f09f2be9f48884025112e2d673, type: 3}
+  m_ShaderKeywords: _COLLECTABLE_ON _METALLICGLOSSMAP _NORMALMAP_TANGENT_SPACE _NORMALMAP_TANGENT_SPACE0
     _NORMALMAP_TANGENT_SPACE1 _NORMALMAP_TANGENT_SPACE2 _NORMALMAP_TANGENT_SPACE3
     _SPECGLOSSMAP
   m_LightmapFlags: 0
@@ -389,6 +389,7 @@ Material:
     - _BlendMode: 0
     - _BumpScale: 1
     - _CoatMask: 0
+    - _Collectable: 1
     - _CullMode: 2
     - _CullModeForward: 2
     - _Cutoff: 0.5
@@ -435,6 +436,7 @@ Material:
     - _DoubleSidedNormalMode: 1
     - _Drag: 1
     - _DstBlend: 0
+    - _EdgeWidth: 350
     - _EmissiveColorMode: 1
     - _EmmisionStrength: 0
     - _EnableBlendModePreserveSpecularLighting: 1
@@ -543,6 +545,7 @@ Material:
     - _OpacityAsDensity1: 0
     - _OpacityAsDensity2: 0
     - _OpacityAsDensity3: 0
+    - _Overclock: 0
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
     - _PPDMinSamples: 5
@@ -550,8 +553,10 @@ Material:
     - _PPDPrimitiveWidth: 1
     - _Parallax: 0.02
     - _PreRefractionPass: 0
+    - _PulseSpeed: 5
     - _ReceivesSSR: 1
     - _RefractionModel: 0
+    - _Reverse: 0
     - _RoughnessStrength: 1
     - _SSRefractionProjectionModel: 0
     - _ShiverDirectionality: 0.5
@@ -575,6 +580,7 @@ Material:
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
     - _SpecularHighlights: 1
+    - _Speed: 1
     - _SrcBlend: 1
     - _StencilRef: 2
     - _StencilRefMV: 128
@@ -588,6 +594,7 @@ Material:
     - _SubsurfaceMask3: 1
     - _SupportDecals: 1
     - _SurfaceType: 0
+    - _Teleport: -1
     - _TexWorldScale: 1
     - _TexWorldScale0: 1
     - _TexWorldScale1: 1
@@ -623,6 +630,7 @@ Material:
     - _UseHeightBasedBlend: 0
     - _UseMainLayerInfluence: 0
     - _UseShadowThreshold: 0
+    - _VertOffsetStrength: 0
     - _VertexColorMode: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
@@ -643,8 +651,12 @@ Material:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Emmission: {r: 0, g: 0, b: 0, a: 0}
+    - _GlowColour: {r: 4, g: 0.879581, b: 0, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
+    - _NoiseDirection: {r: 0, g: -1, b: 0, a: 0}
+    - _OutlineColour: {r: 2.670157, g: 2.670157, b: 2.670157, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
@@ -652,6 +664,7 @@ Material:
     - _ThicknessRemap1: {r: 0, g: 1, b: 0, a: 0}
     - _ThicknessRemap2: {r: 0, g: 1, b: 0, a: 0}
     - _ThicknessRemap3: {r: 0, g: 1, b: 0, a: 0}
+    - _Tiling: {r: 5, g: 5, b: 0, a: 0}
     - _Tint: {r: 1, g: 1, b: 1, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
