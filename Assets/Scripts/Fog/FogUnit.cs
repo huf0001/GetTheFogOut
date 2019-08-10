@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class FogUnit : Entity
 {
@@ -97,9 +98,9 @@ public class FogUnit : Entity
     //Awake
     private void Awake()
     {
-        fogRenderer = gameObject.GetComponent<Renderer>();
-        colour = Shader.PropertyToID("_Colour");
         alpha = Shader.PropertyToID("_Alpha");
+        colour = Shader.PropertyToID("_Colour");
+        fogRenderer = gameObject.GetComponent<Renderer>();
     }
 
     //Sets the starting values for fog damage health variables
@@ -155,7 +156,17 @@ public class FogUnit : Entity
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
     {
-        fogRenderer.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
+        Profiler.BeginSample("FogUnit.RenderColour Mathf.Lerp(colourProgress)");
+        float lerp = Mathf.Lerp(0, 1, colourProgress);
+        Profiler.EndSample();
+
+        Profiler.BeginSample("FogUnit.RenderColour currentColours.Evaluate(lerp)");
+        Color evaluated = currentColours.Evaluate(lerp);
+        Profiler.EndSample();
+
+        Profiler.BeginSample("FogUnit.RenderColour fogRenderer.material.SetColor(colour, evaluated)");
+        fogRenderer.material.SetColor(colour, evaluated);
+        Profiler.EndSample();
 
         if (!angry && currentColours == angryColours || angry && currentColours == docileColours)
         {
