@@ -85,6 +85,7 @@ public class Fog : MonoBehaviour
 
     [Header("Update Intervals")]
     [SerializeField] private float fogFillInterval;
+    [SerializeField] private float maxColourLerpInterval;
     [SerializeField] private float fogDamageInterval;
     [SerializeField] private float fogExpansionInterval;
     [SerializeField] private float fogSphereInterval;
@@ -128,6 +129,7 @@ public class Fog : MonoBehaviour
     //public float                 FogGrowth { get => fogGrowth; set => fogGrowth = value; }
     public List<FogUnit>         FogUnitsInPlay { get => fogUnitsInPlay; }
     public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
+    public float                 MaxColourLerpInterval { get => maxColourLerpInterval; }
     public int                   XMax { get => xMax; }
     public int                   ZMax { get => zMax; }
 
@@ -626,17 +628,20 @@ public class Fog : MonoBehaviour
     private void UpdateFogUnitFill()
     {
         List<FogUnit> toRenderOpacity = new List<FogUnit>();
-
-        if (fogAccelerates && fogGrowth < 100)
-        {
-            fogGrowth += fogFillInterval;
-        }
+        float randomTime;
 
         if (fogUnitsGrow)
         {
+            randomTime = Random.Range(0, maxColourLerpInterval);
+
+            if (fogAccelerates && fogGrowth < 100)
+            {
+                fogGrowth += fogFillInterval;
+            }
+
             foreach (FogUnit f in fogUnitsInPlay)
             {
-                f.RenderColour();
+                f.RenderColour(randomTime, fogFillInterval);
 
                 if (!f.NeighboursFull && f.Health >= fogSpillThreshold)
                 {
@@ -748,7 +753,7 @@ public class Fog : MonoBehaviour
                         break;
                     case FogSphereState.Spilling:
                         f.Move(fogSphereInterval * 0.5f);
-                        f.Spill(fogSphereInterval * fogGrowth * 2f);
+                        f.Spill(fogSphereInterval, fogSphereInterval * fogGrowth * 2f);
                         break;
                     case FogSphereState.Attacking:
                         f.Attack(fogSphereInterval * fogGrowth);

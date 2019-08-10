@@ -14,6 +14,8 @@ public class FogUnit : Entity
 
     [Header("Colour")]
     [SerializeField] private float colourLerpSpeedMultiplier;
+    [SerializeField] private float minStartLerpInterval;
+    [SerializeField] private float maxStartLerpInterval;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
@@ -25,6 +27,7 @@ public class FogUnit : Entity
     [SerializeField] private float damage;
 
     [Header("VFX")]
+    //TODO: plug in animation get it running
     [SerializeField] private GameObject angryFogEvaporation;
 
     [Header("For Testing")]
@@ -34,6 +37,8 @@ public class FogUnit : Entity
     private Fog fog;
     private bool angry = false;
 
+    private bool lerping = true;
+    private float lerpInterval;
     private float colourProgress = 0;
     private float colourProgressTarget = 0;
     private bool lerpForward = true;
@@ -109,6 +114,7 @@ public class FogUnit : Entity
         startHealth = base.Health;
         targetHealth = base.Health;
         currentColours = docileColours;
+        lerpInterval = Random.Range(minStartLerpInterval, maxStartLerpInterval);
     }
 
     //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
@@ -154,57 +160,69 @@ public class FogUnit : Entity
     //Recurring Methods - Appearance-----------------------------------------------------------------------------------------------------------------
 
     //Updates the fog unit's shader colour at random between two values
-    public void RenderColour()
+    public void RenderColour(float randomTime, float interval)
     {
-        Profiler.BeginSample("FogUnit.RenderColour Mathf.Lerp(colourProgress)");
-        float lerp = Mathf.Lerp(0, 1, colourProgress);
-        Profiler.EndSample();
+        lerpInterval -= interval;
 
-        Profiler.BeginSample("FogUnit.RenderColour currentColours.Evaluate(lerp)");
-        Color evaluated = currentColours.Evaluate(lerp);
-        Profiler.EndSample();
-
-        Profiler.BeginSample("FogUnit.RenderColour fogRenderer.material.SetColor(colour, evaluated)");
-        fogRenderer.material.SetColor(colour, evaluated);
-        Profiler.EndSample();
-
-        if (!angry && currentColours == angryColours || angry && currentColours == docileColours)
+        if (lerpInterval <= 0)
         {
-            colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
-
-            if (((!angry && currentColours == angryColours) || (angry && currentColours == docileColours)) && colourProgress < 0)
-            {
-                colourProgress = 0;
-                colourProgressTarget = 0;
-
-                currentColours = angry ? angryColours : docileColours;
-            }
+            lerping = !lerping;
+            lerpInterval = randomTime;
         }
-        else
+
+        if (lerping)
         {
-            if (colourProgress == colourProgressTarget)
+            Profiler.BeginSample("FogUnit.RenderColour Mathf.Lerp(colourProgress)");
+            float lerp = Mathf.Lerp(0, 1, colourProgress);
+            Profiler.EndSample();
+
+            Profiler.BeginSample("FogUnit.RenderColour currentColours.Evaluate(lerp)");
+            Color evaluated = currentColours.Evaluate(lerp);
+            Profiler.EndSample();
+
+            Profiler.BeginSample("FogUnit.RenderColour fogRenderer.material.SetColor(colour, evaluated)");
+            fogRenderer.material.SetColor(colour, evaluated);
+            Profiler.EndSample();
+
+            if (!angry && currentColours == angryColours || angry && currentColours == docileColours)
             {
-                colourProgressTarget = Random.Range(0f, 1f);
+                colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
 
-                lerpForward = colourProgressTarget > colourProgress;
-            }
-
-            if (lerpForward)
-            {
-                colourProgress += Time.deltaTime * colourLerpSpeedMultiplier;
-
-                if (colourProgress > colourProgressTarget)
+                if (((!angry && currentColours == angryColours) || (angry && currentColours == docileColours)) &&
+                    colourProgress < 0)
                 {
-                    colourProgress = colourProgressTarget;
+                    colourProgress = 0;
+                    colourProgressTarget = 0;
+
+                    currentColours = angry ? angryColours : docileColours;
                 }
             }
             else
             {
-                colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
-
-                if (colourProgress < colourProgressTarget)
+                if (colourProgress == colourProgressTarget)
                 {
-                    colourProgress = colourProgressTarget;
+                    colourProgressTarget = Random.Range(0f, 1f);
+
+                    lerpForward = colourProgressTarget > colourProgress;
+                }
+
+                if (lerpForward)
+                {
+                    colourProgress += Time.deltaTime * colourLerpSpeedMultiplier;
+
+                    if (colourProgress > colourProgressTarget)
+                    {
+                        colourProgress = colourProgressTarget;
+                    }
+                }
+                else
+                {
+                    colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
+
+                    if (colourProgress < colourProgressTarget)
+                    {
+                        colourProgress = colourProgressTarget;
+                    }
                 }
             }
         }

@@ -105,21 +105,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3ec4b42f60de624a89c4ba02a03a7d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location:
-    powerSources: []
-    resource: {fileID: 0}
-    building: {fileID: 0}
-    onMaterial: {fileID: 0}
-    visibleMaterial: {fileID: 0}
-    startMaterial: {fileID: 0}
-    x: 0
-    z: 0
-    plane: {fileID: 0}
   health: 0.1
   maxHealth: 1
   startOpacity: 0
   endOpacity: 0.9
   colourLerpSpeedMultiplier: 0.4
+  minStartLerpInterval: 5
+  maxStartLerpInterval: 7
   docileColours:
     serializedVersion: 2
     key0: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
@@ -209,4 +201,6 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   damageLerpMultiplier: 3
   damage: 1
-  angryFogEvaporation: {fileID: 0}
+  angryFogEvaporation: {fileID: 8339360000508706035, guid: 48bd17ea509944d4cb06f7e7564ee1a6,
+    type: 3}
+  returnToPool: 0

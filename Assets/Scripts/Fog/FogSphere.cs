@@ -326,10 +326,11 @@ public class FogSphere : MonoBehaviour
     //Recurring Methods - Spilling-------------------------------------------------------------------------------------------------------------------
     
     //Fog sphere spills into fog tiles that it finds.
-    public void Spill(float increment)
+    public void Spill(float interval, float increment)
     {
         bool readyToSpillFurther = true;
         List<FogUnit> full = new List<FogUnit>();
+        float randomTime = Random.Range(0, fog.MaxColourLerpInterval);
 
         Health -= increment;
         UpdateSize();
@@ -339,7 +340,7 @@ public class FogSphere : MonoBehaviour
         foreach (FogUnit f in spiltFog)
         {
             f.Health += increment * (maxSpiltFogCount / spiltFog.Count);
-            f.RenderColour();
+            f.RenderColour(randomTime, interval);
             f.RenderOpacity();
 
             if (f.Health < f.MaxHealth * 0.5f)
