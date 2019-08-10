@@ -6,11 +6,13 @@ public class FloatingTextController : MonoBehaviour
 {
     [SerializeField] private FloatingText popupText;
     private GameObject canvas;
+    private Camera cam;
     //private GameObject childtxt;
 
     private void Start()
     {
-        canvas = GameObject.Find("TooltipCanvas");
+        canvas = GameObject.Find("Warnings");
+        cam = Camera.main;
     }
 
     public void CreateFloatingText(string text, Transform location)
@@ -24,7 +26,7 @@ public class FloatingTextController : MonoBehaviour
         //RectTransform RT = instance.GetComponent<RectTransform>();
         //RT.sizeDelta = new Vector2(0, 0);
 
-        Vector2 screenPosition = Camera.main.WorldToScreenPoint(location.position);
+        Vector2 screenPosition = cam.WorldToScreenPoint(location.position);
         screenPosition.y += Screen.height / 13;
         instance.transform.SetParent(canvas.transform, false);
         instance.transform.position = screenPosition;

@@ -6,7 +6,7 @@ public class Hub : PowerSource
 { 
     public static Hub Instance { get; protected set; }
 
-    protected override void Awake()
+    protected void Awake()
     {
         if (Instance != null)
         {
@@ -14,8 +14,6 @@ public class Hub : PowerSource
         }
 
         Instance = this;
-
-        base.Awake();
     }
 
     // Start is called before the first frame update
