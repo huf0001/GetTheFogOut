@@ -90,7 +90,7 @@ public class NewInputs : IInputActionCollection
                     ""name"": ""Keyboard"",
                     ""id"": ""5fbd3e36-264a-4e71-8116-280108621eca"",
                     ""path"": ""2DVector"",
-                    ""interactions"": ""Hold(duration=0.01),Press(behavior=2)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Camera Pan"",
