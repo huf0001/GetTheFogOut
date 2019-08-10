@@ -17,6 +17,7 @@ public class MinimapTile : MonoBehaviour
     [SerializeField] private Color mineralTile = new Color32(228, 148, 0, 255);
     private Material mat;
     private Color curColour;
+    private float curFoggyness;
 
     private void Start()
     {
@@ -70,6 +71,21 @@ public class MinimapTile : MonoBehaviour
                 mat.SetColor("_BaseColor", poweredTile);
                 curColour = poweredTile;
             }
+        }
+
+        if (Tile.FogUnit)
+        {
+            float healthPer = Tile.FogUnit.Health / Tile.FogUnit.MaxHealth;
+            if (curFoggyness != healthPer)
+            {
+                mat.SetFloat("_Foggyness", healthPer);
+                curFoggyness = healthPer;
+            }
+        }
+        else if (curFoggyness != 0)
+        {
+            mat.SetFloat("_Foggyness", 0);
+            curFoggyness = 0;
         }
     }
 }
