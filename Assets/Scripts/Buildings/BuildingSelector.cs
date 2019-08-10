@@ -13,6 +13,7 @@ public class BuildingSelector : MonoBehaviour
 
     private CanvasGroup selectParent;
     private RadialMenu radialMenu;
+    private Camera cam;
 
     public bool Visible { get => visible; set => visible = value; }
     public TileData CurrentTile { get; set; }
@@ -21,13 +22,14 @@ public class BuildingSelector : MonoBehaviour
     {
         radialMenu = GetComponentInChildren<RadialMenu>();
         selectParent = GetComponent<CanvasGroup>();
+        cam = Camera.main;
     }
 
     void Update()
     {
         if (visible)
         {
-            transform.position = Camera.main.WorldToScreenPoint(new Vector3(CurrentTile.X, 0, CurrentTile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
+            transform.position = cam.WorldToScreenPoint(new Vector3(CurrentTile.X, 0, CurrentTile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
         }
     }
 
