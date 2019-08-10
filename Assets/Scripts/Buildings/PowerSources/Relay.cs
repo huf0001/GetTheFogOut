@@ -9,10 +9,7 @@ public class Relay : PowerSource
         powerSource = power;
         // costs 10 to build
     }
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+
     // Start is called before the first frame update
     protected override void Start()
     {

@@ -39,7 +39,7 @@ public class WorldController : MonoBehaviour
     private GameObject ground;
     public Collider groundCollider;
 
-    [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab, hubPrefab, mineralPrefab, tilePrefab;
+    [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab, hubPrefab, mineralPrefab;
     [SerializeField] public Material normalTile, hoverTile;
 
     [SerializeField] private Hub hub = null;
@@ -63,6 +63,7 @@ public class WorldController : MonoBehaviour
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
+    private Camera cam;
 
     //Other Controllers
     private ResourceController resourceController;
@@ -116,7 +117,7 @@ public class WorldController : MonoBehaviour
 
         InBuildMode = false;
         Instance = this;
-        //SetPause(false);
+        cam = Camera.main;
 
         tm = FindObjectOfType<TowerManager>();
 
@@ -261,7 +262,6 @@ public class WorldController : MonoBehaviour
     private void InstantiateTileArray()
     {
         tiles = new TileData[width, length];
-        GameObject quad = GameObject.Find("Quads");
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < length; z++)
@@ -269,10 +269,6 @@ public class WorldController : MonoBehaviour
                 TileData tile = new TileData(x, z);
                 tiles[x, z] = tile;
                 pos = new Vector3(tile.X, 0, tile.Z);
-
-                GameObject tileObject = Instantiate(tilePrefab);
-                tileObject.transform.position = new Vector3(tile.X, 0.1f, tile.Z);
-                tileObject.transform.SetParent(quad.transform);
             }
         }
     }
@@ -511,9 +507,9 @@ public class WorldController : MonoBehaviour
         TowerToSpawn = tm.GetTower("holo");
 
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-        if (Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && !WorldController.Instance.IsPointerOverGameObject())
+        if (Instance.Ground.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity) && !IsPointerOverGameObject())
         {
             if (TileExistsAt(hit.point))
             {
@@ -623,7 +619,7 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.transform.position = Camera.main.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
+        uiController.buildingSelector.transform.position = cam.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
         UIController.instance.buildingSelector.CurrentTile = tile;
     }
 

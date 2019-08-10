@@ -45,6 +45,7 @@ public abstract class Building : Entity
     protected bool isOverclockOn = false;
     public float overclockTimer;
     private Material shieldMat;
+    protected Camera cam;
 
     private float toLerp = 1f;
     private float ShieldCheck = 50f;
@@ -73,11 +74,6 @@ public abstract class Building : Entity
         set { isOverclockOn = value; }
     }
 
-    protected virtual void Awake()
-    {
-
-    }
-
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -91,6 +87,7 @@ public abstract class Building : Entity
 
         }
         rend = GetComponentInChildren<MeshRenderer>();
+        cam = Camera.main;
     }
 
     private void CheckForDamage()
@@ -217,13 +214,13 @@ public abstract class Building : Entity
         if (buildingType != BuildingType.Hub)
         {
             healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
-            healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
+            healthBarCanvas.LookAt(new Vector3(cam.transform.position.x, 0, cam.transform.position.z));
             healthBarCanvas.Rotate(0, 135, 0);
         }
         else
         {
             healthBarImage.fillAmount = Health / MaxHealth;
-            healthBarCanvas.LookAt(Camera.main.transform);
+            healthBarCanvas.LookAt(cam.transform);
         }
     }
 

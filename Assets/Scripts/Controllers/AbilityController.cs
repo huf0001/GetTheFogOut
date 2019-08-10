@@ -27,6 +27,7 @@ public class AbilityController : MonoBehaviour
     private Dictionary<AbilityEnum, float> abilityCooldowns = new Dictionary<AbilityEnum, float>();
     private TileData selectedTile;
     private int cooldownsRunning = 0;
+    private Camera cam;
 
     [SerializeField] private GameObject rangeIndicatorGO;
 
@@ -106,6 +107,8 @@ public class AbilityController : MonoBehaviour
         AbilityCollected[AbilityEnum.BuildingDefence] = false;
         AbilityCollected[AbilityEnum.Artillery] = false;
         AbilityCollected[AbilityEnum.FreezeFog] = false;
+
+        cam = Camera.main;
     }
 
     // Update functions ------------------------------------------------------------------------------------------------
@@ -234,7 +237,7 @@ public class AbilityController : MonoBehaviour
     {
         // Visually display the targeted area
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")) &&
             WorldController.Instance.TileExistsAt(hit.point))
         {

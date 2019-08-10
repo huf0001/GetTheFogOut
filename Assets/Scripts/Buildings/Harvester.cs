@@ -24,7 +24,7 @@ public class Harvester : Building
 
         if (!location.Resource)
         {
-            noMineralCanvas.transform.LookAt(Camera.main.transform);
+            noMineralCanvas.transform.LookAt(cam.transform);
         }
     }
 
