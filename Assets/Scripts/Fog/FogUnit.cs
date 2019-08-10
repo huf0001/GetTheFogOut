@@ -33,6 +33,7 @@ public class FogUnit : Entity
 
     //Non-Serialized Fields
     private Fog fog;
+    private bool activeOnTile = false;
     private bool angry = false;
 
     private float colourProgress = 0;
@@ -57,6 +58,7 @@ public class FogUnit : Entity
 
     //Basic Public Properties
     public Fog Fog { get => fog; set => fog = value; }
+    public bool ActiveOnTile { get => activeOnTile; set => activeOnTile = value; }
     public bool Angry { get => angry; set => angry = value; }
     public float Damage { get => damage; set => damage = value; }
     public bool FillingFromFogSphere {  get => fillingFromFogSphere; set => fillingFromFogSphere = value; }
@@ -239,7 +241,7 @@ public class FogUnit : Entity
 
             foreach (TileData t in Location.AdjacentTiles)
             {
-                if (t.FogUnit != null)
+                if (t.FogUnitActive)
                 {
                     t.FogUnit.NeighboursFull = false;
                 }

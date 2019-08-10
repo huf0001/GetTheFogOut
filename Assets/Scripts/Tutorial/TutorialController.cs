@@ -1441,7 +1441,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildPulseDefence:
             case TutorialStage.DefenceActivation:
             case TutorialStage.BuildDefencesInRange:
-                bool tileOkay = tile.FogUnit == null || tile.Building != null;
+                bool tileOkay = !tile.FogUnitActive || tile.Building != null;
 
                 if (!tileOkay && !aiText.Activated)
                 {

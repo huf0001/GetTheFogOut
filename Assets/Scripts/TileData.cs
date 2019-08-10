@@ -32,6 +32,8 @@ public class TileData
 
     //Private fields
     private FogUnit fogUnit = null;
+    private bool fogUnitActive = false;
+
     private GameObject placedTower = null;
     private List<TileData> adjacentTiles = new List<TileData>();
     private List<TileData> allAdjacentTiles = new List<TileData>();
@@ -43,17 +45,18 @@ public class TileData
     public GameObject plane;
 
     //Public Properties
+    public bool FogUnitActive { get => fogUnitActive; set => fogUnitActive = value; }
+    public string Name { get => $"Tile ({x},{z})"; }
+    public bool Visited { get => visited; set => visited = value; }
     public int X { get => x; set => x = value; }
     public int Z { get => z; set => z = value; }
 
+    public BuildingChecks buildingChecks;
     public GameObject PlacedTower { get => placedTower; set => placedTower = value; }
     public ResourceNode Resource { get => resource; set => resource = value; }
 
-    public string Name { get => "Tile (" + x + "," + z + ")"; }
-    public bool Visited { get => visited; set => visited = value; }
     public List<TileData> AdjacentTiles { get => adjacentTiles; }
     public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
-    public BuildingChecks buildingChecks;
 
     //Altered public properties
     public Building Building
