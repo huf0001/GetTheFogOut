@@ -30,6 +30,7 @@ public class CameraController : MonoBehaviour
     private NewInputs inputs;
 
     public Vector3 Move { get => move; }
+    public float ZoomVal { get => zoomVal; }
 
     private void Awake()
     {
