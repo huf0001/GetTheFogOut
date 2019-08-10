@@ -129,9 +129,9 @@ public class WorldController : MonoBehaviour
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
 
-        if (GameObject.Find("MusicFMOD(Clone)") != null)
+        if (GameObject.Find("MusicFMOD") != null)
         {
-            musicFMOD = GameObject.Find("MusicFMOD(Clone)").GetComponent<MusicFMOD>();
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         }
         else
         {

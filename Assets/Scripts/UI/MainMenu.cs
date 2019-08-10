@@ -38,11 +38,6 @@ public class MainMenu : MonoBehaviour
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
             return;
         }
-        else if (GameObject.Find("MusicFMOD(Clone)") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD(Clone)").GetComponent<MusicFMOD>();
-            return;
-        }
         else
         {
             Instantiate(musicfmod);
