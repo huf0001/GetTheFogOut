@@ -285,7 +285,7 @@ public class FogSphere : MonoBehaviour
                     {
                         if (!t.FogUnitActive)
                         {
-                            fog.SpawnFogUnitWithMinHealth(t);
+                            fog.SpawnFogUnitWithMinHealthOnTile(t);
                         }
 
                         spiltFog.Add(t.FogUnit);
@@ -306,7 +306,7 @@ public class FogSphere : MonoBehaviour
                             {
                                 if (!t.FogUnitActive)
                                 {
-                                    fog.SpawnFogUnitWithMinHealth(t);
+                                    fog.SpawnFogUnitWithMinHealthOnTile(t);
                                 }
 
                                 spiltFog.Add(t.FogUnit);
@@ -381,7 +381,7 @@ public class FogSphere : MonoBehaviour
                 {
                     if (!t.FogUnitActive)
                     {
-                        fog.SpawnFogUnitWithMinHealth(t);
+                        fog.SpawnFogUnitWithMinHealthOnTile(t);
                     }
                     
                     newFog.Add(t.FogUnit);

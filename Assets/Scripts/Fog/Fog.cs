@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -253,19 +254,14 @@ public class Fog : MonoBehaviour
         //Create fog unit array
         fogUnits = new FogUnit[xCount, zCount];
 
-        //Populate fog unit pool with fog units
-        //if (fogUnitsInPool.Count == 0)
-        //{
-            for (int i = 0; i < xCount; i++)
+        //Populate fog unit array with fog units
+        for (int i = 0; i < xCount; i++)
+        {
+            for (int j = 0; j < zCount; j++)
             {
-                for (int j = 0; j < zCount; j++)
-                {
-                    FogUnit f = CreateFogUnit();
-                    fogUnits[i, j] = f;
-                    //fogUnitsInPool.Add(f);
-                }
+                CreateFogUnit(i, j);    //creates the fog unit, matches it up with tile (i, j) and assigns it to fogUnits[i, j]. Assigns null if tile already has a fog unit or there is no tile
             }
-        //}
+        }
 
         //Populate fog sphere pool with fog spheres
         if (fogSpheresInPool.Count == 0)
@@ -368,87 +364,74 @@ public class Fog : MonoBehaviour
     //Spawning Methods - Fog Units-------------------------------------------------------------------------------------------------------------------
 
     //Instantiates a fog unit that isn't on the board or in the pool
-    private FogUnit CreateFogUnit()
+    private void CreateFogUnit(int x, int z)
     {
-        FogUnit f = Instantiate<FogUnit>(fogUnitPrefab, transform, true);
-        f.transform.position = transform.position;
-        f.MaxHealth = fogUnitMaxHealth;
-        f.Damage = fogDamage;
-        f.Fog = this;
-        return f;
+        FogUnit f = null;
+
+        if (WorldController.Instance.TileExistsAt(x, z))
+        {
+            TileData t = WorldController.Instance.GetTileAt(x, z);
+
+            if (t.FogUnit != null)
+            {
+                Debug.LogError($"FogUnit({x}, {z}) cannot be assigned to TileData({x}, {z}), as {t.FogUnit.name} is already assigned to TileData({x},{z})");
+            }
+            else
+            {
+                f = Instantiate<FogUnit>(fogUnitPrefab, transform, true);
+                f.Location = t;
+                t.FogUnit = f;
+
+                f.name = $"FogUnit ({x}, {z}) (In Pool)";
+                f.transform.position = transform.position;
+                f.MaxHealth = fogUnitMaxHealth;
+                f.Damage = fogDamage;
+                f.Fog = this;
+            }
+        }
+        else
+        {
+            Debug.Log($"No tile exists at ({x},{z}). Cannot create a fog unit there.");
+        }
+
+        fogUnits[x, z] = f;
     }
 
-    //Retrieves a fog unit from the pool, or asks for a new one if the pool is empty
-    //private FogUnit GetFogUnit()
-    //{
-    //    FogUnit f;
-
-    //    if (fogUnitsInPool.Count > 0)
-    //    {
-    //        f = fogUnitsInPool[0];
-    //        fogUnitsInPool.Remove(f);
-    //        f.gameObject.SetActive(true);
-    //    }
-    //    else
-    //    {
-    //        f = CreateFogUnit();
-    //    }
-
-    //    return f;
-    //}
-
-    //Take a fog unit and puts it on the board with minimum health
-    public void SpawnFogUnitWithMinHealth(TileData t)
+    //Take a fog unit by tile and puts it on the board with minimum health
+    public void SpawnFogUnitWithMinHealthOnTile(TileData t)
     {
-        SpawnFogUnit(t.X, t.Z, fogUnitMinHealth);
+        SpawnFogUnit(fogUnits[t.X, t.Z], t, fogUnitMinHealth);
     }
 
-    //TODO: if possible, move pairing of TileDatas and FogUnits into CreateFogUnit so that that code isn't visited every time a fog unit is spawned
-    //TODO: streamline fetching of fog units and tiles, as FogUnit:TileData is now 1:1, not "pick a random FogUnit out of a hat for this TileData"
-    //Takes a fog unit and puts it on the board
+    //Takes a fog unit by position, and puts it on the board with the specified health
     private void SpawnFogUnit(int x, int z, float health)
     {
         FogUnit f = fogUnits[x, z];
+        TileData t = f.Location;
 
+        SpawnFogUnit(f, t, health);
+    }
+
+    //Takes a fog unit by tile and puts it on the board
+    private void SpawnFogUnit(FogUnit f, TileData t, float health)
+    {
         if (!fogUnitsInPlay.Contains(f))
         {
-            TileData t = WorldController.Instance.GetTileAt(new Vector2(x, z));
             Transform ft = f.gameObject.transform;
-            
-            if (t.FogUnit != f || f.Location != t)
-            {
-                if (t.FogUnit != null)
-                {
-                    Debug.Log($"FogUnit({x}, {z}) cannot be assigned to TileData({x}, {z}), as {t.FogUnit.name} is already assigned to TileData({x},{z})");
-                    return;
-                }
-
-                if (f.Location != null)
-                {
-                    Debug.Log($"TileData({x}, {z}) cannot be assigned to FogUnit({x}, {z}), as {f.Location.Name} is already assigned to FogUnit({x},{z})");
-                    return;
-                }
-                
-                t.FogUnit = f;
-                f.Location = t;
-            }
 
             t.FogUnitActive = true;
             f.ActiveOnTile = true;
 
-            //ft.position = new Vector3(x, 0.13f, z);
-            ft.SetPositionAndRotation(new Vector3(x, 0.13f, z),
+            ft.SetPositionAndRotation(new Vector3(t.X, 0.13f, t.Z),
                 Quaternion.Euler(ft.rotation.eulerAngles.x, Random.Range(0, 360), ft.rotation.eulerAngles.z));
 
+            f.name = $"FogUnit({t.X}, {t.Z})";
             f.gameObject.SetActive(true);
-            f.name = $"FogUnit({x}, {z})";
-
             f.FogRenderer.material = fogUnitVisibleMaterial;
             f.Health = health;
             f.SetStartEmotion(angry);
             f.RenderOpacity();
 
-            //fogUnitsInPool.Remove(f);
             fogUnitsInPlay.Add(f);
 
             if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
@@ -458,7 +441,7 @@ public class Fog : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Error: Cannot spawn Fog.fogUnits[{x}, {z}]; it is already in play.");
+            Debug.Log($"Error: Cannot spawn Fog.fogUnits[{t.X}, {t.Z}]; it is already in play.");
         }
     }
 
