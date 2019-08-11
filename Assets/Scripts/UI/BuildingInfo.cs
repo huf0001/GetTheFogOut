@@ -122,7 +122,7 @@ public class BuildingInfo : MonoBehaviour
 
         building = null;
         shipComp = shipComponent;
-        if (shipComponent.Location.FogUnit != null)
+        if (shipComponent.Location.FogUnitActive)
         {
             mainText.text = "<b>It looks like your missing thruster!\n" +
                 "Try clearing away the fog to collect it</b>";

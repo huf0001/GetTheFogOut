@@ -90,9 +90,10 @@ public abstract class Building : Entity
         cam = Camera.main;
     }
 
+    //TODO: says it's never used, double check
     private void CheckForDamage()
     {
-        if (Fog.Instance.DamageOn && Location.FogUnit != null)
+        if (Fog.Instance.DamageOn && Location.FogUnitActive)
         {
             Location.FogUnit.DealDamageToBuilding();
         }
