@@ -50,7 +50,8 @@ MonoBehaviour:
   guid: 3ce8438a2cb1a74095412aa4db2ac7c2
   Banks:
   - {fileID: 3387853859728145867}
-  - {fileID: 1988662133277808919}
+  - {fileID: -1533486105118367619}
+  - {fileID: -6604513642581895436}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -58,6 +59,23 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 6575
+--- !u!114 &-8562844803881019325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage3
+  m_EditorClassIdentifier: 
+  Name: MusicStage3
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
 --- !u!114 &-8439300682769482004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,7 +129,8 @@ MonoBehaviour:
   guid: 89fc9d339243d046a41b46125b691edb
   Banks:
   - {fileID: 3387853859728145867}
-  - {fileID: 1988662133277808919}
+  - {fileID: -1533486105118367619}
+  - {fileID: -6604513642581895436}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -170,6 +189,26 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 1
+--- !u!114 &-6604513642581895436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.bank
+  SubDir: 
+  lastModified: 636998204040945668
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 6536544
+  Exists: 1
 --- !u!114 &-6513538462134784693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +229,40 @@ MonoBehaviour:
   - Name: Desktop
     Value: 6536544
   Exists: 0
+--- !u!114 &-5861003387685854762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/Lose
+  m_EditorClassIdentifier: 
+  Name: Lose
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
+--- !u!114 &-5681554761804847348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/Win
+  m_EditorClassIdentifier: 
+  Name: Win
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-4760249982049625025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,17 +279,18 @@ MonoBehaviour:
   guid: a7d35a824488734ab15fb1510c728600
   Banks:
   - {fileID: 3387853859728145867}
-  - {fileID: 1988662133277808919}
+  - {fileID: -1533486105118367619}
+  - {fileID: -6604513642581895436}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: -4461986240290078278}
-  - {fileID: 2152597099462703436}
-  - {fileID: 7159048975419792205}
-  - {fileID: -6889259359708145166}
-  - {fileID: 1506846976354688129}
-  - {fileID: -6896459116648369193}
+  - {fileID: 8959093677798326398}
+  - {fileID: -2442004565510695318}
+  - {fileID: -3046573889107187495}
+  - {fileID: -5681554761804847348}
+  - {fileID: -218491480746224673}
+  - {fileID: 1812335976926724310}
   MinDistance: 0
   MaxDistance: 0
   Length: 414234
@@ -237,6 +311,57 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 1
+--- !u!114 &-4062881918762825060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage1
+  m_EditorClassIdentifier: 
+  Name: MusicStage1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
+--- !u!114 &-3046573889107187495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/ReturnMenu
+  m_EditorClassIdentifier: 
+  Name: ReturnMenu
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &-2442004565510695318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage2
+  m_EditorClassIdentifier: 
+  Name: MusicStage2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-2320091115072601490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +378,8 @@ MonoBehaviour:
   guid: 1426e3509640ec41a884ae1ea04e93a2
   Banks:
   - {fileID: 3387853859728145867}
-  - {fileID: 1988662133277808919}
+  - {fileID: -1533486105118367619}
+  - {fileID: -6604513642581895436}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -295,6 +421,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-1888331467304029305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/Win
+  m_EditorClassIdentifier: 
+  Name: Win
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
 --- !u!114 &-1794055701497694861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +475,43 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 1
+--- !u!114 &-1756319339282469648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/ReturnMenu
+  m_EditorClassIdentifier: 
+  Name: ReturnMenu
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
+--- !u!114 &-1533486105118367619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.bank
+  SubDir: 
+  lastModified: 636998204040945668
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 6536544
+  Exists: 1
 --- !u!114 &-1517126535160820647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,7 +528,8 @@ MonoBehaviour:
   guid: 1d4b7d9f8098a442a928d350cab92aef
   Banks:
   - {fileID: 3387853859728145867}
-  - {fileID: 1988662133277808919}
+  - {fileID: -1533486105118367619}
+  - {fileID: -6604513642581895436}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -372,7 +553,8 @@ MonoBehaviour:
   guid: ce32d3595e621048a7d8da428aedcfe8
   Banks:
   - {fileID: 3387853859728145867}
-  - {fileID: 1988662133277808919}
+  - {fileID: -1533486105118367619}
+  - {fileID: -6604513642581895436}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -397,6 +579,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-218491480746224673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage1
+  m_EditorClassIdentifier: 
+  Name: MusicStage1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-192938678214807536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,8 +643,8 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: -1794055701497694861}
-  - {fileID: 1988662133277808919}
+  - {fileID: 330971378666823676}
+  - {fileID: -6604513642581895436}
   EditorEvents:
   - {fileID: -2320091115072601490}
   - {fileID: 5564352489180098777}
@@ -458,10 +657,10 @@ MonoBehaviour:
   - {fileID: -1399680659042702343}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 1988662133277808919}
+  - {fileID: -6604513642581895436}
   StringsBanks:
-  - {fileID: -1794055701497694861}
-  stringsBankWriteTime: 637007278357652045
+  - {fileID: 330971378666823676}
+  stringsBankWriteTime: 636998197209541535
   cacheVersion: 3
 --- !u!114 &174510358767939327
 MonoBehaviour:
@@ -479,7 +678,8 @@ MonoBehaviour:
   guid: b9e77110fc44f848a009ddd77cf04802
   Banks:
   - {fileID: 3387853859728145867}
-  - {fileID: 1988662133277808919}
+  - {fileID: -1533486105118367619}
+  - {fileID: -6604513642581895436}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -487,6 +687,26 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3287
+--- !u!114 &330971378666823676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.strings.bank
+  SubDir: 
+  lastModified: 636998197209541535
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1488
+  Exists: 1
 --- !u!114 &730284226388164185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,6 +727,23 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1488
   Exists: 1
+--- !u!114 &808742069151788646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage2
+  m_EditorClassIdentifier: 
+  Name: MusicStage2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
 --- !u!114 &813706965704474983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,6 +791,23 @@ MonoBehaviour:
   m_Name: parameter:/MusicMix/ReturnMenu
   m_EditorClassIdentifier: 
   Name: ReturnMenu
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &1812335976926724310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/MusicStage3
+  m_EditorClassIdentifier: 
+  Name: MusicStage3
   Min: 0
   Max: 1
   Default: 0
@@ -759,7 +1013,8 @@ MonoBehaviour:
   guid: 9e5b276440bdb74dbd638eaf3c93c043
   Banks:
   - {fileID: 3387853859728145867}
-  - {fileID: 1988662133277808919}
+  - {fileID: -1533486105118367619}
+  - {fileID: -6604513642581895436}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -783,6 +1038,26 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+  Exists: 1
+--- !u!114 &4147750895409805424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: C:\Users\mjger\Desktop\UNITY\2019GP-Under-Ctrl\Assets\Audio\FMOD\Build\Desktop\Master.strings.bank
+  SubDir: 
+  lastModified: 636998197209541535
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1488
   Exists: 1
 --- !u!114 &4577917971554038244
 MonoBehaviour:
@@ -834,7 +1109,8 @@ MonoBehaviour:
   guid: 1b4321179b64b547829df47052a6f978
   Banks:
   - {fileID: 3387853859728145867}
-  - {fileID: 1988662133277808919}
+  - {fileID: -1533486105118367619}
+  - {fileID: -6604513642581895436}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -930,6 +1206,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &8959093677798326398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicMix/Lose
+  m_EditorClassIdentifier: 
+  Name: Lose
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &9058194361912777104
 MonoBehaviour:
   m_ObjectHideFlags: 0
