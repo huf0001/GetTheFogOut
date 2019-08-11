@@ -12,6 +12,7 @@ public class MinimapTile : MonoBehaviour
     [SerializeField] private Color poweredTile = new Color(0, 0.8f, 0);
     [SerializeField] private Color unpoweredTile = new Color(0.5f, 0, 0, 0.7f);
     [SerializeField] private Color buildingTile = new Color(0, 0, 0.7f);
+    [SerializeField] private Color buildingDamageTile = new Color(0.9f, 0, 0);
     [SerializeField] private Color shipTile = new Color(0.8f, 0.8f, 0.8f);
     [SerializeField] private Color collectableTile = new Color(1, 1, 1);
     [SerializeField] private Color mineralTile = new Color32(228, 148, 0, 255);
@@ -29,7 +30,12 @@ public class MinimapTile : MonoBehaviour
     {
         if (Tile.Building)
         {
-            if (Tile.Building.GetComponent<Hub>() && curColour != shipTile)
+            if (Tile.Building.TakingDamage && curColour != buildingDamageTile)
+            {
+                mat.SetColor("_BaseColor", buildingDamageTile);
+                curColour = buildingDamageTile;
+            }
+            else if (Tile.Building.BuildingType == BuildingType.Hub && curColour != shipTile)
             {
                 mat.SetColor("_BaseColor", shipTile);
                 curColour = shipTile;
