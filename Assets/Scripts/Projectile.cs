@@ -70,7 +70,7 @@ public class Projectile : MonoBehaviour
         // If the collision is a tile and it has fog, damage the fog
         if (tileHit != null)
         {
-            if (tileHit.FogUnit != null)
+            if (tileHit.FogUnitActive)
             {
                 //Debug.Log("Dealing damage to " + tileHit.FogUnit);
                 tileHit.FogUnit.DealDamageToFogUnit(damage);
@@ -80,7 +80,7 @@ public class Projectile : MonoBehaviour
 
                 foreach (TileData tile in tileHit.AllAdjacentTiles)
                 {
-                    if (tile.FogUnit != null)
+                    if (tile.FogUnitActive)
                     {
                         //Debug.Log("Dealing damage to " + tile.FogUnit);
                         tile.FogUnit.DealDamageToFogUnit(aoeDamage);

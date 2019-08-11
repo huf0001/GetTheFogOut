@@ -81,7 +81,7 @@ public class ArcDefence : Defence
 
         foreach (TileData tile in tiles)
         {
-            if (tile.FogUnit != null && !tile.FogUnit.TakingDamage)
+            if (tile.FogUnitActive && !tile.FogUnit.TakingDamage)
             {
                 fogTiles.Add(tile);
             }
@@ -107,7 +107,7 @@ public class ArcDefence : Defence
 
         foreach (TileData tile in tiles)
         {
-            if (tile.FogUnit != null)
+            if (tile.FogUnitActive)
             {
                 return true;
             }
