@@ -44,6 +44,8 @@ public class ObjectiveController : DialogueBoxController
     private float tick = 0;
     private int countdown = 60;
 
+    private MusicFMOD musicFMOD;
+
     // Public Properties -------------------------------------------------------------------------------------
 
     // Basic Public Properties
@@ -74,6 +76,7 @@ public class ObjectiveController : DialogueBoxController
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
         WorldController.Instance.Inputs.InputMap.OpenCloseObjectiveWindow.performed += ctx => ToggleObjWindow();
+        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -99,14 +102,15 @@ public class ObjectiveController : DialogueBoxController
         {
 
             case ObjectiveStage.HarvestMinerals:
+                musicFMOD.StageOneMusic();
                 HarvestMineralStage();
                 break;
             case ObjectiveStage.RecoverPart:
-                WorldController.Instance.musicFMOD.StageTwoMusic();
+                musicFMOD.StageTwoMusic();
                 RecoverPartStage();
                 break;
             case ObjectiveStage.SurvivalStage:
-                WorldController.Instance.musicFMOD.StageThreeMusic();
+                musicFMOD.StageThreeMusic();
                 SurvivalStage();
                 break;
             case ObjectiveStage.Finished:
@@ -215,7 +219,7 @@ public class ObjectiveController : DialogueBoxController
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.Intensity += 1;
                 // Play music Var 2 soundtrack
-                WorldController.Instance.musicFMOD.StageTwoMusic();
+                musicFMOD.StageTwoMusic();
 
                 if (TutorialController.Instance.SkipTutorial)
                 {
@@ -286,7 +290,7 @@ public class ObjectiveController : DialogueBoxController
                 hub.transform.GetChild(2).gameObject.SetActive(true);
 
                 // Play music Var 3 soundtrack
-                WorldController.Instance.musicFMOD.StageThreeMusic();
+                musicFMOD.StageThreeMusic();
 
                 //Go to next stage
                 IncrementStage();

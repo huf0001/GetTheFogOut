@@ -51,9 +51,7 @@ public class WorldController : MonoBehaviour
     public bool InBuildMode;
     public GameObject pauseMenu;
 
-    [Header("FMOD")]
-    public MusicFMOD musicfmod;
-    public MusicFMOD musicFMOD;
+    private MusicFMOD musicFMOD;
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
@@ -129,19 +127,9 @@ public class WorldController : MonoBehaviour
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
 
-        if (GameObject.Find("MusicFMOD(Clone)") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD(Clone)").GetComponent<MusicFMOD>();
-        }
-        else
-        {
-            Instantiate(musicfmod);
-            musicFMOD = musicfmod;
-        }
-        musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
-
-        musicFMOD.StartMusic();
+        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         musicFMOD.StageOneMusic();
+        musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
     }
 
     private void Start()
