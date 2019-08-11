@@ -222,7 +222,7 @@ public class ObjectiveController : DialogueBoxController
                     hub.transform.GetChild(0).gameObject.SetActive(false);
                     hub.transform.GetChild(1).gameObject.SetActive(true);
                     // Run AI completion text
-                    SendDialogue("end harvest stage", 1);
+                    SendDialogue("start part stage", 1);
                     //Camera pans to the thruster
                     ShipComponent.SetActive(true);
                     thrusterCamera.gameObject.SetActive(true);
@@ -231,25 +231,12 @@ public class ObjectiveController : DialogueBoxController
                 }
                 else
                 {
-                    SendDialogue("finish finding thruster", 1);
                     generatorLimit += 4;    //Would normally be incremented in IncrementStage()
-                    ChangeToSubStage(4);
+                    ChangeToSubStage(2);
                 }
 
                 break;
             case 1:
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                }
-
-                break;
-            case 2:
-                // Run AI text for stage
-                SendDialogue("start part stage", 1);
-                IncrementSubStage();
-                break;
-            case 3:
                 if (dialogueRead)
                 {
                     Time.timeScale = 1f;
@@ -259,13 +246,13 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 4:
+            case 2:
                 // Update objectives window to 'Recover ship thrusters'
                 // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
                     ShipComponent.SetActive(false);
-                    ChangeToSubStage(6);
+                    ChangeToSubStage(4);
                 }
                 else if (dialogueRead)
                 {
@@ -273,7 +260,7 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 5:
+            case 3:
                 // Update objectives window to 'Recover ship thrusters'
                 // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
@@ -283,7 +270,7 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 6:
+            case 4:
                 if (UIController.instance.buttonClosed)
                 {
                     UIController.instance.ShowAttachButton();
@@ -291,9 +278,9 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 7:
+            case 5:
                 break;
-            case 8:
+            case 6:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
                 hub.transform.GetChild(2).gameObject.SetActive(true);
