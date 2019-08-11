@@ -117,6 +117,8 @@ public class TutorialController : DialogueBoxController
 
     private TileData sonarLandmarkTile;
 
+    private MusicFMOD musicFMOD;
+
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
@@ -155,7 +157,7 @@ public class TutorialController : DialogueBoxController
     public void StartTutorial()
     {
         //Setup music
-        WorldController.Instance.musicFMOD.StageOneMusic();
+        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
 
         //Setup fog
         Fog.Instance.enabled = true;
@@ -1191,7 +1193,7 @@ public class TutorialController : DialogueBoxController
                     ObjectiveController.Instance.IncrementStage();
                     //MusicController.Instance.StartStage1();
                     FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
-                    WorldController.Instance.musicFMOD.StageTwoMusic();
+                    musicFMOD.StageTwoMusic();
                 }
 
                 break;
