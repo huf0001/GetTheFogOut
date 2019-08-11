@@ -33,7 +33,11 @@ public class TileData
     //Private fields
     private FogUnit fogUnit = null;
     private GameObject placedTower = null;
+    //private int tileID;
+    //private List<int> adjacentTileIDs = new List<int>();
+    [NonSerialized]
     private List<TileData> adjacentTiles = new List<TileData>();
+    [NonSerialized]
     private List<TileData> allAdjacentTiles = new List<TileData>();
 
     private List<Building> observers = new List<Building>();
