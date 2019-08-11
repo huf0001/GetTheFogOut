@@ -17,6 +17,7 @@ public class BuildingInfo : MonoBehaviour
     private int mineralHealth;
     private float mineralTime, mineralVal, mineral;
     private Transform Range;
+    private Camera cam;
     public bool Visible { get; private set; }
 
     private void Update()
@@ -31,11 +32,11 @@ public class BuildingInfo : MonoBehaviour
             if (building != null)
             {
                 mineralTime += Time.deltaTime;
-                transform.position = Camera.main.WorldToScreenPoint(building.transform.position) + new Vector3(Screen.width / 13, 0);
+                transform.position = cam.WorldToScreenPoint(building.transform.position) + new Vector3(Screen.width / 13, 0);
             }
             else
             {
-                transform.position = Camera.main.WorldToScreenPoint(shipComp.transform.position) + new Vector3(Screen.width / 13, 0);
+                transform.position = cam.WorldToScreenPoint(shipComp.transform.position) + new Vector3(Screen.width / 13, 0);
             }
         }
     }
@@ -74,6 +75,8 @@ public class BuildingInfo : MonoBehaviour
 
     public void ShowInfo(Building b)
     {
+        if (!cam) cam = Camera.main;
+
         building = b;
         shipComp = null;
         if (building.BuildingType == BuildingType.Hub)
@@ -107,7 +110,7 @@ public class BuildingInfo : MonoBehaviour
         }
 
         healthBar.SetActive(true);
-        transform.position = Camera.main.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
+        transform.position = cam.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
         gameObject.SetActive(true);
         Visible = true;
         InvokeRepeating("UpdateText", 0.1f, 0.1f);
@@ -115,6 +118,8 @@ public class BuildingInfo : MonoBehaviour
 
     public void ShowInfo(ShipComponent shipComponent)
     {
+        if (!cam) cam = Camera.main;
+
         building = null;
         shipComp = shipComponent;
         if (shipComponent.Location.FogUnitActive)
@@ -132,7 +137,7 @@ public class BuildingInfo : MonoBehaviour
 
         destroyButton.gameObject.SetActive(false);
         healthBar.SetActive(false);
-        transform.position = Camera.main.WorldToScreenPoint(shipComponent.transform.position) + new Vector3(Screen.width / 13, 0);
+        transform.position = cam.WorldToScreenPoint(shipComponent.transform.position) + new Vector3(Screen.width / 13, 0);
         gameObject.SetActive(true);
         Visible = true;
     }

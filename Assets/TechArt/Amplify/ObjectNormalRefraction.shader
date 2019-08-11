@@ -1,13 +1,13 @@
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
-Shader "TechArt/Effects/NormalRefraction"
+Shader "ASESampleShaders/ObjectNormalRefraction"
 {
 	Properties
 	{
-		_NormalMap("Normal Map", 2D) = "white" {}
-		_NormalScale("Normal Scale", Range( 0 , 1)) = 0.1
 		[Header(Refraction)]
 		_ChromaticAberration("Chromatic Aberration", Range( 0 , 0.3)) = 0.1
+		_NormalMap("Normal Map", 2D) = "bump" {}
+		_NormalScale("Normal Scale", Range( 0 , 1)) = 0.1
 		_CubeMap("Cube Map", CUBE) = "white" {}
 		_Opacity("Opacity", Range( 0 , 1)) = 0
 		_IndexofRefraction("Index of Refraction", Range( -3 , 4)) = 1
@@ -17,13 +17,23 @@ Shader "TechArt/Effects/NormalRefraction"
 
 	SubShader
 	{
-		Tags{ "RenderType" = "Transparent"  "Queue" = "Transparent+0" "IgnoreProjector" = "True" }
+		Tags{ "RenderType" = "Opaque"  "Queue" = "Transparent+0" }
 		Cull Back
 		GrabPass{ }
-		CGPROGRAM
+		CGINCLUDE
+		#include "UnityStandardUtils.cginc"
+		#include "UnityPBSLighting.cginc"
+		#include "Lighting.cginc"
 		#pragma target 3.0
 		#pragma multi_compile _ALPHAPREMULTIPLY_ON
-		#pragma surface surf Standard alpha:fade keepalpha finalcolor:RefractionF noshadow exclude_path:deferred 
+		#ifdef UNITY_PASS_SHADOWCASTER
+			#undef INTERNAL_DATA
+			#undef WorldReflectionVector
+			#undef WorldNormalVector
+			#define INTERNAL_DATA half3 internalSurfaceTtoW0; half3 internalSurfaceTtoW1; half3 internalSurfaceTtoW2;
+			#define WorldReflectionVector(data,normal) reflect (data.worldRefl, half3(dot(data.internalSurfaceTtoW0,normal), dot(data.internalSurfaceTtoW1,normal), dot(data.internalSurfaceTtoW2,normal)))
+			#define WorldNormalVector(data,normal) fixed3(dot(data.internalSurfaceTtoW0,normal), dot(data.internalSurfaceTtoW1,normal), dot(data.internalSurfaceTtoW2,normal))
+		#endif
 		struct Input
 		{
 			float2 uv_texcoord;
@@ -33,9 +43,9 @@ Shader "TechArt/Effects/NormalRefraction"
 			float3 worldPos;
 		};
 
+		uniform float _NormalScale;
 		uniform sampler2D _NormalMap;
 		uniform float4 _NormalMap_ST;
-		uniform float _NormalScale;
 		uniform samplerCUBE _CubeMap;
 		uniform float _Opacity;
 		uniform sampler2D _GrabTexture;
@@ -65,7 +75,7 @@ Shader "TechArt/Effects/NormalRefraction"
 			return float4( redAlpha.r, green, blue, redAlpha.a );
 		}
 
-		void RefractionF( Input i, SurfaceOutputStandard o, inout half4 color )
+		void RefractionF( Input i, SurfaceOutputStandard o, inout fixed4 color )
 		{
 			#ifdef UNITY_PASS_FORWARDBASE
 			color.rgb = color.rgb + Refraction( i, o, _IndexofRefraction, _ChromaticAberration ) * ( 1 - color.a );
@@ -77,40 +87,120 @@ Shader "TechArt/Effects/NormalRefraction"
 		{
 			o.Normal = float3(0,0,1);
 			float2 uv_NormalMap = i.uv_texcoord * _NormalMap_ST.xy + _NormalMap_ST.zw;
-			float4 tex2DNode54 = tex2D( _NormalMap, uv_NormalMap );
-			o.Normal = ( tex2DNode54 * _NormalScale ).rgb;
-			o.Albedo = ( texCUBE( _CubeMap, WorldReflectionVector( i , tex2DNode54.rgb ) ) * 5 ).rgb;
+			float3 tex2DNode54 = UnpackScaleNormal( tex2D( _NormalMap, uv_NormalMap ) ,_NormalScale );
+			o.Normal = tex2DNode54;
+			o.Albedo = ( texCUBE( _CubeMap, WorldReflectionVector( i , tex2DNode54 ) ) * 5 ).rgb;
 			o.Alpha = _Opacity;
 			o.Normal = o.Normal + 0.00001 * i.screenPos * i.worldPos;
 		}
 
 		ENDCG
+		CGPROGRAM
+		#pragma surface surf Standard keepalpha finalcolor:RefractionF fullforwardshadows exclude_path:deferred 
+
+		ENDCG
+		Pass
+		{
+			Name "ShadowCaster"
+			Tags{ "LightMode" = "ShadowCaster" }
+			ZWrite On
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma target 3.0
+			#pragma multi_compile_shadowcaster
+			#pragma multi_compile UNITY_PASS_SHADOWCASTER
+			#pragma skip_variants FOG_LINEAR FOG_EXP FOG_EXP2
+			#include "HLSLSupport.cginc"
+			#if ( SHADER_API_D3D11 || SHADER_API_GLCORE || SHADER_API_GLES3 || SHADER_API_METAL || SHADER_API_VULKAN )
+				#define CAN_SKIP_VPOS
+			#endif
+			#include "UnityCG.cginc"
+			#include "Lighting.cginc"
+			#include "UnityPBSLighting.cginc"
+			sampler3D _DitherMaskLOD;
+			struct v2f
+			{
+				V2F_SHADOW_CASTER;
+				float4 screenPos : TEXCOORD7;
+				float4 tSpace0 : TEXCOORD1;
+				float4 tSpace1 : TEXCOORD2;
+				float4 tSpace2 : TEXCOORD3;
+				float4 texcoords01 : TEXCOORD4;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+			v2f vert( appdata_full v )
+			{
+				v2f o;
+				UNITY_SETUP_INSTANCE_ID( v );
+				UNITY_INITIALIZE_OUTPUT( v2f, o );
+				UNITY_TRANSFER_INSTANCE_ID( v, o );
+				float3 worldPos = mul( unity_ObjectToWorld, v.vertex ).xyz;
+				fixed3 worldNormal = UnityObjectToWorldNormal( v.normal );
+				fixed3 worldTangent = UnityObjectToWorldDir( v.tangent.xyz );
+				fixed tangentSign = v.tangent.w * unity_WorldTransformParams.w;
+				fixed3 worldBinormal = cross( worldNormal, worldTangent ) * tangentSign;
+				o.tSpace0 = float4( worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x );
+				o.tSpace1 = float4( worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y );
+				o.tSpace2 = float4( worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z );
+				o.texcoords01 = float4( v.texcoord.xy, v.texcoord1.xy );
+				TRANSFER_SHADOW_CASTER_NORMALOFFSET( o )
+				o.screenPos = ComputeScreenPos( o.pos );
+				return o;
+			}
+			fixed4 frag( v2f IN
+			#if !defined( CAN_SKIP_VPOS )
+			, UNITY_VPOS_TYPE vpos : VPOS
+			#endif
+			) : SV_Target
+			{
+				UNITY_SETUP_INSTANCE_ID( IN );
+				Input surfIN;
+				UNITY_INITIALIZE_OUTPUT( Input, surfIN );
+				surfIN.uv_texcoord.xy = IN.texcoords01.xy;
+				float3 worldPos = float3( IN.tSpace0.w, IN.tSpace1.w, IN.tSpace2.w );
+				fixed3 worldViewDir = normalize( UnityWorldSpaceViewDir( worldPos ) );
+				surfIN.worldPos = worldPos;
+				surfIN.worldRefl = -worldViewDir;
+				surfIN.internalSurfaceTtoW0 = IN.tSpace0.xyz;
+				surfIN.internalSurfaceTtoW1 = IN.tSpace1.xyz;
+				surfIN.internalSurfaceTtoW2 = IN.tSpace2.xyz;
+				surfIN.screenPos = IN.screenPos;
+				SurfaceOutputStandard o;
+				UNITY_INITIALIZE_OUTPUT( SurfaceOutputStandard, o )
+				surf( surfIN, o );
+				#if defined( CAN_SKIP_VPOS )
+				float2 vpos = IN.pos;
+				#endif
+				half alphaRef = tex3D( _DitherMaskLOD, float3( vpos.xy * 0.25, o.Alpha * 0.9375 ) ).a;
+				clip( alphaRef - 0.01 );
+				SHADOW_CASTER_FRAGMENT( IN )
+			}
+			ENDCG
+		}
 	}
+	Fallback "Diffuse"
 	CustomEditor "ASEMaterialInspector"
 }
 /*ASEBEGIN
-Version=16800
-1421;73;1609;653;1074.323;361.2438;1.505066;True;True
-Node;AmplifyShaderEditor.SamplerNode;54;-646.7961,72.9934;Float;True;Property;_NormalMap;Normal Map;0;0;Create;True;0;0;False;0;a599dcdec4400194ca793909c2ea2216;a599dcdec4400194ca793909c2ea2216;True;0;True;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;1;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.WorldReflectionVector;46;-268.58,-82.80111;Float;False;False;1;0;FLOAT3;0,0,0;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
-Node;AmplifyShaderEditor.RangedFloatNode;55;-623.6902,281.84;Float;False;Property;_NormalScale;Normal Scale;1;0;Create;True;0;0;False;0;0.1;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;45;-23.07985,-140.8011;Float;True;Property;_CubeMap;Cube Map;4;0;Create;True;0;0;False;0;ef7513b54a0670140b9b967af7620563;ef7513b54a0670140b9b967af7620563;True;0;False;white;LockedToCube;False;Object;-1;Auto;Cube;6;0;SAMPLER2D;;False;1;FLOAT3;0,0,0;False;2;FLOAT;1;False;3;FLOAT3;0,0,0;False;4;FLOAT3;0,0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Version=13803
+566;511;900;507;1805.199;705.2916;3.077033;True;False
+Node;AmplifyShaderEditor.RangedFloatNode;55;-975.6902,141.84;Float;False;Property;_NormalScale;Normal Scale;2;0;0.1;0;1;0;1;FLOAT
+Node;AmplifyShaderEditor.SamplerNode;54;-646.7961,72.9934;Float;True;Property;_NormalMap;Normal Map;1;0;None;True;0;True;bump;Auto;True;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;1.0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1.0;False;5;FLOAT3;FLOAT;FLOAT;FLOAT;FLOAT
+Node;AmplifyShaderEditor.WorldReflectionVector;46;-268.58,-82.80111;Float;False;1;0;FLOAT3;0,0,0;False;4;FLOAT3;FLOAT;FLOAT;FLOAT
 Node;AmplifyShaderEditor.CommentaryNode;52;304.7198,-183.0011;Float;False;293.1999;207.6;Multiplier to make it POP;1;53;;1,1,1,1;0;0
-Node;AmplifyShaderEditor.WireNode;57;-281.99,176.72;Float;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;41;-194.68,199.6993;Float;False;Property;_IndexofRefraction;Index of Refraction;6;0;Create;True;0;0;False;0;1;0;-3;4;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;42;-200.1801,296.399;Float;False;Property;_Opacity;Opacity;5;0;Create;True;0;0;False;0;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.ScaleNode;53;379.1033,-99.10673;Float;False;5;1;0;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;56;-75.98999,76.71997;Float;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.StandardSurfaceOutputNode;0;696.3,49.80001;Float;False;True;2;Float;ASEMaterialInspector;0;0;Standard;TechArt/Effects/NormalRefraction;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;False;False;False;False;False;False;Back;0;False;-1;3;False;-1;False;0;False;-1;0;False;-1;False;0;Transparent;0.5;True;False;0;False;Transparent;;Transparent;ForwardOnly;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;0;False;-1;False;0;False;-1;255;False;-1;255;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;False;0;4;10;25;False;0.5;False;2;5;False;-1;10;False;-1;0;0;False;-1;0;False;-1;1;False;-1;1;False;-1;0;False;0;0,0,0,0;VertexOffset;True;False;Cylindrical;False;Relative;0;;-1;-1;2;-1;0;False;0;0;False;-1;-1;0;False;-1;0;0;0;False;0.1;False;-1;0;False;-1;16;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0;False;9;FLOAT;0;False;10;FLOAT;0;False;13;FLOAT3;0,0,0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
+Node;AmplifyShaderEditor.SamplerNode;45;-23.07985,-140.8011;Float;True;Property;_CubeMap;Cube Map;3;0;Assets/AmplifyShaderEditor/Examples/Assets/Textures/Misc/Cubemap.jpg;True;0;False;white;LockedToCube;False;Object;-1;Auto;Cube;6;0;SAMPLER2D;;False;1;FLOAT3;0,0,0;False;2;FLOAT;1.0;False;3;FLOAT3;0,0,0;False;4;FLOAT3;0,0,0;False;5;FLOAT;1.0;False;5;COLOR;FLOAT;FLOAT;FLOAT;FLOAT
+Node;AmplifyShaderEditor.RangedFloatNode;41;-194.68,199.6993;Float;False;Property;_IndexofRefraction;Index of Refraction;5;0;1;-3;4;0;1;FLOAT
+Node;AmplifyShaderEditor.ScaleNode;53;379.1033,-99.10673;Float;False;5;1;0;COLOR;0,0,0,0;False;1;COLOR
+Node;AmplifyShaderEditor.RangedFloatNode;42;-200.1801,296.399;Float;False;Property;_Opacity;Opacity;4;0;0;0;1;0;1;FLOAT
+Node;AmplifyShaderEditor.StandardSurfaceOutputNode;0;696.3,49.80001;Float;False;True;2;Float;ASEMaterialInspector;0;0;Standard;ASESampleShaders/ObjectNormalRefraction;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;Back;0;3;False;0;0;Translucent;0.5;True;True;0;False;Opaque;Transparent;ForwardOnly;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;False;0;255;255;0;0;0;0;0;0;0;0;False;0;4;10;25;False;0.5;True;0;Zero;Zero;0;Zero;Zero;Add;Add;0;False;0;0,0,0,0;VertexOffset;False;Cylindrical;False;Relative;0;;-1;-1;0;-1;0;0;0;False;16;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0.0;False;4;FLOAT;0.0;False;5;FLOAT;0.0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0.0;False;9;FLOAT;0.0;False;10;FLOAT;0.0;False;13;FLOAT3;0,0,0;False;11;FLOAT3;0.0,0,0;False;12;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
+WireConnection;54;5;55;0
 WireConnection;46;0;54;0
 WireConnection;45;1;46;0
-WireConnection;57;0;55;0
 WireConnection;53;0;45;0
-WireConnection;56;0;54;0
-WireConnection;56;1;57;0
 WireConnection;0;0;53;0
-WireConnection;0;1;56;0
+WireConnection;0;1;54;0
 WireConnection;0;8;41;0
 WireConnection;0;9;42;0
 ASEEND*/
-//CHKSM=F5DD31C8E690CD376E6E421F870F5F17126DAF11
+//CHKSM=71466A91F5DD2C962CE5BF63F5D4B002D316B194

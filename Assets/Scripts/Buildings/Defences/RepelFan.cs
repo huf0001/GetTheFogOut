@@ -5,10 +5,6 @@ using UnityEngine.Experimental.VFX;
 
 public class RepelFan : Defence
 {
-    protected override void Awake()
-    {
-        base.Awake();
-    }
 
     // Start is called before the first frame update
     protected override void Start()

@@ -79,13 +79,6 @@ public class UIController : MonoBehaviour
         temp = 2;
         
         launchButtonImage = objectiveButton.image;
-
-        //cursor = GameObject.Find("Cursor");
-        //cursor.SetActive(false);
-        //Invoke("FindTile", 5);
-        //Tweens in the UI for a smooth bounce in from outside the canvas
-        //hudBar = GameObject.Find("HUD");// "HudBar");
-        //hudBar.GetComponent<RectTransform>().DOAnchorPosY(200f, 1.5f).From(true).SetEase(Ease.OutBounce);
         FindSliders();
     }
 
