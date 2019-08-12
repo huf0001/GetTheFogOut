@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -94,6 +95,7 @@ public class Fog : MonoBehaviour
     private int xMax;
     private int zMax;
 
+    private bool fogActive = true;
     private float fogDamage;
     private float fogSphereMaxHealth;
     private float fogSphereMaxSizeScale;
@@ -101,7 +103,6 @@ public class Fog : MonoBehaviour
 
     private Vector3 hubPosition;
 
-    private bool isGrowthPaused;
     private float pauseTime;
 
     //Private Collection Fields
@@ -546,35 +547,34 @@ public class Fog : MonoBehaviour
 
     //Activating the Fog-----------------------------------------------------------------------------------------------------------------------------
 
-    //Invokes BeginUpdatingDamge according to the parameter passed to it
-    public void InvokeBeginUpdatingDamage(int delay)
-    {
-        Invoke(nameof(BeginUpdatingDamage), delay);
-    }
-
-    //Invokes the damage to fog "update" method according to the interval set in the inspector
+    //Turns on the fog's sensitivity to damage
     public void BeginUpdatingDamage()
     {
-        InvokeRepeating(nameof(UpdateDamageToFogUnits), 0.5f, fogDamageInterval);
+        BeginUpdatingDamage(0);
     }
-
-    //Invokes the WakeUpFog method according to the parameter passed to it
-    public void InvokeWakeUpFog(int delay)
+    
+    //Turns on the fog's sensitivity to damage
+    public void BeginUpdatingDamage(float delay)
     {
-        Invoke(nameof(WakeUpFog), delay);
+        InvokeRepeating(nameof(UpdateDamageToFogUnits), delay, fogDamageInterval);
     }
 
-    //Invokes the "update" methods of Fog according to the intervals set in the inspector
+    //Wakes up the fog, turning on its filling and expansion, and fog spheres
     public void WakeUpFog()
     {
-        InvokeRepeating(nameof(UpdateFogUnitFill), 0.1f, fogFillInterval);
-        InvokeRepeating(nameof(CheckExpandFog), 0.3f, fogExpansionInterval);
-        InvokeRepeating(nameof(UpdateFogSpheres), 1f, fogSphereInterval);
+        WakeUpFog(0);
+    }
+
+    //Wakes up the fog, turning on its filling and expansion, and fog spheres
+    public void WakeUpFog(float delay)
+    {
+        InvokeRepeating(nameof(UpdateFogUnitFill), delay + 0.1f, fogFillInterval);
+        InvokeRepeating(nameof(ExpandFog), delay + 0.3f, fogExpansionInterval);
+        InvokeRepeating(nameof(UpdateFogSpheres), delay + 1f, fogSphereInterval);
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
 
-    //TODO: look at how much of the fog pool can be removed / tidied up
     //Handles the damaging of fog units
     private void UpdateDamageToFogUnits()
     {
@@ -675,25 +675,6 @@ public class Fog : MonoBehaviour
         }
     }
 
-    //Checks if the fog is able to spill over into adjacent tiles
-    private void CheckExpandFog()
-    {
-        //if (fogUnitsInPool.Count > 0)
-        //{
-            ExpandFog();
-        //}
-        //else if (fogUnitsInPlay.Count < xCount * zCount)
-        //{
-        //    Debug.Log("Ran out of fog units. If the board isn't full, there must be some overlapping.");
-        //}
-        //else 
-        
-        if (fogUnitsInPlay.Count > xCount * zCount)
-        {
-            Debug.Log("More fog units than board tiles. There must be some overlapping.");
-        }
-    }
-
     //Fog spills over onto adjacent tiles
     private void ExpandFog()
     {
@@ -721,6 +702,11 @@ public class Fog : MonoBehaviour
             {
                 SpawnFogUnit(n.X, n.Z, fogUnitMinHealth);
             }
+        }
+
+        if (fogUnitsInPlay.Count > xCount * zCount)
+        {
+            Debug.Log("More fog units than board tiles. There must be some overlapping.");
         }
     }
 
@@ -751,10 +737,10 @@ public class Fog : MonoBehaviour
                         break;
                 }
             }
-                            
+
             if (fogSpheresToReturnToPool.Count > 0)
             {
-                foreach(FogSphere f in fogSpheresToReturnToPool)
+                foreach (FogSphere f in fogSpheresToReturnToPool)
                 {
                     ReturnFogSphereToPool(f);
                 }
@@ -844,42 +830,35 @@ public class Fog : MonoBehaviour
         fogSpheresInPlay.Remove(f);
     }
 
-    //Other Methods----------------------------------------------------------------------------------------------------------------------------------
+    //Fog Freezing Methods---------------------------------------------------------------------------------------------------------------------------
 
-    private void Update()
+    //Pauses the fog growth for a specified amount of duration
+    public void FreezeFog(float duration)
     {
-        if (isGrowthPaused)
-        {
-            pauseTime -= Time.deltaTime;
-
-            if (pauseTime <= 0)
-            {
-                fogUnitsGrow = true;
-                fogSpheresGrow = true;
-                isGrowthPaused = false;
-
-                foreach (var fogUnit in fogUnitsInPlay)
-                {
-                    fogUnit.GetComponent<Renderer>().material.SetFloat("_FPS", 16f);
-                }
-            }
-        }
-    }
-    
-    //Pauses the fog growth for a specified amount of time
-    public void PauseFogGrowth(float time)
-    {
-        isGrowthPaused = true;
         fogUnitsGrow = false;
         fogSpheresGrow = false;
 
-        foreach (var fogUnit in fogUnitsInPlay)
+        foreach (FogUnit f in fogUnitsInPlay)
         {
-            fogUnit.GetComponent<Renderer>().material.SetFloat("_FPS", 0f);
+            f.GetComponent<Renderer>().material.SetFloat("_FPS", 0f);
         }
 
-        pauseTime = time;
+        Invoke(nameof(UnFreezeFog), duration);
     }
+
+    //Handles timing out of the fog freeze
+    private void UnFreezeFog()
+    {
+        fogUnitsGrow = true;
+        fogSpheresGrow = true;
+
+        foreach (FogUnit f in fogUnitsInPlay)
+        {
+            f.FogRenderer.material.SetFloat("_FPS", 16f);
+        }
+    }
+
+    //Other Methods----------------------------------------------------------------------------------------------------------------------------------
 
     //Switches the fog between angry and not angry
     public void ToggleAnger()
