@@ -87,8 +87,8 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     [Header("UI Lerp Colours")]
-    [SerializeField] private Color uiNormalColour;
-    [SerializeField] private Color uiHighlightColour;
+    [SerializeField] private Color uiNormalColour = Color.white;
+    [SerializeField] private Color uiHighlightColour = Color.green;
 
     [Header("Goals")]
     [SerializeField] private int builtHarvestersGoal;
