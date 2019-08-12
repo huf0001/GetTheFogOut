@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+using MEC;
 
 public enum FogExpansionDirection
 {
@@ -94,6 +95,7 @@ public class Fog : MonoBehaviour
     private int xMax;
     private int zMax;
 
+    private bool fogActive = true;
     private float fogDamage;
     private float fogSphereMaxHealth;
     private float fogSphereMaxSizeScale;
@@ -547,16 +549,18 @@ public class Fog : MonoBehaviour
     //Activating the Fog-----------------------------------------------------------------------------------------------------------------------------
 
     //Invokes BeginUpdatingDamge according to the parameter passed to it
-    public void InvokeBeginUpdatingDamage(int delay)
+    public void BeginUpdatingDamage(int delay)
     {
-        Invoke(nameof(BeginUpdatingDamage), delay);
+        Timing.CallDelayed(delay, delegate { Timing.RunCoroutine(UpdateDamageToFogUnits(), "fog"); });
+        //Invoke(nameof(BeginUpdatingDamage), delay);
     }
 
     //Invokes the damage to fog "update" method according to the interval set in the inspector
-    public void BeginUpdatingDamage()
-    {
-        InvokeRepeating(nameof(UpdateDamageToFogUnits), 0.5f, fogDamageInterval);
-    }
+    //public void BeginUpdatingDamage()
+    //{
+    //    Timing.RunCoroutine(UpdateDamageToFogUnits());
+    //    //InvokeRepeating(nameof(UpdateDamageToFogUnits), 0.5f, fogDamageInterval);
+    //}
 
     //Invokes the WakeUpFog method according to the parameter passed to it
     public void InvokeWakeUpFog(int delay)
@@ -576,45 +580,50 @@ public class Fog : MonoBehaviour
 
     //TODO: look at how much of the fog pool can be removed / tidied up
     //Handles the damaging of fog units
-    private void UpdateDamageToFogUnits()
+    IEnumerator<float> UpdateDamageToFogUnits()
     {
-        List<FogUnit> toRender = new List<FogUnit>();
-
-        foreach (FogUnit f in fogUnitsInPlay)
+        while (fogActive)
         {
-            if (f.TakingDamage)
+            List<FogUnit> toRender = new List<FogUnit>();
+
+            foreach (FogUnit f in fogUnitsInPlay)
             {
-                f.UpdateDamageToFogUnit(fogDamageInterval);
-                toRender.Add(f);
+                if (f.TakingDamage)
+                {
+                    f.UpdateDamageToFogUnit(fogDamageInterval);
+                    toRender.Add(f);
+                }
+
+                if (f.ReturnToPool)
+                {
+                    QueueFogUnitForPooling(f);
+                    f.ReturnToPool = false;
+                }
             }
 
-            if (f.ReturnToPool)
+            if (fogUnitsToReturnToPool.Count > 0)
             {
-                QueueFogUnitForPooling(f);
-                f.ReturnToPool = false;
-            }
-        }
+                foreach (FogUnit f in fogUnitsToReturnToPool)
+                {
+                    toRender.Remove(f);
+                    ReturnFogUnitToPool(f);
+                }
 
-        if (fogUnitsToReturnToPool.Count > 0)
-        {
-            foreach (FogUnit f in fogUnitsToReturnToPool)
-            {
-                toRender.Remove(f);
-                ReturnFogUnitToPool(f);
+                fogUnitsToReturnToPool.Clear();
             }
 
-            fogUnitsToReturnToPool.Clear();
-        }
+            foreach (FogUnit f in toRender)
+            {
+                f.RenderOpacity();
+            }
 
-        foreach (FogUnit f in toRender)
-        {
-            f.RenderOpacity();
-        }
+            if (fogUnitsInPlay.Count == 0)
+            {
+                ObjectiveController.Instance.FogDestroyed();
+                Timing.KillCoroutines("fog");
+            }
 
-        if (fogUnitsInPlay.Count == 0)
-        {
-            ObjectiveController.Instance.FogDestroyed();
-            CancelInvoke();
+            yield return Timing.WaitForSeconds(fogDamageInterval);
         }
     }
 
