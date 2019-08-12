@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿//using System;
+//using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
-using UnityEditor;
+//using DG.Tweening;
+//using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Profiling;
+//using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 using MEC;
 
@@ -568,6 +569,7 @@ public class Fog : MonoBehaviour
     {
         while (fogActive)
         {
+            Profiler.BeginSample("Fog UpdateDamage");
             List<FogUnit> toRender = new List<FogUnit>();
 
             foreach (FogUnit f in fogUnitsInPlay)
@@ -607,6 +609,7 @@ public class Fog : MonoBehaviour
                 Timing.KillCoroutines("fog");
             }
 
+            Profiler.EndSample();
             yield return Timing.WaitForSeconds(fogDamageInterval);
         }
     }
@@ -616,6 +619,7 @@ public class Fog : MonoBehaviour
     {
         while (fogActive)
         {
+            Profiler.BeginSample("Fog UpdateFill");
             List<FogUnit> toRenderOpacity = new List<FogUnit>();
 
             if (fogUnitsGrow)
@@ -669,6 +673,7 @@ public class Fog : MonoBehaviour
                 }
             }
 
+            Profiler.EndSample();
             yield return Timing.WaitForSeconds(fogFillInterval);
         }
     }
@@ -678,6 +683,7 @@ public class Fog : MonoBehaviour
     {
         while (fogActive)
         {
+            Profiler.BeginSample("Fog Expansion");
             List<TileData> newTiles = new List<TileData>();
 
             foreach (FogUnit f in fogUnitsInPlay)
@@ -709,6 +715,7 @@ public class Fog : MonoBehaviour
                 Debug.Log("More fog units than board tiles. There must be some overlapping.");
             }
 
+            Profiler.EndSample();
             yield return Timing.WaitForSeconds(fogExpansionInterval);
         }
     }
@@ -718,6 +725,7 @@ public class Fog : MonoBehaviour
     {
         while (fogActive)
         {
+            Profiler.BeginSample("Fog Spheres");
             if (fogSpheresGrow)
             {
                 foreach (FogSphere f in fogSpheresInPlay)
@@ -759,6 +767,7 @@ public class Fog : MonoBehaviour
                 SpawnFogSphere();
             }
 
+            Profiler.EndSample();
             yield return Timing.WaitForSeconds(fogSphereInterval);
         }
     }
