@@ -6,11 +6,6 @@ using UnityEngine;
 public class ArcDefence : Defence
 {
     public GameObject mortarBarrelGO;
-        
-    protected override void Awake()
-    {
-        base.Awake();
-    }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -86,7 +81,7 @@ public class ArcDefence : Defence
 
         foreach (TileData tile in tiles)
         {
-            if (tile.FogUnit != null && !tile.FogUnit.TakingDamage)
+            if (tile.FogUnitActive && !tile.FogUnit.TakingDamage)
             {
                 fogTiles.Add(tile);
             }
@@ -112,7 +107,7 @@ public class ArcDefence : Defence
 
         foreach (TileData tile in tiles)
         {
-            if (tile.FogUnit != null)
+            if (tile.FogUnitActive)
             {
                 return true;
             }

@@ -12,7 +12,7 @@ public class MouseController : MonoBehaviour
     // Serialized fields
     [SerializeField] private int generatorCount = 0;
     [SerializeField] private int generatorInterval = 5;
-    [SerializeField] private WarningScript warningScript;
+    //[SerializeField] private WarningScript warningScript;
 
     // Non-serialized fields
     private Hub hub = null;
@@ -26,6 +26,7 @@ public class MouseController : MonoBehaviour
     private TileData hoveredTile;
     public bool isBuildAvaliable = true;
     private bool hovertoggle = true;
+    private Camera cam;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -33,7 +34,6 @@ public class MouseController : MonoBehaviour
     public static MouseController Instance { get; protected set; }
     public Hub Hub { get => hub; set => hub = value; }
     public bool ReportTutorialClick { get => reportTutorialClick; set => reportTutorialClick = value; }
-    public WarningScript WarningScript { get => warningScript; }
 
     // Start / Update Unity Methods ------------------------------------------------------
 
@@ -57,46 +57,13 @@ public class MouseController : MonoBehaviour
         towerManager = FindObjectOfType<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
         tutorialController = GetComponent<TutorialController>();
+        cam = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //UpdatePlacingAlt();
         selectedTile();
-    }
-
-    void UpdateTileAppearance()
-    {
-        List<TileData> innerTiles = new List<TileData>();
-        List<TileData> middleTiles = new List<TileData>();
-        List<TileData> outerTiles = new List<TileData>();
-
-        Vector3 pos = new Vector3(hoveredTile.X, 0f, hoveredTile.Z);
-
-        Collider[] hits = Physics.OverlapSphere(pos, 3, LayerMask.GetMask("Quads"));
-        foreach (Collider hit in hits)
-        {
-            innerTiles.Add(WorldController.Instance.GetTileAt(hit.transform.position));
-        }
-
-        hits = Physics.OverlapSphere(pos, 4, LayerMask.GetMask("Quads"));
-        foreach (Collider hit in hits)
-        {
-            if (!innerTiles.Contains(WorldController.Instance.GetTileAt(hit.transform.position)))
-            {
-                middleTiles.Add(WorldController.Instance.GetTileAt(hit.transform.position));
-            }
-        }
-
-        hits = Physics.OverlapSphere(pos, 5, LayerMask.GetMask("Quads"));
-        foreach (Collider hit in hits)
-        {
-            if (!middleTiles.Contains(WorldController.Instance.GetTileAt(hit.transform.position)))
-            {
-                outerTiles.Add(WorldController.Instance.GetTileAt(hit.transform.position));
-            }
-        }
     }
 
     void UpdateHoveredTile(bool toggle)
@@ -104,7 +71,7 @@ public class MouseController : MonoBehaviour
         if (toggle)
         {
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
 
             if (!WorldController.Instance.IsPointerOverGameObject() && Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
             {
@@ -130,7 +97,6 @@ public class MouseController : MonoBehaviour
                                 changeTileMaterial(WorldController.Instance.normalTile);
                         }
                     }
-
                 }
             }
             else
@@ -194,7 +160,7 @@ public class MouseController : MonoBehaviour
         {
             TileData tile;
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             //Check if a valid tile was clicked
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables" })) && WorldController.Instance.TileExistsAt(hit.point))
             {
@@ -339,7 +305,7 @@ public class MouseController : MonoBehaviour
             }
             else
             {
-                warningScript.ShowMessage(WarningScript.WarningLevel.Warning, warningScript.Warning + "Not enough minerals to build!");
+                //warningScript.ShowMessage(WarningScript.WarningLevel.Warning, warningScript.Warning + "Not enough minerals to build!");
                 Debug.Log("Can't build, do not have the required resources.");
             }
         }

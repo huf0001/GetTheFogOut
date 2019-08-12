@@ -45,6 +45,7 @@ public abstract class Building : Entity
     protected bool isOverclockOn = false;
     public float overclockTimer;
     private Material shieldMat;
+    protected Camera cam;
 
     private float toLerp = 1f;
     private float ShieldCheck = 50f;
@@ -73,11 +74,6 @@ public abstract class Building : Entity
         set { isOverclockOn = value; }
     }
 
-    protected virtual void Awake()
-    {
-
-    }
-
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -91,11 +87,13 @@ public abstract class Building : Entity
 
         }
         rend = GetComponentInChildren<MeshRenderer>();
+        cam = Camera.main;
     }
 
+    //TODO: says it's never used, double check
     private void CheckForDamage()
     {
-        if (Fog.Instance.DamageOn && Location.FogUnit != null)
+        if (Fog.Instance.DamageOn && Location.FogUnitActive)
         {
             Location.FogUnit.DealDamageToBuilding();
         }
@@ -172,39 +170,36 @@ public abstract class Building : Entity
 
     private void UpdateHealthBar()
     {
-        if(shieldObj)
+        if (isShieldOn)
         {
-            if (isShieldOn)
-            {
-                FillHealthBar();
+            FillHealthBar();
 
-                if (buildingType != BuildingType.Hub)
-                {
-                    shieldBarImage.fillAmount = (shield / 50) * 0.75f;
-                }
-                else
-                {
-                    shieldBarImage.fillAmount = shield / 50;
-                }
-            }
-            else if (Health < MaxHealth)
+            if (buildingType != BuildingType.Hub)
             {
-                FillHealthBar();
-                if (shieldBarImage.fillAmount > 0)
-                {
-                    shieldBarImage.fillAmount = 0;
-                }
+                shieldBarImage.fillAmount = (shield / 50) * 0.75f;
             }
             else
             {
-                if (healthBarCanvas.gameObject.activeSelf)
-                {
-                    healthBarCanvas.gameObject.SetActive(false);
-                }
-                if (shieldBarImage.fillAmount > 0)
-                {
-                    shieldBarImage.fillAmount = 0;
-                }
+                shieldBarImage.fillAmount = shield / 50;
+            }
+        }
+        else if (Health < MaxHealth)
+        {
+            FillHealthBar();
+            if (shieldBarImage.fillAmount > 0)
+            {
+                shieldBarImage.fillAmount = 0;
+            }
+        }
+        else
+        {
+            if (healthBarCanvas.gameObject.activeSelf)
+            {
+                healthBarCanvas.gameObject.SetActive(false);
+            }
+            if (shieldBarImage.fillAmount > 0)
+            {
+                shieldBarImage.fillAmount = 0;
             }
         }
     }
@@ -220,13 +215,13 @@ public abstract class Building : Entity
         if (buildingType != BuildingType.Hub)
         {
             healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
-            healthBarCanvas.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
+            healthBarCanvas.LookAt(new Vector3(cam.transform.position.x, 0, cam.transform.position.z));
             healthBarCanvas.Rotate(0, 135, 0);
         }
         else
         {
             healthBarImage.fillAmount = Health / MaxHealth;
-            healthBarCanvas.LookAt(Camera.main.transform);
+            healthBarCanvas.LookAt(cam.transform);
         }
     }
 
@@ -518,8 +513,8 @@ public abstract class Building : Entity
         {
             if (BuildingType == BuildingType.Hub)
             {
-                MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-                    MouseController.Instance.WarningScript.Danger + $"<size=80%>The Ship is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+                //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
+                //    MouseController.Instance.WarningScript.Danger + $"<size=80%>The Ship is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
             }
             else
             {
@@ -531,11 +526,7 @@ public abstract class Building : Entity
                 else damIndScript.On = true;
                 damInd.GetComponent<DamageIndicator>().Building = this;
             }
-
-            //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-            //MouseController.Instance.WarningScript.Danger + $"<size=80%>{(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.Extender ? "An" : "A")}" +
-            //$" {(BuildingType == BuildingType.AirCannon || BuildingType == BuildingType.FogRepeller ? BuildingType.ToString().Insert(3, " ") : BuildingType.ToString())}" +
-            //$" is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
+            
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
             damagingNotified = true;
         }

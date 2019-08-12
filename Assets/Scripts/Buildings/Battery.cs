@@ -10,11 +10,6 @@ public class Battery : Building
         // costs 30 to build
     }
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     // Start is called before the first frame update
     protected override void Start()
     {

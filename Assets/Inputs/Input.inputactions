@@ -52,6 +52,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Open/Close Objective Window",
+                    "type": "Button",
+                    "id": "7f05fbc6-507f-4b5e-ab46-c8eb5b3334cd",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -70,7 +78,7 @@
                     "name": "Keyboard",
                     "id": "5fbd3e36-264a-4e71-8116-280108621eca",
                     "path": "2DVector",
-                    "interactions": "Hold(duration=0.01),Press(behavior=2)",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Camera Pan",
@@ -239,6 +247,17 @@
                     "processors": "",
                     "groups": ";Controller",
                     "action": "Proceed Dialogue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f6682a78-49bd-4988-a2b8-5e7c2c16b2f1",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "Open/Close Objective Window",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

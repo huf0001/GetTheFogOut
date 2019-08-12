@@ -10,11 +10,6 @@ public abstract class PowerSource : Building
 
     public List<Building> SuppliedBuildings { get => suppliedBuildings; set => suppliedBuildings = value; }
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     // Start is called before the first frame update
     protected override void Start()
     {

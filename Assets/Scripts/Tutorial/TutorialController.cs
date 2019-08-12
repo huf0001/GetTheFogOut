@@ -117,6 +117,8 @@ public class TutorialController : DialogueBoxController
 
     private TileData sonarLandmarkTile;
 
+    private MusicFMOD musicFMOD;
+
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
@@ -155,7 +157,7 @@ public class TutorialController : DialogueBoxController
     public void StartTutorial()
     {
         //Setup music
-        WorldController.Instance.musicFMOD.StageOneMusic();
+        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
 
         //Setup fog
         Fog.Instance.enabled = true;
@@ -163,8 +165,8 @@ public class TutorialController : DialogueBoxController
 
         if (skipTutorial)
         {
-            Fog.Instance.InvokeWakeUpFog(5);
-            Fog.Instance.InvokeBeginUpdatingDamage(5);
+            Fog.Instance.WakeUpFog(5);
+            Fog.Instance.BeginUpdatingDamage(5);
             stage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
             defencesOn = true;
@@ -1191,7 +1193,7 @@ public class TutorialController : DialogueBoxController
                     ObjectiveController.Instance.IncrementStage();
                     //MusicController.Instance.StartStage1();
                     FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
-                    WorldController.Instance.musicFMOD.StageTwoMusic();
+                    musicFMOD.StageTwoMusic();
                 }
 
                 break;
@@ -1441,7 +1443,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildPulseDefence:
             case TutorialStage.DefenceActivation:
             case TutorialStage.BuildDefencesInRange:
-                bool tileOkay = tile.FogUnit == null || tile.Building != null;
+                bool tileOkay = !tile.FogUnitActive || tile.Building != null;
 
                 if (!tileOkay && !aiText.Activated)
                 {

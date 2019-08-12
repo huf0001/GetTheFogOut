@@ -55,25 +55,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 51
   length: 51
-  spawnResources: 0
   gameWin: 0
   gameOver: 0
-  mineralSpawnChance: 5
-  fuelSpawnChance: 5
-  powerSpawnChance: 5
-  organSpawnChance: 5
   ground: {fileID: 0}
   groundCollider: {fileID: 0}
   planeGridprefab: {fileID: 6018002286047896067, guid: a9a48ed08e70c5840891481cb21c444d,
     type: 3}
+  minimapPlanePrefab: {fileID: 6018002286047896067, guid: c81cc566d19645349b4a4de39dd40463,
+    type: 3}
+  minimapFogPlanePrefab: {fileID: 6018002286047896067, guid: b24776c9df8a61f43bb042d998dfbbc1,
+    type: 3}
   hubPrefab: {fileID: 0}
   mineralPrefab: {fileID: 8502067115120478638, guid: b73f147f6fafb3242895252f4e5718fb,
-    type: 3}
-  fuelPrefab: {fileID: 8393472377661496211, guid: 4d4c598dd9bc8cb43a0d126a2b0e2eb8,
-    type: 3}
-  powerPrefab: {fileID: 7908624944112950829, guid: 274cb1791698d614a84ceb3fee36b80b,
-    type: 3}
-  organPrefab: {fileID: 7857378348933392223, guid: 5ab951eea836f594ea15cdb13afd6328,
     type: 3}
   tilePrefab: {fileID: 1230523831537891005, guid: ae3c8c22e37954d42892aa77c874a272,
     type: 3}
@@ -160,7 +153,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   generatorCount: 0
   generatorInterval: 5
-  warningScript: {fileID: 0}
   isBuildAvaliable: 1
 --- !u!114 &1899903245264256472
 MonoBehaviour:
@@ -247,181 +239,14 @@ MonoBehaviour:
   objectiveWindow: {fileID: 0}
   objectiveWindowOpenArrows: {fileID: 0}
   aiText: {fileID: 0}
-  dialogue:
-  - key: error
-    expressionDialoguePairs:
-    - aiExpression: 3
-      dialogue: '>Bug caused by developer<. Click for your compensation. Go on. Give
-        it a click. '
-    - aiExpression: 1
-      dialogue: 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to
-        say that they were perfectly normal, thank you very much. '
-  - key: explain situation
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Hello, I am your very own...Ah, no, I'm not fooling anyone with that.
-        I'm a Nexus Drone, an emergency drone that you'll be controlling from your
-        ship.
-    - aiExpression: 2
-      dialogue: 'Since we appear to be in a predicament, I''m going to teach you how
-        to survive. '
-  - key: explain minerals
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: You see these {MINERALS}? You can collect them, which will be highly
-        beneficial to your existence.
-  - key: move camera
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Press the WASD keys to move me around.
-  - key: build harvester target
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: You currently have access to a building called a {HARVESTER}. When
-        placed on a {MINERAL}, it will collect its contents for you.
-    - aiExpression: 2
-      dialogue: The {HARVESTER} will show an >X< when it has exhausted its {MINERALS}.
-    - aiExpression: 2
-      dialogue: I'll show you where to put the {HARVESTER}.
-  - key: build harvester icon
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Click on the {HARVESTER} icon in the building menu.
-  - key: build more harvesters
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: 'Good, you''re learning. Now build two more to speed up your {MINERAL}
-        collection. '
-  - key: build extender target
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: 'You see the green grid around your ship? It represents the area that
-        you can place buildings on. '
-    - aiExpression: 2
-      dialogue: Right now it's too small to reach those {MINERALS} I showed you earlier.
-        You will need to place a [POWER EXTENDER].
-  - key: build more harvesters extended
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: See how your grid range has now increased? Now you can place some
-        more {HARVESTERS}.
-  - key: explain power
-    expressionDialoguePairs:
-    - aiExpression: 3
-      dialogue: Oh, well . . . that isn't good. It appears the {HARVESTERS} have put
-        some strain on the power system. When buildings are placed, they consume power.
-    - aiExpression: 2
-      dialogue: Too many buildings consuming power will cause some to shut down. Move
-        your mouse over the [BATTERY ICON] at the top of the screen to see how that
-        works.
-  - key: build generator target
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: 'To avoid losing power, you can place [POWER GENERATORS]. They will
-        increase the amount of power you can regenerate. Be wary though, they can
-        only handle so much. '
-    - aiExpression: 2
-      dialogue: 'Try placing a [POWER GENERATOR]. '
-  - key: build more generators
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: It appears to have helped. If you look at the [BATTERY ICON] at the
-        top of your screen, the [POWER GENERATION] number should have changed.
-    - aiExpression: 2
-      dialogue: I think you should place a few more [POWER GENERATORS] just to be
-        safe.
-  - key: collect minerals
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Your ship is in pretty bad shape, I would try and collect some {MINERALS}
-        to get it fixed.
-  - key: collect sonar
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: "Great, you\u2019ve repaired your ship. Now we need to find that thruster...hey,
-        what's that canister over there? Try picking it up."
-  - key: select sonar
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: Oh! It's the sonar. It must have fallen out of the ship when we landed.
-        Click the button in the bottom right corner and select it.
-  - key: activate sonar
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Now click somewhere on the ground to activate it. That will be the
-        centre of the sonar's ping.
-  - key: explain abilities
-    expressionDialoguePairs:
-    - aiExpression: 3
-      dialogue: Oh boy, that drained some power. Let's be smart about how it's in
-        the future, okay?
-    - aiExpression: 2
-      dialogue: Anyway, it seems we've found some items over there. You should see
-        what it is, and recover it if it's another canister like the sonar's.
-  - key: explain thruster
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: Ooh! And here's the thruster. We'll be needing that too, if we want
-        to get off this planet.
-  - key: extend to thruster
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: "Great, you\u2019ve repaired your ship. Don't relax just yet. Next
-        step, attaching the ship's missing thruster.\r\n"
-  - key: build extender in fog
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Hey...this thick miasma seems to be in the way though. Try placing
-        a [POWER EXTENDER] in it and see what happens.
-  - key: build mortar
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: As if crash landing wasn't enough... now we're surrounded by a man-dissolving
-        fog? Great!
-    - aiExpression: 2
-      dialogue: 'Your ship comes equipped with some defences called >MORTAR< and >PULSE
-        TOWER<. '
-    - aiExpression: 2
-      dialogue: Since its attacks are long range, try placing a >MORTAR< just outside
-        the fog.
-  - key: build pulse defence
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: Next, place a >PULSE TOWER< a bit closer to the fog, since it does
-        damage at close range.
-  - key: activate defences
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: Now that you know how to place buildings, I would suggest placing
-        some more, we wouldn't want the fog seeping into your ship.
-    - aiExpression: 1
-      dialogue: Once you're prepared, press the >ACTIVATE< button at the top of your
-        screen to boot up your >DEFENCES<.
-  - key: activate defences in range
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: Now that you've built a >DEFENCE< in range of the fog, when you're
-        ready, activate the >DEFENCES< and clear it away.
-  - key: maybe dont build in fog
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Let's not go that way yet, we don't know what's out there.
-  - key: definitely dont build in fog
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Hey, weren't you paying attention? If you build something there, the
-        fog will just destroy it. Let's pay attention to the task at hand.
-  - key: need defences
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Hold on, you need to build defences within striking distance of the
-        fog. Their range isn't infinite, you know.
-  - key: finished
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Well, now that you know the basics, the rest is up to you. I will
-        aid you where I can. I would suggest exploring your surroundings and collecting
-        some more {MINERALS}, maybe even get to your ship's thruster.
+  wKey: {fileID: 0}
+  aKey: {fileID: 0}
+  sKey: {fileID: 0}
+  dKey: {fileID: 0}
+  zoomIn: {fileID: 0}
+  zoomOut: {fileID: 0}
+  powerDiagram: {fileID: 0}
+  abilityUnlockCanvas: {fileID: 0}
   skipTutorial: 1
   stage: 1
   subStage: 1
@@ -456,12 +281,6 @@ MonoBehaviour:
   generatorLandmark: {fileID: 0}
   sonarLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
-  wKey: {fileID: 0}
-  aKey: {fileID: 0}
-  sKey: {fileID: 0}
-  dKey: {fileID: 0}
-  powerDiagram: {fileID: 0}
-  abilityUnlockCanvas: {fileID: 0}
   cameraController: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
   sonarCamera: {fileID: 0}
@@ -488,73 +307,6 @@ MonoBehaviour:
   objectiveWindow: {fileID: 0}
   objectiveWindowOpenArrows: {fileID: 0}
   aiText: {fileID: 0}
-  dialogue:
-  - key: error
-    expressionDialoguePairs:
-    - aiExpression: 3
-      dialogue: '>Bug caused by developer<. Click for your compensation. Go on. Give
-        it a click. '
-    - aiExpression: 1
-      dialogue: 'Mr. and Mrs. Dursley of number four, Privet Drive, were proud to
-        say that they were perfectly normal, thank you very much. '
-  - key: start harvest stage
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Time to repair your hull. You will need collect {MINERALS} to repair
-        it.
-    - aiExpression: 2
-      dialogue: There is likely to be {MINERALS} scattered around the planet. You
-        will need to venture out to find them.
-  - key: end harvest stage
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: "Great, you\u2019ve repaired your ship. Do not relax just yet. Next
-        step, attaching the ship's missing thruster.\r\n"
-  - key: finish finding thruster
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: You're going to need to get to your thruster.
-  - key: start part stage
-    expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: Thankfully it is not in too much disrepair. We've just got to clear
-        the fog and retrieve it.
-  - key: end part stage
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: The fog...it seems to be showing signs of severe aggression.
-  - key: start power stage
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: The ship needs time to repair, keep the fog away from it!
-  - key: end power stage
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: "\rFinally! Quick, push the launch button and get out of here!\r\n"
-  - key: power overloaded
-    expressionDialoguePairs:
-    - aiExpression: 3
-      dialogue: Power generation exceeded! Try destroying some buildings or building
-        more generators.
-  - key: maintain minerals
-    expressionDialoguePairs:
-    - aiExpression: 3
-      dialogue: Come on, what are you doing? You can't repair your ship without enough
-        minerals. You had them  and you wasted them.
-  - key: maintain power
-    expressionDialoguePairs:
-    - aiExpression: 3
-      dialogue: Come on, what are you doing? You can't launch your ship without enough
-        power. You had it  and you wasted it.
-  - key: fog destroyed
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: You destroyed all of the fog. Nice job. Now, can we leave yet?
-  - key: all tiles powered
-    expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: You've supplied power to the whole map? I mean, good job, but can
-        you focus on leaving already?
   objectivesOn: 1
   currStage: 0
   subStage: 0

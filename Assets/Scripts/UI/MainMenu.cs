@@ -21,42 +21,19 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private CanvasGroup difficultySubmenu;
     [SerializeField, TextArea] private string[] difficultyDescriptions;
     [SerializeField] private TextMeshProUGUI difficultyDescText;
-    [SerializeField] private TMP_Dropdown dropdown;
 
     private bool skipTutorial = false;
     private int difficulty = 1;
-    private Button playButton;
 
-    [Header("FMOD")]
-    public MusicFMOD musicfmod;
     private MusicFMOD musicFMOD;
 
     private void Start()
     {
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-            return;
-        }
-        else if (GameObject.Find("MusicFMOD(Clone)") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD(Clone)").GetComponent<MusicFMOD>();
-            return;
-        }
-        else
-        {
-            Instantiate(musicfmod);
-            musicFMOD = musicfmod;
-        }
-
+        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         DontDestroyOnLoad(musicFMOD);
         musicFMOD.StartMusic();
 
         Time.timeScale = 1;
-
-        playButton = GameObject.Find("PlayButton").GetComponent<Button>();
-        EventSystem.current.firstSelectedGameObject = playButton.gameObject;
-        playButton.Select();
     }
 
     public void ToggleTutorial(bool tutorialOn)
@@ -87,7 +64,6 @@ public class MainMenu : MonoBehaviour
                 difficultySubmenu.DOFade(1, 0.5f);
                 difficultySubmenu.interactable = true;
                 difficultySubmenu.blocksRaycasts = true;
-                dropdown.Select();
             });
     }
 
@@ -120,7 +96,6 @@ public class MainMenu : MonoBehaviour
                 mainCanvasGroup.DOFade(1, 0.5f);
                 mainCanvasGroup.interactable = true;
                 mainCanvasGroup.blocksRaycasts = true;
-                playButton.Select();
             });
     }
 

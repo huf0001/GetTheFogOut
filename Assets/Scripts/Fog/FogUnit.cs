@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using UnityEngine.Profiling;
 
 public class FogUnit : Entity
 {
@@ -24,6 +25,7 @@ public class FogUnit : Entity
     [SerializeField] private float damage;
 
     [Header("VFX")]
+    //TODO: plug in animation get it running
     [SerializeField] private GameObject angryFogEvaporation;
 
     [Header("For Testing")]
@@ -31,6 +33,7 @@ public class FogUnit : Entity
 
     //Non-Serialized Fields
     private Fog fog;
+    private bool activeOnTile = false;
     private bool angry = false;
 
     private float colourProgress = 0;
@@ -55,6 +58,7 @@ public class FogUnit : Entity
 
     //Basic Public Properties
     public Fog Fog { get => fog; set => fog = value; }
+    public bool ActiveOnTile { get => activeOnTile; set => activeOnTile = value; }
     public bool Angry { get => angry; set => angry = value; }
     public float Damage { get => damage; set => damage = value; }
     public bool FillingFromFogSphere {  get => fillingFromFogSphere; set => fillingFromFogSphere = value; }
@@ -97,9 +101,9 @@ public class FogUnit : Entity
     //Awake
     private void Awake()
     {
-        fogRenderer = gameObject.GetComponent<Renderer>();
-        colour = Shader.PropertyToID("_Colour");
         alpha = Shader.PropertyToID("_Alpha");
+        colour = Shader.PropertyToID("_Colour");
+        fogRenderer = gameObject.GetComponent<Renderer>();
     }
 
     //Sets the starting values for fog damage health variables
@@ -156,12 +160,24 @@ public class FogUnit : Entity
     public void RenderColour()
     {
         fogRenderer.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
+        //Profiler.BeginSample("FogUnit.RenderColour Mathf.Lerp(colourProgress)");
+        //float lerp = Mathf.Lerp(0, 1, colourProgress);
+        //Profiler.EndSample();
+
+        //Profiler.BeginSample("FogUnit.RenderColour currentColours.Evaluate(lerp)");
+        //Color evaluated = currentColours.Evaluate(lerp);
+        //Profiler.EndSample();
+
+        //Profiler.BeginSample("FogUnit.RenderColour fogRenderer.material.SetColor(colour, evaluated)");
+        //fogRenderer.material.SetColor(colour, evaluated);
+        //Profiler.EndSample();
 
         if (!angry && currentColours == angryColours || angry && currentColours == docileColours)
         {
             colourProgress -= Time.deltaTime * colourLerpSpeedMultiplier;
 
-            if (((!angry && currentColours == angryColours) || (angry && currentColours == docileColours)) && colourProgress < 0)
+            if (((!angry && currentColours == angryColours) || (angry && currentColours == docileColours)) &&
+                colourProgress < 0)
             {
                 colourProgress = 0;
                 colourProgressTarget = 0;
@@ -225,7 +241,7 @@ public class FogUnit : Entity
 
             foreach (TileData t in Location.AdjacentTiles)
             {
-                if (t.FogUnit != null)
+                if (t.FogUnitActive)
                 {
                     t.FogUnit.NeighboursFull = false;
                 }
