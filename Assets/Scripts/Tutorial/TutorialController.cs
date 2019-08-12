@@ -165,7 +165,7 @@ public class TutorialController : DialogueBoxController
 
         if (skipTutorial)
         {
-            Fog.Instance.WakeUpFog(5);
+            Fog.Instance.InvokeWakeUpFog(5);
             Fog.Instance.BeginUpdatingDamage(5);
             stage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
@@ -1175,7 +1175,7 @@ public class TutorialController : DialogueBoxController
                 {
                     if (f.TakingDamage)
                     {
-                        Fog.Instance.WakeUpFog(0);
+                        Fog.Instance.WakeUpFog();
                         IncrementSubStage();
                         break;
                     }

@@ -1,13 +1,12 @@
-﻿//using System;
-//using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-//using DG.Tweening;
-//using UnityEditor;
+using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
-//using UnityEngine.Serialization;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
-using MEC;
 
 public enum FogExpansionDirection
 {
@@ -551,25 +550,30 @@ public class Fog : MonoBehaviour
     //Turns on the fog's sensitivity to damage
     public void BeginUpdatingDamage(int delay)
     {
-        Timing.CallDelayed(delay, delegate { Timing.RunCoroutine(UpdateDamageToFogUnits(), "fog"); });
+        StartCoroutine(UpdateDamageToFogUnits());
     }
 
     //Wakes up the fog, turning on its filling and expansion, and fog spheres
-    public void WakeUpFog(int delay)
+    public void InvokeWakeUpFog(int delay)
     {
-        Timing.CallDelayed(delay + 0.1f, delegate { Timing.RunCoroutine(UpdateFogUnitFill(), "fog"); });
-        Timing.CallDelayed(delay + 0.3f, delegate { Timing.RunCoroutine(ExpandFog(), "fog"); });
-        Timing.CallDelayed(delay + 1f, delegate { Timing.RunCoroutine(UpdateFogSpheres(), "fog"); });
+        Invoke(nameof(WakeUpFog), delay);
+    }
+
+    //Wakes up the fog, turning on its filling and expansion, and fog spheres
+    public void WakeUpFog()
+    {
+        StartCoroutine(UpdateFogUnitFill());
+        StartCoroutine(ExpandFog());
+        StartCoroutine(UpdateFogSpheres());
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
 
     //Handles the damaging of fog units
-    IEnumerator<float> UpdateDamageToFogUnits()
+    IEnumerator UpdateDamageToFogUnits()
     {
         while (fogActive)
         {
-            Profiler.BeginSample("Fog UpdateDamage");
             List<FogUnit> toRender = new List<FogUnit>();
 
             foreach (FogUnit f in fogUnitsInPlay)
@@ -606,20 +610,20 @@ public class Fog : MonoBehaviour
             if (fogUnitsInPlay.Count == 0)
             {
                 ObjectiveController.Instance.FogDestroyed();
-                Timing.KillCoroutines("fog");
+                fogActive = false;
             }
 
-            Profiler.EndSample();
-            yield return Timing.WaitForSeconds(fogDamageInterval);
+            yield return new WaitForSeconds(fogDamageInterval);
         }
     }
 
     //Fills the health of fog units
-    IEnumerator<float> UpdateFogUnitFill()
+    IEnumerator UpdateFogUnitFill()
     {
+        yield return new WaitForSeconds(0.1f);
+
         while (fogActive)
         {
-            Profiler.BeginSample("Fog UpdateFill");
             List<FogUnit> toRenderOpacity = new List<FogUnit>();
 
             if (fogUnitsGrow)
@@ -673,17 +677,17 @@ public class Fog : MonoBehaviour
                 }
             }
 
-            Profiler.EndSample();
-            yield return Timing.WaitForSeconds(fogFillInterval);
+            yield return new WaitForSeconds(fogFillInterval);
         }
     }
 
     //Fog spills over onto adjacent tiles
-    IEnumerator<float> ExpandFog()
+    IEnumerator ExpandFog()
     {
+        yield return new WaitForSeconds(0.3f);
+
         while (fogActive)
         {
-            Profiler.BeginSample("Fog Expansion");
             List<TileData> newTiles = new List<TileData>();
 
             foreach (FogUnit f in fogUnitsInPlay)
@@ -715,17 +719,17 @@ public class Fog : MonoBehaviour
                 Debug.Log("More fog units than board tiles. There must be some overlapping.");
             }
 
-            Profiler.EndSample();
-            yield return Timing.WaitForSeconds(fogExpansionInterval);
+            yield return new WaitForSeconds(fogExpansionInterval);
         }
     }
 
     //Handles the fog spheres
-    IEnumerator<float> UpdateFogSpheres()
+    IEnumerator UpdateFogSpheres()
     {
+        yield return new WaitForSeconds(1f);
+
         while (fogActive)
         {
-            Profiler.BeginSample("Fog Spheres");
             if (fogSpheresGrow)
             {
                 foreach (FogSphere f in fogSpheresInPlay)
@@ -767,8 +771,7 @@ public class Fog : MonoBehaviour
                 SpawnFogSphere();
             }
 
-            Profiler.EndSample();
-            yield return Timing.WaitForSeconds(fogSphereInterval);
+            yield return new WaitForSeconds(fogSphereInterval);
         }
     }
 

@@ -1,9 +1,5 @@
-﻿//using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-//using System.Linq;
-//using System.Security.Cryptography;
-//using System.Xml.Schema;
-//using Cinemachine;
 using UnityEngine;
 
 public enum FogSphereState
