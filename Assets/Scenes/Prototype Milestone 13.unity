@@ -3644,6 +3644,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96bff486ac9ca384a894669da2068243, type: 3}
+--- !u!115 &871351036
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 5
+  m_Script: 
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_ExecutionOrder: 0
+  m_ClassName: CinemachinePostProcessing
+  m_Namespace: Cinemachine.PostFX
 --- !u!4 &874767341 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9057351318773771585, guid: 435f377d7d74a0240b7dc7d43af25cd0,
@@ -11075,7 +11089,18 @@ PrefabInstance:
       propertyPath: orthographic
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5820375784460975700, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521921235953701323, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
+        type: 3}
+      propertyPath: field of view
+      value: 19.016779
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3823238111243201989, guid: d7ecb5b25ac30f24eaf36ffcc437ab87, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d7ecb5b25ac30f24eaf36ffcc437ab87, type: 3}
 --- !u!1 &951816723860016431 stripped
 GameObject:
@@ -11198,6 +11223,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 752055236}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusOffset: 0
+  m_Profile: {fileID: 11400000, guid: 274e836dc78a858488c1684c9bbb5ccc, type: 2}
+--- !u!1 &951816723860016443 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5820375784460975700, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
+    type: 3}
+  m_PrefabInstance: {fileID: 951816723860016430}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &951816723860016444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951816723860016443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 871351036}
   m_Name: 
   m_EditorClassIdentifier: 
   m_FocusTracksTarget: 0
