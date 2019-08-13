@@ -79,7 +79,7 @@ public class MinimapTile : MonoBehaviour
             }
         }
 
-        if (Tile.FogUnit)
+        if (Tile.FogUnitActive)
         {
             float healthPer = Tile.FogUnit.Health / Tile.FogUnit.MaxHealth;
             if (curFoggyness != healthPer)
