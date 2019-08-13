@@ -7660,6 +7660,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b73f147f6fafb3242895252f4e5718fb, type: 3}
+--- !u!1 &1747416220 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6715627309761266782, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
+    type: 3}
+  m_PrefabInstance: {fileID: 951816723860016430}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1747416221
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747416220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_AmplitudeGain: 0.25
+  m_FrequencyGain: 0.5
+  mNoiseOffsets: {x: 867.60596, y: 717.54626, z: 213.37927}
 --- !u!1001 &1800879039
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11089,6 +11111,11 @@ PrefabInstance:
       propertyPath: orthographic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 951816722025852442, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5820375784460975700, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
         type: 3}
       propertyPath: m_IsActive
@@ -11098,6 +11125,11 @@ PrefabInstance:
         type: 3}
       propertyPath: field of view
       value: 19.016779
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521921235953701323, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
+        type: 3}
+      propertyPath: far clip plane
+      value: 50000
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3823238111243201989, guid: d7ecb5b25ac30f24eaf36ffcc437ab87, type: 3}
@@ -11248,7 +11280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FocusTracksTarget: 0
   m_FocusOffset: 0
-  m_Profile: {fileID: 11400000, guid: 274e836dc78a858488c1684c9bbb5ccc, type: 2}
+  m_Profile: {fileID: 11400000, guid: 0c003ba57e60b8e468849a3c273af5df, type: 2}
 --- !u!114 &1913507752406271259 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1710151170767587381, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
