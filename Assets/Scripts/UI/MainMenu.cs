@@ -26,12 +26,20 @@ public class MainMenu : MonoBehaviour
     private int difficulty = 1;
 
     private MusicFMOD musicFMOD;
+    public MusicFMOD musicfmod;
 
     private void Start()
     {
-        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        DontDestroyOnLoad(musicFMOD);
-        musicFMOD.StartMusic();
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
+        else
+        {
+            Instantiate(musicfmod);
+            musicFMOD = musicfmod;
+            musicFMOD.StartMusic();
+        }
 
         Time.timeScale = 1;
     }
