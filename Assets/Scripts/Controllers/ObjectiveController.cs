@@ -67,6 +67,11 @@ public class ObjectiveController : DialogueBoxController
         }
 
         Instance = this;
+
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
     }
 
     // Start is called before the first frame update
@@ -76,7 +81,6 @@ public class ObjectiveController : DialogueBoxController
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
         WorldController.Instance.Inputs.InputMap.OpenCloseObjectiveWindow.performed += ctx => ToggleObjWindow();
-        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
     }
 
     // Update Functions -------------------------------------------------------------------------------------

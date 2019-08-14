@@ -13,13 +13,13 @@ public class FogUnit : Entity
     [SerializeField] private float endOpacity;
 
     [Header("Colour")]
-    [SerializeField] private float colourLerpSpeedMultiplier;
+    [SerializeField] private float colourLerpSpeedMultiplier = 0.2f;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
 
     [Header("Damage to Fog Unit")]
-    [SerializeField] private float damageLerpMultiplier;
+    [SerializeField] private float damageLerpMultiplier = 3.0f;
 
     [Header("Damage to Buildings")]
     [SerializeField] private float damage;
