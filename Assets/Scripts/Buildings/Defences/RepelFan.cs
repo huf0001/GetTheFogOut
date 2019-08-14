@@ -35,7 +35,7 @@ public class RepelFan : Defence
     public override void PowerDown()
     {
         base.PowerDown();
-        this.gameObject.GetComponentInChildren<ParticleSystem>().Pause();
+        this.gameObject.GetComponentInChildren<ParticleSystem>().Stop();
         CancelInvoke("FirePulse");
     }
 
