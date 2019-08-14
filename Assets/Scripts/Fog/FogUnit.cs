@@ -29,6 +29,9 @@ public class FogUnit : Entity
     [Header("For Testing")]
     [SerializeField] private bool returnToPool;
 
+    [Header("Prefabs")]
+    [SerializeField] private GameObject fogLightning;
+
     //Non-Serialized Fields
     private Fog fog;
     private bool angry = false;
@@ -43,6 +46,8 @@ public class FogUnit : Entity
     private float damageLerpProgress = 0;
 
     private Renderer fogRenderer;
+    private GameObject Lightning;
+    private ParticleSystem LightningPS;
     private int colour;
     private int alpha;
 
@@ -98,6 +103,7 @@ public class FogUnit : Entity
     private void Awake()
     {
         fogRenderer = gameObject.GetComponent<Renderer>();
+        spawnLightning();
         colour = Shader.PropertyToID("_Colour");
         alpha = Shader.PropertyToID("_Alpha");
     }
@@ -245,4 +251,25 @@ public class FogUnit : Entity
             Destroy(gameObject);
         }
     }
+
+    private void spawnLightning()
+    {
+            if (!Lightning)
+            {
+                Lightning = Instantiate(fogLightning, transform, true);
+                LightningPS = Lightning.GetComponent<ParticleSystem>();
+            }
+    }
+
+    public void playLightning()
+    {
+        if (LightningPS)
+        {
+            if (LightningPS.isStopped)
+            {
+                LightningPS.Play();
+            }
+        }
+    }
+
 }

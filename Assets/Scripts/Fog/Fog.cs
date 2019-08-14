@@ -204,7 +204,6 @@ public class Fog : MonoBehaviour
         }
 
         Instance = this;
-
         if (GlobalVars.LoadedFromMenu)
         {
             Difficulty = (Difficulty)GlobalVars.Difficulty;
@@ -373,7 +372,7 @@ public class Fog : MonoBehaviour
 
     //Spawning Methods - Fog Units-------------------------------------------------------------------------------------------------------------------
 
-    //Instantiates a fog unit that isn't on the board or in the pool
+    //tiates a fog unit that isn't on the board or in the pool
     private FogUnit CreateFogUnit()
     {
         FogUnit f = Instantiate<FogUnit>(fogUnitPrefab, transform, true);
@@ -436,6 +435,9 @@ public class Fog : MonoBehaviour
 
             fogUnitsInPool.Remove(f);
             fogUnitsInPlay.Add(f);
+
+            f.playLightning();
+
             fogCoveredTiles.Add(t);
 
             if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
@@ -854,13 +856,44 @@ public class Fog : MonoBehaviour
     }
 
     //Other Methods----------------------------------------------------------------------------------------------------------------------------------
-
+    /*
+    // fog lighting
+    private void SpawnLighting()
+    {
+        foreach (FogUnit l in fogUnitsInPlay)
+            {
+            l.fogLighting = GameObject.Instantiate(fogLighting, l.transform.position, Quaternion.identity);
+            if (!l.fogLighting)
+            {
+                ParticleSystem j = l.GetComponentInChildren<ParticleSystem>();
+                if (!j.IsAlive())
+                {
+                    Destroy(l.fogLighting);
+                    Debug.Log("test");
+                }
+            }
+        }
+    }
+    */
+    private void selectedLightning(int amount)
+    {
+            if (amount > 0)
+            {
+            FogUnit f = fogUnits[Random.Range(0, 50), Random.Range(0, 50)];
+            if (fogUnitsInPlay.Contains(f))
+            {
+                f.playLightning();
+                amount--;
+            }
+            }
+        
+    }
     private void Update()
     {
+        selectedLightning(1000);
         if (isGrowthPaused)
         {
             pauseTime -= Time.deltaTime;
-
             if (pauseTime <= 0)
             {
                 fogUnitsGrow = true;
@@ -905,4 +938,8 @@ public class Fog : MonoBehaviour
             f.Angry = angry;
         }
     }
+
+    //fog lighting prefab VFX Spawn randomly ???
+
+
 }
