@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] float moveSpeed = 20f;
     [SerializeField] float rotationSpeed = 40f;
     [SerializeField] float zoomMulti = 10f;
-    [SerializeField] float dragSpeed;
+    [SerializeField] float dragSpeed = 0.005f;
     //[SerializeField] bool enableEdgePan = false;
 
     private bool isBuildingSelect;
