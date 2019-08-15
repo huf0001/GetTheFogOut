@@ -419,7 +419,7 @@ public class WorldController : MonoBehaviour
             ChangeCursorState();
         }
 
-        if (resourceController.IsWin() || hubDestroyed)
+        if (hubDestroyed)
         {
             Time.timeScale = 0.2f;
             GameOver = true;
