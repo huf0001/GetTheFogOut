@@ -202,7 +202,8 @@ public abstract class PowerSource : Building
                     }
                 }
             
-            if (ObjectiveController.Instance.ShipComponent.activeSelf)
+            //TODO: remove hard-coding of these tile numbers, they need to check their position against the hub/thruster's, whichever is appropriate here.
+            if (ObjectiveController.Instance.thruster.activeSelf)
             {
                 if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
                 {

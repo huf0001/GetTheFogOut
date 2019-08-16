@@ -25,7 +25,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveCompletePrefab;
     [SerializeField] GameObject hub;
-    [SerializeField] public GameObject ShipComponent;
+    [SerializeField] public GameObject thruster;
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
@@ -232,7 +232,7 @@ public class ObjectiveController : DialogueBoxController
                     // Run AI completion text
                     SendDialogue("start part stage", 1);
                     //Camera pans to the thruster
-                    ShipComponent.SetActive(true);
+                    thruster.SetActive(true);
                     thrusterCamera.gameObject.SetActive(true);
                     Time.timeScale = 0.25f;
                     IncrementSubStage();
@@ -250,16 +250,17 @@ public class ObjectiveController : DialogueBoxController
                     Time.timeScale = 1f;
                     thrusterCamera.gameObject.SetActive(false);
                     DismissDialogue();
-                    ChangeToSubStage(5);
+                    ChangeToSubStage(3);
                 }
 
                 break;
             case 2:
                 // Update objectives window to 'Recover ship thrusters'
                 // End stage if the part is collected
+                
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
-                    ShipComponent.SetActive(false);
+                    thruster.SetActive(false);
                     ChangeToSubStage(4);
                 }
                 else if (dialogueRead)
@@ -273,7 +274,7 @@ public class ObjectiveController : DialogueBoxController
                 // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
-                    ShipComponent.SetActive(false);
+                    thruster.SetActive(false);
                     IncrementSubStage();
                 }
 

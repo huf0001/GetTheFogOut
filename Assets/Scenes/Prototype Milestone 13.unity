@@ -8668,18 +8668,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1868347795}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1868347809 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4767305868788545471, guid: f0d96ef103d08e4429542615f2b52508,
-    type: 3}
-  m_PrefabInstance: {fileID: 1868347795}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aff8c61d0eeef045b64aa8d8248e4fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1868347810 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 326070630, guid: f0d96ef103d08e4429542615f2b52508,
@@ -8964,7 +8952,7 @@ PrefabInstance:
       objectReference: {fileID: 455652285}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: ShipComponent
+      propertyPath: thruster
       value: 
       objectReference: {fileID: 1898204249}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
@@ -9107,26 +9095,6 @@ PrefabInstance:
       propertyPath: thrusterCamera
       value: 
       objectReference: {fileID: 1913507752406271259}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: zoomIn
-      value: 
-      objectReference: {fileID: 1868347819}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: zoomOut
-      value: 
-      objectReference: {fileID: 1868347800}
-    - target: {fileID: 1899903245264256477, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: warningScript
-      value: 
-      objectReference: {fileID: 1868347809}
     - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -393,7 +393,7 @@ public class WorldController : MonoBehaviour
         }
         showActiveTiles();
 
-        if (ObjectiveController.Instance.ShipComponent.activeSelf)
+        if (ObjectiveController.Instance.thruster.activeSelf)
         {
             thrusterTilesOn();
 
@@ -629,6 +629,7 @@ public class WorldController : MonoBehaviour
                 return s;
             }
         }
+
         return null;
     }
 
