@@ -11,9 +11,9 @@ public class UpgradeScreen : MonoBehaviour
     [SerializeField] private Color unupgradedLine;
     [SerializeField, Tooltip("Alpha value for other tree")] private float treeUnavailable;
 
-    public void PerformUpgrade(Image image, CanvasGroup otherTree)
+    public void PerformUpgrade()
     {
-        
+        // TODO: add functionality to actually do upgrades
     }
 
     public void ChangeCurButtonColour(Image image)
