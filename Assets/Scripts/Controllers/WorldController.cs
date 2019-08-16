@@ -141,6 +141,7 @@ public class WorldController : MonoBehaviour
         SetBuildingsToTiles();
         SetLandmarksToTiles();
         SetCollectablesToTiles();
+        SetRocksToTiles();
         CreateMinimapTiles();
         groundCollider = ground.GetComponent<Collider>();
         TutorialController.Instance.StartTutorial();
@@ -244,6 +245,17 @@ public class WorldController : MonoBehaviour
         foreach (Landmark l in landmarks)
         {
             l.Location = GetTileAt(l.transform.position);
+        }
+    }
+
+    void SetRocksToTiles()
+    {
+        TileBlock[] tileBlocks = FindObjectsOfType<TileBlock>();
+
+        foreach (TileBlock tileBlock in tileBlocks)
+        {
+            TileData tileData = GetTileAt(tileBlock.transform.position);
+            tileData.buildingChecks.obstacle = true;
         }
     }
 
@@ -647,20 +659,24 @@ public class WorldController : MonoBehaviour
 
     public void showActiveTiles()
     {
-        GameObject grids = GameObject.Find("Grids");
-
         if (index != activeTiles.Count)
         {
+            GameObject grids = GameObject.Find("Grids");
+            
             hideActiveTiles();
+            
             foreach (TileData tile in activeTiles)
             {
-                Vector3 pos = Vector3.zero;
-                pos.x += tile.X;
-                pos.y = 0.033f;
-                pos.z += tile.Z;
-                tile.plane = Instantiate(planeGridprefab, pos, planeGridprefab.transform.localRotation);
+                if (tile.isBuildable)
+                {
+                    Vector3 pos = Vector3.zero;
+                    pos.x += tile.X;
+                    pos.y = 0.033f;
+                    pos.z += tile.Z;
+                    tile.plane = Instantiate(planeGridprefab, pos, planeGridprefab.transform.localRotation);
 
-                tile.plane.transform.SetParent(grids.transform);
+                    tile.plane.transform.SetParent(grids.transform);
+                }
             }
             index = activeTiles.Count;
         }
