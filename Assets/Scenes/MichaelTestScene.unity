@@ -1082,6 +1082,100 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1615385481}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1634879911
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 683996814274507510, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_Name
+      value: Cable Energy
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 846055841476615255, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 846055841476615255, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: EmissionModule.m_BurstCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 846055841476615255, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: EmissionModule.rateOverDistance.scalar
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 846055841476615255, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 846055841476615255, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.25
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4b11cdfd0ed975246be7b2958996c13a, type: 3}
 --- !u!1 &1774601779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1224,7 +1318,7 @@ PrefabInstance:
     - target: {fileID: 8502067115120478638, guid: cd31d6fcf7add7e4aaa8e7a22e19b7c7,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3575913343396146165, guid: cd31d6fcf7add7e4aaa8e7a22e19b7c7,
         type: 3}

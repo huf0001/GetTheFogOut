@@ -27,6 +27,7 @@ public enum StartConfiguration
 
 public enum Difficulty
 {
+    Chill,
     Easy,
     Normal,
     Hard
@@ -217,6 +218,12 @@ public class Fog : MonoBehaviour
 
         switch (difficulty)
         {
+            case Difficulty.Chill:
+                fogDamage /= 2f;
+                fogGrowthEasy /= 2;
+                fogGrowthMedium /= 2;
+                fogGrowthHard /= 2;
+                break;
             case Difficulty.Easy:
                 fogDamage /= 1.40f;
                 fogGrowthEasy /= 2;
