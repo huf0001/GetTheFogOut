@@ -23,7 +23,7 @@ public class MouseController : MonoBehaviour
     private GameObject PointAtObj;
     List<GameObject> collisionList = new List<GameObject>();
     private bool reportTutorialClick = false;
-    private TileData hoveredTile;
+    public TileData hoveredTile;
     public bool isBuildAvaliable = true;
     private bool hovertoggle = true;
     private Camera cam;
@@ -72,20 +72,25 @@ public class MouseController : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-            if (!WorldController.Instance.IsPointerOverGameObject() && Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Tiles")))
+            
+            if (!WorldController.Instance.IsPointerOverGameObject() && Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
             {
                 if (WorldController.Instance.TileExistsAt(hit.point))
                 {
+                    TileData t = WorldController.Instance.GetTileAt(hit.point);
                     if (hovertoggle)
                     {
                         hovertoggle = false;
-                        hoveredTile = WorldController.Instance.GetTileAt(hit.point);
-                        changeTileMaterial(WorldController.Instance.hoverTile);
+                        if (!t.buildingChecks.collectable)
+                        {
+                            hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                            changeTileMaterial(WorldController.Instance.hoverTile);
+                        }else
+                            changeTileMaterial(WorldController.Instance.normalTile);
                     }
                     else
                     {
-                        if (!hoveredTile.Equals(WorldController.Instance.GetTileAt(hit.point)))
+                        if (!(hoveredTile.Equals(WorldController.Instance.GetTileAt(hit.point))))
                         {
                             hovertoggle = true;
                             if (hoveredTile.plane == null)
@@ -93,8 +98,10 @@ public class MouseController : MonoBehaviour
                                 hoveredTile = WorldController.Instance.GetTileAt(hit.point);
                                 changeTileMaterial(WorldController.Instance.hoverTile);
                             }
-                            else
+                            else if (!t.buildingChecks.collectable)
+                            {
                                 changeTileMaterial(WorldController.Instance.normalTile);
+                            }
                         }
                     }
                 }
@@ -107,17 +114,19 @@ public class MouseController : MonoBehaviour
         else
         {
             changeTileMaterial(WorldController.Instance.normalTile);
-            if (!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile))
+            
+            if ((!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile)))
             {
                 Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
                 newColor.a = 0.8f;
                 towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
             }
             hoveredTile = towerManager.CurrentTile;
+            
         }
     }
 
-    void changeTileMaterial(Material mat)
+    public void changeTileMaterial(Material mat)
     {
         if (hoveredTile != null)
         {
@@ -130,8 +139,7 @@ public class MouseController : MonoBehaviour
                     hoveredTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
                 }
                 else
-                    hoveredTile.plane.GetComponent<Renderer>().material = mat;
-                //    hoveredTile.plane.GetComponent<Renderer>().material
+                    hoveredTile.plane.GetComponent<Renderer>().material = mat;  
             }
         }
     }
@@ -168,8 +176,7 @@ public class MouseController : MonoBehaviour
                 {
                     changeTileMaterial(WorldController.Instance.normalTile);
                     towerManager.CancelBuild();
-                }
-                else if (hit.collider.gameObject.layer == 15)
+                }else if (hit.collider.gameObject.layer == 15)
                 {
                     hit.collider.GetComponent<Collectable>()?.CollectAbility();
                     hit.collider.GetComponent<ShipComponent>()?.Collect();
@@ -193,7 +200,8 @@ public class MouseController : MonoBehaviour
 
                             towerManager.CurrentTile = tile;
                         }
-                    }
+                    }else
+                        towerManager.CurrentTile = tile;
                 }
             }
         }
