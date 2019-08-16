@@ -11,7 +11,7 @@ public class UpgradeScreen : MonoBehaviour
     [SerializeField] private Color unupgradedLine;
     [SerializeField, Tooltip("Alpha value for other tree")] private float treeUnavailable;
 
-    public void PerformUpgrade()
+    public void PerformUpgrade(/* Add in one parameter as needed to upgrade */)
     {
         // TODO: add functionality to actually do upgrades
     }
