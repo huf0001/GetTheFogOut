@@ -17,7 +17,7 @@ public class Collectable : Locatable, ICollectible
     {
         collectibleName = ability.name;
     }
-    
+
     private void Update()
     {
         if (isTriggered)
@@ -33,10 +33,9 @@ public class Collectable : Locatable, ICollectible
                 isTriggered = false;
             }
         }
-
         if (location.FogUnitActive)
         {
-           // Debug.Log(location.FogUnit.name + ability);
+            // Debug.Log(location.FogUnit.name + ability);
             if (location.FogUnit.Health == 100)
             {
                 meshRenderer.enabled = false;
@@ -65,6 +64,7 @@ public class Collectable : Locatable, ICollectible
                     FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_1", GetComponent<Transform>().position);
                     AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
                     UIController.instance.AbilityUnlock(ability);
+                    location.plane.GetComponent<MeshRenderer>().material = WorldController.Instance.normalTile;
                     Invoke(nameof(DestroyCollectable), 0.05f);
                 }
             }

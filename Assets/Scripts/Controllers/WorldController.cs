@@ -40,7 +40,7 @@ public class WorldController : MonoBehaviour
     public Collider groundCollider;
 
     [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab, hubPrefab, mineralPrefab;
-    [SerializeField] public Material normalTile, hoverTile;
+    [SerializeField] public Material normalTile, hoverTile,collectibleTile;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
@@ -669,8 +669,12 @@ public class WorldController : MonoBehaviour
                 pos.y = 0.033f;
                 pos.z += tile.Z;
                 tile.plane = Instantiate(planeGridprefab, pos, planeGridprefab.transform.localRotation);
-
                 tile.plane.transform.SetParent(grids.transform);
+                if (tile.buildingChecks.collectable)
+                {
+                    MeshRenderer mesh = tile.plane.GetComponent<MeshRenderer>();
+                    mesh.material = collectibleTile;
+                }
             }
             index = activeTiles.Count;
         }
