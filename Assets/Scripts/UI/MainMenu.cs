@@ -85,16 +85,16 @@ public class MainMenu : MonoBehaviour
         switch (difficulty)
         {
             case 0:
-                difficultyButtonText.text = "Difficulty: Chill";
-                break;
-            case 1:
                 difficultyButtonText.text = "Difficulty: Easy";
                 break;
-            case 2:
+            case 1:
                 difficultyButtonText.text = "Difficulty: Medium";
                 break;
-            case 3:
+            case 2:
                 difficultyButtonText.text = "Difficulty: Hard";
+                break;
+            case 3:
+                difficultyButtonText.text = "Difficulty: Very Hard";
                 break;
         }
         difficultySubmenu.blocksRaycasts = false;
