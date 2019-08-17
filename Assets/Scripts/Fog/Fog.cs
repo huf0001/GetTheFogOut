@@ -201,7 +201,6 @@ public class Fog : MonoBehaviour
         }
 
         Instance = this;
-
         if (GlobalVars.LoadedFromMenu)
         {
             Difficulty = (Difficulty)GlobalVars.Difficulty;
@@ -370,7 +369,7 @@ public class Fog : MonoBehaviour
     }
 
     //Spawning Methods - Fog Units-------------------------------------------------------------------------------------------------------------------
-
+    
     //Instantiates a fog unit that isn't on the board or in the pool
     private void CreateFogUnit(int x, int z)
     {
@@ -441,6 +440,10 @@ public class Fog : MonoBehaviour
             f.RenderOpacity();
 
             fogUnitsInPlay.Add(f);
+
+            f.playLightning();
+
+            //fogCoveredTiles.Add(t);
 
             if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
             {
@@ -882,4 +885,27 @@ public class Fog : MonoBehaviour
             f.Angry = angry;
         }
     }
+    
+    private void selectedLightning(int amount)
+    {
+        if (amount > 0)
+        {
+            FogUnit f = fogUnits[Random.Range(0, 50), Random.Range(0, 50)];
+            if (fogUnitsInPlay.Contains(f))
+            {
+                f.playLightning();
+                amount--;
+            }
+        }
+        
+    }
+
+    private void Update()
+    {
+        selectedLightning(1000);
+    }
+
+    //fog lighting prefab VFX Spawn randomly ???
+
+
 }
