@@ -217,7 +217,7 @@ namespace AmplifyShaderEditor
 		public readonly static string DeprecatedNoAlternativeMessageStr = "Node '{0}' is deprecated and should be removed.";
 		public readonly static string UndoChangePropertyTypeNodesId = "Changing Property Types";
 		public readonly static string UndoChangeTypeNodesId = "Changing Nodes Types";
-		public readonly static string UndoMoveNodesId = "MovingAndGrowing Nodes";
+		public readonly static string UndoMoveNodesId = "Moving Nodes";
 		public readonly static string UndoRegisterFullGrapId = "Register Graph";
 		public readonly static string UndoAddNodeToCommentaryId = "Add node to Commentary";
 		public readonly static string UndoRemoveNodeFromCommentaryId = "Remove node from Commentary";
@@ -421,7 +421,7 @@ namespace AmplifyShaderEditor
 		public readonly static string[] OverallInvalidChars = { "\r", "\n", "\\", " ", ".", ">", ",", "<", "\'", "\"", ";", ":", "[", "{", "]", "}", "=", "+", "`", "~", "/", "?", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-" };
 		public readonly static string[] ShaderInvalidChars = { "\r", "\n", "\\", "\'", "\"", };
 		public readonly static string[] EnumInvalidChars = { "\r", "\n", "\\", ".", ">", ",", "<", "\'", "\"", ";", ":", "[", "{", "]", "}", "=", "+", "`", "~", "/", "?", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-" };
-		public readonly static string[] AttrInvalidChars = { "\r", "\n", "\\", ".", ">", "<", "\'", "\"", ";", ":", "[", "{", "]", "}", "=", "+", "`", "~", "/", "?", "!", "@", "#", "$", "%", "^", "&", "*" };
+		public readonly static string[] AttrInvalidChars = { "\r", "\n", "\\", ">", "<", "\'", "\"", ";", ":", "[", "{", "]", "}", "=", "+", "`", "~", "/", "?", "!", "@", "#", "$", "%", "^", "&", "*" };
 
 		public readonly static string[] WikiInvalidChars = { "#", "<", ">", "[", "]", "|", "{", "}", "%", "+", "?", "\\", "/", ",", ";", "." };
 

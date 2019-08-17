@@ -49,6 +49,16 @@ public class TutorialController : DialogueBoxController
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
+    [Header("Tutorial UI Elements")]
+    [SerializeField] private CameraInput wKey;
+    [SerializeField] private CameraInput aKey;
+    [SerializeField] private CameraInput sKey;
+    [SerializeField] private CameraInput dKey;
+    [SerializeField] private CameraInput zoomIn;
+    [SerializeField] private CameraInput zoomOut;
+    [SerializeField] private Image powerDiagram;
+    [SerializeField] private GameObject abilityUnlockCanvas;
+
     [Header("Skip Tutorial")]
     [SerializeField] private bool skipTutorial = true;
 
@@ -65,21 +75,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] public GameObject thruster;
     [SerializeField] private ResourceNode harvesterResource;
     [SerializeField] private Landmark extenderLandmark;
-    //[SerializeField] private ResourceNode extendedHarvesterResource;
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private Landmark sonarLandmark;
-    //[SerializeField] private Landmark extenderInFogLandmark;
-    //[SerializeField] private Landmark mortarLandmark;
-    //[SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
-
-    [Header("UI Elements")]
-    [SerializeField] private CameraKey wKey;
-    [SerializeField] private CameraKey aKey;
-    [SerializeField] private CameraKey sKey;
-    [SerializeField] private CameraKey dKey;
-    [SerializeField] private Image powerDiagram;
-    [SerializeField] private GameObject abilityUnlockCanvas;
 
     [Header("Cameras")]
     [SerializeField] private CameraController cameraController;
@@ -88,9 +86,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CinemachineVirtualCamera artilleryCamera;
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
-    [Header("Colours")]
-    [SerializeField] private Color uiNormalColour;
-    [SerializeField] private Color uiHighlightColour;
+    [Header("UI Lerp Colours")]
+    [SerializeField] private Color uiNormalColour = Color.white;
+    [SerializeField] private Color uiHighlightColour = Color.green;
 
     [Header("Goals")]
     [SerializeField] private int builtHarvestersGoal;
@@ -118,6 +116,8 @@ public class TutorialController : DialogueBoxController
     private int savedSubStage;
 
     private TileData sonarLandmarkTile;
+
+    private MusicFMOD musicFMOD;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -151,22 +151,25 @@ public class TutorialController : DialogueBoxController
         {
             skipTutorial = GlobalVars.SkipTut;
         }
+
+        //Setup music
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
     public void StartTutorial()
     {
-        //Setup music
-        WorldController.Instance.musicFMOD.StageOneMusic();
-
         //Setup fog
         Fog.Instance.enabled = true;
         Fog.Instance.SpawnStartingFog();
 
         if (skipTutorial)
         {
-            Fog.Instance.InvokeWakeUpFog(5);
-            Fog.Instance.InvokeBeginUpdatingDamage(5);
+            Fog.Instance.WakeUpFog(5);
+            Fog.Instance.BeginUpdatingDamage(5);
             stage = TutorialStage.Finished;
             ObjectiveController.Instance.IncrementStage();
             defencesOn = true;
@@ -341,7 +344,7 @@ public class TutorialController : DialogueBoxController
                 dKey.LerpIn();
                 break;
             case 2:
-                GetCameraMovementInput();
+                GetCameraInputs();
 
                 if (dialogueRead)
                 {
@@ -354,7 +357,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 3:
-                GetCameraMovementInput();
+                GetCameraInputs();
 
                 if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
@@ -363,6 +366,33 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                SendDialogue("zoom camera", 1);
+                zoomIn.LerpIn();
+                zoomOut.LerpIn();
+                break;
+            case 5:
+                GetCameraInputs();
+
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (zoomIn.Finished && zoomOut.Finished)
+                {
+                    GoToSubStage(7);
+                }
+
+                break;
+            case 6:
+                GetCameraInputs();
+
+                if (zoomIn.Finished && zoomOut.Finished)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 7:
                 stage = TutorialStage.BuildHarvesters;
                 currentlyBuilding = BuildingType.Harvester;
                 ResetSubStage();
@@ -1166,7 +1196,7 @@ public class TutorialController : DialogueBoxController
                     ObjectiveController.Instance.IncrementStage();
                     //MusicController.Instance.StartStage1();
                     FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
-                    WorldController.Instance.musicFMOD.StageTwoMusic();
+                    musicFMOD.StageTwoMusic();
                 }
 
                 break;
@@ -1336,34 +1366,48 @@ public class TutorialController : DialogueBoxController
 
     //Tutorial Utility Methods - Camera--------------------------------------------------------------------------------------------------------------
 
-    //Checks inputs for camera movement part of the tutorial
-    private void GetCameraMovementInput()
+    //Checks WASD inputs for camera movement part of the tutorial
+    private void GetCameraInputs()
     {
-        GetButtonInput("Vertical", sKey, wKey);
-        GetButtonInput("Horizontal", aKey, dKey);
-    }
-
-    //Checks a specific camera input's input
-    private void GetButtonInput(string input, CameraKey negativeKey, CameraKey positiveKey)
-    {
-        float inputValue;
-
-        if (input == "Vertical")
+        if (subStage < 4)
         {
-            inputValue = cameraController.Move.y;
+            GetCameraInput("Vertical", sKey, wKey);
+            GetCameraInput("Horizontal", aKey, dKey);
         }
         else
         {
-            inputValue = cameraController.Move.x;
+            GetCameraInput("Zoom", zoomOut, zoomIn);
+        }
+    }
+
+    //Checks a specific camera input's input
+    private void GetCameraInput(string input, CameraInput negativeInput, CameraInput positiveInput)
+    {
+        float inputValue;
+
+        switch (input)
+        {
+            case "Vertical":
+                inputValue = cameraController.Move.y;
+                break;
+            case "Horizontal":
+                inputValue = cameraController.Move.x;
+                break;
+            case "Zoom":
+                inputValue = cameraController.ZoomVal;
+                break;
+            default:
+                inputValue = 0;
+                break;
         }
 
-        if (inputValue > 0 && !positiveKey.LerpOutCalled)
+        if (inputValue > 0 && !positiveInput.LerpOutCalled)
         {
-            positiveKey.LerpOut();
+            positiveInput.LerpOut();
         }
-        else if (inputValue < 0 && !negativeKey.LerpOutCalled)
+        else if (inputValue < 0 && !negativeInput.LerpOutCalled)
         {
-            negativeKey.LerpOut();
+            negativeInput.LerpOut();
         }
     }
 
@@ -1402,7 +1446,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildPulseDefence:
             case TutorialStage.DefenceActivation:
             case TutorialStage.BuildDefencesInRange:
-                bool tileOkay = tile.FogUnit == null || tile.Building != null;
+                bool tileOkay = !tile.FogUnitActive || tile.Building != null;
 
                 if (!tileOkay && !aiText.Activated)
                 {

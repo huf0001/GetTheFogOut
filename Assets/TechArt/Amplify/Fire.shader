@@ -24,6 +24,7 @@ Shader "TechArt/Particles/Fire"
 		struct Input
 		{
 			float2 uv_texcoord;
+			float4 vertexColor : COLOR;
 		};
 
 		uniform sampler2D _TextureSample1;
@@ -64,7 +65,7 @@ Shader "TechArt/Particles/Fire"
 			// *** END Flipbook UV Animation vars ***
 			o.Normal = tex2D( _TextureSample1, fbuv2 ).rgb;
 			float4 tex2DNode7 = tex2D( _TextureSample0, fbuv2 );
-			o.Albedo = ( _Colour * tex2DNode7 ).rgb;
+			o.Albedo = ( _Colour * tex2DNode7 * i.vertexColor ).rgb;
 			o.Alpha = tex2DNode7.a;
 		}
 
@@ -101,6 +102,7 @@ Shader "TechArt/Particles/Fire"
 				float4 tSpace0 : TEXCOORD3;
 				float4 tSpace1 : TEXCOORD4;
 				float4 tSpace2 : TEXCOORD5;
+				half4 color : COLOR0;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 			v2f vert( appdata_full v )
@@ -122,6 +124,7 @@ Shader "TechArt/Particles/Fire"
 				o.customPack1.xy = v.texcoord;
 				o.worldPos = worldPos;
 				TRANSFER_SHADOW_CASTER_NORMALOFFSET( o )
+				o.color = v.color;
 				return o;
 			}
 			half4 frag( v2f IN
@@ -136,6 +139,7 @@ Shader "TechArt/Particles/Fire"
 				surfIN.uv_texcoord = IN.customPack1.xy;
 				float3 worldPos = IN.worldPos;
 				half3 worldViewDir = normalize( UnityWorldSpaceViewDir( worldPos ) );
+				surfIN.vertexColor = IN.color;
 				SurfaceOutputStandard o;
 				UNITY_INITIALIZE_OUTPUT( SurfaceOutputStandard, o )
 				surf( surfIN, o );
@@ -153,16 +157,17 @@ Shader "TechArt/Particles/Fire"
 	CustomEditor "ASEMaterialInspector"
 }
 /*ASEBEGIN
-Version=16800
-858;7;1912;1004;1797.814;766.9199;1.475206;True;False
+Version=16900
+1140;81;770;912;993.6802;980.2761;2.075206;False;False
 Node;AmplifyShaderEditor.TextureCoordinatesNode;3;-771.1248,-296.5135;Float;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;4;-673.6249,-145.7133;Float;False;Constant;_Float0;Float 0;0;0;Create;True;0;0;False;0;8;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleTimeNode;6;-676.2253,3.786777;Float;False;1;0;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;5;-668.425,-69.01342;Float;False;Property;_FPS;FPS;1;0;Create;True;0;0;False;0;16;16;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TFHCFlipBookUVAnimation;2;-494.2599,-176.5864;Float;False;0;0;6;0;FLOAT2;0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.SamplerNode;7;-155.006,-260.0585;Float;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;False;0;d34cf0b1a6163ad4abc469a5ed4d036f;d34cf0b1a6163ad4abc469a5ed4d036f;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.ColorNode;10;-71.08533,-433.0167;Float;False;Property;_Colour;Colour;3;1;[HDR];Create;True;0;0;False;0;1,1,1,0;0,0.3638365,1,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;11;148.9033,-334.1612;Float;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.VertexColorNode;12;-36.41793,-425.4098;Float;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;10;-102.0647,-595.4299;Float;False;Property;_Colour;Colour;3;1;[HDR];Create;True;0;0;False;0;1,1,1,0;0.2264151,0.2264151,0.2264151,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;11;148.9033,-334.1612;Float;False;3;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SamplerNode;8;-150.606,-62.05853;Float;True;Property;_TextureSample1;Texture Sample 1;2;0;Create;True;0;0;False;0;c559870912e037b4384a2dcb95a56c29;c559870912e037b4384a2dcb95a56c29;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.StandardSurfaceOutputNode;9;419.9492,-235.2183;Float;False;True;2;Float;ASEMaterialInspector;0;0;Standard;TechArt/Particles/Fire;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;False;False;False;False;False;False;Back;0;False;-1;0;False;-1;False;0;False;-1;0;False;-1;False;0;Transparent;0.5;True;True;0;False;Transparent;;Transparent;All;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;0;False;-1;False;0;False;-1;255;False;-1;255;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;False;2;15;10;25;False;0.5;True;2;5;False;-1;10;False;-1;2;5;False;-1;10;False;-1;0;False;-1;0;False;-1;0;False;0;0,0,0,0;VertexOffset;True;False;Cylindrical;False;Relative;0;;-1;-1;-1;-1;0;False;0;0;False;-1;-1;0;False;-1;0;0;0;False;0.1;False;-1;0;False;-1;16;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0;False;9;FLOAT;0;False;10;FLOAT;0;False;13;FLOAT3;0,0,0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
 WireConnection;2;0;3;0
@@ -173,9 +178,10 @@ WireConnection;2;5;6;0
 WireConnection;7;1;2;0
 WireConnection;11;0;10;0
 WireConnection;11;1;7;0
+WireConnection;11;2;12;0
 WireConnection;8;1;2;0
 WireConnection;9;0;11;0
 WireConnection;9;1;8;0
 WireConnection;9;9;7;4
 ASEEND*/
-//CHKSM=D9FC3083A858B3E72DFA1254E85E1B04D9584710
+//CHKSM=A2E7005A77019E9B8D128C79EBA0FA1C8E9879E4

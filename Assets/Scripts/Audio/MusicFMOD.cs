@@ -5,26 +5,36 @@ using UnityEngine;
 public class MusicFMOD : MonoBehaviour
 {
     [FMODUnity.EventRef]
-    public string music = "event:/MUSIC/Music2D";
+    public string music = "event:/MUSIC/MusicMix";
 
     private FMOD.Studio.EventInstance musicEvent;
     private FMOD.Studio.PARAMETER_ID stageOne, stageTwo, stageThree, lose, win, outro;
     private FMOD.Studio.EventDescription stageOneDesc, stageTwoDesc, stageThreeDesc, loseDesc, winDesc, outroDesc;
 
-    private static MusicFMOD _instance = new MusicFMOD();
-    public static MusicFMOD Instance { get { return _instance; } }
+    private static MusicFMOD _instance;
+    public MusicFMOD musicfmod;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (_instance != null && _instance != this)
+        if (GameObject.Find("MusicFMOD") != null)
         {
-            Destroy(gameObject);
-            return;
+            _instance = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            else
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
         }
         else
         {
-            _instance = this;
+            Instantiate(gameObject);
+            gameObject.name = "MusicFMOD";
             DontDestroyOnLoad(gameObject);
         }
 

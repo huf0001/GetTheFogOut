@@ -25,7 +25,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveCompletePrefab;
     [SerializeField] GameObject hub;
-    [SerializeField] public GameObject ShipComponent;
+    [SerializeField] public GameObject thruster;
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
@@ -43,6 +43,8 @@ public class ObjectiveController : DialogueBoxController
     private float lastOverloadDialogue = -1f;
     private float tick = 0;
     private int countdown = 60;
+
+    private MusicFMOD musicFMOD;
 
     // Public Properties -------------------------------------------------------------------------------------
 
@@ -65,6 +67,11 @@ public class ObjectiveController : DialogueBoxController
         }
 
         Instance = this;
+
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
     }
 
     // Start is called before the first frame update
@@ -73,6 +80,7 @@ public class ObjectiveController : DialogueBoxController
         //audioSource = GetComponent<AudioSource>();
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
+        WorldController.Instance.Inputs.InputMap.OpenCloseObjectiveWindow.performed += ctx => ToggleObjWindow();
     }
 
     // Update Functions -------------------------------------------------------------------------------------
@@ -98,14 +106,15 @@ public class ObjectiveController : DialogueBoxController
         {
 
             case ObjectiveStage.HarvestMinerals:
+                musicFMOD.StageOneMusic();
                 HarvestMineralStage();
                 break;
             case ObjectiveStage.RecoverPart:
-                WorldController.Instance.musicFMOD.StageTwoMusic();
+                musicFMOD.StageTwoMusic();
                 RecoverPartStage();
                 break;
             case ObjectiveStage.SurvivalStage:
-                WorldController.Instance.musicFMOD.StageThreeMusic();
+                musicFMOD.StageThreeMusic();
                 SurvivalStage();
                 break;
             case ObjectiveStage.Finished:
@@ -214,57 +223,45 @@ public class ObjectiveController : DialogueBoxController
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.Intensity += 1;
                 // Play music Var 2 soundtrack
-                WorldController.Instance.musicFMOD.StageTwoMusic();
+                musicFMOD.StageTwoMusic();
 
                 if (TutorialController.Instance.SkipTutorial)
                 {
                     hub.transform.GetChild(0).gameObject.SetActive(false);
                     hub.transform.GetChild(1).gameObject.SetActive(true);
                     // Run AI completion text
-                    SendDialogue("end harvest stage", 1);
+                    SendDialogue("start part stage", 1);
                     //Camera pans to the thruster
-                    ShipComponent.SetActive(true);
+                    thruster.SetActive(true);
                     thrusterCamera.gameObject.SetActive(true);
                     Time.timeScale = 0.25f;
                     IncrementSubStage();
                 }
                 else
                 {
-                    SendDialogue("finish finding thruster", 1);
                     generatorLimit += 4;    //Would normally be incremented in IncrementStage()
-                    ChangeToSubStage(4);
+                    ChangeToSubStage(2);
                 }
 
                 break;
             case 1:
                 if (dialogueRead)
                 {
+                    Time.timeScale = 1f;
+                    thrusterCamera.gameObject.SetActive(false);
                     DismissDialogue();
+                    ChangeToSubStage(3);
                 }
 
                 break;
             case 2:
-                // Run AI text for stage
-                SendDialogue("start part stage", 1);
-                IncrementSubStage();
-                break;
-            case 3:
-                if (dialogueRead)
-                {
-                    Time.timeScale = 1f;
-                    thrusterCamera.gameObject.SetActive(false);
-                    DismissDialogue();
-                    ChangeToSubStage(5);
-                }
-
-                break;
-            case 4:
                 // Update objectives window to 'Recover ship thrusters'
                 // End stage if the part is collected
+                
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
-                    ShipComponent.SetActive(false);
-                    ChangeToSubStage(6);
+                    thruster.SetActive(false);
+                    ChangeToSubStage(4);
                 }
                 else if (dialogueRead)
                 {
@@ -272,17 +269,17 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 5:
+            case 3:
                 // Update objectives window to 'Recover ship thrusters'
                 // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
-                    ShipComponent.SetActive(false);
+                    thruster.SetActive(false);
                     IncrementSubStage();
                 }
 
                 break;
-            case 6:
+            case 4:
                 if (UIController.instance.buttonClosed)
                 {
                     UIController.instance.ShowAttachButton();
@@ -290,15 +287,15 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 7:
+            case 5:
                 break;
-            case 8:
+            case 6:
                 // Update hub model with attached thrusters
                 hub.transform.GetChild(1).gameObject.SetActive(false);
                 hub.transform.GetChild(2).gameObject.SetActive(true);
 
                 // Play music Var 3 soundtrack
-                WorldController.Instance.musicFMOD.StageThreeMusic();
+                musicFMOD.StageThreeMusic();
 
                 //Go to next stage
                 IncrementStage();

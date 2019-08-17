@@ -5,10 +5,6 @@ using UnityEngine.Experimental.VFX;
 
 public class RepelFan : Defence
 {
-    protected override void Awake()
-    {
-        base.Awake();
-    }
 
     // Start is called before the first frame update
     protected override void Start()
@@ -39,7 +35,7 @@ public class RepelFan : Defence
     public override void PowerDown()
     {
         base.PowerDown();
-        this.gameObject.GetComponentInChildren<ParticleSystem>().Pause();
+        this.gameObject.GetComponentInChildren<ParticleSystem>().Stop();
         CancelInvoke("FirePulse");
     }
 
@@ -63,7 +59,7 @@ public class RepelFan : Defence
             {
                 foreach (TileData dir in directTarget)
                 {
-                    if ((dir.FogUnit != null && !dir.FogUnit.TakingDamage))
+                    if ((dir.FogUnitActive && !dir.FogUnit.TakingDamage))
                     {
                         dir.FogUnit.DealDamageToFogUnit(directDamage);
                     }
@@ -71,7 +67,7 @@ public class RepelFan : Defence
 
                 foreach (TileData ndir in notDirectTarget)
                 {
-                    if (ndir.FogUnit != null && !ndir.FogUnit.TakingDamage)
+                    if (ndir.FogUnitActive && !ndir.FogUnit.TakingDamage)
                     {
                         ndir.FogUnit.DealDamageToFogUnit(aoeDamage);
                     }
@@ -94,7 +90,7 @@ public class RepelFan : Defence
 
         foreach (TileData t in tiles)
         {
-            if (t.FogUnit != null)
+            if (t.FogUnitActive)
             {
                 return true;
             }

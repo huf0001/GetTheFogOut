@@ -58,7 +58,7 @@ namespace Abilities
             // Deals full damage to short range tiles
             foreach (var t in fullDamageTiles)
             {
-                if (t.FogUnit)
+                if (t.FogUnitActive)
                 {
                     t.FogUnit.DealDamageToFogUnit(fullDamage);
                 }
@@ -67,7 +67,7 @@ namespace Abilities
             // Deals less damage to far range tiles
             foreach (var t in lowDamageTiles)
             {
-                if (t.FogUnit)
+                if (t.FogUnitActive)
                 {
                     t.FogUnit.DealDamageToFogUnit(fallOffDamage);
                 }
