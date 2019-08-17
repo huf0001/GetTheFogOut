@@ -87,8 +87,8 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     [Header("UI Lerp Colours")]
-    [SerializeField] private Color uiNormalColour;
-    [SerializeField] private Color uiHighlightColour;
+    [SerializeField] private Color uiNormalColour = Color.white;
+    [SerializeField] private Color uiHighlightColour = Color.green;
 
     [Header("Goals")]
     [SerializeField] private int builtHarvestersGoal;
@@ -151,14 +151,17 @@ public class TutorialController : DialogueBoxController
         {
             skipTutorial = GlobalVars.SkipTut;
         }
+
+        //Setup music
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
     public void StartTutorial()
     {
-        //Setup music
-        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-
         //Setup fog
         Fog.Instance.enabled = true;
         Fog.Instance.SpawnStartingFog();

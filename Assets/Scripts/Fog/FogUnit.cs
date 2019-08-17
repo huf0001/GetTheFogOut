@@ -13,13 +13,13 @@ public class FogUnit : Entity
     [SerializeField] private float endOpacity;
 
     [Header("Colour")]
-    [SerializeField] private float colourLerpSpeedMultiplier;
+    [SerializeField] private float colourLerpSpeedMultiplier = 0.2f;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient docileColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient angryColours;
     [SerializeField] [GradientUsageAttribute(true)] private Gradient currentColours;
 
     [Header("Damage to Fog Unit")]
-    [SerializeField] private float damageLerpMultiplier;
+    [SerializeField] private float damageLerpMultiplier = 3.0f;
 
     [Header("Damage to Buildings")]
     [SerializeField] private float damage;
@@ -30,6 +30,9 @@ public class FogUnit : Entity
 
     [Header("For Testing")]
     [SerializeField] private bool returnToPool;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject fogLightning;
 
     //Non-Serialized Fields
     private Fog fog;
@@ -46,6 +49,8 @@ public class FogUnit : Entity
     private float damageLerpProgress = 0;
 
     private Renderer fogRenderer;
+    private GameObject Lightning;
+    private ParticleSystem LightningPS;
     private int colour;
     private int alpha;
 
@@ -101,6 +106,8 @@ public class FogUnit : Entity
     //Awake
     private void Awake()
     {
+        fogRenderer = gameObject.GetComponent<Renderer>();
+        spawnLightning();
         alpha = Shader.PropertyToID("_Alpha");
         colour = Shader.PropertyToID("_Colour");
         fogRenderer = gameObject.GetComponent<Renderer>();
@@ -261,4 +268,25 @@ public class FogUnit : Entity
             Destroy(gameObject);
         }
     }
+
+    private void spawnLightning()
+    {
+            if (!Lightning)
+            {
+                Lightning = Instantiate(fogLightning, transform, true);
+                LightningPS = Lightning.GetComponent<ParticleSystem>();
+            }
+    }
+
+    public void playLightning()
+    {
+        if (LightningPS)
+        {
+            if (LightningPS.isStopped)
+            {
+                LightningPS.Play();
+            }
+        }
+    }
+
 }

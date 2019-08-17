@@ -42,7 +42,7 @@ public class FogSphere : MonoBehaviour
     [SerializeField] private List<Renderer> renderers;
 
     [Header("Opacity")]
-    [SerializeField] private float startOpacity;
+    [SerializeField] private float startOpacity = 0.0f;
     [SerializeField] private float endOpacity;
 
     [Header("Colour")]

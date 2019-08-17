@@ -52,6 +52,7 @@ public class WorldController : MonoBehaviour
     public GameObject pauseMenu;
 
     private MusicFMOD musicFMOD;
+    public MusicFMOD musicfmod;
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
@@ -127,7 +128,15 @@ public class WorldController : MonoBehaviour
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
 
-        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        if (GameObject.Find("MusicFMOD"))
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
+        else
+        {
+            Instantiate(musicFMOD);
+        }
+        musicFMOD.StartMusic();
         musicFMOD.StageOneMusic();
         musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
     }
@@ -384,7 +393,7 @@ public class WorldController : MonoBehaviour
         }
         showActiveTiles();
 
-        if (ObjectiveController.Instance.ShipComponent.activeSelf)
+        if (ObjectiveController.Instance.thruster.activeSelf)
         {
             thrusterTilesOn();
 
@@ -620,6 +629,7 @@ public class WorldController : MonoBehaviour
                 return s;
             }
         }
+
         return null;
     }
 
