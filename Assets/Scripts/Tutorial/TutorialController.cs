@@ -1473,7 +1473,7 @@ public class TutorialController : DialogueBoxController
             switch (stage)
             {
                 case TutorialStage.CollectMinerals:
-                    return button == ButtonType.Extender || button == ButtonType.Harvester;
+                    return button == ButtonType.Extender || button == ButtonType.Harvester || button == ButtonType.Generator;
                 case TutorialStage.DefenceActivation:
                 case TutorialStage.BuildDefencesInRange:
                 case TutorialStage.Finished:
