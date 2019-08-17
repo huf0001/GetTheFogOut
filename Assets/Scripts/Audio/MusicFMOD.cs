@@ -12,19 +12,29 @@ public class MusicFMOD : MonoBehaviour
     private FMOD.Studio.EventDescription stageOneDesc, stageTwoDesc, stageThreeDesc, loseDesc, winDesc, outroDesc;
 
     private static MusicFMOD _instance;
+    public MusicFMOD musicfmod;
 
     // Start is called before the first frame update
     void Start()
     {
-        _instance = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        if (_instance != null && _instance != this)
+        if (GameObject.Find("MusicFMOD") != null)
         {
-            Destroy(gameObject);
-            return;
+            _instance = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            else
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
         }
         else
         {
-            _instance = this;
+            Instantiate(gameObject);
+            gameObject.name = "MusicFMOD";
             DontDestroyOnLoad(gameObject);
         }
 

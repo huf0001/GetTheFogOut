@@ -40,7 +40,6 @@ public class ShipComponent : Entity
 
     private void OnMouseEnter()
     {
-        ShaderOnMethod();
         if (!UIController.instance.buildingInfo.Visible && !WorldController.Instance.IsPointerOverGameObject())
         {
             UIController.instance.buildingInfo.ShowInfo(this);
@@ -49,7 +48,6 @@ public class ShipComponent : Entity
 
     private void OnMouseExit()
     {
-        ShaderOffMethod();
         if (!UIController.instance.buildingInfo.building)
         {
             UIController.instance.buildingInfo.HideInfo();
@@ -63,15 +61,5 @@ public class ShipComponent : Entity
             WorldController.Instance.GetShipComponent(id).Collected = true;
             UIController.instance.buildingInfo.HideInfo();
         }
-    }
-
-    private void ShaderOnMethod()
-    {
-        //Stuff
-    }
-
-    private void ShaderOffMethod()
-    {
-        //Stuff
     }
 }

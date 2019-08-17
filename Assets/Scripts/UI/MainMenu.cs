@@ -26,12 +26,20 @@ public class MainMenu : MonoBehaviour
     private int difficulty = 1;
 
     private MusicFMOD musicFMOD;
+    public MusicFMOD musicfmod;
 
     private void Start()
     {
-        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        DontDestroyOnLoad(musicFMOD);
-        musicFMOD.StartMusic();
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
+        else
+        {
+            Instantiate(musicfmod);
+            musicFMOD = musicfmod;
+            musicFMOD.StartMusic();
+        }
 
         Time.timeScale = 1;
     }
@@ -77,12 +85,15 @@ public class MainMenu : MonoBehaviour
         switch (difficulty)
         {
             case 0:
-                difficultyButtonText.text = "Difficulty: Easy";
+                difficultyButtonText.text = "Difficulty: Chill";
                 break;
             case 1:
-                difficultyButtonText.text = "Difficulty: Medium";
+                difficultyButtonText.text = "Difficulty: Easy";
                 break;
             case 2:
+                difficultyButtonText.text = "Difficulty: Medium";
+                break;
+            case 3:
                 difficultyButtonText.text = "Difficulty: Hard";
                 break;
         }

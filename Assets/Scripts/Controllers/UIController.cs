@@ -58,6 +58,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI abilityNameText;
     [SerializeField] private TextMeshProUGUI abilityDescText;
     [SerializeField, TextArea] private string[] abilityDescriptions;
+    [Header("Upgrades")]
+    [SerializeField] private GameObject upgradesCanvas;
+    [SerializeField] private Transform upgradesBg;
 
     ResourceController resourceController = null;
     private int index, temp;
@@ -77,7 +80,7 @@ public class UIController : MonoBehaviour
 
         index = 0;
         temp = 2;
-        
+
         launchButtonImage = objectiveButton.image;
         FindSliders();
     }
@@ -163,7 +166,7 @@ public class UIController : MonoBehaviour
                             {
                                 TutorialController.Instance.CompleteMineralCollection();
                             }
-                            
+
                             CloseButton();
                         }
                     });
@@ -223,8 +226,6 @@ public class UIController : MonoBehaviour
     public void HideCountdownSlider()
     {
         DOTween.Kill(countdownText);
-        //Sequence sequence = DOTween.Sequence();
-        //sequence.Append()
         countdownSliderCG.alpha = 0;
         countdownSliderBG.fillAmount = 0;
     }
@@ -264,7 +265,8 @@ public class UIController : MonoBehaviour
                     objectiveButton.enabled = true;
                     buttonClosed = false;
                     objectiveButton.onClick.AddListener(
-                        delegate {
+                        delegate
+                        {
                             if (TutorialController.Instance.DefencesOperable())     //If returns false, DefencesOperable() sets up the BuildDefencesInRange() stage
                             {
                                 TutorialController.Instance.ActivateDefences();
@@ -336,6 +338,23 @@ public class UIController : MonoBehaviour
         }
     }
 
+    public void ShowUpgradeWindow()
+    {
+        upgradesCanvas.SetActive(true);
+        upgradesBg.DOScale(1, 0.3f).SetUpdate(true);
+        Time.timeScale = 0.1f;
+    }
+
+    public void HideUpgradeWindow()
+    {
+        upgradesBg.DOScale(0.01f, 0.3f).SetUpdate(true).OnComplete(
+            delegate
+            {
+                upgradesCanvas.SetActive(false);
+            });
+        Time.timeScale = 1;
+    }
+
     public void WinGame()
     {
         DOTween.Kill(launchButtonImage);
@@ -357,7 +376,7 @@ public class UIController : MonoBehaviour
     }
 
     private void ChangeColor(Color newColor, bool flash)
-    { 
+    {
         GameObject tileObject = GameObject.FindGameObjectWithTag("Tile");
 
         if (tileObject)
@@ -409,7 +428,7 @@ public class UIController : MonoBehaviour
             {
                 colour = "#006273>±";
             }
-            
+
 
             // update text values
             powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
@@ -440,7 +459,7 @@ public class UIController : MonoBehaviour
             {
                 powerImg.sprite = powerLevelSprites[0];
             }
-            
+
             if (temp != index)
             {
                 temp = index;
@@ -459,16 +478,16 @@ public class UIController : MonoBehaviour
                         powerCurrent = powerMax;
                         break;
                 }
-                
-                    if (index == 1)
-                    {
-                        ChangeColor(powerCurrent, true);
-                    }
-                    else
-                    {
-                        DOTween.Kill("tile");
-                        ChangeColor(powerCurrent, false);
-                    }
+
+                if (index == 1)
+                {
+                    ChangeColor(powerCurrent, true);
+                }
+                else
+                {
+                    DOTween.Kill("tile");
+                    ChangeColor(powerCurrent, false);
+                }
             }
 
             if (resourceController.StoredMineral != mineral)

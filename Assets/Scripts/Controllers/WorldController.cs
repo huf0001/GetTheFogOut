@@ -40,7 +40,7 @@ public class WorldController : MonoBehaviour
     public Collider groundCollider;
 
     [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab, hubPrefab, mineralPrefab;
-    [SerializeField] public Material normalTile, hoverTile;
+    [SerializeField] public Material normalTile, hoverTile,collectibleTile;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
@@ -52,6 +52,7 @@ public class WorldController : MonoBehaviour
     public GameObject pauseMenu;
 
     private MusicFMOD musicFMOD;
+    public MusicFMOD musicfmod;
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
@@ -127,7 +128,15 @@ public class WorldController : MonoBehaviour
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
 
-        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        if (GameObject.Find("MusicFMOD"))
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
+        else
+        {
+            Instantiate(musicFMOD);
+        }
+        musicFMOD.StartMusic();
         musicFMOD.StageOneMusic();
         musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
     }
@@ -396,7 +405,7 @@ public class WorldController : MonoBehaviour
         }
         showActiveTiles();
 
-        if (ObjectiveController.Instance.ShipComponent.activeSelf)
+        if (ObjectiveController.Instance.thruster.activeSelf)
         {
             thrusterTilesOn();
 
@@ -431,7 +440,7 @@ public class WorldController : MonoBehaviour
             ChangeCursorState();
         }
 
-        if (resourceController.IsWin() || hubDestroyed)
+        if (hubDestroyed)
         {
             Time.timeScale = 0.2f;
             GameOver = true;
@@ -632,6 +641,7 @@ public class WorldController : MonoBehaviour
                 return s;
             }
         }
+
         return null;
     }
 
@@ -664,7 +674,7 @@ public class WorldController : MonoBehaviour
             GameObject grids = GameObject.Find("Grids");
             
             hideActiveTiles();
-            
+
             foreach (TileData tile in activeTiles)
             {
                 if (tile.isBuildable)
@@ -676,8 +686,14 @@ public class WorldController : MonoBehaviour
                     tile.plane = Instantiate(planeGridprefab, pos, planeGridprefab.transform.localRotation);
 
                     tile.plane.transform.SetParent(grids.transform);
+                    if (tile.buildingChecks.collectable)
+                    {
+                        MeshRenderer mesh = tile.plane.GetComponent<MeshRenderer>();
+                        mesh.material = collectibleTile;
+                    }
                 }
             }
+
             index = activeTiles.Count;
         }
     }

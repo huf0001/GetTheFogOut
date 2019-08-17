@@ -443,10 +443,4 @@ public class ResourceController : MonoBehaviour
                 break;
         }
     }
-
-    //Returns whether or not the player has won
-    public bool IsWin()
-    {
-        return powerFull && mineralFull;
-    }
 }

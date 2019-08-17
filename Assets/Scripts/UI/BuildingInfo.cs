@@ -10,6 +10,7 @@ public class BuildingInfo : MonoBehaviour
     [SerializeField] GameObject healthBar;
     [SerializeField] Image healthBarFill;
     [SerializeField] Button destroyButton;
+    [SerializeField] Button upgradeButton;
     [SerializeField] Gradient healthGradient;
     [SerializeField] private Image bg;
     [HideInInspector] public Building building;
@@ -83,10 +84,12 @@ public class BuildingInfo : MonoBehaviour
         {
             bg.color = new Color32(0, 92, 118, 237);
             destroyButton.gameObject.SetActive(false);
+            upgradeButton.gameObject.SetActive(true);
         }
         else
         {
             destroyButton.gameObject.SetActive(true);
+            upgradeButton.gameObject.SetActive(false);
         }
         if (building.BuildingType == BuildingType.Battery || building.BuildingType == BuildingType.Generator || building.BuildingType == BuildingType.Extender)
         {
