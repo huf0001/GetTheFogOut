@@ -13,7 +13,7 @@ public class ArcDefence : Defence
         base.Start();
         if (placedInEditor)
         {
-            InvokeRepeating("Fire", 0.25f, rateOfFire);
+            InvokeRepeating(nameof(Fire), 0.25f, rateOfFire);
         }
     }
 
@@ -27,24 +27,24 @@ public class ArcDefence : Defence
     {
         base.PowerUp();
 
-        if (!IsInvoking("Fire"))
+        if (!IsInvoking(nameof(Fire)))
         {
-            InvokeRepeating("Fire", rateOfFire / OverclockValue, rateOfFire / OverclockValue);
+            InvokeRepeating(nameof(Fire), rateOfFire / OverclockValue, rateOfFire / OverclockValue);
         }
     }
 
     public override void PowerDown()
     {
         base.PowerDown();
-        CancelInvoke("Fire");
+        CancelInvoke(nameof(Fire));
     }
 
     protected override void ResetFire()
     {
-        if (IsInvoking("Fire"))
+        if (IsInvoking(nameof(Fire)))
         {
-            CancelInvoke("Fire");
-            InvokeRepeating("Fire", rateOfFire / OverclockValue, rateOfFire / OverclockValue);
+            CancelInvoke(nameof(Fire));
+            InvokeRepeating(nameof(Fire), rateOfFire / OverclockValue, rateOfFire / OverclockValue);
         }
     }
     

@@ -58,16 +58,13 @@ MonoBehaviour:
   gameWin: 0
   gameOver: 0
   ground: {fileID: 0}
-  groundCollider: {fileID: 0}
   planeGridprefab: {fileID: 6018002286047896067, guid: a9a48ed08e70c5840891481cb21c444d,
     type: 3}
   minimapPlanePrefab: {fileID: 6018002286047896067, guid: c81cc566d19645349b4a4de39dd40463,
     type: 3}
-  hubPrefab: {fileID: 0}
-  mineralPrefab: {fileID: 8502067115120478638, guid: b73f147f6fafb3242895252f4e5718fb,
-    type: 3}
   normalTile: {fileID: 2100000, guid: cd289d025dea78640a61133498b826c3, type: 2}
   hoverTile: {fileID: 2100000, guid: dd292b7936937f946aa9f72bffca81bd, type: 2}
+  collectibleTile: {fileID: 2100000, guid: 77428a3f7e14da943b8716d11636197d, type: 2}
   hub: {fileID: 0}
   shipComponents:
   - component: 0
@@ -79,8 +76,6 @@ MonoBehaviour:
   serialCamera: {fileID: 0}
   InBuildMode: 1
   pauseMenu: {fileID: 0}
-  musicfmod: {fileID: 4407398185932732860, guid: 5c819ef072426864db6435e12ba6cc4c,
-    type: 3}
   tempPower: {fileID: 0}
 --- !u!114 &1210913968312047254
 MonoBehaviour:
@@ -148,6 +143,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   generatorCount: 0
   generatorInterval: 5
+  hoveredTile:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    collectible: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
   isBuildAvaliable: 1
 --- !u!114 &1899903245264256472
 MonoBehaviour:
@@ -219,6 +225,8 @@ MonoBehaviour:
   - An intense surge of electricity that causes buildings to temporarily perform better.
   - A small, short blip that will reveal the locations of useful items within a specific
     radius.
+  upgradesCanvas: {fileID: 0}
+  upgradesBg: {fileID: 0}
 --- !u!114 &334475222590731063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +250,7 @@ MonoBehaviour:
   zoomOut: {fileID: 0}
   powerDiagram: {fileID: 0}
   abilityUnlockCanvas: {fileID: 0}
-  skipTutorial: 1
+  skipTutorial: 0
   stage: 1
   subStage: 1
   currentlyBuilding: 0
@@ -361,8 +369,7 @@ MonoBehaviour:
   expansionDirection: 0
   surroundingHubRange: 9
   fogAccelerates: 0
-  fogUnitsGrow: 1
-  fogSpheresGrow: 1
+  fogFrozen: 0
   maxFogSpheresCount: 3
   fogGrowth: 10
   fogSpillThreshold: 50
