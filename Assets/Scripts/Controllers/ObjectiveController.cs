@@ -29,7 +29,6 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
-    //[SerializeField] AudioClip audioCompleteObjective;
 
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
