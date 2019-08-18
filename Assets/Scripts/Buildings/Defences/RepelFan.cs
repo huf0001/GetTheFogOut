@@ -12,7 +12,7 @@ public class RepelFan : Defence
         base.Start();
         if (placedInEditor)
         {
-            InvokeRepeating("FirePulse", 1f, rateOfFire);
+            InvokeRepeating(nameof(FirePulse), 1f, rateOfFire);
         }
     }
 
@@ -25,26 +25,35 @@ public class RepelFan : Defence
     public override void PowerUp()
     {
         base.PowerUp();
-        this.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-        if (!IsInvoking("FirePulse"))
+
+        if (TutorialController.Instance.DefencesOn)
         {
-            InvokeRepeating("FirePulse", rateOfFire / OverclockValue, rateOfFire / OverclockValue);
+            GetComponentInChildren<ParticleSystem>().Play();
+        }
+        else
+        {
+            GetComponentInChildren<ParticleSystem>().Stop();
+        }
+
+        if (!IsInvoking(nameof(FirePulse)))
+        {
+            InvokeRepeating(nameof(FirePulse), rateOfFire / OverclockValue, rateOfFire / OverclockValue);
         }
     }
 
     public override void PowerDown()
     {
         base.PowerDown();
-        this.gameObject.GetComponentInChildren<ParticleSystem>().Stop();
-        CancelInvoke("FirePulse");
+        GetComponentInChildren<ParticleSystem>().Stop();
+        CancelInvoke(nameof(FirePulse));
     }
 
     protected override void ResetFire()
     {
-        if (IsInvoking("FirePulse"))
+        if (IsInvoking(nameof(FirePulse)))
         {
-            CancelInvoke("FirePulse");
-            InvokeRepeating("FirePulse", rateOfFire / OverclockValue, rateOfFire / OverclockValue);
+            CancelInvoke(nameof(FirePulse));
+            InvokeRepeating(nameof(FirePulse), rateOfFire / OverclockValue, rateOfFire / OverclockValue);
         }
     }
     

@@ -29,17 +29,14 @@ public class WorldController : MonoBehaviour
 
     //Serialized Fields
     [Header("World Spawning Rules")]
-    [SerializeField]
-    private int width = 31;
+    [SerializeField] private int width = 31;
     [SerializeField] private int length = 31;
     [SerializeField] private bool gameWin = false, gameOver = false;
 
     [Header("Prefab/Gameobject assignment")]
-    [SerializeField]
-    private GameObject ground;
-    public Collider groundCollider;
+    [SerializeField] private GameObject ground;
 
-    [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab, hubPrefab, mineralPrefab;
+    [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab/*, hubPrefab, *//*mineralPrefab*/;
     [SerializeField] public Material normalTile, hoverTile,collectibleTile;
 
     [SerializeField] private Hub hub = null;
@@ -52,7 +49,7 @@ public class WorldController : MonoBehaviour
     public GameObject pauseMenu;
 
     private MusicFMOD musicFMOD;
-    public MusicFMOD musicfmod;
+    //public MusicFMOD musicfmod;
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
@@ -67,9 +64,9 @@ public class WorldController : MonoBehaviour
     //Other Controllers
     private ResourceController resourceController;
     private UIController uiController;
-    private CameraController cameraController;
+    //private CameraController cameraController;
 
-    private List<TileData> ThrusterList = new List<TileData>();
+    //private List<TileData> ThrusterList = new List<TileData>();
 
     private List<TileData> activeTiles = new List<TileData>();
     public List<TileData> ActiveTiles { get => activeTiles; }
@@ -124,7 +121,7 @@ public class WorldController : MonoBehaviour
         Cursor.visible = (CursorLockMode.Locked != wantedMode);
 
         serialCamera = GameObject.Find("CameraTarget");
-        cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
+        //cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
 
@@ -151,7 +148,6 @@ public class WorldController : MonoBehaviour
         SetLandmarksToTiles();
         SetCollectablesToTiles();
         CreateMinimapTiles();
-        groundCollider = ground.GetComponent<Collider>();
         TutorialController.Instance.StartTutorial();
     }
 

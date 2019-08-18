@@ -9469,11 +9469,6 @@ PrefabInstance:
       objectReference: {fileID: 1338089003}
     - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
-      propertyPath: hubPrefab
-      value: 
-      objectReference: {fileID: 455652285}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
       propertyPath: hub
       value: 
       objectReference: {fileID: 455652284}
@@ -9482,11 +9477,6 @@ PrefabInstance:
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 1868347807}
-    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: collectibleTile
-      value: 
-      objectReference: {fileID: 2100000, guid: 77428a3f7e14da943b8716d11636197d, type: 2}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow
@@ -9502,6 +9492,46 @@ PrefabInstance:
       propertyPath: aiText
       value: 
       objectReference: {fileID: 1868347801}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: wKey
+      value: 
+      objectReference: {fileID: 1868347813}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: aKey
+      value: 
+      objectReference: {fileID: 1868347812}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: sKey
+      value: 
+      objectReference: {fileID: 1868347811}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dKey
+      value: 
+      objectReference: {fileID: 1868347810}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: zoomIn
+      value: 
+      objectReference: {fileID: 1868347819}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: zoomOut
+      value: 
+      objectReference: {fileID: 1868347800}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: powerDiagram
+      value: 
+      objectReference: {fileID: 519653546}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: abilityUnlockCanvas
+      value: 
+      objectReference: {fileID: 468061752}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: hub
@@ -9562,51 +9592,6 @@ PrefabInstance:
       propertyPath: thrusterCamera
       value: 
       objectReference: {fileID: 1913507752406271259}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: wKey
-      value: 
-      objectReference: {fileID: 1868347813}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: aKey
-      value: 
-      objectReference: {fileID: 1868347812}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: sKey
-      value: 
-      objectReference: {fileID: 1868347811}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dKey
-      value: 
-      objectReference: {fileID: 1868347810}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: zoomIn
-      value: 
-      objectReference: {fileID: 1868347819}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: zoomOut
-      value: 
-      objectReference: {fileID: 1868347800}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerDiagram
-      value: 
-      objectReference: {fileID: 519653546}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: abilityUnlockCanvas
-      value: 
-      objectReference: {fileID: 468061752}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9686,12 +9671,6 @@ PrefabInstance:
       propertyPath: abilityButtons.Array.data[4]
       value: 
       objectReference: {fileID: 511500181}
-    - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: fogLighting
-      value: 
-      objectReference: {fileID: 683996814274507510, guid: 54d18ab5f09329b4ea603039c2bd07cf,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
 --- !u!114 &1869141244 stripped

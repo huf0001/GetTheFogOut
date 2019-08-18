@@ -1163,10 +1163,10 @@ public class TutorialController : DialogueBoxController
                 //Waiting for the big button to be pressed
                 break;
             case 4:
-                //foreach (RepelFan pd in ResourceController.Instance.PulseDefences)
-                //{
-                //    pd.GetComponentInChildren<Animator>().enabled = true;
-                //}
+                foreach (RepelFan pd in ResourceController.Instance.PulseDefences)
+                {
+                    pd.GetComponentInChildren<ParticleSystem>().Play();
+                }
 
                 //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = true;
                 defencesOn = true;

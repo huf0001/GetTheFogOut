@@ -60,8 +60,7 @@ public class Fog : MonoBehaviour
 
     [Header("Fog Expansion")]
     [SerializeField] private bool fogAccelerates;
-    [SerializeField] private bool fogUnitsGrow;
-    [SerializeField] private bool fogSpheresGrow;
+    [SerializeField] private bool fogFrozen;
     [SerializeField] private float maxFogSpheresCount;
     [SerializeField] private float fogGrowth;
     [SerializeField] private float fogSpillThreshold;
@@ -633,7 +632,7 @@ public class Fog : MonoBehaviour
     {
         List<FogUnit> toRenderOpacity = new List<FogUnit>();
 
-        if (fogUnitsGrow)
+        if (!fogFrozen)
         {
             if (fogAccelerates && fogGrowth < 100)
             {
@@ -723,7 +722,7 @@ public class Fog : MonoBehaviour
     //Handles the fog spheres
     private void UpdateFogSpheres()
     {
-        if (fogSpheresGrow)
+        if (!fogFrozen)
         {
             foreach (FogSphere f in fogSpheresInPlay)
             {
@@ -845,8 +844,7 @@ public class Fog : MonoBehaviour
     //Pauses the fog growth for a specified amount of duration
     public void FreezeFog(float duration)
     {
-        fogUnitsGrow = false;
-        fogSpheresGrow = false;
+        fogFrozen = true;
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
@@ -859,8 +857,7 @@ public class Fog : MonoBehaviour
     //Handles timing out of the fog freeze
     private void UnFreezeFog()
     {
-        fogUnitsGrow = true;
-        fogSpheresGrow = true;
+        fogFrozen = false;
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
