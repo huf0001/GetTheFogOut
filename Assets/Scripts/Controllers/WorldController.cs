@@ -49,7 +49,7 @@ public class WorldController : MonoBehaviour
     public GameObject pauseMenu;
 
     private MusicFMOD musicFMOD;
-    //public MusicFMOD musicfmod;
+    public MusicFMOD musicfmod;
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
@@ -100,6 +100,32 @@ public class WorldController : MonoBehaviour
     public NewInputs Inputs { get; set; }
 
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
+    private void Start()
+    {
+        index = 0;
+        InstantiateTileArray();
+        ConnectAdjacentTiles();
+        SetResourcesToTiles();
+        SetBuildingsToTiles();
+        SetLandmarksToTiles();
+        SetCollectablesToTiles();
+        CreateMinimapTiles();
+        TutorialController.Instance.StartTutorial();
+
+        if (GameObject.Find("MusicFMOD") != null)
+        {
+            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        }
+        else
+        {
+            Instantiate(musicfmod);
+            musicFMOD = musicfmod;
+        }
+        musicFMOD.StartMusic();
+        musicFMOD.StageOneMusic();
+        musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
+    }
+
     private void Awake()
     {
         Inputs = new NewInputs();
@@ -124,31 +150,6 @@ public class WorldController : MonoBehaviour
         //cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
-
-        if (GameObject.Find("MusicFMOD"))
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-        else
-        {
-            Instantiate(musicFMOD);
-        }
-        musicFMOD.StartMusic();
-        musicFMOD.StageOneMusic();
-        musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
-    }
-
-    private void Start()
-    {
-        index = 0;
-        InstantiateTileArray();
-        ConnectAdjacentTiles();
-        SetResourcesToTiles();
-        SetBuildingsToTiles();
-        SetLandmarksToTiles();
-        SetCollectablesToTiles();
-        CreateMinimapTiles();
-        TutorialController.Instance.StartTutorial();
     }
 
     void SetResourcesToTiles()
