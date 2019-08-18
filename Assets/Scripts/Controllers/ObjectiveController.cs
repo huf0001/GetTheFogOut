@@ -52,7 +52,7 @@ public class ObjectiveController : DialogueBoxController
     public static ObjectiveController Instance { get; protected set; }
     public int Countdown { get => countdown; set => countdown = value; }
     public int CurrStage { get => (int)currStage; }
-    public int GeneratorLimit { get => generatorLimit; }
+    public int GeneratorLimit { get => generatorLimit; set => generatorLimit = value; }
     public int MineralTarget { get => mineralTarget; }
     public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
     public int PowerTarget { get => powerTarget; }
