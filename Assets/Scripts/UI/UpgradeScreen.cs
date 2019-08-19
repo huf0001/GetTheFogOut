@@ -37,8 +37,13 @@ public class UpgradeScreen : MonoBehaviour
         image.color = unupgradedLine;
     }
 
+    /// <summary>
+    /// Make next button interactable
+    /// </summary>
+    /// <param name="button"></param>
     public void UnlockNextUpgrade(Button button)
     {
         button.interactable = true;
+        button.GetComponentsInChildren<Image>()[2].color = new Color32(4, 80, 117, 255);
     }
 }
