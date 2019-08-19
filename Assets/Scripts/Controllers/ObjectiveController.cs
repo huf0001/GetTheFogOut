@@ -89,6 +89,10 @@ public class ObjectiveController : DialogueBoxController
     {
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
+            if (GameObject.Find("MusicFMOD") != null)
+            {
+                musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            }
             CheckObjectiveStage();
         }
 
