@@ -1440,7 +1440,6 @@ GameObject:
   - component: {fileID: 1481896582996522219}
   - component: {fileID: 5254887744399496735}
   - component: {fileID: 118505074173231286}
-  - component: {fileID: 2568506083136386480}
   m_Layer: 0
   m_Name: Battery
   m_TagString: Building
@@ -1530,18 +1529,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dff3b8a52592cb4da4b5c685eccd389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location:
-    powerSources: []
-    resource: {fileID: 0}
-    building: {fileID: 0}
-    onMaterial: {fileID: 0}
-    visibleMaterial: {fileID: 0}
-    startMaterial: {fileID: 0}
-    x: 0
-    z: 0
-    plane: {fileID: 0}
   health: 50
   maxHealth: 1
+  shield: 0
   visibilityRange: 2
   upkeep: 0
   powerSource: {fileID: 0}
@@ -1550,11 +1540,6 @@ MonoBehaviour:
   buildingType: 2
   mineralCost: 5
   powerCost: 0
-  fuelCost: 0
-  organicCost: 0
-  audioSpawn: {fileID: 8300000, guid: e0c97010a385fd0409e496af2cdb3508, type: 3}
-  audioDamage: {fileID: 8300000, guid: 4535fc1af65437142a2fac2905d84b59, type: 3}
-  audioDestroy: {fileID: 8300000, guid: da06e19e5c22a054083b658e48bcfc6e, type: 3}
   healthBarCanvas: {fileID: 3868328489742519209}
   healthBarImage: {fileID: 833973746119089450}
   healthGradient:
@@ -1586,104 +1571,13 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  shieldBarTransform: {fileID: 0}
+  shieldBarImage: {fileID: 0}
   damageIndicatorPrefab: {fileID: 8599427647162027438, guid: d157f3b0eefcb6743985ca736438dcff,
     type: 3}
---- !u!82 &2568506083136386480
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5638767552450026913}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e0c97010a385fd0409e496af2cdb3508, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  shieldObj: {fileID: 0}
+  isShieldOn: 0
+  overclockTimer: 0
 --- !u!1 &5675711588491677590
 GameObject:
   m_ObjectHideFlags: 0
