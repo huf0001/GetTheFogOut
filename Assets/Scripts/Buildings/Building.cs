@@ -262,10 +262,6 @@ public abstract class Building : Entity
         gameObject.layer = LayerMask.NameToLayer("Buildings");
         placed = true;
 
-        if (this.buildingType != BuildingType.Hub)
-        {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingBuilt", GetComponent<Transform>().position);
-        }
         //GetComponent<Renderer>().material.shader = buildingShader;
     }
 
