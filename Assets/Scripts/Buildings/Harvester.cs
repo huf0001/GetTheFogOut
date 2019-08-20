@@ -8,13 +8,15 @@ public class Harvester : Building
     [SerializeField] private Canvas noMineralCanvas;
     [SerializeField] private Light offLight;
     [SerializeField] public ParticleSystem hvtProgress;
-
+    public int levelBuilding = 0;
+    private int currentLevel;
     public int HarvestAmt { get => harvestAmt; }
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+        levelBuilding = 0;
     }
 
     // Update is called once per frame
@@ -91,5 +93,56 @@ public class Harvester : Building
             hvtProgress.Stop();
         }
             base.PowerDown();
+    }
+
+    public void Upgrade(int path)
+    {
+        switch (path)
+        {
+            case 1:
+                Debug.Log(levelBuilding);
+                Path_1(levelBuilding);
+                break;
+            case 2:
+                if (levelBuilding < 3)
+                {
+                    Path_2(levelBuilding);
+                }
+                break;
+        }
+    }
+
+    private void Path_1(int level)
+    {
+        switch (level)
+        {
+            case 0:
+                Debug.Log(level);
+                break;
+            case 1:
+                Debug.Log(level);
+                break;
+            case 2:
+                Debug.Log(level);
+                break;
+        }
+        levelBuilding++;
+    }
+
+    private void Path_2(int level)
+    {
+        switch (level)
+        {
+            case 0:
+
+                break;
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+        }
+        levelBuilding++;
     }
 }
