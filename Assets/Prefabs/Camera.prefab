@@ -910,7 +910,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3521921235953701361}
   - component: {fileID: 3521921235953701323}
-  - component: {fileID: 3521921235953701364}
   - component: {fileID: 3521921235953701367}
   - component: {fileID: 951816723860016405}
   - component: {fileID: 951816723860016402}
@@ -978,14 +977,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &3521921235953701364
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3521921235953701362}
-  m_Enabled: 1
 --- !u!114 &3521921235953701367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1532,7 +1523,6 @@ GameObject:
   - component: {fileID: 5593071679757959891}
   - component: {fileID: 5937193376097011629}
   - component: {fileID: 8655729837590565479}
-  - component: {fileID: 3823238111243201989}
   m_Layer: 0
   m_Name: DeathCam
   m_TagString: Untagged
@@ -1608,21 +1598,6 @@ MonoBehaviour:
   m_Damping: 1
   m_MinFOV: 4
   m_MaxFOV: 40
---- !u!114 &3823238111243201989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5820375784460975700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FocusTracksTarget: 0
-  m_FocusOffset: 0
-  m_Profile: {fileID: 11400000, guid: 274e836dc78a858488c1684c9bbb5ccc, type: 2}
 --- !u!1 &6150989101281049791
 GameObject:
   m_ObjectHideFlags: 0

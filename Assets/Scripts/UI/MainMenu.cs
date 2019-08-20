@@ -46,6 +46,7 @@ public class MainMenu : MonoBehaviour
 
     public void ToggleTutorial(bool tutorialOn)
     {
+        // Play Toggle Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Toggle", GetComponent<Transform>().position);
         skipTutorial = !tutorialOn;
     }
 
@@ -57,6 +58,7 @@ public class MainMenu : MonoBehaviour
 
     public void OpenMenu()
     {
+        // Play Open Difficulty Menu Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-OpenDifficulty", GetComponent<Transform>().position);
         StartCoroutine(OpenDifficultyMenu());
     }
 
@@ -77,6 +79,7 @@ public class MainMenu : MonoBehaviour
 
     public void CloseMenu()
     {
+        // Play Close Difficulty Menu Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-CloseDifficulty", GetComponent<Transform>().position);
         StartCoroutine(CloseDifficultyMenu());
     }
 
@@ -85,16 +88,16 @@ public class MainMenu : MonoBehaviour
         switch (difficulty)
         {
             case 0:
-                difficultyButtonText.text = "Difficulty: Chill";
-                break;
-            case 1:
                 difficultyButtonText.text = "Difficulty: Easy";
                 break;
-            case 2:
+            case 1:
                 difficultyButtonText.text = "Difficulty: Medium";
                 break;
-            case 3:
+            case 2:
                 difficultyButtonText.text = "Difficulty: Hard";
+                break;
+            case 3:
+                difficultyButtonText.text = "Difficulty: Very Hard";
                 break;
         }
         difficultySubmenu.blocksRaycasts = false;
@@ -112,6 +115,7 @@ public class MainMenu : MonoBehaviour
 
     public void playGame()
     {
+        // Play Start Game Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-StartGame", GetComponent<Transform>().position);
         GlobalVars.SkipTut = skipTutorial;
         GlobalVars.Difficulty = difficulty;
         GlobalVars.LoadedFromMenu = true;
@@ -130,7 +134,7 @@ public class MainMenu : MonoBehaviour
         loadingMessageBox.text = loadingMessages[Random.Range(0, loadingMessages.Length)];
         yield return loadingCanvasGroup.DOFade(1, 0.5f);
         InvokeRepeating("ChangeLoadingMessage", 3, 4);
-        //loadingCanvasGroup.alpha = 1;
+
         while (!loading.isDone)
         {
             float progress = Mathf.Clamp01(loading.progress / 0.9f);

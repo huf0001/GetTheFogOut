@@ -51,7 +51,6 @@ public class TowerManager : MonoBehaviour
                         selectedTower = null;
                         Destroy(hologramTower);
                         MouseController.Instance.Build(currentTile.PlacedTower, currentTile, 0f);
-                        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingBuilt", GetComponent<Transform>().position);
                     }
                 }
                 else

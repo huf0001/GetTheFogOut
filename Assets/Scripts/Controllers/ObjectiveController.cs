@@ -29,7 +29,6 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
-    //[SerializeField] AudioClip audioCompleteObjective;
 
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
@@ -52,7 +51,7 @@ public class ObjectiveController : DialogueBoxController
     public static ObjectiveController Instance { get; protected set; }
     public int Countdown { get => countdown; set => countdown = value; }
     public int CurrStage { get => (int)currStage; }
-    public int GeneratorLimit { get => generatorLimit; }
+    public int GeneratorLimit { get => generatorLimit; set => generatorLimit = value; }
     public int MineralTarget { get => mineralTarget; }
     public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
     public int PowerTarget { get => powerTarget; }
@@ -90,6 +89,10 @@ public class ObjectiveController : DialogueBoxController
     {
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
+            if (GameObject.Find("MusicFMOD") != null)
+            {
+                musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            }
             CheckObjectiveStage();
         }
 

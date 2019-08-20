@@ -107,6 +107,7 @@ public class TutorialController : DialogueBoxController
     private float lerpProgress = 0f;
     private bool lerpForward = true;
 
+    private int originalGeneratorLimit;
     private int extendersGoal;
     private bool defencesOn = false;
     private int mortarsGoal;
@@ -174,13 +175,18 @@ public class TutorialController : DialogueBoxController
             ObjectiveController.Instance.IncrementStage();
             defencesOn = true;
             wKey.transform.parent.gameObject.SetActive(false);
-            //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = true;
         }
         else
         {
             sonarLandmarkTile = WorldController.Instance.GetTileAt(sonarLandmark.transform.position);
             targetRenderer = buildingTarget.GetComponent<MeshRenderer>();
-            //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = false;
+            originalGeneratorLimit = ObjectiveController.Instance.GeneratorLimit;
+            ObjectiveController.Instance.GeneratorLimit = builtGeneratorsGoal;
+
+            if (builtGeneratorsGoal > originalGeneratorLimit)
+            {
+                Debug.Log("Warning: TutorialController.builtGeneratorsGoal > originalGeneratorLimit. Shouldn't it be <=?");
+            }
         }
     }
 
@@ -747,6 +753,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 15:
+                ObjectiveController.Instance.GeneratorLimit = originalGeneratorLimit;
                 stage = TutorialStage.CollectMinerals;
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
@@ -1163,10 +1170,10 @@ public class TutorialController : DialogueBoxController
                 //Waiting for the big button to be pressed
                 break;
             case 4:
-                //foreach (RepelFan pd in ResourceController.Instance.PulseDefences)
-                //{
-                //    pd.GetComponentInChildren<Animator>().enabled = true;
-                //}
+                foreach (RepelFan pd in ResourceController.Instance.PulseDefences)
+                {
+                    pd.GetComponentInChildren<ParticleSystem>().Play();
+                }
 
                 //pulseDefencePrefab.GetComponentInChildren<Animator>().enabled = true;
                 defencesOn = true;
@@ -1473,7 +1480,7 @@ public class TutorialController : DialogueBoxController
             switch (stage)
             {
                 case TutorialStage.CollectMinerals:
-                    return button == ButtonType.Extender || button == ButtonType.Harvester;
+                    return button == ButtonType.Extender || button == ButtonType.Harvester || button == ButtonType.Generator;
                 case TutorialStage.DefenceActivation:
                 case TutorialStage.BuildDefencesInRange:
                 case TutorialStage.Finished:

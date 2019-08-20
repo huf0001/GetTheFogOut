@@ -45,7 +45,7 @@ public class ResourceController : MonoBehaviour
     public List<Generator> Generators { get => generators; set => generators = value; }
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     //public List<ArcDefence> Mortars { get => mortars; set => mortars = value; }
-    //public List<RepelFan> PulseDefences { get => pulseDefences; set => pulseDefences = value; }
+    public List<RepelFan> PulseDefences { get => pulseDefences; set => pulseDefences = value; }
 
 
     // [SerializeField] protected AudioSource audioMaxPower;

@@ -12,7 +12,6 @@ public class MusicFMOD : MonoBehaviour
     private FMOD.Studio.EventDescription stageOneDesc, stageTwoDesc, stageThreeDesc, loseDesc, winDesc, outroDesc;
 
     private static MusicFMOD _instance;
-    public MusicFMOD musicfmod;
 
     // Start is called before the first frame update
     void Start()
