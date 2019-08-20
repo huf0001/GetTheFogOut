@@ -109,6 +109,7 @@ public class WorldController : MonoBehaviour
         SetBuildingsToTiles();
         SetLandmarksToTiles();
         SetCollectablesToTiles();
+        SetRocksToTiles();
         CreateMinimapTiles();
         TutorialController.Instance.StartTutorial();
 
@@ -162,22 +163,6 @@ public class WorldController : MonoBehaviour
         musicFMOD.StartMusic();
         musicFMOD.StageOneMusic();
         musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
-    }
-
-    private void Start()
-    {
-        index = 0;
-        InstantiateTileArray();
-        ConnectAdjacentTiles();
-        SetResourcesToTiles();
-        SetBuildingsToTiles();
-        SetLandmarksToTiles();
-        SetCollectablesToTiles();
-        SetRocksToTiles();
-        CreateMinimapTiles();
-        //groundCollider = ground.GetComponent<Collider>();
-        TutorialController.Instance.StartTutorial();
-
     }
 
     void SetResourcesToTiles()
@@ -701,7 +686,7 @@ public class WorldController : MonoBehaviour
 
             foreach (TileData tile in activeTiles)
             {
-                if (tile.isBuildable)
+                if (!tile.buildingChecks.obstacle)
                 {
                     Vector3 pos = Vector3.zero;
                     pos.x += tile.X;
