@@ -44,6 +44,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
     [SerializeField] protected GameObject serialCamera;
     [SerializeField] private AbilityMenu abilityMenu;
+    [SerializeField] private GameObject mainCamera;
 
     [Header("Public variable?")]
     public bool InBuildMode;
@@ -393,7 +394,15 @@ public class WorldController : MonoBehaviour
         }
         else
         {
-            GameOverUpdate();
+            if (GameWin)
+            {
+                StartCoroutine("PlayWinAnimator");
+            }
+            else
+            {
+                StartCoroutine("PlayDeadAnimator");
+            }
+         //   GameOverUpdate();
         }
     }
 
@@ -509,18 +518,36 @@ public class WorldController : MonoBehaviour
         Cursor.lockState = wantedMode;
     }
 
+     IEnumerator PlayDeadAnimator()
+    {
+        Animator dead = mainCamera.GetComponent<Animator>();
+        if (dead)
+        {
+            dead.SetBool("IsDead", true);
+        }
+        yield return new WaitForSeconds(1f);
+        GameOverUpdate();
+    }
+
+    IEnumerator PlayWinAnimator()
+    {
+        Animator win = Hub.Instance.Animator;
+        if (win)
+        {
+            win.SetBool("Win", true);
+        }
+        yield return new WaitForSeconds(8.0f);
+        GameWinUpdate();
+    }
+    private void GameWinUpdate()
+    {
+        musicFMOD.GameWinMusic();
+        uiController.EndGameDisplay("You win!"); //Display win UI
+    }
     private void GameOverUpdate()
     {
-        if (GameWin)
-        {
-            musicFMOD.GameWinMusic();
-            uiController.EndGameDisplay("You win!"); //Display win UI
-        }
-        else
-        {
             musicFMOD.GameLoseMusic();
-            uiController.EndGameDisplay("You lose!"); //Display lose UI
-        }
+            uiController.EndGameDisplay("You lose!"); //Display lose UI     
     }
 
     private void RenderTower()
