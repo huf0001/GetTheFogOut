@@ -1030,10 +1030,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(mortarLandmark);
                 }
 
                 break;
@@ -1088,10 +1085,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(pulseDefenceLandmark);
                 }
 
                 break;
@@ -1430,8 +1424,6 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildExtenderInFog:
                 return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
             case TutorialStage.CollectMinerals:
-            case TutorialStage.BuildMortar:         //TODO: leave for default
-            case TutorialStage.BuildPulseDefence:   //TODO: leave for default
             case TutorialStage.DefenceActivation:
             case TutorialStage.BuildDefencesInRange:
                 bool tileOkay = !tile.FogUnitActive || tile.Building != null;
