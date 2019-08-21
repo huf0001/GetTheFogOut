@@ -12,7 +12,7 @@ public class Collectable : Locatable, ICollectible
     public string CollectableName { get => collectibleName; }
     public bool isTriggered;
     public float pingTime;
-
+    [SerializeField] private GameObject collectableObj;
     private void Start()
     {
         collectibleName = ability.name;
@@ -50,9 +50,72 @@ public class Collectable : Locatable, ICollectible
             meshRenderer.enabled = true;
         }
 
+        ShowWhiteMaterials();
         //CollectedCheck();
     }
 
+    public void ShowWhiteMaterials()
+    {
+        if (TutorialController.Instance.Stage == TutorialStage.Finished || (TutorialController.Instance.Stage == TutorialStage.CollectSonar && ability.AbilityType == AbilityEnum.Sonar))
+        {
+            Renderer mr = collectableObj.GetComponent<Renderer>();
+            Material[] Mats = mr.materials;
+
+            if (!location.FogUnitActive)
+            {
+                if (location.PowerSource && !WorldController.Instance.IsPointerOverGameObject())
+                {
+                    if (ability.AbilityType != AbilityEnum.None)
+                    {
+                        foreach (Material m in Mats)
+                        {
+                            if (m.HasProperty("_Collectable"))
+                            {
+                                m.SetFloat("_Collectable", 1);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Material m in Mats)
+                    {
+                        if (m.HasProperty("_Collectable"))
+                        {
+                            m.SetFloat("_Collectable", 0);
+                        }
+                    }
+                }
+            }
+
+            if (location.FogUnitActive)
+            {
+                if (location.FogUnit.Health <= 0 && location.PowerSource && !WorldController.Instance.IsPointerOverGameObject())
+                {
+                    if (ability.AbilityType != AbilityEnum.None)
+                    {
+                        foreach (Material m in Mats)
+                        {
+                            if (m.HasProperty("_Collectable"))
+                            {
+                                m.SetFloat("_Collectable", 1);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Material m in Mats)
+                    {
+                        if (m.HasProperty("_Collectable"))
+                        {
+                            m.SetFloat("_Collectable", 0);
+                        }
+                    }
+                }
+            }
+        }
+    }
     public void CollectAbility()
     {
         if (TutorialController.Instance.Stage == TutorialStage.Finished || (TutorialController.Instance.Stage == TutorialStage.CollectSonar && ability.AbilityType == AbilityEnum.Sonar))
