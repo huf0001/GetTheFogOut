@@ -11699,9 +11699,29 @@ PrefabInstance:
       objectReference: {fileID: 1644847195}
     - target: {fileID: 6443926712149952886, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowPowerThresholds
+      objectReference: {fileID: 0}
+    - target: {fileID: 6443926712149952886, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6443926712149952886, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1644847195}
+    - target: {fileID: 6443926712149952886, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HidePowerThresholds
+      objectReference: {fileID: 0}
+    - target: {fileID: 6443926712149952886, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8839552120422238798, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -11750,7 +11770,7 @@ PrefabInstance:
     - target: {fileID: 4767305868897888019, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4767305868897888019, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
@@ -12150,18 +12170,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &922240232 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6776057272039401895, guid: f0d96ef103d08e4429542615f2b52508,
-    type: 3}
-  m_PrefabInstance: {fileID: 922240204}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &922240233 stripped
@@ -15462,6 +15470,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9ff5b1c68228ae4db9435030bf14584, type: 3}
+--- !u!95 &1132859027 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2076639785155127167, guid: f0d96ef103d08e4429542615f2b52508,
+    type: 3}
+  m_PrefabInstance: {fileID: 922240204}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1132933858 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2665747012393569261, guid: a9ff5b1c68228ae4db9435030bf14584,
@@ -21470,7 +21484,7 @@ PrefabInstance:
         type: 3}
       propertyPath: powerThresholds
       value: 
-      objectReference: {fileID: 922240232}
+      objectReference: {fileID: 1132859027}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objWindowText
@@ -27572,7 +27586,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: -2.8153733e-35, z: 7.58e-43, w: 4.9e-44}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0

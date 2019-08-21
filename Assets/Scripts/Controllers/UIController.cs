@@ -30,8 +30,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private Image powerImg;
     [SerializeField] private Sprite[] powerLevelSprites;
-    [SerializeField] private Image powerThresholdsBg;
-    [SerializeField] private Image powerThresholds;
+    [SerializeField] private Animator powerThresholds;
     [SerializeField] private TextMeshProUGUI objWindowText;
     [SerializeField] private TextMeshProUGUI hudObjText;
     [Header("Tile Colours")]
@@ -114,15 +113,12 @@ public class UIController : MonoBehaviour
     // Power Threshold image show and hide methods
     public void ShowPowerThresholds()
     {
-        Sequence sequence = DOTween.Sequence();
-        sequence.Insert(0, powerThresholdsBg.DOFillAmount(1, 0.3f));
-        sequence.Insert(0.05f, powerThresholds.DOFillAmount(1, 0.25f));
+        powerThresholds.SetBool("Hover", true);
     }
 
     public void HidePowerThresholds()
     {
-        powerThresholdsBg.DOFillAmount(0, 0.3f);
-        powerThresholds.DOFillAmount(0, 0.2f);
+        powerThresholds.SetBool("Hover", false);
     }
 
     // Functions dealing with the drop down objective button
