@@ -72,6 +72,8 @@ public class UIController : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            objWindowText.text = "** Initialising **";
+            hudObjText.text = "<b>** Initialising **</b>\n\n** Initialising **\n\n";
         }
         else if (instance != this)
         {

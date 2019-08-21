@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
     int aoeDamage;
     float timeToReturn;
     bool isLanded;
-    private Rigidbody rigidbody;
+    [HideInInspector][SerializeField] new Rigidbody rigidbody;
 
     public GameObject hitEffect;
 

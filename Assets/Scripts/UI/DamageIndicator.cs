@@ -19,7 +19,7 @@ public class DamageIndicator : MonoBehaviour
     private TextMeshProUGUI exclamationMark;
     private bool on = true;
     private Transform camTarget;
-    private Camera camera;
+    [HideInInspector][SerializeField] new Camera camera;
 
     public Building Building { get; set; }
     public bool On
