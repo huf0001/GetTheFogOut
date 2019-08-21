@@ -512,7 +512,7 @@ public class UIController : MonoBehaviour
                 colour = "#006273>±";
             }
 
-            mineralText.text = Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime)) + " units\n<color=" + colour + mineralChange + "</color>";
+            mineralText.text = Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime)) + " units\n<size=80%><color=" + colour + mineralChange + "</color>";
         }
     }
 
