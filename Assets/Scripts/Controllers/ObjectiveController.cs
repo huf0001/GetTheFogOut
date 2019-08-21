@@ -5,6 +5,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine.UI;
 using Cinemachine;
+using UnityEngine.Profiling;
 
 public enum ObjectiveStage
 {
@@ -87,14 +88,20 @@ public class ObjectiveController : DialogueBoxController
     // Update is called once per frame
     void Update()
     {
+        Profiler.BeginSample("objective");
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
-            if (GameObject.Find("MusicFMOD") != null)
+            
+            // This is very performance heavy, not sure if required so won't delete for now. 
+            /* if (GameObject.Find("MusicFMOD") != null)
             {
                 musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-            }
-            CheckObjectiveStage();
+            } */
+            
+            
+            CheckObjectiveStage(); 
         }
+        Profiler.EndSample();
 
         if (currStage > ObjectiveStage.None)
         {
