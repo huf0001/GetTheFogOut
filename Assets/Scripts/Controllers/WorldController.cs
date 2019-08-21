@@ -43,6 +43,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
     [SerializeField] protected GameObject serialCamera;
+    [SerializeField] private GameObject mainCamera;
 
     [Header("Public variable?")]
     public bool InBuildMode;
@@ -392,7 +393,8 @@ public class WorldController : MonoBehaviour
         }
         else
         {
-            GameOverUpdate();
+            StartCoroutine("PlayDeadAnimator");
+         //   GameOverUpdate();
         }
     }
 
@@ -506,6 +508,16 @@ public class WorldController : MonoBehaviour
         Cursor.lockState = wantedMode;
     }
 
+     IEnumerator PlayDeadAnimator()
+    {
+        Animator dead = mainCamera.GetComponent<Animator>();
+        if (dead)
+        {
+            dead.SetBool("IsDead", true);
+        }
+        yield return new WaitForSeconds(1f);
+        GameOverUpdate();
+    }
     private void GameOverUpdate()
     {
         if (GameWin)
