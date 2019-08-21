@@ -77,6 +77,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark extenderLandmark;
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private Landmark sonarLandmark;
+    [SerializeField] private Landmark fogExtenderLandmark;
+    [SerializeField] private Landmark mortarLandmark;
+    [SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [Header("Cameras")]
@@ -969,11 +972,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    DismissMouse();
-                    GoToSubStage(4);
+                    ActivateTarget(fogExtenderLandmark);
                 }
 
                 break;
@@ -981,32 +980,11 @@ public class TutorialController : DialogueBoxController
                 if (tileClicked)
                 {
                     DismissMouse();
+                    currentlyLerping = ButtonType.Extender;
                 }
 
                 break;
             case 4:
-                currentlyLerping = ButtonType.Extender;
-                IncrementSubStage();
-                break;
-            case 5:
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                }
-                else
-                {
-                    foreach (Relay e in ResourceController.Instance.Extenders)
-                    {
-                        if (e.TakingDamage)
-                        {
-                            GoToSubStage(7);
-                            break;
-                        }
-                    }
-                }
-
-                break;
-            case 6:
                 foreach (Relay e in ResourceController.Instance.Extenders)
                 {
                     if (e.TakingDamage)
@@ -1017,9 +995,11 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 7:
+
+            case 5:
                 stage = TutorialStage.BuildMortar;
                 currentlyBuilding = BuildingType.AirCannon;
+                currentlyLerping = ButtonType.None;
                 ResetSubStage();
                 DeactivateTarget();
                 break;
@@ -1050,10 +1030,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(mortarLandmark);
                 }
 
                 break;
@@ -1108,10 +1085,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(pulseDefenceLandmark);
                 }
 
                 break;
@@ -1444,13 +1418,12 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildHarvestersExtended:
                 return tile.Resource != null;
             case TutorialStage.BuildMoreGenerators:
-            case TutorialStage.BuildExtenderInFog:
                 return tile.Resource == null;
             case TutorialStage.CollectSonar:
                 return false;
+            case TutorialStage.BuildExtenderInFog:
+                return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
             case TutorialStage.CollectMinerals:
-            case TutorialStage.BuildMortar:
-            case TutorialStage.BuildPulseDefence:
             case TutorialStage.DefenceActivation:
             case TutorialStage.BuildDefencesInRange:
                 bool tileOkay = !tile.FogUnitActive || tile.Building != null;

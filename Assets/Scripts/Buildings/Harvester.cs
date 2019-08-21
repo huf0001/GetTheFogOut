@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class Harvester : Building
 {
@@ -50,12 +51,12 @@ public class Harvester : Building
     public void getMineral()
     {
         /*
- 100%: 21FF00  r33,g255,b0
-75%: FFFF00 r255,g255,b0
-50%: FF9A00 r255,g154,b0
-25%: FF0000 r255,g0,b0
- */
-        ResourceNode[] resources = FindObjectsOfType<ResourceNode>();
+        100%: 21FF00  r33,g255,b0
+        75%: FFFF00 r255,g255,b0
+        50%: FF9A00 r255,g154,b0
+        25%: FF0000 r255,g0,b0
+        */
+        
         ParticleSystem.MainModule main = hvtProgress.main;
         TileData hvtTile = WorldController.Instance.GetTileAt(this.transform.position);
         if (hvtTile.Resource)
@@ -84,6 +85,7 @@ public class Harvester : Building
             }
         }
     }
+    
     public override void PowerDown()
     {
         if (hvtProgress.isPlaying)
