@@ -10,8 +10,8 @@ public class MouseController : MonoBehaviour
     // Fields -------------------------------------------------------------------
 
     // Serialized fields
-    [SerializeField] private int generatorCount = 0;
-    [SerializeField] private int generatorInterval = 5;
+    //[SerializeField] private int generatorCount = 0;
+    //[SerializeField] private int generatorInterval = 5;
     //[SerializeField] private WarningScript warningScript;
 
     // Non-serialized fields

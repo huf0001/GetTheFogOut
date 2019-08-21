@@ -83,7 +83,7 @@ public class DialogueBox : MonoBehaviour
     private string currentText = "";
     private string pendingText = "";
     private string pendingColouredText = "";
-    private int lerpTextMinIndex = 0;
+    //private int lerpTextMinIndex = 0;
     private int lerpTextMaxIndex = 0;
     //private int clickCount = 0;
 

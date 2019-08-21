@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     private CinemachineFollowZoom zoom;
 
     [SerializeField] float moveSpeed = 20f;
-    [SerializeField] float rotationSpeed = 40f;
+    //[SerializeField] float rotationSpeed = 40f;
     [SerializeField] float zoomMulti = 10f;
     [SerializeField] float dragSpeed = 0.005f;
     //[SerializeField] bool enableEdgePan = false;

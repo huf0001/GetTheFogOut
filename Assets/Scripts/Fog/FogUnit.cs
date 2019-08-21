@@ -46,7 +46,7 @@ public class FogUnit : Entity
     private float startHealth;
     private float targetHealth;
     private bool takingDamage = false;
-    private float damageLerpProgress = 0;
+    //private float damageLerpProgress = 0;
 
     private Renderer fogRenderer;
     private GameObject Lightning;

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class GridToMouse : MonoBehaviour
 {
     [SerializeField] private int radius = 5;
-    private int i = 0;
+    // private int i = 0;
     // Update is called once per frame
     void Update()
     {

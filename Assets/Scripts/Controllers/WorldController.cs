@@ -78,7 +78,6 @@ public class WorldController : MonoBehaviour
     private CursorLockMode wantedMode;
 
     //Flags
-    private bool hubBuilt = false;
     private bool hubDestroyed = false;
 
     private int index;

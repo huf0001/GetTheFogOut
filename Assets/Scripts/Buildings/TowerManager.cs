@@ -17,8 +17,6 @@ public class TowerManager : MonoBehaviour
     public BuildingType TowerBuildingType { get => buildingType; set => buildingType = value; }
     public TileData CurrentTile { get => currentTile; set => currentTile = value; }
 
-    private bool InbuildMode = false;
-
     //TODO: TOGGLE ?
     //DESC: click on the button will get the value of the assigned value(button) ? xD
     public void OnButtonClicked(btn_tower chooseTower)
@@ -65,7 +63,6 @@ public class TowerManager : MonoBehaviour
             }
         }
         //WorldController.Instance.InBuildMode = true;
-        //InbuildMode = true;
     }
 
     public void OnHoverEnter(btn_tower tower)
@@ -91,7 +88,6 @@ public class TowerManager : MonoBehaviour
         //this.SelectedTower = chooseTower;
         //buildingType = SelectedTower.TowerType;
         //WorldController.Instance.InBuildMode = true;
-        //InbuildMode = true;
     }
 
     //DESC: return prefab object *replace with tower 3d later
@@ -138,11 +134,9 @@ public class TowerManager : MonoBehaviour
             UIController.instance.buildingSelector.ToggleVisibility();
         }
         UIController.instance.buildingInfo.HideInfo();
-        InbuildMode = false;
         buildingType = BuildingType.None;
         //}
         //selectedTower = null;
-        //InbuildMode = false;
         //buildingType = BuildingType.None;
     }
 }
