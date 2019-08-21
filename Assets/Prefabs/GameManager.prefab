@@ -53,8 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16bbb129faf07144293a7a0bab6ea442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 51
-  length: 51
+  width: 71
+  length: 71
   gameWin: 0
   gameOver: 0
   ground: {fileID: 0}
@@ -285,6 +285,9 @@ MonoBehaviour:
   extenderLandmark: {fileID: 0}
   generatorLandmark: {fileID: 0}
   sonarLandmark: {fileID: 0}
+  fogExtenderLandmark: {fileID: 0}
+  mortarLandmark: {fileID: 0}
+  pulseDefenceLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
   cameraController: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
@@ -294,7 +297,7 @@ MonoBehaviour:
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
   builtHarvestersGoal: 3
-  builtHarvestersExtendedGoal: 5
+  builtHarvestersExtendedGoal: 4
   builtGeneratorsGoal: 3
   collectedMineralsGoal: 300
 --- !u!114 &4019818891569145385
