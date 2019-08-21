@@ -490,9 +490,4 @@ public class ObjectiveController : DialogueBoxController
             ToggleObjWindow();
         }
     }
-
-    public void ToggleObjWindow()
-    {
-        base.ToggleObjWindow();
-    }
 }
