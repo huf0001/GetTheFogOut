@@ -393,7 +393,14 @@ public class WorldController : MonoBehaviour
         }
         else
         {
-            StartCoroutine("PlayDeadAnimator");
+            if (GameWin)
+            {
+                StartCoroutine("PlayWinAnimator");
+            }
+            else
+            {
+                StartCoroutine("PlayDeadAnimator");
+            }
          //   GameOverUpdate();
         }
     }
@@ -518,18 +525,26 @@ public class WorldController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         GameOverUpdate();
     }
+
+    IEnumerator PlayWinAnimator()
+    {
+        Animator win = Hub.Instance.Animator;
+        if (win)
+        {
+            win.SetBool("Win", true);
+        }
+        yield return new WaitForSeconds(8.0f);
+        GameWinUpdate();
+    }
+    private void GameWinUpdate()
+    {
+        musicFMOD.GameWinMusic();
+        uiController.EndGameDisplay("You win!"); //Display win UI
+    }
     private void GameOverUpdate()
     {
-        if (GameWin)
-        {
-            musicFMOD.GameWinMusic();
-            uiController.EndGameDisplay("You win!"); //Display win UI
-        }
-        else
-        {
             musicFMOD.GameLoseMusic();
-            uiController.EndGameDisplay("You lose!"); //Display lose UI
-        }
+            uiController.EndGameDisplay("You lose!"); //Display lose UI     
     }
 
     private void RenderTower()
