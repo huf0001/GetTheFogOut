@@ -84,6 +84,10 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private List<ColourTag> colourTags;
     [SerializeField] private List<DialogueSet> dialogue;
 
+    [Header("Objective Buttons")]
+    [SerializeField] private Image countdown;
+    [SerializeField] private Image objButton;
+
     //Non-Serialized Fields
     [Header("Temporarily Serialized")]
     //[SerializeField] private List<ExpressionDialoguePair> contentToDisplay = new List<ExpressionDialoguePair>();
@@ -274,7 +278,7 @@ public class DialogueBox : MonoBehaviour
                 RegisterDialogueRead();
             }
         }
-        
+
         if (!lerpFinished)
         {
             pendingText = "";
@@ -434,6 +438,8 @@ public class DialogueBox : MonoBehaviour
     {
         nextDialogueSetReady = true;
 
+        countdown.rectTransform.DOAnchorPosY(Screen.height / 100 + 125, popUpSpeed).SetEase(Ease.OutBack);
+        objButton.rectTransform.DOAnchorPosY(Screen.height / 100 + 125, popUpSpeed).SetEase(Ease.OutBack);
         dialogueRectTransform.DOAnchorPosY(Screen.height / 100, popUpSpeed).SetEase(Ease.OutBack).SetUpdate(true).OnComplete(
             delegate
             {
@@ -532,13 +538,15 @@ public class DialogueBox : MonoBehaviour
                 clickable = false;
                 DeactivateDialogueBox();
             }
-        }        
+        }
     }
 
     //Tweens the dialogue box out
     private void DeactivateDialogueBox()
     {
         deactivating = true;
+        countdown.rectTransform.DOAnchorPosY(20, popUpSpeed).SetEase(Ease.InBack);
+        objButton.rectTransform.DOAnchorPosY(20, popUpSpeed).SetEase(Ease.InBack);
         dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y, popUpSpeed).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
             delegate
             {
