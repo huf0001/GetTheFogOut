@@ -11787,6 +11787,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6998205902158839161, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 234.7998
+      objectReference: {fileID: 0}
+    - target: {fileID: 611771328913381120, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: abilityController
+      value: 
+      objectReference: {fileID: 1644847193}
     - target: {fileID: 1644654724949681786, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -21265,6 +21275,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b40131ac2789224ca2cbb2e41ee50ed, type: 3}
+--- !u!114 &1613218890 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 611771328913381120, guid: f0d96ef103d08e4429542615f2b52508,
+    type: 3}
+  m_PrefabInstance: {fileID: 922240204}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce751e7e4e674a240b7918f8bf50ead8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1616031963 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2665747012393569261, guid: a9ff5b1c68228ae4db9435030bf14584,
@@ -21650,6 +21672,11 @@ PrefabInstance:
       propertyPath: length
       value: 71
       objectReference: {fileID: 0}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: abilityMenu
+      value: 
+      objectReference: {fileID: 1613218890}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow

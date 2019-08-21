@@ -43,6 +43,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
     [SerializeField] protected GameObject serialCamera;
+    [SerializeField] private AbilityMenu abilityMenu;
 
     [Header("Public variable?")]
     public bool InBuildMode;
@@ -425,7 +426,7 @@ public class WorldController : MonoBehaviour
             thrusterTilesOff();
         }
 
-        if (Input.GetButtonDown("Cancel"))
+        if (Inputs.InputMap.Pause.triggered)
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -474,21 +475,23 @@ public class WorldController : MonoBehaviour
 
     public void SetPause(bool pause)
     {
-        pauseMenu.SetActive(!pauseMenu.activeSelf);
-
-        if (pause)
+        if (!uiController.buildingSelector.Visible && !uiController.buildingInfo.Visible && !abilityMenu.Visible)
         {
-            Time.timeScale = 0.0f;
-            musicVolume = 0.3f;
-        }
-        else
-        {
-            Time.timeScale = 1.0f;
-            musicVolume = 1f;
-        }
+            pauseMenu.SetActive(!pauseMenu.activeSelf);
 
-        musicBus.setVolume(musicVolume);
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            if (pause)
+            {
+                Time.timeScale = 0.0f;
+                musicVolume = 0.3f;
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                musicVolume = 1f;
+            }
+
+            musicBus.setVolume(musicVolume); 
+        }
     }
 
 
@@ -553,8 +556,7 @@ public class WorldController : MonoBehaviour
             Destroy(TowerSpawn);
         }
 
-        if ((Input.GetButtonDown("Cancel"))
-            && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.Stage == TutorialStage.Finished))
+        if (Inputs.InputMap.Pause.triggered && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.Stage == TutorialStage.Finished))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
