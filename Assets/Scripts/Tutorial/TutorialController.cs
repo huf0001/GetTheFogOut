@@ -56,27 +56,34 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraInput dKey;
     [SerializeField] private CameraInput zoomIn;
     [SerializeField] private CameraInput zoomOut;
-    [SerializeField] private Image harvesterButtonLerpTarget;
-    [SerializeField] private Image extenderButtonLerpTarget;
+    [SerializeField] private Image harvesterButton;
+    [SerializeField] private Image extenderButton;
     [SerializeField] private Image powerDiagram;
-    [SerializeField] private Image batteryIconLerpTarget;
-    [SerializeField] private Image generatorButtonLerpTarget;
+    [SerializeField] private Image batteryIcon;
+    [SerializeField] private Image generatorButton;
     [SerializeField] private GameObject abilityUnlockCanvas;
-    [SerializeField] private Image abilityMenuLerpTarget;
+    [SerializeField] private Image abilityMenu;
     [SerializeField] private RadialMenu abilitySelectorRadialMenu;
-    [SerializeField] private Image sonarButtonLerpTarget;
-    [SerializeField] private Image mortarButtonLerpTarget;
-    [SerializeField] private Image pulseDefenceButtonLerpTarget;
+    [SerializeField] private Image sonarButton;
+    [SerializeField] private Image mortarButton;
+    [SerializeField] private Image pulseDefenceButton;
+    [SerializeField] private Image uiLerpTarget;
 
-    [Header("Tutorial UI Values")]
+    [Header("UI Lerp Values")]
     [SerializeField] private float decalMinLerp;
     [SerializeField] private float decalMaxLerp;
-    [SerializeField] private float batteryIconMinLerp;
-    [SerializeField] private float batteryIconMaxLerp;
+    [SerializeField] private float batteryIconMinLerp = 0.47f;
+    //[SerializeField] private float batteryIconMaxLerp;
     [SerializeField] private float abilityMenuMinLerp;
-    [SerializeField] private float abilityMenuMaxLerp;
+    //[SerializeField] private float abilityMenuMaxLerp;
     [SerializeField] private float sonarIconMinLerp;
-    [SerializeField] private float sonarIconMaxLerp;
+    //[SerializeField] private float sonarIconMaxLerp;
+
+    [Header("UI Lerp Colours")]
+    [SerializeField] private Color uiNormalColour = Color.white;
+    [SerializeField] private Color uiHighlightColour = Color.green;
+    [SerializeField] private Color lerpTargetColour = Color.red;
+    //TODO: need lerp values for battery(bright green, dull green, orange/yellow, red), defences, harvesters, power-related buildings, ability menu, and sonar), 9 total
 
     [Header("Skip Tutorial")]
     [SerializeField] private bool skipTutorial = true;
@@ -108,9 +115,6 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CinemachineVirtualCamera artilleryCamera;
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
-    [Header("UI Lerp Colours")]
-    [SerializeField] private Color uiNormalColour = Color.white;
-    [SerializeField] private Color uiHighlightColour = Color.green;
 
     [Header("Goals")]
     [SerializeField] private int builtHarvestersGoal;
@@ -141,7 +145,7 @@ public class TutorialController : DialogueBoxController
     private MusicFMOD musicFMOD;
 
     private bool lerpUITarget = false;
-    [SerializeField] private Image uiLerpTarget;
+    //[SerializeField] private Image uiLerpTarget;
     private float uiMinLerp;
     private float uiMaxLerp;
 
@@ -665,7 +669,7 @@ public class TutorialController : DialogueBoxController
                     stage = TutorialStage.MouseOverPowerDiagram;
                     UIController.instance.UpdateObjectiveText(stage);
                     SendDialogue("explain power", 1);
-                    ActivateUILerpTarget(batteryIconLerpTarget, batteryIconMinLerp, batteryIconMaxLerp);
+                    ActivateUILerpTarget(batteryIcon, batteryIconMinLerp, lerpTargetColour);
 
                     if (!objWindowVisible)
                     {
@@ -1668,24 +1672,46 @@ public class TutorialController : DialogueBoxController
 
     //Tutorial Utility Methods - UI Lerp Target------------------------------------------------------------------------------------------------------
 
-    private void ActivateUILerpTarget(Image newUILerpTarget, float minLerp, float maxLerp)
+    private void ActivateUILerpTarget(Image newUILerpTarget, float minLerp, Color colour)
     {
         lerpUITarget = true;
-        uiLerpTarget = newUILerpTarget;
+        uiLerpTarget.transform.position = newUILerpTarget.transform.position;
         lerpForward = true;
         lerpProgress = 0;
         uiMinLerp = minLerp;
-        uiMaxLerp = maxLerp;
+        //uiMaxLerp = maxLerp;
 
-        Color c = uiLerpTarget.color;
-        c.a = 0.5f;
-        uiLerpTarget.color = c;
+        uiLerpTarget.color = colour;
     }
 
     private void LerpUITarget()
     {
-        float lerp = Mathf.Lerp(uiMinLerp, uiMaxLerp, lerpProgress);
+        float lerp = Mathf.Lerp(uiMinLerp, uiMinLerp * 1.5f, lerpProgress);
         uiLerpTarget.transform.localScale = new Vector3(lerp, lerp, uiLerpTarget.transform.localScale.z);
+
+        //TODO: If need to double check position, store current image target in variable and check against its position
+
+        //if (stage == TutorialStage.BuildGenerator && subStage < 4)
+        //{
+        //    float power = ResourceController.Instance.StoredPower;
+
+        //    if (power < 25)
+        //    {
+        //        //if colour != red, colour = red
+        //    }
+        //    else if (power < 50)
+        //    {
+        //        //if colour != orange, colour = orange
+        //    }
+        //    else if (power < 75)
+        //    {
+        //        //if colour != dull green, colour = dull green
+        //    }
+        //    else
+        //    {
+        //        //if colour != bright green, colour = bright green
+        //    }
+        //}
 
         UpdateLerpValues();
     }
