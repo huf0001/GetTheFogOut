@@ -56,13 +56,21 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraInput dKey;
     [SerializeField] private CameraInput zoomIn;
     [SerializeField] private CameraInput zoomOut;
+    [SerializeField] private Image buildButtonLerpTarget;
     [SerializeField] private Image powerDiagram;
+    [SerializeField] private Image powerDiagramLerpTarget;
     [SerializeField] private GameObject abilityUnlockCanvas;
+
+    [Header("Tutorial UI Values")]
+    [SerializeField] private float decalMinLerp = 1.5f;
+    [SerializeField] private float decalMaxLerp = 3f;
+    [SerializeField] private float uiMinLerp = 1f;
+    [SerializeField] private float uiMaxLerp = 3f;  //TODO: adjust value for battery icon; 3 is too much
 
     [Header("Skip Tutorial")]
     [SerializeField] private bool skipTutorial = true;
 
-    [Header("Tutorial Game State (Testing)")]
+    [Header("Tutorial Game State")]
     [SerializeField] private TutorialStage stage = TutorialStage.ExplainSituation;
     [SerializeField] private int subStage = 1;
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
@@ -104,8 +112,6 @@ public class TutorialController : DialogueBoxController
 
     //Non-Serialized Fields
     private MeshRenderer targetRenderer = null;
-    private float decalMin = 1.5f;
-    private float decalMax = 3f;
     private float lerpMultiplier = 1f;
     private float lerpProgress = 0f;
     private bool lerpForward = true;
@@ -122,6 +128,9 @@ public class TutorialController : DialogueBoxController
     private TileData sonarLandmarkTile;
 
     private MusicFMOD musicFMOD;
+
+    private bool lerpUITarget = false;
+    private Image uiLerpTarget;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -214,6 +223,11 @@ public class TutorialController : DialogueBoxController
             if (targetRenderer.enabled)
             {
                 LerpDecal();
+            }
+
+            if (lerpUITarget)
+            {
+                LerpUITarget();
             }
         }
     }
@@ -638,6 +652,7 @@ public class TutorialController : DialogueBoxController
                     stage = TutorialStage.MouseOverPowerDiagram;
                     UIController.instance.UpdateObjectiveText(stage);
                     SendDialogue("explain power", 1);
+                    //ActivateUILerpTarget(powerDiagramLerpTarget); //TODO: uncomment for testing; note: the lerp target was lerping on top of the battery icon, not behind it.
 
                     if (!objWindowVisible)
                     {
@@ -665,6 +680,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                //DeactivateUILerpTarget(); //TODO: uncomment for testing
                 stage = TutorialStage.BuildGenerator;
                 UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build generator target", 1);
@@ -1514,20 +1530,20 @@ public class TutorialController : DialogueBoxController
         base.SendDialogue(dialogueKey, invokeDelay);
         IncrementSubStage();
     }
-    
+
     //Dismisses the dialogue and increments the substage
     private void DismissDialogue()
     {
         ResetDialogueRead();
         IncrementSubStage();
     }
-    
+
     //Increments the substage by 1
     private void IncrementSubStage()
     {
         subStage++;
     }
-   
+
     //Dismisses dialogue and the mouse and advances/retreats to the specified sub-stage appropriately appropriately
     private void GoToSubStage(int nextSubStage)
     {
@@ -1537,7 +1553,7 @@ public class TutorialController : DialogueBoxController
         ResetDialogueRead();
         subStage = nextSubStage;
     }
-    
+
     //Resets the substage to 1
     private void ResetSubStage()
     {
@@ -1596,13 +1612,61 @@ public class TutorialController : DialogueBoxController
     //Lerp the target decal
     private void LerpDecal()
     {
-        float lerped = Mathf.Lerp(decalMin, decalMax, lerpProgress);
+        float lerped = Mathf.Lerp(decalMinLerp, decalMaxLerp, lerpProgress);
         buildingTarget.transform.localScale = new Vector3(lerped, 1, lerped);
 
         UpdateLerpValues();
     }
 
-    //Update the decal's lerping values
+    //Check if the building currently being built at a specific location has been built
+    private bool BuiltCurrentlyBuilding()
+    {
+        return currentTile != null && currentTile.Building != null && currentTile.Building.BuildingType == currentlyBuilding;
+    }
+
+    //Deactivates the building target
+    private void DeactivateTarget()
+    {
+        targetRenderer.enabled = false;
+    }
+
+    //Tutorial Utility Methods - UI Lerp Target------------------------------------------------------------------------------------------------------
+
+    private void ActivateUILerpTarget(Image newUILerpTarget)
+    {
+        lerpUITarget = true;
+        uiLerpTarget = newUILerpTarget;
+        lerpProgress = 0;
+        lerpForward = true;
+
+        Color c = uiLerpTarget.color;
+        c.a = 1;
+        uiLerpTarget.color = c;
+    }
+
+    private void LerpUITarget()
+    {
+        float lerped = Mathf.Lerp(uiMinLerp, uiMaxLerp, lerpProgress);
+        uiLerpTarget.transform.localScale = new Vector3(lerped, lerped, 1);
+
+        UpdateLerpValues();
+    }
+
+    private void DeactivateUILerpTarget()
+    {
+        lerpUITarget = false;
+        uiLerpTarget.transform.localScale = new Vector3(1, 1, 1);
+
+        Color c = uiLerpTarget.color;
+        c.a = 0;
+        uiLerpTarget.color = c;
+
+        uiLerpTarget = null;
+    }
+
+    //Tutorial Utility Methods - (General) Target Lerping--------------------------------------------------------------------------------------------
+
+    //Update lerp progress
     private void UpdateLerpValues()
     {
         if (lerpForward)
@@ -1624,18 +1688,6 @@ public class TutorialController : DialogueBoxController
             lerpProgress = 0;
             lerpForward = true;
         }
-    }
-
-    //Check if the building currently being built at a specific location has been built
-    private bool BuiltCurrentlyBuilding()
-    {
-        return currentTile != null && currentTile.Building != null && currentTile.Building.BuildingType == currentlyBuilding;
-    }
-
-    //Deactivates the building target
-    private void DeactivateTarget()
-    {
-        targetRenderer.enabled = false;
     }
 }
 
