@@ -652,7 +652,7 @@ public class TutorialController : DialogueBoxController
                     stage = TutorialStage.MouseOverPowerDiagram;
                     UIController.instance.UpdateObjectiveText(stage);
                     SendDialogue("explain power", 1);
-                    //ActivateUILerpTarget(powerDiagramLerpTarget); //TODO: uncomment for testing; note: the lerp target was lerping on top of the battery icon, not behind it.
+                    ActivateUILerpTarget(powerDiagramLerpTarget); //TODO: uncomment for testing; note: the lerp target was lerping on top of the battery icon, not behind it.
 
                     if (!objWindowVisible)
                     {
@@ -680,7 +680,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                //DeactivateUILerpTarget(); //TODO: uncomment for testing
+                DeactivateUILerpTarget(); //TODO: uncomment for testing
                 stage = TutorialStage.BuildGenerator;
                 UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build generator target", 1);
@@ -1640,7 +1640,7 @@ public class TutorialController : DialogueBoxController
         lerpForward = true;
 
         Color c = uiLerpTarget.color;
-        c.a = 1;
+        c.a = 0.5f;
         uiLerpTarget.color = c;
     }
 

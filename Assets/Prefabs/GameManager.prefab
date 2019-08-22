@@ -74,6 +74,8 @@ MonoBehaviour:
   - component: 2
     collected: 0
   serialCamera: {fileID: 0}
+  abilityMenu: {fileID: 0}
+  mainCamera: {fileID: 0}
   InBuildMode: 1
   pauseMenu: {fileID: 0}
   musicfmod: {fileID: 4407398185932732860, guid: 5c819ef072426864db6435e12ba6cc4c,
@@ -182,7 +184,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1d7b93855cfd8b74e8efcfe95c262f1c, type: 3}
   - {fileID: 21300000, guid: c9b306912d4733348a3a569ebab51f72, type: 3}
   - {fileID: 21300000, guid: dbcded0b72a66044bbab44d79f074e0a, type: 3}
-  powerThresholdsBg: {fileID: 0}
   powerThresholds: {fileID: 0}
   objWindowText: {fileID: 0}
   hudObjText: {fileID: 0}
@@ -250,8 +251,14 @@ MonoBehaviour:
   dKey: {fileID: 0}
   zoomIn: {fileID: 0}
   zoomOut: {fileID: 0}
+  buildButtonLerpTarget: {fileID: 0}
   powerDiagram: {fileID: 0}
+  powerDiagramLerpTarget: {fileID: 0}
   abilityUnlockCanvas: {fileID: 0}
+  decalMinLerp: 1.5
+  decalMaxLerp: 3
+  uiMinLerp: 1
+  uiMaxLerp: 1.5
   skipTutorial: 0
   stage: 1
   subStage: 1
