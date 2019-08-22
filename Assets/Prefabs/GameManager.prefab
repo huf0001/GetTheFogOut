@@ -251,14 +251,25 @@ MonoBehaviour:
   dKey: {fileID: 0}
   zoomIn: {fileID: 0}
   zoomOut: {fileID: 0}
-  buildButtonLerpTarget: {fileID: 0}
+  harvesterButtonLerpTarget: {fileID: 0}
+  extenderButtonLerpTarget: {fileID: 0}
   powerDiagram: {fileID: 0}
-  powerDiagramLerpTarget: {fileID: 0}
+  batteryIconLerpTarget: {fileID: 0}
+  generatorButtonLerpTarget: {fileID: 0}
   abilityUnlockCanvas: {fileID: 0}
+  abilityMenuLerpTarget: {fileID: 0}
+  abilitySelectorRadialMenu: {fileID: 0}
+  sonarButtonLerpTarget: {fileID: 0}
+  mortarButtonLerpTarget: {fileID: 0}
+  pulseDefenceButtonLerpTarget: {fileID: 0}
   decalMinLerp: 1.5
   decalMaxLerp: 3
-  uiMinLerp: 1
-  uiMaxLerp: 1.5
+  batteryIconMinLerp: 1
+  batteryIconMaxLerp: 2
+  abilityMenuMinLerp: 0.5
+  abilityMenuMaxLerp: 1
+  sonarIconMinLerp: 0
+  sonarIconMaxLerp: 0
   skipTutorial: 0
   stage: 1
   subStage: 1
@@ -307,6 +318,7 @@ MonoBehaviour:
   builtHarvestersExtendedGoal: 5
   builtGeneratorsGoal: 3
   collectedMineralsGoal: 300
+  uiLerpTarget: {fileID: 0}
 --- !u!114 &4019818891569145385
 MonoBehaviour:
   m_ObjectHideFlags: 0

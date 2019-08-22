@@ -56,16 +56,27 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraInput dKey;
     [SerializeField] private CameraInput zoomIn;
     [SerializeField] private CameraInput zoomOut;
-    [SerializeField] private Image buildButtonLerpTarget;
+    [SerializeField] private Image harvesterButtonLerpTarget;
+    [SerializeField] private Image extenderButtonLerpTarget;
     [SerializeField] private Image powerDiagram;
-    [SerializeField] private Image powerDiagramLerpTarget;
+    [SerializeField] private Image batteryIconLerpTarget;
+    [SerializeField] private Image generatorButtonLerpTarget;
     [SerializeField] private GameObject abilityUnlockCanvas;
+    [SerializeField] private Image abilityMenuLerpTarget;
+    [SerializeField] private RadialMenu abilitySelectorRadialMenu;
+    [SerializeField] private Image sonarButtonLerpTarget;
+    [SerializeField] private Image mortarButtonLerpTarget;
+    [SerializeField] private Image pulseDefenceButtonLerpTarget;
 
     [Header("Tutorial UI Values")]
-    [SerializeField] private float decalMinLerp = 1.5f;
-    [SerializeField] private float decalMaxLerp = 3f;
-    [SerializeField] private float uiMinLerp = 1f;
-    [SerializeField] private float uiMaxLerp = 3f;  //TODO: adjust value for battery icon; 3 is too much
+    [SerializeField] private float decalMinLerp;
+    [SerializeField] private float decalMaxLerp;
+    [SerializeField] private float batteryIconMinLerp;
+    [SerializeField] private float batteryIconMaxLerp;
+    [SerializeField] private float abilityMenuMinLerp;
+    [SerializeField] private float abilityMenuMaxLerp;
+    [SerializeField] private float sonarIconMinLerp;
+    [SerializeField] private float sonarIconMaxLerp;
 
     [Header("Skip Tutorial")]
     [SerializeField] private bool skipTutorial = true;
@@ -130,7 +141,9 @@ public class TutorialController : DialogueBoxController
     private MusicFMOD musicFMOD;
 
     private bool lerpUITarget = false;
-    private Image uiLerpTarget;
+    [SerializeField] private Image uiLerpTarget;
+    private float uiMinLerp;
+    private float uiMaxLerp;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -652,7 +665,7 @@ public class TutorialController : DialogueBoxController
                     stage = TutorialStage.MouseOverPowerDiagram;
                     UIController.instance.UpdateObjectiveText(stage);
                     SendDialogue("explain power", 1);
-                    ActivateUILerpTarget(powerDiagramLerpTarget); //TODO: uncomment for testing; note: the lerp target was lerping on top of the battery icon, not behind it.
+                    ActivateUILerpTarget(batteryIconLerpTarget, batteryIconMinLerp, batteryIconMaxLerp);
 
                     if (!objWindowVisible)
                     {
@@ -680,7 +693,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                DeactivateUILerpTarget(); //TODO: uncomment for testing
+                DeactivateUILerpTarget();
                 stage = TutorialStage.BuildGenerator;
                 UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build generator target", 1);
@@ -882,34 +895,59 @@ public class TutorialController : DialogueBoxController
             case 4:
                 stage = TutorialStage.ActivateSonar;
                 SendDialogue("select sonar", 1);
+                //ActivateUILerpTarget(abilityMenuLerpTarget, abilityMenuMinLerp, abilityMenuMaxLerp);
                 break;
             case 5:
-                if (AbilityController.Instance.IsAbilitySelected)
+                if (dialogueRead)
+                {
+                    abilityUnlockCanvas.SetActive(false);
+                    DismissDialogue();
+                }
+                else if (abilitySelectorRadialMenu.Radius > 0)
                 {
                     abilityUnlockCanvas.SetActive(false);
                     GoToSubStage(7);
                 }
-                else if (dialogueRead)
-                {
-                    DismissDialogue();
-                    abilityUnlockCanvas.SetActive(false);
-                }
 
                 break;
             case 6:
-                if (AbilityController.Instance.IsAbilitySelected)
+                if (abilitySelectorRadialMenu.Radius > 0)
                 {
                     IncrementSubStage();
                 }
 
                 break;
             case 7:
-                SendDialogue("activate sonar", 1);
+                //DeactivateUILerpTarget();
+                //ActivateUILerpTarget(sonarButtonLerpTarget, sonarIconMinLerp, sonarIconMaxLerp);
+                IncrementSubStage();
                 break;
             case 8:
-                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                if (AbilityController.Instance.IsAbilitySelected)
                 {
                     GoToSubStage(10);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 9:
+                if (AbilityController.Instance.IsAbilitySelected)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 10:
+                SendDialogue("activate sonar", 1);
+                //DeactivateUILerpTarget();
+                break;
+            case 11:
+                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                {
+                    GoToSubStage(13);
                 }
                 else if (dialogueRead)
                 {
@@ -917,15 +955,14 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 9:
+            case 12:
                 if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
                 {
                     IncrementSubStage();
-
                 }
 
                 break;
-            case 10:
+            case 13:
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.transform.GetChild(0).gameObject.SetActive(false);
                 hub.transform.GetChild(1).gameObject.SetActive(true);
@@ -937,20 +974,19 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.SonarActivated;
                 SendDialogue("explain abilities", 1);
                 break;
-            case 11:
+            case 14:
                 if (dialogueRead)
                 {
                     DismissDialogue();
-
                 }
 
                 break;
-            case 12:
+            case 15:
                 SendDialogue("explain thruster", 1);
                 artilleryCamera.gameObject.SetActive(false);
                 thrusterCamera.gameObject.SetActive(true);
                 break;
-            case 13:
+            case 16:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -1632,12 +1668,14 @@ public class TutorialController : DialogueBoxController
 
     //Tutorial Utility Methods - UI Lerp Target------------------------------------------------------------------------------------------------------
 
-    private void ActivateUILerpTarget(Image newUILerpTarget)
+    private void ActivateUILerpTarget(Image newUILerpTarget, float minLerp, float maxLerp)
     {
         lerpUITarget = true;
         uiLerpTarget = newUILerpTarget;
-        lerpProgress = 0;
         lerpForward = true;
+        lerpProgress = 0;
+        uiMinLerp = minLerp;
+        uiMaxLerp = maxLerp;
 
         Color c = uiLerpTarget.color;
         c.a = 0.5f;
@@ -1646,8 +1684,8 @@ public class TutorialController : DialogueBoxController
 
     private void LerpUITarget()
     {
-        float lerped = Mathf.Lerp(uiMinLerp, uiMaxLerp, lerpProgress);
-        uiLerpTarget.transform.localScale = new Vector3(lerped, lerped, 1);
+        float lerp = Mathf.Lerp(uiMinLerp, uiMaxLerp, lerpProgress);
+        uiLerpTarget.transform.localScale = new Vector3(lerp, lerp, uiLerpTarget.transform.localScale.z);
 
         UpdateLerpValues();
     }
@@ -1655,13 +1693,18 @@ public class TutorialController : DialogueBoxController
     private void DeactivateUILerpTarget()
     {
         lerpUITarget = false;
-        uiLerpTarget.transform.localScale = new Vector3(1, 1, 1);
+        Debug.Log($"UILerpTarget is {uiLerpTarget}");
+        Debug.Log($"UILerpTarget.transform is {uiLerpTarget.transform}");
+        Debug.Log($"UILerpTarget.transform.localScale is {uiLerpTarget.transform.localScale}");
+        uiLerpTarget.transform.localScale = new Vector3(uiMinLerp, uiMinLerp, uiLerpTarget.transform.localScale.z);
 
         Color c = uiLerpTarget.color;
         c.a = 0;
         uiLerpTarget.color = c;
 
         uiLerpTarget = null;
+        uiMinLerp = 1;
+        uiMaxLerp = 1;
     }
 
     //Tutorial Utility Methods - (General) Target Lerping--------------------------------------------------------------------------------------------
