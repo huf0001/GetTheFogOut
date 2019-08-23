@@ -16,6 +16,7 @@ public class MinimapTile : MonoBehaviour
     [SerializeField] private Color shipTile = new Color(0.8f, 0.8f, 0.8f);
     [SerializeField] private Color collectableTile = new Color(1, 1, 1);
     [SerializeField] private Color mineralTile = new Color32(228, 148, 0, 255);
+    [SerializeField] private Color obstacleTile;
     private Material mat;
     private Color curColour;
     private float curFoggyness;
@@ -23,7 +24,14 @@ public class MinimapTile : MonoBehaviour
     private void Start()
     {
         mat = GetComponent<Renderer>().material;
-        InvokeRepeating(nameof(CheckColour), 0.1f, 0.5f);
+        if (Tile.buildingChecks.obstacle)
+        {
+            mat.SetColor("_BaseColor", obstacleTile);
+        }
+        else
+        {
+            InvokeRepeating(nameof(CheckColour), 0.1f, 0.5f);
+        }
     }
 
     private void CheckColour()

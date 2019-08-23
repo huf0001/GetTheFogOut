@@ -15,6 +15,20 @@ public enum AIExpression
 }
 
 [Serializable]
+public class ColourTag
+{
+    [SerializeField] private char openingTag;
+    [SerializeField] private char closingTag;
+    [SerializeField] private Color colour;
+    private string colourName;
+
+    public char OpeningTag { get => openingTag; }
+    public char ClosingTag { get => closingTag; }
+    public Color Colour { get => colour; }
+    public string ColourName { get => colourName; set => colourName = value; }
+}
+
+[Serializable]
 public class ExpressionDialoguePair
 {
     //Serialized Fields
@@ -60,13 +74,19 @@ public class DialogueBox : MonoBehaviour
     [Header("Images")]
     [SerializeField] private Image continueArrow;
 
-    [Header("Colours")]
-    [SerializeField] private string squareBracketColour;
-    [SerializeField] private string squigglyBracketColour;
-    [SerializeField] private string vBracketColour;
+    //[Header("Colours")]
+    //[SerializeField] private string squareBracketColour;
+    //[SerializeField] private string ampersandBracketColour;
+    //[SerializeField] private string squigglyBracketColour;
+    //[SerializeField] private string htmlTagBracketColour;
 
     [Header("Dialogue")]
+    [SerializeField] private List<ColourTag> colourTags;
     [SerializeField] private List<DialogueSet> dialogue;
+
+    [Header("Objective Buttons")]
+    [SerializeField] private Image countdown;
+    [SerializeField] private Image objButton;
 
     //Non-Serialized Fields
     [Header("Temporarily Serialized")]
@@ -87,9 +107,10 @@ public class DialogueBox : MonoBehaviour
     private int lerpTextMaxIndex = 0;
     //private int clickCount = 0;
 
-    private bool coloured = false;
+    //private bool coloured = false;
+    private ColourTag colourTag = null;
     private bool lerpFinished = true;
-    private string textColourString;
+    //private string textColourString;
 
     //private DialogueSet nextDialogueSet = null;
     private string nextDialogueKey = "";
@@ -114,32 +135,47 @@ public class DialogueBox : MonoBehaviour
         aiImage.sprite = aiNeutral;
         arrowInitialPosition = continueArrow.GetComponent<RectTransform>().anchoredPosition;
 
-        if (squareBracketColour == "")
+        foreach (ColourTag c in colourTags)
         {
-            Debug.LogError("DialogueBox.squareBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
-        }
-        else if (squareBracketColour[0].ToString() != "#")
-        {
-            squareBracketColour = $"\"{squareBracketColour}\"";
+            //c.ColourName = c.Colour.ToString();
+            c.ColourName = $"#{ColorUtility.ToHtmlStringRGB(c.Colour)}";
         }
 
-        if (squareBracketColour == "")
-        {
-            Debug.LogError("DialogueBox.squigglyBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
-        }
-        else if (squigglyBracketColour[0].ToString() != "#")
-        {
-            squigglyBracketColour = $"\"{squigglyBracketColour}\"";
-        }
+        //if (squareBracketColour == "")
+        //{
+        //    Debug.LogError("DialogueBox.squareBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
+        //}
+        //else if (squareBracketColour[0].ToString() != "#")
+        //{
+        //    squareBracketColour = $"\"{squareBracketColour}\"";
+        //}
 
-        if (squareBracketColour == "")
-        {
-            Debug.LogError("DialogueBox.vBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
-        }
-        else if (vBracketColour[0].ToString() != "#")
-        {
-            vBracketColour = $"\"{vBracketColour}\"";
-        }
+        //if (ampersandBracketColour == "")
+        //{
+        //    Debug.LogError("DialogueBox.squareBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
+        //}
+        //else if (squareBracketColour[0].ToString() != "#")
+        //{
+        //    squareBracketColour = $"\"{squareBracketColour}\"";
+        //}
+
+        //if (squareBracketColour == "")
+        //{
+        //    Debug.LogError("DialogueBox.squigglyBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
+        //}
+        //else if (squigglyBracketColour[0].ToString() != "#")
+        //{
+        //    squigglyBracketColour = $"\"{squigglyBracketColour}\"";
+        //}
+
+        //if (squareBracketColour == "")
+        //{
+        //    Debug.LogError("DialogueBox.vBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
+        //}
+        //else if (htmlTagBracketColour[0].ToString() != "#")
+        //{
+        //    htmlTagBracketColour = $"\"{htmlTagBracketColour}\"";
+        //}
 
         if (aiImage.sprite == aiHappy)
         {
@@ -242,22 +278,22 @@ public class DialogueBox : MonoBehaviour
                 RegisterDialogueRead();
             }
         }
-        
+
         if (!lerpFinished)
         {
             pendingText = "";
             pendingColouredText = "";
-            coloured = false;
+            colourTag = null;
 
             foreach (char c in currentText.Substring(0, lerpTextMaxIndex))
             {
-                if (coloured)
+                if (colourTag != null)
                 {
-                    if (c.ToString() == "]" || c.ToString() == "}" || c.ToString() == "<")
+                    if (c == colourTag.ClosingTag)
                     {
-                        coloured = false;
-                        pendingText += $"<color={textColourString}><b>{pendingColouredText}</b></color>";
+                        pendingText += $"<color={colourTag.ColourName}><b>{pendingColouredText}</b></color>";
                         pendingColouredText = "";
+                        colourTag = null;
                     }
                     else
                     {
@@ -266,30 +302,49 @@ public class DialogueBox : MonoBehaviour
                 }
                 else
                 {
-                    switch (c.ToString())
+                    foreach (ColourTag t in colourTags)
                     {
-                        case "[":
-                            coloured = true;
-                            textColourString = squareBracketColour;
+                        if (c == t.OpeningTag)
+                        {
+                            colourTag = t;
+                            //textColourString = t.ColourName;
                             break;
-                        case "{":
-                            coloured = true;
-                            textColourString = squigglyBracketColour;
-                            break;
-                        case ">":
-                            coloured = true;
-                            textColourString = vBracketColour;
-                            break;
-                        default:
-                            pendingText += c;
-                            break;
+                        }
                     }
+
+                    if (colourTag == null)
+                    {
+                        pendingText += c;
+                    }
+
+                    //switch (c.ToString())
+                    //{
+                    //    case "[":
+                    //        coloured = true;
+                    //        textColourString = squareBracketColour;
+                    //        break;
+                    //    case "{":
+                    //        coloured = true;
+                    //        textColourString = squigglyBracketColour;
+                    //        break;
+                    //    case "<":
+                    //        coloured = true;
+                    //        textColourString = htmlTagBracketColour;
+                    //        break;
+                    //    case "&":
+                    //        coloured = true;
+                    //        textColourString = ampersandBracketColour;
+                    //        break;
+                    //    default:
+                    //        pendingText += c;
+                    //        break;
+                    //}
                 }
             }
 
-            if (coloured)
+            if (colourTag != null)
             {
-                pendingText += $"<color={textColourString}><b>{pendingColouredText}</b></color>";
+                pendingText += $"<color={colourTag.ColourName}><b>{pendingColouredText}</b></color>";
             }
 
             textBox.text = pendingText;
@@ -383,6 +438,8 @@ public class DialogueBox : MonoBehaviour
     {
         nextDialogueSetReady = true;
 
+        countdown.rectTransform.DOAnchorPosY(Screen.height / 100 + 125, popUpSpeed).SetEase(Ease.OutBack);
+        objButton.rectTransform.DOAnchorPosY(Screen.height / 100 + 125, popUpSpeed).SetEase(Ease.OutBack);
         dialogueRectTransform.DOAnchorPosY(Screen.height / 100, popUpSpeed).SetEase(Ease.OutBack).SetUpdate(true).OnComplete(
             delegate
             {
@@ -481,13 +538,15 @@ public class DialogueBox : MonoBehaviour
                 clickable = false;
                 DeactivateDialogueBox();
             }
-        }        
+        }
     }
 
     //Tweens the dialogue box out
     private void DeactivateDialogueBox()
     {
         deactivating = true;
+        countdown.rectTransform.DOAnchorPosY(20, popUpSpeed).SetEase(Ease.InBack);
+        objButton.rectTransform.DOAnchorPosY(20, popUpSpeed).SetEase(Ease.InBack);
         dialogueRectTransform.DOAnchorPosY(originalRectTransformPosition.y, popUpSpeed).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
             delegate
             {

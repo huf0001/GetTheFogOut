@@ -32,8 +32,8 @@ public class AbilityController : MonoBehaviour
     [SerializeField] private GameObject rangeIndicatorGO;
 
     // Public Properties -----------------------------------------------------------------------------------------------
-    public Button[] abilityButtons; 
-    
+    public Button[] abilityButtons;
+
     public List<Collectable> CollectedObjects
     {
         get => collectedObjects;
@@ -101,7 +101,7 @@ public class AbilityController : MonoBehaviour
         abilityTriggered[AbilityEnum.BuildingDefence] = false;
         abilityTriggered[AbilityEnum.Artillery] = false;
         abilityTriggered[AbilityEnum.FreezeFog] = false;
-        
+
         AbilityCollected[AbilityEnum.Overclock] = false;
         AbilityCollected[AbilityEnum.Sonar] = false;
         AbilityCollected[AbilityEnum.BuildingDefence] = false;
@@ -118,9 +118,9 @@ public class AbilityController : MonoBehaviour
         {
             UpdateButtonCooldowns();
         }
-        
+
         ProcessInput();
-        
+
         if (IsAbilitySelected)
         {
             DisplayTarget();
@@ -155,21 +155,21 @@ public class AbilityController : MonoBehaviour
     void UpdateButtonCooldowns()
     {
         List<AbilityEnum> cooldownsToUpdate = new List<AbilityEnum>();
-        
+
         // Loop through each ability and if it is triggered, run its cooldown
         foreach (KeyValuePair<AbilityEnum, bool> trigger in abilityTriggered)
         {
             if (trigger.Value == true)
             {
                 abilityCooldowns[trigger.Key] -= Time.deltaTime;
-                
+
                 // TODO: Do visual cooldown stuff here
-                
+
                 if (abilityCooldowns[trigger.Key] <= 0f)
                 {
                     cooldownsToUpdate.Add(trigger.Key);
                 }
-            }   
+            }
         }
 
         foreach (AbilityEnum abilityEnum in cooldownsToUpdate)
@@ -177,20 +177,27 @@ public class AbilityController : MonoBehaviour
             abilityTriggered[abilityEnum] = false;
             cooldownsRunning--;
         }
-        
+
         cooldownsToUpdate.Clear();
     }
 
     // Button Management -----------------------------------------------------------------------------------------------
     public void OnButtonClicked(Ability ability)
     {
-        selectedAbility = ability;
-        IsAbilitySelected = true;
-        MouseController.Instance.isBuildAvaliable = false;
+        if (selectedAbility != ability)
+        {
+            selectedAbility = ability;
+            IsAbilitySelected = true;
+            MouseController.Instance.isBuildAvaliable = false;
 
-        // Set correct range for the range indicator
-        Vector3 scale = new Vector3(ability.targetRadius * 2, 0.01f, ability.targetRadius * 2);
-        rangeIndicatorGO.transform.localScale = scale;
+            // Set correct range for the range indicator
+            Vector3 scale = new Vector3(ability.targetRadius * 2, 0.01f, ability.targetRadius * 2);
+            rangeIndicatorGO.transform.localScale = scale;
+        }
+        else
+        {
+            CancelAbility();
+        }
     }
 
     private void ProcessInput()
@@ -198,38 +205,36 @@ public class AbilityController : MonoBehaviour
         if (IsAbilitySelected)
         {
             // Use ability
-            if (WorldController.Instance.Inputs.InputMap.Build.ReadValue<float>() > 0)
+            if (WorldController.Instance.Inputs.InputMap.Build.ReadValue<float>() > 0 && !WorldController.Instance.IsPointerOverGameObject())
             {
                 if (!abilityTriggered[selectedAbility.AbilityType])
                 {
-                    if (ResourceController.Instance.StoredPower >= selectedAbility.powerCost)
-                    {
-                        selectedAbility.TriggerAbility(selectedTile);
-                        abilityTriggered[selectedAbility.AbilityType] = true;
-                        abilityCooldowns[selectedAbility.AbilityType] = selectedAbility.baseCoolDown;
-                        cooldownsRunning++;
-                        ResourceController.Instance.StoredPower -= selectedAbility.powerCost;
-                        // TODO: Play sound effect
-                        // TODO: Start visual cooldown stuff
-                        IsAbilitySelected = false;
-                        selectedAbility = null;
-                        MouseController.Instance.isBuildAvaliable = true;
-
-                    }
-                    else
-                    {
-                        // TODO: tell the user they don't have enough power
-                    }
+                    // Power check is done on button click to assist in providing feedback to player
+                    selectedAbility.TriggerAbility(selectedTile);
+                    abilityTriggered[selectedAbility.AbilityType] = true;
+                    abilityCooldowns[selectedAbility.AbilityType] = selectedAbility.baseCoolDown;
+                    cooldownsRunning++;
+                    ResourceController.Instance.StoredPower -= selectedAbility.powerCost;
+                    // TODO: Play sound effect
+                    // TODO: Start visual cooldown stuff
+                    IsAbilitySelected = false;
+                    selectedAbility = null;
+                    MouseController.Instance.isBuildAvaliable = true;
                 }
-            } 
+            }
             // Cancel ability
-            else if (Input.GetButtonDown("Cancel"))
+            else if (WorldController.Instance.Inputs.InputMap.Pause.triggered)
             {
-                IsAbilitySelected = false;
-                selectedAbility = null;
-                MouseController.Instance.isBuildAvaliable = true;
+                CancelAbility();
             }
         }
+    }
+
+    public void CancelAbility()
+    {
+        IsAbilitySelected = false;
+        selectedAbility = null;
+        MouseController.Instance.isBuildAvaliable = true;
     }
 
     // Visual Display --------------------------------------------------------------------------------------------------
@@ -245,5 +250,5 @@ public class AbilityController : MonoBehaviour
             rangeIndicatorGO.transform.position = new Vector3(tile.X, 0.2f, tile.Z);
             selectedTile = tile;
         }
-    } 
+    }
 }

@@ -46,28 +46,28 @@ public class btnTutorial : MonoBehaviour
         {
             button.interactable = true;
 
-            if (buildingType == tutorialController.CurrentlyLerping)
-            {
-                if (!lerping)
-                {
-                    ActivateLerping();
-                }
+            //if (buildingType == tutorialController.CurrentlyLerping)
+            //{
+            //    if (!lerping)
+            //    {
+            //        ActivateLerping();
+            //    }
 
-                LerpButtonColour();
-            }
-            else if (lerping)
-            {
-                DeactivateLerping();
-            }
+            //    LerpButtonColour();
+            //}
+            //else if (lerping)
+            //{
+            //    DeactivateLerping();
+            //}
         }
         else if (tutorialController.Stage != TutorialStage.Finished)
         {
             button.interactable = false;
 
-            if (lerping)
-            {
-                DeactivateLerping();
-            }
+            //if (lerping)
+            //{
+            //    DeactivateLerping();
+            //}
         }
     }
 

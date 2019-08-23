@@ -11,7 +11,7 @@ public class AbilityMenu : MonoBehaviour
 
     private RadialMenu radialMenu;
     private Button toggleButton;
-    private bool open;
+    public bool Visible { get; set; }
 
     private void Start()
     {
@@ -21,14 +21,14 @@ public class AbilityMenu : MonoBehaviour
 
     public void ToggleMenu()
     {
-        if (open) CloseMenu();
+        if (Visible) CloseMenu();
         else OpenMenu();
     }
 
     private void OpenMenu()
     {
         toggleButton.interactable = false;
-        open = true;
+        Visible = true;
         buttons.alpha = 1;
         DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).SetEase(Ease.OutBack).
             OnComplete(delegate
@@ -41,10 +41,14 @@ public class AbilityMenu : MonoBehaviour
 
     private void CloseMenu()
     {
+        if (AbilityController.Instance.IsAbilitySelected)
+        {
+            AbilityController.Instance.CancelAbility();
+        }
         toggleButton.interactable = false;
         buttons.interactable = false;
         buttons.blocksRaycasts = false;
-        open = false;
+        Visible = false;
         DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, 0, 0.3f).SetEase(Ease.InBack).
             OnComplete(delegate
             {
