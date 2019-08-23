@@ -1813,7 +1813,7 @@ MonoBehaviour:
     m_Bits: 512
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 1
-  antialiasingMode: 0
+  antialiasingMode: 2
   temporalAntialiasing:
     jitterSpread: 0.75
     sharpness: 0.25
@@ -9413,10 +9413,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1294883713}
     m_Modifications:
-    - target: {fileID: 1366804467, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
-      propertyPath: m_Name
-      value: Broken Ship
-      objectReference: {fileID: 0}
     - target: {fileID: 1366804468, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.39
@@ -9460,6 +9456,10 @@ PrefabInstance:
     - target: {fileID: 1366804468, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366804467, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
+      propertyPath: m_Name
+      value: Broken Ship
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3eaf8989f44d084b839e060e504b247, type: 3}
