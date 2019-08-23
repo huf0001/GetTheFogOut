@@ -19,7 +19,7 @@ public class DamageIndicator : MonoBehaviour
     private TextMeshProUGUI exclamationMark;
     private bool on = true;
     private Transform camTarget;
-    [HideInInspector][SerializeField] new Camera camera;
+    private Camera cam;
 
     public Building Building { get; set; }
     public bool On
@@ -43,14 +43,14 @@ public class DamageIndicator : MonoBehaviour
         screen = new Rect(0, 0, Screen.width, Screen.height);
         icon = GetComponent<CanvasGroup>();
         exclamationMark = GetComponentInChildren<TextMeshProUGUI>();
-        camera = Camera.main;
+        cam = Camera.main;
     }
 
     private void Update()
     {
         if (On)
         {
-            Vector3 lookAtPos = camera.WorldToScreenPoint(Building.transform.position);
+            Vector3 lookAtPos = cam.WorldToScreenPoint(Building.transform.position);
 
             if (!screen.Contains(lookAtPos))
             {

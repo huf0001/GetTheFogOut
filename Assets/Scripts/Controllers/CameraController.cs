@@ -71,55 +71,58 @@ public class CameraController : MonoBehaviour
 
     void UpdateCameraMovement()
     {
-        bool hasChanged = false;
-        //Only run if player is moving left/right/up/down
-        if (move != Vector3.zero)
+        if (Time.timeScale == 1)
         {
-            forward = myTransform.forward;
-            right = myTransform.right;
+            bool hasChanged = false;
+            //Only run if player is moving left/right/up/down
+            if (move != Vector3.zero)
+            {
+                forward = myTransform.forward;
+                right = myTransform.right;
 
-            // Camera keyboard movement
-            xMove = moveSpeed * Time.deltaTime * move.x * right;
-            zMove = moveSpeed * Time.deltaTime * move.y * forward;
+                // Camera keyboard movement
+                xMove = moveSpeed * Time.deltaTime * move.x * right;
+                zMove = moveSpeed * Time.deltaTime * move.y * forward;
 
-            var position = myTransform.localPosition;
-            position += xMove;
-            position += zMove;
-            myTransform.localPosition = position;
+                var position = myTransform.localPosition;
+                position += xMove;
+                position += zMove;
+                myTransform.localPosition = position;
 
-            hasChanged = true;
-        }
+                hasChanged = true;
+            }
 
-        //Handle screen dragging if right click is held down
-        if (Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)
-        {
-            //Right or middle mouse
-            float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
-            float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;
-            transform.Translate(h, 0, v, transform);
+            //Handle screen dragging if right click is held down
+            if (Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)
+            {
+                //Right or middle mouse
+                float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
+                float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;
+                transform.Translate(h, 0, v, transform);
 
-            hasChanged = true;
-        }
+                hasChanged = true;
+            }
 
-        // Zoom
-        //if (Input.GetAxisRaw("Zoom") != 0)
-        //{
-        //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
-        //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
+            // Zoom
+            //if (Input.GetAxisRaw("Zoom") != 0)
+            //{
+            //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
+            //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
 
-        zoom.m_Width -= zoomVal * zoomMulti;
-        zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
-        //}
+            zoom.m_Width -= zoomVal * zoomMulti;
+            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
+            //}
 
-        if (hasChanged)
-        {
-            Vector3 pos = myTransform.localPosition;
+            if (hasChanged)
+            {
+                Vector3 pos = myTransform.localPosition;
 
-            // Boundry checks
-            pos.x = Mathf.Clamp(pos.x, 0f, WorldController.Instance.Width);
-            pos.z = Mathf.Clamp(pos.z, 0f, WorldController.Instance.Length);
+                // Boundry checks
+                pos.x = Mathf.Clamp(pos.x, 0f, WorldController.Instance.Width);
+                pos.z = Mathf.Clamp(pos.z, 0f, WorldController.Instance.Length);
 
-            myTransform.localPosition = pos;
+                myTransform.localPosition = pos;
+            } 
         }
     }
 }

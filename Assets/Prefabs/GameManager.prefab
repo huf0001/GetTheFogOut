@@ -74,6 +74,8 @@ MonoBehaviour:
   - component: 2
     collected: 0
   serialCamera: {fileID: 0}
+  abilityMenu: {fileID: 0}
+  mainCamera: {fileID: 0}
   InBuildMode: 1
   pauseMenu: {fileID: 0}
   musicfmod: {fileID: 4407398185932732860, guid: 5c819ef072426864db6435e12ba6cc4c,
@@ -182,7 +184,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1d7b93855cfd8b74e8efcfe95c262f1c, type: 3}
   - {fileID: 21300000, guid: c9b306912d4733348a3a569ebab51f72, type: 3}
   - {fileID: 21300000, guid: dbcded0b72a66044bbab44d79f074e0a, type: 3}
-  powerThresholdsBg: {fileID: 0}
   powerThresholds: {fileID: 0}
   objWindowText: {fileID: 0}
   hudObjText: {fileID: 0}
@@ -250,8 +251,26 @@ MonoBehaviour:
   dKey: {fileID: 0}
   zoomIn: {fileID: 0}
   zoomOut: {fileID: 0}
+  harvesterButton: {fileID: 0}
+  extenderButton: {fileID: 0}
   powerDiagram: {fileID: 0}
+  batteryIcon: {fileID: 0}
+  generatorButton: {fileID: 0}
   abilityUnlockCanvas: {fileID: 0}
+  abilityMenu: {fileID: 0}
+  abilitySelectorRadialMenu: {fileID: 0}
+  sonarButton: {fileID: 0}
+  mortarButton: {fileID: 0}
+  pulseDefenceButton: {fileID: 0}
+  uiLerpTarget: {fileID: 0}
+  decalMinLerp: 1.5
+  decalMaxLerp: 3
+  batteryIconMinLerp: 0.5
+  abilityMenuMinLerp: 0.5
+  sonarIconMinLerp: 0
+  uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
+  uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
+  lerpTargetColour: {r: 1, g: 0, b: 0, a: 1}
   skipTutorial: 0
   stage: 1
   subStage: 1
@@ -285,16 +304,17 @@ MonoBehaviour:
   extenderLandmark: {fileID: 0}
   generatorLandmark: {fileID: 0}
   sonarLandmark: {fileID: 0}
+  fogExtenderLandmark: {fileID: 0}
+  mortarLandmark: {fileID: 0}
+  pulseDefenceLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
   cameraController: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
   sonarCamera: {fileID: 0}
   artilleryCamera: {fileID: 0}
   thrusterCamera: {fileID: 0}
-  uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
-  uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
   builtHarvestersGoal: 3
-  builtHarvestersExtendedGoal: 4
+  builtHarvestersExtendedGoal: 5
   builtGeneratorsGoal: 3
   collectedMineralsGoal: 300
 --- !u!114 &4019818891569145385

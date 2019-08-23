@@ -56,13 +56,44 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraInput dKey;
     [SerializeField] private CameraInput zoomIn;
     [SerializeField] private CameraInput zoomOut;
+    [SerializeField] private Image harvesterButton;
+    [SerializeField] private Image extenderButton;
     [SerializeField] private Image powerDiagram;
+    [SerializeField] private Image batteryIcon;
+    [SerializeField] private Image generatorButton;
     [SerializeField] private GameObject abilityUnlockCanvas;
+    [SerializeField] private Image abilityMenu;
+    [SerializeField] private RadialMenu abilitySelectorRadialMenu;
+    [SerializeField] private Image sonarButton;
+    [SerializeField] private Image mortarButton;
+    [SerializeField] private Image pulseDefenceButton;
+    [SerializeField] private Image uiLerpTarget;
+
+    [Header("UI Lerp Values")]
+    [SerializeField] private float decalMinLerp;
+    [SerializeField] private float decalMaxLerp;
+    [SerializeField] private float batteryIconMinLerp = 0.47f;
+    //[SerializeField] private float batteryIconMaxLerp;
+    [SerializeField] private float abilityMenuMinLerp;
+    //[SerializeField] private float abilityMenuMaxLerp;
+    [SerializeField] private float sonarIconMinLerp;
+    //[SerializeField] private float sonarIconMaxLerp;
+
+    [Header("UI Lerp Colours")]
+    [SerializeField] private Color uiNormalColour = Color.white;    //TODO: test without green lerping of building buttons, comment out if it looks fine without it.
+    [SerializeField] private Color uiHighlightColour = Color.green;
+    [SerializeField] private Color batteryEmptyColour;
+    [SerializeField] private Color batteryLowColour;
+    [SerializeField] private Color batteryHalfColour;
+    [SerializeField] private Color batteryHighColour;
+    [SerializeField] private Color batteryFullColour;
+
+    //TODO: need lerp values for (DONE): battery, (NOT DONE): defences, harvesters, power-related buildings, ability menu, and sonar), 9 total
 
     [Header("Skip Tutorial")]
     [SerializeField] private bool skipTutorial = true;
 
-    [Header("Tutorial Game State (Testing)")]
+    [Header("Tutorial Game State")]
     [SerializeField] private TutorialStage stage = TutorialStage.ExplainSituation;
     [SerializeField] private int subStage = 1;
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
@@ -77,6 +108,9 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark extenderLandmark;
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private Landmark sonarLandmark;
+    [SerializeField] private Landmark fogExtenderLandmark;
+    [SerializeField] private Landmark mortarLandmark;
+    [SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
 
     [Header("Cameras")]
@@ -86,9 +120,6 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CinemachineVirtualCamera artilleryCamera;
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
-    [Header("UI Lerp Colours")]
-    [SerializeField] private Color uiNormalColour = Color.white;
-    [SerializeField] private Color uiHighlightColour = Color.green;
 
     [Header("Goals")]
     [SerializeField] private int builtHarvestersGoal;
@@ -101,8 +132,6 @@ public class TutorialController : DialogueBoxController
 
     //Non-Serialized Fields
     private MeshRenderer targetRenderer = null;
-    private float decalMin = 1.5f;
-    private float decalMax = 3f;
     private float lerpMultiplier = 1f;
     private float lerpProgress = 0f;
     private bool lerpForward = true;
@@ -119,6 +148,11 @@ public class TutorialController : DialogueBoxController
     private TileData sonarLandmarkTile;
 
     private MusicFMOD musicFMOD;
+
+    private bool lerpUITarget = false;
+    //[SerializeField] private Image uiLerpTarget;
+    private float uiMinLerp;
+    private float uiMaxLerp;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -211,6 +245,11 @@ public class TutorialController : DialogueBoxController
             if (targetRenderer.enabled)
             {
                 LerpDecal();
+            }
+
+            if (lerpUITarget)
+            {
+                LerpUITarget();
             }
         }
     }
@@ -635,6 +674,7 @@ public class TutorialController : DialogueBoxController
                     stage = TutorialStage.MouseOverPowerDiagram;
                     UIController.instance.UpdateObjectiveText(stage);
                     SendDialogue("explain power", 1);
+                    ActivateUILerpTarget(batteryIcon, batteryIconMinLerp, Color.clear);
 
                     if (!objWindowVisible)
                     {
@@ -662,6 +702,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                DeactivateUILerpTarget();
                 stage = TutorialStage.BuildGenerator;
                 UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build generator target", 1);
@@ -863,34 +904,59 @@ public class TutorialController : DialogueBoxController
             case 4:
                 stage = TutorialStage.ActivateSonar;
                 SendDialogue("select sonar", 1);
+                //ActivateUILerpTarget(abilityMenuLerpTarget, abilityMenuMinLerp, abilityMenuMaxLerp);
                 break;
             case 5:
-                if (AbilityController.Instance.IsAbilitySelected)
+                if (dialogueRead)
+                {
+                    abilityUnlockCanvas.SetActive(false);
+                    DismissDialogue();
+                }
+                else if (abilitySelectorRadialMenu.Radius > 0)
                 {
                     abilityUnlockCanvas.SetActive(false);
                     GoToSubStage(7);
                 }
-                else if (dialogueRead)
-                {
-                    DismissDialogue();
-                    abilityUnlockCanvas.SetActive(false);
-                }
 
                 break;
             case 6:
-                if (AbilityController.Instance.IsAbilitySelected)
+                if (abilitySelectorRadialMenu.Radius > 0)
                 {
                     IncrementSubStage();
                 }
 
                 break;
             case 7:
-                SendDialogue("activate sonar", 1);
+                //DeactivateUILerpTarget();
+                //ActivateUILerpTarget(sonarButtonLerpTarget, sonarIconMinLerp, sonarIconMaxLerp);
+                IncrementSubStage();
                 break;
             case 8:
-                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                if (AbilityController.Instance.IsAbilitySelected)
                 {
                     GoToSubStage(10);
+                }
+                else if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+
+                break;
+            case 9:
+                if (AbilityController.Instance.IsAbilitySelected)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 10:
+                SendDialogue("activate sonar", 1);
+                //DeactivateUILerpTarget();
+                break;
+            case 11:
+                if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
+                {
+                    GoToSubStage(13);
                 }
                 else if (dialogueRead)
                 {
@@ -898,15 +964,14 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 9:
+            case 12:
                 if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
                 {
                     IncrementSubStage();
-
                 }
 
                 break;
-            case 10:
+            case 13:
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.transform.GetChild(0).gameObject.SetActive(false);
                 hub.transform.GetChild(1).gameObject.SetActive(true);
@@ -918,20 +983,19 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.SonarActivated;
                 SendDialogue("explain abilities", 1);
                 break;
-            case 11:
+            case 14:
                 if (dialogueRead)
                 {
                     DismissDialogue();
-
                 }
 
                 break;
-            case 12:
+            case 15:
                 SendDialogue("explain thruster", 1);
                 artilleryCamera.gameObject.SetActive(false);
                 thrusterCamera.gameObject.SetActive(true);
                 break;
-            case 13:
+            case 16:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -969,11 +1033,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    DismissMouse();
-                    GoToSubStage(4);
+                    ActivateTarget(fogExtenderLandmark);
                 }
 
                 break;
@@ -981,32 +1041,11 @@ public class TutorialController : DialogueBoxController
                 if (tileClicked)
                 {
                     DismissMouse();
+                    currentlyLerping = ButtonType.Extender;
                 }
 
                 break;
             case 4:
-                currentlyLerping = ButtonType.Extender;
-                IncrementSubStage();
-                break;
-            case 5:
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                }
-                else
-                {
-                    foreach (Relay e in ResourceController.Instance.Extenders)
-                    {
-                        if (e.TakingDamage)
-                        {
-                            GoToSubStage(7);
-                            break;
-                        }
-                    }
-                }
-
-                break;
-            case 6:
                 foreach (Relay e in ResourceController.Instance.Extenders)
                 {
                     if (e.TakingDamage)
@@ -1017,9 +1056,11 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 7:
+
+            case 5:
                 stage = TutorialStage.BuildMortar;
                 currentlyBuilding = BuildingType.AirCannon;
+                currentlyLerping = ButtonType.None;
                 ResetSubStage();
                 DeactivateTarget();
                 break;
@@ -1050,10 +1091,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(mortarLandmark);
                 }
 
                 break;
@@ -1108,10 +1146,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-                else if (tileClicked)
-                {
-                    GoToSubStage(4);
+                    ActivateTarget(pulseDefenceLandmark);
                 }
 
                 break;
@@ -1444,13 +1479,12 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildHarvestersExtended:
                 return tile.Resource != null;
             case TutorialStage.BuildMoreGenerators:
-            case TutorialStage.BuildExtenderInFog:
                 return tile.Resource == null;
             case TutorialStage.CollectSonar:
                 return false;
+            case TutorialStage.BuildExtenderInFog:
+                return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
             case TutorialStage.CollectMinerals:
-            case TutorialStage.BuildMortar:
-            case TutorialStage.BuildPulseDefence:
             case TutorialStage.DefenceActivation:
             case TutorialStage.BuildDefencesInRange:
                 bool tileOkay = !tile.FogUnitActive || tile.Building != null;
@@ -1541,20 +1575,20 @@ public class TutorialController : DialogueBoxController
         base.SendDialogue(dialogueKey, invokeDelay);
         IncrementSubStage();
     }
-    
+
     //Dismisses the dialogue and increments the substage
     private void DismissDialogue()
     {
         ResetDialogueRead();
         IncrementSubStage();
     }
-    
+
     //Increments the substage by 1
     private void IncrementSubStage()
     {
         subStage++;
     }
-   
+
     //Dismisses dialogue and the mouse and advances/retreats to the specified sub-stage appropriately appropriately
     private void GoToSubStage(int nextSubStage)
     {
@@ -1564,7 +1598,7 @@ public class TutorialController : DialogueBoxController
         ResetDialogueRead();
         subStage = nextSubStage;
     }
-    
+
     //Resets the substage to 1
     private void ResetSubStage()
     {
@@ -1623,13 +1657,117 @@ public class TutorialController : DialogueBoxController
     //Lerp the target decal
     private void LerpDecal()
     {
-        float lerped = Mathf.Lerp(decalMin, decalMax, lerpProgress);
+        float lerped = Mathf.Lerp(decalMinLerp, decalMaxLerp, lerpProgress);
         buildingTarget.transform.localScale = new Vector3(lerped, 1, lerped);
 
         UpdateLerpValues();
     }
 
-    //Update the decal's lerping values
+    //Check if the building currently being built at a specific location has been built
+    private bool BuiltCurrentlyBuilding()
+    {
+        return currentTile != null && currentTile.Building != null && currentTile.Building.BuildingType == currentlyBuilding;
+    }
+
+    //Deactivates the building target
+    private void DeactivateTarget()
+    {
+        targetRenderer.enabled = false;
+    }
+
+    //Tutorial Utility Methods - UI Lerp Target------------------------------------------------------------------------------------------------------
+
+    private void ActivateUILerpTarget(Image newUILerpTarget, float minLerp, Color colour)
+    {
+        lerpUITarget = true;
+        uiLerpTarget.transform.position = newUILerpTarget.transform.position;
+        lerpForward = true;
+        lerpProgress = 0;
+        uiMinLerp = minLerp;
+        //uiMaxLerp = maxLerp;
+
+        //if (colour != Color.clear)
+        //{
+            uiLerpTarget.color = colour;
+        //}
+        //else
+        //{
+        //    GetCurrentBatteryColour();
+        //}
+    }
+
+    private void LerpUITarget()
+    {
+        float lerp = Mathf.Lerp(uiMinLerp, uiMinLerp * 1.5f, lerpProgress);
+        uiLerpTarget.transform.localScale = new Vector3(lerp, lerp, uiLerpTarget.transform.localScale.z);
+
+        //TODO: If need to double check position, store current image target in variable and check against its position
+
+        if (stage == TutorialStage.MouseOverPowerDiagram)
+        {
+            GetCurrentBatteryColour();
+        }
+
+        UpdateLerpValues();
+    }
+
+    private void GetCurrentBatteryColour()
+    {
+        float power = UIController.instance.CurrentPowerValDisplayed;
+
+        if (power == 0)
+        {
+            if (uiLerpTarget.color != batteryEmptyColour)
+            {
+                uiLerpTarget.color = batteryEmptyColour;
+            }
+        }
+        else if (power <= 25)
+        {
+            if (uiLerpTarget.color != batteryLowColour)
+            {
+                uiLerpTarget.color = batteryLowColour;
+            }
+        }
+        else if (power <= 50)
+        {
+            if (uiLerpTarget.color != batteryHalfColour)
+            {
+                uiLerpTarget.color = batteryHalfColour;
+            }
+        }
+        else if (power <= 75)
+        {
+            if (uiLerpTarget.color != batteryHighColour)
+            {
+                uiLerpTarget.color = batteryHighColour;
+            }
+        }
+        else if (power > 75)
+        {
+            if (uiLerpTarget.color != batteryFullColour)
+            {
+                uiLerpTarget.color = batteryFullColour;
+            }
+        }
+    }
+
+    private void DeactivateUILerpTarget()
+    {
+        lerpUITarget = false;
+        //Debug.Log($"UILerpTarget is {uiLerpTarget}");
+        //Debug.Log($"UILerpTarget.transform is {uiLerpTarget.transform}");
+        //Debug.Log($"UILerpTarget.transform.localScale is {uiLerpTarget.transform.localScale}");
+        uiLerpTarget.transform.localScale = new Vector3(uiMinLerp, uiMinLerp, uiLerpTarget.transform.localScale.z);
+        uiLerpTarget.color = Color.clear;
+
+        uiMinLerp = 1;
+        uiMaxLerp = 1;
+    }
+
+    //Tutorial Utility Methods - (General) Target Lerping--------------------------------------------------------------------------------------------
+
+    //Update lerp progress
     private void UpdateLerpValues()
     {
         if (lerpForward)
@@ -1651,18 +1789,6 @@ public class TutorialController : DialogueBoxController
             lerpProgress = 0;
             lerpForward = true;
         }
-    }
-
-    //Check if the building currently being built at a specific location has been built
-    private bool BuiltCurrentlyBuilding()
-    {
-        return currentTile != null && currentTile.Building != null && currentTile.Building.BuildingType == currentlyBuilding;
-    }
-
-    //Deactivates the building target
-    private void DeactivateTarget()
-    {
-        targetRenderer.enabled = false;
     }
 }
 
