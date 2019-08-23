@@ -57,6 +57,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraInput zoomIn;
     [SerializeField] private CameraInput zoomOut;
     [SerializeField] private Image harvesterButton;
+    [SerializeField] private CanvasGroup buildMenuCanvasGroup;
     [SerializeField] private Image extenderButton;
     [SerializeField] private Image powerDiagram;
     [SerializeField] private Image batteryIcon;
@@ -64,6 +65,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private GameObject abilityUnlockCanvas;
     [SerializeField] private Image abilityMenu;
     [SerializeField] private RadialMenu abilitySelectorRadialMenu;
+    [SerializeField] private CanvasGroup abilityMenuCanvasGroup;
     [SerializeField] private Image sonarButton;
     [SerializeField] private Image mortarButton;
     [SerializeField] private Image pulseDefenceButton;
@@ -72,18 +74,20 @@ public class TutorialController : DialogueBoxController
     [Header("UI Lerp Values")]
     [SerializeField] private float decalMinLerp;
     [SerializeField] private float decalMaxLerp;
-    [SerializeField] private float batteryIconMinLerp = 0.47f;
+    [SerializeField] private float batteryIconMinLerp;
     //[SerializeField] private float batteryIconMaxLerp;
-    [SerializeField] private float abilityMenuMinLerp;
+    [SerializeField] private float generalMinLerp;
     //[SerializeField] private float abilityMenuMaxLerp;
-    [SerializeField] private float sonarIconMinLerp;
+    //[SerializeField] private float sonarIconMinLerp;
     //[SerializeField] private float sonarIconMaxLerp;
 
     [Header("UI Lerp Colours")]
     [SerializeField] private Color uiNormalColour = Color.white;    //TODO: test without green lerping of building buttons, comment out if it looks fine without it.
     [SerializeField] private Color uiHighlightColour = Color.green;
-    [SerializeField] private Color harvesterColour;
-    [SerializeField] private Color powerBuildingColour;
+    [SerializeField] private Color enterHarvesterColour;
+    [SerializeField] private Color exitHarvesterColour;
+    [SerializeField] private Color enterPowerBuildingColour;
+    [SerializeField] private Color exitPowerBuildingColour;
     [SerializeField] private Color batteryEmptyColour;
     [SerializeField] private Color batteryLowColour;
     [SerializeField] private Color batteryHalfColour;
@@ -92,7 +96,8 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Color abilityMenuColour;
     [SerializeField] private Color enterSonarColour;
     [SerializeField] private Color exitSonarColour;
-    [SerializeField] private Color defencesColour;
+    [SerializeField] private Color enterDefencesColour;
+    [SerializeField] private Color exitDefencesColour;
 
     //TODO: need lerp values for (DONE): battery, (NOT DONE): defences, harvesters, power-related buildings, ability menu, and sonar), 9 total
 
@@ -138,8 +143,8 @@ public class TutorialController : DialogueBoxController
     //Non-Serialized Fields
     private MeshRenderer targetRenderer = null;
     private float lerpMultiplier = 1f;
-    private float lerpProgress = 0f;
-    private bool lerpForward = true;
+    private float tileTargetLerpProgress = 0f;
+    private bool tileTargetLerpForward = true;
 
     private int originalGeneratorLimit;
     private int extendersGoal;
@@ -158,6 +163,9 @@ public class TutorialController : DialogueBoxController
     private Image currentUILerpFocus;
     private float uiMinLerp;
     private float uiMaxLerp;
+    private float uiTargetLerpProgress = 0f;
+    private bool uiTargetLerpForward = true;
+    private CanvasGroup uiButtonCanvasGroup = null;
 
     private Color enterLerpFocusColour;
     private Color exitLerpFocusColour;
@@ -221,6 +229,7 @@ public class TutorialController : DialogueBoxController
         }
         else
         {
+            uiButtonCanvasGroup = buildMenuCanvasGroup;
             sonarLandmarkTile = WorldController.Instance.GetTileAt(sonarLandmark.transform.position);
             targetRenderer = buildingTarget.GetComponent<MeshRenderer>();
             originalGeneratorLimit = ObjectiveController.Instance.GeneratorLimit;
@@ -486,6 +495,7 @@ public class TutorialController : DialogueBoxController
                 if (tileClicked)
                 {
                     DismissMouse();
+                    ActivateUILerpTarget(harvesterButton, generalMinLerp, enterHarvesterColour, exitHarvesterColour, buildMenuCanvasGroup);
                 }
 
                 break;
@@ -514,6 +524,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
+                DeactivateUILerpTarget();
                 SendDialogue("build more harvesters", 1);
                 ActivateMouse();
                 break;
@@ -589,6 +600,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                ActivateUILerpTarget(extenderButton, generalMinLerp, enterPowerBuildingColour, exitPowerBuildingColour, buildMenuCanvasGroup);
                 currentlyLerping = ButtonType.Extender;
                 IncrementSubStage();
                 break;
@@ -605,6 +617,7 @@ public class TutorialController : DialogueBoxController
                 currentlyBuilding = BuildingType.Harvester;
                 ResetSubStage();
                 DeactivateTarget();
+                DeactivateUILerpTarget();
 
                 break;
             default:
@@ -683,7 +696,7 @@ public class TutorialController : DialogueBoxController
                     stage = TutorialStage.MouseOverPowerDiagram;
                     UIController.instance.UpdateObjectiveText(stage);
                     SendDialogue("explain power", 1);
-                    ActivateUILerpTarget(batteryIcon, batteryIconMinLerp, Color.clear);
+                    ActivateUILerpTarget(batteryIcon, batteryIconMinLerp, Color.clear, null);
 
                     if (!objWindowVisible)
                     {
@@ -738,6 +751,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
+                ActivateUILerpTarget(generatorButton, generalMinLerp, enterPowerBuildingColour, exitPowerBuildingColour, buildMenuCanvasGroup);
                 currentlyLerping = ButtonType.Generator;
                 IncrementSubStage();
                 break;
@@ -748,7 +762,6 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (BuiltCurrentlyBuilding())
                 {
-                    DeactivateTarget();
                     GoToSubStage(10);
                 }
 
@@ -756,12 +769,13 @@ public class TutorialController : DialogueBoxController
             case 9:
                 if (BuiltCurrentlyBuilding())
                 {
-                    DeactivateTarget();
                     IncrementSubStage();
                 }
 
                 break;
             case 10:
+                DeactivateTarget();
+                DeactivateUILerpTarget();
                 SendDialogue("build more generators", 1);
                 ActivateMouse();
                 stage = TutorialStage.BuildMoreGenerators;
@@ -913,7 +927,7 @@ public class TutorialController : DialogueBoxController
             case 4:
                 stage = TutorialStage.ActivateSonar;
                 SendDialogue("select sonar", 1);
-                ActivateUILerpTarget(abilityMenu, abilityMenuMinLerp, abilityMenuColour);
+                ActivateUILerpTarget(abilityMenu, generalMinLerp, abilityMenuColour, null);
                 break;
             case 5:
                 if (dialogueRead)
@@ -937,7 +951,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 7:
                 DeactivateUILerpTarget();
-                ActivateUILerpTarget(sonarButton, sonarIconMinLerp, enterSonarColour, exitSonarColour);
+                ActivateUILerpTarget(sonarButton, generalMinLerp, enterSonarColour, exitSonarColour, abilityMenuCanvasGroup);
                 IncrementSubStage();
                 break;
             case 8:
@@ -959,8 +973,8 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 10:
-                SendDialogue("activate sonar", 1);
                 DeactivateUILerpTarget();
+                SendDialogue("activate sonar", 1);
                 break;
             case 11:
                 if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
@@ -1112,6 +1126,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                ActivateUILerpTarget(mortarButton, generalMinLerp, enterDefencesColour, exitDefencesColour, buildMenuCanvasGroup);
                 currentlyLerping = ButtonType.AirCannon;
                 IncrementSubStage();
                 break;
@@ -1126,6 +1141,7 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.BuildPulseDefence;
                 currentlyBuilding = BuildingType.FogRepeller;
                 ResetSubStage();
+                DeactivateUILerpTarget();
                 DeactivateTarget();
                 break;
             default:
@@ -1167,6 +1183,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                ActivateUILerpTarget(pulseDefenceButton, generalMinLerp, enterDefencesColour, exitDefencesColour, buildMenuCanvasGroup);
                 currentlyLerping = ButtonType.FogRepeller;
                 IncrementSubStage();
                 break;
@@ -1177,6 +1194,7 @@ public class TutorialController : DialogueBoxController
                     currentlyBuilding = BuildingType.None;
                     ResetSubStage();
                     DeactivateTarget();
+                    DeactivateUILerpTarget();
                 }
 
                 break;
@@ -1639,8 +1657,8 @@ public class TutorialController : DialogueBoxController
         buildingTarget.transform.position = l.transform.position;
         targetRenderer.enabled = true;
 
-        lerpProgress = 0f;
-        lerpForward = true;
+        tileTargetLerpProgress = 0f;
+        tileTargetLerpForward = true;
 
         ActivateMouse();
     }
@@ -1666,10 +1684,34 @@ public class TutorialController : DialogueBoxController
     //Lerp the target decal
     private void LerpDecal()
     {
-        float lerped = Mathf.Lerp(decalMinLerp, decalMaxLerp, lerpProgress);
+        float lerped = Mathf.Lerp(decalMinLerp, decalMaxLerp, tileTargetLerpProgress);
         buildingTarget.transform.localScale = new Vector3(lerped, 1, lerped);
 
-        UpdateLerpValues();
+        UpdateTileTargetLerpValues();
+    }
+
+    //Update lerp progress
+    private void UpdateTileTargetLerpValues()
+    {
+        if (tileTargetLerpForward)
+        {
+            tileTargetLerpProgress += Time.deltaTime * lerpMultiplier;
+        }
+        else
+        {
+            tileTargetLerpProgress -= Time.deltaTime * lerpMultiplier;
+        }
+
+        if (tileTargetLerpProgress > 1)
+        {
+            tileTargetLerpProgress = 1;
+            tileTargetLerpForward = false;
+        }
+        else if (tileTargetLerpProgress < 0)
+        {
+            tileTargetLerpProgress = 0;
+            tileTargetLerpForward = true;
+        }
     }
 
     //Check if the building currently being built at a specific location has been built
@@ -1686,41 +1728,33 @@ public class TutorialController : DialogueBoxController
 
     //Tutorial Utility Methods - UI Lerp Target------------------------------------------------------------------------------------------------------
 
-    private void ActivateUILerpTarget(Image newUILerpTarget, float minLerp, Color mouseEnterColour, Color mouseExitColour)
+    //Activates the UI lerp target, also assigning mouse enter and mouse exit colours
+    private void ActivateUILerpTarget(Image newUILerpTarget, float minLerp, Color mouseEnterColour, Color mouseExitColour, CanvasGroup canvasGroup)
     {
         enterLerpFocusColour = mouseEnterColour;
         exitLerpFocusColour = mouseExitColour;
-
-        ActivateUILerpTarget(newUILerpTarget, minLerp, mouseExitColour);
+        ActivateUILerpTarget(newUILerpTarget, minLerp, mouseExitColour,canvasGroup);
     }
 
-    private void ActivateUILerpTarget(Image newUILerpTarget, float minLerp, Color colour)
+    //Activates the UI lerp target
+    private void ActivateUILerpTarget(Image newUILerpTarget, float minLerp, Color colour, CanvasGroup canvasGroup)
     {
         lerpUITarget = true;
         uiLerpTarget.transform.position = newUILerpTarget.transform.position;
-        lerpForward = true;
-        lerpProgress = 0;
+        uiTargetLerpForward = true;
+        uiTargetLerpProgress = 0;
         uiMinLerp = minLerp;
         currentUILerpFocus = newUILerpTarget;
-
-        //uiMaxLerp = maxLerp;
-
-        //if (colour != Color.clear)
-        //{
-            uiLerpTarget.color = colour;
-        //}
-        //else
-        //{
-        //    GetCurrentBatteryColour();
-        //}
+        uiLerpTarget.color = colour;
+        uiButtonCanvasGroup = canvasGroup;
     }
 
-    private void LerpUITarget()
+    //Lerps the UI lerp target
+    private void LerpUITarget() //TODO: slightly reduce max lerp multiplier
     {
-        float lerp = Mathf.Lerp(uiMinLerp, uiMinLerp * 1.5f, lerpProgress);
+        float lerp = Mathf.Lerp(uiMinLerp, uiMinLerp * 1.5f, uiTargetLerpProgress);
         uiLerpTarget.transform.localScale = new Vector3(lerp, lerp, uiLerpTarget.transform.localScale.z);
 
-        //TODO: If need to double check position, store current image target in variable and check against its position
         if (uiLerpTarget.transform.position != currentUILerpFocus.transform.position)
         {
             uiLerpTarget.transform.position = currentUILerpFocus.transform.position;
@@ -1731,7 +1765,47 @@ public class TutorialController : DialogueBoxController
             GetCurrentBatteryColour();
         }
 
-        UpdateLerpValues();
+        if (uiButtonCanvasGroup != null)
+        {
+            if (uiButtonCanvasGroup.alpha == 1 && uiLerpTarget.color.a != 1)
+            {
+                Color c = uiLerpTarget.color;
+                c.a = 1;
+                uiLerpTarget.color = c;
+            }
+            else if (uiButtonCanvasGroup.alpha < 1 && uiLerpTarget.color.a != 0)
+            {
+                Color c = uiLerpTarget.color;
+                c.a = 0;
+                uiLerpTarget.color = c;
+            }
+        }
+
+        UpdateUITargetLerpValues();
+    }
+
+    //Update lerp progress
+    private void UpdateUITargetLerpValues()
+    {
+        if (uiTargetLerpForward)
+        {
+            uiTargetLerpProgress += Time.deltaTime * lerpMultiplier;
+        }
+        else
+        {
+            uiTargetLerpProgress -= Time.deltaTime * lerpMultiplier;
+        }
+
+        if (uiTargetLerpProgress > 1)
+        {
+            uiTargetLerpProgress = 1;
+            uiTargetLerpForward = false;
+        }
+        else if (uiTargetLerpProgress < 0)
+        {
+            uiTargetLerpProgress = 0;
+            uiTargetLerpForward = true;
+        }
     }
 
     //Called by other functionality to update the colour of the lerp target on mouse enter
@@ -1743,7 +1817,6 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-
     //Called by other functionality to update the colour of the lerp target on mouse exit
     public void MouseExitLerpFocus()
     {
@@ -1753,6 +1826,7 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Called to update the battery colour according to the current amount of power stored
     private void GetCurrentBatteryColour()
     {
         float power = UIController.instance.CurrentPowerValDisplayed;
@@ -1794,43 +1868,17 @@ public class TutorialController : DialogueBoxController
         }
     }
 
+    //Deactivates the UI lerp target
     private void DeactivateUILerpTarget()
     {
         lerpUITarget = false;
-        //Debug.Log($"UILerpTarget is {uiLerpTarget}");
-        //Debug.Log($"UILerpTarget.transform is {uiLerpTarget.transform}");
-        //Debug.Log($"UILerpTarget.transform.localScale is {uiLerpTarget.transform.localScale}");
         uiLerpTarget.transform.localScale = new Vector3(uiMinLerp, uiMinLerp, uiLerpTarget.transform.localScale.z);
         uiLerpTarget.color = Color.clear;
 
         uiMinLerp = 1;
         uiMaxLerp = 1;
-    }
 
-    //Tutorial Utility Methods - (General) Target Lerping--------------------------------------------------------------------------------------------
-
-    //Update lerp progress
-    private void UpdateLerpValues()
-    {
-        if (lerpForward)
-        {
-            lerpProgress += Time.deltaTime * lerpMultiplier;
-        }
-        else
-        {
-            lerpProgress -= Time.deltaTime * lerpMultiplier;
-        }
-
-        if (lerpProgress > 1)
-        {
-            lerpProgress = 1;
-            lerpForward = false;
-        }
-        else if (lerpProgress < 0)
-        {
-            lerpProgress = 0;
-            lerpForward = true;
-        }
+        uiButtonCanvasGroup = null;
     }
 }
 

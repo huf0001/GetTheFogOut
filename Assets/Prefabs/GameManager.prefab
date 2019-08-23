@@ -252,6 +252,7 @@ MonoBehaviour:
   zoomIn: {fileID: 0}
   zoomOut: {fileID: 0}
   harvesterButton: {fileID: 0}
+  buildMenuCanvasGroup: {fileID: 0}
   extenderButton: {fileID: 0}
   powerDiagram: {fileID: 0}
   batteryIcon: {fileID: 0}
@@ -259,6 +260,7 @@ MonoBehaviour:
   abilityUnlockCanvas: {fileID: 0}
   abilityMenu: {fileID: 0}
   abilitySelectorRadialMenu: {fileID: 0}
+  abilityMenuCanvasGroup: {fileID: 0}
   sonarButton: {fileID: 0}
   mortarButton: {fileID: 0}
   pulseDefenceButton: {fileID: 0}
@@ -266,12 +268,13 @@ MonoBehaviour:
   decalMinLerp: 1.5
   decalMaxLerp: 3
   batteryIconMinLerp: 0.5
-  abilityMenuMinLerp: 0.65
-  sonarIconMinLerp: 0.65
+  generalMinLerp: 0.65
   uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
   uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
-  harvesterColour: {r: 0, g: 0, b: 0, a: 0}
-  powerBuildingColour: {r: 0, g: 0, b: 0, a: 0}
+  enterHarvesterColour: {r: 1, g: 0.79607844, b: 0.2509804, a: 1}
+  exitHarvesterColour: {r: 0.8784314, g: 0.5686275, b: 0, a: 1}
+  enterPowerBuildingColour: {r: 0.19215687, g: 1, b: 0, a: 1}
+  exitPowerBuildingColour: {r: 0, g: 0.6509804, b: 0.31764707, a: 1}
   batteryEmptyColour: {r: 0.7137255, g: 0.08235294, b: 0, a: 1}
   batteryLowColour: {r: 0.85490197, g: 0.5254902, b: 0.007843138, a: 1}
   batteryHalfColour: {r: 0.85490197, g: 0.7294118, b: 0.007843138, a: 1}
@@ -280,7 +283,8 @@ MonoBehaviour:
   abilityMenuColour: {r: 0.3019608, g: 0.8235294, b: 1, a: 1}
   enterSonarColour: {r: 0.94509804, g: 0.5803922, b: 0.047058824, a: 1}
   exitSonarColour: {r: 1, g: 1, b: 1, a: 1}
-  defencesColour: {r: 0, g: 0, b: 0, a: 0}
+  enterDefencesColour: {r: 0.6862745, g: 0.30588236, b: 1, a: 1}
+  exitDefencesColour: {r: 0.44313726, g: 0.25882354, b: 0.9254902, a: 1}
   skipTutorial: 0
   stage: 1
   subStage: 1
