@@ -65,6 +65,10 @@ public class UIController : MonoBehaviour
     private int index, temp;
     private MeshRenderer tile;
 
+    private float currentPowerValDisplayed = 0;
+
+    public float CurrentPowerValDisplayed { get => currentPowerValDisplayed; }
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -427,33 +431,47 @@ public class UIController : MonoBehaviour
 
 
             // update text values
-            powerText.text = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime)) + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
+            currentPowerValDisplayed = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime));
+            powerText.text =  currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
 
-            float powerCheck = float.Parse(powerText.text.Split('%')[0]) * 0.01f;/// resourceController.MaxPower;
-
-            if (powerCheck > 0 && powerCheck <= .25f && powerImg.sprite != powerLevelSprites[1])
+            if (currentPowerValDisplayed == 0)
             {
-                powerImg.sprite = powerLevelSprites[1];
-                index = 1;
+                if (powerImg.sprite != powerLevelSprites[0])
+                {
+                    powerImg.sprite = powerLevelSprites[0];
+                }
             }
-            else if (powerCheck > .25f && powerCheck <= .50f && powerImg.sprite != powerLevelSprites[2])
+            else if (currentPowerValDisplayed <= 25)
             {
-                powerImg.sprite = powerLevelSprites[2];
-                index = 2;
+                if (powerImg.sprite != powerLevelSprites[1])
+                {
+                    powerImg.sprite = powerLevelSprites[1];
+                    index = 1;
+                }
             }
-            else if (powerCheck > .50f && powerCheck <= .75f && powerImg.sprite != powerLevelSprites[3])
+            else if (currentPowerValDisplayed <= 50)
             {
-                powerImg.sprite = powerLevelSprites[3];
-                index = 0;
+                if (powerImg.sprite != powerLevelSprites[2])
+                { 
+                    powerImg.sprite = powerLevelSprites[2];
+                    index = 2;
+                }
             }
-            else if (powerCheck > .75f && powerImg.sprite != powerLevelSprites[4])
+            else if (currentPowerValDisplayed <= 75)
             {
-                powerImg.sprite = powerLevelSprites[4];
-                index = 3;
+                if (powerImg.sprite != powerLevelSprites[3])
+                {
+                    powerImg.sprite = powerLevelSprites[3];
+                    index = 0;
+                }
             }
-            else if (powerCheck == 0 && powerImg.sprite != powerLevelSprites[0])
+            else if (currentPowerValDisplayed > 75)
             {
-                powerImg.sprite = powerLevelSprites[0];
+                if (powerImg.sprite != powerLevelSprites[4])
+                {
+                    powerImg.sprite = powerLevelSprites[4];
+                    index = 3;
+                }
             }
 
             if (temp != index)

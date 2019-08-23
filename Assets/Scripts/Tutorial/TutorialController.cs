@@ -80,10 +80,15 @@ public class TutorialController : DialogueBoxController
     //[SerializeField] private float sonarIconMaxLerp;
 
     [Header("UI Lerp Colours")]
-    [SerializeField] private Color uiNormalColour = Color.white;
+    [SerializeField] private Color uiNormalColour = Color.white;    //TODO: test without green lerping of building buttons, comment out if it looks fine without it.
     [SerializeField] private Color uiHighlightColour = Color.green;
-    [SerializeField] private Color lerpTargetColour = Color.red;
-    //TODO: need lerp values for battery(bright green, dull green, orange/yellow, red), defences, harvesters, power-related buildings, ability menu, and sonar), 9 total
+    [SerializeField] private Color batteryEmptyColour;
+    [SerializeField] private Color batteryLowColour;
+    [SerializeField] private Color batteryHalfColour;
+    [SerializeField] private Color batteryHighColour;
+    [SerializeField] private Color batteryFullColour;
+
+    //TODO: need lerp values for (DONE): battery, (NOT DONE): defences, harvesters, power-related buildings, ability menu, and sonar), 9 total
 
     [Header("Skip Tutorial")]
     [SerializeField] private bool skipTutorial = true;
@@ -669,7 +674,7 @@ public class TutorialController : DialogueBoxController
                     stage = TutorialStage.MouseOverPowerDiagram;
                     UIController.instance.UpdateObjectiveText(stage);
                     SendDialogue("explain power", 1);
-                    ActivateUILerpTarget(batteryIcon, batteryIconMinLerp, lerpTargetColour);
+                    ActivateUILerpTarget(batteryIcon, batteryIconMinLerp, Color.clear);
 
                     if (!objWindowVisible)
                     {
@@ -1681,7 +1686,14 @@ public class TutorialController : DialogueBoxController
         uiMinLerp = minLerp;
         //uiMaxLerp = maxLerp;
 
-        uiLerpTarget.color = colour;
+        //if (colour != Color.clear)
+        //{
+            uiLerpTarget.color = colour;
+        //}
+        //else
+        //{
+        //    GetCurrentBatteryColour();
+        //}
     }
 
     private void LerpUITarget()
@@ -1691,44 +1703,64 @@ public class TutorialController : DialogueBoxController
 
         //TODO: If need to double check position, store current image target in variable and check against its position
 
-        //if (stage == TutorialStage.BuildGenerator && subStage < 4)
-        //{
-        //    float power = ResourceController.Instance.StoredPower;
-
-        //    if (power < 25)
-        //    {
-        //        //if colour != red, colour = red
-        //    }
-        //    else if (power < 50)
-        //    {
-        //        //if colour != orange, colour = orange
-        //    }
-        //    else if (power < 75)
-        //    {
-        //        //if colour != dull green, colour = dull green
-        //    }
-        //    else
-        //    {
-        //        //if colour != bright green, colour = bright green
-        //    }
-        //}
+        if (stage == TutorialStage.MouseOverPowerDiagram)
+        {
+            GetCurrentBatteryColour();
+        }
 
         UpdateLerpValues();
+    }
+
+    private void GetCurrentBatteryColour()
+    {
+        float power = UIController.instance.CurrentPowerValDisplayed;
+
+        if (power == 0)
+        {
+            if (uiLerpTarget.color != batteryEmptyColour)
+            {
+                uiLerpTarget.color = batteryEmptyColour;
+            }
+        }
+        else if (power <= 25)
+        {
+            if (uiLerpTarget.color != batteryLowColour)
+            {
+                uiLerpTarget.color = batteryLowColour;
+            }
+        }
+        else if (power <= 50)
+        {
+            if (uiLerpTarget.color != batteryHalfColour)
+            {
+                uiLerpTarget.color = batteryHalfColour;
+            }
+        }
+        else if (power <= 75)
+        {
+            if (uiLerpTarget.color != batteryHighColour)
+            {
+                uiLerpTarget.color = batteryHighColour;
+            }
+        }
+        else if (power > 75)
+        {
+            if (uiLerpTarget.color != batteryFullColour)
+            {
+                uiLerpTarget.color = batteryFullColour;
+            }
+        }
     }
 
     private void DeactivateUILerpTarget()
     {
         lerpUITarget = false;
-        Debug.Log($"UILerpTarget is {uiLerpTarget}");
-        Debug.Log($"UILerpTarget.transform is {uiLerpTarget.transform}");
-        Debug.Log($"UILerpTarget.transform.localScale is {uiLerpTarget.transform.localScale}");
+        //Debug.Log($"UILerpTarget is {uiLerpTarget}");
+        //Debug.Log($"UILerpTarget.transform is {uiLerpTarget.transform}");
+        //Debug.Log($"UILerpTarget.transform.localScale is {uiLerpTarget.transform.localScale}");
         uiLerpTarget.transform.localScale = new Vector3(uiMinLerp, uiMinLerp, uiLerpTarget.transform.localScale.z);
+        uiLerpTarget.color = Color.clear;
 
-        Color c = uiLerpTarget.color;
-        c.a = 0;
-        uiLerpTarget.color = c;
-
-        uiLerpTarget = null;
         uiMinLerp = 1;
         uiMaxLerp = 1;
     }
