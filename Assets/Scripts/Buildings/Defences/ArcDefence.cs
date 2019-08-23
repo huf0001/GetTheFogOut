@@ -17,6 +17,13 @@ public class ArcDefence : Defence
         }
     }
 
+    public override void Place()
+    {
+        base.Place();
+        if (WorldController.Instance.mortarUpgradeLevel) 
+            Upgrade(WorldController.Instance.mortarUpgradeLevel);
+    }
+
     // Update is called once per frame
     protected override void Update()
     {
@@ -114,5 +121,32 @@ public class ArcDefence : Defence
         }
 
         return false;
+    }
+
+    public void Upgrade(Upgrade upgrade)
+    {
+        switch (upgrade.pathNum)
+        {
+            case 1:
+                switch (upgrade.upgradeNum)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
+                break;
+            case 2:
+                switch (upgrade.upgradeNum)
+                {
+                    case 1:
+                        upkeep = 1.6f;
+                        break;
+                    case 2:
+                        upkeep = 1f;
+                        break;
+                }
+                break;
+        }
     }
 }

@@ -45,7 +45,7 @@ public class UpgradeController : MonoBehaviour
         if (BuildingType.Harvester.ToString().Equals(selectedBuilding))
         {
             Harvester hvst = harvester.GetComponentInChildren<Harvester>();
-            hvst.Upgrade(upgradePath);
+            //hvst.Upgrade(upgradePath);
         }
         else if (BuildingType.FogRepeller.ToString().Equals(selectedBuilding))
         {

@@ -11,9 +11,32 @@ public class UpgradeScreen : MonoBehaviour
     [SerializeField] private Color unupgradedLine;
     [SerializeField, Tooltip("Alpha value for other tree")] private float treeUnavailable;
 
-    public void PerformUpgrade(/* Add in one parameter as needed to upgrade */)
+    public void PerformUpgrade(Upgrade upgrade)
     {
-        // TODO: add functionality to actually do upgrades
+        switch (upgrade.buildingType)
+        {
+            case BuildingType.Harvester:
+                WorldController.Instance.hvstUpgradeLevel = upgrade;
+                foreach (Harvester harvester in ResourceController.Instance.Harvesters)
+                {
+                    harvester.Upgrade(upgrade);
+                }
+                break;
+            case BuildingType.AirCannon:
+                WorldController.Instance.mortarUpgradeLevel = upgrade;
+                foreach (ArcDefence mortar in ResourceController.Instance.Mortars)
+                {
+                    mortar.Upgrade(upgrade);
+                }
+                break;
+            case BuildingType.FogRepeller:
+                WorldController.Instance.pulseDefUpgradeLevel = upgrade;
+                foreach (RepelFan pulseDefence in ResourceController.Instance.PulseDefences)
+                {
+                    pulseDefence.Upgrade(upgrade);
+                }
+                break;
+        }
     }
 
     public void ChangeCurButtonColour(Image image)

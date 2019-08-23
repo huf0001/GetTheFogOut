@@ -5,19 +5,26 @@ using UnityEngine.Profiling;
 
 public class Harvester : Building
 {
-    [SerializeField] private int harvestAmt = +5;
+    [SerializeField] private float harvestAmt;
     [SerializeField] private Canvas noMineralCanvas;
     [SerializeField] private Light offLight;
     [SerializeField] public ParticleSystem hvtProgress;
     public int levelBuilding = 0;
     private int currentLevel;
-    public int HarvestAmt { get => harvestAmt; }
+    public float HarvestAmt { get => harvestAmt; }
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         levelBuilding = 0;
+    }
+
+    public override void Place()
+    {
+        base.Place();
+        if (WorldController.Instance.hvstUpgradeLevel) 
+            Upgrade(WorldController.Instance.hvstUpgradeLevel);
     }
 
     // Update is called once per frame
@@ -97,18 +104,30 @@ public class Harvester : Building
             base.PowerDown();
     }
 
-    public void Upgrade(int path)
+    public void Upgrade(Upgrade upgrade)
     {
-        switch (path)
+        switch (upgrade.pathNum)
         {
             case 1:
-                Debug.Log(levelBuilding);
-                Path_1(levelBuilding);
+                switch (upgrade.upgradeNum)
+                {
+                    case 1:
+                        harvestAmt = 2.5f;
+                        break;
+                    case 2:
+                        harvestAmt = 3f;
+                        break;
+                }
                 break;
             case 2:
-                if (levelBuilding < 3)
+                switch (upgrade.upgradeNum)
                 {
-                    Path_2(levelBuilding);
+                    case 1:
+                        upkeep = 0.8f;
+                        break;
+                    case 2:
+                        upkeep = 0.5f;
+                        break;
                 }
                 break;
         }

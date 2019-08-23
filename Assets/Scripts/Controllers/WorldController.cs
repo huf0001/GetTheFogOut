@@ -53,6 +53,10 @@ public class WorldController : MonoBehaviour
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
+    
+    public Upgrade hvstUpgradeLevel;
+    public Upgrade mortarUpgradeLevel;
+    public Upgrade pulseDefUpgradeLevel;
 
     //Non-Serialized Fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
