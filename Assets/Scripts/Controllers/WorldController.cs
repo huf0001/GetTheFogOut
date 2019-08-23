@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -43,6 +43,8 @@ public class WorldController : MonoBehaviour
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
     [SerializeField] protected GameObject serialCamera;
+    [SerializeField] private AbilityMenu abilityMenu;
+    [SerializeField] private GameObject mainCamera;
 
     [Header("Public variable?")]
     public bool InBuildMode;
@@ -53,7 +55,7 @@ public class WorldController : MonoBehaviour
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
-    
+
     public Upgrade hvstUpgradeLevel;
     public Upgrade mortarUpgradeLevel;
     public Upgrade pulseDefUpgradeLevel;
@@ -104,33 +106,6 @@ public class WorldController : MonoBehaviour
     public NewInputs Inputs { get; set; }
 
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
-    private void Start()
-    {
-        index = 0;
-        InstantiateTileArray();
-        ConnectAdjacentTiles();
-        SetResourcesToTiles();
-        SetBuildingsToTiles();
-        SetLandmarksToTiles();
-        SetCollectablesToTiles();
-        SetRocksToTiles();
-        CreateMinimapTiles();
-        TutorialController.Instance.StartTutorial();
-
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-        else
-        {
-            Instantiate(musicfmod);
-            musicFMOD = musicfmod;
-        }
-        musicFMOD.StartMusic();
-        musicFMOD.StageOneMusic();
-        musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
-    }
-
     private void Awake()
     {
         Inputs = new NewInputs();
@@ -156,13 +131,40 @@ public class WorldController : MonoBehaviour
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
 
-        if (GameObject.Find("MusicFMOD"))
+        //if (GameObject.Find("MusicFMOD"))
+        //{
+        //    musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+        //}
+        //else
+        //{
+        //    Instantiate(musicFMOD);
+        //}
+        //musicFMOD.StartMusic();
+        //musicFMOD.StageOneMusic();
+        //musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
+    }
+
+    private void Start()
+    {
+        index = 0;
+        InstantiateTileArray();
+        ConnectAdjacentTiles();
+        SetResourcesToTiles();
+        SetBuildingsToTiles();
+        SetLandmarksToTiles();
+        SetCollectablesToTiles();
+        SetRocksToTiles();
+        CreateMinimapTiles();
+        TutorialController.Instance.StartTutorial();
+
+        if (GameObject.Find("MusicFMOD") != null)
         {
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         }
         else
         {
-            Instantiate(musicFMOD);
+            Instantiate(musicfmod);
+            musicFMOD = musicfmod;
         }
         musicFMOD.StartMusic();
         musicFMOD.StageOneMusic();
@@ -396,7 +398,15 @@ public class WorldController : MonoBehaviour
         }
         else
         {
-            GameOverUpdate();
+            if (GameWin)
+            {
+                StartCoroutine("PlayWinAnimator");
+            }
+            else
+            {
+                StartCoroutine("PlayDeadAnimator");
+            }
+         //   GameOverUpdate();
         }
     }
 
@@ -429,7 +439,7 @@ public class WorldController : MonoBehaviour
             thrusterTilesOff();
         }
 
-        if (Input.GetButtonDown("Cancel"))
+        if (Inputs.InputMap.Pause.triggered)
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -478,21 +488,23 @@ public class WorldController : MonoBehaviour
 
     public void SetPause(bool pause)
     {
-        pauseMenu.SetActive(!pauseMenu.activeSelf);
-
-        if (pause)
+        if (!uiController.buildingSelector.Visible && !uiController.buildingInfo.Visible && !abilityMenu.Visible)
         {
-            Time.timeScale = 0.0f;
-            musicVolume = 0.3f;
-        }
-        else
-        {
-            Time.timeScale = 1.0f;
-            musicVolume = 1f;
-        }
+            pauseMenu.SetActive(!pauseMenu.activeSelf);
 
-        musicBus.setVolume(musicVolume);
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            if (pause)
+            {
+                Time.timeScale = 0.0f;
+                musicVolume = 0.3f;
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                musicVolume = 1f;
+            }
+
+            musicBus.setVolume(musicVolume); 
+        }
     }
 
 
@@ -510,18 +522,36 @@ public class WorldController : MonoBehaviour
         Cursor.lockState = wantedMode;
     }
 
+     IEnumerator PlayDeadAnimator()
+    {
+        Animator dead = mainCamera.GetComponent<Animator>();
+        if (dead)
+        {
+            dead.SetBool("IsDead", true);
+        }
+        yield return new WaitForSeconds(1f);
+        GameOverUpdate();
+    }
+
+    IEnumerator PlayWinAnimator()
+    {
+        Animator win = Hub.Instance.Animator;
+        if (win)
+        {
+            win.SetBool("Win", true);
+        }
+        yield return new WaitForSeconds(8.0f);
+        GameWinUpdate();
+    }
+    private void GameWinUpdate()
+    {
+        musicFMOD.GameWinMusic();
+        uiController.EndGameDisplay("You win!"); //Display win UI
+    }
     private void GameOverUpdate()
     {
-        if (GameWin)
-        {
-            musicFMOD.GameWinMusic();
-            uiController.EndGameDisplay("You win!"); //Display win UI
-        }
-        else
-        {
             musicFMOD.GameLoseMusic();
-            uiController.EndGameDisplay("You lose!"); //Display lose UI
-        }
+            uiController.EndGameDisplay("You lose!"); //Display lose UI     
     }
 
     private void RenderTower()
@@ -557,8 +587,7 @@ public class WorldController : MonoBehaviour
             Destroy(TowerSpawn);
         }
 
-        if ((Input.GetButtonDown("Cancel"))
-            && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.Stage == TutorialStage.Finished))
+        if (Inputs.InputMap.Pause.triggered && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.Stage == TutorialStage.Finished))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);

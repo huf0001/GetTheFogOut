@@ -421,7 +421,7 @@ public class Fog : MonoBehaviour
     //Takes a fog unit by tile and puts it on the board
     private void SpawnFogUnit(FogUnit f, TileData t, float health)
     {
-        if (!fogUnitsInPlay.Contains(f))
+        if (!f.ActiveOnTile && !t.buildingChecks.obstacle)    
         {
             Transform ft = f.gameObject.transform;
 
@@ -449,7 +449,7 @@ public class Fog : MonoBehaviour
                 borderFogUnitsInPlay.Add(f);
             }
         }
-        else
+        else if (f.ActiveOnTile)
         {
             Debug.Log($"Error: Cannot spawn Fog.fogUnits[{t.X}, {t.Z}]; it is already in play.");
         }
@@ -697,7 +697,7 @@ public class Fog : MonoBehaviour
 
                 foreach (TileData a in f.Location.AdjacentTiles)
                 {
-                    if (!a.FogUnitActive && !newTiles.Contains(a))
+                    if (!a.buildingChecks.obstacle && !a.FogUnitActive && !newTiles.Contains(a))
                     {
                         newTiles.Add(a);
                     }

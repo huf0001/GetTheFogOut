@@ -19,9 +19,10 @@ public class DamageIndicator : MonoBehaviour
     private TextMeshProUGUI exclamationMark;
     private bool on = true;
     private Transform camTarget;
-    private Camera camera;
+    private Camera cam;
 
     public Building Building { get; set; }
+    public Landmark Landmark { get; set; }
     public bool On
     {
         get => on;
@@ -37,20 +38,30 @@ public class DamageIndicator : MonoBehaviour
         }
     }
 
+    public Color32 Colour
+    {
+        set
+        {
+            GetComponent<Image>().color = value;
+            exclamationMark = GetComponentInChildren<TextMeshProUGUI>();
+            exclamationMark.color = value;
+        }
+    }
+
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         screen = new Rect(0, 0, Screen.width, Screen.height);
         icon = GetComponent<CanvasGroup>();
-        exclamationMark = GetComponentInChildren<TextMeshProUGUI>();
-        camera = Camera.main;
+        if (!exclamationMark) exclamationMark = GetComponentInChildren<TextMeshProUGUI>();
+        cam = Camera.main;
     }
 
     private void Update()
     {
         if (On)
         {
-            Vector3 lookAtPos = camera.WorldToScreenPoint(Building.transform.position);
+            Vector3 lookAtPos = cam.WorldToScreenPoint(Building ? Building.transform.position : Landmark.transform.position);
 
             if (!screen.Contains(lookAtPos))
             {

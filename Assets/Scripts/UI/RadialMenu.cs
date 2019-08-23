@@ -23,7 +23,7 @@ public class RadialMenu : MonoBehaviour
 
     private void Start()
     {
-        offset = offset * (Mathf.PI / 180);
+        offset *= Mathf.PI / 180;
         for (int i = 0; i < transform.childCount; i++)
         {
             angles.Add(i * (Mathf.PI * 2) / transform.childCount / restrictVal);

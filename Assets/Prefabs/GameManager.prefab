@@ -53,8 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16bbb129faf07144293a7a0bab6ea442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 51
-  length: 51
+  width: 71
+  length: 71
   gameWin: 0
   gameOver: 0
   ground: {fileID: 0}
@@ -74,6 +74,8 @@ MonoBehaviour:
   - component: 2
     collected: 0
   serialCamera: {fileID: 0}
+  abilityMenu: {fileID: 0}
+  mainCamera: {fileID: 0}
   InBuildMode: 1
   pauseMenu: {fileID: 0}
   musicfmod: {fileID: 4407398185932732860, guid: 5c819ef072426864db6435e12ba6cc4c,
@@ -182,7 +184,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1d7b93855cfd8b74e8efcfe95c262f1c, type: 3}
   - {fileID: 21300000, guid: c9b306912d4733348a3a569ebab51f72, type: 3}
   - {fileID: 21300000, guid: dbcded0b72a66044bbab44d79f074e0a, type: 3}
-  powerThresholdsBg: {fileID: 0}
   powerThresholds: {fileID: 0}
   objWindowText: {fileID: 0}
   hudObjText: {fileID: 0}
@@ -250,8 +251,36 @@ MonoBehaviour:
   dKey: {fileID: 0}
   zoomIn: {fileID: 0}
   zoomOut: {fileID: 0}
+  harvesterButton: {fileID: 0}
+  extenderButton: {fileID: 0}
   powerDiagram: {fileID: 0}
+  batteryIcon: {fileID: 0}
+  generatorButton: {fileID: 0}
   abilityUnlockCanvas: {fileID: 0}
+  abilityMenu: {fileID: 0}
+  abilitySelectorRadialMenu: {fileID: 0}
+  sonarButton: {fileID: 0}
+  mortarButton: {fileID: 0}
+  pulseDefenceButton: {fileID: 0}
+  uiLerpTarget: {fileID: 0}
+  decalMinLerp: 1.5
+  decalMaxLerp: 3
+  batteryIconMinLerp: 0.5
+  abilityMenuMinLerp: 0.65
+  sonarIconMinLerp: 0.65
+  uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
+  uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
+  harvesterColour: {r: 0, g: 0, b: 0, a: 0}
+  powerBuildingColour: {r: 0, g: 0, b: 0, a: 0}
+  batteryEmptyColour: {r: 0.7137255, g: 0.08235294, b: 0, a: 1}
+  batteryLowColour: {r: 0.85490197, g: 0.5254902, b: 0.007843138, a: 1}
+  batteryHalfColour: {r: 0.85490197, g: 0.7294118, b: 0.007843138, a: 1}
+  batteryHighColour: {r: 0.39607844, g: 0.6509804, b: 0, a: 1}
+  batteryFullColour: {r: 0, g: 0.6509804, b: 0.31764707, a: 1}
+  abilityMenuColour: {r: 0.3019608, g: 0.8235294, b: 1, a: 1}
+  enterSonarColour: {r: 0.94509804, g: 0.5803922, b: 0.047058824, a: 1}
+  exitSonarColour: {r: 1, g: 1, b: 1, a: 1}
+  defencesColour: {r: 0, g: 0, b: 0, a: 0}
   skipTutorial: 0
   stage: 1
   subStage: 1
@@ -285,14 +314,15 @@ MonoBehaviour:
   extenderLandmark: {fileID: 0}
   generatorLandmark: {fileID: 0}
   sonarLandmark: {fileID: 0}
+  fogExtenderLandmark: {fileID: 0}
+  mortarLandmark: {fileID: 0}
+  pulseDefenceLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
   cameraController: {fileID: 0}
   mineralDepositCamera: {fileID: 0}
   sonarCamera: {fileID: 0}
   artilleryCamera: {fileID: 0}
   thrusterCamera: {fileID: 0}
-  uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
-  uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
   builtHarvestersGoal: 3
   builtHarvestersExtendedGoal: 5
   builtGeneratorsGoal: 3
