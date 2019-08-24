@@ -173,15 +173,18 @@ public class ObjectiveController : DialogueBoxController
         switch (subStage)
         {
             case 0:
-                if (TutorialController.Instance.SkipTutorial)
+                if (cameraController.FinishedOpeningCameraPan)
                 {
-                    SendDialogue("start harvest stage", 1);
-                    IncrementSubStage();
-                }
-                else
-                {
-                    currStage = ObjectiveStage.RecoverPart;
-                    RecoverPartStage();
+                    if (TutorialController.Instance.SkipTutorial)
+                    {
+                        SendDialogue("start harvest stage", 1);
+                        IncrementSubStage();
+                    }
+                    else
+                    {
+                        currStage = ObjectiveStage.RecoverPart;
+                        RecoverPartStage();
+                    }
                 }
 
                 break;

@@ -345,9 +345,16 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 UIController.instance.UpdateObjectiveText(stage);
-                SendDialogue("explain situation", 2);
+                IncrementSubStage();
                 break;
             case 2:
+                if (cameraController.FinishedOpeningCameraPan)
+                {
+                    SendDialogue("explain situation", 2);
+                }
+
+                break;
+            case 3:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -1496,7 +1503,7 @@ public class TutorialController : DialogueBoxController
     {
         lastTileChecked = tile;
 
-        if (stage <= TutorialStage.CollectSonar && tile == sonarLandmarkTile)
+        if (!cameraController.FinishedOpeningCameraPan || (stage <= TutorialStage.CollectSonar && tile == sonarLandmarkTile))
         {
             return false;
         }
