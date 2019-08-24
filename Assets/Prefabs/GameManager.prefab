@@ -285,7 +285,7 @@ MonoBehaviour:
   exitSonarColour: {r: 1, g: 1, b: 1, a: 1}
   enterDefencesColour: {r: 0.6862745, g: 0.30588236, b: 1, a: 1}
   exitDefencesColour: {r: 0.44313726, g: 0.25882354, b: 0.9254902, a: 1}
-  skipTutorial: 0
+  skipTutorial: 1
   stage: 1
   subStage: 1
   currentlyBuilding: 0
@@ -356,6 +356,7 @@ MonoBehaviour:
   mineralTarget: 500
   powerTarget: 500
   generatorLimit: 5
+  cameraController: {fileID: 0}
   thrusterCamera: {fileID: 0}
 --- !u!114 &3646138034780775634
 MonoBehaviour:

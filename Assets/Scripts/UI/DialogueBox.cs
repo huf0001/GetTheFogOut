@@ -74,12 +74,6 @@ public class DialogueBox : MonoBehaviour
     [Header("Images")]
     [SerializeField] private Image continueArrow;
 
-    //[Header("Colours")]
-    //[SerializeField] private string squareBracketColour;
-    //[SerializeField] private string ampersandBracketColour;
-    //[SerializeField] private string squigglyBracketColour;
-    //[SerializeField] private string htmlTagBracketColour;
-
     [Header("Dialogue")]
     [SerializeField] private List<ColourTag> colourTags;
     [SerializeField] private List<DialogueSet> dialogue;
@@ -88,9 +82,11 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private Image countdown;
     [SerializeField] private Image objButton;
 
+    [Header("Camera Controller")]
+    [SerializeField] private CameraController cameraController;
+
     //Non-Serialized Fields
     [Header("Temporarily Serialized")]
-    //[SerializeField] private List<ExpressionDialoguePair> contentToDisplay = new List<ExpressionDialoguePair>();
     private Vector2 originalRectTransformPosition;
     private RectTransform dialogueRectTransform;
     private Vector2 arrowInitialPosition;
@@ -105,14 +101,10 @@ public class DialogueBox : MonoBehaviour
     private string pendingColouredText = "";
     private int lerpTextMinIndex = 0;
     private int lerpTextMaxIndex = 0;
-    //private int clickCount = 0;
 
-    //private bool coloured = false;
     private ColourTag colourTag = null;
     private bool lerpFinished = true;
-    //private string textColourString;
 
-    //private DialogueSet nextDialogueSet = null;
     private string nextDialogueKey = "";
     private float nextInvokeDelay = 0f;
     private bool deactivationSubmitted = false;
@@ -123,9 +115,7 @@ public class DialogueBox : MonoBehaviour
 
     //Public Properties
     public bool Activated { get => activated; }
-    //public int DialogueCount { get => contentToDisplay.Count; }
     public string CurrentDialogueSet { get => currentDialogueKey; }
-    //public bool Clickable { get => clickable; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -137,46 +127,9 @@ public class DialogueBox : MonoBehaviour
 
         foreach (ColourTag c in colourTags)
         {
-            //c.ColourName = c.Colour.ToString();
             c.ColourName = $"#{ColorUtility.ToHtmlStringRGB(c.Colour)}";
         }
-
-        //if (squareBracketColour == "")
-        //{
-        //    Debug.LogError("DialogueBox.squareBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
-        //}
-        //else if (squareBracketColour[0].ToString() != "#")
-        //{
-        //    squareBracketColour = $"\"{squareBracketColour}\"";
-        //}
-
-        //if (ampersandBracketColour == "")
-        //{
-        //    Debug.LogError("DialogueBox.squareBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
-        //}
-        //else if (squareBracketColour[0].ToString() != "#")
-        //{
-        //    squareBracketColour = $"\"{squareBracketColour}\"";
-        //}
-
-        //if (squareBracketColour == "")
-        //{
-        //    Debug.LogError("DialogueBox.squigglyBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
-        //}
-        //else if (squigglyBracketColour[0].ToString() != "#")
-        //{
-        //    squigglyBracketColour = $"\"{squigglyBracketColour}\"";
-        //}
-
-        //if (squareBracketColour == "")
-        //{
-        //    Debug.LogError("DialogueBox.vBracketColour is empty. It needs to have a value to work. Pick a colour (hexadecimal or string name) and fill in the field.");
-        //}
-        //else if (htmlTagBracketColour[0].ToString() != "#")
-        //{
-        //    htmlTagBracketColour = $"\"{htmlTagBracketColour}\"";
-        //}
-
+        
         if (aiImage.sprite == aiHappy)
         {
             currentExpression = AIExpression.Happy;
@@ -198,7 +151,6 @@ public class DialogueBox : MonoBehaviour
             }
             else
             {
-                //dialogueDictionary.Add(ds.Key, ds.ExpressionDialoguePairs);
                 dialogueDictionary[ds.Key] = ds.ExpressionDialoguePairs;
             }
         }
@@ -307,7 +259,6 @@ public class DialogueBox : MonoBehaviour
                         if (c == t.OpeningTag)
                         {
                             colourTag = t;
-                            //textColourString = t.ColourName;
                             break;
                         }
                     }
@@ -316,29 +267,6 @@ public class DialogueBox : MonoBehaviour
                     {
                         pendingText += c;
                     }
-
-                    //switch (c.ToString())
-                    //{
-                    //    case "[":
-                    //        coloured = true;
-                    //        textColourString = squareBracketColour;
-                    //        break;
-                    //    case "{":
-                    //        coloured = true;
-                    //        textColourString = squigglyBracketColour;
-                    //        break;
-                    //    case "<":
-                    //        coloured = true;
-                    //        textColourString = htmlTagBracketColour;
-                    //        break;
-                    //    case "&":
-                    //        coloured = true;
-                    //        textColourString = ampersandBracketColour;
-                    //        break;
-                    //    default:
-                    //        pendingText += c;
-                    //        break;
-                    //}
                 }
             }
 
@@ -374,40 +302,7 @@ public class DialogueBox : MonoBehaviour
         {
             Debug.Log("Dialogue key '" + key + "' is invalid.");
         }
-
-        //nextDialogueSet = dialogueSet;
-        //nextInvokeDelay = invokeDelay;
     }
-
-    ////Retrieves dialogue from the list using the dialogue key
-    //private bool ValidDialogueKey(string key)
-    //{
-    //    foreach (DialogueSet p in dialogue)
-    //    {
-    //        if (p.Key == key)
-    //        {
-    //            return true;
-    //        }
-    //    }
-
-    //    Debug.Log("Dialogue key '" + key + "' is invalid.");
-    //    return false;
-    //}
-
-    ////Retrieves dialogue from the list using the dialogue key
-    //private DialogueSet GetDialogueSet(string key)
-    //{
-    //    foreach (DialogueSet p in dialogue)
-    //    {
-    //        if (p.Key == key)
-    //        {
-    //            return p;
-    //        }
-    //    }
-
-    //    Debug.Log("Dialogue key '" + key + "' is invalid.");
-    //    return null;
-    //}
 
     //Activates the dialogue box; takes a list of strings
     private void ActivateDialogueBox(string key, float invokeDelay)
@@ -418,7 +313,6 @@ public class DialogueBox : MonoBehaviour
             dialogueRectTransform = GetComponent<RectTransform>();
             originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
 
-            //contentToDisplay = new List<ExpressionDialoguePair>(dialogueSet.ExpressionDialoguePairs);
             dialogueIndex = 0;
             currentDialogueKey = key;
 
@@ -452,7 +346,6 @@ public class DialogueBox : MonoBehaviour
     {
         if (dialogueDictionary.ContainsKey(key) && dialogueDictionary[key].Count > 0)
         {
-            //contentToDisplay = new List<ExpressionDialoguePair>(dialogueSet.ExpressionDialoguePairs);
             currentDialogueKey = key;
             dialogueIndex = 0;
             LerpNext();
@@ -484,7 +377,6 @@ public class DialogueBox : MonoBehaviour
     //Lerps the next lot of dialogue onto the dialogue box
     private void LerpNext()
     {
-        //Debug.Log("LerpingNext");
         lerpFinished = false;
         textBox.text = "";
         currentText = dialogueDictionary[currentDialogueKey][dialogueIndex].Dialogue;
@@ -517,12 +409,6 @@ public class DialogueBox : MonoBehaviour
 
     //Utility Methods - Progress / Finish Dialogue---------------------------------------------------------------------------------------------------
 
-    //Called by OnClick to register that the player has clicked the dialogue box
-    //    public void OnDialogueClicked()
-    //    {
-    //        dialogueRead = true;
-    //    }
-
     //Called by OnClick to register that the player has read the currently displayed dialogue
     private void RegisterDialogueRead()
     {
@@ -551,8 +437,6 @@ public class DialogueBox : MonoBehaviour
             delegate
             {
                 //Reset position after tweening
-                //dialogueRectTransform.anchoredPosition = originalRectTransformPosition;
-                //gameObject.SetActive(false);
                 textBox.text = "";
                 deactivating = false;
 
