@@ -369,6 +369,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
+                cameraController.MovementEnabled = false;
                 SendDialogue("explain minerals", 1);
                 mineralDepositCamera.gameObject.SetActive(true);
                 break;
@@ -382,6 +383,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 3:
                 stage = TutorialStage.CameraControls;
+                cameraController.MovementEnabled = true;
                 ResetSubStage();
                 break;
         }
@@ -899,6 +901,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
+                cameraController.MovementEnabled = false;
                 UIController.instance.UpdateObjectiveText(stage);
                 sonarCamera.gameObject.SetActive(true);
                 SendDialogue("collect sonar", 1);
@@ -906,11 +909,13 @@ public class TutorialController : DialogueBoxController
             case 2:
                 if (AbilityController.Instance.AbilityCollected[AbilityEnum.Sonar])
                 {
+                    cameraController.MovementEnabled = true;
                     sonarCamera.gameObject.SetActive(false);
                     GoToSubStage(4);
                 }
                 else if (dialogueRead)
                 {
+                    cameraController.MovementEnabled = true;
                     sonarCamera.gameObject.SetActive(false);
                     DismissDialogue();
                 }
@@ -919,7 +924,8 @@ public class TutorialController : DialogueBoxController
             case 3:
                 if (AbilityController.Instance.AbilityCollected[AbilityEnum.Sonar])
                 {
-                    sonarCamera.gameObject.SetActive(false);
+                    //cameraController.MovementEnabled = true;
+                    //sonarCamera.gameObject.SetActive(false);
                     IncrementSubStage();
                 }
 
@@ -995,6 +1001,8 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 13:
+                cameraController.MovementEnabled = false;
+
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.transform.GetChild(0).gameObject.SetActive(false);
                 hub.transform.GetChild(1).gameObject.SetActive(true);
@@ -1023,6 +1031,7 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissDialogue();
                     thrusterCamera.gameObject.SetActive(false);
+                    cameraController.MovementEnabled = true;
                     stage = TutorialStage.BuildExtenderInFog;
                     currentlyBuilding = BuildingType.Extender;
                     ResetSubStage();

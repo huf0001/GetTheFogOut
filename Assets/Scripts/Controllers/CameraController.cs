@@ -28,9 +28,11 @@ public class CameraController : MonoBehaviour
     private Vector3 move;
     private float zoomVal;
     private NewInputs inputs;
+    private bool movementEnabled = true;
 
     public Vector3 Move { get => move; }
     public float ZoomVal { get => zoomVal; }
+    public bool MovementEnabled { get => movementEnabled; set => movementEnabled = value; }
 
     private void Awake()
     {
@@ -71,7 +73,7 @@ public class CameraController : MonoBehaviour
 
     void UpdateCameraMovement()
     {
-        if (Time.timeScale == 1)
+        if (Time.timeScale == 1 && movementEnabled)
         {
             bool hasChanged = false;
             //Only run if player is moving left/right/up/down
