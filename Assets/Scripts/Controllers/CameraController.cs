@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using DG.Tweening;
 
 public class CameraController : MonoBehaviour
 {
@@ -75,7 +76,7 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         UpdateCameraMovement();
-        inputs.InputMap.CameraCenter.performed += ctx => transform.position = Home;
+        inputs.InputMap.CameraCenter.performed += ctx => transform.DOMove(Home, 0.3f);
         zoomVal = inputs.InputMap.Zoom.ReadValue<float>();
     }
 
