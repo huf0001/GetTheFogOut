@@ -245,47 +245,7 @@ MonoBehaviour:
   objectiveWindow: {fileID: 0}
   objectiveWindowOpenArrows: {fileID: 0}
   aiText: {fileID: 0}
-  wKey: {fileID: 0}
-  aKey: {fileID: 0}
-  sKey: {fileID: 0}
-  dKey: {fileID: 0}
-  zoomIn: {fileID: 0}
-  zoomOut: {fileID: 0}
-  harvesterButton: {fileID: 0}
-  buildMenuCanvasGroup: {fileID: 0}
-  extenderButton: {fileID: 0}
-  powerDiagram: {fileID: 0}
-  batteryIcon: {fileID: 0}
-  generatorButton: {fileID: 0}
-  abilityUnlockCanvas: {fileID: 0}
-  abilityMenu: {fileID: 0}
-  abilitySelectorRadialMenu: {fileID: 0}
-  abilityMenuCanvasGroup: {fileID: 0}
-  sonarButton: {fileID: 0}
-  mortarButton: {fileID: 0}
-  pulseDefenceButton: {fileID: 0}
-  uiLerpTarget: {fileID: 0}
-  decalMinLerp: 1.5
-  decalMaxLerp: 3
-  batteryIconMinLerp: 0.5
-  generalMinLerp: 0.65
-  uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
-  uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
-  enterHarvesterColour: {r: 1, g: 0.79607844, b: 0.2509804, a: 1}
-  exitHarvesterColour: {r: 0.8784314, g: 0.5686275, b: 0, a: 1}
-  enterPowerBuildingColour: {r: 0.19215687, g: 1, b: 0, a: 1}
-  exitPowerBuildingColour: {r: 0, g: 0.6509804, b: 0.31764707, a: 1}
-  batteryEmptyColour: {r: 0.7137255, g: 0.08235294, b: 0, a: 1}
-  batteryLowColour: {r: 0.85490197, g: 0.5254902, b: 0.007843138, a: 1}
-  batteryHalfColour: {r: 0.85490197, g: 0.7294118, b: 0.007843138, a: 1}
-  batteryHighColour: {r: 0.39607844, g: 0.6509804, b: 0, a: 1}
-  batteryFullColour: {r: 0, g: 0.6509804, b: 0.31764707, a: 1}
-  abilityMenuColour: {r: 0.3019608, g: 0.8235294, b: 1, a: 1}
-  enterSonarColour: {r: 0.94509804, g: 0.5803922, b: 0.047058824, a: 1}
-  exitSonarColour: {r: 1, g: 1, b: 1, a: 1}
-  enterDefencesColour: {r: 0.6862745, g: 0.30588236, b: 1, a: 1}
-  exitDefencesColour: {r: 0.44313726, g: 0.25882354, b: 0.9254902, a: 1}
-  skipTutorial: 1
+  skipTutorial: 0
   stage: 1
   subStage: 1
   currentlyBuilding: 0
@@ -312,6 +272,15 @@ MonoBehaviour:
     x: 0
     z: 0
     plane: {fileID: 0}
+  builtHarvestersGoal: 3
+  builtHarvestersExtendedGoal: 5
+  builtGeneratorsGoal: 3
+  collectedMineralsGoal: 300
+  cameraController: {fileID: 0}
+  mineralDepositCamera: {fileID: 0}
+  sonarCamera: {fileID: 0}
+  artilleryCamera: {fileID: 0}
+  thrusterCamera: {fileID: 0}
   hub: {fileID: 0}
   thruster: {fileID: 0}
   harvesterResource: {fileID: 0}
@@ -322,15 +291,47 @@ MonoBehaviour:
   mortarLandmark: {fileID: 0}
   pulseDefenceLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
-  cameraController: {fileID: 0}
-  mineralDepositCamera: {fileID: 0}
-  sonarCamera: {fileID: 0}
-  artilleryCamera: {fileID: 0}
-  thrusterCamera: {fileID: 0}
-  builtHarvestersGoal: 3
-  builtHarvestersExtendedGoal: 5
-  builtGeneratorsGoal: 3
-  collectedMineralsGoal: 300
+  wKey: {fileID: 0}
+  aKey: {fileID: 0}
+  sKey: {fileID: 0}
+  dKey: {fileID: 0}
+  zoomIn: {fileID: 0}
+  zoomOut: {fileID: 0}
+  harvesterButton: {fileID: 0}
+  buildMenuCanvasGroup: {fileID: 0}
+  extenderButton: {fileID: 0}
+  powerDiagram: {fileID: 0}
+  batteryIcon: {fileID: 0}
+  generatorButton: {fileID: 0}
+  abilityUnlockCanvas: {fileID: 0}
+  abilityMenu: {fileID: 0}
+  abilitySelectorRadialMenu: {fileID: 0}
+  abilityMenuCanvasGroup: {fileID: 0}
+  sonarButton: {fileID: 0}
+  mortarButton: {fileID: 0}
+  pulseDefenceButton: {fileID: 0}
+  uiLerpTarget: {fileID: 0}
+  decalMinLerp: 1.5
+  decalMaxLerp: 3
+  batteryIconMinLerp: 0.5
+  multipleLerpRingsForBattery: 0
+  generalMinLerp: 0.65
+  uiNormalColour: {r: 1, g: 1, b: 1, a: 1}
+  uiHighlightColour: {r: 0, g: 1, b: 0, a: 1}
+  enterHarvesterColour: {r: 1, g: 0.79607844, b: 0.2509804, a: 1}
+  exitHarvesterColour: {r: 0.8784314, g: 0.5686275, b: 0, a: 1}
+  enterPowerBuildingColour: {r: 0.19215687, g: 1, b: 0, a: 1}
+  exitPowerBuildingColour: {r: 0, g: 0.6509804, b: 0.31764707, a: 1}
+  batteryEmptyColour: {r: 1, g: 0, b: 0, a: 1}
+  batteryLowColour: {r: 1, g: 0.55, b: 0, a: 1}
+  batteryHalfColour: {r: 1, g: 1, b: 0, a: 1}
+  batteryHighColour: {r: 0.75, g: 1, b: 0, a: 1}
+  batteryFullColour: {r: 0, g: 1, b: 0, a: 1}
+  abilityMenuColour: {r: 0.3019608, g: 0.8235294, b: 1, a: 1}
+  enterSonarColour: {r: 0.94509804, g: 0.5803922, b: 0.047058824, a: 1}
+  exitSonarColour: {r: 1, g: 1, b: 1, a: 1}
+  enterDefencesColour: {r: 0.6862745, g: 0.30588236, b: 1, a: 1}
+  exitDefencesColour: {r: 0.44313726, g: 0.25882354, b: 0.9254902, a: 1}
 --- !u!114 &4019818891569145385
 MonoBehaviour:
   m_ObjectHideFlags: 0
