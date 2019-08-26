@@ -162,7 +162,6 @@ public class TutorialController : DialogueBoxController
     private Image currentUILerpFocus;
     private float uiMinLerp;
     private float uiMaxLerp;
-    private CanvasGroup uiButtonCanvasGroup = null;//TODO: remove if unnecessary
     
     private bool lerpUIColourTarget = false;
     private Image uiColourLerpTarget = null;
@@ -548,6 +547,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (buildMenuCanvasGroup.alpha == 0)
                 {
+                    DeactivateUIColourLerpTarget();
                     GoToSubStage(3);
                     ActivateTarget(harvesterResource);
                 }
@@ -560,6 +560,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (buildMenuCanvasGroup.alpha == 0)
                 {
+                    DeactivateUIColourLerpTarget();
                     GoToSubStage(3);
                     ActivateTarget(harvesterResource);
                 }
@@ -642,6 +643,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                DeactivateTarget();
                 ActivateUIColourLerpTarget(extenderHighlight, minPowerBuildingColour, maxPowerBuildingColour);
                 currentlyLerping = ButtonType.Extender;
                 IncrementSubStage();
@@ -650,6 +652,12 @@ public class TutorialController : DialogueBoxController
                 if (BuiltCurrentlyBuilding())
                 {
                     IncrementSubStage();
+                }
+                else if (buildMenuCanvasGroup.alpha == 0)
+                {
+                    GoToSubStage(3);
+                    DeactivateUIColourLerpTarget();
+                    ActivateTarget(extenderLandmark);
                 }
 
                 break;
@@ -760,7 +768,7 @@ public class TutorialController : DialogueBoxController
             case 3:
                 if (powerDiagram.fillAmount == 1)
                 {
-                    GoToSubStage(4);
+                    IncrementSubStage();
                 }
 
                 break;
@@ -785,37 +793,60 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    GoToSubStage(8);
+                }
+
+                break;
+            case 7:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 7:
+            case 8:
+                DeactivateTarget();
                 ActivateUIColourLerpTarget(generatorHighlight, minPowerBuildingColour, maxPowerBuildingColour);
                 currentlyLerping = ButtonType.Generator;
                 IncrementSubStage();
                 break;
-            case 8:
+            case 9:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (BuiltCurrentlyBuilding())
                 {
-                    GoToSubStage(10);
+                    GoToSubStage(11);
                 }
-
-                break;
-            case 9:
-                if (BuiltCurrentlyBuilding())
+                else if (buildMenuCanvasGroup.alpha == 0)
                 {
-                    IncrementSubStage();
+                    DeactivateUIColourLerpTarget();
+                    GoToSubStage(6);
+                    ActivateTarget(generatorLandmark);
                 }
 
                 break;
             case 10:
-                DeactivateTarget();
+                if (BuiltCurrentlyBuilding())
+                {
+                    IncrementSubStage();
+                }
+                else if (buildMenuCanvasGroup.alpha == 0)
+                {
+                    DeactivateUIColourLerpTarget();
+                    GoToSubStage(6);
+                    ActivateTarget(generatorLandmark);
+                }
+
+                break;
+            case 11:
                 DeactivateUIColourLerpTarget();
                 SendDialogue("build more generators", 1);
                 ActivateMouse();
@@ -828,36 +859,36 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 11:
+            case 12:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (tileClicked)
                 {
-                    GoToSubStage(13);
+                    GoToSubStage(14);
                 }
 
                 break;
-            case 12:
+            case 13:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 13:
+            case 14:
                 currentlyLerping = ButtonType.Generator;
                 IncrementSubStage();
                 break;
-            case 14:
+            case 15:
                 if (ResourceController.Instance.Generators.Count == builtGeneratorsGoal)
                 {
                     IncrementSubStage();
                 }
 
                 break;
-            case 15:
+            case 16:
                 ObjectiveController.Instance.GeneratorLimit = originalGeneratorLimit;
                 stage = TutorialStage.CollectMinerals;
                 currentlyBuilding = BuildingType.None;
@@ -1127,12 +1158,26 @@ public class TutorialController : DialogueBoxController
             case 3:
                 if (tileClicked)
                 {
+                    DeactivateTarget();
                     DismissMouse();
                     currentlyLerping = ButtonType.Extender;
                 }
 
                 break;
             case 4:
+                if (BuiltCurrentlyBuilding())
+                {
+                    IncrementSubStage();
+                }
+                else if (buildMenuCanvasGroup.alpha == 0)
+                {
+                    GoToSubStage(3);
+                    ActivateTarget(fogExtenderLandmark);
+                }
+
+                break;
+
+            case 5:
                 foreach (Relay e in ResourceController.Instance.Extenders)
                 {
                     if (e.TakingDamage)
@@ -1143,13 +1188,11 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-
-            case 5:
+            case 6:
                 stage = TutorialStage.BuildMortar;
                 currentlyBuilding = BuildingType.AirCannon;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
-                DeactivateTarget();
                 break;
             default:
                 SendDialogue("error", 1);
@@ -1190,6 +1233,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                DeactivateTarget();
                 ActivateUIColourLerpTarget(mortarHighlight, minDefencesColour, maxDefencesColour);
                 currentlyLerping = ButtonType.AirCannon;
                 IncrementSubStage();
@@ -1198,6 +1242,12 @@ public class TutorialController : DialogueBoxController
                 if (Hub.Instance.GetMortars().Count == 1)
                 {
                     IncrementSubStage();
+                }
+                else if (buildMenuCanvasGroup.alpha == 0)
+                {
+                    DeactivateUIColourLerpTarget();
+                    GoToSubStage(3);
+                    ActivateTarget(mortarLandmark);
                 }
 
                 break;
@@ -1247,6 +1297,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                DeactivateTarget();
                 ActivateUIColourLerpTarget(pulseDefenceHighlight, minDefencesColour, maxDefencesColour);
                 currentlyLerping = ButtonType.FogRepeller;
                 IncrementSubStage();
@@ -1257,8 +1308,13 @@ public class TutorialController : DialogueBoxController
                     stage = TutorialStage.DefenceActivation;
                     currentlyBuilding = BuildingType.None;
                     ResetSubStage();
-                    DeactivateTarget();
                     DeactivateUIColourLerpTarget();
+                }
+                else if (buildMenuCanvasGroup.alpha == 0)
+                {
+                    DeactivateUIColourLerpTarget();
+                    GoToSubStage(3);
+                    ActivateTarget(pulseDefenceLandmark);
                 }
 
                 break;
