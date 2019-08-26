@@ -31,6 +31,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
 
+    [SerializeField] private CameraController cameraController;
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     // Non-Serialized Fields
@@ -172,15 +173,18 @@ public class ObjectiveController : DialogueBoxController
         switch (subStage)
         {
             case 0:
-                if (TutorialController.Instance.SkipTutorial)
+                if (cameraController.FinishedOpeningCameraPan)
                 {
-                    SendDialogue("start harvest stage", 1);
-                    IncrementSubStage();
-                }
-                else
-                {
-                    currStage = ObjectiveStage.RecoverPart;
-                    RecoverPartStage();
+                    if (TutorialController.Instance.SkipTutorial)
+                    {
+                        SendDialogue("start harvest stage", 1);
+                        IncrementSubStage();
+                    }
+                    else
+                    {
+                        currStage = ObjectiveStage.RecoverPart;
+                        RecoverPartStage();
+                    }
                 }
 
                 break;
@@ -237,6 +241,7 @@ public class ObjectiveController : DialogueBoxController
 
                 if (TutorialController.Instance.SkipTutorial)
                 {
+                    cameraController.MovementEnabled = false;
                     hub.transform.GetChild(0).gameObject.SetActive(false);
                     hub.transform.GetChild(1).gameObject.SetActive(true);
                     // Run AI completion text
@@ -259,6 +264,7 @@ public class ObjectiveController : DialogueBoxController
                 {
                     Time.timeScale = 1f;
                     thrusterCamera.gameObject.SetActive(false);
+                    cameraController.MovementEnabled = true;
                     DismissDialogue();
                     ChangeToSubStage(3);
                 }
@@ -333,7 +339,7 @@ public class ObjectiveController : DialogueBoxController
                 //Survival countdown
                 Tick();
 
-                Debug.Log($"Countdown: {countdown}");
+                //Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
                 {
