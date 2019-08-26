@@ -114,6 +114,9 @@ public class DialogueBox : MonoBehaviour
     private bool dialogueRead = false;
     private bool deactivating = false;
 
+    private RectTransform continueArrowTransform;
+    private RectTransform completeArrowTransform;
+
     //Public Properties
     public bool Activated { get => activated; }
     public string CurrentDialogueSet { get => currentDialogueKey; }
@@ -160,6 +163,9 @@ public class DialogueBox : MonoBehaviour
     private void Start()
     {
         WorldController.Instance.Inputs.InputMap.ProceedDialogue.performed += ctx => RegisterDialogueRead();
+
+        continueArrowTransform = continueArrow.GetComponent<RectTransform>();
+        completeArrowTransform = completeArrow.GetComponent<RectTransform>();
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
@@ -167,28 +173,30 @@ public class DialogueBox : MonoBehaviour
     //Checks for new dialogue, lerps text, checks if player wants to progress text
     private void Update()
     {
-        if (clickable && !(completeArrow.enabled || continueArrow.enabled))
+        if (clickable)
         {
-            if (nextDialogueKey == "")
+            if (!continueArrow.enabled && dialogueIndex < dialogueDictionary[currentDialogueKey].Count)
             {
-                completeArrow.enabled = true;
-                completeArrow.GetComponent<RectTransform>().DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
-            }
-            else
-            {
+                if (completeArrow.enabled)
+                {
+                    DOTween.Kill(completeArrowTransform);
+                    completeArrowTransform.anchoredPosition = arrowInitialPosition;
+                    completeArrow.enabled = false;
+                }
                 continueArrow.enabled = true;
-                continueArrow.GetComponent<RectTransform>().DOAnchorPosX(arrowInitialPosition.x - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+                continueArrowTransform.DOAnchorPosX(arrowInitialPosition.x + 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
             }
-        }
-        else if (!clickable && (completeArrow.enabled || continueArrow.enabled))
-        {
-            DOTween.Kill(completeArrow.GetComponent<RectTransform>());
-            completeArrow.GetComponent<RectTransform>().anchoredPosition = arrowInitialPosition;
-            completeArrow.enabled = false;
-
-            DOTween.Kill(continueArrow.GetComponent<RectTransform>());
-            continueArrow.GetComponent<RectTransform>().anchoredPosition = arrowInitialPosition;
-            continueArrow.enabled = false;
+            else if (!completeArrow.enabled && dialogueIndex == dialogueDictionary[currentDialogueKey].Count)
+            {
+                if (continueArrow.enabled)
+                {
+                    DOTween.Kill(continueArrowTransform);
+                    continueArrowTransform.anchoredPosition = arrowInitialPosition;
+                    continueArrow.enabled = false;
+                }
+                completeArrow.enabled = true;
+                completeArrowTransform.DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+            }
         }
 
         if (nextDialogueKey != "" && !deactivating)
@@ -427,6 +435,14 @@ public class DialogueBox : MonoBehaviour
     {
         if (clickable)
         {
+            DOTween.Kill(continueArrowTransform);
+            continueArrowTransform.anchoredPosition = arrowInitialPosition;
+            continueArrow.enabled = false;
+
+            DOTween.Kill(completeArrowTransform);
+            completeArrowTransform.anchoredPosition = arrowInitialPosition;
+            completeArrow.enabled = false;
+
             if (dialogueIndex < dialogueDictionary[currentDialogueKey].Count)
             {
                 LerpNext();
