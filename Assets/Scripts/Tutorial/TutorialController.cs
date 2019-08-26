@@ -985,7 +985,13 @@ public class TutorialController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 8:
-                if (AbilityController.Instance.IsAbilitySelected)
+                if (abilitySelectorRadialMenu.Radius == 0)
+                {
+                    DeactivateUIColourLerpTarget();
+                    ActivateUIScalingLerpTarget(abilityMenu, abilityMenuMinLerp, abilityMenuColour/*, null*/);
+                    GoToSubStage(5);
+                }
+                else if (AbilityController.Instance.IsAbilitySelected)
                 {
                     GoToSubStage(10);
                 }
@@ -996,7 +1002,13 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 9:
-                if (AbilityController.Instance.IsAbilitySelected)
+                if (abilitySelectorRadialMenu.Radius == 0)
+                {
+                    DeactivateUIColourLerpTarget();
+                    ActivateUIScalingLerpTarget(abilityMenu, abilityMenuMinLerp, abilityMenuColour/*, null*/);
+                    GoToSubStage(6);
+                }
+                else if (AbilityController.Instance.IsAbilitySelected)
                 {
                     IncrementSubStage();
                 }
