@@ -28,6 +28,7 @@ public class CameraController : MonoBehaviour
     private Vector3 move;
     private float zoomVal;
     private NewInputs inputs;
+    private Vector3 Home;
     private bool movementEnabled = false;
     private bool finishedOpeningCameraPan = false;
 
@@ -38,6 +39,7 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
+        Home = new Vector3(34.77f, 0.95f, 33.4f);
     }
 
     private void Start()
@@ -50,6 +52,7 @@ public class CameraController : MonoBehaviour
         inputs.InputMap.Zoom.canceled += ctx => zoomVal = 0;
 
         myTransform = transform;
+
         zoom = FindObjectOfType<CinemachineFollowZoom>();
 
         if (runCameraPan)
@@ -72,6 +75,7 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         UpdateCameraMovement();
+        inputs.InputMap.CameraCenter.performed += ctx => transform.position = Home;
         zoomVal = inputs.InputMap.Zoom.ReadValue<float>();
     }
 
