@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+
 using Cinemachine;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum TutorialStage
 {
@@ -59,6 +62,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private ButtonType currentlyLerping;
     [SerializeField] private TileData currentTile = null;
     [SerializeField] private TileData lastTileChecked;
+    [SerializeField] private GameObject objectiveCompletePrefab;
     
     [Header("Goals")]
     [SerializeField] private int builtHarvestersGoal;
@@ -168,6 +172,8 @@ public class TutorialController : DialogueBoxController
 
     private Color enterLerpFocusColour;
     private Color exitLerpFocusColour;
+
+    //private float dialogueTimeout = 0f;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -890,6 +896,12 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
+                StartCoroutine(CompleteTutorialObjective("You repaired damage to your ship!"));
+                IncrementSubStage();
+                break;
+            case 7:
+                break;
+            case 8:
                 stage = TutorialStage.CollectSonar;
                 currentlyBuilding = BuildingType.None;
                 ResetSubStage();
@@ -1270,18 +1282,27 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
-                SendDialogue("finished", 1);
+                StartCoroutine(CompleteTutorialObjective("You've activated your defences!"));
+                IncrementSubStage();
                 break;
             case 7:
-                if (dialogueRead)
-                {
+                break;
+            case 8:
+                SendDialogue("finished", 1);
+            //    break;
+            //case 9:
+                //dialogueTimeout += Time.deltaTime;
+
+                //if (dialogueRead || dialogueTimeout >= 30)
+                //{
+                //    dialogueTimeout = 0;
                     stage = TutorialStage.Finished;
                     ResetSubStage();
                     ObjectiveController.Instance.IncrementStage();
                     //MusicController.Instance.StartStage1();
                     FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
                     musicFMOD.StageTwoMusic();
-                }
+                //}
 
                 break;
             default:
@@ -1639,6 +1660,29 @@ public class TutorialController : DialogueBoxController
         currentlyLerping = ButtonType.None;
         ResetDialogueRead();
         subStage = nextSubStage;
+    }
+
+    //Runs a "yay, you did the thing" screen
+    //Borrowed and adapted from ObjectiveController
+    IEnumerator CompleteTutorialObjective(string message)
+    {
+        GameObject objComp = Instantiate(objectiveCompletePrefab, GameObject.Find("Canvas").transform);
+        GameObject objCompImage = objComp.GetComponentInChildren<Image>().gameObject;
+        TextMeshProUGUI unlocksText = objCompImage.GetComponentInChildren<TextMeshProUGUI>();
+
+        unlocksText.text = message;
+        objCompImage.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad).SetUpdate(true);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
+
+        yield return new WaitForSecondsRealtime(3f);
+
+        objCompImage.GetComponent<RectTransform>().DOAnchorPosX(1250, 0.3f).SetEase(Ease.InQuad).SetUpdate(true);
+
+        yield return new WaitForSecondsRealtime(0.3f);
+
+        Destroy(objComp);
+
+        IncrementSubStage();
     }
 
     //Resets the substage to 1
