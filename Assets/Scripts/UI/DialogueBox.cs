@@ -72,6 +72,7 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private Sprite aiSad;
 
     [Header("Images")]
+    [SerializeField] private Image completeArrow;
     [SerializeField] private Image continueArrow;
 
     //[Header("Colours")]
@@ -133,7 +134,7 @@ public class DialogueBox : MonoBehaviour
     private void Awake()
     {
         aiImage.sprite = aiNeutral;
-        arrowInitialPosition = continueArrow.GetComponent<RectTransform>().anchoredPosition;
+        arrowInitialPosition = completeArrow.GetComponent<RectTransform>().anchoredPosition;
 
         foreach (ColourTag c in colourTags)
         {
@@ -214,13 +215,25 @@ public class DialogueBox : MonoBehaviour
     //Checks for new dialogue, lerps text, checks if player wants to progress text
     private void Update()
     {
-        if (clickable && !continueArrow.enabled)
+        if (clickable && !(completeArrow.enabled || continueArrow.enabled))
         {
-            continueArrow.enabled = true;
-            continueArrow.GetComponent<RectTransform>().DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+            if (nextDialogueKey == "")
+            {
+                completeArrow.enabled = true;
+                completeArrow.GetComponent<RectTransform>().DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+            }
+            else
+            {
+                continueArrow.enabled = true;
+                continueArrow.GetComponent<RectTransform>().DOAnchorPosX(arrowInitialPosition.x - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+            }
         }
-        else if (!clickable && continueArrow.enabled)
+        else if (!clickable && (completeArrow.enabled || continueArrow.enabled))
         {
+            DOTween.Kill(completeArrow.GetComponent<RectTransform>());
+            completeArrow.GetComponent<RectTransform>().anchoredPosition = arrowInitialPosition;
+            completeArrow.enabled = false;
+
             DOTween.Kill(continueArrow.GetComponent<RectTransform>());
             continueArrow.GetComponent<RectTransform>().anchoredPosition = arrowInitialPosition;
             continueArrow.enabled = false;
