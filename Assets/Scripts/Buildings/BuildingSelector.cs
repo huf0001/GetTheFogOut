@@ -66,13 +66,13 @@ public class BuildingSelector : MonoBehaviour
     {
         btnTutorial[] buttons = GetComponentsInChildren<btnTutorial>();
 
-        foreach (btnTutorial b in buttons)
-        {
-            if (b.Lerping)
-            {
-                b.DeactivateLerping();
-            }
-        }
+        //foreach (btnTutorial b in buttons)
+        //{
+        //    if (b.Lerping)
+        //    {
+        //        b.DeactivateLerping();
+        //    }
+        //}
         visible = false;
         selectParent.interactable = false;
         selectParent.blocksRaycasts = false;
