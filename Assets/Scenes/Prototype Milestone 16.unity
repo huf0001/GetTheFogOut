@@ -4927,6 +4927,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 728324856}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &425385575 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7068522273531672103, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 923276628}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &428165012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12595,6 +12601,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 2842, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
+      propertyPath: Fires
+      value: 
+      objectReference: {fileID: 425385575}
+    - target: {fileID: 2842, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
+      propertyPath: fireLight
+      value: 
+      objectReference: {fileID: 1313726939}
     m_RemovedComponents:
     - {fileID: 6497169286510600957, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
@@ -17906,6 +17920,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9ff5b1c68228ae4db9435030bf14584, type: 3}
+--- !u!108 &1313726939 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 2683, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 923276628}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1317111132
 PrefabInstance:
   m_ObjectHideFlags: 0
