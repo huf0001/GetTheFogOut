@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 
 public class ManualResource : MonoBehaviour
 {
-    [SerializeField] GameObject ResourcePrefab;
+    [SerializeField]
+    private GameObject ResourcePrefab;
 
     private bool inResource;
     // Start is called before the first frame update

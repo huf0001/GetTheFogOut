@@ -64,7 +64,6 @@ public class WorldController : MonoBehaviour
     //Other Controllers
     private ResourceController resourceController;
     private UIController uiController;
-    //private CameraController cameraController;
 
     //private List<TileData> ThrusterList = new List<TileData>();
 
@@ -147,7 +146,6 @@ public class WorldController : MonoBehaviour
         Cursor.visible = (CursorLockMode.Locked != wantedMode);
 
         serialCamera = GameObject.Find("CameraTarget");
-        //cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
 

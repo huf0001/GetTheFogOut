@@ -152,7 +152,7 @@ public class TutorialController : DialogueBoxController
     private bool lerpUITarget = false;
     //[SerializeField] private Image uiLerpTarget;
     private float uiMinLerp;
-    private float uiMaxLerp;
+    //private float uiMaxLerp;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -1762,7 +1762,7 @@ public class TutorialController : DialogueBoxController
         uiLerpTarget.color = Color.clear;
 
         uiMinLerp = 1;
-        uiMaxLerp = 1;
+        //uiMaxLerp = 1;
     }
 
     //Tutorial Utility Methods - (General) Target Lerping--------------------------------------------------------------------------------------------
