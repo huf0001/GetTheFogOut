@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using DG.Tweening;
 
 public class CameraController : MonoBehaviour
 {
@@ -28,12 +29,18 @@ public class CameraController : MonoBehaviour
     private Vector3 move;
     private float zoomVal;
     private NewInputs inputs;
+    private Vector3 Home;
+    private bool movementEnabled = false;
+    private bool finishedOpeningCameraPan = false;
 
     public Vector3 Move { get => move; }
     public float ZoomVal { get => zoomVal; }
+    public bool MovementEnabled { get => movementEnabled; set => movementEnabled = value; }
+    public bool FinishedOpeningCameraPan { get => finishedOpeningCameraPan; }
 
     private void Awake()
     {
+        Home = new Vector3(34.77f, 0.95f, 33.4f);
     }
 
     private void Start()
@@ -46,6 +53,7 @@ public class CameraController : MonoBehaviour
         inputs.InputMap.Zoom.canceled += ctx => zoomVal = 0;
 
         myTransform = transform;
+
         zoom = FindObjectOfType<CinemachineFollowZoom>();
 
         if (runCameraPan)
@@ -60,18 +68,21 @@ public class CameraController : MonoBehaviour
     {
         //camera.gameObject.SetActive(true);
         serialCameraCutscene.gameObject.SetActive(false);
+        movementEnabled = true;
+        finishedOpeningCameraPan = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateCameraMovement();
+        inputs.InputMap.CameraCenter.performed += ctx => transform.DOMove(Home, 0.3f);
         zoomVal = inputs.InputMap.Zoom.ReadValue<float>();
     }
 
     void UpdateCameraMovement()
     {
-        if (Time.timeScale == 1)
+        if (Time.timeScale == 1 && movementEnabled)
         {
             bool hasChanged = false;
             //Only run if player is moving left/right/up/down

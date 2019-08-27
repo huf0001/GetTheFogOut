@@ -234,8 +234,8 @@ public class UIController : MonoBehaviour
 
     public void ShowLaunchButton()
     {
-        objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[2];
+        objectiveButtonBG.rectTransform.localScale = new Vector3(2, 2, 2);
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(objectiveButtonBG.DOFade(0.93f, 1))
@@ -248,7 +248,7 @@ public class UIController : MonoBehaviour
                 {
                     WinGame();
                 });
-                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 0.5f).SetLoops(-1, LoopType.Yoyo);
                 buttonClosed = false;
             });
     }
@@ -284,6 +284,7 @@ public class UIController : MonoBehaviour
     public void CloseButton()
     {
         DOTween.Kill(launchButtonImage);
+        launchButtonImage.color = new Color(1, 1, 1);
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))

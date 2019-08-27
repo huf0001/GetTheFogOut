@@ -60,6 +60,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Camera Center",
+                    "type": "Button",
+                    "id": "0491aece-9e9e-477d-8a7c-2fb235c36c81",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -258,6 +266,17 @@
                     "processors": "",
                     "groups": ";Controller",
                     "action": "Open/Close Objective Window",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f799e8cd-d373-478c-9d51-c6300785a69c",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "Camera Center",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

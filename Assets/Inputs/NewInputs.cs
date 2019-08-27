@@ -72,6 +72,14 @@ public class NewInputs : IInputActionCollection
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Camera Center"",
+                    ""type"": ""Button"",
+                    ""id"": ""0491aece-9e9e-477d-8a7c-2fb235c36c81"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -272,6 +280,17 @@ public class NewInputs : IInputActionCollection
                     ""action"": ""Open/Close Objective Window"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f799e8cd-d373-478c-9d51-c6300785a69c"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Camera Center"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -312,6 +331,7 @@ public class NewInputs : IInputActionCollection
         m_InputMap_CameraDrag = m_InputMap.GetAction("Camera Drag");
         m_InputMap_ProceedDialogue = m_InputMap.GetAction("Proceed Dialogue");
         m_InputMap_OpenCloseObjectiveWindow = m_InputMap.GetAction("Open/Close Objective Window");
+        m_InputMap_CameraCenter = m_InputMap.GetAction("Camera Center");
     }
 
     ~NewInputs()
@@ -368,6 +388,7 @@ public class NewInputs : IInputActionCollection
     private readonly InputAction m_InputMap_CameraDrag;
     private readonly InputAction m_InputMap_ProceedDialogue;
     private readonly InputAction m_InputMap_OpenCloseObjectiveWindow;
+    private readonly InputAction m_InputMap_CameraCenter;
     public struct InputMapActions
     {
         private NewInputs m_Wrapper;
@@ -379,6 +400,7 @@ public class NewInputs : IInputActionCollection
         public InputAction @CameraDrag => m_Wrapper.m_InputMap_CameraDrag;
         public InputAction @ProceedDialogue => m_Wrapper.m_InputMap_ProceedDialogue;
         public InputAction @OpenCloseObjectiveWindow => m_Wrapper.m_InputMap_OpenCloseObjectiveWindow;
+        public InputAction @CameraCenter => m_Wrapper.m_InputMap_CameraCenter;
         public InputActionMap Get() { return m_Wrapper.m_InputMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -409,6 +431,9 @@ public class NewInputs : IInputActionCollection
                 OpenCloseObjectiveWindow.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnOpenCloseObjectiveWindow;
                 OpenCloseObjectiveWindow.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnOpenCloseObjectiveWindow;
                 OpenCloseObjectiveWindow.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnOpenCloseObjectiveWindow;
+                CameraCenter.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraCenter;
+                CameraCenter.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraCenter;
+                CameraCenter.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCameraCenter;
             }
             m_Wrapper.m_InputMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -434,6 +459,9 @@ public class NewInputs : IInputActionCollection
                 OpenCloseObjectiveWindow.started += instance.OnOpenCloseObjectiveWindow;
                 OpenCloseObjectiveWindow.performed += instance.OnOpenCloseObjectiveWindow;
                 OpenCloseObjectiveWindow.canceled += instance.OnOpenCloseObjectiveWindow;
+                CameraCenter.started += instance.OnCameraCenter;
+                CameraCenter.performed += instance.OnCameraCenter;
+                CameraCenter.canceled += instance.OnCameraCenter;
             }
         }
     }
@@ -465,5 +493,6 @@ public class NewInputs : IInputActionCollection
         void OnCameraDrag(InputAction.CallbackContext context);
         void OnProceedDialogue(InputAction.CallbackContext context);
         void OnOpenCloseObjectiveWindow(InputAction.CallbackContext context);
+        void OnCameraCenter(InputAction.CallbackContext context);
     }
 }
