@@ -6,6 +6,7 @@ using UnityEngine;
 public class ArcDefence : Defence
 {
     public GameObject mortarBarrelGO;
+    public int innerRange, outerRange;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -74,7 +75,7 @@ public class ArcDefence : Defence
                             Vector3 origin = transform.position;
                             origin.y += 0.8f;
                             Vector3 targetPos = new Vector3(target.X, 0, target.Z);
-                            p.Fire(origin, targetPos, directDamage, aoeDamage);
+                            p.Fire(origin, targetPos, directDamage, aoeDamage, innerRange, outerRange);
                         });
             }
         }
@@ -131,8 +132,11 @@ public class ArcDefence : Defence
                 switch (upgrade.upgradeNum)
                 {
                     case 1:
+                        outerRange = 2;
                         break;
                     case 2:
+                        innerRange = 1;
+                        outerRange = 3;
                         break;
                 }
                 break;

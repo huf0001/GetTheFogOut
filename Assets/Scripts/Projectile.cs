@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    int damage;
-    int aoeDamage;
+    int damage, aoeDamage, innerRange, outerRange;
     float timeToReturn;
     bool isLanded;
     private Rigidbody rigidbody;
@@ -26,11 +25,13 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Fire(Vector3 origin, Vector3 target, int dmg, int aoeDmg)
+    public void Fire(Vector3 origin, Vector3 target, int dmg, int aoeDmg, int inRange, int outRange)
     // Fires the projectile from the origin to the target, with the given damage
     {
         damage = dmg;
         aoeDamage = aoeDmg;
+        innerRange = inRange;
+        outerRange = outRange;
 
         Vector3 Vo = CalculateVelocity(target, origin, 1f);
         transform.position = origin;
@@ -65,33 +66,40 @@ public class Projectile : MonoBehaviour
     {
         ContactPoint hit = collision.GetContact(0);
         TileData tileHit = WorldController.Instance.GetTileAt(new Vector2(hit.point.x, hit.point.z));
-        //Tile tileHit = collision.gameObject.GetComponent<Tile>();
 
         // If the collision is a tile and it has fog, damage the fog
         if (tileHit != null)
         {
             if (tileHit.FogUnitActive)
             {
-                //Debug.Log("Dealing damage to " + tileHit.FogUnit);
-                tileHit.FogUnit.DealDamageToFogUnit(damage);
+                if (innerRange > 0)
+                {
+                    List<TileData> innerTiles = tileHit.CollectTilesInRange(innerRange);
+
+                    foreach (TileData tile in innerTiles)
+                    {
+                        if (tile.FogUnitActive)
+                        {
+                            tile.FogUnit.DealDamageToFogUnit(damage);
+                        }
+                    }
+                }
+                else
+                {
+                    tileHit.FogUnit.DealDamageToFogUnit(damage);
+                }
                 
-                //Spawns the
                 Destroy((Instantiate(hitEffect, transform.position, transform.rotation)), 1f);
 
-                foreach (TileData tile in tileHit.AllAdjacentTiles)
+                List<TileData> outerTiles = tileHit.CollectTilesInRange(outerRange);
+                foreach (TileData tile in outerTiles)
                 {
                     if (tile.FogUnitActive)
                     {
-                        //Debug.Log("Dealing damage to " + tile.FogUnit);
                         tile.FogUnit.DealDamageToFogUnit(aoeDamage);
                     }
                 }
             }
-            //else if (tileHit.FogBatch.Batched)
-            //{
-            //    //Debug.Log("Dealing damage to " + tileHit.FogUnit);
-            //    tileHit.FogBatch.DealDamage(damage, transform.position);
-            //}
         }
 
         // Return the projectile to the pool
