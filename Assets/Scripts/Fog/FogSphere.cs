@@ -182,7 +182,7 @@ public class FogSphere : MonoBehaviour
         }
     }
 
-    //Moves the fog sphere towards the hub
+    //Moves the fog sphere towards the hub --> with navMeshAgent, updates the speed and checks conditions for transitioning to other states.
     public void Move(float interval)
     {
         if (state == FogSphereState.Spilling)
@@ -202,6 +202,7 @@ public class FogSphere : MonoBehaviour
 
         hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateSize()
         //transform.position = Vector3.MoveTowards(transform.position, hubPosition, currentMovementSpeed * interval);
+        navMeshAgent.speed = currentMovementSpeed;
         
         if (transform.position == hubPosition)
         {
@@ -528,6 +529,7 @@ public class FogSphere : MonoBehaviour
     {
         float scale = Mathf.Lerp(minSizeScale, maxSizeScale, Mathf.Min(health / maxHealth, 1));
         transform.localScale = new Vector3(scale, scale, scale);
+        navMeshAgent.radius = renderers[0].bounds.extents.magnitude * 0.5f;
     }
 
     //Triggered/Utility Methods - Other--------------------------------------------------------------------------------------------------------------
