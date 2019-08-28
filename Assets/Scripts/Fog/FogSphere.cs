@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum FogSphereState
 {
@@ -26,6 +27,7 @@ public class FogSphere : MonoBehaviour
 
     [Header("Movement")]
     //[SerializeField] private float minHeight;
+    [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private float height;
     [SerializeField] private float minMovementSpeed;
     [SerializeField] private float maxMovementSpeed;
@@ -97,6 +99,7 @@ public class FogSphere : MonoBehaviour
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
     public float MaxSizeScale { get => maxSizeScale; set => maxSizeScale = value; }
     public float MinSizeScale { get => minSizeScale; set => minSizeScale = value; }
+    public NavMeshAgent NavMeshAgent { get => navMeshAgent; }
     public List<Renderer> Renderers {  get => renderers; }
     public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
@@ -148,6 +151,8 @@ public class FogSphere : MonoBehaviour
         startHealth = health;
         targetHealth = health;
         currentColours = docileColours;
+
+        //TODO: update movement values of nav mesh agent, rather than fog sphere
     }
 
     //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
@@ -196,7 +201,7 @@ public class FogSphere : MonoBehaviour
         }
 
         hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateSize()
-        transform.position = Vector3.MoveTowards(transform.position, hubPosition, currentMovementSpeed * interval);
+        //transform.position = Vector3.MoveTowards(transform.position, hubPosition, currentMovementSpeed * interval);
         
         if (transform.position == hubPosition)
         {

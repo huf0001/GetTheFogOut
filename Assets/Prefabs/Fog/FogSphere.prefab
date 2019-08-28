@@ -192,13 +192,14 @@ GameObject:
   m_Component:
   - component: {fileID: 3064332006142968858}
   - component: {fileID: 9126576650219075606}
+  - component: {fileID: 7409427968774005981}
   m_Layer: 0
   m_Name: FogSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3064332006142968858
 Transform:
   m_ObjectHideFlags: 0
@@ -232,6 +233,7 @@ MonoBehaviour:
   health: 0.1
   maxHealth: 1
   damageLerpMultiplier: 3
+  navMeshAgent: {fileID: 7409427968774005981}
   height: -0.1
   minMovementSpeed: 2
   maxMovementSpeed: 5
@@ -335,6 +337,28 @@ MonoBehaviour:
   minSizeScale: 0.2
   maxSizeScale: 2.3
   currentMovementSpeed: 0
+--- !u!195 &7409427968774005981
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3064332006142968861}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &3064332006645821888
 GameObject:
   m_ObjectHideFlags: 0

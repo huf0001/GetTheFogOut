@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Profiling;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -51,6 +52,8 @@ public class Fog : MonoBehaviour
     [Header("General Settings")]
     [SerializeField] private bool angry;
     [SerializeField] private bool damageOn;
+
+    [SerializeField] private Transform fogSphereInstantiationPoint;
 
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private Difficulty difficulty;
@@ -460,7 +463,7 @@ public class Fog : MonoBehaviour
     //Instantiates a fog sphere that isn't on the board or in the pool
     private FogSphere CreateFogSphere()
     {
-        FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, transform, true);
+        FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, fogSphereInstantiationPoint, true);
         f.transform.position = transform.position;
         f.State = FogSphereState.None;
         f.Fog = this;
@@ -517,6 +520,12 @@ public class Fog : MonoBehaviour
             s.UpdateSize();
             s.RenderOpacity();
             fogSpheresInPlay.Add(s);
+            s.NavMeshAgent.enabled = true;
+
+            if (s.NavMeshAgent.destination != hubPosition)
+            {
+                s.NavMeshAgent.destination = hubPosition;
+            }
         }
     }
 
@@ -837,6 +846,7 @@ public class Fog : MonoBehaviour
         f.SpiltFog.Clear();
         fogSpheresInPool.Add(f);
         fogSpheresInPlay.Remove(f);
+        f.NavMeshAgent.enabled = false;
     }
 
     //Fog Freezing Methods---------------------------------------------------------------------------------------------------------------------------
