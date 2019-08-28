@@ -520,7 +520,7 @@ public abstract class Building : Entity
                     damIndScript = damInd.GetComponent<DamageIndicator>();
                 }
                 else damIndScript.On = true;
-                damInd.GetComponent<DamageIndicator>().Building = this;
+                damInd.GetComponent<DamageIndicator>().Locatable = this;
             }
             
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);

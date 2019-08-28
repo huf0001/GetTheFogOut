@@ -21,8 +21,8 @@ public class DamageIndicator : MonoBehaviour
     private Transform camTarget;
     private Camera cam;
 
-    public Building Building { get; set; }
-    public Landmark Landmark { get; set; }
+    //public Building Locatable { get; set; }
+    public Locatable Locatable { get; set; }
     public bool On
     {
         get => on;
@@ -61,7 +61,7 @@ public class DamageIndicator : MonoBehaviour
     {
         if (On)
         {
-            Vector3 lookAtPos = cam.WorldToScreenPoint(Building ? Building.transform.position : Landmark.transform.position);
+            Vector3 lookAtPos = Camera.main.WorldToScreenPoint(/*Locatable ? Locatable.transform.position : */Locatable.transform.position);
 
             if (!screen.Contains(lookAtPos))
             {
@@ -95,6 +95,6 @@ public class DamageIndicator : MonoBehaviour
     public void MoveToBuilding()
     {
         if (!camTarget) camTarget = GameObject.Find("CameraTarget").transform;
-        camTarget.DOMove(new Vector3(Building.Location.X, camTarget.position.y, Building.Location.Z), 0.3f);
+        camTarget.DOMove(new Vector3(Locatable.Location.X, camTarget.position.y, Locatable.Location.Z), 0.3f);
     }
 }
