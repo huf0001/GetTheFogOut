@@ -88,6 +88,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark mortarLandmark;
     [SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
+    [SerializeField] private GameObject arrowToTargetPrefab;
 
     [Header("UI Elements")]
     [SerializeField] private CameraInput wKey;
@@ -155,6 +156,7 @@ public class TutorialController : DialogueBoxController
     private int savedSubStage;
 
     private TileData sonarLandmarkTile;
+    private DamageIndicator arrowToTarget = null;
 
     private MusicFMOD musicFMOD;
 
@@ -1799,6 +1801,18 @@ public class TutorialController : DialogueBoxController
         tileTargetLerpProgress = 0f;
         tileTargetLerpForward = true;
 
+        if (arrowToTarget == null)
+        {
+            arrowToTarget = Instantiate(arrowToTargetPrefab, GameObject.Find("Warnings").transform).GetComponent<DamageIndicator>();
+            arrowToTarget.Colour = Color.cyan;
+            arrowToTarget.Locatable = buildingTarget;
+        }
+        else
+        {
+            arrowToTarget.On = true;
+        }
+
+
         ActivateMouse();
     }
 
@@ -1863,6 +1877,7 @@ public class TutorialController : DialogueBoxController
     private void DeactivateTarget()
     {
         targetRenderer.enabled = false;
+        arrowToTarget.On = false;
     }
 
     //Tutorial Utility Methods - UI Colour-Lerp Target----------------------------------------------------------------------------------------------
