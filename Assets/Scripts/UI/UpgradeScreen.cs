@@ -37,10 +37,26 @@ public class UpgradeScreen : MonoBehaviour
                     switch (upgrade.pathNum)
                     {
                         case 1:
-                            harvesterButton.PowCostVal = -0.8f;
+                            switch (upgrade.upgradeNum)
+                            {
+                                case 1:
+                                    harvesterButton.UniqueStatVal = 2.5f;
+                                    break;
+                                case 2:
+                                    harvesterButton.UniqueStatVal = 3;
+                                    break;
+                            }
                             break;
                         case 2:
-                            harvesterButton.PowCostVal = -0.5f;
+                            switch (upgrade.upgradeNum)
+                            {
+                                case 1:
+                                    harvesterButton.PowCostVal = -0.8f;
+                                    break;
+                                case 2:
+                                    harvesterButton.PowCostVal = -0.5f;
+                                    break;
+                            }
                             break;
                     }
                     break;
@@ -54,10 +70,18 @@ public class UpgradeScreen : MonoBehaviour
                     switch (upgrade.pathNum)
                     {
                         case 1:
-                            mortarButton.PowCostVal = -1.6f;
+                            
                             break;
                         case 2:
-                            mortarButton.PowCostVal = -1;
+                            switch (upgrade.upgradeNum)
+                            {
+                                case 1:
+                                    mortarButton.PowCostVal = -1.6f;
+                                    break;
+                                case 2:
+                                    mortarButton.PowCostVal = -1;
+                                    break;
+                            }
                             break;
                     }
                     break;
@@ -71,10 +95,26 @@ public class UpgradeScreen : MonoBehaviour
                     switch (upgrade.pathNum)
                     {
                         case 1:
-                            pulseDefenceButton.PowCostVal = -0.8f;
+                            switch (upgrade.upgradeNum)
+                            {
+                                case 1:
+                                    pulseDefenceButton.UniqueStatVal = 3;
+                                    break;
+                                case 2:
+                                    pulseDefenceButton.UniqueStatVal = 4;
+                                    break;
+                            }
                             break;
                         case 2:
-                            pulseDefenceButton.PowCostVal = -0.5f;
+                            switch (upgrade.upgradeNum)
+                            {
+                                case 1:
+                                    pulseDefenceButton.PowCostVal = -0.8f;
+                                    break;
+                                case 2:
+                                    pulseDefenceButton.PowCostVal = -0.5f;
+                                    break;
+                            }
                             break;
                     }
                     break;

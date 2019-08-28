@@ -433,7 +433,7 @@ public class UIController : MonoBehaviour
 
             // update text values
             currentPowerValDisplayed = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime));
-            powerText.text =  currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
+            powerText.text =  currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange.ToString("F1") + " %/s</color>";
 
             if (currentPowerValDisplayed == 0)
             {

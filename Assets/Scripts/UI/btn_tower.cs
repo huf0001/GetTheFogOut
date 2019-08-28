@@ -39,7 +39,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         set
         {
             powCostVal = value;
-            powCost.text = $"<size=250%><sprite=\"all_icons\" index=0>\n<size=120%>{(powCostVal > 0 ? "+" : "")}{powCostVal} %/s";
+            powCost.text = $"<size=250%><sprite=\"all_icons\" index=0>\n<size=120%>{(powCostVal > 0 ? "+" : "") + powCostVal.ToString("F1")}\n%/s";
         }
     }
     public float UniqueStatVal
@@ -48,6 +48,18 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         set
         {
             uniqueStatVal = value;
+
+            switch (gameObject.name)
+            {
+                case "btn_arc_defence":
+                case "btn_repel_fan":
+                case "btn_relay":
+                    uniqueStat.text = $"Range: {uniqueStatVal} tiles";
+                    break;
+                case "btn_harvester":
+                    uniqueStat.text = $"+{uniqueStatVal.ToString("F1")} <sprite=\"all_icons\" index=2>/s";
+                    break;
+            }
         }
     }
 
@@ -57,8 +69,29 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         buttonColour = buttonBG.GetComponent<Image>().color;
         minCostVal = build_prefab.GetComponentInChildren<Building>().MineralCost;
         powCostVal = build_prefab.GetComponentInChildren<Building>().Upkeep;
+        
+        switch (gameObject.name)
+        {
+            case "btn_arc_defence":
+                uniqueStatVal = 5;
+                uniqueStat.text = $"Range: {uniqueStatVal} tiles";
+                break;
+            case "btn_repel_fan":
+                uniqueStatVal = 2;
+                uniqueStat.text = $"Range: {uniqueStatVal} tiles";
+                break;
+            case "btn_relay":
+                uniqueStatVal = 5;
+                uniqueStat.text = $"Range: {uniqueStatVal} tiles";
+                break;
+            case "btn_harvester":
+                uniqueStatVal = 2;
+                uniqueStat.text = $"+{uniqueStatVal.ToString("F1")} <sprite=\"all_icons\" index=2>/s";
+                break;
+        }
+
         minCost.text = $"<size=250%><sprite=\"all_icons\" index=2>\n<size=120%>{minCostVal}";
-        powCost.text = $"<size=250%><sprite=\"all_icons\" index=0>\n<size=120%>{(powCostVal > 0 ? "+" : "")}{powCostVal} %/s";
+        powCost.text = $"<size=250%><sprite=\"all_icons\" index=0>\n<size=120%>{(powCostVal > 0 ? "+" : "") + powCostVal.ToString("F1")}\n%/s";
     }
 
     public void ChangeDescColour()
@@ -74,14 +107,15 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             {
                 buildingDesc.text = $"<b>{buildingName}</b>\n" +
                     "<line-height=80% size=65%>" + descText;
-                buildingCost.text = $"{minCostVal} <sprite=\"all_icons\" index=2>";
             }
             else
             {
                 buildingDesc.text = $"<b>{buildingName}</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
                     "<line-height=80% size=65%>" + descText;
-                buildingCost.text = $"{minCostVal} <sprite=\"all_icons\" index=2>";
+                uniqueStat.text = $"{ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit} Built";
             }
+
+            buildingCost.text = $"{minCostVal} <sprite=\"all_icons\" index=2>";
         }
         else if (gameObject.name == "btn_generator" && ResourceController.Instance.Generators.Count == ObjectiveController.Instance.GeneratorLimit)
         {
