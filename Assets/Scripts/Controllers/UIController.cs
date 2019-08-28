@@ -21,7 +21,7 @@ public class UIController : MonoBehaviour
 
     private GameObject cursor;
     private Slider powerSlider;
-    private int power = 0, powerChange = 0, mineral = 0;
+    private float power = 0, powerChange = 0, mineral = 0;
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
     private bool isCursorOn = false;
@@ -512,7 +512,7 @@ public class UIController : MonoBehaviour
                 mineralTime = 0;
             }
 
-            int mineralChange = resourceController.MineralChange;
+            float mineralChange = resourceController.MineralChange;
 
             if (mineralChange > 0)
             {
