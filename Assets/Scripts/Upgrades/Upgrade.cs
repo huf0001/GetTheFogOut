@@ -9,4 +9,5 @@ public class Upgrade : ScriptableObject
     public int pathNum;
     public int upgradeNum;
     public float amount;
+    public int cost;
 }
