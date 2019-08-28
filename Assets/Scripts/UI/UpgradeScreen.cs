@@ -11,6 +11,10 @@ public class UpgradeScreen : MonoBehaviour
     [SerializeField] private Color upgradedLine;
     [SerializeField] private Color unupgradedLine;
     [SerializeField, Tooltip("Alpha value for other tree")] private float treeUnavailable;
+    [Header("Building Buttons")]
+    [SerializeField] private btn_tower harvesterButton;
+    [SerializeField] private btn_tower mortarButton;
+    [SerializeField] private btn_tower pulseDefenceButton;
 
     private Image buttonImg, lineImg, otherLineImg;
     private CanvasGroup canvas;
@@ -29,6 +33,16 @@ public class UpgradeScreen : MonoBehaviour
                     {
                         harvester.Upgrade(upgrade);
                     }
+
+                    switch (upgrade.pathNum)
+                    {
+                        case 1:
+                            harvesterButton.PowCostVal = -0.8f;
+                            break;
+                        case 2:
+                            harvesterButton.PowCostVal = -0.5f;
+                            break;
+                    }
                     break;
                 case BuildingType.AirCannon:
                     WorldController.Instance.mortarUpgradeLevel = upgrade;
@@ -36,12 +50,32 @@ public class UpgradeScreen : MonoBehaviour
                     {
                         mortar.Upgrade(upgrade);
                     }
+
+                    switch (upgrade.pathNum)
+                    {
+                        case 1:
+                            mortarButton.PowCostVal = -1.6f;
+                            break;
+                        case 2:
+                            mortarButton.PowCostVal = -1;
+                            break;
+                    }
                     break;
                 case BuildingType.FogRepeller:
                     WorldController.Instance.pulseDefUpgradeLevel = upgrade;
                     foreach (RepelFan pulseDefence in ResourceController.Instance.PulseDefences)
                     {
                         pulseDefence.Upgrade(upgrade);
+                    }
+
+                    switch (upgrade.pathNum)
+                    {
+                        case 1:
+                            pulseDefenceButton.PowCostVal = -0.8f;
+                            break;
+                        case 2:
+                            pulseDefenceButton.PowCostVal = -0.5f;
+                            break;
                     }
                     break;
             }
