@@ -232,9 +232,12 @@ public class FogSphere : MonoBehaviour
             {
                 TileData t = wc.GetTileAt(transform.position);
 
-                if (!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f)
+                if (!t.buildingChecks.obstacle)
                 {
-                    return true;
+                    if (!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f)
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -248,9 +251,12 @@ public class FogSphere : MonoBehaviour
                     {
                         TileData t = wc.GetTileAt(i, j);
 
-                        if ((!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                        if (!t.buildingChecks.obstacle)
                         {
-                            return true;
+                            if ((!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -282,14 +288,17 @@ public class FogSphere : MonoBehaviour
                 {
                     TileData t = wc.GetTileAt(transform.position);
 
-                    if (!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth)
+                    if (!t.buildingChecks.obstacle)
                     {
-                        if (!t.FogUnitActive)
+                        if (!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth)
                         {
-                            fog.SpawnFogUnitWithMinHealthOnTile(t);
-                        }
+                            if (!t.FogUnitActive)
+                            {
+                                fog.SpawnFogUnitWithMinHealthOnTile(t);
+                            }
 
-                        spiltFog.Add(t.FogUnit);
+                            spiltFog.Add(t.FogUnit);
+                        }
                     }
                 }
             }
@@ -303,14 +312,17 @@ public class FogSphere : MonoBehaviour
                         {
                             TileData t = wc.GetTileAt(i, j);
 
-                            if ((!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                            if (!t.buildingChecks.obstacle)
                             {
-                                if (!t.FogUnitActive)
+                                if ((!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
                                 {
-                                    fog.SpawnFogUnitWithMinHealthOnTile(t);
-                                }
+                                    if (!t.FogUnitActive)
+                                    {
+                                        fog.SpawnFogUnitWithMinHealthOnTile(t);
+                                    }
 
-                                spiltFog.Add(t.FogUnit);
+                                    spiltFog.Add(t.FogUnit);
+                                }
                             }
                         }
                     }
@@ -378,14 +390,17 @@ public class FogSphere : MonoBehaviour
         {
             foreach (TileData t in f.Location.AdjacentTiles)
             {
-                if (!t.FogUnitActive || (t.FogUnit.Health < t.FogUnit.MaxHealth && !newFog.Contains(t.FogUnit) && !spiltFog.Contains(t.FogUnit)))
+                if (!t.buildingChecks.obstacle)
                 {
-                    if (!t.FogUnitActive)
+                    if (!t.FogUnitActive || (t.FogUnit.Health < t.FogUnit.MaxHealth && !newFog.Contains(t.FogUnit) && !spiltFog.Contains(t.FogUnit)))
                     {
-                        fog.SpawnFogUnitWithMinHealthOnTile(t);
+                        if (!t.FogUnitActive)
+                        {
+                            fog.SpawnFogUnitWithMinHealthOnTile(t);
+                        }
+                        
+                        newFog.Add(t.FogUnit);
                     }
-                    
-                    newFog.Add(t.FogUnit);
                 }
             }
         }

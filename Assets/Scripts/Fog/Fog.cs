@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
@@ -492,41 +493,58 @@ public class Fog : MonoBehaviour
     //Takes a fog unit and puts it on the board
     private void SpawnFogSphere()
     {
-        FogUnit u = GetBorderFogUnit();
-
-        if (u != null)
+        bool successful;
+        do
         {
             FogSphere s = GetFogSphere();
-            GameObject o = s.gameObject;
-            Vector3 pos = u.transform.position;
-            pos.y = s.Height;
-            o.transform.position = pos;
-            o.name = "FogSphereInPlay";
+            FogUnit u = GetBorderFogUnit();
+            successful = true;
 
-            foreach (Renderer r in s.Renderers)
+            //setting the navmesh destination can throw an error if the fog sphere isn't
+            //on the nav mesh, and some tiles aren't; this tries again if that occurs,
+            //until a fog unit is selected that is on the nav mesh.
+            try
             {
-                r.material = fogSphereVisibleMaterial;
+                if (u != null)
+                {
+                    GameObject o = s.gameObject;
+                    Vector3 pos = u.transform.position;
+                    pos.y = s.Height;
+                    o.transform.position = pos;
+                    o.name = "FogSphereInPlay";
+
+                    foreach (Renderer r in s.Renderers)
+                    {
+                        r.material = fogSphereVisibleMaterial;
+                    }
+
+                    s.SpawningTile = u.Location;
+                    s.Health = fogSphereMinHealth;
+                    s.MaxHealth = fogSphereMaxHealth;
+                    s.MaxSizeScale = fogSphereMaxSizeScale;
+                    s.FogUnitMinHealth = fogUnitMinHealth;
+                    s.FogUnitMaxHealth = fogUnitMaxHealth;
+                    s.State = FogSphereState.MovingAndGrowing;
+                    s.SetStartEmotion(angry);
+                    s.RandomiseMovementSpeed();
+                    s.UpdateSize();
+                    s.RenderOpacity();
+                    fogSpheresInPlay.Add(s);
+                    s.NavMeshAgent.enabled = true;
+
+                    if (s.NavMeshAgent.destination != hubPosition)
+                    {
+                        s.NavMeshAgent.destination = hubPosition;
+                    }
+                }
             }
-
-            s.SpawningTile = u.Location;
-            s.Health = fogSphereMinHealth;
-            s.MaxHealth = fogSphereMaxHealth;
-            s.MaxSizeScale = fogSphereMaxSizeScale;
-            s.FogUnitMinHealth = fogUnitMinHealth;
-            s.FogUnitMaxHealth = fogUnitMaxHealth;
-            s.State = FogSphereState.MovingAndGrowing;
-            s.SetStartEmotion(angry);
-            s.RandomiseMovementSpeed();
-            s.UpdateSize();
-            s.RenderOpacity();
-            fogSpheresInPlay.Add(s);
-            s.NavMeshAgent.enabled = true;
-
-            if (s.NavMeshAgent.destination != hubPosition)
+            catch (Exception e)
             {
-                s.NavMeshAgent.destination = hubPosition;
+                Debug.Log($"Failed to spawn fog sphere. {u.name} must not be on the NavMesh. Re-pooling and trying again.");
+                successful = false;
+                ReturnFogSphereToPool(s);
             }
-        }
+        } while (!successful);
     }
 
     //Gets a random fog unit at the edge of the board
