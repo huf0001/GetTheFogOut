@@ -18,14 +18,18 @@ public class MusicFMOD : MonoBehaviour
     {
         if (GameObject.Find("MusicFMOD") != null)
         {
+            Debug.Log("Start MusicFMOD");
             _instance = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            Debug.Log("Instance: " + (_instance != null) + " This: " + (_instance != this));
             if (_instance != null && _instance != this)
             {
+                Debug.Log("Instance not null. This Not Instance.");
                 Destroy(gameObject);
                 return;
             }
             else
             {
+                Debug.Log("This becomes the Instance.");
                 _instance = this;
                 DontDestroyOnLoad(gameObject);
             }
