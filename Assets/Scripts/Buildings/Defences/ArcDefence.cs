@@ -6,6 +6,7 @@ using UnityEngine;
 public class ArcDefence : Defence
 {
     public GameObject mortarBarrelGO;
+    public int innerRange, outerRange;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -15,6 +16,13 @@ public class ArcDefence : Defence
         {
             InvokeRepeating(nameof(Fire), 0.25f, rateOfFire);
         }
+    }
+
+    public override void Place()
+    {
+        base.Place();
+        if (WorldController.Instance.mortarUpgradeLevel) 
+            Upgrade(WorldController.Instance.mortarUpgradeLevel);
     }
 
     // Update is called once per frame
@@ -67,7 +75,7 @@ public class ArcDefence : Defence
                             Vector3 origin = transform.position;
                             origin.y += 0.8f;
                             Vector3 targetPos = new Vector3(target.X, 0, target.Z);
-                            p.Fire(origin, targetPos, directDamage, aoeDamage);
+                            p.Fire(origin, targetPos, directDamage, aoeDamage, innerRange, outerRange);
                         });
             }
         }
@@ -114,5 +122,35 @@ public class ArcDefence : Defence
         }
 
         return false;
+    }
+
+    public void Upgrade(Upgrade upgrade)
+    {
+        switch (upgrade.pathNum)
+        {
+            case 1:
+                switch (upgrade.upgradeNum)
+                {
+                    case 1:
+                        outerRange = 2;
+                        break;
+                    case 2:
+                        innerRange = 1;
+                        outerRange = 3;
+                        break;
+                }
+                break;
+            case 2:
+                switch (upgrade.upgradeNum)
+                {
+                    case 1:
+                        upkeep = 1.6f;
+                        break;
+                    case 2:
+                        upkeep = 1f;
+                        break;
+                }
+                break;
+        }
     }
 }

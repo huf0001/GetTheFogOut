@@ -14,6 +14,7 @@ public class BuildingSelector : MonoBehaviour
     private CanvasGroup selectParent;
     private RadialMenu radialMenu;
     private Camera cam;
+    private RectTransform rectTransform;
 
     public bool Visible { get => visible; set => visible = value; }
     public TileData CurrentTile { get; set; }
@@ -23,13 +24,17 @@ public class BuildingSelector : MonoBehaviour
         radialMenu = GetComponentInChildren<RadialMenu>();
         selectParent = GetComponent<CanvasGroup>();
         cam = Camera.main;
+        rectTransform = GetComponent<RectTransform>();
     }
 
     void Update()
     {
         if (visible)
         {
-            transform.position = cam.WorldToScreenPoint(new Vector3(CurrentTile.X, 0, CurrentTile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
+            rectTransform.position = cam.WorldToScreenPoint(new Vector3(CurrentTile.X, 0, CurrentTile.Z));// + new Vector3(-Screen.width / 100, Screen.height / 25);
+            Vector2 rect = rectTransform.anchoredPosition;
+            rect += new Vector2(11, 5);
+            rectTransform.anchoredPosition = rect;
         }
     }
 

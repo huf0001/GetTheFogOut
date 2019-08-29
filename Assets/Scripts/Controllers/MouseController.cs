@@ -124,7 +124,7 @@ public class MouseController : MonoBehaviour
             if (towerManager.CurrentTile.plane)
             {
                 changeTileMaterial(WorldController.Instance.normalTile);
-                
+
                 if ((!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile)))
                 {
                     Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
@@ -132,7 +132,7 @@ public class MouseController : MonoBehaviour
                     towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
                 }
                 hoveredTile = towerManager.CurrentTile;
-            }  
+            }
         }
     }
 

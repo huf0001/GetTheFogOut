@@ -5,7 +5,9 @@ using UnityEngine.Experimental.VFX;
 
 public class RepelFan : Defence
 {
-
+    public int repelRange;
+    public GameObject shockwave;
+    
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -14,6 +16,13 @@ public class RepelFan : Defence
         {
             InvokeRepeating(nameof(FirePulse), 1f, rateOfFire);
         }
+    }
+
+    public override void Place()
+    {
+        base.Place();
+        if (WorldController.Instance.pulseDefUpgradeLevel) 
+            Upgrade(WorldController.Instance.pulseDefUpgradeLevel);
     }
 
     // Update is called once per frame
@@ -62,7 +71,7 @@ public class RepelFan : Defence
         if (TutorialController.Instance.DefencesOn)
         {
             List<TileData> directTarget = location.AllAdjacentTiles;
-            List<TileData> notDirectTarget = GetTarget(2);
+            List<TileData> notDirectTarget = GetTarget(repelRange);
 
             if ((directTarget != null) || notDirectTarget != null)
             {
@@ -106,5 +115,36 @@ public class RepelFan : Defence
         }
 
         return false;
+    }
+
+    public void Upgrade(Upgrade upgrade)
+    {
+        switch (upgrade.pathNum)
+        {
+            case 1:
+                switch (upgrade.upgradeNum)
+                {
+                    case 1:
+                        repelRange = 3;
+                        shockwave.transform.localScale = new Vector3(1.3f, 1f, 1.3f);
+                        break;
+                    case 2:
+                        repelRange = 4;
+                        shockwave.transform.localScale = new Vector3(1.65f, 1f, 1.65f);
+                        break;
+                }
+                break;
+            case 2:
+                switch (upgrade.upgradeNum)
+                {
+                    case 1:
+                        upkeep = 0.8f;
+                        break;
+                    case 2:
+                        upkeep = 0.5f;
+                        break;
+                }
+                break;
+        }
     }
 }

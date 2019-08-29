@@ -26,7 +26,7 @@ public class WarningScript : MonoBehaviour
     TextMeshProUGUI buildingStatus;
     List<GameObject> existingMessages = new List<GameObject>();
 
-    int pChangeValue = 0;
+    float pChangeValue = 0;
 
     public string Normal { get => NORMAL; }
     public string Warning { get => WARNING; }
@@ -146,7 +146,7 @@ public class WarningScript : MonoBehaviour
 
     private void CheckPower()
     {
-        int pChange = resourceController.PowerChange;
+        float pChange = resourceController.PowerChange;
 
         if ((pChange > 0 && pChangeValue > 0) || (pChange < 0 && pChangeValue < 0) || (pChange == 0 && pChangeValue == 0))
         {

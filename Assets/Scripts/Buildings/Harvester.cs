@@ -5,17 +5,26 @@ using UnityEngine.Profiling;
 
 public class Harvester : Building
 {
-    [SerializeField] private int harvestAmt = +5;
+    [SerializeField] private float harvestAmt;
     [SerializeField] private Canvas noMineralCanvas;
     [SerializeField] private Light offLight;
     [SerializeField] public ParticleSystem hvtProgress;
-
-    public int HarvestAmt { get => harvestAmt; }
+    public int levelBuilding = 0;
+    private int currentLevel;
+    public float HarvestAmt { get => harvestAmt; }
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
+        levelBuilding = 0;
+    }
+
+    public override void Place()
+    {
+        base.Place();
+        if (WorldController.Instance.hvstUpgradeLevel) 
+            Upgrade(WorldController.Instance.hvstUpgradeLevel);
     }
 
     // Update is called once per frame
@@ -93,5 +102,68 @@ public class Harvester : Building
             hvtProgress.Stop();
         }
             base.PowerDown();
+    }
+
+    public void Upgrade(Upgrade upgrade)
+    {
+        switch (upgrade.pathNum)
+        {
+            case 1:
+                switch (upgrade.upgradeNum)
+                {
+                    case 1:
+                        harvestAmt = 2.5f;
+                        break;
+                    case 2:
+                        harvestAmt = 3f;
+                        break;
+                }
+                break;
+            case 2:
+                switch (upgrade.upgradeNum)
+                {
+                    case 1:
+                        upkeep = 0.8f;
+                        break;
+                    case 2:
+                        upkeep = 0.5f;
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void Path_1(int level)
+    {
+        switch (level)
+        {
+            case 0:
+                Debug.Log(level);
+                break;
+            case 1:
+                Debug.Log(level);
+                break;
+            case 2:
+                Debug.Log(level);
+                break;
+        }
+        levelBuilding++;
+    }
+
+    private void Path_2(int level)
+    {
+        switch (level)
+        {
+            case 0:
+
+                break;
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+        }
+        levelBuilding++;
     }
 }

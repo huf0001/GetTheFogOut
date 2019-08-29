@@ -37,12 +37,14 @@ public class WorldController : MonoBehaviour
     [SerializeField] private GameObject ground;
 
     [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab/*, hubPrefab, *//*mineralPrefab*/;
-    [SerializeField] public Material normalTile, hoverTile,collectibleTile;
+    [SerializeField] public Material normalTile, hoverTile, collectibleTile;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
     [SerializeField] protected GameObject serialCamera;
+    [SerializeField] private AbilityMenu abilityMenu;
+    [SerializeField] private GameObject mainCamera;
 
     [Header("Public variable?")]
     public bool InBuildMode;
@@ -53,6 +55,10 @@ public class WorldController : MonoBehaviour
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
+
+    public Upgrade hvstUpgradeLevel;
+    public Upgrade mortarUpgradeLevel;
+    public Upgrade pulseDefUpgradeLevel;
 
     //Non-Serialized Fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
@@ -389,7 +395,15 @@ public class WorldController : MonoBehaviour
         }
         else
         {
-            GameOverUpdate();
+            if (GameWin)
+            {
+                StartCoroutine("PlayWinAnimator");
+            }
+            else
+            {
+                StartCoroutine("PlayDeadAnimator");
+            }
+            //   GameOverUpdate();
         }
     }
 
@@ -422,7 +436,7 @@ public class WorldController : MonoBehaviour
             thrusterTilesOff();
         }
 
-        if (Input.GetButtonDown("Cancel"))
+        if (Inputs.InputMap.Pause.triggered)
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -471,23 +485,24 @@ public class WorldController : MonoBehaviour
 
     public void SetPause(bool pause)
     {
-        pauseMenu.SetActive(!pauseMenu.activeSelf);
-
-        if (pause)
+        if (!uiController.buildingSelector.Visible && !uiController.buildingInfo.Visible && !abilityMenu.Visible)
         {
-            Time.timeScale = 0.0f;
-            musicVolume = 0.3f;
-        }
-        else
-        {
-            Time.timeScale = 1.0f;
-            musicVolume = 1f;
-        }
+            pauseMenu.SetActive(!pauseMenu.activeSelf);
 
-        musicBus.setVolume(musicVolume);
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            if (pause)
+            {
+                Time.timeScale = 0.0f;
+                musicVolume = 0.3f;
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                musicVolume = 1f;
+            }
+
+            musicBus.setVolume(musicVolume);
+        }
     }
-
 
     private void ChangeCursorState()
     {
@@ -503,18 +518,38 @@ public class WorldController : MonoBehaviour
         Cursor.lockState = wantedMode;
     }
 
+    IEnumerator PlayDeadAnimator()
+    {
+        Animator dead = mainCamera.GetComponent<Animator>();
+        if (dead)
+        {
+            dead.SetBool("IsDead", true);
+        }
+        yield return new WaitForSeconds(1f);
+        GameOverUpdate();
+    }
+
+    IEnumerator PlayWinAnimator()
+    {
+        Animator win = Hub.Instance.Animator;
+        if (win)
+        {
+            win.SetBool("Win", true);
+        }
+        yield return new WaitForSeconds(8.0f);
+        GameWinUpdate();
+    }
+
+    private void GameWinUpdate()
+    {
+        musicFMOD.GameWinMusic();
+        uiController.EndGameDisplay("You win!"); //Display win UI
+    }
+
     private void GameOverUpdate()
     {
-        if (GameWin)
-        {
-            musicFMOD.GameWinMusic();
-            uiController.EndGameDisplay("You win!"); //Display win UI
-        }
-        else
-        {
-            musicFMOD.GameLoseMusic();
-            uiController.EndGameDisplay("You lose!"); //Display lose UI
-        }
+        musicFMOD.GameLoseMusic();
+        uiController.EndGameDisplay("You lose!"); //Display lose UI     
     }
 
     private void RenderTower()
@@ -550,8 +585,7 @@ public class WorldController : MonoBehaviour
             Destroy(TowerSpawn);
         }
 
-        if ((Input.GetButtonDown("Cancel"))
-            && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.Stage == TutorialStage.Finished))
+        if (Inputs.InputMap.Pause.triggered && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.Stage == TutorialStage.Finished))
         {
             Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
@@ -634,7 +668,7 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.transform.position = cam.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
+        uiController.buildingSelector.transform.position = cam.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(12, 5); // + new Vector3(-Screen.width / 100, Screen.height / 25);
         UIController.instance.buildingSelector.CurrentTile = tile;
     }
 
@@ -678,7 +712,7 @@ public class WorldController : MonoBehaviour
         if (index != activeTiles.Count)
         {
             GameObject grids = GameObject.Find("Grids");
-            
+
             hideActiveTiles();
 
             foreach (TileData tile in activeTiles)
@@ -794,7 +828,7 @@ public class WorldController : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-                Application.Quit();
+        Application.Quit();
 #endif
     }
 
