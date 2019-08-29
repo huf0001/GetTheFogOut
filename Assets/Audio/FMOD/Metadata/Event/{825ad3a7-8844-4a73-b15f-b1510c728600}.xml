@@ -112,9 +112,6 @@
 	<object class="MarkerTrack" id="{cf2aa8ad-337e-45e8-8df0-3ef2cb246b11}" />
 	<object class="MarkerTrack" id="{7c11b25a-64d0-4d9d-97f2-679366329196}" />
 	<object class="GroupTrack" id="{e1e34f37-61a7-4be4-b703-89496117b785}">
-		<relationship name="automationTracks">
-			<destination>{e682a49e-9ac4-4529-a0b3-cc93125066b2}</destination>
-		</relationship>
 		<relationship name="modules">
 			<destination>{c026e5ff-bf42-4fb7-8ce8-96a0e009a55d}</destination>
 			<destination>{d7e50c27-93ae-493c-aea0-69137f50d137}</destination>
@@ -427,11 +424,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{85ff631e-08e8-4e51-8466-ed198e930107}" />
-	<object class="AutomationTrack" id="{e682a49e-9ac4-4529-a0b3-cc93125066b2}">
-		<relationship name="automator">
-			<destination>{e3d05b90-a4a3-4d98-90e4-7f3aad70b969}</destination>
-		</relationship>
-	</object>
 	<object class="SingleSound" id="{c026e5ff-bf42-4fb7-8ce8-96a0e009a55d}">
 		<property name="length">
 			<value>14.373222345213589</value>
@@ -781,7 +773,7 @@
 			<value>0.58181895174091736</value>
 		</property>
 		<property name="length">
-			<value>5.1716057057933291</value>
+			<value>5.582564609902918</value>
 		</property>
 		<property name="timelockedOffset">
 			<value>58.574680224834978</value>
@@ -1661,7 +1653,7 @@
 			<value>volume</value>
 		</property>
 		<property name="initialValue">
-			<value>-10</value>
+			<value>-3</value>
 		</property>
 		<property name="attackTime">
 			<value>2000</value>
@@ -2012,7 +2004,7 @@
 			<value>0</value>
 		</property>
 		<property name="curveShape">
-			<value>0.104098901</value>
+			<value>0.229491949</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{aef8d415-3536-4dd7-ac49-ab4bde5ef8f5}">
@@ -2563,12 +2555,12 @@
 			<value>0</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.2547189</value>
+			<value>0.107150033</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{b9135ec8-ea48-4d59-9114-2a8d93dbfff2}">
 		<property name="position">
-			<value>1.6438356164383552</value>
+			<value>2.8767123287671232</value>
 		</property>
 		<property name="value">
 			<value>1</value>
@@ -2576,7 +2568,7 @@
 	</object>
 	<object class="AutomationPoint" id="{66bea109-21e2-4852-a4ad-e80a309a2756}">
 		<property name="position">
-			<value>2.8767123287671259</value>
+			<value>3.2876712328767148</value>
 		</property>
 		<property name="value">
 			<value>1</value>
@@ -2587,7 +2579,7 @@
 	</object>
 	<object class="AutomationPoint" id="{68824ae5-d3e5-402b-9072-cc8dc4e750ec}">
 		<property name="position">
-			<value>5.7534246575342465</value>
+			<value>6.1643835616438354</value>
 		</property>
 		<property name="value">
 			<value>0</value>

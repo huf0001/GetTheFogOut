@@ -154,18 +154,6 @@ public class WorldController : MonoBehaviour
         serialCamera = GameObject.Find("CameraTarget");
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
-
-        if (GameObject.Find("MusicFMOD"))
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-        else
-        {
-            Instantiate(musicFMOD);
-        }
-        musicFMOD.StartMusic();
-        musicFMOD.StageOneMusic();
-        musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
     }
 
     void SetResourcesToTiles()
