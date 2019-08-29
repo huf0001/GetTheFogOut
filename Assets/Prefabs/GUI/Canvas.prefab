@@ -15133,13 +15133,17 @@ MonoBehaviour:
         say that they were perfectly normal, thank you very much. '
   - key: explain situation
     expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: Hello, I am your ship's Nexus Drone. You may call me Nexy for short.
+    - aiExpression: 3
+      dialogue: Wait, what happened? What's that around the ship?
+    - aiExpression: 3
+      dialogue: Fog? We crash landed? No, no, no...
     - aiExpression: 2
-      dialogue: Hello, I am your very own...Ah, no, I'm not fooling anyone with that.
-        I'm a Nexus Drone, an emergency drone that you'll be controlling from your
-        ship.
+      dialogue: We have to get out of here, fast. Let's not hang around to see what
+        tries to kill us. But, the ship is in no condition to be leaving just yet.
     - aiExpression: 2
-      dialogue: 'Since we appear to be in a predicament, I''m going to teach you how
-        to survive. '
+      dialogue: Pay close attention, I'm going to teach you how to survive.
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -15152,7 +15156,8 @@ MonoBehaviour:
   - key: zoom camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Scroll up and down to move me closer to or away from the ground.
+      dialogue: Scroll with the mouse wheel to zoom me in or out. Thankfully for me,
+        motion sickness isn't a part of my program.
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
@@ -15181,7 +15186,7 @@ MonoBehaviour:
         You will need to place a [POWER EXTENDER].
   - key: build more harvesters extended
     expressionDialoguePairs:
-    - aiExpression: 1
+    - aiExpression: 2
       dialogue: See how your grid range has now increased? Now you can place some
         more {HARVESTERS}.
   - key: explain power
@@ -15191,8 +15196,8 @@ MonoBehaviour:
         some strain on the power system. When buildings are placed, they consume power.
     - aiExpression: 2
       dialogue: Too many buildings consuming power will cause some to shut down. Move
-        your mouse over the [BATTERY ICON] at the top of the screen to see how that
-        works.
+        your mouse over the [BATTERY ICON] next to your minimap to see how the power
+        system functions.
   - key: build generator target
     expressionDialoguePairs:
     - aiExpression: 2
@@ -15204,11 +15209,11 @@ MonoBehaviour:
   - key: build more generators
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: It appears to have helped. If you look at the [BATTERY ICON] at the
-        top of your screen, the [POWER GENERATION] number should have changed.
+      dialogue: It appears to have helped. If you look at the [BATTERY ICON] next
+        to your minimap again, the [POWER GENERATION] number should have changed.
     - aiExpression: 2
-      dialogue: I think you should place a few more [POWER GENERATORS] just to be
-        safe.
+      dialogue: I think you should place a couple more [POWER GENERATORS] just to
+        be safe.
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -15223,7 +15228,7 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 1
       dialogue: Oh! It's the sonar. It must have fallen out of the ship when we landed.
-        Click the button in the bottom right corner and select it.
+        Click the button on the left of your screen to open the ability menu.
   - key: activate sonar
     expressionDialoguePairs:
     - aiExpression: 2
@@ -15231,12 +15236,11 @@ MonoBehaviour:
         centre of the sonar's ping.
   - key: explain abilities
     expressionDialoguePairs:
-    - aiExpression: 3
-      dialogue: Oh boy, that drained some power. Let's be smart about how it's in
-        the future, okay?
+    - aiExpression: 1
+      dialogue: Look, it worked! It's identified some useful items in the fog.
     - aiExpression: 2
-      dialogue: Anyway, it seems we've found some items over there. You should see
-        what it is, and recover it if it's another canister like the sonar's.
+      dialogue: 'Before we crashed, your ship came equipped with more than just the
+        Sonar. Maybe you could use it to find the rest of the ability canisters? '
   - key: explain thruster
     expressionDialoguePairs:
     - aiExpression: 1
@@ -15245,13 +15249,14 @@ MonoBehaviour:
   - key: extend to thruster
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: "Great, you've repaired your ship. Don't relax just yet. Next step,
-        attaching the ship's missing thruster.\r\n"
+      dialogue: 'You need to get to the thruster, that''s out ticket out of here.
+
+'
   - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Hey...this thick miasma seems to be in the way though. Try placing
-        a [POWER EXTENDER] in it and see what happens.
+      dialogue: Well, this fog seems to have done nothing so far, maybe it's harmless?
+        Try placing a [POWER EXTENDER] in it and see what happens.
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 2
