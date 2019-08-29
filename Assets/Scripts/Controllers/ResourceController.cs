@@ -9,10 +9,10 @@ public class ResourceController : MonoBehaviour
     //Serialized Fields
     [SerializeField] private int maxPower;
     [SerializeField] private int maxMineral;
-    [SerializeField] private int storedPower;
-    [SerializeField] private int storedMineral;
-    [SerializeField] private int powerChange;
-    [SerializeField] private int mineralChange;
+    [SerializeField] private float storedPower;
+    [SerializeField] private float storedMineral;
+    [SerializeField] private float powerChange;
+    [SerializeField] private float mineralChange;
 
     [SerializeField] private List<ArcDefence> mortars = new List<ArcDefence>();
     [SerializeField] private List<RepelFan> pulseDefences = new List<RepelFan>();
@@ -35,16 +35,16 @@ public class ResourceController : MonoBehaviour
     public static ResourceController Instance { get; protected set; }
 
     //public int MaxPower { get => maxPower; set => maxPower = value; }
-    public int StoredPower { get => storedPower; set => storedPower = value; }
-    public int StoredMineral { get => storedMineral; set => storedMineral = value; }
-    public int PowerChange { get => powerChange; set => powerChange = value; }
-    public int MineralChange { get => mineralChange; set => mineralChange = value; }
+    public float StoredPower { get => storedPower; set => storedPower = value; }
+    public float StoredMineral { get => storedMineral; set => storedMineral = value; }
+    public float PowerChange { get => powerChange; set => powerChange = value; }
+    public float MineralChange { get => mineralChange; set => mineralChange = value; }
 
     public List<Building> Buildings { get => buildings; set => buildings = value; }
     public List<Relay> Extenders { get => extenders; }
     public List<Generator> Generators { get => generators; set => generators = value; }
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
-    //public List<ArcDefence> Mortars { get => mortars; set => mortars = value; }
+    public List<ArcDefence> Mortars { get => mortars; set => mortars = value; }
     public List<RepelFan> PulseDefences { get => pulseDefences; set => pulseDefences = value; }
 
 
