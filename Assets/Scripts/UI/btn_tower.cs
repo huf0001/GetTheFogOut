@@ -13,6 +13,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     [SerializeField] private GameObject build_prefab;
     [SerializeField] private BuildingType towerType = BuildingType.None;
     [SerializeField] private RectTransform buttonBG;
+    [SerializeField] private GameObject buttonHighlight;
     [SerializeField] private Image buildingDescBG;
     [SerializeField] TextMeshProUGUI buildingDesc;
     [SerializeField] TextMeshProUGUI buildingCost;
@@ -29,6 +30,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private int minCostVal;
     private float powCostVal;
     private float uniqueStatVal;
+    private bool lerping;
 
     public GameObject Holo_prefab { get => holo_prefab; }
     public GameObject Build_prefab { get => build_prefab; }
@@ -69,7 +71,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         buttonColour = buttonBG.GetComponent<Image>().color;
         minCostVal = build_prefab.GetComponentInChildren<Building>().MineralCost;
         powCostVal = build_prefab.GetComponentInChildren<Building>().Upkeep;
-        
+
         switch (gameObject.name)
         {
             case "btn_arc_defence":
@@ -103,6 +105,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         if (button.interactable)
         {
+            // Update description text
             if (gameObject.name != "btn_generator")
             {
                 buildingDesc.text = $"<b>{buildingName}</b>\n" +
@@ -119,9 +122,18 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         }
         else if (gameObject.name == "btn_generator" && ResourceController.Instance.Generators.Count == ObjectiveController.Instance.GeneratorLimit)
         {
+            // Make it known player can't build more generators
             buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}\n" +
                 $"<line-height=80% size=65%>You have the max number of generators.";
         }
+
+
+        if (buttonHighlight.activeSelf)
+        {
+            buttonHighlight.SetActive(false);
+            lerping = true;
+        }
+
         buttonBG.DOSizeDelta(new Vector2(170, 170), 0.2f).OnComplete(
             delegate
             {
@@ -135,6 +147,14 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         buildingDesc.text = "";
         buildingCost.text = "";
         keyInfo.alpha = 0;
-        buttonBG.DOSizeDelta(new Vector2(75, 75), 0.2f);
+        buttonBG.DOSizeDelta(new Vector2(75, 75), 0.2f).OnComplete(
+            delegate
+            {
+                if (lerping)
+                {
+                    buttonHighlight.SetActive(true);
+                    lerping = false;
+                }
+            });
     }
 }
