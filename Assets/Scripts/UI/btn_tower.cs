@@ -65,7 +65,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         }
     }
 
-    private void Awake()
+    private void Start()
     {
         button = GetComponent<Button>();
         buttonColour = buttonBG.GetComponent<Image>().color;
@@ -89,6 +89,9 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             case "btn_harvester":
                 uniqueStatVal = 2;
                 uniqueStat.text = $"+{uniqueStatVal.ToString("F1")} <sprite=\"all_icons\" index=2>/s";
+                break;
+            case "btn_generator":
+                uniqueStat.text = $"{ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit} Built";
                 break;
         }
 
@@ -150,7 +153,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         buttonBG.DOSizeDelta(new Vector2(75, 75), 0.2f).OnComplete(
             delegate
             {
-                if (buttonHighlight != null && lerping)
+                if (lerping)
                 {
                     buttonHighlight.SetActive(true);
                     lerping = false;

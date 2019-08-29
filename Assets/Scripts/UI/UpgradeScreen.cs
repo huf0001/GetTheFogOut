@@ -1,8 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Switch;
 using UnityEngine.UI;
+using TMPro;
+
+[Serializable]
+public struct UpgradeCosts
+{
+    public TextMeshProUGUI textbox;
+    public Upgrade upgrade;
+}
 
 public class UpgradeScreen : MonoBehaviour
 {
@@ -15,10 +24,20 @@ public class UpgradeScreen : MonoBehaviour
     [SerializeField] private btn_tower harvesterButton;
     [SerializeField] private btn_tower mortarButton;
     [SerializeField] private btn_tower pulseDefenceButton;
+    [Header("Upgrade Costs")]
+    [SerializeField] private UpgradeCosts[] upgradeCosts;
 
     private Image buttonImg, lineImg, otherLineImg;
     private CanvasGroup canvas;
     private Button nextButton;
+
+    private void Start()
+    {
+        foreach (UpgradeCosts uc in upgradeCosts)
+        {
+            uc.textbox.text = $"<line-height=200%>{uc.upgrade.cost.ToString()} <size=200%><sprite=\"all_icons\" index=2>";
+        }
+    }
 
     public void PerformUpgrade(Upgrade upgrade)
     {
