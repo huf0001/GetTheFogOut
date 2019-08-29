@@ -128,7 +128,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         }
 
 
-        if (buttonHighlight.activeSelf)
+        if (buttonHighlight != null && buttonHighlight.activeSelf)
         {
             buttonHighlight.SetActive(false);
             lerping = true;
@@ -150,7 +150,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         buttonBG.DOSizeDelta(new Vector2(75, 75), 0.2f).OnComplete(
             delegate
             {
-                if (lerping)
+                if (buttonHighlight != null && lerping)
                 {
                     buttonHighlight.SetActive(true);
                     lerping = false;
