@@ -73,6 +73,7 @@ public class Fog : MonoBehaviour
     [SerializeField] private float maxFogSpheresCount;
     [SerializeField] private float fogGrowth;
     [SerializeField] private float fogSpillThreshold;
+    [SerializeField] private float fogSphereSpillMultiplier;
 
     [Header("Fog Strength Over Time")]
     [SerializeField] private float fogGrowthEasy;
@@ -556,6 +557,15 @@ public class Fog : MonoBehaviour
                 s.NavMeshAgent.destination = hubPosition;
             }
 
+            //Errors shouldn't occur for the above if statement, but if it can't assign it, the below should handle the fog sphere 
+            //that can't spawn, and re-pool it. If the logerror from s.NavMeshAgent.destination = hubPosition halts the game execution,
+            //going to the Console window and unselecting Error Pause will get around that. Not ideal, but it works.
+            if (s.NavMeshAgent.destination != hubPosition)
+            {
+                ReturnFogSphereToPool(s);
+                return;
+            }
+
             foreach (Renderer r in s.Renderers)
             {
                 r.material = fogSphereVisibleMaterial;
@@ -808,7 +818,7 @@ public class Fog : MonoBehaviour
                         break;
                     case FogSphereState.Spilling:
                         f.Move(fogSphereInterval * 0.5f);
-                        f.Spill(fogSphereInterval * fogGrowth * 2f);
+                        f.Spill(fogSphereInterval * fogGrowth * fogSphereSpillMultiplier);
                         break;
                     case FogSphereState.Attacking:
                         f.Attack(fogSphereInterval * fogGrowth);
