@@ -32,6 +32,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private float uniqueStatVal;
     private bool lerping;
 
+    public Button Button { get => button; set => button = value; }
     public GameObject Holo_prefab { get => holo_prefab; }
     public GameObject Build_prefab { get => build_prefab; }
     public BuildingType TowerType { get => towerType; }
@@ -67,7 +68,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void Start()
     {
-        button = GetComponent<Button>();
+        Button = GetComponent<Button>();
         buttonColour = buttonBG.GetComponent<Image>().color;
         minCostVal = build_prefab.GetComponentInChildren<Building>().MineralCost;
         powCostVal = build_prefab.GetComponentInChildren<Building>().Upkeep;
@@ -106,7 +107,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (button.interactable)
+        if (Button.interactable)
         {
             // Update description text
             if (gameObject.name != "btn_generator")
