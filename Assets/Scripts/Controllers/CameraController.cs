@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using DG.Tweening;
 
 public class CameraController : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class CameraController : MonoBehaviour
     private Vector3 move;
     private float zoomVal;
     private NewInputs inputs;
+    private Vector3 Home;
     private bool movementEnabled = false;
     private bool finishedOpeningCameraPan = false;
 
@@ -38,6 +40,7 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
+        Home = new Vector3(34.77f, 0.95f, 33.4f);
     }
 
     private void Start()
@@ -46,10 +49,11 @@ public class CameraController : MonoBehaviour
 
         inputs.InputMap.CameraPan.performed += ctx => move = ctx.ReadValue<Vector2>();
         inputs.InputMap.CameraPan.canceled += ctx => move = Vector2.zero;
-        inputs.InputMap.Zoom.performed += ctx => zoomVal = ctx.ReadValue<float>();
+        inputs.InputMap.Zoom.performed += ctx =>  zoomVal = ctx.ReadValue<float>();
         inputs.InputMap.Zoom.canceled += ctx => zoomVal = 0;
 
         myTransform = transform;
+
         zoom = FindObjectOfType<CinemachineFollowZoom>();
 
         if (runCameraPan)
@@ -72,7 +76,31 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         UpdateCameraMovement();
+        inputs.InputMap.CameraCenter.performed += ctx => transform.DOMove(Home, 0.3f);
         zoomVal = inputs.InputMap.Zoom.ReadValue<float>();
+    }
+
+    float panSpeed(float zoom)
+    {
+        float pan = dragSpeed;
+        zoom = Mathf.RoundToInt(zoom);
+
+        if (zoom <= 17)
+        {       
+            if (zoom > 13 && zoom < 17)
+            {
+                pan = dragSpeed * 0.4f;
+            }else if (zoom > 7 && zoom < 14)
+            {
+                pan = dragSpeed * 0.3f;
+            }
+            else if (zoom > 0 && zoom < 6)
+            {
+                pan = dragSpeed / 10;
+            }
+        }
+    //    Debug.Log("level zoom : " + zoom + "   speed: " + pan);
+        return pan;
     }
 
     void UpdateCameraMovement()
@@ -98,12 +126,27 @@ public class CameraController : MonoBehaviour
                 hasChanged = true;
             }
 
+            zoomVal = ZoomVal / 3f;
+            zoom.m_Width = Mathf.Lerp(zoom.m_Width, zoom.m_Width -= zoomVal * zoomMulti, 0.4f);
+
+            if (zoom.m_Width <= 4)
+            {
+                zoom.m_Width = 4;
+            }
+
+            if (zoom.m_Width > 22)
+            {
+                zoom.m_Width = 22;
+            }
+
             //Handle screen dragging if right click is held down
             if (Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)
             {
+              //  dragSpeed = panSpeed(zoom.m_Width);
+              //  Debug.Log(zoom.m_Width + "   f  " + dragSpeed);
                 //Right or middle mouse
-                float h = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
-                float v = dragSpeed * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;
+                float h = panSpeed(zoom.m_Width) * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
+                float v = panSpeed(zoom.m_Width) * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;
                 transform.Translate(h, 0, v, transform);
 
                 hasChanged = true;
@@ -115,8 +158,8 @@ public class CameraController : MonoBehaviour
             //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
             //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
 
-            zoom.m_Width -= zoomVal * zoomMulti;
-            zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
+            //  zoom.m_Width -= zoomVal * zoomMulti;
+            //   zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
             //}
 
             if (hasChanged)

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -55,6 +55,10 @@ public class WorldController : MonoBehaviour
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
+
+    public Upgrade hvstUpgradeLevel;
+    public Upgrade mortarUpgradeLevel;
+    public Upgrade pulseDefUpgradeLevel;
 
     //Non-Serialized Fields
     private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
@@ -666,7 +670,7 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.transform.position = cam.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(-Screen.width / 100, Screen.height / 25);
+        uiController.buildingSelector.transform.position = cam.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(12, 5);// + new Vector3(-Screen.width / 100, Screen.height / 25);
         UIController.instance.buildingSelector.CurrentTile = tile;
     }
 

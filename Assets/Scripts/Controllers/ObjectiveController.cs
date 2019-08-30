@@ -338,7 +338,6 @@ public class ObjectiveController : DialogueBoxController
             case 1:
                 //Survival countdown
                 Tick();
-
                 //Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
@@ -376,7 +375,7 @@ public class ObjectiveController : DialogueBoxController
             case 4:
                 //Survival countdown
                 Tick();
-
+                Hub.Instance.extinguishingFire(); // smoke for the hub
                 Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)

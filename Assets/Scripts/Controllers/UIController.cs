@@ -21,7 +21,7 @@ public class UIController : MonoBehaviour
 
     private GameObject cursor;
     private Slider powerSlider;
-    private int power = 0, powerChange = 0, mineral = 0;
+    private float power = 0, powerChange = 0, mineral = 0;
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
     private bool isCursorOn = false;
@@ -232,8 +232,8 @@ public class UIController : MonoBehaviour
 
     public void ShowLaunchButton()
     {
-        objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[2];
+        objectiveButtonBG.rectTransform.localScale = new Vector3(2, 2, 2);
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(objectiveButtonBG.DOFade(0.93f, 1))
@@ -246,7 +246,7 @@ public class UIController : MonoBehaviour
                 {
                     WinGame();
                 });
-                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+                launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 0.5f).SetLoops(-1, LoopType.Yoyo);
                 buttonClosed = false;
             });
     }
@@ -282,6 +282,7 @@ public class UIController : MonoBehaviour
     public void CloseButton()
     {
         DOTween.Kill(launchButtonImage);
+        launchButtonImage.color = new Color(1, 1, 1);
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
@@ -432,7 +433,7 @@ public class UIController : MonoBehaviour
 
             // update text values
             currentPowerValDisplayed = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime));
-            powerText.text =  currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange + " %/s</color>";
+            powerText.text =  currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange.ToString("F1") + " %/s</color>";
 
             if (currentPowerValDisplayed == 0)
             {
@@ -511,7 +512,7 @@ public class UIController : MonoBehaviour
                 mineralTime = 0;
             }
 
-            int mineralChange = resourceController.MineralChange;
+            float mineralChange = resourceController.MineralChange;
 
             if (mineralChange > 0)
             {

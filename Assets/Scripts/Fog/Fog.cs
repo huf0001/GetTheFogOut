@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Numerics;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Profiling;
 using UnityEngine.Serialization;
+using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 public enum FogExpansionDirection
 {
@@ -52,6 +57,10 @@ public class Fog : MonoBehaviour
     [SerializeField] private bool angry;
     [SerializeField] private bool damageOn;
 
+    [SerializeField] private Transform fogSphereInstantiationPoint;
+    [SerializeField] private GameObject fogSphereSpawnPointsParent;
+    [SerializeField] private bool validateFogSphereSpawnPoints;
+
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private Difficulty difficulty;
     [SerializeField] private FogExpansionDirection expansionDirection;
@@ -64,6 +73,7 @@ public class Fog : MonoBehaviour
     [SerializeField] private float maxFogSpheresCount;
     [SerializeField] private float fogGrowth;
     [SerializeField] private float fogSpillThreshold;
+    [SerializeField] private float fogSphereSpillMultiplier;
 
     [Header("Fog Strength Over Time")]
     [SerializeField] private float fogGrowthEasy;
@@ -102,6 +112,7 @@ public class Fog : MonoBehaviour
     private int intensity;
 
     private Vector3 hubPosition;
+    private List<Transform> fogSphereSpawnPoints;
 
     private float pauseTime;
 
@@ -109,7 +120,7 @@ public class Fog : MonoBehaviour
     private FogUnit[,]      fogUnits;                                               //i.e. all fog units being managed by the fog; effectively the pool of all fog units, pooled or in play
 
     private List<FogUnit>   fogUnitsInPlay = new List<FogUnit>();                   //i.e. currently active fog units on the board
-    private List<FogUnit>   borderFogUnitsInPlay = new List<FogUnit>();             //i.e. currently active fog units around the edge of the board
+    //private List<FogUnit>   borderFogUnitsInPlay = new List<FogUnit>();             //i.e. currently active fog units around the edge of the board
     private List<FogUnit>   fogUnitsToReturnToPool = new List<FogUnit>();           //i.e. currently waiting to be re-pooled
 
     private List<FogSphere> fogSpheresInPlay = new List<FogSphere>();               //i.e. currently active fog spheres on the board
@@ -205,6 +216,7 @@ public class Fog : MonoBehaviour
             Difficulty = (Difficulty)GlobalVars.Difficulty;
         }
 
+        fogSphereSpawnPoints = new List<Transform>(fogSphereSpawnPointsParent.GetComponentsInChildren<Transform>());
         SetDifficulty();
         Intensity = 1;  //Sets the intensity-derived values to the default of their "Easy" values.
     }
@@ -266,15 +278,6 @@ public class Fog : MonoBehaviour
             for (int j = 0; j < zCount; j++)
             {
                 CreateFogUnit(i, j);    //creates the fog unit, matches it up with tile (i, j) and assigns it to fogUnits[i, j]. Assigns null if tile already has a fog unit or there is no tile
-            }
-        }
-
-        //Populate fog sphere pool with fog spheres
-        if (fogSpheresInPool.Count == 0)
-        {
-            for (int i = 0; i < maxFogSpheresCount * 2; i++)
-            {
-                fogSpheresInPool.Add(CreateFogSphere());
             }
         }
 
@@ -365,6 +368,55 @@ public class Fog : MonoBehaviour
                 }
                 break;
         }
+
+        //Populate fog sphere pool with fog spheres
+        if (fogSpheresInPool.Count == 0)
+        {
+            for (int i = 0; i < maxFogSpheresCount * 2; i++)
+            {
+                fogSpheresInPool.Add(CreateFogSphere());
+            }
+        }
+
+        //Check if fog sphere spawn points are okay
+        if (validateFogSphereSpawnPoints)
+        {
+            foreach (Transform sp in fogSphereSpawnPoints)
+            {
+                Vector3 pos = sp.position;
+                Debug.Log($"Checking fog sphere spawn point at {pos}.");
+
+                if (!WorldController.Instance.TileExistsAt(pos))
+                {
+                    Debug.Log($"Cannot have a fog sphere spawn point at {pos}; there's no tile there.");
+                    continue;
+                }
+
+                TileData t = WorldController.Instance.GetTileAt(sp.position);
+
+                if (t.buildingChecks.obstacle)
+                {
+                    Debug.Log($"Cannot have a fog sphere spawn point at {pos}; the tile there is an obstacle.");
+                    continue;
+                }
+                else if (t.FogUnit == null)
+                {
+                    Debug.Log(
+                        $"Cannot have a fog sphere spawn point at {pos}; the fog unit for the corresponding tile is null.");
+                    continue;
+                }
+
+                FogSphere s = GetFogSphere();
+                pos = t.FogUnit.transform.position;
+                pos.y = hubPosition.y;
+                s.NavMeshAgent.enabled = true;
+                s.NavMeshAgent.Warp(pos);
+                s.NavMeshAgent.destination = hubPosition;
+
+                Debug.Log($"Fog sphere spawn point at {sp.position} is okay.");
+                ReturnFogSphereToPool(s);
+            }
+        }
     }
 
     //Spawning Methods - Fog Units-------------------------------------------------------------------------------------------------------------------
@@ -442,12 +494,10 @@ public class Fog : MonoBehaviour
 
             f.playLightning();
 
-            //fogCoveredTiles.Add(t);
-
-            if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
-            {
-                borderFogUnitsInPlay.Add(f);
-            }
+            //if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
+            //{
+            //    borderFogUnitsInPlay.Add(f);
+            //}
         }
         else if (f.ActiveOnTile)
         {
@@ -460,7 +510,7 @@ public class Fog : MonoBehaviour
     //Instantiates a fog sphere that isn't on the board or in the pool
     private FogSphere CreateFogSphere()
     {
-        FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, transform, true);
+        FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, fogSphereInstantiationPoint, true);
         f.transform.position = transform.position;
         f.State = FogSphereState.None;
         f.Fog = this;
@@ -488,17 +538,33 @@ public class Fog : MonoBehaviour
 
     //Takes a fog unit and puts it on the board
     private void SpawnFogSphere()
-    {
+    { 
         FogUnit u = GetBorderFogUnit();
 
         if (u != null)
         {
             FogSphere s = GetFogSphere();
             GameObject o = s.gameObject;
-            Vector3 pos = u.transform.position;
-            pos.y = s.Height;
-            o.transform.position = pos;
             o.name = "FogSphereInPlay";
+
+            Vector3 pos = u.transform.position;
+            pos.y = hubPosition.y;
+            s.NavMeshAgent.enabled = true;
+            s.NavMeshAgent.Warp(pos);
+
+            if (s.NavMeshAgent.destination != hubPosition)
+            {
+                s.NavMeshAgent.destination = hubPosition;
+            }
+
+            //Errors shouldn't occur for the above if statement, but if it can't assign it, the below should handle the fog sphere 
+            //that can't spawn, and re-pool it. If the logerror from s.NavMeshAgent.destination = hubPosition halts the game execution,
+            //going to the Console window and unselecting Error Pause will get around that. Not ideal, but it works.
+            if (s.NavMeshAgent.destination != hubPosition)
+            {
+                ReturnFogSphereToPool(s);
+                return;
+            }
 
             foreach (Renderer r in s.Renderers)
             {
@@ -522,18 +588,32 @@ public class Fog : MonoBehaviour
 
     //Gets a random fog unit at the edge of the board
     private FogUnit GetBorderFogUnit()
-    {        
-        FogUnit f = null;
-        List<FogUnit> validBorderFogUnits = new List<FogUnit>(borderFogUnitsInPlay);
+    {
+        //List<FogUnit> validBorderFogUnits = new List<FogUnit>(borderFogUnitsInPlay);
+        List<Transform> validSpawnPoints = new List<Transform>(fogSphereSpawnPoints);
 
-        while (validBorderFogUnits.Count > 0)
+        while (validSpawnPoints.Count > 0)
         {
             bool valid = true;
-            f = validBorderFogUnits[Random.Range(0, validBorderFogUnits.Count - 1)];
+            Transform sp = validSpawnPoints[Random.Range(0, validSpawnPoints.Count - 1)];
 
-            foreach (TileData t in f.Location.AdjacentTiles)
+            if (!WorldController.Instance.TileExistsAt(sp.position))
             {
-                if (!t.FogUnitActive)
+                validSpawnPoints.Remove(sp);
+                continue;
+            }
+
+            TileData t = WorldController.Instance.GetTileAt(sp.position);
+
+            if (t.FogUnit == null || !t.FogUnitActive)
+            {
+                validSpawnPoints.Remove(sp);
+                continue;
+            }
+
+            foreach (TileData a in t.AdjacentTiles)
+            {
+                if (!a.FogUnitActive)
                 {
                     valid = false;
                     break;
@@ -542,16 +622,15 @@ public class Fog : MonoBehaviour
 
             if (valid)
             {
-                return f;
+                return t.FogUnit;
             }
             else
             {
-                validBorderFogUnits.Remove(f);
-                f = null;
+                validSpawnPoints.Remove(sp);
             }            
         }
 
-        return f;
+        return null;
     }
 
     //Activating the Fog-----------------------------------------------------------------------------------------------------------------------------
@@ -739,7 +818,7 @@ public class Fog : MonoBehaviour
                         break;
                     case FogSphereState.Spilling:
                         f.Move(fogSphereInterval * 0.5f);
-                        f.Spill(fogSphereInterval * fogGrowth * 2f);
+                        f.Spill(fogSphereInterval * fogGrowth * fogSphereSpillMultiplier);
                         break;
                     case FogSphereState.Attacking:
                         f.Attack(fogSphereInterval * fogGrowth);
@@ -772,7 +851,6 @@ public class Fog : MonoBehaviour
         fogUnitsToReturnToPool.Add(f);
     }
 
-    //TODO: double check everything in here is doing what it should be
     //Takes the fog unit off the board and puts it back in the pool
     private void ReturnFogUnitToPool(FogUnit f)
     {
@@ -780,10 +858,10 @@ public class Fog : MonoBehaviour
         f.Location.FogUnitActive = false;
         f.name = $"{f.name} (In Pool)";
 
-        if (borderFogUnitsInPlay.Contains(f))
-        {
-            borderFogUnitsInPlay.Remove(f);
-        }
+        //if (borderFogUnitsInPlay.Contains(f))
+        //{
+        //    borderFogUnitsInPlay.Remove(f);
+        //}
 
         foreach (TileData t in f.Location.AdjacentTiles)
         {
@@ -837,6 +915,7 @@ public class Fog : MonoBehaviour
         f.SpiltFog.Clear();
         fogSpheresInPool.Add(f);
         fogSpheresInPlay.Remove(f);
+        f.NavMeshAgent.enabled = false;
     }
 
     //Fog Freezing Methods---------------------------------------------------------------------------------------------------------------------------

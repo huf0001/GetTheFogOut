@@ -13,7 +13,7 @@ public abstract class Building : Entity
     //Serialized fields
     [SerializeField] protected float shield;
     [SerializeField] protected float visibilityRange;
-    [SerializeField] protected int upkeep;
+    [SerializeField] protected float upkeep;
     [SerializeField] protected PowerSource powerSource = null;
     [SerializeField] protected bool powered = false;
     [SerializeField] protected bool placed = false;
@@ -51,7 +51,7 @@ public abstract class Building : Entity
     private float ShieldCheck = 50f;
     //Public properties
     //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
-    public int Upkeep { get => upkeep; }
+    public float Upkeep { get => upkeep; }
     public BuildingType BuildingType { get => buildingType; }
     public Animator Animator { get => animator; set => animator = value; }
     public bool Powered { get => powered; }
@@ -520,7 +520,7 @@ public abstract class Building : Entity
                     damIndScript = damInd.GetComponent<DamageIndicator>();
                 }
                 else damIndScript.On = true;
-                damInd.GetComponent<DamageIndicator>().Building = this;
+                damInd.GetComponent<DamageIndicator>().Locatable = this;
             }
             
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);

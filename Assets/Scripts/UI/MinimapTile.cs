@@ -54,14 +54,6 @@ public class MinimapTile : MonoBehaviour
                 curColour = buildingTile;
             }
         }
-        else if (!Tile.PowerSource)
-        {
-            if (curColour != unpoweredTile)
-            {
-                mat.SetColor("_BaseColor", unpoweredTile);
-                curColour = unpoweredTile;
-            }
-        }
         else if (Tile.Resource)
         {
             if (curColour != mineralTile)
@@ -70,12 +62,25 @@ public class MinimapTile : MonoBehaviour
                 curColour = mineralTile;
             }
         }
+        else if (!Tile.PowerSource)
+        {
+            if (curColour != unpoweredTile)
+            {
+                mat.SetColor("_BaseColor", unpoweredTile);
+                curColour = unpoweredTile;
+            }
+        }
         else if (Tile.Collectible)
         {
             if (curColour != collectableTile)
             {
                 mat.SetColor("_BaseColor", collectableTile);
                 curColour = collectableTile;
+            }
+            else
+            {
+                mat.SetColor("_BaseColor", poweredTile);
+                curColour = poweredTile;
             }
         }
         else if (Tile.PowerSource)
