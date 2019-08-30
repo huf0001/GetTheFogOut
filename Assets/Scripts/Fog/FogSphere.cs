@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum FogSphereState
 {
@@ -26,6 +27,7 @@ public class FogSphere : MonoBehaviour
 
     [Header("Movement")]
     //[SerializeField] private float minHeight;
+    [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private float height;
     [SerializeField] private float minMovementSpeed;
     [SerializeField] private float maxMovementSpeed;
@@ -97,6 +99,7 @@ public class FogSphere : MonoBehaviour
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
     public float MaxSizeScale { get => maxSizeScale; set => maxSizeScale = value; }
     public float MinSizeScale { get => minSizeScale; set => minSizeScale = value; }
+    public NavMeshAgent NavMeshAgent { get => navMeshAgent; }
     public List<Renderer> Renderers {  get => renderers; }
     public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
@@ -148,6 +151,8 @@ public class FogSphere : MonoBehaviour
         startHealth = health;
         targetHealth = health;
         currentColours = docileColours;
+
+        //TODO: update movement values of nav mesh agent, rather than fog sphere
     }
 
     //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
@@ -177,7 +182,7 @@ public class FogSphere : MonoBehaviour
         }
     }
 
-    //Moves the fog sphere towards the hub
+    //Moves the fog sphere towards the hub --> with navMeshAgent, updates the speed and checks conditions for transitioning to other states.
     public void Move(float interval)
     {
         if (state == FogSphereState.Spilling)
@@ -196,7 +201,8 @@ public class FogSphere : MonoBehaviour
         }
 
         hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateSize()
-        transform.position = Vector3.MoveTowards(transform.position, hubPosition, currentMovementSpeed * interval);
+        //transform.position = Vector3.MoveTowards(transform.position, hubPosition, currentMovementSpeed * interval);
+        navMeshAgent.speed = currentMovementSpeed;
         
         if (transform.position == hubPosition)
         {
@@ -227,9 +233,12 @@ public class FogSphere : MonoBehaviour
             {
                 TileData t = wc.GetTileAt(transform.position);
 
-                if (!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f)
+                if (!t.buildingChecks.obstacle)
                 {
-                    return true;
+                    if (!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f)
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -243,9 +252,12 @@ public class FogSphere : MonoBehaviour
                     {
                         TileData t = wc.GetTileAt(i, j);
 
-                        if ((!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                        if (!t.buildingChecks.obstacle)
                         {
-                            return true;
+                            if ((!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth * 0.5f) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -277,14 +289,17 @@ public class FogSphere : MonoBehaviour
                 {
                     TileData t = wc.GetTileAt(transform.position);
 
-                    if (!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth)
+                    if (!t.buildingChecks.obstacle)
                     {
-                        if (!t.FogUnitActive)
+                        if (!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth)
                         {
-                            fog.SpawnFogUnitWithMinHealthOnTile(t);
-                        }
+                            if (!t.FogUnitActive)
+                            {
+                                fog.SpawnFogUnitWithMinHealthOnTile(t);
+                            }
 
-                        spiltFog.Add(t.FogUnit);
+                            spiltFog.Add(t.FogUnit);
+                        }
                     }
                 }
             }
@@ -298,14 +313,17 @@ public class FogSphere : MonoBehaviour
                         {
                             TileData t = wc.GetTileAt(i, j);
 
-                            if ((!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
+                            if (!t.buildingChecks.obstacle)
                             {
-                                if (!t.FogUnitActive)
+                                if ((!t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth) && Vector3.Distance(transform.position, new Vector3(i, transform.position.y, j)) < radius)
                                 {
-                                    fog.SpawnFogUnitWithMinHealthOnTile(t);
-                                }
+                                    if (!t.FogUnitActive)
+                                    {
+                                        fog.SpawnFogUnitWithMinHealthOnTile(t);
+                                    }
 
-                                spiltFog.Add(t.FogUnit);
+                                    spiltFog.Add(t.FogUnit);
+                                }
                             }
                         }
                     }
@@ -373,14 +391,17 @@ public class FogSphere : MonoBehaviour
         {
             foreach (TileData t in f.Location.AdjacentTiles)
             {
-                if (!t.FogUnitActive || (t.FogUnit.Health < t.FogUnit.MaxHealth && !newFog.Contains(t.FogUnit) && !spiltFog.Contains(t.FogUnit)))
+                if (!t.buildingChecks.obstacle)
                 {
-                    if (!t.FogUnitActive)
+                    if (!t.FogUnitActive || (t.FogUnit.Health < t.FogUnit.MaxHealth && !newFog.Contains(t.FogUnit) && !spiltFog.Contains(t.FogUnit)))
                     {
-                        fog.SpawnFogUnitWithMinHealthOnTile(t);
+                        if (!t.FogUnitActive)
+                        {
+                            fog.SpawnFogUnitWithMinHealthOnTile(t);
+                        }
+                        
+                        newFog.Add(t.FogUnit);
                     }
-                    
-                    newFog.Add(t.FogUnit);
                 }
             }
         }
@@ -508,6 +529,7 @@ public class FogSphere : MonoBehaviour
     {
         float scale = Mathf.Lerp(minSizeScale, maxSizeScale, Mathf.Min(health / maxHealth, 1));
         transform.localScale = new Vector3(scale, scale, scale);
+        navMeshAgent.radius = renderers[0].bounds.extents.magnitude * 0.5f;
     }
 
     //Triggered/Utility Methods - Other--------------------------------------------------------------------------------------------------------------

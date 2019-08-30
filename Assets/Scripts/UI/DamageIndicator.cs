@@ -63,7 +63,7 @@ public class DamageIndicator : MonoBehaviour
         {
             Vector3 lookAtPos = Camera.main.WorldToScreenPoint(/*Locatable ? Locatable.transform.position : */Locatable.transform.position);
 
-            if (!screen.Contains(lookAtPos))
+            if (!screen.Contains(lookAtPos) || Locatable as Building)
             {
                 rectTransform.position = lookAtPos;
                 Vector3 newPos = rectTransform.anchoredPosition;

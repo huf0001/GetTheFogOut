@@ -269,6 +269,8 @@ public class FogUnit : Entity
         }
     }
 
+    //Fog Lightning Methods--------------------------------------------------------------------------------------------------------------------------
+
     private void spawnLightning()
     {
             if (!Lightning)

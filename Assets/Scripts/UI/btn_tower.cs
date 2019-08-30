@@ -32,6 +32,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private float uniqueStatVal;
     private bool lerping;
 
+    public Button Button { get => button; set => button = value; }
     public GameObject Holo_prefab { get => holo_prefab; }
     public GameObject Build_prefab { get => build_prefab; }
     public BuildingType TowerType { get => towerType; }
@@ -67,7 +68,9 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void Start()
     {
-        button = GetComponent<Button>();
+        if (gameObject.name == "btn_remove") return;
+        Button = GetComponent<Button>();
+
         buttonColour = buttonBG.GetComponent<Image>().color;
         minCostVal = build_prefab.GetComponentInChildren<Building>().MineralCost;
         powCostVal = build_prefab.GetComponentInChildren<Building>().Upkeep;
@@ -106,58 +109,69 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (button.interactable)
+        if (gameObject.name != "btn_remove")
         {
-            // Update description text
-            if (gameObject.name != "btn_generator")
+            if (Button.interactable)
             {
-                buildingDesc.text = $"<b>{buildingName}</b>\n" +
-                    "<line-height=80% size=65%>" + descText;
+                // Update description text
+                if (gameObject.name != "btn_generator")
+                {
+                    buildingDesc.text = $"<b>{buildingName}</b>   {powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
+                        "<line-height=80% size=65%>" + descText;
+                }
+                else
+                {
+                    buildingDesc.text = $"<b>{buildingName}</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
+                        "<line-height=80% size=65%>" + descText;
+                    uniqueStat.text = $"{ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit} Built";
+                }
+
+                buildingCost.text = $"{minCostVal} <sprite=\"all_icons\" index=2>";
+            }
+            else if (gameObject.name == "btn_generator" && ResourceController.Instance.Generators.Count == ObjectiveController.Instance.GeneratorLimit)
+            {
+                // Make it known player can't build more generators
+                buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
+                    $"<line-height=80% size=65%>You have the max number of generators.";
             }
             else
             {
-                buildingDesc.text = $"<b>{buildingName}</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
-                    "<line-height=80% size=65%>" + descText;
-                uniqueStat.text = $"{ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit} Built";
+                buildingDesc.text = $"<b>{buildingName}</b>   {powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
+                        "<line-height=80% size=65%>This building cannot be placed here";
             }
 
-            buildingCost.text = $"{minCostVal} <sprite=\"all_icons\" index=2>";
-        }
-        else if (gameObject.name == "btn_generator" && ResourceController.Instance.Generators.Count == ObjectiveController.Instance.GeneratorLimit)
-        {
-            // Make it known player can't build more generators
-            buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}\n" +
-                $"<line-height=80% size=65%>You have the max number of generators.";
-        }
 
-
-        if (buttonHighlight != null && buttonHighlight.activeSelf)
-        {
-            buttonHighlight.SetActive(false);
-            lerping = true;
-        }
-
-        buttonBG.DOSizeDelta(new Vector2(170, 170), 0.2f).OnComplete(
-            delegate
+            if (buttonHighlight != null && buttonHighlight.activeSelf)
             {
-                keyInfo.alpha = 1;
-            });
+                buttonHighlight.SetActive(false);
+                lerping = true;
+            }
+
+            buttonBG.DOSizeDelta(new Vector2(170, 170), 0.2f).OnComplete(
+                delegate
+                {
+                    keyInfo.alpha = 1;
+                }); 
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        DOTween.Kill(buttonBG);
-        buildingDesc.text = "";
-        buildingCost.text = "";
-        keyInfo.alpha = 0;
-        buttonBG.DOSizeDelta(new Vector2(75, 75), 0.2f).OnComplete(
-            delegate
-            {
-                if (lerping)
+        if (gameObject.name != "btn_remove")
+        {
+            DOTween.Kill(buttonBG);
+            buildingDesc.text = "";
+            buildingCost.text = "";
+            keyInfo.alpha = 0;
+            buttonBG.DOSizeDelta(new Vector2(75, 75), 0.2f).OnComplete(
+                delegate
                 {
-                    buttonHighlight.SetActive(true);
-                    lerping = false;
-                }
-            });
+                    if (lerping)
+                    {
+                        buttonHighlight.SetActive(true);
+                        lerping = false;
+                    }
+                }); 
+        }
     }
 }

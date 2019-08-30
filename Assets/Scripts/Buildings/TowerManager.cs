@@ -69,7 +69,7 @@ public class TowerManager : MonoBehaviour
     {
         GameObject TowerToSpawn;
 
-        if (currentTile != null)
+        if (currentTile != null && tower.Button.interactable)
         {
             int x = Mathf.RoundToInt(currentTile.X);
             int y = Mathf.RoundToInt(currentTile.Z);
