@@ -13,33 +13,14 @@ public class MusicFMOD : MonoBehaviour
 
     private static MusicFMOD _instance;
 
+    public static MusicFMOD Instance { get { return _instance; } }
+
     // Start is called before the first frame update
     void Start()
     {
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            Debug.Log("Start MusicFMOD");
-            _instance = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-            Debug.Log("Instance: " + (_instance != null) + " This: " + (_instance != this));
-            if (_instance != null && _instance != this)
-            {
-                Debug.Log("Instance not null. This Not Instance.");
-                Destroy(gameObject);
-                return;
-            }
-            else
-            {
-                Debug.Log("This becomes the Instance.");
-                _instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-        }
-        else
-        {
-            Instantiate(gameObject);
-            gameObject.name = "MusicFMOD";
-            DontDestroyOnLoad(gameObject);
-        }
+        Instantiate(gameObject);
+        gameObject.name = "MusicFMOD";
+        DontDestroyOnLoad(gameObject);
 
         musicEvent = FMODUnity.RuntimeManager.CreateInstance(music);
 
@@ -74,6 +55,25 @@ public class MusicFMOD : MonoBehaviour
         lose = loseParamDesc.id;
         win = winParamDesc.id;
         outro = outroParamDesc.id;
+    }
+
+    void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            _instance = this;
+            musicEvent.setParameterByID(stageOne, 0f);
+            musicEvent.setParameterByID(stageTwo, 0f);
+            musicEvent.setParameterByID(stageThree, 0f);
+            musicEvent.setParameterByID(lose, 0f);
+            musicEvent.setParameterByID(win, 0f);
+            musicEvent.setParameterByID(outro, 0f);
+        }
     }
 
     // Player begins the game from Menu, onto Stage 1 of Game. Will start here on Prototype Milestone 2 scene.
