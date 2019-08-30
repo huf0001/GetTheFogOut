@@ -27,6 +27,7 @@ public class MouseController : MonoBehaviour
     public bool isBuildAvaliable = true;
     private bool hovertoggle = true;
     private Camera cam;
+    private Keyboard kb;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -58,12 +59,26 @@ public class MouseController : MonoBehaviour
         floatingTextController = GetComponent<FloatingTextController>();
         tutorialController = GetComponent<TutorialController>();
         cam = Camera.main;
+        kb = InputSystem.GetDevice<Keyboard>();
     }
 
     // Update is called once per frame
     void Update()
     {
         selectedTile();
+        checkforDeleteKey();
+    }
+
+    void checkforDeleteKey()
+    {
+        if (UIController.instance.buildingInfo.Visible)
+        {
+            if (kb.deleteKey.wasPressedThisFrame)
+            {
+                Building removeBuilding = ReturnCost(towerManager.CurrentTile);
+                RemoveBulding(removeBuilding);
+            }
+        }
     }
 
     void UpdateHoveredTile(bool toggle)
