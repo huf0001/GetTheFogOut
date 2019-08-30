@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 
 [Serializable]
-public struct UpgradeCosts
+internal struct UpgradeCost
 {
     public TextMeshProUGUI textbox;
     public Upgrade upgrade;
@@ -25,7 +25,7 @@ public class UpgradeScreen : MonoBehaviour
     [SerializeField] private btn_tower mortarButton;
     [SerializeField] private btn_tower pulseDefenceButton;
     [Header("Upgrade Costs")]
-    [SerializeField] private UpgradeCosts[] upgradeCosts;
+    [SerializeField] private UpgradeCost[] upgradeCosts;
 
     private Image buttonImg, lineImg, otherLineImg;
     private CanvasGroup canvas;
@@ -33,7 +33,7 @@ public class UpgradeScreen : MonoBehaviour
 
     private void Start()
     {
-        foreach (UpgradeCosts uc in upgradeCosts)
+        foreach (UpgradeCost uc in upgradeCosts)
         {
             uc.textbox.text = $"<line-height=200%>{uc.upgrade.cost.ToString()} <size=200%><sprite=\"all_icons\" index=2>";
         }
