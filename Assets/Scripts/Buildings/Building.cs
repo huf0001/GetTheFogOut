@@ -518,9 +518,10 @@ public abstract class Building : Entity
                 {
                     damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
                     damIndScript = damInd.GetComponent<DamageIndicator>();
+                    damInd.GetComponent<RectTransform>().sizeDelta = damInd.GetComponent<RectTransform>().sizeDelta * new Vector2(2, 2);
                 }
                 else damIndScript.On = true;
-                damInd.GetComponent<DamageIndicator>().Locatable = this;
+                damIndScript.Locatable = this;
             }
             
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
