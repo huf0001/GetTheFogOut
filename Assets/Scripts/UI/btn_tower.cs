@@ -111,7 +111,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             // Update description text
             if (gameObject.name != "btn_generator")
             {
-                buildingDesc.text = $"<b>{buildingName}</b>\n" +
+                buildingDesc.text = $"<b>{buildingName}</b>   {powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
                     "<line-height=80% size=65%>" + descText;
             }
             else
@@ -126,8 +126,13 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         else if (gameObject.name == "btn_generator" && ResourceController.Instance.Generators.Count == ObjectiveController.Instance.GeneratorLimit)
         {
             // Make it known player can't build more generators
-            buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}\n" +
+            buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
                 $"<line-height=80% size=65%>You have the max number of generators.";
+        }
+        else
+        {
+            buildingDesc.text = $"<b>{buildingName}</b>   {powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
+                    "<line-height=80% size=65%>This building cannot be placed here";
         }
 
 
