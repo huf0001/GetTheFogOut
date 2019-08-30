@@ -56,7 +56,6 @@ public class GamepadController : MonoBehaviour
     private static Vector2 previousMousePosition;
 
     //private FastLineRendererProperties propsFLR;
-    private float cursorThickness = 0.5f;
     private float cursorSize = 1.0f;
     private float joystickTraverseScreenSecs = 2.0f;
     private float joystickPixelsPerSec;

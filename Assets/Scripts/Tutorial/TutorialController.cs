@@ -157,7 +157,7 @@ public class TutorialController : DialogueBoxController
     private bool lerpUIScalingTarget = false;
     private Image currentUILerpFocus;
     private float uiMinLerp;
-    private float uiMaxLerp;
+    //private float uiMaxLerp;
     
     private bool lerpUIColourTarget = false;
     private Image uiColourLerpTarget = null;
@@ -2046,7 +2046,7 @@ public class TutorialController : DialogueBoxController
         UpdateUIScalingLerpTargetColour(Color.clear);
 
         uiMinLerp = 1;
-        uiMaxLerp = 1;
+        //uiMaxLerp = 1;
     }
 
     //Tutorial Utility Methods - UI Lerp Value Updating----------------------------------------------------------------------------------------------

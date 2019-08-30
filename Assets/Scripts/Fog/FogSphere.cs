@@ -71,7 +71,7 @@ public class FogSphere : MonoBehaviour
     private float healthProgress = 0;
     private float startHealth;
     private float targetHealth;
-    private float damageLerpProgress = 0;
+    //private float damageLerpProgress = 0;
 
     private TileData spawningTile;
     private Vector3 startPosition;

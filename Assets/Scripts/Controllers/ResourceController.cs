@@ -24,8 +24,6 @@ public class ResourceController : MonoBehaviour
 
     //Non-serialized fields
     private Hub hub = null;
-    private bool powerFull = false;
-    private bool mineralFull = false;
 
     private List<Building> buildings = new List<Building>();
 
@@ -324,7 +322,6 @@ public class ResourceController : MonoBehaviour
         if (storedPower >= maxPower)
         {
             storedPower = maxPower;
-            powerFull = true;
             // if (!maxPowPlayed)
             // {
             //     audioMaxPower.Play();
@@ -333,7 +330,6 @@ public class ResourceController : MonoBehaviour
         }
         else
         {
-            powerFull = false;
             // maxPowPlayed = false;
 
             if (storedPower < 0)
@@ -345,7 +341,6 @@ public class ResourceController : MonoBehaviour
         if (storedMineral >= maxMineral)
         {
             storedMineral = maxMineral;
-            mineralFull = true;
             // if (!maxMinPlayed)
             // {
             //     audioMaxMineral.Play();
@@ -354,7 +349,6 @@ public class ResourceController : MonoBehaviour
         }
         else
         {
-            mineralFull = false;
             // maxMinPlayed = false;
 
             if (storedMineral < 0)

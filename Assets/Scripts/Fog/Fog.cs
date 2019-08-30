@@ -105,7 +105,6 @@ public class Fog : MonoBehaviour
     private int xMax;
     private int zMax;
 
-    private bool fogActive = true;
     private float fogDamage;
     private float fogSphereMaxHealth;
     private float fogSphereMaxSizeScale;

@@ -10,8 +10,8 @@ public class MouseController : MonoBehaviour
     // Fields -------------------------------------------------------------------
 
     // Serialized fields
-    [SerializeField] private int generatorCount = 0;
-    [SerializeField] private int generatorInterval = 5;
+    //[SerializeField] private int generatorCount = 0;
+    //[SerializeField] private int generatorInterval = 5;
     //[SerializeField] private WarningScript warningScript;
 
     // Non-serialized fields
@@ -136,17 +136,24 @@ public class MouseController : MonoBehaviour
         }
         else
         {
-            if (towerManager.CurrentTile.plane)
+            if (towerManager.CurrentTile != null)
             {
-                changeTileMaterial(WorldController.Instance.normalTile);
-
-                if ((!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile)))
+                if (towerManager.CurrentTile.plane)
                 {
-                    Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
-                    newColor.a = 0.8f;
-                    towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
+                    changeTileMaterial(WorldController.Instance.normalTile);
+
+                    if ((!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile)))
+                    {
+                        Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
+                        newColor.a = 0.8f;
+                        towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
+                    }
+                    hoveredTile = towerManager.CurrentTile;
                 }
-                hoveredTile = towerManager.CurrentTile;
+            }
+            else
+            {
+                towerManager.CurrentTile = hoveredTile;
             }
         }
     }

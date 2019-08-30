@@ -8,6 +8,7 @@ namespace Abilities
     public class Overclock : Ability
     {
         private float timer;
+        private ParticleSystem pSystem;
         
         public override void TriggerAbility(TileData tile)
         {
@@ -16,6 +17,9 @@ namespace Abilities
             {
                 if (t.Building)
                 {
+                    pSystem = t.Building.GetComponent<ParticleSystem>();
+                    var main = pSystem.main;
+
                     t.Building.IsOverclockOn = true;
                     
                     Renderer[] renderers = t.Building.GetComponentsInChildren<Renderer>();
@@ -27,8 +31,8 @@ namespace Abilities
                     switch (t.Building.BuildingType)
                     {
                         case BuildingType.Harvester:
-                            t.Building.GetComponentInChildren<ParticleSystem>().startSpeed = 8f;
-                            t.Building.GetComponentInChildren<ParticleSystem>().startLifetime = 1.25f;
+                            main.startSpeed = 8f;
+                            main.startLifetime = 1.25f;
 
                             break;
                         case BuildingType.FogRepeller:
@@ -46,7 +50,10 @@ namespace Abilities
         private IEnumerator TurnOffOverclock(Building b)
         {
             b.overclockTimer = duration;
-            
+
+            pSystem = b.GetComponent<ParticleSystem>();
+            var main = pSystem.main;
+
             while (b.overclockTimer > 0)
             {
                 b.overclockTimer -= Time.deltaTime;
@@ -63,8 +70,8 @@ namespace Abilities
             switch (b.BuildingType)
             {
                 case BuildingType.Harvester:
-                    b.GetComponentInChildren<ParticleSystem>().startSpeed = 2f;
-                    b.GetComponentInChildren<ParticleSystem>().startLifetime = 5f;
+                    main.startSpeed = 2f;
+                    main.startLifetime = 5f;
 
                     break;
                 case BuildingType.FogRepeller:
