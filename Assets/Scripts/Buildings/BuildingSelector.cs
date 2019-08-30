@@ -59,11 +59,12 @@ public class BuildingSelector : MonoBehaviour
     private void OpenMenu()
     {
         visible = true;
-        selectParent.alpha = 1;
+        
         DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).SetEase(Ease.OutBack).OnComplete(delegate
             {
                 selectParent.interactable = true;
                 selectParent.blocksRaycasts = true;
+                selectParent.alpha = 1;
             });
     }
 
