@@ -47,7 +47,7 @@ public class TowerManager : MonoBehaviour
 
                         currentTile.PlacedTower = toBuild;
                         selectedTower = null;
-                        Destroy(hologramTower);
+                        if (ResourceController.Instance.StoredMineral > b.MineralCost) Destroy(hologramTower);
                         MouseController.Instance.Build(currentTile.PlacedTower, currentTile, 0f);
                     }
                 }

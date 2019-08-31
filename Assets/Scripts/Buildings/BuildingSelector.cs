@@ -42,18 +42,6 @@ public class BuildingSelector : MonoBehaviour
     {
         if (visible) CloseMenu();
         else OpenMenu();
-
-        //gameObject.SetActive(!gameObject.activeSelf);
-        //visible = !visible;
-
-        //    if (visible)
-        //   {
-        //      freezeCam(0f, 0f);
-        //  }
-        // else
-        //     freezeCam(0.4f, 0.4f);
-
-        //buildingDesc.gameObject.SetActive(!buildingDesc.gameObject.activeSelf);
     }
 
     private void OpenMenu()
@@ -71,15 +59,6 @@ public class BuildingSelector : MonoBehaviour
 
     private void CloseMenu()
     {
-        //btnTutorial[] buttons = GetComponentsInChildren<btnTutorial>();
-
-        //foreach (btnTutorial b in buttons)
-        //{
-        //    if (b.Lerping)
-        //    {
-        //        b.DeactivateLerping();
-        //    }
-        //}
         DOTween.Kill("BuildMenu");
         visible = false;
         selectParent.interactable = false;

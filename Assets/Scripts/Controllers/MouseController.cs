@@ -341,6 +341,7 @@ public class MouseController : MonoBehaviour
                 //Tell the building to do things it should do when placed
                 building.Place();
                 changeTileMaterial(WorldController.Instance.normalTile);
+                UIController.instance.buildingSelector.ToggleVisibility();
                 StartCoroutine(FloatText(buildingGo.transform, -building.MineralCost));
             }
             else
