@@ -518,13 +518,16 @@ public abstract class Building : Entity
                 {
                     damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
                     damIndScript = damInd.GetComponent<DamageIndicator>();
-                    damInd.GetComponent<RectTransform>().sizeDelta = damInd.GetComponent<RectTransform>().sizeDelta * new Vector2(2, 2);
+
+                    RectTransform rect = damInd.GetComponent<RectTransform>();
+                    rect.sizeDelta = rect.sizeDelta * new Vector2(1.5f, 1.5f);
+                    damInd.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localPosition -= new Vector3(30, 0);
                 }
                 else damIndScript.On = true;
                 damIndScript.Locatable = this;
             }
             
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", transform.position);
             damagingNotified = true;
         }
     }

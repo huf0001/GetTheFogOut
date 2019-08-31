@@ -61,23 +61,37 @@ public class DamageIndicator : MonoBehaviour
         {
             Vector3 lookAtPos = Camera.main.WorldToScreenPoint(Locatable.transform.position);
 
-            if (!screen.Contains(lookAtPos) || Locatable as Building)
+            if (!screen.Contains(lookAtPos))
             {
                 rectTransform.position = lookAtPos;
                 Vector3 newPos = rectTransform.anchoredPosition;
                 newPos.x = Mathf.Clamp(newPos.x, leftEdgeBuffer, 1280 - rightEdgeBuffer);
                 newPos.y = Mathf.Clamp(newPos.y, bottomEdgeBuffer, 720 - topEdgeBuffer);
                 rectTransform.anchoredPosition = newPos;
-                float distance = Vector3.Distance(rectTransform.position, lookAtPos);
-                Vector3 dir = -(lookAtPos - rectTransform.position).normalized;
-                if (distance < 110)
-                {
-                    rectTransform.Translate(dir * 110);
-                }
+                //float distance = Vector3.Distance(rectTransform.position, lookAtPos);
+                //if (distance < 110)
+                //{
+                //    rectTransform.Translate(dir * 110);
+                //}
 
-                float rotZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                rectTransform.rotation = Quaternion.AngleAxis(rotZ + 180, Vector3.forward);
-                exclamationMark.rectTransform.rotation = Quaternion.identity;
+                RotateIcon(lookAtPos);
+
+                if (icon.alpha == 0)
+                {
+                    icon.alpha = 1;
+                    icon.blocksRaycasts = true;
+                    icon.interactable = true;
+                }
+            }
+            else if (Locatable as Building)
+            {
+                rectTransform.position = lookAtPos;
+                Vector3 newPos = rectTransform.anchoredPosition + new Vector2(0, 50);
+                newPos.x = Mathf.Clamp(newPos.x, leftEdgeBuffer, 1280 - rightEdgeBuffer);
+                newPos.y = Mathf.Clamp(newPos.y, bottomEdgeBuffer, 720 - topEdgeBuffer);
+                rectTransform.anchoredPosition = newPos;
+
+                RotateIcon(lookAtPos);
 
                 if (icon.alpha == 0)
                 {
@@ -93,6 +107,14 @@ public class DamageIndicator : MonoBehaviour
                 icon.interactable = false;
             }
         }
+    }
+
+    private void RotateIcon(Vector3 lookAtPos)
+    {
+        Vector3 dir = -(lookAtPos - rectTransform.position).normalized;
+        float rotZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        rectTransform.rotation = Quaternion.AngleAxis(rotZ + 180, Vector3.forward);
+        exclamationMark.rectTransform.rotation = Quaternion.identity;
     }
 
     public void MoveToBuilding()
