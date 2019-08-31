@@ -64,16 +64,7 @@ public class DamageIndicator : MonoBehaviour
             if (!screen.Contains(lookAtPos))
             {
                 rectTransform.position = lookAtPos;
-                Vector3 newPos = rectTransform.anchoredPosition;
-                newPos.x = Mathf.Clamp(newPos.x, leftEdgeBuffer, 1280 - rightEdgeBuffer);
-                newPos.y = Mathf.Clamp(newPos.y, bottomEdgeBuffer, 720 - topEdgeBuffer);
-                rectTransform.anchoredPosition = newPos;
-                //float distance = Vector3.Distance(rectTransform.position, lookAtPos);
-                //if (distance < 110)
-                //{
-                //    rectTransform.Translate(dir * 110);
-                //}
-
+                ClampIcon();
                 RotateIcon(lookAtPos);
 
                 if (icon.alpha == 0)
@@ -86,11 +77,7 @@ public class DamageIndicator : MonoBehaviour
             else if (Locatable as Building)
             {
                 rectTransform.position = lookAtPos;
-                Vector3 newPos = rectTransform.anchoredPosition + new Vector2(0, 50);
-                newPos.x = Mathf.Clamp(newPos.x, leftEdgeBuffer, 1280 - rightEdgeBuffer);
-                newPos.y = Mathf.Clamp(newPos.y, bottomEdgeBuffer, 720 - topEdgeBuffer);
-                rectTransform.anchoredPosition = newPos;
-
+                ClampIcon(new Vector2(50, 0));
                 RotateIcon(lookAtPos);
 
                 if (icon.alpha == 0)
@@ -107,6 +94,14 @@ public class DamageIndicator : MonoBehaviour
                 icon.interactable = false;
             }
         }
+    }
+
+    private void ClampIcon(Vector2 adjustment = new Vector2())
+    {
+        Vector3 newPos = rectTransform.anchoredPosition + adjustment;
+        newPos.x = Mathf.Clamp(newPos.x, leftEdgeBuffer, 1280 - rightEdgeBuffer);
+        newPos.y = Mathf.Clamp(newPos.y, bottomEdgeBuffer, 720 - topEdgeBuffer);
+        rectTransform.anchoredPosition = newPos;
     }
 
     private void RotateIcon(Vector3 lookAtPos)

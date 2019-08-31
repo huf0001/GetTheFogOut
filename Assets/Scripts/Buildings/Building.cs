@@ -507,12 +507,7 @@ public abstract class Building : Entity
 
         if (!damagingNotified)
         {
-            if (BuildingType == BuildingType.Hub)
-            {
-                //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-                //    MouseController.Instance.WarningScript.Danger + $"<size=80%>The Ship is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
-            }
-            else
+            if (BuildingType != BuildingType.Hub)
             {
                 if (!damInd)
                 {
