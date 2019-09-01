@@ -1383,7 +1383,7 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.Finished;
                 ResetSubStage();
                 ObjectiveController.Instance.IncrementStage();
-                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
+                //FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
                 musicFMOD.StageTwoMusic();
                 break;
             default:
