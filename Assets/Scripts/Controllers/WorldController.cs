@@ -51,7 +51,6 @@ public class WorldController : MonoBehaviour
     public GameObject pauseMenu;
 
     private MusicFMOD musicFMOD;
-    public MusicFMOD musicfmod;
 
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
@@ -61,7 +60,7 @@ public class WorldController : MonoBehaviour
     public Upgrade pulseDefUpgradeLevel;
 
     //Non-Serialized Fields
-    private GameObject temp, PlaneSpawn, TowerSpawn, TowerToSpawn, tiletest, tmp;
+    private GameObject temp, TowerSpawn, TowerToSpawn, tiletest, tmp;
     private GameObject[] objs;
     private TowerManager tm;
     private Vector3 pos;
@@ -78,9 +77,6 @@ public class WorldController : MonoBehaviour
 
     private List<TileData> disableTiles = new List<TileData>();
     public List<TileData> DisableTiles { get => disableTiles; }
-
-    //Cursor Locking to centre
-    private CursorLockMode wantedMode;
 
     //Flags
     private bool hubDestroyed = false;
@@ -117,15 +113,7 @@ public class WorldController : MonoBehaviour
         CreateMinimapTiles();
         TutorialController.Instance.StartTutorial();
 
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-        else
-        {
-            Instantiate(musicfmod);
-            musicFMOD = musicfmod;
-        }
+        musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         musicFMOD.StartMusic();
         musicFMOD.StageOneMusic();
         musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
@@ -148,10 +136,9 @@ public class WorldController : MonoBehaviour
 
         tm = FindObjectOfType<TowerManager>();
 
-        Cursor.lockState = wantedMode;
-        Cursor.visible = (CursorLockMode.Locked != wantedMode);
-
+        abilityMenu = GameObject.Find("AbilitySelectParent").GetComponent<AbilityMenu>();
         serialCamera = GameObject.Find("CameraTarget");
+        mainCamera = GameObject.Find("Camera");
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
     }
@@ -399,12 +386,7 @@ public class WorldController : MonoBehaviour
     {
         if (Gamepad.all.Count > 0 && Gamepad.current.wasUpdatedThisFrame)
         {
-            //Cursor.lockState = CursorLockMode.Locked;
             Mouse.current.WarpCursorPosition(new Vector2(Screen.width / 2, Screen.height / 2));
-        }
-        else
-        {
-            //Cursor.lockState = CursorLockMode.None;
         }
 
         if (InBuildMode)
@@ -426,7 +408,6 @@ public class WorldController : MonoBehaviour
 
         if (Inputs.InputMap.Pause.triggered)
         {
-            Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
             tm.CancelBuild();
             InBuildMode = false;
@@ -438,14 +419,9 @@ public class WorldController : MonoBehaviour
             hub = FindObjectOfType<Hub>();
         }
 
-        //if (Input.GetButtonDown("Pause"))
-        //{
-        //    SetPause(!pauseMenu.activeSelf);
-        //}
-
-        if (Input.GetKeyDown("c"))
+        if (Input.GetButtonDown("Pause"))
         {
-            ChangeCursorState();
+            SetPause(!pauseMenu.activeSelf);
         }
 
         if (hubDestroyed)
@@ -490,20 +466,6 @@ public class WorldController : MonoBehaviour
 
             musicBus.setVolume(musicVolume);
         }
-    }
-
-    private void ChangeCursorState()
-    {
-        switch (Cursor.lockState)
-        {
-            case CursorLockMode.None:
-                wantedMode = CursorLockMode.Locked;
-                break;
-            case CursorLockMode.Locked:
-                wantedMode = CursorLockMode.None;
-                break;
-        }
-        Cursor.lockState = wantedMode;
     }
 
     IEnumerator PlayDeadAnimator()
@@ -569,13 +531,11 @@ public class WorldController : MonoBehaviour
         }
         else if (TowerSpawn != null)
         {
-            Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
         }
 
         if (Inputs.InputMap.Pause.triggered && (tm.GetBuildingType() != TutorialController.Instance.CurrentlyBuilding || TutorialController.Instance.Stage == TutorialStage.Finished))
         {
-            Destroy(PlaneSpawn);
             Destroy(TowerSpawn);
             tm.CancelBuild();
             InBuildMode = false;
