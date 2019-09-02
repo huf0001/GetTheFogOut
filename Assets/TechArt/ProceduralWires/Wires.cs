@@ -1,8 +1,11 @@
 ﻿//Code acquired from https://answers.unity.com/questions/375226/procedural-wirescablestubes.html
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Wires : MonoBehaviour
 {
@@ -18,6 +21,9 @@ public class Wires : MonoBehaviour
 
     public Material material;
 
+    public GameObject energyEffectGO;
+    public ParticleSystem energyEffectParticle;
+
     private Vector3 curPosition;
     private Vector3 nextPosition;
     private Vector3[] mainPointArr = new Vector3[0];
@@ -25,6 +31,10 @@ public class Wires : MonoBehaviour
     private Vector3[,] subPointArr = new Vector3[0, 0];
 
     private GameObject[] children;
+
+    private LineRenderer lineRenderer;
+    private Vector3[] positions;
+    private Vector3 startPosition;
 
     void Start()
     {
@@ -73,7 +83,37 @@ public class Wires : MonoBehaviour
                 }
             }
         }
+        
+        StartEffect();
     }
+
+    public void StartEffect()
+    {
+        lineRenderer = GetComponentInChildren<LineRenderer>();
+        
+        if (!lineRenderer) return;
+        
+        positions = new Vector3[lineRenderer.positionCount];
+        lineRenderer.GetPositions(positions);
+        Array.Reverse(positions);
+        startPosition = next.transform.position;
+        energyEffectParticle.Stop();
+        energyEffectGO.transform.position = startPosition;
+        energyEffectParticle.Play();
+        DoEffect();
+    }
+
+    private void DoEffect()
+    {
+        energyEffectGO.transform.DOPath(positions, 2f).OnComplete(delegate
+        {
+            energyEffectParticle.Stop();
+            energyEffectGO.transform.position = startPosition;
+            energyEffectParticle.Play();
+            Invoke(nameof(DoEffect), Random.Range(5, 10));
+        });
+    }
+    
 
     public Vector3 DrawCosH(int i)
     {

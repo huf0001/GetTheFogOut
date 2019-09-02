@@ -297,7 +297,10 @@ public abstract class Building : Entity
                 {
                     for (int i = 0; i < wire.transform.childCount; i++)
                     {
-                        Destroy(wire.transform.GetChild(i).gameObject);
+                        if (wire.transform.GetChild(i).name != "Cable Energy")
+                        {
+                            Destroy(wire.transform.GetChild(i).gameObject);
+                        }
                     }
                 }
 
