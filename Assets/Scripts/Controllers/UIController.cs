@@ -213,7 +213,7 @@ public class UIController : MonoBehaviour
                 delegate
                 {
                     countdownSliderCG.blocksRaycasts = true;
-                    countdownText.DOFade(0.3f, 0.7f).SetLoops(-1, LoopType.Yoyo);
+                    countdownText.DOFade(0.7f, 0.7f).SetEase(Ease.InOutCubic).SetLoops(-1, LoopType.Yoyo);
                 }));
     }
 

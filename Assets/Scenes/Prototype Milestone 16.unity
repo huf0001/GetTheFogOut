@@ -11634,6 +11634,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9ff5b1c68228ae4db9435030bf14584, type: 3}
+--- !u!20 &757147859 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 3521921235953701323, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
+    type: 3}
+  m_PrefabInstance: {fileID: 1296432923}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &757926027 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2665747012393569261, guid: a9ff5b1c68228ae4db9435030bf14584,
@@ -14543,6 +14549,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867181588154, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 757147859}
+    - target: {fileID: 4767305867181588154, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_PlaneDistance
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305868568126268, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 757147859}
+    - target: {fileID: 4767305868568126268, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_PlaneDistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2864313256439687512, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
