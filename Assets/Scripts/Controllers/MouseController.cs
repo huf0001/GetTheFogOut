@@ -10,8 +10,8 @@ public class MouseController : MonoBehaviour
     // Fields -------------------------------------------------------------------
 
     // Serialized fields
-    [SerializeField] private int generatorCount = 0;
-    [SerializeField] private int generatorInterval = 5;
+    //[SerializeField] private int generatorCount = 0;
+    //[SerializeField] private int generatorInterval = 5;
     //[SerializeField] private WarningScript warningScript;
 
     // Non-serialized fields
@@ -27,6 +27,7 @@ public class MouseController : MonoBehaviour
     public bool isBuildAvaliable = true;
     private bool hovertoggle = true;
     private Camera cam;
+    private Keyboard kb;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -58,12 +59,26 @@ public class MouseController : MonoBehaviour
         floatingTextController = GetComponent<FloatingTextController>();
         tutorialController = GetComponent<TutorialController>();
         cam = Camera.main;
+        kb = InputSystem.GetDevice<Keyboard>();
     }
 
     // Update is called once per frame
     void Update()
     {
         selectedTile();
+        checkforDeleteKey();
+    }
+
+    void checkforDeleteKey()
+    {
+        if (UIController.instance.buildingInfo.Visible)
+        {
+            if (kb.deleteKey.wasPressedThisFrame)
+            {
+                Building removeBuilding = ReturnCost(towerManager.CurrentTile);
+                RemoveBulding(removeBuilding);
+            }
+        }
     }
 
     void UpdateHoveredTile(bool toggle)
@@ -121,17 +136,24 @@ public class MouseController : MonoBehaviour
         }
         else
         {
-            if (towerManager.CurrentTile.plane)
+            if (towerManager.CurrentTile != null)
             {
-                changeTileMaterial(WorldController.Instance.normalTile);
-
-                if ((!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile)))
+                if (towerManager.CurrentTile.plane)
                 {
-                    Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
-                    newColor.a = 0.8f;
-                    towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
+                    changeTileMaterial(WorldController.Instance.normalTile);
+
+                    if ((!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile)))
+                    {
+                        Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
+                        newColor.a = 0.8f;
+                        towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
+                    }
+                    hoveredTile = towerManager.CurrentTile;
                 }
-                hoveredTile = towerManager.CurrentTile;
+            }
+            else
+            {
+                towerManager.CurrentTile = hoveredTile;
             }
         }
     }
@@ -319,6 +341,7 @@ public class MouseController : MonoBehaviour
                 //Tell the building to do things it should do when placed
                 building.Place();
                 changeTileMaterial(WorldController.Instance.normalTile);
+                UIController.instance.buildingSelector.ToggleVisibility();
                 StartCoroutine(FloatText(buildingGo.transform, -building.MineralCost));
             }
             else

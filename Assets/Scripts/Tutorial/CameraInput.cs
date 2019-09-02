@@ -18,7 +18,7 @@ public class CameraInput : MonoBehaviour
     private float lerpProgress = 0;
     private float lerpMultiplier = 1;
 
-    private bool lerpInCalled = false;
+    //private bool lerpInCalled = false;
     private bool lerpOutCalled = false;
     private bool finished = false;
 
@@ -93,7 +93,7 @@ public class CameraInput : MonoBehaviour
     public void LerpIn()
     {
         lerping = true;
-        lerpInCalled = true;
+        //lerpInCalled = true;
     }
 
     //Called by TutorialController to begin lerping the key's image out

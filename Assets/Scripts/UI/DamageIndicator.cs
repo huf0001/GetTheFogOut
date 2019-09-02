@@ -20,8 +20,6 @@ public class DamageIndicator : MonoBehaviour
     private bool on = true;
     private Transform camTarget;
     private Camera cam;
-
-    //public Building Locatable { get; set; }
     public Locatable Locatable { get; set; }
     public bool On
     {
@@ -61,20 +59,26 @@ public class DamageIndicator : MonoBehaviour
     {
         if (On)
         {
-            Vector3 lookAtPos = Camera.main.WorldToScreenPoint(/*Locatable ? Locatable.transform.position : */Locatable.transform.position);
+            Vector3 lookAtPos = Camera.main.WorldToScreenPoint(Locatable.transform.position);
 
             if (!screen.Contains(lookAtPos))
             {
                 rectTransform.position = lookAtPos;
-                Vector3 newPos = rectTransform.anchoredPosition;
-                newPos.x = Mathf.Clamp(newPos.x, leftEdgeBuffer, 1280 - rightEdgeBuffer);
-                newPos.y = Mathf.Clamp(newPos.y, bottomEdgeBuffer, 720 - topEdgeBuffer);
-                rectTransform.anchoredPosition = newPos;
+                ClampIcon();
+                RotateIcon(lookAtPos);
 
-                Vector3 dir = -(lookAtPos - rectTransform.position).normalized;
-                float rotZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                rectTransform.rotation = Quaternion.AngleAxis(rotZ + 180, Vector3.forward);
-                exclamationMark.rectTransform.rotation = Quaternion.identity;
+                if (icon.alpha == 0)
+                {
+                    icon.alpha = 1;
+                    icon.blocksRaycasts = true;
+                    icon.interactable = true;
+                }
+            }
+            else if (Locatable as Building)
+            {
+                rectTransform.position = lookAtPos;
+                ClampIcon(new Vector2(50, 0));
+                RotateIcon(lookAtPos);
 
                 if (icon.alpha == 0)
                 {
@@ -90,6 +94,22 @@ public class DamageIndicator : MonoBehaviour
                 icon.interactable = false;
             }
         }
+    }
+
+    private void ClampIcon(Vector2 adjustment = new Vector2())
+    {
+        Vector3 newPos = rectTransform.anchoredPosition + adjustment;
+        newPos.x = Mathf.Clamp(newPos.x, leftEdgeBuffer, 1280 - rightEdgeBuffer);
+        newPos.y = Mathf.Clamp(newPos.y, bottomEdgeBuffer, 720 - topEdgeBuffer);
+        rectTransform.anchoredPosition = newPos;
+    }
+
+    private void RotateIcon(Vector3 lookAtPos)
+    {
+        Vector3 dir = -(lookAtPos - rectTransform.position).normalized;
+        float rotZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        rectTransform.rotation = Quaternion.AngleAxis(rotZ + 180, Vector3.forward);
+        exclamationMark.rectTransform.rotation = Quaternion.identity;
     }
 
     public void MoveToBuilding()

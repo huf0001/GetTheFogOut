@@ -78,7 +78,6 @@ public class ObjectiveController : DialogueBoxController
     // Start is called before the first frame update
     void Start()
     {
-        //audioSource = GetComponent<AudioSource>();
         lastOverload = Time.fixedTime;
         lastOverloadDialogue = Time.fixedTime;
         WorldController.Instance.Inputs.InputMap.OpenCloseObjectiveWindow.performed += ctx => ToggleObjWindow();

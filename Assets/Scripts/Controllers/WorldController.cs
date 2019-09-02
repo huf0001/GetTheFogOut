@@ -37,7 +37,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] private GameObject ground;
 
     [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab/*, hubPrefab, *//*mineralPrefab*/;
-    [SerializeField] public Material normalTile, hoverTile,collectibleTile;
+    [SerializeField] public Material normalTile, hoverTile, collectibleTile;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
@@ -70,7 +70,6 @@ public class WorldController : MonoBehaviour
     //Other Controllers
     private ResourceController resourceController;
     private UIController uiController;
-    //private CameraController cameraController;
 
     //private List<TileData> ThrusterList = new List<TileData>();
 
@@ -84,7 +83,6 @@ public class WorldController : MonoBehaviour
     private CursorLockMode wantedMode;
 
     //Flags
-    private bool hubBuilt = false;
     private bool hubDestroyed = false;
 
     private int index;
@@ -106,44 +104,6 @@ public class WorldController : MonoBehaviour
     public NewInputs Inputs { get; set; }
 
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
-    private void Awake()
-    {
-        Inputs = new NewInputs();
-        Inputs.Enable();
-        Inputs.InputMap.Pause.performed += ctx => SetPause(!pauseMenu.activeSelf);
-
-        if (Instance != null)
-        {
-            Debug.LogError("There should never be 2 or more world managers.");
-        }
-
-        InBuildMode = false;
-        Instance = this;
-        cam = Camera.main;
-
-        tm = FindObjectOfType<TowerManager>();
-
-        Cursor.lockState = wantedMode;
-        Cursor.visible = (CursorLockMode.Locked != wantedMode);
-
-        serialCamera = GameObject.Find("CameraTarget");
-        //cameraController = GameObject.Find("CameraTarget").GetComponent<CameraController>();
-        uiController = GetComponent<UIController>();
-        resourceController = ResourceController.Instance;
-
-        //if (GameObject.Find("MusicFMOD"))
-        //{
-        //    musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        //}
-        //else
-        //{
-        //    Instantiate(musicFMOD);
-        //}
-        //musicFMOD.StartMusic();
-        //musicFMOD.StageOneMusic();
-        //musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
-    }
-
     private void Start()
     {
         index = 0;
@@ -169,6 +129,31 @@ public class WorldController : MonoBehaviour
         musicFMOD.StartMusic();
         musicFMOD.StageOneMusic();
         musicBus = FMODUnity.RuntimeManager.GetBus("bus:/MASTER/MUSIC");
+    }
+
+    private void Awake()
+    {
+        Inputs = new NewInputs();
+        Inputs.Enable();
+        Inputs.InputMap.Pause.performed += ctx => SetPause(!pauseMenu.activeSelf);
+
+        if (Instance != null)
+        {
+            Debug.LogError("There should never be 2 or more world managers.");
+        }
+
+        InBuildMode = false;
+        Instance = this;
+        cam = Camera.main;
+
+        tm = FindObjectOfType<TowerManager>();
+
+        Cursor.lockState = wantedMode;
+        Cursor.visible = (CursorLockMode.Locked != wantedMode);
+
+        serialCamera = GameObject.Find("CameraTarget");
+        uiController = GetComponent<UIController>();
+        resourceController = ResourceController.Instance;
     }
 
     void SetResourcesToTiles()
@@ -406,7 +391,7 @@ public class WorldController : MonoBehaviour
             {
                 StartCoroutine("PlayDeadAnimator");
             }
-         //   GameOverUpdate();
+            //   GameOverUpdate();
         }
     }
 
@@ -503,10 +488,9 @@ public class WorldController : MonoBehaviour
                 musicVolume = 1f;
             }
 
-            musicBus.setVolume(musicVolume); 
+            musicBus.setVolume(musicVolume);
         }
     }
-
 
     private void ChangeCursorState()
     {
@@ -522,7 +506,7 @@ public class WorldController : MonoBehaviour
         Cursor.lockState = wantedMode;
     }
 
-     IEnumerator PlayDeadAnimator()
+    IEnumerator PlayDeadAnimator()
     {
         Animator dead = mainCamera.GetComponent<Animator>();
         if (dead)
@@ -543,15 +527,17 @@ public class WorldController : MonoBehaviour
         yield return new WaitForSeconds(8.0f);
         GameWinUpdate();
     }
+
     private void GameWinUpdate()
     {
         musicFMOD.GameWinMusic();
         uiController.EndGameDisplay("You win!"); //Display win UI
     }
+
     private void GameOverUpdate()
     {
-            musicFMOD.GameLoseMusic();
-            uiController.EndGameDisplay("You lose!"); //Display lose UI     
+        musicFMOD.GameLoseMusic();
+        uiController.EndGameDisplay("You lose!"); //Display lose UI     
     }
 
     private void RenderTower()
@@ -670,7 +656,7 @@ public class WorldController : MonoBehaviour
             }
             uiController.buildingSelector.ToggleVisibility();
         }
-        uiController.buildingSelector.transform.position = cam.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(12, 5);// + new Vector3(-Screen.width / 100, Screen.height / 25);
+        uiController.buildingSelector.transform.position = cam.WorldToScreenPoint(new Vector3(tile.X, 0, tile.Z)) + new Vector3(12, 5); // + new Vector3(-Screen.width / 100, Screen.height / 25);
         UIController.instance.buildingSelector.CurrentTile = tile;
     }
 
@@ -714,7 +700,7 @@ public class WorldController : MonoBehaviour
         if (index != activeTiles.Count)
         {
             GameObject grids = GameObject.Find("Grids");
-            
+
             hideActiveTiles();
 
             foreach (TileData tile in activeTiles)
@@ -830,7 +816,7 @@ public class WorldController : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-                Application.Quit();
+        Application.Quit();
 #endif
     }
 
@@ -849,4 +835,3 @@ public class WorldController : MonoBehaviour
         Inputs = null;
     }
 }
-

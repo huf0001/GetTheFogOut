@@ -42,25 +42,15 @@ public class BuildingSelector : MonoBehaviour
     {
         if (visible) CloseMenu();
         else OpenMenu();
-
-        //gameObject.SetActive(!gameObject.activeSelf);
-        //visible = !visible;
-
-        //    if (visible)
-        //   {
-        //      freezeCam(0f, 0f);
-        //  }
-        // else
-        //     freezeCam(0.4f, 0.4f);
-
-        //buildingDesc.gameObject.SetActive(!buildingDesc.gameObject.activeSelf);
     }
 
     private void OpenMenu()
     {
+        DOTween.Kill("BuildMenu");
         visible = true;
         selectParent.alpha = 1;
-        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).SetEase(Ease.OutBack).OnComplete(delegate
+        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).SetId("BuildMenu").SetEase(Ease.OutBack).OnComplete(
+            delegate
             {
                 selectParent.interactable = true;
                 selectParent.blocksRaycasts = true;
@@ -69,20 +59,12 @@ public class BuildingSelector : MonoBehaviour
 
     private void CloseMenu()
     {
-        btnTutorial[] buttons = GetComponentsInChildren<btnTutorial>();
-
-        //foreach (btnTutorial b in buttons)
-        //{
-        //    if (b.Lerping)
-        //    {
-        //        b.DeactivateLerping();
-        //    }
-        //}
+        DOTween.Kill("BuildMenu");
         visible = false;
         selectParent.interactable = false;
         selectParent.blocksRaycasts = false;
-        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, 0, 0.3f).SetEase(Ease.InBack).
-            OnComplete(delegate
+        DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, 0, 0.3f).SetId("BuildMenu").SetEase(Ease.InBack).OnComplete(
+            delegate
             {
                 selectParent.alpha = 0;
             });
