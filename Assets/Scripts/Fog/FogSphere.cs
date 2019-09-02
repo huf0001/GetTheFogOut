@@ -26,8 +26,6 @@ public class FogSphere : MonoBehaviour
     [SerializeField] private float damageLerpMultiplier;
 
     [Header("Movement")]
-    //[SerializeField] private float minHeight;
-    [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private float height;
     [SerializeField] private float minMovementSpeed;
     [SerializeField] private float maxMovementSpeed;
@@ -99,7 +97,6 @@ public class FogSphere : MonoBehaviour
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
     public float MaxSizeScale { get => maxSizeScale; set => maxSizeScale = value; }
     public float MinSizeScale { get => minSizeScale; set => minSizeScale = value; }
-    public NavMeshAgent NavMeshAgent { get => navMeshAgent; }
     public List<Renderer> Renderers {  get => renderers; }
     public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
@@ -182,7 +179,7 @@ public class FogSphere : MonoBehaviour
         }
     }
 
-    //Moves the fog sphere towards the hub --> with navMeshAgent, updates the speed and checks conditions for transitioning to other states.
+    //Moves the fog sphere towards the hub
     public void Move(float interval)
     {
         if (state == FogSphereState.Spilling)
@@ -200,10 +197,8 @@ public class FogSphere : MonoBehaviour
             }
         }
 
-        hubPosition.y = transform.position.y;       //Ensures rate of movement accounts only for orthogonal movement; vertical movement is handled by UpdateSize()
-        //transform.position = Vector3.MoveTowards(transform.position, hubPosition, currentMovementSpeed * interval);
-        navMeshAgent.speed = currentMovementSpeed;
-        
+        transform.position = Vector3.MoveTowards(transform.position, hubPosition, currentMovementSpeed * interval);
+
         if (transform.position == hubPosition)
         {
             state = FogSphereState.Attacking;
@@ -529,7 +524,6 @@ public class FogSphere : MonoBehaviour
     {
         float scale = Mathf.Lerp(minSizeScale, maxSizeScale, Mathf.Min(health / maxHealth, 1));
         transform.localScale = new Vector3(scale, scale, scale);
-        navMeshAgent.radius = renderers[0].bounds.extents.magnitude * 0.5f;
     }
 
     //Triggered/Utility Methods - Other--------------------------------------------------------------------------------------------------------------

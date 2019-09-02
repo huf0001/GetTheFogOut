@@ -377,6 +377,7 @@ public class Fog : MonoBehaviour
             }
         }
 
+        //TODO: consider if this section is now necessary; I don't think it should be.
         //Check if fog sphere spawn points are okay
         if (validateFogSphereSpawnPoints)
         {
@@ -408,9 +409,7 @@ public class Fog : MonoBehaviour
                 FogSphere s = GetFogSphere();
                 pos = t.FogUnit.transform.position;
                 pos.y = hubPosition.y;
-                s.NavMeshAgent.enabled = true;
-                s.NavMeshAgent.Warp(pos);
-                s.NavMeshAgent.destination = hubPosition;
+                s.transform.position = pos;
 
                 Debug.Log($"Fog sphere spawn point at {sp.position} is okay.");
                 ReturnFogSphereToPool(s);
@@ -546,24 +545,9 @@ public class Fog : MonoBehaviour
             GameObject o = s.gameObject;
             o.name = "FogSphereInPlay";
 
-            Vector3 pos = u.transform.position;
-            pos.y = hubPosition.y;
-            s.NavMeshAgent.enabled = true;
-            s.NavMeshAgent.Warp(pos);
-
-            if (s.NavMeshAgent.destination != hubPosition)
-            {
-                s.NavMeshAgent.destination = hubPosition;
-            }
-
-            //Errors shouldn't occur for the above if statement, but if it can't assign it, the below should handle the fog sphere 
-            //that can't spawn, and re-pool it. If the logerror from s.NavMeshAgent.destination = hubPosition halts the game execution,
-            //going to the Console window and unselecting Error Pause will get around that. Not ideal, but it works.
-            if (s.NavMeshAgent.destination != hubPosition)
-            {
-                ReturnFogSphereToPool(s);
-                return;
-            }
+            //Vector3 pos = u.transform.position;
+            //pos.y = hubPosition.y;
+            s.transform.position = u.transform.position;
 
             foreach (Renderer r in s.Renderers)
             {
@@ -914,7 +898,6 @@ public class Fog : MonoBehaviour
         f.SpiltFog.Clear();
         fogSpheresInPool.Add(f);
         fogSpheresInPlay.Remove(f);
-        f.NavMeshAgent.enabled = false;
     }
 
     //Fog Freezing Methods---------------------------------------------------------------------------------------------------------------------------
