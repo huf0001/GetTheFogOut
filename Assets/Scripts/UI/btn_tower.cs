@@ -102,6 +102,15 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         powCost.text = $"<size=250%><sprite=\"all_icons\" index=0>\n<size=120%>{(powCostVal > 0 ? "+" : "") + powCostVal.ToString("F1")}\n%/s";
     }
 
+    private void Update()
+    {
+        if (keyInfo.alpha == 1 && buildingCost.color != Color.white && minCostVal < ResourceController.Instance.StoredMineral)
+        {
+            buildingCost.color = Color.white;
+            minCost.color = Color.white;
+        }
+    }
+
     public void ChangeDescColour()
     {
         buildingDescBG.color = buttonColour;
@@ -125,8 +134,6 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                         "<line-height=80% size=65%>" + descText;
                     uniqueStat.text = $"{ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit} Built";
                 }
-
-                buildingCost.text = $"{minCostVal} <sprite=\"all_icons\" index=2>";
             }
             else if (gameObject.name == "btn_generator" && ResourceController.Instance.Generators.Count == ObjectiveController.Instance.GeneratorLimit)
             {
@@ -136,10 +143,23 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             }
             else
             {
+                // Tell player they can't place that building there
                 buildingDesc.text = $"<b>{buildingName}</b>   {powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
                         "<line-height=80% size=65%>This building cannot be placed here";
             }
 
+            buildingCost.text = $"{minCostVal} <sprite=\"all_icons\" index=2>";
+
+            if (minCostVal > ResourceController.Instance.StoredMineral)
+            {
+                buildingCost.color = Color.red;
+                minCost.color = Color.red;
+            }
+            else
+            {
+                buildingCost.color = Color.white;
+                minCost.color = Color.white;
+            }
 
             if (buttonHighlight != null && buttonHighlight.activeSelf)
             {
@@ -151,7 +171,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 delegate
                 {
                     keyInfo.alpha = 1;
-                }); 
+                });
         }
     }
 
@@ -171,7 +191,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                         buttonHighlight.SetActive(true);
                         lerping = false;
                     }
-                }); 
+                });
         }
     }
 }

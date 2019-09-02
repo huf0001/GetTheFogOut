@@ -507,24 +507,22 @@ public abstract class Building : Entity
 
         if (!damagingNotified)
         {
-            if (BuildingType == BuildingType.Hub)
-            {
-                //MouseController.Instance.WarningScript.ShowMessage(WarningScript.WarningLevel.Danger,
-                //    MouseController.Instance.WarningScript.Danger + $"<size=80%>The Ship is taking damage! <sprite=\"magnifyingGlass\" index=0>", this);
-            }
-            else
+            if (BuildingType != BuildingType.Hub)
             {
                 if (!damInd)
                 {
                     damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
                     damIndScript = damInd.GetComponent<DamageIndicator>();
-                    damInd.GetComponent<RectTransform>().sizeDelta = damInd.GetComponent<RectTransform>().sizeDelta * new Vector2(2, 2);
+
+                    RectTransform rect = damInd.GetComponent<RectTransform>();
+                    rect.sizeDelta = rect.sizeDelta * new Vector2(1.5f, 1.5f);
+                    damInd.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localPosition -= new Vector3(30, 0);
                 }
                 else damIndScript.On = true;
                 damIndScript.Locatable = this;
             }
             
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", GetComponent<Transform>().position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", transform.position);
             damagingNotified = true;
         }
     }
