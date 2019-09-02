@@ -104,7 +104,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void Update()
     {
-        if (keyInfo.alpha == 1 && buildingCost.color != Color.white && minCostVal < ResourceController.Instance.StoredMineral)
+        if (gameObject.name != "btn_remove" && keyInfo.alpha == 1 && buildingCost.color != Color.white && minCostVal < ResourceController.Instance.StoredMineral)
         {
             buildingCost.color = Color.white;
             minCost.color = Color.white;

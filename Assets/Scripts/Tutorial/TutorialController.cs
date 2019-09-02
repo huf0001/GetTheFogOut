@@ -110,6 +110,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Image abilityMenu;
     [SerializeField] private RadialMenu abilitySelectorRadialMenu;
     [SerializeField] private Image uiLerpTarget;
+    [SerializeField] private Slider tutProgressSlider;
 
     [Header("UI Lerp Ranges")]
     [SerializeField] private float decalMinLerp;
@@ -205,6 +206,8 @@ public class TutorialController : DialogueBoxController
         {
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         }
+
+        tutProgressSlider.maxValue = 12;
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
@@ -219,6 +222,7 @@ public class TutorialController : DialogueBoxController
             Fog.Instance.WakeUpFog(5);
             Fog.Instance.BeginUpdatingDamage(5);
             stage = TutorialStage.Finished;
+            tutProgressSlider.gameObject.SetActive(false);
             ObjectiveController.Instance.IncrementStage();
             defencesOn = true;
             wKey.transform.parent.gameObject.SetActive(false);
@@ -360,6 +364,7 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                     stage = TutorialStage.ExplainMinerals;
                     ResetSubStage();
+                    tutProgressSlider.value++;
                 }
 
                 break;
@@ -392,6 +397,7 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.CameraControls;
                 cameraController.MovementEnabled = true;
                 ResetSubStage();
+                tutProgressSlider.value++;
                 break;
         }
     }
@@ -468,6 +474,7 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.BuildHarvesters;
                 currentlyBuilding = BuildingType.Harvester;
                 ResetSubStage();
+                tutProgressSlider.value++;
                 wKey.transform.parent.gameObject.SetActive(false);
 
                 break;
@@ -597,6 +604,7 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.BuildExtender;
                 currentlyBuilding = BuildingType.Extender;
                 ResetSubStage();
+                tutProgressSlider.value++;
                 break;
             default:
                 SendDialogue("error", 1);
@@ -663,6 +671,7 @@ public class TutorialController : DialogueBoxController
                 DeactivateUIColourLerpTarget();
                 Destroy(extenderHighlight);
                 extenderHighlight = null;
+                tutProgressSlider.value++;
                 break;
             default:
                 SendDialogue("error", 1);
@@ -721,6 +730,7 @@ public class TutorialController : DialogueBoxController
                 currentlyBuilding = BuildingType.Generator;
                 ResetSubStage();
                 UIController.instance.UpdateObjectiveText(stage);
+                tutProgressSlider.value++;
                 break;
             default:
                 SendDialogue("error", 1);
@@ -891,6 +901,7 @@ public class TutorialController : DialogueBoxController
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
+                tutProgressSlider.value++;
                 break;
             default:
                 SendDialogue("error", 1);
@@ -960,6 +971,7 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.CollectSonar;
                 currentlyBuilding = BuildingType.None;
                 ResetSubStage();
+                tutProgressSlider.value++;
                 break;
             default:
                 SendDialogue("error", 1);
@@ -1118,6 +1130,7 @@ public class TutorialController : DialogueBoxController
                     stage = TutorialStage.BuildExtenderInFog;
                     currentlyBuilding = BuildingType.Extender;
                     ResetSubStage();
+                    tutProgressSlider.value++;
                 }
 
                 break;
@@ -1190,6 +1203,7 @@ public class TutorialController : DialogueBoxController
                 currentlyBuilding = BuildingType.AirCannon;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
+                tutProgressSlider.value++;
                 break;
             default:
                 SendDialogue("error", 1);
@@ -1256,6 +1270,7 @@ public class TutorialController : DialogueBoxController
                 DeactivateUIColourLerpTarget();
                 Destroy(mortarHighlight);
                 mortarHighlight = null;
+                tutProgressSlider.value++;
                 break;
             default:
                 SendDialogue("error", 1);
@@ -1310,6 +1325,7 @@ public class TutorialController : DialogueBoxController
                     DeactivateUIColourLerpTarget();
                     Destroy(pulseDefenceHighlight);
                     pulseDefenceHighlight = null;
+                    tutProgressSlider.value++;
                 }
                 else if (buildMenuCanvasGroup.alpha == 0)
                 {
@@ -1381,6 +1397,7 @@ public class TutorialController : DialogueBoxController
             case 8:
                 SendDialogue("finished", 1);
                 stage = TutorialStage.Finished;
+                tutProgressSlider.gameObject.SetActive(false);
                 ResetSubStage();
                 ObjectiveController.Instance.IncrementStage();
                 FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
