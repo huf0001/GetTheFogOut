@@ -1304,9 +1304,13 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 3:
-                if (tileClicked)
+                if (tileClicked && lastTileChecked == pulseDefenceLandmark.Location)
                 {
                     DismissMouse();
+                }
+                else
+                {
+                    tileClicked = false;
                 }
 
                 break;
@@ -1400,7 +1404,7 @@ public class TutorialController : DialogueBoxController
                 tutProgressSlider.gameObject.SetActive(false);
                 ResetSubStage();
                 ObjectiveController.Instance.IncrementStage();
-                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
+                //FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
                 musicFMOD.StageTwoMusic();
                 break;
             default:
@@ -1646,6 +1650,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildExtenderInFog:
                 return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
             case TutorialStage.CollectMinerals:
+            case TutorialStage.BuildPulseDefence:
             case TutorialStage.DefenceActivation:
             case TutorialStage.BuildDefencesInRange:
                 bool tileOkay = !tile.FogUnitActive || tile.Building != null;
@@ -1657,6 +1662,11 @@ public class TutorialController : DialogueBoxController
 
                     stage = TutorialStage.DontBuildInFog;
                     subStage = 1;
+                }
+
+                if (tileOkay && stage == TutorialStage.BuildPulseDefence)
+                {
+                    return tile.Resource == null;
                 }
 
                 return tileOkay;
@@ -1675,7 +1685,14 @@ public class TutorialController : DialogueBoxController
             switch (stage)
             {
                 case TutorialStage.CollectMinerals:
-                    return button == ButtonType.Extender || button == ButtonType.Harvester || button == ButtonType.Generator;
+                    return button == ButtonType.Extender 
+                           || button == ButtonType.Harvester 
+                           || button == ButtonType.Generator 
+                           || button == ButtonType.Destroy;
+                case TutorialStage.BuildPulseDefence:
+                    return (button == ButtonType.FogRepeller && lastTileChecked == pulseDefenceLandmark.Location) 
+                           || (button == ButtonType.Extender && lastTileChecked != pulseDefenceLandmark.Location) 
+                           || button == ButtonType.Destroy;
                 case TutorialStage.DefenceActivation:
                 case TutorialStage.BuildDefencesInRange:
                 case TutorialStage.Finished:
