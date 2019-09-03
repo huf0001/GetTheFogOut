@@ -16020,8 +16020,8 @@ MonoBehaviour:
       dialogue: Hello, I am an emergency Nexus Drone that you can control from your
         ship. You may call me Nexy for short.
     - aiExpression: 2
-      dialogue: My job is to ensure our safety, and we are currently at risk of being
-        in immediate danger.
+      dialogue: My job is to ensure our safety. According to my calculations, we are
+        at a 95% risk of being in imminent danger.
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16040,7 +16040,7 @@ MonoBehaviour:
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: You ship comes equipped with a blueprint for a {HARVESTER}. To use
+      dialogue: Your ship comes equipped with a blueprint for a {HARVESTER}. To use
         one, click on this {MINERAL}.
   - key: build harvester icon
     expressionDialoguePairs:
@@ -16055,46 +16055,48 @@ MonoBehaviour:
   - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'You see the green grid around your ship? It represents the area that
-        you can place buildings on. '
+      dialogue: 'Now, you see the green grid around your ship? That represents the
+        area available to place buildings on. '
     - aiExpression: 2
-      dialogue: Right now it's too small to reach those {MINERALS} I showed you earlier.
-        You will need to place a [POWER EXTENDER].
+      dialogue: 'Right now it''s too small to reach those minerals nearby. You will
+        need to place a [POWER EXTENDER]. Try placing one here. '
   - key: build more harvesters extended
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: See how your grid range has now increased? Now you can place some
-        more {HARVESTERS}.
+      dialogue: See how your grid range has increased? Now you can place some more
+        {HARVESTERS}.
   - key: explain power
     expressionDialoguePairs:
     - aiExpression: 3
-      dialogue: Oh, well . . . that isn't good. It appears the {HARVESTERS} have put
-        some strain on the power system. When buildings are placed, they consume power.
+      dialogue: 'Oh, no! Those extra {HARVESTERS} have strained the power system.
+        To see how the power system works, hover over the [BATTERY ICON] next to your
+        minimap. '
     - aiExpression: 2
       dialogue: Too many buildings consuming power will cause some to shut down. Move
         your mouse over the [BATTERY ICON] next to your minimap to see how the power
         system functions.
+    - aiExpression: 2
+      dialogue: Each building, aside from [POWER EXTENDERS], will consume power when
+        they're placed.
+    - aiExpression: 2
+      dialogue: When the [BATTERY ICON] reached 75%, buildings will progressively
+        shut down. It's of utmost importance that you refer to this indicator as often
+        as possible.
   - key: build generator target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'To avoid losing power, you can place [POWER GENERATORS]. They will
-        increase the amount of power you can regenerate. Be wary though, they can
-        only handle so much. '
-    - aiExpression: 2
-      dialogue: 'Try placing a [POWER GENERATOR]. '
+      dialogue: To manage your power consumption, you can place [POWER GENERATORS].
+        They will increase the rate that you can regenerate power. Try placing a [POWER
+        GENERATOR].
   - key: build more generators
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: It appears to have helped. If you look at the [BATTERY ICON] next
-        to your minimap again, the [POWER GENERATION] number should have changed.
-    - aiExpression: 2
-      dialogue: I think you should place a couple more [POWER GENERATORS] just to
-        be safe.
+      dialogue: 'Good, that''s saved us from imminent disaster. '
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Your ship is in pretty bad shape, I would try and collect some {MINERALS}
-        to get it fixed.
+      dialogue: 'Your ship has sustatained serious damage upon landing. Use your new-found
+        skills to repair it, it''s the only way off this wretched planet. '
   - key: collect sonar
     expressionDialoguePairs:
     - aiExpression: 2
