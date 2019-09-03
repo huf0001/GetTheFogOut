@@ -32,7 +32,7 @@ public class FogUnit : Entity
     [SerializeField] private bool returnToPool;
 
     [Header("Prefabs")]
-    [SerializeField] private GameObject fogLightning;
+    [SerializeField] public GameObject fogLightning;
 
     //Non-Serialized Fields
     private Fog fog;
@@ -107,7 +107,6 @@ public class FogUnit : Entity
     private void Awake()
     {
         fogRenderer = gameObject.GetComponent<Renderer>();
-        spawnLightning();
         alpha = Shader.PropertyToID("_Alpha");
         colour = Shader.PropertyToID("_Colour");
         fogRenderer = gameObject.GetComponent<Renderer>();
@@ -271,24 +270,26 @@ public class FogUnit : Entity
 
     //Fog Lightning Methods--------------------------------------------------------------------------------------------------------------------------
 
-    private void spawnLightning()
-    {
-            if (!Lightning)
-            {
-                Lightning = Instantiate(fogLightning, transform, true);
-                LightningPS = Lightning.GetComponent<ParticleSystem>();
-            }
-    }
+    //Removed because of new lightning pooling -Cyrus
+//    private void spawnLightning()
+//    {
+//            if (!Lightning)
+//            {
+//                Lightning = Instantiate(fogLightning, transform, true);
+//                LightningPS = Lightning.GetComponent<ParticleSystem>();
+//            }
+//    }
 
-    public void playLightning()
-    {
-        if (LightningPS)
-        {
-            if (LightningPS.isStopped)
-            {
-                LightningPS.Play();
-            }
-        }
-    }
+    //Removed because of new lightning pooling -Cyrus
+//    public void playLightning()
+//    {
+//        if (LightningPS)
+//        {
+//            if (LightningPS.isStopped)
+//            {
+//                LightningPS.Play();
+//            }
+//        }
+//    }
 
 }
