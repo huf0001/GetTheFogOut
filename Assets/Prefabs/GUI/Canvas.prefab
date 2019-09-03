@@ -16016,17 +16016,12 @@ MonoBehaviour:
         say that they were perfectly normal, thank you very much. '
   - key: explain situation
     expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: Hello, I am your ship's Nexus Drone. You may call me Nexy for short.
-    - aiExpression: 3
-      dialogue: Wait, what happened? What's that around the ship?
-    - aiExpression: 3
-      dialogue: Fog? We crash landed? No, no, no...
     - aiExpression: 2
-      dialogue: We have to get out of here, fast. Let's not hang around to see what
-        tries to kill us. But, the ship is in no condition to be leaving just yet.
+      dialogue: Hello, I am an emergency Nexus Drone that you can control from your
+        ship. You may call me Nexy for short.
     - aiExpression: 2
-      dialogue: Pay close attention, I'm going to teach you how to survive.
+      dialogue: My job is to ensure our safety, and we are currently at risk of being
+        in immediate danger.
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16035,30 +16030,28 @@ MonoBehaviour:
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Press the WASD keys to move me around.
+      dialogue: 'To move me around, press the WASD keys. Or, hold down RMB while moving
+        the mouse. '
   - key: zoom camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Scroll with the mouse wheel to zoom me in or out. Thankfully for me,
-        motion sickness isn't a part of my program.
+      dialogue: Now, use the mouse wheel to zoom me in or out. Thankfully for me,
+        I'm not programmed to experience what humans call 'motion sickness'.
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: You currently have access to a building called a {HARVESTER}. When
-        placed on a {MINERAL}, it will collect its contents for you.
-    - aiExpression: 2
-      dialogue: The {HARVESTER} will show an &X& when it has exhausted its {MINERALS}.
-    - aiExpression: 2
-      dialogue: I'll show you where to put the {HARVESTER}.
+      dialogue: You ship comes equipped with a blueprint for a {HARVESTER}. To use
+        one, click on this {MINERAL}.
   - key: build harvester icon
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Click on the {HARVESTER} icon in the building menu.
+      dialogue: 'Now, click on the {HARVESTER} icon. '
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: 'Good, you''re learning. Now build two more to speed up your {MINERAL}
-        collection. '
+      dialogue: Perfect. Once the {HARVESTER} has exhausted its {MINERAL} consumption,
+        it will show an &X& icon to indicate that it has completed its task. Place
+        two more to increase your mineral generation.
   - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
