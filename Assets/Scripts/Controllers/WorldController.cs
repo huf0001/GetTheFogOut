@@ -114,6 +114,7 @@ public class WorldController : MonoBehaviour
         SetLandmarksToTiles();
         SetCollectablesToTiles();
         SetRocksToTiles();
+        SetUnbuildablesToTiles();
         CreateMinimapTiles();
         TutorialController.Instance.StartTutorial();
 
@@ -265,6 +266,17 @@ public class WorldController : MonoBehaviour
         {
             TileData tileData = GetTileAt(tileBlock.transform.position);
             tileData.buildingChecks.obstacle = true;
+        }
+    }
+    
+    void SetUnbuildablesToTiles()
+    {
+        UnbuildableTile[] tileBlocks = FindObjectsOfType<UnbuildableTile>();
+
+        foreach (UnbuildableTile tileBlock in tileBlocks)
+        {
+            TileData tileData = GetTileAt(tileBlock.transform.position);
+            tileData.buildingChecks.unBuildable = true;
         }
     }
 
@@ -705,7 +717,7 @@ public class WorldController : MonoBehaviour
 
             foreach (TileData tile in activeTiles)
             {
-                if (!tile.buildingChecks.obstacle)
+                if (!tile.buildingChecks.obstacle && !tile.buildingChecks.unBuildable)
                 {
                     Vector3 pos = Vector3.zero;
                     pos.x += tile.X;
