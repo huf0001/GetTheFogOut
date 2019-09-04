@@ -972,7 +972,7 @@ public class Fog : MonoBehaviour
     
     private void SelectedLightning()
     {
-        FogUnit f = fogUnits[Random.Range(0, 50), Random.Range(0, 50)];
+        FogUnit f = fogUnits[Random.Range(0, 70), Random.Range(0, 70)];
         if (fogUnitsInPlay.Contains(f))
         {
             PlayLightning(f);
