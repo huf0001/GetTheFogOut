@@ -38,6 +38,13 @@ public enum Difficulty
     Hard
 }
 
+//Simple struct to allow caching of the particle system
+public struct FogLightning
+{
+    public GameObject lightning;
+    public ParticleSystem lightningPS;
+}
+
 public class Fog : MonoBehaviour
 {
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
@@ -125,6 +132,9 @@ public class Fog : MonoBehaviour
     private List<FogSphere> fogSpheresInPlay = new List<FogSphere>();               //i.e. currently active fog spheres on the board
     private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
     private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
+
+    private List<FogLightning> lightningInPlay = new List<FogLightning>();              //i.e. currently active lightning effects
+    private List<FogLightning> lightningInPool = new List<FogLightning>();              //i.e. currently inactive lightning effects in pool
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -217,6 +227,7 @@ public class Fog : MonoBehaviour
 
         fogSphereSpawnPoints = new List<Transform>(fogSphereSpawnPointsParent.GetComponentsInChildren<Transform>());
         SetDifficulty();
+        InitializePool(100);
         Intensity = 1;  //Sets the intensity-derived values to the default of their "Easy" values.
     }
 
@@ -490,8 +501,6 @@ public class Fog : MonoBehaviour
             f.RenderOpacity();
 
             fogUnitsInPlay.Add(f);
-
-            f.playLightning();
 
             //if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
             //{
@@ -961,26 +970,82 @@ public class Fog : MonoBehaviour
         }
     }
     
-    private void selectedLightning(int amount)
+    private void SelectedLightning()
     {
-        if (amount > 0)
+        FogUnit f = fogUnits[Random.Range(0, 70), Random.Range(0, 70)];
+        if (fogUnitsInPlay.Contains(f))
         {
-            FogUnit f = fogUnits[Random.Range(0, 50), Random.Range(0, 50)];
-            if (fogUnitsInPlay.Contains(f))
+            PlayLightning(f);
+        }
+    }
+    
+    private void InitializePool(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            AddLightningToPool();
+        }
+    }
+
+    private void AddLightningToPool()
+    {
+        FogLightning fogLightning = new FogLightning {lightning = Instantiate(fogUnitPrefab.fogLightning)};
+        fogLightning.lightning.transform.SetParent(transform);
+        fogLightning.lightning.SetActive(false);
+        fogLightning.lightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
+        lightningInPool.Add(fogLightning);
+    }
+
+    private FogLightning GetLightningFromPool()
+    {
+        if (lightningInPool.Count > 0)
+        {
+            FogLightning fogLightning = lightningInPool[0];
+            lightningInPool.RemoveAt(0);
+            lightningInPlay.Add(fogLightning);
+            return fogLightning;
+        }
+        else
+        {
+            FogLightning fogLightning = new FogLightning {lightning = Instantiate(fogUnitPrefab.fogLightning)};
+            fogLightning.lightning.transform.SetParent(transform);
+            fogLightning.lightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
+            lightningInPlay.Add(fogLightning);
+            return fogLightning;
+        }
+    }
+
+    private void PlayLightning(FogUnit fogUnit)
+    {
+        FogLightning fogLightning = GetLightningFromPool();
+        fogLightning.lightning.transform.position = fogUnit.transform.position;
+        fogLightning.lightning.SetActive(true);
+        fogLightning.lightning.GetComponent<ParticleSystem>().Play();
+    }
+
+    private void ReturnLightningToPool()
+    {
+        List<FogLightning> toRemove = new List<FogLightning>();
+        foreach (FogLightning fogLightning in lightningInPlay)
+        {
+            if (fogLightning.lightningPS.isStopped)
             {
-                f.playLightning();
-                amount--;
+                toRemove.Add(fogLightning);
             }
         }
-        
+
+        foreach (FogLightning fogLightning in toRemove)
+        {
+            fogLightning.lightning.SetActive(false);
+            lightningInPlay.Remove(fogLightning);
+            lightningInPool.Add(fogLightning);
+        }
     }
 
     private void Update()
     {
-        selectedLightning(1000);
+        SelectedLightning();
+        ReturnLightningToPool();
     }
-
-    //fog lighting prefab VFX Spawn randomly ???
-
 
 }

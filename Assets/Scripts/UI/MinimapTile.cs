@@ -15,6 +15,7 @@ public class MinimapTile : MonoBehaviour
     [SerializeField] private Color buildingDamageTile = new Color(0.9f, 0, 0);
     [SerializeField] private Color shipTile = new Color(0.8f, 0.8f, 0.8f);
     [SerializeField] private Color collectableTile = new Color(1, 1, 1);
+    [SerializeField] private Color collectableTileAlt;
     [SerializeField] private Color mineralTile = new Color32(228, 148, 0, 255);
     [SerializeField] private Color obstacleTile;
     private Material mat;
@@ -79,8 +80,8 @@ public class MinimapTile : MonoBehaviour
             }
             else
             {
-                mat.SetColor("_BaseColor", poweredTile);
-                curColour = poweredTile;
+                mat.SetColor("_BaseColor", collectableTileAlt);
+                curColour = collectableTileAlt;
             }
         }
         else if (Tile.PowerSource)

@@ -51,6 +51,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countdownText;
     [Header("Ability Unlock")]
     [SerializeField] private Canvas abilityUnlockCanvas;
+    [SerializeField] private RectTransform abilityUnlockBG;
+    [SerializeField] private RectTransform proceedArrows;
     [SerializeField] private Image abilityImage;
     [SerializeField] private Sprite[] abilitySprites;
     [SerializeField] private Button[] abilityButtons;
@@ -64,6 +66,7 @@ public class UIController : MonoBehaviour
     ResourceController resourceController = null;
     private int index, temp;
     private MeshRenderer tile;
+    private Vector2 arrowInitialPosition;
 
     private float currentPowerValDisplayed = 0;
 
@@ -87,6 +90,7 @@ public class UIController : MonoBehaviour
         temp = 2;
 
         launchButtonImage = objectiveButton.image;
+        arrowInitialPosition = proceedArrows.GetComponent<RectTransform>().anchoredPosition;
         FindSliders();
     }
 
@@ -209,7 +213,7 @@ public class UIController : MonoBehaviour
                 delegate
                 {
                     countdownSliderCG.blocksRaycasts = true;
-                    countdownText.DOFade(0.3f, 0.7f).SetLoops(-1, LoopType.Yoyo);
+                    countdownText.DOFade(0.7f, 0.7f).SetEase(Ease.InOutCubic).SetLoops(-1, LoopType.Yoyo);
                 }));
     }
 
@@ -305,6 +309,7 @@ public class UIController : MonoBehaviour
     // Ability unlock screen
     public void AbilityUnlock(Ability ability)
     {
+        Time.timeScale = 0.1f;
         abilityUnlockCanvas.gameObject.SetActive(true);
         switch (ability.AbilityType)
         {
@@ -339,6 +344,20 @@ public class UIController : MonoBehaviour
                 abilityButtons[4].interactable = true;
                 break;
         }
+        abilityUnlockBG.DOScale(0.01f, 0.3f).From().SetUpdate(true);
+        proceedArrows.DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+    }
+
+    public void FinishAbilityUnlock()
+    {
+        DOTween.Kill(proceedArrows);
+        proceedArrows.anchoredPosition = arrowInitialPosition;
+        abilityUnlockBG.DOScale(0.01f, 0.3f).SetUpdate(true).OnComplete(
+            delegate
+            {
+                abilityUnlockCanvas.gameObject.SetActive(false);
+            });
+        Time.timeScale = 1;
     }
 
     public void ShowUpgradeWindow()
@@ -435,7 +454,7 @@ public class UIController : MonoBehaviour
 
             // update text values
             currentPowerValDisplayed = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime));
-            powerText.text =  currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange.ToString("F1") + " %/s</color>";
+            powerText.text = currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange.ToString("F1") + " %/s</color>";
 
             if (currentPowerValDisplayed == 0)
             {
@@ -455,7 +474,7 @@ public class UIController : MonoBehaviour
             else if (currentPowerValDisplayed <= 50)
             {
                 if (powerImg.sprite != powerLevelSprites[2])
-                { 
+                {
                     powerImg.sprite = powerLevelSprites[2];
                     index = 2;
                 }
