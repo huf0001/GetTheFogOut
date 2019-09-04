@@ -53,6 +53,7 @@ public class FogUnit : Entity
     private ParticleSystem LightningPS;
     private int colour;
     private int alpha;
+    private MaterialPropertyBlock mat;
 
     private bool spill = false;
     private bool neighboursFull = false;
@@ -106,10 +107,11 @@ public class FogUnit : Entity
     //Awake
     private void Awake()
     {
-        fogRenderer = gameObject.GetComponent<Renderer>();
+        fogRenderer = GetComponent<Renderer>();
+        mat = new MaterialPropertyBlock();
+        fogRenderer.GetPropertyBlock(mat);
         alpha = Shader.PropertyToID("_Alpha");
         colour = Shader.PropertyToID("_Colour");
-        fogRenderer = gameObject.GetComponent<Renderer>();
     }
 
     //Sets the starting values for fog damage health variables
@@ -165,7 +167,7 @@ public class FogUnit : Entity
     //Updates the fog unit's shader colour at random between two values
     public void RenderColour()
     {
-        fogRenderer.material.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
+        mat.SetColor(colour, currentColours.Evaluate(Mathf.Lerp(0, 1, colourProgress)));
         //Profiler.BeginSample("FogUnit.RenderColour Mathf.Lerp(colourProgress)");
         //float lerp = Mathf.Lerp(0, 1, colourProgress);
         //Profiler.EndSample();
@@ -219,12 +221,15 @@ public class FogUnit : Entity
                 }
             }
         }
+
+        fogRenderer.SetPropertyBlock(mat);
     }
 
     //Updates the fog unit's shader opacity according to its health
     public void RenderOpacity()
     {
-        fogRenderer.material.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, base.Health / MaxHealth));
+        mat.SetFloat(alpha, Mathf.Lerp(startOpacity, endOpacity, base.Health / MaxHealth));
+        fogRenderer.SetPropertyBlock(mat);
     }
 
     //Triggered Methods------------------------------------------------------------------------------------------------------------------------------
