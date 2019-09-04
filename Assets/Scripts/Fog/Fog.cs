@@ -6,7 +6,6 @@ using System.Numerics;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Profiling;
 using UnityEngine.Serialization;
 using Quaternion = UnityEngine.Quaternion;
@@ -57,10 +56,6 @@ public class Fog : MonoBehaviour
     [SerializeField] private bool angry;
     [SerializeField] private bool damageOn;
 
-    [SerializeField] private Transform fogSphereInstantiationPoint;
-    [SerializeField] private GameObject fogSphereSpawnPointsParent;
-    [SerializeField] private bool validateFogSphereSpawnPoints;
-
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private Difficulty difficulty;
     [SerializeField] private FogExpansionDirection expansionDirection;
@@ -70,9 +65,11 @@ public class Fog : MonoBehaviour
     [Header("Fog Expansion")]
     [SerializeField] private bool fogAccelerates;
     [SerializeField] private bool fogFrozen;
-    [SerializeField] private float maxFogSpheresCount;
     [SerializeField] private float fogGrowth;
     [SerializeField] private float fogSpillThreshold;
+
+    [SerializeField] private GameObject fogSphereSpawnPointsParent;
+    [SerializeField] private float maxFogSpheresCount;
     [SerializeField] private float fogSphereSpillMultiplier;
 
     [Header("Fog Strength Over Time")]
@@ -111,7 +108,7 @@ public class Fog : MonoBehaviour
     private int intensity;
 
     private Vector3 hubPosition;
-    private List<Transform> fogSphereSpawnPoints;
+    private List<FogSphereWaypoint> fogSphereSpawnPoints;
 
     private float pauseTime;
 
@@ -215,7 +212,7 @@ public class Fog : MonoBehaviour
             Difficulty = (Difficulty)GlobalVars.Difficulty;
         }
 
-        fogSphereSpawnPoints = new List<Transform>(fogSphereSpawnPointsParent.GetComponentsInChildren<Transform>());
+        fogSphereSpawnPoints = new List<FogSphereWaypoint>(fogSphereSpawnPointsParent.GetComponentsInChildren<FogSphereWaypoint>());
         SetDifficulty();
         Intensity = 1;  //Sets the intensity-derived values to the default of their "Easy" values.
     }
@@ -376,45 +373,6 @@ public class Fog : MonoBehaviour
                 fogSpheresInPool.Add(CreateFogSphere());
             }
         }
-
-        //TODO: consider if this section is now necessary; I don't think it should be.
-        //Check if fog sphere spawn points are okay
-        if (validateFogSphereSpawnPoints)
-        {
-            foreach (Transform sp in fogSphereSpawnPoints)
-            {
-                Vector3 pos = sp.position;
-                Debug.Log($"Checking fog sphere spawn point at {pos}.");
-
-                if (!WorldController.Instance.TileExistsAt(pos))
-                {
-                    Debug.Log($"Cannot have a fog sphere spawn point at {pos}; there's no tile there.");
-                    continue;
-                }
-
-                TileData t = WorldController.Instance.GetTileAt(sp.position);
-
-                if (t.buildingChecks.obstacle)
-                {
-                    Debug.Log($"Cannot have a fog sphere spawn point at {pos}; the tile there is an obstacle.");
-                    continue;
-                }
-                else if (t.FogUnit == null)
-                {
-                    Debug.Log(
-                        $"Cannot have a fog sphere spawn point at {pos}; the fog unit for the corresponding tile is null.");
-                    continue;
-                }
-
-                FogSphere s = GetFogSphere();
-                pos = t.FogUnit.transform.position;
-                pos.y = hubPosition.y;
-                s.transform.position = pos;
-
-                Debug.Log($"Fog sphere spawn point at {sp.position} is okay.");
-                ReturnFogSphereToPool(s);
-            }
-        }
     }
 
     //Spawning Methods - Fog Units-------------------------------------------------------------------------------------------------------------------
@@ -508,7 +466,7 @@ public class Fog : MonoBehaviour
     //Instantiates a fog sphere that isn't on the board or in the pool
     private FogSphere CreateFogSphere()
     {
-        FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, fogSphereInstantiationPoint, true);
+        FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, transform, true);
         f.transform.position = transform.position;
         f.State = FogSphereState.None;
         f.Fog = this;
@@ -537,66 +495,64 @@ public class Fog : MonoBehaviour
     //Takes a fog unit and puts it on the board
     private void SpawnFogSphere()
     { 
-        FogUnit u = GetBorderFogUnit();
+        FogSphereWaypoint sp = GetSpawnPoint();
 
-        if (u != null)
+        if (sp != null)
         {
-            FogSphere s = GetFogSphere();
-            GameObject o = s.gameObject;
-            o.name = "FogSphereInPlay";
+            FogUnit fu = WorldController.Instance.GetTileAt(sp.transform.position).FogUnit;
+            FogSphere fs = GetFogSphere();
 
-            //Vector3 pos = u.transform.position;
-            //pos.y = hubPosition.y;
-            s.transform.position = u.transform.position;
-
-            foreach (Renderer r in s.Renderers)
+            foreach (Renderer r in fs.Renderers)
             {
                 r.material = fogSphereVisibleMaterial;
             }
 
-            s.SpawningTile = u.Location;
-            s.Health = fogSphereMinHealth;
-            s.MaxHealth = fogSphereMaxHealth;
-            s.MaxSizeScale = fogSphereMaxSizeScale;
-            s.FogUnitMinHealth = fogUnitMinHealth;
-            s.FogUnitMaxHealth = fogUnitMaxHealth;
-            s.State = FogSphereState.MovingAndGrowing;
-            s.SetStartEmotion(angry);
-            s.RandomiseMovementSpeed();
-            s.UpdateSize();
-            s.RenderOpacity();
-            fogSpheresInPlay.Add(s);
+            fs.name = "FogSphereInPlay";
+            fs.transform.position = fu.transform.position;
+            fs.Waypoint = sp.GetNextWaypoint();
+            fs.transform.DOLookAt(fs.Waypoint.transform.position, 0);
+
+            fs.SpawningTile = fu.Location;
+            fs.Health = fogSphereMinHealth;
+            fs.MaxHealth = fogSphereMaxHealth;
+            fs.MaxSizeScale = fogSphereMaxSizeScale;
+            fs.FogUnitMinHealth = fogUnitMinHealth;
+            fs.FogUnitMaxHealth = fogUnitMaxHealth;
+            fs.State = FogSphereState.MovingAndGrowing;
+            fs.SetStartEmotion(angry);
+            fs.RandomiseMovementSpeed();
+            fs.UpdateSize();
+            fs.RenderOpacity();
+            fogSpheresInPlay.Add(fs);
         }
     }
 
     //Gets a random fog unit at the edge of the board
-    private FogUnit GetBorderFogUnit()
+    private FogSphereWaypoint GetSpawnPoint()
     {
-        //List<FogUnit> validBorderFogUnits = new List<FogUnit>(borderFogUnitsInPlay);
-        List<Transform> validSpawnPoints = new List<Transform>(fogSphereSpawnPoints);
+        List<FogSphereWaypoint> validSpawnPoints = new List<FogSphereWaypoint>(fogSphereSpawnPoints);
 
         while (validSpawnPoints.Count > 0)
         {
             bool valid = true;
-            Transform sp = validSpawnPoints[Random.Range(0, validSpawnPoints.Count - 1)];
+            FogSphereWaypoint sp = validSpawnPoints[Random.Range(0, validSpawnPoints.Count - 1)];
+            validSpawnPoints.Remove(sp);
 
-            if (!WorldController.Instance.TileExistsAt(sp.position))
+            if (!WorldController.Instance.TileExistsAt(sp.transform.position))
             {
-                validSpawnPoints.Remove(sp);
                 continue;
             }
 
-            TileData t = WorldController.Instance.GetTileAt(sp.position);
+            TileData t = WorldController.Instance.GetTileAt(sp.transform.position);
 
-            if (t.FogUnit == null || !t.FogUnitActive)
+            if (t.FogUnit == null || !t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth)
             {
-                validSpawnPoints.Remove(sp);
                 continue;
             }
 
             foreach (TileData a in t.AdjacentTiles)
             {
-                if (!a.FogUnitActive)
+                if (a.FogUnit == null || !a.FogUnitActive || a.FogUnit.Health < a.FogUnit.MaxHealth * 0.5)
                 {
                     valid = false;
                     break;
@@ -605,12 +561,8 @@ public class Fog : MonoBehaviour
 
             if (valid)
             {
-                return t.FogUnit;
-            }
-            else
-            {
-                validSpawnPoints.Remove(sp);
-            }            
+                return sp;
+            }       
         }
 
         return null;
@@ -884,6 +836,7 @@ public class Fog : MonoBehaviour
         f.gameObject.SetActive(false);
         f.transform.position = transform.position;
         f.State = FogSphereState.None;
+        f.Waypoint = null;
 
         foreach(Renderer r in f.Renderers)
         {

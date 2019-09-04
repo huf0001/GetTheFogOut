@@ -6,35 +6,36 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class FogSphereWaypoint : MonoBehaviour
 {
+    //Serialized Fields
     [SerializeField] private List<FogSphereWaypoint> nextWaypoints;
-    [SerializeField] private bool renderLines;
     [SerializeField] private bool spawnPoint;
-    [SerializeField] private bool hub;
+    [SerializeField] private bool editing;
 
+    //Public Properties
     public bool SpawnPoint { get => spawnPoint; }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 pos = transform.position;
-        pos.x = Mathf.Round(pos.x);
-        pos.z = Mathf.Round(pos.z);
-        transform.position = pos;
-
-        if (!hub)
+        if (editing)
         {
+            //Snap to grid
+            Vector3 pos = transform.position;
+            pos.x = Mathf.Round(pos.x);
+            pos.z = Mathf.Round(pos.z);
+            transform.position = pos;
+
+            //Rename by position and type
             if (spawnPoint)
             {
-                name = $"FogSphereSpawnPoint({pos.x},{pos.z})";
+                name = $"FogSphereSpawnPoint({transform.position.x},{transform.position.z})";
             }
             else
             {
-                name = $"FogSphereWaypoint({pos.x},{pos.z})";
+                name = $"FogSphereWaypoint({transform.position.x},{transform.position.z})";
             }
-        }        
 
-        if (renderLines)
-        {
+            //Point towards next waypoint
             foreach (FogSphereWaypoint w in nextWaypoints)
             {
                 if (w != null)
@@ -42,7 +43,7 @@ public class FogSphereWaypoint : MonoBehaviour
                     Debug.DrawLine(transform.position, Vector3.MoveTowards(transform.position, w.transform.position, 2f), Color.cyan);
                 }
             }
-        }        
+        }      
     }
 
     public FogSphereWaypoint GetNextWaypoint()

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public enum FogSphereState
 {
@@ -31,6 +30,9 @@ public class FogSphere : MonoBehaviour
     [SerializeField] private float maxMovementSpeed;
     [SerializeField] private float minSpeedWhileSpilling;
     [SerializeField] private float acceleration;
+    [SerializeField] private float currentMovementSpeed;
+    [SerializeField] private FogSphereWaypoint waypoint;
+    [SerializeField] private float turningSpeed;
 
     [Header("Spilling")]
     [SerializeField] private int maxSpiltFogCount;
@@ -54,6 +56,7 @@ public class FogSphere : MonoBehaviour
     [Header("Size")]
     [SerializeField] private float minSizeScale;
     [SerializeField] private float maxSizeScale;
+    
 
     //Non-Serialized Fields
     private Fog fog;
@@ -77,9 +80,6 @@ public class FogSphere : MonoBehaviour
 
     private float normalMovementSpeed;
 
-    [Header("Testing")]
-    [SerializeField] private float currentMovementSpeed;
-
     private List<FogUnit> spiltFog = new List<FogUnit>();
     private float fogUnitMinHealth;
     private float fogUnitMaxHealth;
@@ -101,6 +101,7 @@ public class FogSphere : MonoBehaviour
     public TileData SpawningTile { get => spawningTile; set => spawningTile = value; }
     public List<FogUnit> SpiltFog { get => spiltFog; set => spiltFog = value; }
     public FogSphereState State { get => state; set => state = value; }
+    public FogSphereWaypoint Waypoint { get => waypoint; set => waypoint = value; }
 
     //Altered Public Properties
     public float Health
@@ -139,7 +140,6 @@ public class FogSphere : MonoBehaviour
         alpha = Shader.PropertyToID("_Alpha");
         hub = GameObject.Find("Hub").GetComponent<Hub>();
         hubPosition = hub.transform.position;
-        hubPosition.y = height;
     }
 
     //Sets the starting values for fog damage health variables
@@ -148,8 +148,6 @@ public class FogSphere : MonoBehaviour
         startHealth = health;
         targetHealth = health;
         currentColours = docileColours;
-
-        //TODO: update movement values of nav mesh agent, rather than fog sphere
     }
 
     //Fog uses this to set the starting emotion of a fog unit upon being dropped onto the board,
@@ -197,17 +195,37 @@ public class FogSphere : MonoBehaviour
             }
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, hubPosition, currentMovementSpeed * interval);
+        //Move forwards
+        transform.position += transform.forward * Mathf.Min(currentMovementSpeed * interval, Vector3.Distance(transform.position, waypoint.transform.position));
 
-        if (transform.position == hubPosition)
+        //Move towards - worked, but just straight lines with no cornering
+        //transform.position = Vector3.MoveTowards(transform.position, waypoint.transform.position, currentMovementSpeed * interval);
+
+        if (Vector3.Distance(transform.position, waypoint.transform.position) <= 1)
         {
-            state = FogSphereState.Attacking;
+            waypoint = waypoint.GetNextWaypoint();
+
+            if (waypoint == null)
+            {
+                state = FogSphereState.Attacking;
+            }
         }
         else if (CheckFogToFill())    
         {
             GetFogToFill();
             state = FogSphereState.Spilling;
             canSpillFurther = true;
+        }
+    }
+
+    void Update()
+    {
+        if (waypoint != null)
+        {
+            //Rotate towards target waypoint
+            Vector3 targetDir = waypoint.transform.position - transform.position;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, turningSpeed * Time.deltaTime, 0f);
+            transform.rotation = Quaternion.LookRotation(newDir);
         }
     }
 
