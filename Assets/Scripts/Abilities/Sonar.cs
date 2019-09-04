@@ -35,7 +35,7 @@ namespace Abilities
 
                 // Tween the collider
                 Sequence sequence = DOTween.Sequence();
-                sequence.Append(colliderGo.transform.DOScale((sonarRange * 2) + 1, sonarSpeed))
+                sequence.Append(colliderGo.transform.DOScale((sonarRange / 2) + 6, sonarSpeed))
                     .OnComplete(delegate
                     {
                         colliderGo.SetActive(false);
