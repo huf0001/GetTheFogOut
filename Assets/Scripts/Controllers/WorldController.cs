@@ -406,7 +406,7 @@ public class WorldController : MonoBehaviour
             RenderTower();
         }
         showActiveTiles();
-
+        /*
         if (ObjectiveController.Instance.thruster.activeSelf)
         {
             thrusterTilesOn();
@@ -417,7 +417,7 @@ public class WorldController : MonoBehaviour
         {
             thrusterTilesOff();
         }
-
+        */
         if (Inputs.InputMap.Pause.triggered)
         {
             Destroy(TowerSpawn);
