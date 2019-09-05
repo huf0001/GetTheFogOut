@@ -76,7 +76,7 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         UpdateCameraMovement();
-        inputs.InputMap.CameraCenter.performed += ctx => transform.DOMove(Home, 0.3f);
+        inputs.InputMap.CameraCenter.performed += ctx => transform.DOMove(Home, 0.3f).Kill(true) ;
         zoomVal = inputs.InputMap.Zoom.ReadValue<float>();
     }
 
