@@ -51,6 +51,7 @@ public class CameraController : MonoBehaviour
         inputs.InputMap.CameraPan.canceled += ctx => move = Vector2.zero;
         inputs.InputMap.Zoom.performed += ctx =>  zoomVal = ctx.ReadValue<float>();
         inputs.InputMap.Zoom.canceled += ctx => zoomVal = 0;
+        inputs.InputMap.CameraCenter.performed += ctx => transform.DOMove(Home, 0.3f).Kill(true);
 
         myTransform = transform;
 
@@ -76,7 +77,6 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         UpdateCameraMovement();
-        inputs.InputMap.CameraCenter.performed += ctx => transform.DOMove(Home, 0.3f).Kill(true) ;
         zoomVal = inputs.InputMap.Zoom.ReadValue<float>();
     }
 

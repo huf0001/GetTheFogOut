@@ -67,6 +67,8 @@ public class UIController : MonoBehaviour
     private int index, temp;
     private MeshRenderer tile;
     private Vector2 arrowInitialPosition;
+    private RectTransform abilityImageParent;
+    private Vector3 abilityImageOriginalPos;
 
     private float currentPowerValDisplayed = 0;
 
@@ -91,6 +93,8 @@ public class UIController : MonoBehaviour
 
         launchButtonImage = objectiveButton.image;
         arrowInitialPosition = proceedArrows.GetComponent<RectTransform>().anchoredPosition;
+        abilityImageParent = abilityImage.rectTransform.parent.GetComponent<RectTransform>();
+        abilityImageOriginalPos = abilityImageParent.anchoredPosition;
         FindSliders();
     }
 
@@ -344,7 +348,7 @@ public class UIController : MonoBehaviour
                 abilityButtons[4].interactable = true;
                 break;
         }
-        abilityUnlockBG.DOScale(0.01f, 0.3f).From().SetUpdate(true);
+        abilityUnlockBG.DOScale(1, 0.3f).SetUpdate(true).SetEase(Ease.OutBack);
         proceedArrows.DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
     }
 
@@ -352,24 +356,33 @@ public class UIController : MonoBehaviour
     {
         DOTween.Kill(proceedArrows);
         proceedArrows.anchoredPosition = arrowInitialPosition;
-        abilityUnlockBG.DOScale(0.01f, 0.3f).SetUpdate(true).OnComplete(
+        abilityImageParent.DOScale(0.45f, 0.6f);
+        abilityImageParent.DOMove(abilityButtons[0].transform.parent.position, 0.6f).OnComplete(
             delegate
             {
-                abilityUnlockCanvas.gameObject.SetActive(false);
+                abilityImageParent.gameObject.SetActive(false);
+                abilityUnlockBG.DOScale(0.01f, 0.3f).SetUpdate(true).SetEase(Ease.InBack).OnComplete(
+                    delegate
+                    {
+                        abilityImageParent.anchoredPosition = abilityImageOriginalPos;
+                        abilityImageParent.gameObject.SetActive(true);
+                        abilityImageParent.localScale = new Vector3(1, 1, 1);
+                        abilityUnlockCanvas.gameObject.SetActive(false);
+                    });
             });
         Time.timeScale = 1;
     }
-
+    
     public void ShowUpgradeWindow()
     {
         upgradesCanvas.SetActive(true);
-        upgradesBg.DOScale(1, 0.3f).SetUpdate(true);
+        upgradesBg.DOScale(1, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
         Time.timeScale = 0.1f;
     }
 
     public void HideUpgradeWindow()
     {
-        upgradesBg.DOScale(0.01f, 0.3f).SetUpdate(true).OnComplete(
+        upgradesBg.DOScale(0.01f, 0.3f).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
             delegate
             {
                 upgradesCanvas.SetActive(false);
