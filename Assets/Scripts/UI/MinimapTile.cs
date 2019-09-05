@@ -18,16 +18,20 @@ public class MinimapTile : MonoBehaviour
     [SerializeField] private Color collectableTileAlt;
     [SerializeField] private Color mineralTile = new Color32(228, 148, 0, 255);
     [SerializeField] private Color obstacleTile;
-    private Material mat;
+    private MaterialPropertyBlock material;
+    private Renderer rend;
     private Color curColour;
     private float curFoggyness;
 
     private void Start()
     {
-        mat = GetComponent<Renderer>().material;
+        //material = GetComponent<Renderer>().material;
+        rend = GetComponent<Renderer>();
+        material = new MaterialPropertyBlock();
         if (Tile.buildingChecks.obstacle)
         {
-            mat.SetColor("_BaseColor", obstacleTile);
+            material.SetColor("_BaseColor", obstacleTile);
+            rend.SetPropertyBlock(material);
         }
         else
         {
@@ -41,17 +45,17 @@ public class MinimapTile : MonoBehaviour
         {
             if (Tile.Building.TakingDamage && curColour != buildingDamageTile)
             {
-                mat.SetColor("_BaseColor", buildingDamageTile);
+                material.SetColor("_BaseColor", buildingDamageTile);
                 curColour = buildingDamageTile;
             }
             else if (Tile.Building.BuildingType == BuildingType.Hub && curColour != shipTile)
             {
-                mat.SetColor("_BaseColor", shipTile);
+                material.SetColor("_BaseColor", shipTile);
                 curColour = shipTile;
             }
             else if (curColour != buildingTile)
             {
-                mat.SetColor("_BaseColor", buildingTile);
+                material.SetColor("_BaseColor", buildingTile);
                 curColour = buildingTile;
             }
         }
@@ -59,7 +63,7 @@ public class MinimapTile : MonoBehaviour
         {
             if (curColour != mineralTile)
             {
-                mat.SetColor("_BaseColor", mineralTile);
+                material.SetColor("_BaseColor", mineralTile);
                 curColour = mineralTile;
             }
         }
@@ -67,7 +71,7 @@ public class MinimapTile : MonoBehaviour
         {
             if (curColour != unpoweredTile)
             {
-                mat.SetColor("_BaseColor", unpoweredTile);
+                material.SetColor("_BaseColor", unpoweredTile);
                 curColour = unpoweredTile;
             }
         }
@@ -75,12 +79,12 @@ public class MinimapTile : MonoBehaviour
         {
             if (curColour != collectableTile)
             {
-                mat.SetColor("_BaseColor", collectableTile);
+                material.SetColor("_BaseColor", collectableTile);
                 curColour = collectableTile;
             }
             else
             {
-                mat.SetColor("_BaseColor", collectableTileAlt);
+                material.SetColor("_BaseColor", collectableTileAlt);
                 curColour = collectableTileAlt;
             }
         }
@@ -88,7 +92,7 @@ public class MinimapTile : MonoBehaviour
         {
             if (curColour != poweredTile)
             {
-                mat.SetColor("_BaseColor", poweredTile);
+                material.SetColor("_BaseColor", poweredTile);
                 curColour = poweredTile;
             }
         }
@@ -98,14 +102,16 @@ public class MinimapTile : MonoBehaviour
             float healthPer = Tile.FogUnit.Health / Tile.FogUnit.MaxHealth;
             if (curFoggyness != healthPer)
             {
-                mat.SetFloat("_Foggyness", healthPer);
+                material.SetFloat("_Foggyness", healthPer);
                 curFoggyness = healthPer;
             }
         }
         else if (curFoggyness != 0)
         {
-            mat.SetFloat("_Foggyness", 0);
+            material.SetFloat("_Foggyness", 0);
             curFoggyness = 0;
         }
+
+        rend.SetPropertyBlock(material);
     }
 }
