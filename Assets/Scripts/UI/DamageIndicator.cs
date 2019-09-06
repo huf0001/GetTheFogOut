@@ -30,8 +30,6 @@ public class DamageIndicator : MonoBehaviour
             if (!value)
             {
                 icon.alpha = 0;
-                icon.blocksRaycasts = false;
-                icon.interactable = false;
             }
         }
     }
@@ -70,28 +68,22 @@ public class DamageIndicator : MonoBehaviour
                 if (icon.alpha == 0)
                 {
                     icon.alpha = 1;
-                    icon.blocksRaycasts = true;
-                    icon.interactable = true;
                 }
             }
             else if (Locatable as Building)
             {
                 rectTransform.position = lookAtPos;
-                ClampIcon(new Vector2(50, 0));
+                ClampIcon(new Vector2(0, 50));
                 RotateIcon(lookAtPos);
 
                 if (icon.alpha == 0)
                 {
                     icon.alpha = 1;
-                    icon.blocksRaycasts = true;
-                    icon.interactable = true;
                 }
             }
             else if (icon.alpha == 1)
             {
                 icon.alpha = 0;
-                icon.blocksRaycasts = false;
-                icon.interactable = false;
             }
         }
     }
@@ -110,11 +102,5 @@ public class DamageIndicator : MonoBehaviour
         float rotZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         rectTransform.rotation = Quaternion.AngleAxis(rotZ + 180, Vector3.forward);
         exclamationMark.rectTransform.rotation = Quaternion.identity;
-    }
-
-    public void MoveToBuilding()
-    {
-        if (!camTarget) camTarget = GameObject.Find("CameraTarget").transform;
-        camTarget.DOMove(new Vector3(Locatable.Location.X, camTarget.position.y, Locatable.Location.Z), 0.3f);
     }
 }
