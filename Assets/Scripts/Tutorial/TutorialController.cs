@@ -1648,7 +1648,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildMoreGenerators:
                 return tile.Resource == null;
             case TutorialStage.CollectSonar:
-                return false;
+                return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.BuildExtenderInFog:
                 return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
             case TutorialStage.CollectMinerals:
@@ -1690,6 +1690,9 @@ public class TutorialController : DialogueBoxController
                     return button == ButtonType.Extender 
                            || button == ButtonType.Harvester 
                            || button == ButtonType.Generator 
+                           || button == ButtonType.Destroy;
+                case TutorialStage.CollectSonar:
+                    return button == ButtonType.Extender
                            || button == ButtonType.Destroy;
                 case TutorialStage.BuildPulseDefence:
                     return (button == ButtonType.FogRepeller && lastTileChecked == pulseDefenceLandmark.Location) 
