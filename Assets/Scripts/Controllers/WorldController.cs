@@ -692,11 +692,12 @@ public class WorldController : MonoBehaviour
                         MeshRenderer mesh = tile.plane.GetComponent<MeshRenderer>();
                         mesh.material = collectibleTile;
                     }
-
+                    /*
                     if (tile == WorldController.Instance.GetTileAt(36,34))
                     {
                         Destroy(tile.plane);
                     }
+                    */
                 }
             }
 
