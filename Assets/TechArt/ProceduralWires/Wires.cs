@@ -36,6 +36,8 @@ public class Wires : MonoBehaviour
     private Vector3[] positions;
     private Vector3 startPosition;
 
+    public Sequence sequence;
+
     void Start()
     {
 
@@ -105,13 +107,16 @@ public class Wires : MonoBehaviour
 
     private void DoEffect()
     {
-        energyEffectGO.transform.DOPath(positions, 2f).OnComplete(delegate
-        {
-            energyEffectParticle.Stop();
-            energyEffectGO.transform.position = startPosition;
-            energyEffectParticle.Play();
-            Invoke(nameof(DoEffect), Random.Range(5, 10));
-        });
+        sequence = DOTween.Sequence();
+        sequence.Append(
+            energyEffectGO.transform.DOPath(positions, 2f).OnComplete(delegate
+              {
+                  energyEffectParticle.Stop();
+                  energyEffectGO.transform.position = startPosition;
+                  energyEffectParticle.Play();
+                  Invoke(nameof(DoEffect), Random.Range(5, 10));
+              })
+        );
     }
     
 
