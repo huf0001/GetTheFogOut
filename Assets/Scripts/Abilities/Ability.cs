@@ -7,7 +7,6 @@ public abstract class Ability : ScriptableObject, ICollectible
 {
     [SerializeField] protected string collectibleName = "New Ability";
     [SerializeField] protected AbilityEnum abilityType;
-    public AudioClip sound;
     public Sprite sprite;
     public float baseCoolDown = 1f;
     public int targetRadius = 10;

@@ -48,17 +48,27 @@ public class MainMenu : MonoBehaviour
     {
         // Play Toggle Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Toggle", GetComponent<Transform>().position);
         skipTutorial = !tutorialOn;
+        if (!skipTutorial)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
+        }
+        else
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", GetComponent<Transform>().position);
+        }
     }
 
     public void ChangeDifficulty(int diff)
     {
         difficulty = diff;
         difficultyDescText.text = difficultyDescriptions[difficulty];
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
     }
 
     public void OpenMenu()
     {
         // Play Open Difficulty Menu Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-OpenDifficulty", GetComponent<Transform>().position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
         StartCoroutine(OpenDifficultyMenu());
     }
 
@@ -80,6 +90,7 @@ public class MainMenu : MonoBehaviour
     public void CloseMenu()
     {
         // Play Close Difficulty Menu Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-CloseDifficulty", GetComponent<Transform>().position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", GetComponent<Transform>().position);
         StartCoroutine(CloseDifficultyMenu());
     }
 
@@ -115,7 +126,8 @@ public class MainMenu : MonoBehaviour
 
     public void playGame()
     {
-        // Play Start Game Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-StartGame", GetComponent<Transform>().position);
+        // Play Start Game Sound effect here //
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
         GlobalVars.SkipTut = skipTutorial;
         GlobalVars.Difficulty = difficulty;
         GlobalVars.LoadedFromMenu = true;
@@ -162,7 +174,7 @@ public class MainMenu : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+        Application.Quit();
 #endif
     }
 }
