@@ -109,8 +109,6 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   InBuildMode: 1
   pauseMenu: {fileID: 0}
-  musicfmod: {fileID: 4407398185932732860, guid: 5c819ef072426864db6435e12ba6cc4c,
-    type: 3}
   hvstUpgradeLevel: {fileID: 0}
   mortarUpgradeLevel: {fileID: 0}
   pulseDefUpgradeLevel: {fileID: 0}
@@ -179,8 +177,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1692cc51973ab7c4bb849fb4c44e3bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generatorCount: 0
-  generatorInterval: 5
   hoveredTile:
     powerSources: []
     resource: {fileID: 0}
@@ -222,10 +218,10 @@ MonoBehaviour:
   objWindowText: {fileID: 0}
   hudObjText: {fileID: 0}
   powerLow: {r: 1, g: 0, b: 0, a: 0.3137255}
-  powerMedium: {r: 1, g: 0.78683865, b: 0, a: 0.3137255}
-  powerHigh: {r: 0.122219995, g: 0.582, b: 0.20078997, a: 0.3137255}
-  powerMax: {r: 0.16620678, g: 0.7830188, b: 0.27217957, a: 0.3137255}
-  powerCurrent: {r: 0.16620678, g: 0.7830188, b: 0.27217957, a: 0.3137255}
+  powerMedium: {r: 1, g: 0.3019608, b: 0, a: 0.3137255}
+  powerHigh: {r: 0, g: 0.19607843, b: 0, a: 0.3137255}
+  powerMax: {r: 0, g: 0.5137255, b: 0, a: 0.3137255}
+  powerCurrent: {r: 0, g: 0.5137255, b: 0, a: 0.3137255}
   objectiveProceedCanvas: {fileID: 0}
   objectiveButtonBG: {fileID: 0}
   objectiveButton: {fileID: 0}
@@ -239,6 +235,8 @@ MonoBehaviour:
   countdownSlider: {fileID: 0}
   countdownText: {fileID: 0}
   abilityUnlockCanvas: {fileID: 0}
+  abilityUnlockBG: {fileID: 0}
+  proceedArrows: {fileID: 0}
   abilityImage: {fileID: 0}
   abilitySprites:
   - {fileID: 21300000, guid: 8d0eb468eeb398742ad01eafc8675dbe, type: 3}
@@ -348,6 +346,7 @@ MonoBehaviour:
   abilityMenu: {fileID: 0}
   abilitySelectorRadialMenu: {fileID: 0}
   uiLerpTarget: {fileID: 0}
+  tutProgressSlider: {fileID: 0}
   decalMinLerp: 1.5
   decalMaxLerp: 3
   batteryIconMinLerp: 0.5
@@ -446,19 +445,39 @@ MonoBehaviour:
   surroundingHubRange: 9
   fogAccelerates: 0
   fogFrozen: 0
-  maxFogSpheresCount: 3
+  maxFogSpheresCount: 0
   fogGrowth: 10
   fogSpillThreshold: 50
   fogSphereSpillMultiplier: 8
-  fogGrowthEasy: 10
-  fogGrowthMedium: 25
-  fogGrowthHard: 50
-  fogSphereEasyMaxHealth: 100
-  fogSphereMediumMaxHealth: 150
-  fogSphereHardMaxHealth: 200
-  fogSphereEasyMaxSizeScale: 2.3
-  fogSphereMediumMaxSizeScale: 3.45
-  fogSphereHardMaxSizeScale: 4.6
+  earlyGameFogGrowth: 10
+  midGameFogGrowth: 25
+  lateGameFogGrowth: 50
+  earlyGameMaxFogSphereHealth: 100
+  midGameMaxFogSphereHealth: 150
+  lateGameMaxFogSphereHealth: 200
+  chillMultipliers:
+    fogDamageMultiplier: 0.5
+    earlyGameGrowthMultiplier: 0.5
+    midGameGrowthMultiplier: 0.5
+    lateGameGrowthMultiplier: 0.5
+  easyMultipliers:
+    fogDamageMultiplier: 0.7
+    earlyGameGrowthMultiplier: 0.5
+    midGameGrowthMultiplier: 0.5
+    lateGameGrowthMultiplier: 0.5
+  normalMultipliers:
+    fogDamageMultiplier: 1
+    earlyGameGrowthMultiplier: 1
+    midGameGrowthMultiplier: 1
+    lateGameGrowthMultiplier: 1
+  hardMultipliers:
+    fogDamageMultiplier: 2
+    earlyGameGrowthMultiplier: 2
+    midGameGrowthMultiplier: 2
+    lateGameGrowthMultiplier: 2
+  earlyGameMaxFogSphereSize: 2.3
+  midGameMaxFogSphereSize: 3.45
+  lateGameMaxFogSphereSize: 4.6
   fogSphereMinHealth: 0.001
   fogUnitMinHealth: 0.001
   fogUnitMaxHealth: 100

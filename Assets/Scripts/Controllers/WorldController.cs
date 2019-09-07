@@ -264,6 +264,7 @@ public class WorldController : MonoBehaviour
         {
             TileData tileData = GetTileAt(tileBlock.transform.position);
             tileData.buildingChecks.unBuildable = true;
+            
         }
     }
 
@@ -691,6 +692,12 @@ public class WorldController : MonoBehaviour
                         MeshRenderer mesh = tile.plane.GetComponent<MeshRenderer>();
                         mesh.material = collectibleTile;
                     }
+                    /*
+                    if (tile == WorldController.Instance.GetTileAt(36,34))
+                    {
+                        Destroy(tile.plane);
+                    }
+                    */
                 }
             }
 

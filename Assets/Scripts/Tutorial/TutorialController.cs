@@ -14,8 +14,8 @@ public enum TutorialStage
 {
     None,
     ExplainSituation,
-    ExplainMinerals,
     CameraControls,
+    ExplainMinerals,
     BuildHarvesters,
     BuildExtender,
     BuildHarvestersExtended,
@@ -321,12 +321,12 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.ExplainSituation:
                 ExplainSituation();
                 break;
-            case TutorialStage.ExplainMinerals:
-                ExplainMinerals();
-                break;
             case TutorialStage.CameraControls:
                 CameraControls();
                 break;
+            //case TutorialStage.ExplainMinerals:
+            //    ExplainMinerals();
+            //    break;
             case TutorialStage.BuildHarvesters:
                 BuildHarvesters();
                 break;
@@ -399,7 +399,7 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    stage = TutorialStage.ExplainMinerals;
+                    stage = TutorialStage.CameraControls;
                     ResetSubStage();
                     tutProgressSlider.value++;
                 }
@@ -408,33 +408,6 @@ public class TutorialController : DialogueBoxController
             default:
                 SendDialogue("error", 1);
                 Debug.Log("Inaccurate sub stage");
-                break;
-        }
-    }
-
-    //Nexy pans to a mineral deposit and explains it to the player
-    private void ExplainMinerals()
-    {
-        switch (subStage)
-        {
-            case 1:
-                cameraController.MovementEnabled = false;
-                SendDialogue("explain minerals", 1);
-                mineralDepositCamera.gameObject.SetActive(true);
-                break;
-            case 2:
-                if (dialogueRead)
-                {
-                    mineralDepositCamera.gameObject.SetActive(false);
-                    DismissDialogue();
-                }
-
-                break;
-            case 3:
-                stage = TutorialStage.CameraControls;
-                cameraController.MovementEnabled = true;
-                ResetSubStage();
-                tutProgressSlider.value++;
                 break;
         }
     }
@@ -521,6 +494,34 @@ public class TutorialController : DialogueBoxController
                 break;
         }
     }
+
+    //Nexy pans to a mineral deposit and explains it to the player
+    //private void ExplainMinerals()
+    //{
+    //    switch (subStage)
+    //    {
+    //        case 1:
+    //            cameraController.MovementEnabled = false;
+    //            SendDialogue("explain minerals", 1);
+    //            mineralDepositCamera.gameObject.SetActive(true);
+    //            break;
+    //        case 2:
+    //            if (dialogueRead)
+    //            {
+    //                mineralDepositCamera.gameObject.SetActive(false);
+    //                DismissDialogue();
+    //            }
+
+    //            break;
+    //        case 3:
+    //            stage = TutorialStage.BuildHarvesters;
+    //            currentlyBuilding = BuildingType.Harvester;
+    //            cameraController.MovementEnabled = true;
+    //            ResetSubStage();
+    //            tutProgressSlider.value++;
+    //            break;
+    //    }
+    //}
 
     //Player learns about and builds a harvester
     private void BuildHarvesters()
@@ -1146,23 +1147,24 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.SonarActivated;
                 SendDialogue("explain abilities", 1);
                 break;
+            //case 14:
+            //    if (dialogueRead)
+            //    {
+            //        DismissDialogue();
+            //    }
+
+            //    break;
+            //case 15:
+            //    SendDialogue("explain thruster", 1);
+            //    artilleryCamera.gameObject.SetActive(false);
+            //    thrusterCamera.gameObject.SetActive(true);
+            //    break;
             case 14:
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                }
-
-                break;
-            case 15:
-                SendDialogue("explain thruster", 1);
-                artilleryCamera.gameObject.SetActive(false);
-                thrusterCamera.gameObject.SetActive(true);
-                break;
-            case 16:
-                if (dialogueRead)
-                {
-                    DismissDialogue();
-                    thrusterCamera.gameObject.SetActive(false);
+                    //thrusterCamera.gameObject.SetActive(false);
+                    artilleryCamera.gameObject.SetActive(false);
                     cameraController.MovementEnabled = true;
                     stage = TutorialStage.BuildExtenderInFog;
                     currentlyBuilding = BuildingType.Extender;
@@ -1683,7 +1685,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildMoreGenerators:
                 return tile.Resource == null;
             case TutorialStage.CollectSonar:
-                return false;
+                return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.BuildExtenderInFog:
                 return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
             case TutorialStage.CollectMinerals:
@@ -1725,6 +1727,9 @@ public class TutorialController : DialogueBoxController
                     return button == ButtonType.Extender 
                            || button == ButtonType.Harvester 
                            || button == ButtonType.Generator 
+                           || button == ButtonType.Destroy;
+                case TutorialStage.CollectSonar:
+                    return button == ButtonType.Extender
                            || button == ButtonType.Destroy;
                 case TutorialStage.BuildPulseDefence:
                     return (button == ButtonType.FogRepeller && lastTileChecked == pulseDefenceLandmark.Location) 
