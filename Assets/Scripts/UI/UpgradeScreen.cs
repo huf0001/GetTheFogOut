@@ -33,6 +33,7 @@ public class UpgradeScreen : MonoBehaviour
 
     private void Start()
     {
+        upgradedButton = new Color32(0, 150, 247, 255);
         foreach (UpgradeCost uc in upgradeCosts)
         {
             uc.textbox.text = $"<line-height=200%>{uc.upgrade.cost.ToString()} <size=200%><sprite=\"all_icons\" index=2>";

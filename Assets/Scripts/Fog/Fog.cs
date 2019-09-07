@@ -66,7 +66,7 @@ public class Fog : MonoBehaviour
 
     [SerializeField] private Transform fogSphereInstantiationPoint;
     [SerializeField] private GameObject fogSphereSpawnPointsParent;
-    [SerializeField] private bool validateFogSphereSpawnPoints;
+    //[SerializeField] private bool validateFogSphereSpawnPoints;
 
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private Difficulty difficulty;
@@ -389,44 +389,44 @@ public class Fog : MonoBehaviour
         }
 
         //Check if fog sphere spawn points are okay
-        if (validateFogSphereSpawnPoints)
-        {
-            foreach (Transform sp in fogSphereSpawnPoints)
-            {
-                Vector3 pos = sp.position;
-                Debug.Log($"Checking fog sphere spawn point at {pos}.");
+        //if (validateFogSphereSpawnPoints)
+        //{
+        //    foreach (Transform sp in fogSphereSpawnPoints)
+        //    {
+        //        Vector3 pos = sp.position;
+        //        Debug.Log($"Checking fog sphere spawn point at {pos}.");
 
-                if (!WorldController.Instance.TileExistsAt(pos))
-                {
-                    Debug.Log($"Cannot have a fog sphere spawn point at {pos}; there's no tile there.");
-                    continue;
-                }
+        //        if (!WorldController.Instance.TileExistsAt(pos))
+        //        {
+        //            Debug.Log($"Cannot have a fog sphere spawn point at {pos}; there's no tile there.");
+        //            continue;
+        //        }
 
-                TileData t = WorldController.Instance.GetTileAt(sp.position);
+        //        TileData t = WorldController.Instance.GetTileAt(sp.position);
 
-                if (t.buildingChecks.obstacle)
-                {
-                    Debug.Log($"Cannot have a fog sphere spawn point at {pos}; the tile there is an obstacle.");
-                    continue;
-                }
-                else if (t.FogUnit == null)
-                {
-                    Debug.Log(
-                        $"Cannot have a fog sphere spawn point at {pos}; the fog unit for the corresponding tile is null.");
-                    continue;
-                }
+        //        if (t.buildingChecks.obstacle)
+        //        {
+        //            Debug.Log($"Cannot have a fog sphere spawn point at {pos}; the tile there is an obstacle.");
+        //            continue;
+        //        }
+        //        else if (t.FogUnit == null)
+        //        {
+        //            Debug.Log(
+        //                $"Cannot have a fog sphere spawn point at {pos}; the fog unit for the corresponding tile is null.");
+        //            continue;
+        //        }
 
-                FogSphere s = GetFogSphere();
-                pos = t.FogUnit.transform.position;
-                pos.y = hubPosition.y;
-                s.NavMeshAgent.enabled = true;
-                s.NavMeshAgent.Warp(pos);
-                s.NavMeshAgent.destination = hubPosition;
+        //        FogSphere s = GetFogSphere();
+        //        pos = t.FogUnit.transform.position;
+        //        pos.y = hubPosition.y;
+        //        s.NavMeshAgent.enabled = true;
+        //        s.NavMeshAgent.Warp(pos);
+        //        s.NavMeshAgent.destination = hubPosition;
 
-                Debug.Log($"Fog sphere spawn point at {sp.position} is okay.");
-                ReturnFogSphereToPool(s);
-            }
-        }
+        //        Debug.Log($"Fog sphere spawn point at {sp.position} is okay.");
+        //        ReturnFogSphereToPool(s);
+        //    }
+        //}
     }
 
     //Spawning Methods - Fog Units-------------------------------------------------------------------------------------------------------------------

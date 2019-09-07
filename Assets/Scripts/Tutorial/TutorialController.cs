@@ -88,7 +88,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark mortarLandmark;
     [SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
-    [SerializeField] private GameObject arrowToTargetPrefab;
+    [SerializeField] private DamageIndicator arrowToTargetPrefab;
 
     [Header("UI Elements")]
     [SerializeField] private CameraInput wKey;
@@ -189,6 +189,8 @@ public class TutorialController : DialogueBoxController
     //Ensures singleton-ness
     private void Awake()
     {
+        objectiveCompletePrefab = new GameObject();
+
         if (Instance != null)
         {
             Debug.LogError("There should never be 2 or more tutorial managers.");
@@ -206,6 +208,41 @@ public class TutorialController : DialogueBoxController
         {
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         }
+
+        //mineralDepositCamera = GameObject.Find("CM Minerals Camera").GetComponent<CinemachineVirtualCamera>(); ;
+        //sonarCamera = GameObject.Find("CM SonarCamera").GetComponent<CinemachineVirtualCamera>(); ;
+        //artilleryCamera = GameObject.Find("CM Artillery Camera").GetComponent<CinemachineVirtualCamera>(); ;
+        //thrusterCamera = GameObject.Find("CM Thruster Camera").GetComponent<CinemachineVirtualCamera>(); ;
+
+        wKey = GameObject.Find("WKey").GetComponent<CameraInput>();
+        aKey = GameObject.Find("AKey").GetComponent<CameraInput>();
+        sKey = GameObject.Find("SKey").GetComponent<CameraInput>();
+        dKey = GameObject.Find("DKey").GetComponent<CameraInput>();
+        zoomIn = GameObject.Find("ZoomInInput").GetComponent<CameraInput>();
+        zoomOut = GameObject.Find("ZoomOutInput").GetComponent<CameraInput>();
+
+        abilitySelectorRadialMenu = new RadialMenu();
+
+        minHarvesterColour = new Color32(224, 145, 0, 0);
+        maxHarvesterColour = new Color32(255, 203, 64, 255);
+        minPowerBuildingColour = new Color32(0, 166, 81, 0);
+        maxPowerBuildingColour = new Color32(49, 255, 0, 255);
+        minDefencesColour = new Color32(113, 66, 236, 0);
+        maxDefencesColour = new Color32(175, 78, 255, 255);
+        batteryEmptyColour = new Color32(255, 0, 0, 255);
+        batteryLowColour = new Color32(255, 140, 0, 255);
+        batteryHalfColour = new Color32(255, 255, 0, 255);
+        batteryHighColour = new Color32(191, 255, 0, 255);
+        batteryFullColour = new Color32(0, 255, 0, 255);
+        abilityMenuColour = new Color32(77, 210, 255, 255);
+        minSonarColour = new Color32(255, 255, 255, 255);
+        maxSonarColour = new Color32(241, 148, 12, 255);
+
+        arrowToTargetPrefab = new DamageIndicator();
+
+        decalMinLerp = 1.5f;
+        decalMaxLerp = 3f;
+        batteryIconMinLerp = 0.5f;
 
         tutProgressSlider.maxValue = 12;
     }

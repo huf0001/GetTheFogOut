@@ -3733,6 +3733,9 @@ MonoBehaviour:
   m_Script: {fileID: 1112543076}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusOffset: 0
+  m_Profile: {fileID: 0}
 --- !u!1001 &217810639
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26441,6 +26444,12 @@ PrefabInstance:
       propertyPath: tutProgressSlider
       value: 
       objectReference: {fileID: 1094405326}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: arrowToTargetPrefab
+      value: 
+      objectReference: {fileID: 3286938245972313546, guid: d157f3b0eefcb6743985ca736438dcff,
+        type: 3}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: endGame
