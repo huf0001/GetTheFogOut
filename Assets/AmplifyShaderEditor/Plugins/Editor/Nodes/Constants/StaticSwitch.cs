@@ -641,6 +641,7 @@ namespace AmplifyShaderEditor
 					if( GUI.Button( m_varRect, GUIContent.none, UIUtils.GraphButton ) )
 					{
 						CurrentSelectedInput = CurrentSelectedInput == 1 ? 0 : 1;
+						PreviewIsDirty = true;
 						m_editing = false;
 						if( m_materialMode )
 							m_requireMaterialUpdate = true;
@@ -657,6 +658,7 @@ namespace AmplifyShaderEditor
 					CurrentSelectedInput = EditorGUIPopup( m_varRect, CurrentSelectedInput, m_keywordEnumList, UIUtils.GraphDropDown );
 					if( EditorGUI.EndChangeCheck() )
 					{
+						PreviewIsDirty = true;
 						m_editing = false;
 						if( m_materialMode )
 							m_requireMaterialUpdate = true;

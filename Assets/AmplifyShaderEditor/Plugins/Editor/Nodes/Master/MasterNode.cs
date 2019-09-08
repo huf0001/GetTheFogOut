@@ -221,16 +221,47 @@ namespace AmplifyShaderEditor
 			}
 		}
 
-		protected void DrawCustomInspector()
+		protected void DrawCustomInspector( bool dropdown )
 		{
 			EditorGUILayout.BeginHorizontal();
 			m_customInspectorName = EditorGUILayoutTextField( CustomInspectorStr, m_customInspectorName );
-			if( GUILayoutButton( string.Empty, UIUtils.GetCustomStyle( CustomStyle.ResetToDefaultInspectorButton ), GUILayout.Width( 15 ), GUILayout.Height( 15 ) ) )
+			if( !dropdown )
 			{
-				GUIUtility.keyboardControl = 0;
-				m_customInspectorName = Constants.DefaultCustomInspector;
+				if( GUILayoutButton( string.Empty, UIUtils.GetCustomStyle( CustomStyle.ResetToDefaultInspectorButton ), GUILayout.Width( 15 ), GUILayout.Height( 15 ) ) )
+				{
+					GUIUtility.keyboardControl = 0;
+					m_customInspectorName = Constants.DefaultCustomInspector;
+				}
+			}
+			else
+			{
+				if( GUILayoutButton( string.Empty, UIUtils.InspectorPopdropdownFallback, GUILayout.Width( 17 ), GUILayout.Height( 19 ) ) )
+				{
+					EditorGUI.FocusTextInControl( null );
+					GUI.FocusControl( null );
+
+					GenericMenu menu = new GenericMenu();
+					AddMenuItem( menu, Constants.DefaultCustomInspector );
+					#if UNITY_2018_3_OR_NEWER
+					if( ASEPackageManagerHelper.CurrentHDVersion > ASESRPVersions.ASE_SRP_6_9_1 )
+						AddMenuItem( menu, "UnityEditor.Rendering.HighDefinition.HDLitGUI" );
+					else
+					#endif
+						AddMenuItem( menu, "UnityEditor.Experimental.Rendering.HDPipeline.HDLitGUI" );
+					menu.ShowAsContext();
+				}
 			}
 			EditorGUILayout.EndHorizontal();
+		}
+
+		private void AddMenuItem( GenericMenu menu, string newClass )
+		{
+			menu.AddItem( new GUIContent( newClass ), m_customInspectorName.Equals( newClass ), OnSelection, newClass );
+		}
+
+		private void OnSelection( object newClass )
+		{
+			m_customInspectorName = (string)newClass;
 		}
 
 		protected void DrawShaderName()
@@ -665,6 +696,19 @@ namespace AmplifyShaderEditor
 
 			ReorderList( ref nodes );
 			//RecursiveLog();
+		}
+
+		private void RecursiveLog()
+		{
+			List<PropertyNode> nodes = UIUtils.PropertyNodesList();
+			nodes.Sort( ( x, y ) => { return x.OrderIndex.CompareTo( y.OrderIndex ); } );
+			for( int i = 0; i < nodes.Count; i++ )
+			{
+				if( ( nodes[ i ] is ReordenatorNode ) )
+					( nodes[ i ] as ReordenatorNode ).RecursiveLog();
+				else
+					Debug.Log( nodes[ i ].OrderIndex + " " + nodes[ i ].PropertyName );
+			}
 		}
 
 		private void ReorderList( ref List<PropertyNode> nodes )

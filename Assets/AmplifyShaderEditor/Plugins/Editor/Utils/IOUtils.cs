@@ -87,8 +87,8 @@ namespace AmplifyShaderEditor
 		public static readonly string LWSRPInstancedPropertiesElement = "UNITY_DEFINE_INSTANCED_PROP({0}, {1})";
 		public static readonly string LWSRPInstancedPropertiesData = "UNITY_ACCESS_INSTANCED_PROP({0},{1})";
 
-		public static readonly string SRPInstancedPropertiesBegin = "CBUFFER_START({0})";
-		public static readonly string SRPInstancedPropertiesEnd = "CBUFFER_END";
+		public static readonly string SRPCBufferPropertiesBegin = "CBUFFER_START( UnityPerMaterial )";//"CBUFFER_START({0})";
+		public static readonly string SRPCBufferPropertiesEnd = "CBUFFER_END";
 
 
 		public static readonly string InstancedPropertiesBeginTabs		= "\t\t"+ InstancedPropertiesBegin + "\n";

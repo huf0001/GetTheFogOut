@@ -353,6 +353,7 @@ namespace AmplifyShaderEditor
 		public static readonly string TemplatePassTagPattern = @"\s\/\*ase_pass[:\*]+";
 		public static readonly string TemplatePropertyTag = "/*ase_props*/\n";
 		public static readonly string TemplateGlobalsTag = "/*ase_globals*/\n";
+		public static readonly string TemplateSRPBatcherTag = "/*ase_srp_batcher*/\n";
 		public static readonly string TemplateInterpolatorBeginTag = "/*ase_interp(";
 		public static readonly string TemplateVertexDataTag = "/*ase_vdata:";
 
@@ -394,6 +395,7 @@ namespace AmplifyShaderEditor
 
 		public static readonly TemplateTagData[] CommonTags = { new TemplateTagData( TemplatePropertyTag,true),
 																new TemplateTagData( TemplateGlobalsTag,true),
+																new TemplateTagData( TemplateSRPBatcherTag,true),
 																new TemplateTagData( TemplateFunctionsTag,true),
 																//new TemplateTagData( TemplateTagsTag,false," "),
 																new TemplateTagData( TemplatePragmaBeforeTag,true),
@@ -415,17 +417,18 @@ namespace AmplifyShaderEditor
 
 		public static Dictionary<string, string> OfficialTemplates = new Dictionary<string, string>()
 		{
-			{ "0770190933193b94aaa3065e307002fa","Unlit"},
-			{ "32139be9c1eb75640a847f011acf3bcf","Post-Processing Stack"},
-			{ "6ce779933eb99f049b78d6163735e06f","Custom RT Init"},
-			{ "32120270d1b3a8746af2aca8bc749736","Custom RT Update"},
-			{ LightweigthPBRGUID,"Lightweight PBR"},
-			{ LightweigthUnlitGUID,"Lightweight Unlit"},
-			{ HDLitGUID,"HD Lit"},
-			{ HDPBRGUID,"HD PBR"},
-			{ HDUnlitGUID,"HD Unlit"},
+			{ "0770190933193b94aaa3065e307002fa","Legacy/Unlit"},
+			{ "32139be9c1eb75640a847f011acf3bcf","Legacy/Post-Processing Stack"},
+			{ "6ce779933eb99f049b78d6163735e06f","Legacy/Custom RT Init"},
+			{ "32120270d1b3a8746af2aca8bc749736","Legacy/Custom RT Update"},
+			{ LightweigthPBRGUID,"LW/PBR"},
+			{ LightweigthUnlitGUID,"LW/Unlit"},
+			{ "53b46d85872c5b24c8f4f0a1c3fe4c87","HD/Lit"},
+			{ HDLitGUID,"Deprecated/HD/Lit"},
+			{ HDPBRGUID,"Deprecated/HD/PBR"},
+			{ HDUnlitGUID,"Deprecated/HD/Unlit"},
 			{ "c71b220b631b6344493ea3cf87110c93","Legacy/Post Process" },
-			{ "6e114a916ca3e4b4bb51972669d463bf","Legacy/Default Unlit" },
+			{ "6e114a916ca3e4b4bb51972669d463bf","Deprecated/Legacy/Default Unlit" },
 			{ "5056123faa0c79b47ab6ad7e8bf059a4","Legacy/Default UI" },
 			{ "899e609c083c74c4ca567477c39edef0","Legacy/Unlit Lightmap" },
 			{ "0f8ba0101102bb14ebf021ddadce9b49","Legacy/Default Sprites" },
