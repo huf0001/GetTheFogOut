@@ -3748,9 +3748,6 @@ MonoBehaviour:
   m_Script: {fileID: 844769575}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FocusTracksTarget: 0
-  m_FocusOffset: 0
-  m_Profile: {fileID: 0}
 --- !u!1001 &217810639
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14530,9 +14527,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
+      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 1296432935}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[0].dialogue
+      value: I have scanned the planet in hopes of finding something of use. The planet
+        is full of a resource called {MINERALS}. These will be key to escaping here
+        alive.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: dialogue.Array.data[3].expressionDialoguePairs.Array.data[0].dialogue
+      value: In order to survive, you will need to learn how to use me. Press the
+        WASD keys to move me around, or press and hold the RMB while moving the mouse.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[1].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[1].dialogue
+      value: Your ship comes equipped with a blueprint for a {HARVESTER}, which you
+        can use to collect the {MINERALS}. I will show you where to place one.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: dialogue.Array.data[6].expressionDialoguePairs.Array.data[0].dialogue
+      value: Now that the menu is open, you can click on the {HARVESTER} icon.
+      objectReference: {fileID: 0}
     - target: {fileID: 3446900964976330014, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_LocalPosition.z
