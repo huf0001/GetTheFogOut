@@ -15,7 +15,6 @@ public enum TutorialStage
     None,
     ExplainSituation,
     CameraControls,
-    ExplainMinerals,
     BuildHarvesters,
     BuildExtender,
     BuildHarvestersExtended,
@@ -293,9 +292,6 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.CameraControls:
                 CameraControls();
                 break;
-            //case TutorialStage.ExplainMinerals:
-            //    ExplainMinerals();
-            //    break;
             case TutorialStage.BuildHarvesters:
                 BuildHarvesters();
                 break;
@@ -1320,22 +1316,39 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                     ActivateTarget(mortarLandmark);
                 }
+                else if (tileClicked)       //If player ignores dialogue and speedruns
+                {
+                    DismissMouse();
+                    GoToSubStage(5);
+                }
 
                 break;
             case 3:
+                if (dialogueRead)           //If player ignores dialogue, speedruns, then closes the build menu before building the thing
+                {
+                    DismissDialogue();
+                }
+                else if (tileClicked)
+                {
+                    DismissMouse();
+                    GoToSubStage(5);
+                }
+
+                break;
+            case 4:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 4:
+            case 5:
                 DeactivateTarget();
                 ActivateUIColourLerpTarget(mortarHighlight, minDefencesColour, maxDefencesColour);
                 currentlyLerping = ButtonType.AirCannon;
                 IncrementSubStage();
                 break;
-            case 5:
+            case 6:
                 if (Hub.Instance.GetMortars().Count == 1)
                 {
                     IncrementSubStage();
@@ -1344,11 +1357,18 @@ public class TutorialController : DialogueBoxController
                 {
                     DeactivateUIColourLerpTarget();
                     GoToSubStage(3);
+
+                    if (mortarLandmark.Location != lastTileChecked)
+                    {
+                        mortarLandmark.Location = lastTileChecked;
+                        mortarLandmark.transform.position = lastTileChecked.Position;
+                    }
+
                     ActivateTarget(mortarLandmark);
                 }
 
                 break;
-            case 6:
+            case 7:
                 stage = TutorialStage.BuildPulseDefence;
                 currentlyBuilding = BuildingType.FogRepeller;
                 ResetSubStage();
@@ -1387,9 +1407,46 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                     ActivateTarget(pulseDefenceLandmark);
                 }
+                else if (tileClicked)       //If player ignores dialogue
+                {
+                    foreach (TileData t in lastTileChecked.AllAdjacentTiles)
+                    {
+                        if (t.FogUnitActive)
+                        {
+                            GoToSubStage(5);
+                            return;
+                        }
+
+                        foreach (TileData a in t.AllAdjacentTiles)
+                        {
+                            if (a.FogUnitActive)
+                            {
+                                GoToSubStage(5);
+                                return;
+                            }
+                        }
+                    }
+
+                    tileClicked = false;
+                }
 
                 break;
             case 3:
+                if (dialogueRead)           //If player ignores dialogue, goes to build, then closes build menu.
+                {
+                    DismissDialogue();
+                }
+                if (tileClicked && lastTileChecked == pulseDefenceLandmark.Location)
+                {
+                    GoToSubStage(5);
+                }
+                else
+                {
+                    tileClicked = false;
+                }
+
+                break;
+            case 4:
                 if (tileClicked && lastTileChecked == pulseDefenceLandmark.Location)
                 {
                     DismissMouse();
@@ -1400,13 +1457,13 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 4:
+            case 5:
                 DeactivateTarget();
                 ActivateUIColourLerpTarget(pulseDefenceHighlight, minDefencesColour, maxDefencesColour);
                 currentlyLerping = ButtonType.FogRepeller;
                 IncrementSubStage();
                 break;
-            case 5:
+            case 6:
                 if (Hub.Instance.GetPulseDefences().Count == 1)
                 {
                     stage = TutorialStage.DefenceActivation;
@@ -1421,6 +1478,13 @@ public class TutorialController : DialogueBoxController
                 {
                     DeactivateUIColourLerpTarget();
                     GoToSubStage(3);
+
+                    if (pulseDefenceLandmark.Location != lastTileChecked)
+                    {
+                        pulseDefenceLandmark.Location = lastTileChecked;
+                        pulseDefenceLandmark.transform.position = lastTileChecked.Position;
+                    }
+
                     ActivateTarget(pulseDefenceLandmark);
                 }
 
@@ -1490,7 +1554,6 @@ public class TutorialController : DialogueBoxController
                 tutProgressSlider.gameObject.SetActive(false);
                 ResetSubStage();
                 ObjectiveController.Instance.IncrementStage();
-                //FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
                 musicFMOD.StageTwoMusic();
                 break;
             default:
@@ -1710,6 +1773,7 @@ public class TutorialController : DialogueBoxController
     public bool TileAllowed(TileData tile)
     {
         lastTileChecked = tile;
+        bool tileOkay;
 
         if (!cameraController.FinishedOpeningCameraPan || (stage <= TutorialStage.CollectSonar && tile == sonarLandmarkTile))
         {
@@ -1727,15 +1791,9 @@ public class TutorialController : DialogueBoxController
                 {
                     return tile == currentTile;
                 }
-            case TutorialStage.BuildExtender:
-                if (subStage < 3)
-                {
-                    return tile.Resource == null && !tile.FogUnitActive;
-                }
-                else
-                {
-                    return tile == currentTile;
-                }
+
+            case TutorialStage.BuildHarvestersExtended:
+                return !tile.FogUnitActive;
             case TutorialStage.BuildGenerator:
                 if (subStage == 5)
                 {
@@ -1745,8 +1803,6 @@ public class TutorialController : DialogueBoxController
                 {
                     return tile == currentTile;
                 }
-            case TutorialStage.BuildHarvestersExtended:
-                return !tile.FogUnitActive;
             case TutorialStage.BuildMoreGenerators:
                 return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.CollectSonar:
@@ -1760,11 +1816,8 @@ public class TutorialController : DialogueBoxController
                 {
                     return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
                 }
-            case TutorialStage.CollectMinerals:
             case TutorialStage.BuildPulseDefence:
-            case TutorialStage.DefenceActivation:
-            case TutorialStage.BuildDefencesInRange:
-                bool tileOkay = !tile.FogUnitActive || tile.Building != null;
+                tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
 
                 if (!tileOkay && !aiText.Activated)
                 {
@@ -1775,9 +1828,29 @@ public class TutorialController : DialogueBoxController
                     subStage = 1;
                 }
 
-                if (tileOkay && stage == TutorialStage.BuildPulseDefence)
+                return tileOkay;
+            case TutorialStage.BuildExtender:
+            case TutorialStage.BuildMortar:
+                if (subStage < 3)
                 {
-                    return tile.Resource == null;
+                    return tile.Resource == null && !tile.FogUnitActive;
+                }
+                else
+                {
+                    return tile == currentTile;
+                }
+            case TutorialStage.CollectMinerals:
+            case TutorialStage.DefenceActivation:
+            case TutorialStage.BuildDefencesInRange:
+                tileOkay = !tile.FogUnitActive || tile.Building != null;
+
+                if (!tileOkay && !aiText.Activated)
+                {
+                    savedTutorialStage = stage;
+                    savedSubStage = subStage;
+
+                    stage = TutorialStage.DontBuildInFog;
+                    subStage = 1;
                 }
 
                 return tileOkay;
@@ -1809,7 +1882,7 @@ public class TutorialController : DialogueBoxController
                     return button == ButtonType.Extender
                            || button == ButtonType.Destroy;
                 case TutorialStage.BuildPulseDefence:
-                    return (button == ButtonType.FogRepeller && lastTileChecked == pulseDefenceLandmark.Location) 
+                    return (button == ButtonType.FogRepeller && subStage >= 5) 
                            || (button == ButtonType.Extender && lastTileChecked != pulseDefenceLandmark.Location) 
                            || button == ButtonType.Destroy;
                 case TutorialStage.DefenceActivation:
