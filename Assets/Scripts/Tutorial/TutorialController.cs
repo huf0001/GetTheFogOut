@@ -1201,42 +1201,70 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                     ActivateTarget(fogExtenderLandmark);
                 }
+                else if (lastTileChecked.FogUnitActive && tileClicked)
+                {
+                    DismissMouse();
+                    GoToSubStage(5);
+                }
 
                 break;
             case 3:
-                if (tileClicked)
+                if (dialogueRead)       //In case the player ignores the dialogue, but then opens and closes the build menu on a fog-covered tile
+                {
+                    DismissDialogue();
+                }
+                else if (lastTileChecked.FogUnitActive && tileClicked)
                 {
                     DeactivateTarget();
-                    DismissMouse();
-                    currentlyLerping = ButtonType.Extender;
+                    GoToSubStage(5);
                 }
 
                 break;
             case 4:
-                if (BuiltCurrentlyBuilding())
+                if (lastTileChecked.FogUnitActive && tileClicked)
                 {
-                    IncrementSubStage();
+                    DeactivateTarget();
+                    DismissMouse();
                 }
-                else if (buildMenuCanvasGroup.alpha == 0)
+
+                break;
+            case 5:
+                foreach (Relay e in ResourceController.Instance.Extenders)
+                {
+                    if (e.Location.FogUnitActive)
+                    {
+                        IncrementSubStage();
+                        return;
+                    }
+                }
+
+                if (lastTileChecked.FogUnitActive && buildMenuCanvasGroup.alpha == 0)
                 {
                     GoToSubStage(3);
+
+                    if (fogExtenderLandmark.Location != lastTileChecked)
+                    {
+                        fogExtenderLandmark.Location = lastTileChecked;
+                        fogExtenderLandmark.transform.position = lastTileChecked.Position;
+                    }
+
                     ActivateTarget(fogExtenderLandmark);
                 }
 
                 break;
 
-            case 5:
+            case 6:
                 foreach (Relay e in ResourceController.Instance.Extenders)
                 {
                     if (e.TakingDamage)
                     {
                         IncrementSubStage();
-                        break;
+                        return;
                     }
                 }
 
                 break;
-            case 6:
+            case 7:
                 stage = TutorialStage.BuildMortar;
                 currentlyBuilding = BuildingType.AirCannon;
                 currentlyLerping = ButtonType.None;
@@ -1704,7 +1732,14 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.CollectSonar:
                 return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.BuildExtenderInFog:
-                return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
+                if (subStage < 3)
+                {
+                    return tile.Resource == null;
+                }
+                else
+                {
+                    return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
+                }
             case TutorialStage.CollectMinerals:
             case TutorialStage.BuildPulseDefence:
             case TutorialStage.DefenceActivation:
@@ -1750,6 +1785,7 @@ public class TutorialController : DialogueBoxController
                            || button == ButtonType.Generator 
                            || button == ButtonType.Destroy;
                 case TutorialStage.CollectSonar:
+                case TutorialStage.BuildExtenderInFog:
                     return button == ButtonType.Extender
                            || button == ButtonType.Destroy;
                 case TutorialStage.BuildPulseDefence:
