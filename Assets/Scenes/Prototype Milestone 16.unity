@@ -14396,7 +14396,7 @@ PrefabInstance:
     - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
@@ -14406,15 +14406,14 @@ PrefabInstance:
     - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[0].dialogue
-      value: I have scanned the planet in hopes of finding something of use. The planet
-        is full of a resource called {MINERALS}. These will be key to escaping here
-        alive.
+      value: 'I have scanned the planet in hopes of finding something of use. The
+        planet is full of a resource called {MINERALS}. '
       objectReference: {fileID: 0}
     - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: dialogue.Array.data[3].expressionDialoguePairs.Array.data[0].dialogue
-      value: In order to survive, you will need to learn how to use me. Press the
-        WASD keys to move me around, or press and hold the RMB while moving the mouse.
+      value: Press the WASD keys to move me around, or press and hold the RMB while
+        moving the mouse.
       objectReference: {fileID: 0}
     - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
@@ -14424,13 +14423,36 @@ PrefabInstance:
     - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[1].dialogue
-      value: Your ship comes equipped with a blueprint for a {HARVESTER}, which you
-        can use to collect the {MINERALS}. I will show you where to place one.
+      value: These will be key to keeping us alive. Your ship comes equipped with
+        a blueprint for a {HARVESTER}.
       objectReference: {fileID: 0}
     - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: dialogue.Array.data[6].expressionDialoguePairs.Array.data[0].dialogue
-      value: Now that the menu is open, you can click on the {HARVESTER} icon.
+      value: Now that the building menu is open, click on the {HARVESTER} icon to
+        place one.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: dialogue.Array.data[1].expressionDialoguePairs.Array.data[0].dialogue
+      value: Hello! My name is Nexy, I'm your very own Nexus Drone. You are currently
+        viewing this disaster through my lens.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: dialogue.Array.data[1].expressionDialoguePairs.Array.data[1].dialogue
+      value: You will be controlling me via your ship. Let me teach you how to use
+        me.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[2].aiExpression
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4767305867422027972, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: dialogue.Array.data[5].expressionDialoguePairs.Array.data[2].dialogue
+      value: I will show you where to place one.
       objectReference: {fileID: 0}
     - target: {fileID: 712307568192493098, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
