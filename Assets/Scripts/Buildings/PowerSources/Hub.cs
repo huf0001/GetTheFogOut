@@ -57,7 +57,7 @@ public class Hub : PowerSource
         {
             ParticleSystem[] ps = Fires.GetComponentsInChildren<ParticleSystem>();
             // delay 6s - 100 particle so 60s (reparing time) = 1000 particles but because i roundtoint so it faster so 7s
-            if (delay(7))
+            if (delay(6))
             {
                 foreach (ParticleSystem p in ps)
                 {
@@ -65,7 +65,7 @@ public class Hub : PowerSource
                     if (pe.maxParticles > 0)
                     {
                         
-                        pe.maxParticles -= 111  ;
+                        pe.maxParticles -= 95  ;
                     }
                     if (pe.maxParticles <= 1)  // particle left
                     {
