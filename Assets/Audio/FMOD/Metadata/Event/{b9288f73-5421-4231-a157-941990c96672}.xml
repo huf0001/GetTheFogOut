@@ -92,12 +92,14 @@
 		<property name="length">
 			<value>0.1875</value>
 		</property>
+		<property name="playlistMode">
+			<value>1</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{cc487c48-070f-4e69-a2f3-21901e8998b8}</destination>
 		</relationship>
 		<relationship name="sounds">
 			<destination>{b8f1864b-278b-44a6-bf02-cf0ebf0b7637}</destination>
-			<destination>{8dd6018f-70ec-4f57-8c78-af0e61bbafed}</destination>
 			<destination>{07b2181b-ec05-4fee-9baa-59ba4ee94170}</destination>
 		</relationship>
 	</object>
@@ -133,11 +135,6 @@
 	<object class="SingleSound" id="{b8f1864b-278b-44a6-bf02-cf0ebf0b7637}">
 		<relationship name="audioFile">
 			<destination>{32c4a0e7-c0bc-49ef-ba7c-1db94da6595b}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{8dd6018f-70ec-4f57-8c78-af0e61bbafed}">
-		<relationship name="audioFile">
-			<destination>{54bc98a3-ddf2-42be-bf72-20cd13346dfe}</destination>
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{07b2181b-ec05-4fee-9baa-59ba4ee94170}">
