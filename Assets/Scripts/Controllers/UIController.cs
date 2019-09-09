@@ -599,7 +599,6 @@ public class UIController : MonoBehaviour
         {
             case TutorialStage.None:
             case TutorialStage.ExplainSituation:
-            case TutorialStage.ExplainMinerals:
             case TutorialStage.WaitingForPowerDrop:
             case TutorialStage.SonarActivated:
                 hudObjText.text = "<b>Complete the Tutorial</b>";
