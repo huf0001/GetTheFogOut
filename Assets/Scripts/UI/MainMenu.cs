@@ -46,7 +46,6 @@ public class MainMenu : MonoBehaviour
 
     public void ToggleTutorial(bool tutorialOn)
     {
-        // Play Toggle Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Toggle", GetComponent<Transform>().position);
         skipTutorial = !tutorialOn;
         if (!skipTutorial)
         {
@@ -67,7 +66,6 @@ public class MainMenu : MonoBehaviour
 
     public void OpenMenu()
     {
-        // Play Open Difficulty Menu Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-OpenDifficulty", GetComponent<Transform>().position);
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
         StartCoroutine(OpenDifficultyMenu());
     }
@@ -89,7 +87,6 @@ public class MainMenu : MonoBehaviour
 
     public void CloseMenu()
     {
-        // Play Close Difficulty Menu Sound effect here // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-CloseDifficulty", GetComponent<Transform>().position);
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", GetComponent<Transform>().position);
         StartCoroutine(CloseDifficultyMenu());
     }
