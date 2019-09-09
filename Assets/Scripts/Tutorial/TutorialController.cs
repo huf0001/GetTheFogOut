@@ -208,6 +208,8 @@ public class TutorialController : DialogueBoxController
         }
 
         tutProgressSlider.maxValue = 12;
+
+        arrowToTarget = Instantiate(arrowToTargetPrefab, GameObject.Find("Warnings").transform).GetComponent<DamageIndicator>();
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
@@ -216,6 +218,10 @@ public class TutorialController : DialogueBoxController
         //Setup fog
         Fog.Instance.enabled = true;
         Fog.Instance.SpawnStartingFog();
+
+        arrowToTarget.Colour = Color.cyan;
+        arrowToTarget.Locatable = buildingTarget;
+        arrowToTarget.On = false;
 
         if (skipTutorial)
         {
@@ -509,7 +515,6 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)       //Player hasn't waited for tutorial help, is going ahead on their own
                 {
-                    DismissMouse();
                     ActivateUIColourLerpTarget(harvesterHighlight, minHarvesterColour, maxHarvesterColour);
                     GoToSubStage(5);
                 }
@@ -629,6 +634,7 @@ public class TutorialController : DialogueBoxController
             case 1:
                 SendDialogue("build extender target", 1);
                 UIController.instance.UpdateObjectiveText(stage);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
@@ -642,38 +648,55 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                     ActivateTarget(extenderLandmark);
                 }
+                else if (tileClicked)       //Handles if player ignores dialogue and goes straight to building the extender
+                {
+                    GoToSubStage(5);
+                }
 
                 break;
             case 3:
-                if (tileClicked)
+                if (dialogueRead)           //Handles if player opens then closes build menu; they may have not read the dialogue. Also separates from previous sub stage to ensure accurate tile availability in case the player ignored dialogue originally
                 {
-                    DismissMouse();
+                    DismissDialogue();
+                }
+                else if (tileClicked)      
+                {
+                    DeactivateTarget();
+                    GoToSubStage(5);
                 }
 
                 break;
             case 4:
-                DeactivateTarget();
+                if (tileClicked)
+                {
+                    DeactivateTarget();
+                    DismissMouse();
+                }
+
+                break;
+            case 5:
                 ActivateUIColourLerpTarget(extenderHighlight, minPowerBuildingColour, maxPowerBuildingColour);
                 currentlyLerping = ButtonType.Extender;
                 IncrementSubStage();
                 break;
-            case 5:
-                if (BuiltCurrentlyBuilding())
+            case 6:
+                if (ResourceController.Instance.Extenders.Count == 1)
                 {
                     IncrementSubStage();
                 }
                 else if (buildMenuCanvasGroup.alpha == 0)
                 {
-                    GoToSubStage(3);
+                    GoToSubStage(3);    //2 rather than 3 in case the player hasn't read any of this stage's dialogue
                     DeactivateUIColourLerpTarget();
                     ActivateTarget(extenderLandmark);
                 }
 
                 break;
-            case 6:
+            case 7:
                 //Turn off UI element prompting player to build a relay on the prompted tile
                 stage = TutorialStage.BuildHarvestersExtended;
                 currentlyBuilding = BuildingType.Harvester;
+                currentlyLerping = ButtonType.None;
                 ResetSubStage();
                 DeactivateTarget();
                 DeactivateUIColourLerpTarget();
@@ -723,17 +746,18 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                currentlyLerping = ButtonType.Harvester;
-                IncrementSubStage();
-                break;
-            case 5:
                 if (ResourceController.Instance.Harvesters.Count == builtHarvestersExtendedGoal)
                 {
                     IncrementSubStage();
                 }
+                else if (buildMenuCanvasGroup.alpha == 0)
+                {
+                    GoToSubStage(2);
+                    ActivateMouse();
+                }
 
                 break;
-            case 6:
+            case 5:
                 stage = TutorialStage.WaitingForPowerDrop;
                 currentlyBuilding = BuildingType.Generator;
                 ResetSubStage();
@@ -790,6 +814,7 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.BuildGenerator;
                 UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build generator target", 1);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
@@ -803,10 +828,14 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                     ActivateTarget(generatorLandmark);
                 }
+                else if (tileClicked)       //If the player ignores the dialogue
+                {
+                    GoToSubStage(8);
+                }
 
                 break;
             case 6:
-                if (dialogueRead)
+                if (dialogueRead)           //If the player opens and closes the build menu; they may not have read the dialogue
                 {
                     DismissDialogue();
                 }
@@ -834,7 +863,7 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissDialogue();
                 }
-                else if (BuiltCurrentlyBuilding())
+                else if (ResourceController.Instance.Generators.Count == 1)
                 {
                     GoToSubStage(11);
                 }
@@ -847,7 +876,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 10:
-                if (BuiltCurrentlyBuilding())
+                if (ResourceController.Instance.Generators.Count == 1)
                 {
                     IncrementSubStage();
                 }
@@ -1644,16 +1673,34 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildHarvesters:
                 if (subStage < 3 || subStage > 6)
                 {
-                    return tile.Resource != null;
+                    return tile.Resource != null && !tile.FogUnitActive;
+                }
+                else
+                {
+                    return tile == currentTile;
+                }
+            case TutorialStage.BuildExtender:
+                if (subStage < 3)
+                {
+                    return tile.Resource == null && !tile.FogUnitActive;
+                }
+                else
+                {
+                    return tile == currentTile;
+                }
+            case TutorialStage.BuildGenerator:
+                if (subStage == 5)
+                {
+                    return tile.Resource == null && !tile.FogUnitActive;
                 }
                 else
                 {
                     return tile == currentTile;
                 }
             case TutorialStage.BuildHarvestersExtended:
-                return tile.Resource != null;
+                return !tile.FogUnitActive;
             case TutorialStage.BuildMoreGenerators:
-                return tile.Resource == null;
+                return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.CollectSonar:
                 return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.BuildExtenderInFog:
@@ -1693,6 +1740,10 @@ public class TutorialController : DialogueBoxController
         {
             switch (stage)
             {
+                case TutorialStage.BuildHarvestersExtended:
+                    return button == ButtonType.Extender
+                        || button == ButtonType.Harvester
+                        || button == ButtonType.Destroy;
                 case TutorialStage.CollectMinerals:
                     return button == ButtonType.Extender 
                            || button == ButtonType.Harvester 
@@ -1846,17 +1897,7 @@ public class TutorialController : DialogueBoxController
         tileTargetLerpProgress = 0f;
         tileTargetLerpForward = true;
 
-        if (arrowToTarget == null)
-        {
-            arrowToTarget = Instantiate(arrowToTargetPrefab, GameObject.Find("Warnings").transform).GetComponent<DamageIndicator>();
-            arrowToTarget.Colour = Color.cyan;
-            arrowToTarget.Locatable = buildingTarget;
-        }
-        else
-        {
-            arrowToTarget.On = true;
-        }
-
+        arrowToTarget.On = true;
 
         ActivateMouse();
     }
