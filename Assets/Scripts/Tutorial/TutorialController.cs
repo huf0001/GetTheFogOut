@@ -168,6 +168,8 @@ public class TutorialController : DialogueBoxController
     private bool uiTargetLerpForward = true;
     private bool lerpPaused = false;
 
+    private List<Locatable> lerpTargetsRemaining;
+
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
@@ -243,6 +245,15 @@ public class TutorialController : DialogueBoxController
             {
                 Debug.Log("Warning: TutorialController.builtGeneratorsGoal > originalGeneratorLimit. Shouldn't it be <=?");
             }
+
+            lerpTargetsRemaining = new List<Locatable>();
+            lerpTargetsRemaining.Add(harvesterResource);
+            lerpTargetsRemaining.Add(extenderLandmark);
+            lerpTargetsRemaining.Add(generatorLandmark);
+            lerpTargetsRemaining.Add(sonarLandmark);
+            lerpTargetsRemaining.Add(fogExtenderLandmark);
+            lerpTargetsRemaining.Add(mortarLandmark);
+            lerpTargetsRemaining.Add(pulseDefenceLandmark);
         }
     }
 
@@ -580,6 +591,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 8:
+                lerpTargetsRemaining.Remove(harvesterResource);
                 DeactivateUIColourLerpTarget();
                 Destroy(harvesterHighlight);
                 harvesterHighlight = null;
@@ -703,6 +715,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 7:
                 //Turn off UI element prompting player to build a relay on the prompted tile
+                lerpTargetsRemaining.Remove(extenderLandmark);
                 stage = TutorialStage.BuildHarvestersExtended;
                 currentlyBuilding = BuildingType.Harvester;
                 currentlyLerping = ButtonType.None;
@@ -905,6 +918,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 11:
+                lerpTargetsRemaining.Remove(generatorLandmark);
                 DeactivateUIColourLerpTarget();
                 Destroy(generatorHighlight);
                 generatorHighlight = null;
@@ -1177,6 +1191,7 @@ public class TutorialController : DialogueBoxController
             case 14:
                 if (dialogueRead)
                 {
+                    lerpTargetsRemaining.Remove(sonarLandmark);
                     DismissDialogue();
                     //thrusterCamera.gameObject.SetActive(false);
                     artilleryCamera.gameObject.SetActive(false);
@@ -1281,6 +1296,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
+                lerpTargetsRemaining.Remove(fogExtenderLandmark);
                 stage = TutorialStage.BuildMortar;
                 currentlyBuilding = BuildingType.AirCannon;
                 currentlyLerping = ButtonType.None;
@@ -1369,6 +1385,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
+                lerpTargetsRemaining.Remove(generatorLandmark);
                 stage = TutorialStage.BuildPulseDefence;
                 currentlyBuilding = BuildingType.FogRepeller;
                 ResetSubStage();
@@ -1466,6 +1483,7 @@ public class TutorialController : DialogueBoxController
             case 6:
                 if (Hub.Instance.GetPulseDefences().Count == 1)
                 {
+                    lerpTargetsRemaining.Remove(pulseDefenceLandmark);
                     stage = TutorialStage.DefenceActivation;
                     currentlyBuilding = BuildingType.None;
                     ResetSubStage();
@@ -2019,7 +2037,7 @@ public class TutorialController : DialogueBoxController
     {
         GetLocationOf(l);
 
-        if (currentTile.Building != null && currentTile != fogExtenderLandmark.Location)
+        if (currentTile.Building != null && stage != TutorialStage.BuildHarvesters && stage != TutorialStage.BuildExtenderInFog)
         {
             l = GetBackupTarget(l);
         }
@@ -2058,10 +2076,16 @@ public class TutorialController : DialogueBoxController
     Locatable GetBackupTarget(Locatable l)
     {
         List<TileData> alternatives = new List<TileData>();
+        List<TileData> invalidTiles = new List<TileData>();
+
+        foreach (Locatable t in lerpTargetsRemaining)
+        {
+            invalidTiles.Add(t.Location);
+        }
 
         foreach (TileData t in currentTile.AllAdjacentTiles)
         {
-            if (t.Building == null && t.PowerSource != null && !t.buildingChecks.obstacle)
+            if (!invalidTiles.Contains(t) && t.Building == null && t.Resource == null && t.PowerSource != null && !t.FogUnitActive && !t.buildingChecks.obstacle)
             {
                 alternatives.Add(t);
             }
@@ -2071,7 +2095,7 @@ public class TutorialController : DialogueBoxController
         {
             foreach (TileData t in WorldController.Instance.ActiveTiles)
             {
-                if (t.Building == null && t.PowerSource != null && !t.buildingChecks.obstacle)
+                if (!invalidTiles.Contains(t) && t.Building == null && t.Resource == null && t.PowerSource != null && !t.FogUnitActive && !t.buildingChecks.obstacle)
                 {
                     if (alternatives.Count == 0)
                     {
