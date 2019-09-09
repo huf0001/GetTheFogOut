@@ -305,6 +305,13 @@ namespace AmplifyShaderEditor
 		private float m_zoomToFocus = 1.0f;
 		private bool m_selectNodeToFocus = true;
 
+		[NonSerialized]
+		public Dictionary<int, bool> VisitedChanged = new Dictionary<int, bool>();
+
+		public int m_frameCounter = 0;
+		public double m_fpsTime = 0;
+		public string m_fpsDisplay = string.Empty;
+
 #if UNITY_EDITOR_WIN
 		// ScreenShot vars
 		IntPtr m_aseHandle;
@@ -603,7 +610,7 @@ namespace AmplifyShaderEditor
 					Debug.Log( "Re-Initializing Manager" );
 				m_templatesManager.Init();
 			}
-
+            TemplatePostProcessor.Destroy();
 			if( m_innerEditorVariables == null )
 			{
 				m_innerEditorVariables = new InnerWindowEditorVariables();
@@ -632,11 +639,12 @@ namespace AmplifyShaderEditor
 			EditorApplication.update -= IOUtils.UpdateIO;
 			EditorApplication.update += IOUtils.UpdateIO;
 
-			EditorApplication.update -= UpdateTime;
-			EditorApplication.update -= UpdateNodePreviewList;
+			//EditorApplication.update -= UpdateTime;
+			EditorApplication.update -= UpdateNodePreviewListAndTime;
+			//EditorApplication.update += UpdateTime;
 
-			EditorApplication.update += UpdateTime;
-			EditorApplication.update += UpdateNodePreviewList;
+			EditorApplication.update += UpdateNodePreviewListAndTime;
+
 
 			if( CurrentSelection == ASESelectionMode.ShaderFunction )
 			{
@@ -2921,7 +2929,11 @@ namespace AmplifyShaderEditor
 					}
 				}
 				break;
-
+				case EventType.MouseMove:
+				{
+					m_keyEvtMousePos2D = m_currentEvent.mousePosition;
+				}
+				break;
 				case EventType.MouseUp:
 				{
 					GUIUtility.hotControl = 0;
@@ -4684,6 +4696,11 @@ namespace AmplifyShaderEditor
 			}
 			//GUILayout.EndArea();
 
+			if( DebugConsoleWindow.DeveloperMode && m_currentEvent.type == EventType.Repaint )
+			{
+				GUI.Label( new Rect(Screen.width - 60, 40, 60, 50), m_fpsDisplay );
+			}
+
 			bool restoreMouse = false;
 			if( InsideMenus( m_currentMousePos2D ) /*|| _confirmationWindow.IsActive*/ )
 			{
@@ -4951,13 +4968,6 @@ namespace AmplifyShaderEditor
 				}
 			}
 
-			if( m_repaintIsDirty )
-			{
-				m_repaintIsDirty = false;
-				Repaint();
-				//ForceRepaint();
-			}
-
 			if( m_cacheSaveOp )
 			{
 				if( ( EditorApplication.timeSinceStartup - m_lastTimeSaved ) > SaveTime )
@@ -5212,7 +5222,7 @@ namespace AmplifyShaderEditor
 			return node;
 		}
 
-		public void UpdateTime()
+		public void UpdateNodePreviewListAndTime()
 		{
 			if( UIUtils.CurrentWindow != this )
 				return;
@@ -5220,8 +5230,20 @@ namespace AmplifyShaderEditor
 			double deltaTime = Time.realtimeSinceStartup - m_time;
 			m_time = Time.realtimeSinceStartup;
 
+			if( DebugConsoleWindow.DeveloperMode )
+			{
+				m_frameCounter++;
+				if( m_frameCounter >= 60 )
+				{
+					m_fpsDisplay = ( 60 / ( Time.realtimeSinceStartup - m_fpsTime ) ).ToString( "N2" );
+					m_fpsTime = Time.realtimeSinceStartup;
+					m_frameCounter = 0;
+				}
+			}
+
 			if( m_smoothZoom )
 			{
+				m_repaintIsDirty = true;
 				if( Mathf.Abs( m_targetZoom - m_cameraZoom ) < 0.001f )
 				{
 					m_smoothZoom = false;
@@ -5242,6 +5264,7 @@ namespace AmplifyShaderEditor
 
 			if( m_smoothOffset )
 			{
+				m_repaintIsDirty = true;
 				if( ( m_targetOffset - m_cameraOffset ).SqrMagnitude() < 1f )
 				{
 					m_smoothOffset = false;
@@ -5277,25 +5300,28 @@ namespace AmplifyShaderEditor
 			}
 			Shader.SetGlobalFloat( "_EditorTime", (float)m_time );
 			Shader.SetGlobalFloat( "_EditorDeltaTime", (float)deltaTime );
-		}
-
-		public void UpdateNodePreviewList()
-		{
-			if( UIUtils.CurrentWindow != this )
-				return;
-
+			
+			/////////// UPDATE PREVIEWS //////////////
 			UIUtils.CheckNullMaterials();
-
-			for( int i = 0; i < CurrentGraph.AllNodes.Count; i++ )
+			//CurrentGraph.AllNodes.Sort( ( x, y ) => { return x.Depth.CompareTo( y.Depth ); } );
+			int nodeCount = CurrentGraph.AllNodes.Count;
+			for( int i = nodeCount - 1; i >= 0; i-- )
 			{
 				ParentNode node = CurrentGraph.AllNodes[ i ];
-				if( node != null )
+				if( node != null && !VisitedChanged.ContainsKey( node.UniqueId ) )
 				{
-					node.RenderNodePreview();
+					bool result = node.RecursivePreviewUpdate();
+					if( result )
+						m_repaintIsDirty = true;
 				}
 			}
 
-			Repaint();
+			VisitedChanged.Clear();
+			if( m_repaintIsDirty )
+			{
+				m_repaintIsDirty = false;
+				Repaint();
+			}
 		}
 
 		public void ForceRepaint()
@@ -5355,8 +5381,8 @@ namespace AmplifyShaderEditor
 		{
 			base.OnDisable();
 			m_ctrlSCallback = false;
-			EditorApplication.update -= UpdateTime;
-			EditorApplication.update -= UpdateNodePreviewList;
+			//EditorApplication.update -= UpdateTime;
+			EditorApplication.update -= UpdateNodePreviewListAndTime;
 
 			EditorApplication.update -= IOUtils.UpdateIO;
 

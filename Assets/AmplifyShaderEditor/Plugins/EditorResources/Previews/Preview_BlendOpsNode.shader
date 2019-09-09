@@ -26,7 +26,7 @@ Shader "Hidden/BlendOpsNode"
 				float4 src = tex2D( _A, i.uv );
 				float4 des = tex2D( _B, i.uv );
 
-				float4 c = ( ( 1.0 - ( ( 1.0 - des) / src) ) );
+				float4 c = ( ( 1.0 - ( ( 1.0 - des) / max( src,0.00001)) ) );
 				if (_Lerp == 1)
 				{
 					float alpha = tex2D (_C, i.uv).r;
@@ -58,7 +58,7 @@ Shader "Hidden/BlendOpsNode"
 				float4 src = tex2D( _A, i.uv );
 				float4 des = tex2D( _B, i.uv );
 
-				float4 c = ( ( des/ ( 1.0 - src ) ) );
+				float4 c = ( ( des/ max( 1.0 - src,0.00001 ) ) );
 				if (_Lerp == 1)
 				{
 					float alpha = tex2D (_C, i.uv).r;
@@ -120,7 +120,7 @@ Shader "Hidden/BlendOpsNode"
 				float4 src = tex2D( _A, i.uv );
 				float4 des = tex2D( _B, i.uv );
 
-				float4 c = ( ( des / src ) );
+				float4 c = ( ( des / max( src,0.00001) ) );
 				if (_Lerp == 1)
 				{
 					float alpha = tex2D (_C, i.uv).r;
@@ -213,7 +213,7 @@ Shader "Hidden/BlendOpsNode"
 				float4 src = tex2D( _A, i.uv );
 				float4 des = tex2D( _B, i.uv );
 
-				float4 c = ( 2.0f*src*des + src*src*(1.0f - 2.0f*des) );
+				float4 c = ( 2.0f*src*des + des*des*(1.0f - 2.0f*src) );
 				if (_Lerp == 1)
 				{
 					float alpha = tex2D (_C, i.uv).r;
@@ -585,7 +585,7 @@ Shader "Hidden/BlendOpsNode"
 				float4 src = tex2D( _A, i.uv );
 				float4 des = tex2D( _B, i.uv );
 
-				float4 c = ( ( src > 0.5 ? ( des / ( ( 1.0 - src ) * 2.0 ) ) : ( 1.0 - ( ( ( 1.0 - des ) * 0.5 ) / src ) ) ) );
+				float4 c = ( ( src > 0.5 ? ( des / max( ( 1.0 - src ) * 2.0 ,0.00001) ) : ( 1.0 - ( ( ( 1.0 - des ) * 0.5 ) / max(src,0.00001) ) ) ) );
 				if (_Lerp == 1)
 				{
 					float alpha = tex2D (_C, i.uv).r;

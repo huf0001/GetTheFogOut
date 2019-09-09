@@ -530,6 +530,7 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 SendDialogue("build harvester target", 1);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
@@ -543,10 +544,16 @@ public class TutorialController : DialogueBoxController
                     DismissDialogue();
                     ActivateTarget(harvesterResource);
                 }
+                else if (tileClicked)       //Player hasn't waited for tutorial help, is going ahead on their own
+                {
+                    DismissMouse();
+                    ActivateUIColourLerpTarget(harvesterHighlight, minHarvesterColour, maxHarvesterColour);
+                    GoToSubStage(5);
+                }
 
                 break;
             case 3:
-                if (dialogueRead)
+                if (dialogueRead)           //In case the player opens the build menu, gets the glow icon dialogue, and then jumps back out of the build menu
                 {
                     DismissDialogue();
                 }
@@ -577,7 +584,7 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissDialogue();
                 }
-                else if (BuiltCurrentlyBuilding())
+                else if (ResourceController.Instance.Harvesters.Count == 1)
                 {
                     GoToSubStage(8);
                 }
@@ -590,7 +597,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
-                if (BuiltCurrentlyBuilding())
+                if (ResourceController.Instance.Harvesters.Count == 1)
                 {
                     IncrementSubStage();
                 }
@@ -1672,7 +1679,7 @@ public class TutorialController : DialogueBoxController
         switch (stage)
         {
             case TutorialStage.BuildHarvesters:
-                if (subStage > 6)
+                if (subStage < 3 || subStage > 6)
                 {
                     return tile.Resource != null;
                 }

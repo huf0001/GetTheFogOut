@@ -17,7 +17,7 @@ namespace Abilities
             {
                 if (t.Building)
                 {
-                    pSystem = t.Building.GetComponent<ParticleSystem>();
+                    pSystem = t.Building.GetComponentInChildren<ParticleSystem>();
                     var main = pSystem.main;
 
                     t.Building.IsOverclockOn = true;
@@ -51,7 +51,7 @@ namespace Abilities
         {
             b.overclockTimer = duration;
 
-            pSystem = b.GetComponent<ParticleSystem>();
+            pSystem = b.GetComponentInChildren<ParticleSystem>();
             var main = pSystem.main;
 
             while (b.overclockTimer > 0)

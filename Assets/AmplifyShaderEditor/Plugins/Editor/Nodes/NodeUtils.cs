@@ -74,20 +74,22 @@ namespace AmplifyShaderEditor
 			GUILayout.EndHorizontal();
 		}
 
-		public static void DrawNestedPropertyGroup( ref bool foldoutValue, Rect rect, string sectionName, DrawPropertySection DrawSection, int padding = 2 )
+		public static void DrawNestedPropertyGroup( ref bool foldoutValue, Rect rect, string sectionName, DrawPropertySection DrawSection, int horizontalSpacing = 15 )
 		{
 			var box = rect;
-			box.height -= padding;
+			box.height -= 2;
 			GUI.Label( box, string.Empty, EditorStyles.helpBox );
+
 			var tog = rect;
-			tog.xMin += padding;
-			tog.xMax -= padding;
-			tog.yMin += padding;
+			tog.xMin += 2;
+			tog.xMax -= 2;
+			tog.yMin += 2;
 			bool value = GUI.Toggle( tog, foldoutValue, sectionName, UIUtils.MenuItemToggleStyle );
 			if( Event.current.button == Constants.FoldoutMouseId )
 			{
 				foldoutValue = value;
 			}
+
 			if( foldoutValue )
 			{
 				DrawSection();
