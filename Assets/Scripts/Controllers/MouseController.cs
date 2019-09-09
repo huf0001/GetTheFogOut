@@ -218,7 +218,7 @@ public class MouseController : MonoBehaviour
 
             }else
             */
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables","Buildings" })) && WorldController.Instance.TileExistsAt(hit.point))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables", "Buildings" })) && WorldController.Instance.TileExistsAt(hit.point))
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
