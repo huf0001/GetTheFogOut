@@ -16017,12 +16017,11 @@ MonoBehaviour:
   - key: explain situation
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Hello, I am an emergency Nexus Drone that you can control from your
-        ship. You may call me Nexy for short. You are currently seeing the world through
-        my lens.
+      dialogue: Hello! My name is Nexy, I'm your very own Nexus Drone. You are currently
+        viewing this disaster through my lens.
     - aiExpression: 2
-      dialogue: My job is to ensure our safety. According to my calculations, we are
-        at a 95% risk of being in imminent danger.
+      dialogue: You will be controlling me via your ship. Let me teach you how to
+        use me.
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16031,8 +16030,8 @@ MonoBehaviour:
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'To move me around, press the WASD keys. Or, hold down RMB while moving
-        the mouse. '
+      dialogue: Press the WASD keys to move me around, or press and hold the RMB while
+        moving the mouse.
   - key: zoom camera
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16041,12 +16040,18 @@ MonoBehaviour:
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Your ship comes equipped with a blueprint for a {HARVESTER}. To use
-        one, click on this {MINERAL}.
+      dialogue: I have scanned the planet in hopes of finding something of use. The
+        planet is full of a resource called {MINERALS}.
+    - aiExpression: 2
+      dialogue: These will be key to keeping us alive. Your ship comes equipped with
+        a blueprint for a {HARVESTER}.
+    - aiExpression: 2
+      dialogue: I will show you where to place one.
   - key: build harvester icon
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'Now, click on the {HARVESTER} icon. '
+      dialogue: Now that the building menu is open, click on the {HARVESTER} icon
+        to place one.
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 1
@@ -16056,11 +16061,11 @@ MonoBehaviour:
   - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'Now, you see the green grid around your ship? That represents the
-        area available to place buildings on. '
+      dialogue: 'Now, you see the green grid around your ship? It represents the area
+        available to place buildings on. '
     - aiExpression: 2
-      dialogue: 'Right now it''s too small to reach those minerals nearby. You will
-        need to place a [POWER EXTENDER]. Try placing one here. '
+      dialogue: Right now it's too small to reach minerals nearby. You will need to
+        place a [POWER EXTENDER]. I will show you where to place one.
   - key: build more harvesters extended
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16072,10 +16077,6 @@ MonoBehaviour:
       dialogue: 'Oh, no! Those extra {HARVESTERS} have strained the power system.
         To see how the power system works, hover over the [BATTERY ICON] next to your
         minimap. '
-    - aiExpression: 2
-      dialogue: Too many buildings consuming power will cause some to shut down. Move
-        your mouse over the [BATTERY ICON] next to your minimap to see how the power
-        system functions.
     - aiExpression: 2
       dialogue: Each building, aside from [POWER EXTENDERS], will consume power when
         they're placed.
@@ -16092,11 +16093,12 @@ MonoBehaviour:
   - key: build more generators
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: 'Good, that''s saved us from imminent disaster. '
+      dialogue: Good, that appears to have saved us from disaster. Try placing a couple
+        more.
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'Your ship has sustatained serious damage upon landing. Use your new-found
+      dialogue: 'Your ship has sustained serious damage upon landing. Use your new-found
         skills to repair it, it''s the only way off this wretched planet. '
   - key: collect sonar
     expressionDialoguePairs:
