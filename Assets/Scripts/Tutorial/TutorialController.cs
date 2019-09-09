@@ -2019,6 +2019,11 @@ public class TutorialController : DialogueBoxController
     {
         GetLocationOf(l);
 
+        if (currentTile.Building != null && currentTile != fogExtenderLandmark.Location)
+        {
+            l = GetBackupTarget(l);
+        }
+
         buildingTarget.Location = currentTile;
         buildingTarget.transform.position = l.transform.position;
         targetRenderer.enabled = true;
@@ -2047,6 +2052,58 @@ public class TutorialController : DialogueBoxController
         {
             Debug.Log("TutorialController.CurrentTile is null");
         }
+    }
+
+    //Compensates for if the player speedruns and builds on the tile the target is trying to be activated on
+    Locatable GetBackupTarget(Locatable l)
+    {
+        List<TileData> alternatives = new List<TileData>();
+
+        foreach (TileData t in currentTile.AllAdjacentTiles)
+        {
+            if (t.Building == null && t.PowerSource != null && !t.buildingChecks.obstacle)
+            {
+                alternatives.Add(t);
+            }
+        }
+
+        if (alternatives.Count == 0)
+        {
+            foreach (TileData t in WorldController.Instance.ActiveTiles)
+            {
+                if (t.Building == null && t.PowerSource != null && !t.buildingChecks.obstacle)
+                {
+                    if (alternatives.Count == 0)
+                    {
+                        alternatives.Add(t);
+                    }
+                    else
+                    {
+                        float dist = Vector3.Distance(currentTile.Position, t.Position);
+                        float bestDist = Vector3.Distance(currentTile.Position, alternatives[0].Position);
+
+                        if (dist < bestDist)
+                        {
+                            alternatives.Clear();
+                            alternatives.Add(t);
+                        }
+                        else if (dist == bestDist)
+                        {
+                            alternatives.Add(t);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (alternatives.Count > 0)
+        {
+            currentTile = alternatives[UnityEngine.Random.Range(0, alternatives.Count)];
+            l.Location = currentTile;
+            l.transform.position = currentTile.Position;
+        }
+
+        return l;
     }
 
     //Lerp the target decal
