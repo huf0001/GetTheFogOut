@@ -560,6 +560,12 @@ public class TutorialController : DialogueBoxController
                 {
                     DeactivateUIColourLerpTarget();
                     GoToSubStage(3);
+
+                    if (harvesterResource.Location != lastTileChecked)
+                    {
+                        harvesterResource = lastTileChecked.Resource;
+                    }
+
                     ActivateTarget(harvesterResource);
                 }
 
@@ -688,6 +694,13 @@ public class TutorialController : DialogueBoxController
                 {
                     GoToSubStage(3);    //2 rather than 3 in case the player hasn't read any of this stage's dialogue
                     DeactivateUIColourLerpTarget();
+
+                    if (extenderLandmark.Location != lastTileChecked)
+                    {
+                        extenderLandmark.Location = lastTileChecked;
+                        extenderLandmark.transform.position = lastTileChecked.Position;
+                    }
+
                     ActivateTarget(extenderLandmark);
                 }
 
@@ -871,6 +884,13 @@ public class TutorialController : DialogueBoxController
                 {
                     DeactivateUIColourLerpTarget();
                     GoToSubStage(6);
+
+                    if (generatorLandmark.Location != lastTileChecked)
+                    {
+                        generatorLandmark.Location = lastTileChecked;
+                        generatorLandmark.transform.position = lastTileChecked.Position;
+                    }
+
                     ActivateTarget(generatorLandmark);
                 }
 
