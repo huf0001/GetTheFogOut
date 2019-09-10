@@ -38,13 +38,6 @@ public enum Difficulty
     Hard
 }
 
-//Simple struct to allow caching of the particle system
-public struct FogLightning
-{
-    public GameObject lightning;
-    public ParticleSystem lightningPS;
-}
-
 public class Fog : MonoBehaviour
 {
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
@@ -133,8 +126,8 @@ public class Fog : MonoBehaviour
     private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
     private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
 
-    private List<FogLightning> lightningInPlay = new List<FogLightning>();              //i.e. currently active lightning effects
-    private List<FogLightning> lightningInPool = new List<FogLightning>();              //i.e. currently inactive lightning effects in pool
+    public List<FogLightning> lightningInPlay = new List<FogLightning>();              //i.e. currently active lightning effects
+    public List<FogLightning> lightningInPool = new List<FogLightning>();              //i.e. currently inactive lightning effects in pool
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -989,10 +982,10 @@ public class Fog : MonoBehaviour
 
     private void AddLightningToPool()
     {
-        FogLightning fogLightning = new FogLightning {lightning = Instantiate(fogUnitPrefab.fogLightning)};
+        FogLightning fogLightning = Instantiate(fogUnitPrefab.fogLightning).GetComponent<FogLightning>();
         fogLightning.lightning.transform.SetParent(transform);
         fogLightning.lightning.SetActive(false);
-        fogLightning.lightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
+        fogLightning.LightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
         lightningInPool.Add(fogLightning);
     }
 
@@ -1007,9 +1000,9 @@ public class Fog : MonoBehaviour
         }
         else
         {
-            FogLightning fogLightning = new FogLightning {lightning = Instantiate(fogUnitPrefab.fogLightning)};
+            FogLightning fogLightning = Instantiate(fogUnitPrefab.fogLightning).GetComponent<FogLightning>();
             fogLightning.lightning.transform.SetParent(transform);
-            fogLightning.lightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
+            fogLightning.LightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
             lightningInPlay.Add(fogLightning);
             return fogLightning;
         }
@@ -1020,7 +1013,7 @@ public class Fog : MonoBehaviour
         FogLightning fogLightning = GetLightningFromPool();
         fogLightning.lightning.transform.position = fogUnit.transform.position;
         fogLightning.lightning.SetActive(true);
-        fogLightning.lightning.GetComponent<ParticleSystem>().Play();
+        fogLightning.LightningPS.Play();
     }
 
     private void ReturnLightningToPool()
@@ -1028,7 +1021,7 @@ public class Fog : MonoBehaviour
         List<FogLightning> toRemove = new List<FogLightning>();
         foreach (FogLightning fogLightning in lightningInPlay)
         {
-            if (fogLightning.lightningPS.isStopped)
+            if (fogLightning.LightningPS.isStopped)
             {
                 toRemove.Add(fogLightning);
             }
@@ -1042,10 +1035,9 @@ public class Fog : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         SelectedLightning();
-        ReturnLightningToPool();
     }
 
 }
