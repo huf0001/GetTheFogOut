@@ -61,6 +61,8 @@ namespace AmplifyShaderEditor
 
 			m_allowPropertyDuplicates = true;
 			m_showAutoRegisterUI = false;
+
+			m_srpBatcherCompatible = true;
 		}
 
 		protected override void OnUniqueIDAssigned()
@@ -160,6 +162,7 @@ namespace AmplifyShaderEditor
 				m_currentSelectedInput = EditorGUIIntPopup( m_varRect, m_currentSelectedInput, AvailableInputsLabels, AvailableInputsValues, UIUtils.SwitchNodePopUp );
 				if ( EditorGUI.EndChangeCheck() )
 				{
+					PreviewIsDirty = true;
 					UpdateConnection();
 					m_requireMaterialUpdate = true;
 					m_editing = false;

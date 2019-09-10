@@ -1,4 +1,72 @@
 Release Notes:
+v1.7.0 rev 00:
+* New Node:
+    * Voronoi
+
+* Fixes:
+    * Fixed issue on all templates not being available to choose over the Creates > Amplify Shader menu
+    * Fixed issue on Unlit absolute mode
+    * Fixed issue on both Lightweight templates absolute mode
+    * Fixed issue on 'World Space View Dir' node preview
+    * Fixed blinking window when 'Add'or 'Mul' nodes are dynamically changing their input ports
+    * Fixed issue with detection loop function that was causing massive slow downs on node connection on big graphs
+    * Fixed multiple issues with new Lit template
+    * 'Face' and 'Switch By Face' now correctly work on the latest HDRP version
+    * Fixed multiple issue on latest HD Lit template
+    * Fixed issue when selecting shaders on Unity 2019.3
+    * Fixed incorrect local variable generation on multiple nodes over Standard Surface's Vertex ports
+
+* Improvements:
+    * Improved editor performance by only refreshing when needed and only updating previews that are necessary to update
+    * Texture array auto sorting on texture drop over Texture Array tool
+    * Directives can now be written both before or after (via mouse drag ) to native directives detected on template
+    * Added dropdown for custom editor in templates that contain the HD material inspector
+    * 'Depth Fade' and 'Screen Depth' can now be used on vertex shader
+    * Improved and optimized node search on context menu
+        * Node developers can now associate tags to their nodes
+    * Small improvement to shader function properties order when multiple shader functions are inside each other
+    * Improved 'Noise Generator' node
+        * Added new Gradient type
+        * Added new option to auto set noise generator values to a 0-1 range
+        * Added new scale input port to scale its Size input
+    * Extended Port options versatility when declared on SubShader (API)
+    * Shader Properties default values can now be set through the SetShaderProperty action (API)
+    * Refactored templates paths
+
+* Deprecated:
+    * Disabled ASE custom texture array inspector on Unity 2019 and above
+    * Marked old templates as deprecated
+        * These will be eliminated from the package on a future build
+
+v1.6.9 rev 02:
+* New Template:
+    * Re-designed a new HD Lit template for SRP v6 and above
+        * Compatible with Unity's default HD material inspector
+
+* Fixes:
+    * Fixed division by zero issues on 'Blend Operations' node
+    * Fixed VR stereo issue in Standard Surface custom shadow caster
+    * Fixed issue with reorderable properties in shader function being stuck when two or more of the same SF was used inside another one
+    * Fixed incorrect variable naming on certain operations over both 'Transform Position' and 'Transform Direction' nodes
+    * Fixed issue on Input Port internal wrapper creating float3x3 with float4x4 contents
+    * Minor tab fixing on Unlit template
+    * Fixed issue on HD templates Auto-Importer
+    * Fixed issue on not always capturing the template custom inspector correctly
+    * Fixed compatibility issue with 'Diffusion Profile' node on Unity 2019.3
+
+* Improvements:
+    * Added tag system to node search and improved how nodes are searched
+        * Now words don't have to be in the same order of the name to match
+    * Reactivated SRP Batcher compatibility
+        * Each UnityPerMaterial Cbuffer set in pass now contains all declared property variables
+
+v1.6.9 rev 01:
+* Improvements:
+    * Added support for HDRP v6xx over Unity 2019.2
+        * HDRP v5xx now set as legacy and moved into the SRP (Legacy) folder
+        * LWRP templates remain the same between v5 and v6
+    * 'Swizzle' node is now non-destructive when connecting data with less info than selected options
+
 v1.6.9 rev 00:
 * Fixes:
     * Fixed 'Component Mask' node preview 

@@ -37,6 +37,15 @@ public enum Difficulty
     Hard
 }
 
+[Serializable]
+public struct FogDifficulty
+{
+    public float fogDamageMultiplier;
+    public float earlyGameGrowthMultiplier;
+    public float midGameGrowthMultiplier;
+    public float lateGameGrowthMultiplier;
+}
+
 public class Fog : MonoBehaviour
 {
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
@@ -73,17 +82,23 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogSphereSpillMultiplier;
 
     [Header("Fog Strength Over Time")]
-    [SerializeField] private float fogGrowthEasy;
-    [SerializeField] private float fogGrowthMedium;
-    [SerializeField] private float fogGrowthHard;
-    [SerializeField] private float fogSphereEasyMaxHealth;
-    [SerializeField] private float fogSphereMediumMaxHealth;
-    [SerializeField] private float fogSphereHardMaxHealth;
+    [SerializeField] private float earlyGameFogGrowth;
+    [SerializeField] private float midGameFogGrowth;
+    [SerializeField] private float lateGameFogGrowth;
+    [SerializeField] private float earlyGameMaxFogSphereHealth;
+    [SerializeField] private float midGameMaxFogSphereHealth;
+    [SerializeField] private float lateGameMaxFogSphereHealth;
 
-    [Header("Fog Size Over Time")]
-    [SerializeField] private float fogSphereEasyMaxSizeScale;
-    [SerializeField] private float fogSphereMediumMaxSizeScale;
-    [SerializeField] private float fogSphereHardMaxSizeScale;
+    [Header("Fog Strength Multipliers by Difficulty")]
+    [SerializeField] private FogDifficulty chillMultipliers;
+    [SerializeField] private FogDifficulty easyMultipliers;
+    [SerializeField] private FogDifficulty normalMultipliers;
+    [SerializeField] private FogDifficulty hardMultipliers;
+
+    [Header("Fog Sphere Size Over Time")]
+    [SerializeField] private float earlyGameMaxFogSphereSize;
+    [SerializeField] private float midGameMaxFogSphereSize;
+    [SerializeField] private float lateGameMaxFogSphereSize;
 
     [Header("Health")]
     [SerializeField] private float fogSphereMinHealth;
@@ -123,6 +138,9 @@ public class Fog : MonoBehaviour
     private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
     private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
 
+    public List<FogLightning> lightningInPlay = new List<FogLightning>();              //i.e. currently active lightning effects
+    public List<FogLightning> lightningInPool = new List<FogLightning>();              //i.e. currently inactive lightning effects in pool
+
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
@@ -151,9 +169,9 @@ public class Fog : MonoBehaviour
                 switch (intensity)
                 {
                     case 1:
-                        fogGrowth = fogGrowthEasy;
-                        fogSphereMaxHealth = fogSphereEasyMaxHealth;
-                        fogSphereMaxSizeScale = fogSphereEasyMaxSizeScale;
+                        fogGrowth = earlyGameFogGrowth;
+                        fogSphereMaxHealth = earlyGameMaxFogSphereHealth;
+                        fogSphereMaxSizeScale = earlyGameMaxFogSphereSize;
 
                         if (angry)
                         {
@@ -162,9 +180,9 @@ public class Fog : MonoBehaviour
 
                         break;
                     case 2:
-                        fogGrowth = fogGrowthMedium;
-                        fogSphereMaxHealth = fogSphereMediumMaxHealth;
-                        fogSphereMaxSizeScale = fogSphereMediumMaxSizeScale;
+                        fogGrowth = midGameFogGrowth;
+                        fogSphereMaxHealth = midGameMaxFogSphereHealth;
+                        fogSphereMaxSizeScale = midGameMaxFogSphereSize;
 
                         if (angry)
                         {
@@ -173,9 +191,9 @@ public class Fog : MonoBehaviour
 
                         break;
                     case 3:
-                        fogGrowth = fogGrowthHard;
-                        fogSphereMaxHealth = fogSphereHardMaxHealth;
-                        fogSphereMaxSizeScale = fogSphereHardMaxSizeScale;
+                        fogGrowth = lateGameFogGrowth;
+                        fogSphereMaxHealth = lateGameMaxFogSphereHealth;
+                        fogSphereMaxSizeScale = lateGameMaxFogSphereSize;
 
                         if (!angry)
                         {
@@ -214,6 +232,7 @@ public class Fog : MonoBehaviour
 
         fogSphereSpawnPoints = new List<FogSphereWaypoint>(fogSphereSpawnPointsParent.GetComponentsInChildren<FogSphereWaypoint>());
         SetDifficulty();
+        InitializePool(100);
         Intensity = 1;  //Sets the intensity-derived values to the default of their "Easy" values.
     }
 
@@ -225,24 +244,28 @@ public class Fog : MonoBehaviour
         switch (difficulty)
         {
             case Difficulty.Chill:
-                fogDamage /= 2f;
-                fogGrowthEasy /= 2;
-                fogGrowthMedium /= 2;
-                fogGrowthHard /= 2;
+                fogDamage *= chillMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= chillMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= chillMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= chillMultipliers.lateGameGrowthMultiplier;
                 break;
             case Difficulty.Easy:
-                fogDamage /= 1.40f;
-                fogGrowthEasy /= 2;
-                fogGrowthMedium /= 2;
-                fogGrowthHard /= 2;
+                fogDamage *= chillMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= easyMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= easyMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= easyMultipliers.lateGameGrowthMultiplier;
                 break;
             case Difficulty.Normal:
+                fogDamage *= normalMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= normalMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= normalMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= normalMultipliers.lateGameGrowthMultiplier;
                 break;
             case Difficulty.Hard:
-                fogDamage *= 2f;
-                fogGrowthEasy *= 2;
-                fogGrowthMedium *= 2;
-                fogGrowthHard *= 2;
+                fogDamage *= hardMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= hardMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= hardMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= hardMultipliers.lateGameGrowthMultiplier;
                 break;
         }
     }
@@ -447,8 +470,6 @@ public class Fog : MonoBehaviour
             f.RenderOpacity();
 
             fogUnitsInPlay.Add(f);
-
-            f.playLightning();
 
             //if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
             //{
@@ -897,26 +918,81 @@ public class Fog : MonoBehaviour
         }
     }
     
-    private void selectedLightning(int amount)
+    private void SelectedLightning()
     {
-        if (amount > 0)
+        FogUnit f = fogUnits[Random.Range(0, 70), Random.Range(0, 70)];
+        if (fogUnitsInPlay.Contains(f))
         {
-            FogUnit f = fogUnits[Random.Range(0, 50), Random.Range(0, 50)];
-            if (fogUnitsInPlay.Contains(f))
+            PlayLightning(f);
+        }
+    }
+    
+    private void InitializePool(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            AddLightningToPool();
+        }
+    }
+
+    private void AddLightningToPool()
+    {
+        FogLightning fogLightning = Instantiate(fogUnitPrefab.fogLightning).GetComponent<FogLightning>();
+        fogLightning.lightning.transform.SetParent(transform);
+        fogLightning.lightning.SetActive(false);
+        fogLightning.LightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
+        lightningInPool.Add(fogLightning);
+    }
+
+    private FogLightning GetLightningFromPool()
+    {
+        if (lightningInPool.Count > 0)
+        {
+            FogLightning fogLightning = lightningInPool[0];
+            lightningInPool.RemoveAt(0);
+            lightningInPlay.Add(fogLightning);
+            return fogLightning;
+        }
+        else
+        {
+            FogLightning fogLightning = Instantiate(fogUnitPrefab.fogLightning).GetComponent<FogLightning>();
+            fogLightning.lightning.transform.SetParent(transform);
+            fogLightning.LightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
+            lightningInPlay.Add(fogLightning);
+            return fogLightning;
+        }
+    }
+
+    private void PlayLightning(FogUnit fogUnit)
+    {
+        FogLightning fogLightning = GetLightningFromPool();
+        fogLightning.lightning.transform.position = fogUnit.transform.position;
+        fogLightning.lightning.SetActive(true);
+        fogLightning.LightningPS.Play();
+    }
+
+    private void ReturnLightningToPool()
+    {
+        List<FogLightning> toRemove = new List<FogLightning>();
+        foreach (FogLightning fogLightning in lightningInPlay)
+        {
+            if (fogLightning.LightningPS.isStopped)
             {
-                f.playLightning();
-                amount--;
+                toRemove.Add(fogLightning);
             }
         }
-        
+
+        foreach (FogLightning fogLightning in toRemove)
+        {
+            fogLightning.lightning.SetActive(false);
+            lightningInPlay.Remove(fogLightning);
+            lightningInPool.Add(fogLightning);
+        }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        selectedLightning(1000);
+        SelectedLightning();
     }
-
-    //fog lighting prefab VFX Spawn randomly ???
-
 
 }

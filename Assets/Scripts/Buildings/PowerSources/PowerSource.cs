@@ -201,7 +201,7 @@ public abstract class PowerSource : Building
                         }
                     }
                 }
-            
+            /*
             //TODO: remove hard-coding of these tile numbers, they need to check their position against the hub/thruster's, whichever is appropriate here.
             if (ObjectiveController.Instance.thruster.activeSelf)
             {
@@ -216,7 +216,7 @@ public abstract class PowerSource : Building
                     }
                 }
             }
-            
+            */
             /*
             if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
             {

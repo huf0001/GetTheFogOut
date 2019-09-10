@@ -201,7 +201,7 @@ public class ResourceController : MonoBehaviour
         //Powers mortars
         if (connectedMortars.Count > 0)
         {
-            if (storedPower > 0)
+            if (storedPower > 75)
             {
                 foreach (ArcDefence ac in mortars)
                 {
@@ -255,7 +255,7 @@ public class ResourceController : MonoBehaviour
         {
             bool needDestroy = false;
 
-            if (storedPower > 75)
+            if (storedPower > 0)
             {
                 foreach (Harvester h in harvesters)
                 {
@@ -293,7 +293,7 @@ public class ResourceController : MonoBehaviour
                         h.PowerDown();
                     }
                 }
-                
+
                 storedMineral += mineralChange;
             }
             else

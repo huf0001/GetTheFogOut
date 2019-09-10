@@ -45,6 +45,7 @@ public abstract class Building : Entity
     protected bool isOverclockOn = false;
     public float overclockTimer;
     private Material shieldMat;
+    private Wires wire;
     protected Camera cam;
 
     private float toLerp = 1f;
@@ -289,7 +290,7 @@ public abstract class Building : Entity
             PowerUp();
 
             // Create wires between buidings
-            Wires wire = GetComponentInChildren<Wires>();
+            wire = GetComponentInChildren<Wires>();
             if (wire)
             {
                 // Destroy any already existing wires
@@ -297,7 +298,10 @@ public abstract class Building : Entity
                 {
                     for (int i = 0; i < wire.transform.childCount; i++)
                     {
-                        Destroy(wire.transform.GetChild(i).gameObject);
+                        if (wire.transform.GetChild(i).name != "Cable Energy")
+                        {
+                            Destroy(wire.transform.GetChild(i).gameObject);
+                        }
                     }
                 }
 
@@ -413,7 +417,10 @@ public abstract class Building : Entity
     {
         Debug.Log("Dismantling " + this.name);
         if (damInd) Destroy(damInd.gameObject);
-
+        
+        // Kill Cable Effect tween
+        wire.sequence.Kill();
+        
         if (buildingType == BuildingType.Hub)
         {
             WorldController.Instance.HubDestroyed = true;
@@ -515,8 +522,6 @@ public abstract class Building : Entity
                     damIndScript = damInd.GetComponent<DamageIndicator>();
 
                     RectTransform rect = damInd.GetComponent<RectTransform>();
-                    rect.sizeDelta = rect.sizeDelta * new Vector2(1.5f, 1.5f);
-                    damInd.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localPosition -= new Vector3(30, 0);
                 }
                 else damIndScript.On = true;
                 damIndScript.Locatable = this;

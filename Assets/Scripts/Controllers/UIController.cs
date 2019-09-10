@@ -13,7 +13,6 @@ public class UIController : MonoBehaviour
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
     public GameObject endGame, pauseGame;
-    GameObject hudBar;
     public BuildingSelector buildingSelector;
     public BuildingInfo buildingInfo;
     public TextMeshProUGUI endGameText;
@@ -28,6 +27,7 @@ public class UIController : MonoBehaviour
     private Image launchButtonImage;
     private MusicFMOD musicFMOD;
 
+    [SerializeField] private Image hud;
     [SerializeField] private Image powerImg;
     [SerializeField] private Sprite[] powerLevelSprites;
     [SerializeField] private Animator powerThresholds;
@@ -51,6 +51,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countdownText;
     [Header("Ability Unlock")]
     [SerializeField] private Canvas abilityUnlockCanvas;
+    [SerializeField] private RectTransform abilityUnlockBG;
+    [SerializeField] private RectTransform proceedArrows;
     [SerializeField] private Image abilityImage;
     [SerializeField] private Sprite[] abilitySprites;
     [SerializeField] private Button[] abilityButtons;
@@ -64,6 +66,9 @@ public class UIController : MonoBehaviour
     ResourceController resourceController = null;
     private int index, temp;
     private MeshRenderer tile;
+    private Vector2 arrowInitialPosition;
+    private RectTransform abilityImageParent;
+    private Vector3 abilityImageOriginalPos;
 
     private float currentPowerValDisplayed = 0;
 
@@ -86,7 +91,11 @@ public class UIController : MonoBehaviour
         index = 0;
         temp = 2;
 
+        hud.alphaHitTestMinimumThreshold = 0.5f;
         launchButtonImage = objectiveButton.image;
+        arrowInitialPosition = proceedArrows.GetComponent<RectTransform>().anchoredPosition;
+        abilityImageParent = abilityImage.rectTransform.parent.GetComponent<RectTransform>();
+        abilityImageOriginalPos = abilityImageParent.anchoredPosition;
         FindSliders();
     }
 
@@ -209,7 +218,7 @@ public class UIController : MonoBehaviour
                 delegate
                 {
                     countdownSliderCG.blocksRaycasts = true;
-                    countdownText.DOFade(0.3f, 0.7f).SetLoops(-1, LoopType.Yoyo);
+                    countdownText.DOFade(0.7f, 0.7f).SetEase(Ease.InOutCubic).SetLoops(-1, LoopType.Yoyo);
                 }));
     }
 
@@ -305,6 +314,7 @@ public class UIController : MonoBehaviour
     // Ability unlock screen
     public void AbilityUnlock(Ability ability)
     {
+        Time.timeScale = 0.1f;
         abilityUnlockCanvas.gameObject.SetActive(true);
         switch (ability.AbilityType)
         {
@@ -339,18 +349,41 @@ public class UIController : MonoBehaviour
                 abilityButtons[4].interactable = true;
                 break;
         }
+        abilityUnlockBG.DOScale(1, 0.3f).SetUpdate(true).SetEase(Ease.OutBack);
+        proceedArrows.DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
     }
 
+    public void FinishAbilityUnlock()
+    {
+        DOTween.Kill(proceedArrows);
+        proceedArrows.anchoredPosition = arrowInitialPosition;
+        abilityImageParent.DOScale(0.45f, 0.6f);
+        abilityImageParent.DOMove(abilityButtons[0].transform.parent.position, 0.6f).OnComplete(
+            delegate
+            {
+                abilityImageParent.gameObject.SetActive(false);
+                abilityUnlockBG.DOScale(0.01f, 0.3f).SetUpdate(true).SetEase(Ease.InBack).OnComplete(
+                    delegate
+                    {
+                        abilityImageParent.anchoredPosition = abilityImageOriginalPos;
+                        abilityImageParent.gameObject.SetActive(true);
+                        abilityImageParent.localScale = new Vector3(1, 1, 1);
+                        abilityUnlockCanvas.gameObject.SetActive(false);
+                    });
+            });
+        Time.timeScale = 1;
+    }
+    
     public void ShowUpgradeWindow()
     {
         upgradesCanvas.SetActive(true);
-        upgradesBg.DOScale(1, 0.3f).SetUpdate(true);
+        upgradesBg.DOScale(1, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
         Time.timeScale = 0.1f;
     }
 
     public void HideUpgradeWindow()
     {
-        upgradesBg.DOScale(0.01f, 0.3f).SetUpdate(true).OnComplete(
+        upgradesBg.DOScale(0.01f, 0.3f).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
             delegate
             {
                 upgradesCanvas.SetActive(false);
@@ -435,7 +468,7 @@ public class UIController : MonoBehaviour
 
             // update text values
             currentPowerValDisplayed = Mathf.Round(Mathf.Lerp(powerVal, power, powerTime));
-            powerText.text =  currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange.ToString("F1") + " %/s</color>";
+            powerText.text = currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange.ToString("F1") + " %/s</color>";
 
             if (currentPowerValDisplayed == 0)
             {
@@ -455,7 +488,7 @@ public class UIController : MonoBehaviour
             else if (currentPowerValDisplayed <= 50)
             {
                 if (powerImg.sprite != powerLevelSprites[2])
-                { 
+                {
                     powerImg.sprite = powerLevelSprites[2];
                     index = 2;
                 }
@@ -567,7 +600,6 @@ public class UIController : MonoBehaviour
         {
             case TutorialStage.None:
             case TutorialStage.ExplainSituation:
-            case TutorialStage.ExplainMinerals:
             case TutorialStage.WaitingForPowerDrop:
             case TutorialStage.SonarActivated:
                 hudObjText.text = "<b>Complete the Tutorial</b>";

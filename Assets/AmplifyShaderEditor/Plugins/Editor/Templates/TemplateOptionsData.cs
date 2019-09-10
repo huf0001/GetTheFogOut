@@ -67,7 +67,8 @@ namespace AmplifyShaderEditor
 		ExcludePass,
 		IncludePass,
 		SetPropertyOnPass,
-		SetPropertyOnSubShader
+		SetPropertyOnSubShader,
+		SetShaderProperty
 	}
 
 	public enum PropertyActionsEnum
@@ -143,7 +144,7 @@ namespace AmplifyShaderEditor
 
 		public bool CopyFromSubShader = false;
 
-
+		public string ActionBuffer;
 		public override string ToString()
 		{
 			return ActionType + " " + ActionData + " " + ActionDataIdx;
@@ -197,6 +198,8 @@ namespace AmplifyShaderEditor
 		public string Name = string.Empty;
 		public string DefaultOption = string.Empty;
 		public string[] Options = null;
+		public string[] DisplayOptions = null;
+		public int DisableIdx = -1;
 
 		public TemplateActionItemGrid ActionsPerOption = null;
 
@@ -242,6 +245,7 @@ namespace AmplifyShaderEditor
 				return 0;
 			}
 		}
+
 	}
 
 	[Serializable]
@@ -296,9 +300,10 @@ namespace AmplifyShaderEditor
 
 	public class TemplateOptionsToolsHelper
 	{
-		public const string PassOptionsMainPattern = @"\/\*ase_pass_options:([\w:= ]*)[\n]([\w: \t;\n&|,_\+-]*)\*\/";
-		public const string SubShaderOptionsMainPattern = @"\/\*ase_subshader_options:([\w:= ]*)[\n]([\w: \t;\n&|,_\+-]*)\*\/";
-
+		//public const string PassOptionsMainPattern = @"\/\*ase_pass_options:([\w:= ]*)[\n]([\w: \t;\n&|,_\+-]*)\*\/";
+		//public const string SubShaderOptionsMainPattern = @"\/\*ase_subshader_options:([\w:= ]*)[\n]([\w: \t;\n&|,_\+-]*)\*\/";
+		public const string PassOptionsMainPattern = "\\/\\*ase_pass_options:([\\w:= ]*)[\n]([\\w: \t;\n&|,_\\+\\-\\(\\)\\[\\]\\\"\\=]*)\\*\\/";
+		public const string SubShaderOptionsMainPattern = "\\/\\*ase_subshader_options:([\\w:= ]*)[\n]([\\w: \t;\n&|,_\\+\\-\\(\\)\\[\\]\\\"\\=]*)\\*\\/";
 		public static readonly char OptionsDataSeparator = ',';
 		public static Dictionary<string, AseOptionsSetup> AseOptionsSetupDict = new Dictionary<string, AseOptionsSetup>()
 		{
@@ -329,6 +334,7 @@ namespace AmplifyShaderEditor
 			{"IncludePass", AseOptionsActionType.IncludePass },
 			{"SetPropertyOnPass", AseOptionsActionType.SetPropertyOnPass },
 			{"SetPropertyOnSubShader", AseOptionsActionType.SetPropertyOnSubShader },
+			{"SetShaderProperty", AseOptionsActionType.SetShaderProperty }
 		};
 
 		public static Dictionary<string, AseOptionItemSetup> AseOptionItemSetupDict = new Dictionary<string, AseOptionItemSetup>
@@ -457,6 +463,9 @@ namespace AmplifyShaderEditor
 									}
 
 									currentOption.Id = itemIds.Length > 1 ? itemIds[ 1 ] : optionItems[ 1 ];
+									currentOption.DisplayOptions = optionItems[ 2 ].Split( OptionsDataSeparator );
+									currentOption.DisableIdx = currentOption.DisplayOptions.Length;
+									optionItems[ 2 ] += ",disable";
 									currentOption.Options = optionItems[ 2 ].Split( OptionsDataSeparator );
 									currentOption.Count = currentOption.Options.Length;
 
@@ -475,11 +484,7 @@ namespace AmplifyShaderEditor
 										currentOption.DefaultOption = currentOption.Options[ 0 ];
 									}
 
-									if( currentOption.Options.Length > 2 )
-									{
-										currentOption.UIWidget = AseOptionsUIWidget.Dropdown;
-									}
-									else if( currentOption.Options.Length == 2 )
+									if( currentOption.Options.Length == 2 || ( currentOption.Options.Length == 3 && currentOption.Options[ 2 ].Equals( "disable" ) ) )
 									{
 										if( ( currentOption.Options[ 0 ].Equals( "true" ) && currentOption.Options[ 1 ].Equals( "false" ) ) ||
 											( currentOption.Options[ 0 ].Equals( "false" ) && currentOption.Options[ 1 ].Equals( "true" ) ) )
@@ -489,6 +494,10 @@ namespace AmplifyShaderEditor
 											currentOption.Options[ 1 ] = "true";
 											currentOption.UIWidget = AseOptionsUIWidget.Toggle;
 										}
+									}
+									else if( currentOption.Options.Length > 2 )
+									{
+										currentOption.UIWidget = AseOptionsUIWidget.Dropdown;
 									}
 									else
 									{
@@ -535,6 +544,8 @@ namespace AmplifyShaderEditor
 										if( currentOption != null && currentOption.UIWidget == AseOptionsUIWidget.Toggle )
 										{
 											idx = ( optionItems[ 0 ].Equals( "true" ) ) ? 1 : 0;
+											if( optionItems[ 0 ].Equals( "disable" ) )
+												idx = 2;
 										}
 										else
 										{
@@ -589,8 +600,9 @@ namespace AmplifyShaderEditor
 		{
 			if( currentOption != null )
 			{
-				currentOption.ActionsPerOption = new TemplateActionItemGrid( actionItemsList.Count );
-				for( int i = 0; i < actionItemsList.Count; i++ )
+				int count = actionItemsList.Count;
+				currentOption.ActionsPerOption = new TemplateActionItemGrid( count );
+				for( int i = 0; i < count; i++ )
 				{
 					currentOption.ActionsPerOption[ i ] = actionItemsList[ i ].ToArray();
 					actionItemsList[ i ].Clear();
@@ -671,6 +683,16 @@ namespace AmplifyShaderEditor
 					case AseOptionsActionType.ExcludePass:
 					case AseOptionsActionType.IncludePass:
 					break;
+					case AseOptionsActionType.SetShaderProperty:
+					{
+						int optIndex = optionItems[ optionsIdx ].IndexOf( OptionsDataSeparator );
+						if( optIndex > -1 )
+						{
+							actionItem.ActionData = optionItems[ optionsIdx ].Substring( 0, optIndex );
+							actionItem.ActionBuffer = optionItems[ optionsIdx ].Substring( optIndex + 1, optionItems[ optionsIdx ].Length - optIndex - 1);
+						}
+						//Debug.Log( "CreateActionItem:SetShaderProperty" );
+					}break;
 					case AseOptionsActionType.SetPropertyOnPass:
 					case AseOptionsActionType.SetPropertyOnSubShader:
 					{

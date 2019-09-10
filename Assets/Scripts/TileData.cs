@@ -11,6 +11,7 @@ public struct BuildingChecks
 {
     public bool obstacle;
     public bool collectable;
+    public bool unBuildable;
 }
 
 [Serializable]
@@ -126,7 +127,7 @@ public class TileData
 
     public bool isBuildable
     {
-        get { return !buildingChecks.collectable && !buildingChecks.obstacle; }
+        get { return !buildingChecks.collectable && !buildingChecks.obstacle && !buildingChecks.unBuildable; }
     }
     
     public TileData(int x, int z)
