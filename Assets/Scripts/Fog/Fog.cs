@@ -814,11 +814,6 @@ public class Fog : MonoBehaviour
         f.Location.FogUnitActive = false;
         f.name = $"{f.name} (In Pool)";
 
-        //if (borderFogUnitsInPlay.Contains(f))
-        //{
-        //    borderFogUnitsInPlay.Remove(f);
-        //}
-
         foreach (TileData t in f.Location.AdjacentTiles)
         {
             if (t.FogUnitActive)
@@ -900,32 +895,7 @@ public class Fog : MonoBehaviour
         }
     }
 
-    //Other Methods----------------------------------------------------------------------------------------------------------------------------------
-
-    //Switches the fog between angry and not angry
-    public void ToggleAnger()
-    {
-        angry = !angry;
-
-        foreach (FogUnit f in fogUnitsInPlay)
-        {
-            f.Angry = angry;
-        }
-
-        foreach (FogSphere f in fogSpheresInPlay)
-        {
-            f.Angry = angry;
-        }
-    }
-    
-    private void SelectedLightning()
-    {
-        FogUnit f = fogUnits[Random.Range(0, 70), Random.Range(0, 70)];
-        if (fogUnitsInPlay.Contains(f))
-        {
-            PlayLightning(f);
-        }
-    }
+    //Fog Lightning Methods--------------------------------------------------------------------------------------------------------------------------
     
     private void InitializePool(int amount)
     {
@@ -963,6 +933,21 @@ public class Fog : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        SelectedLightning();
+    }
+
+    private void SelectedLightning()
+    {
+        FogUnit f = fogUnits[Random.Range(0, 70), Random.Range(0, 70)];
+
+        if (f.ActiveOnTile)
+        {
+            PlayLightning(f);
+        }
+    }
+
     private void PlayLightning(FogUnit fogUnit)
     {
         FogLightning fogLightning = GetLightningFromPool();
@@ -974,6 +959,7 @@ public class Fog : MonoBehaviour
     private void ReturnLightningToPool()
     {
         List<FogLightning> toRemove = new List<FogLightning>();
+
         foreach (FogLightning fogLightning in lightningInPlay)
         {
             if (fogLightning.LightningPS.isStopped)
@@ -990,9 +976,21 @@ public class Fog : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        SelectedLightning();
-    }
+    //Other Methods----------------------------------------------------------------------------------------------------------------------------------
 
+    //Switches the fog between angry and not angry
+    public void ToggleAnger()
+    {
+        angry = !angry;
+
+        foreach (FogUnit f in fogUnitsInPlay)
+        {
+            f.Angry = angry;
+        }
+
+        foreach (FogSphere f in fogSpheresInPlay)
+        {
+            f.Angry = angry;
+        }
+    }
 }
