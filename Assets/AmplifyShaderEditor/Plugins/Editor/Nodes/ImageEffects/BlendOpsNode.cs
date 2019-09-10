@@ -297,12 +297,12 @@ namespace AmplifyShaderEditor
 			{
 				case BlendOps.ColorBurn:
 				{
-					result = "( 1.0 - ( ( 1.0 - " + dstLocalVar + ") / " + srcLocalVar + ") )";
+					result = string.Format( "( 1.0 - ( ( 1.0 - {0}) / max( {1}, 0.00001) ) )", dstLocalVar, srcLocalVar);
 				}
 				break;
 				case BlendOps.ColorDodge:
 				{
-					result = "( " + dstLocalVar + "/ ( 1.0 - " + srcLocalVar + " ) )";
+					result = string.Format(  "( {0}/ max( 1.0 - {1}, 0.00001 ) )", dstLocalVar, srcLocalVar );
 				}
 				break;
 				case BlendOps.Darken:
@@ -312,7 +312,7 @@ namespace AmplifyShaderEditor
 				break;
 				case BlendOps.Divide:
 				{
-					result = "( " + dstLocalVar + " / " + srcLocalVar + " )";
+					result = string.Format( "( {0} / max({1},0.00001) )", dstLocalVar, srcLocalVar );
 				}
 				break;
 				case BlendOps.Difference:
@@ -396,7 +396,7 @@ namespace AmplifyShaderEditor
 				break;
 				case BlendOps.VividLight:
 				{
-					result = "(( " + srcLocalVar + " > 0.5 ) ? ( " + dstLocalVar + " / ( ( 1.0 - " + srcLocalVar + " ) * 2.0 ) ) : ( 1.0 - ( ( ( 1.0 - " + dstLocalVar + " ) * 0.5 ) / " + srcLocalVar + " ) ) )";
+					result = string.Format( "(( {0} > 0.5 ) ? ( {1} / max( ( 1.0 - {0} ) * 2.0 ,0.00001) ) : ( 1.0 - ( ( ( 1.0 - {1} ) * 0.5 ) / max( {0},0.00001) ) ) )", srcLocalVar, dstLocalVar);
 					//dataCollector.AddFunction( ASEVividLightCall, UIUtils.ShaderIndentTabs + ASEVividLightFunc );
 					//result = CreateMultiChannel( ref dataCollector, ASEVividLightCall, srcLocalVar, dstLocalVar, "vividLightBlend" );
 				}

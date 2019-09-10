@@ -794,6 +794,7 @@ namespace AmplifyShaderEditor
 					{
 						if( newValue != (UnityEngine.Object)m_botTexture.Value )
 						{
+							PreviewIsDirty = true;
 							UndoRecordObject( "Changing value EditorGUIObjectField on node Triplanar Node" );
 							m_botTexture.Value = newValue != null ? (Texture2D)newValue : null;
 
@@ -805,6 +806,7 @@ namespace AmplifyShaderEditor
 					{
 						if( newValue != (UnityEngine.Object)m_midTexture.Value )
 						{
+							PreviewIsDirty = true;
 							UndoRecordObject( "Changing value EditorGUIObjectField on node Triplanar Node" );
 							m_midTexture.Value = newValue != null ? (Texture2D)newValue : null;
 
@@ -816,6 +818,7 @@ namespace AmplifyShaderEditor
 					{
 						if( newValue != (UnityEngine.Object)m_topTexture.Value )
 						{
+							PreviewIsDirty = true;
 							UndoRecordObject( "Changing value EditorGUIObjectField on node Triplanar Node" );
 							m_topTexture.Value = newValue != null ? (Texture2D)newValue : null;
 

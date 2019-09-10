@@ -323,6 +323,7 @@ public class ObjectiveController : DialogueBoxController
 
     void SurvivalStage()
     {
+        Hub.Instance.extinguishingFire(); // smoke for the hub
         switch (subStage)
         {
             case 0:
@@ -374,7 +375,6 @@ public class ObjectiveController : DialogueBoxController
             case 4:
                 //Survival countdown
                 Tick();
-                Hub.Instance.extinguishingFire(); // smoke for the hub
                 Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)

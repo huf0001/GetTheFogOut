@@ -2139,38 +2139,37 @@ namespace AmplifyShaderEditor
 
 		public static bool DetectNodeLoopsFrom( ParentNode node, Dictionary<int, int> currentNodes )
 		{
-			if( currentNodes.ContainsKey( node.UniqueId ) )
-			{
-				currentNodes.Clear();
-				currentNodes = null;
-				return true;
-			}
-
-			currentNodes.Add( node.UniqueId, 1 );
-			bool foundLoop = false;
 			for( int i = 0; i < node.InputPorts.Count; i++ )
 			{
 				if( node.InputPorts[ i ].IsConnected )
 				{
 					ParentNode newNode = node.InputPorts[ i ].GetOutputNode();
-					if( newNode.InputPorts.Count > 0 )
-					{
-						Dictionary<int, int> newDict = new Dictionary<int, int>();
-						foreach( KeyValuePair<int, int> entry in currentNodes )
-						{
-							newDict.Add( entry.Key, entry.Value );
-						}
-						foundLoop = foundLoop || DetectNodeLoopsFrom( newNode, newDict );
-						if( foundLoop )
-							break;
-					}
+					if( !currentNodes.ContainsKey( newNode.UniqueId ) )
+						RecursiveNodeFill( newNode, currentNodes );
 				}
 			}
 
+			bool found = currentNodes.ContainsKey( node.UniqueId );
 			currentNodes.Clear();
 			currentNodes = null;
 
-			return foundLoop;
+			return found;
+		}
+
+		private static void RecursiveNodeFill( ParentNode node, Dictionary<int, int> currentNodes )
+		{
+			if( !currentNodes.ContainsKey( node.UniqueId ) )
+				currentNodes.Add( node.UniqueId, 1 );
+
+			for( int i = 0; i < node.InputPorts.Count; i++ )
+			{
+				if( node.InputPorts[ i ].IsConnected )
+				{
+					ParentNode newNode = node.InputPorts[ i ].GetOutputNode();
+					if( !currentNodes.ContainsKey( newNode.UniqueId ) )
+						RecursiveNodeFill( newNode, currentNodes );
+				}
+			}
 		}
 
 		public static ParentNode CreateNode( System.Type type, bool registerUndo, Vector2 pos, int nodeId = -1, bool addLast = true )

@@ -201,17 +201,46 @@ public class MouseController : MonoBehaviour
             TileData tile;
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-            //Check if a valid tile was clicked
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables" })) && WorldController.Instance.TileExistsAt(hit.point))
+            /*
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Buildings")))
+            {
+                if (!UIController.instance.buildingInfo.Visible)
+                {
+                    Building b;
+                    if (hit.collider.name == "pCube31")
+                    {
+                        b = Hub.Instance;
+                        UIController.instance.buildingInfo.ShowInfo(b);
+                    }
+                }
+                else
+                    UIController.instance.buildingInfo.HideInfo();
+
+            }else
+            */
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables", "Buildings" })) && WorldController.Instance.TileExistsAt(hit.point))
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
                     changeTileMaterial(WorldController.Instance.normalTile);
                     towerManager.CancelBuild();
-                }else if (hit.collider.gameObject.layer == 15)
+                } else if (hit.collider.gameObject.layer == 15)
                 {
                     hit.collider.GetComponent<Collectable>()?.CollectAbility();
                     hit.collider.GetComponent<ShipComponent>()?.Collect();
+                }
+                else if (hit.collider.name == "pCube31")
+                {
+                    if (!UIController.instance.buildingInfo.Visible)
+                    {
+                        Building b = Hub.Instance;
+                        UIController.instance.buildingInfo.ShowInfo(b);
+                    }
+                    else
+                        UIController.instance.buildingInfo.HideInfo();
+
+                    TileData t = WorldController.Instance.GetTileAt(36,34);
+                    towerManager.CurrentTile = t;
                 }
                 else
                 {
@@ -232,10 +261,11 @@ public class MouseController : MonoBehaviour
 
                             towerManager.CurrentTile = tile;
                         }
-                    }else
+                    } else
                         towerManager.CurrentTile = tile;
                 }
             }
+            
         }
     }
 

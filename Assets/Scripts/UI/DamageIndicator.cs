@@ -27,6 +27,7 @@ public class DamageIndicator : MonoBehaviour
         set
         {
             on = value;
+
             if (!value)
             {
                 icon.alpha = 0;

@@ -52,7 +52,7 @@ namespace AmplifyShaderEditor
 							int count = nodes.Count;
 							for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 							{
-								nodes[ nodeIdx ].OptionsDefineContainer.AddDefine( "#define "+m_options.ActionsPerOption[ optionId ][ i ].ActionData );
+								nodes[ nodeIdx ].OptionsDefineContainer.AddDefine( "#define "+m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
 							}
 							//dataCollector.AddToDefines( -1, m_options.ActionsPerOption[ optionId ][ i ].ActionData );
 						}
@@ -63,7 +63,7 @@ namespace AmplifyShaderEditor
 							int count = nodes.Count;
 							for( int nodeIdx = 0; nodeIdx < count; nodeIdx++ )
 							{
-								nodes[ nodeIdx ].OptionsDefineContainer.AddDefine( "#undef " + m_options.ActionsPerOption[ optionId ][ i ].ActionData );
+								nodes[ nodeIdx ].OptionsDefineContainer.AddDefine( "#undef " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
 							}
 							//dataCollector.AddToDefines( -1, m_options.ActionsPerOption[ optionId ][ i ].ActionData, false );
 						}
@@ -71,8 +71,49 @@ namespace AmplifyShaderEditor
 					}
 				}
 			}
-
 		}
+
+		public void SubShaderFillDataCollector( TemplateMultiPassMasterNode owner, ref MasterNodeDataCollector dataCollector )
+		{
+
+			TemplateMultiPassMasterNode targetNode = string.IsNullOrEmpty(m_options.Id) ? owner:owner.ContainerGraph.GetMasterNodeOfPass( m_options.Id );
+			InputPort port = null;
+			if( m_portId > -1 )
+			{
+				port = targetNode.GetInputPortByUniqueId( m_portId );
+			}
+			else
+			{
+				port = targetNode.InputPorts.Find( x => x.Name.Equals( m_options.Name ) );
+			}
+
+			
+			if( port != null )
+			{
+				int optionId = port.HasOwnOrLinkConnection ? 0 : 1;
+				for( int i = 0; i < m_options.ActionsPerOption[ optionId ].Length; i++ )
+				{
+					if( string.IsNullOrEmpty( m_options.ActionsPerOption[ optionId ][ i ].PassName ) ||
+						m_options.ActionsPerOption[ optionId ][ i ].PassName.Equals( owner.PassName ) )
+					{
+						switch( m_options.ActionsPerOption[ optionId ][ i ].ActionType )
+						{
+							case AseOptionsActionType.SetDefine:
+							{
+								owner.OptionsDefineContainer.AddDefine( "#define " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, true );
+							}
+							break;
+							case AseOptionsActionType.SetUndefine:
+							{
+								owner.OptionsDefineContainer.AddDefine( "#undef " + m_options.ActionsPerOption[ optionId ][ i ].ActionData, true );
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		public void CheckImediateActionsForPort( TemplateMultiPassMasterNode owner, int portId )
 		{
 			if( portId != m_portId )

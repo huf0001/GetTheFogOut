@@ -338,33 +338,34 @@ internal class ASEMaterialInspector : ShaderGUI
 		{
 			if( ( properties[ i ].flags & ( MaterialProperty.PropFlags.HideInInspector | MaterialProperty.PropFlags.PerRendererData ) ) == MaterialProperty.PropFlags.None )
 			{
-				if( ( properties[ i ].flags & MaterialProperty.PropFlags.NoScaleOffset ) == MaterialProperty.PropFlags.NoScaleOffset )
-				{
-					object obj = MaterialPropertyHandlerEx.GetHandler( mat.shader, properties[ i ].name );
-					if( obj != null )
-					{
-						float height = MaterialPropertyHandlerEx.GetPropertyHeight( obj, properties[ i ], properties[ i ].displayName, materialEditor );
-						//Rect rect = (Rect)materialEditor.GetType().InvokeMember( "GetPropertyRect", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod, null, materialEditor, new object[] { properties[ i ], properties[ i ].displayName, true } );
-						Rect rect = EditorGUILayout.GetControlRect( true, height, EditorStyles.layerMaskField );
-						MaterialPropertyHandlerEx.OnGUI( obj, ref rect, properties[ i ], new GUIContent( properties[ i ].displayName ), materialEditor );
+				// Removed no scale offset one line texture property for consistency :( sad face
+				//if( ( properties[ i ].flags & MaterialProperty.PropFlags.NoScaleOffset ) == MaterialProperty.PropFlags.NoScaleOffset )
+				//{
+				//	object obj = MaterialPropertyHandlerEx.GetHandler( mat.shader, properties[ i ].name );
+				//	if( obj != null )
+				//	{
+				//		float height = MaterialPropertyHandlerEx.GetPropertyHeight( obj, properties[ i ], properties[ i ].displayName, materialEditor );
+				//		//Rect rect = (Rect)materialEditor.GetType().InvokeMember( "GetPropertyRect", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod, null, materialEditor, new object[] { properties[ i ], properties[ i ].displayName, true } );
+				//		Rect rect = EditorGUILayout.GetControlRect( true, height, EditorStyles.layerMaskField );
+				//		MaterialPropertyHandlerEx.OnGUI( obj, ref rect, properties[ i ], new GUIContent( properties[ i ].displayName ), materialEditor );
 
-						if( MaterialPropertyHandlerEx.PropertyDrawer( obj ) != null )
-							continue;
+				//		if( MaterialPropertyHandlerEx.PropertyDrawer( obj ) != null )
+				//			continue;
 
-						rect = EditorGUILayout.GetControlRect( true, height, EditorStyles.layerMaskField );
-						materialEditor.TexturePropertyMiniThumbnail( rect, properties[ i ], properties[ i ].displayName, string.Empty );
-					}
-					else
-					{
-						materialEditor.TexturePropertySingleLine( new GUIContent( properties[ i ].displayName ), properties[ i ] );
-					}
-				}
-				else
-				{
+				//		rect = EditorGUILayout.GetControlRect( true, height, EditorStyles.layerMaskField );
+				//		materialEditor.TexturePropertyMiniThumbnail( rect, properties[ i ], properties[ i ].displayName, string.Empty );
+				//	}
+				//	else
+				//	{
+				//		materialEditor.TexturePropertySingleLine( new GUIContent( properties[ i ].displayName ), properties[ i ] );
+				//	}
+				//}
+				//else
+				//{
 					float propertyHeight = materialEditor.GetPropertyHeight( properties[ i ], properties[ i ].displayName );
 					Rect controlRect = EditorGUILayout.GetControlRect( true, propertyHeight, EditorStyles.layerMaskField, new GUILayoutOption[ 0 ] );
 					materialEditor.ShaderProperty( controlRect, properties[ i ], properties[ i ].displayName );
-				}
+				//}
 			}
 		}
 

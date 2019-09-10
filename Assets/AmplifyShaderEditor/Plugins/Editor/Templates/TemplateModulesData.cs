@@ -21,6 +21,7 @@ namespace AmplifyShaderEditor
 		ModuleZOffset,
 		ModuleTag,
 		ModuleGlobals,
+		ModuleSRPBatcher,
 		ModuleFunctions,
 		ModulePragma,
 		ModulePragmaBefore,
@@ -66,6 +67,9 @@ namespace AmplifyShaderEditor
 
 		[SerializeField]
 		private TemplateTagData m_globalsTag = new TemplateTagData( TemplatesManager.TemplateGlobalsTag, true );
+
+		[SerializeField]
+		private TemplateTagData m_srpBatcherTag = new TemplateTagData( TemplatesManager.TemplateSRPBatcherTag, true );
 
 		[SerializeField]
 		private TemplateTagData m_allModulesTag = new TemplateTagData( TemplatesManager.TemplateAllModulesTag, true );
@@ -119,6 +123,7 @@ namespace AmplifyShaderEditor
 			m_tagData.Destroy();
 			m_tagData = null;
 			m_globalsTag = null;
+			m_srpBatcherTag = null;
 			m_allModulesTag = null;
 			m_functionsTag = null;
 			m_pragmaTag = null;
@@ -152,6 +157,7 @@ namespace AmplifyShaderEditor
 
 			//COMMON TAGS
 			ConfigureCommonTag( m_globalsTag, propertyContainer, idManager, uniquePrefix, offsetIdx, subBody );
+			ConfigureCommonTag( m_srpBatcherTag, propertyContainer, idManager, uniquePrefix, offsetIdx, subBody );
 			ConfigureCommonTag( m_functionsTag, propertyContainer, idManager, uniquePrefix, offsetIdx, subBody );
 			ConfigureCommonTag( m_pragmaTag, propertyContainer, idManager, uniquePrefix, offsetIdx, subBody );
 			ConfigureCommonTag( m_pragmaBeforeTag, propertyContainer, idManager, uniquePrefix, offsetIdx, subBody );
@@ -451,6 +457,7 @@ namespace AmplifyShaderEditor
 						m_tagData.DataCheck == TemplateDataCheck.Valid ||
 						m_shaderModel.DataCheck == TemplateDataCheck.Valid ||
 						m_globalsTag.IsValid ||
+						m_srpBatcherTag.IsValid ||
 						m_allModulesTag.IsValid ||
 						m_functionsTag.IsValid ||
 						m_pragmaTag.IsValid ||
@@ -468,6 +475,7 @@ namespace AmplifyShaderEditor
 		public TemplateDepthData DepthData { get { return m_depthData; } }
 		public TemplateTagsModuleData TagData { get { return m_tagData; } }
 		public TemplateTagData GlobalsTag { get { return m_globalsTag; } }
+		public TemplateTagData SRPBatcherTag { get { return m_srpBatcherTag; } }
 		public TemplateTagData AllModulesTag { get { return m_allModulesTag; } }
 		public TemplateTagData FunctionsTag { get { return m_functionsTag; } }
 		public TemplateTagData PragmaTag { get { return m_pragmaTag; } }

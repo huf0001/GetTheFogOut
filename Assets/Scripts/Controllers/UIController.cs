@@ -13,7 +13,6 @@ public class UIController : MonoBehaviour
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
     public GameObject endGame, pauseGame;
-    GameObject hudBar;
     public BuildingSelector buildingSelector;
     public BuildingInfo buildingInfo;
     public TextMeshProUGUI endGameText;
@@ -28,6 +27,7 @@ public class UIController : MonoBehaviour
     private Image launchButtonImage;
     private MusicFMOD musicFMOD;
 
+    [SerializeField] private Image hud;
     [SerializeField] private Image powerImg;
     [SerializeField] private Sprite[] powerLevelSprites;
     [SerializeField] private Animator powerThresholds;
@@ -91,6 +91,7 @@ public class UIController : MonoBehaviour
         index = 0;
         temp = 2;
 
+        hud.alphaHitTestMinimumThreshold = 0.5f;
         launchButtonImage = objectiveButton.image;
         arrowInitialPosition = proceedArrows.GetComponent<RectTransform>().anchoredPosition;
         abilityImageParent = abilityImage.rectTransform.parent.GetComponent<RectTransform>();
@@ -599,7 +600,6 @@ public class UIController : MonoBehaviour
         {
             case TutorialStage.None:
             case TutorialStage.ExplainSituation:
-            case TutorialStage.ExplainMinerals:
             case TutorialStage.WaitingForPowerDrop:
             case TutorialStage.SonarActivated:
                 hudObjText.text = "<b>Complete the Tutorial</b>";

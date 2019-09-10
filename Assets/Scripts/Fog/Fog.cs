@@ -38,6 +38,15 @@ public enum Difficulty
     Hard
 }
 
+[Serializable]
+public struct FogDifficulty
+{
+    public float fogDamageMultiplier;
+    public float earlyGameGrowthMultiplier;
+    public float midGameGrowthMultiplier;
+    public float lateGameGrowthMultiplier;
+}
+
 public class Fog : MonoBehaviour
 {
     //Fields-----------------------------------------------------------------------------------------------------------------------------------------
@@ -76,17 +85,23 @@ public class Fog : MonoBehaviour
     [SerializeField] private float fogSphereSpillMultiplier;
 
     [Header("Fog Strength Over Time")]
-    [SerializeField] private float fogGrowthEasy;
-    [SerializeField] private float fogGrowthMedium;
-    [SerializeField] private float fogGrowthHard;
-    [SerializeField] private float fogSphereEasyMaxHealth;
-    [SerializeField] private float fogSphereMediumMaxHealth;
-    [SerializeField] private float fogSphereHardMaxHealth;
+    [SerializeField] private float earlyGameFogGrowth;
+    [SerializeField] private float midGameFogGrowth;
+    [SerializeField] private float lateGameFogGrowth;
+    [SerializeField] private float earlyGameMaxFogSphereHealth;
+    [SerializeField] private float midGameMaxFogSphereHealth;
+    [SerializeField] private float lateGameMaxFogSphereHealth;
 
-    [Header("Fog Size Over Time")]
-    [SerializeField] private float fogSphereEasyMaxSizeScale;
-    [SerializeField] private float fogSphereMediumMaxSizeScale;
-    [SerializeField] private float fogSphereHardMaxSizeScale;
+    [Header("Fog Strength Multipliers by Difficulty")]
+    [SerializeField] private FogDifficulty chillMultipliers;
+    [SerializeField] private FogDifficulty easyMultipliers;
+    [SerializeField] private FogDifficulty normalMultipliers;
+    [SerializeField] private FogDifficulty hardMultipliers;
+
+    [Header("Fog Sphere Size Over Time")]
+    [SerializeField] private float earlyGameMaxFogSphereSize;
+    [SerializeField] private float midGameMaxFogSphereSize;
+    [SerializeField] private float lateGameMaxFogSphereSize;
 
     [Header("Health")]
     [SerializeField] private float fogSphereMinHealth;
@@ -157,9 +172,9 @@ public class Fog : MonoBehaviour
                 switch (intensity)
                 {
                     case 1:
-                        fogGrowth = fogGrowthEasy;
-                        fogSphereMaxHealth = fogSphereEasyMaxHealth;
-                        fogSphereMaxSizeScale = fogSphereEasyMaxSizeScale;
+                        fogGrowth = earlyGameFogGrowth;
+                        fogSphereMaxHealth = earlyGameMaxFogSphereHealth;
+                        fogSphereMaxSizeScale = earlyGameMaxFogSphereSize;
 
                         if (angry)
                         {
@@ -168,9 +183,9 @@ public class Fog : MonoBehaviour
 
                         break;
                     case 2:
-                        fogGrowth = fogGrowthMedium;
-                        fogSphereMaxHealth = fogSphereMediumMaxHealth;
-                        fogSphereMaxSizeScale = fogSphereMediumMaxSizeScale;
+                        fogGrowth = midGameFogGrowth;
+                        fogSphereMaxHealth = midGameMaxFogSphereHealth;
+                        fogSphereMaxSizeScale = midGameMaxFogSphereSize;
 
                         if (angry)
                         {
@@ -179,9 +194,9 @@ public class Fog : MonoBehaviour
 
                         break;
                     case 3:
-                        fogGrowth = fogGrowthHard;
-                        fogSphereMaxHealth = fogSphereHardMaxHealth;
-                        fogSphereMaxSizeScale = fogSphereHardMaxSizeScale;
+                        fogGrowth = lateGameFogGrowth;
+                        fogSphereMaxHealth = lateGameMaxFogSphereHealth;
+                        fogSphereMaxSizeScale = lateGameMaxFogSphereSize;
 
                         if (!angry)
                         {
@@ -232,24 +247,28 @@ public class Fog : MonoBehaviour
         switch (difficulty)
         {
             case Difficulty.Chill:
-                fogDamage /= 2f;
-                fogGrowthEasy /= 2;
-                fogGrowthMedium /= 2;
-                fogGrowthHard /= 2;
+                fogDamage *= chillMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= chillMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= chillMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= chillMultipliers.lateGameGrowthMultiplier;
                 break;
             case Difficulty.Easy:
-                fogDamage /= 1.40f;
-                fogGrowthEasy /= 2;
-                fogGrowthMedium /= 2;
-                fogGrowthHard /= 2;
+                fogDamage *= chillMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= easyMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= easyMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= easyMultipliers.lateGameGrowthMultiplier;
                 break;
             case Difficulty.Normal:
+                fogDamage *= normalMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= normalMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= normalMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= normalMultipliers.lateGameGrowthMultiplier;
                 break;
             case Difficulty.Hard:
-                fogDamage *= 2f;
-                fogGrowthEasy *= 2;
-                fogGrowthMedium *= 2;
-                fogGrowthHard *= 2;
+                fogDamage *= hardMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= hardMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= hardMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= hardMultipliers.lateGameGrowthMultiplier;
                 break;
         }
     }

@@ -637,12 +637,20 @@ namespace UnityEditor
 
 		public static void FetchCachedErrors( Shader s )
 		{
+#if UNITY_2019_3_OR_NEWER
+			ShaderUtilEx.Type.InvokeMember( "FetchCachedMessages", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod, null, null, new object[] { s } );
+#else
 			ShaderUtilEx.Type.InvokeMember( "FetchCachedErrors", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod, null, null, new object[] { s } );
+#endif
 		}
 
 		public static int GetShaderErrorCount( Shader s )
 		{
+#if UNITY_2019_3_OR_NEWER
+			return ShaderUtil.GetShaderMessageCount( s );
+#else
 			return ( int ) ShaderUtilEx.Type.InvokeMember( "GetShaderErrorCount", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod, null, null, new object[] { s } );
+#endif
 		}
 
 		public static int GetAvailableShaderCompilerPlatforms()
