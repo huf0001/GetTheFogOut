@@ -30,26 +30,6 @@ public abstract class PowerSource : Building
         ActivateTiles();
     }
 
-    //public List<Battery> GetBatteries()
-    //{
-    //    List<Battery> batteries = new List<Battery>();
-
-    //    foreach (Building b in suppliedBuildings)
-    //    {
-    //        if (b.BuildingType == BuildingType.Battery)
-    //        {
-    //            batteries.Add(b as Battery);
-    //        }
-    //        else if (b.BuildingType == BuildingType.Extender)
-    //        {
-    //            Extender r = b as Extender;
-    //            batteries.AddRange(r.GetBatteries());
-    //        }
-    //    }
-
-    //    return batteries;
-    //}
-
     public List<Generator> GetGenerators()
     {
         List<Generator> generators = new List<Generator>();
@@ -169,9 +149,9 @@ public abstract class PowerSource : Building
     public void UpdateTiles()
     { 
         foreach (TileData tile in WorldController.Instance.ActiveTiles)
-            {
-                tile.PowerUp(this as PowerSource);
-            }
+        {
+            tile.PowerUp(this as PowerSource);
+        }
 
         foreach (TileData tile in WorldController.Instance.DisableTiles)
         {
@@ -189,47 +169,19 @@ public abstract class PowerSource : Building
         {
             tile.PowerUp(this as PowerSource);
             if ((tile.X == 28) || (tile.X == 29) || (tile.X == 30))
-                {
-                    if ((tile.Z == 20) || (tile.Z == 21) || (tile.Z == 22))
-                    {
-                        tile.PowerDown(this as PowerSource);
-                        WorldController.Instance.DisableTiles.Add(tile);
-                        if (tile.X == 29 && tile.Z == 21) //this block is to re-enable the hub tile , removed this if you don't want the player to see the hub
-                        {
-                            WorldController.Instance.DisableTiles.Remove(tile);
-                            tile.PowerUp(this as PowerSource);
-                        }
-                    }
-                }
-            /*
-            //TODO: remove hard-coding of these tile numbers, they need to check their position against the hub/thruster's, whichever is appropriate here.
-            if (ObjectiveController.Instance.thruster.activeSelf)
             {
-                if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
+                if ((tile.Z == 20) || (tile.Z == 21) || (tile.Z == 22))
                 {
-                    if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
+                    tile.PowerDown(this as PowerSource);
+                    WorldController.Instance.DisableTiles.Add(tile);
+                    if (tile.X == 29 && tile.Z == 21) //this block is to re-enable the hub tile , removed this if you don't want the player to see the hub
                     {
-                        WorldController.Instance.tempPower = tile.PowerSource;
-                        tile.PowerDown(tile.PowerSource);
-                        WorldController.Instance.DisableTiles.Add(tile);
-                        WorldController.Instance.ActiveTiles.Remove(tile);
+                        WorldController.Instance.DisableTiles.Remove(tile);
+                        tile.PowerUp(this as PowerSource);
                     }
                 }
             }
-            */
-            /*
-            if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
-            {
-                if ((tile.X == 45) || (tile.X == 46) || (tile.X == 47))
-                {
-                    if ((tile.Z == 19) || (tile.Z == 20) || (tile.Z == 21))
-                    {
-                        tile.PowerUp(tile.PowerSource);
-                        Debug.Log("collected");
-                    }
-                }
-            }*/
-            
+
             if (!WorldController.Instance.ActiveTiles.Contains(tile))
             {
                 if (!WorldController.Instance.DisableTiles.Contains(tile))
@@ -271,33 +223,19 @@ public abstract class PowerSource : Building
     {
         if (this != newBuilding)
         {
-            //Debug.Log("Plugging " + newBuilding.name + " into " + this.name);
             if (!suppliedBuildings.Contains(newBuilding))
             {
                 suppliedBuildings.Add(newBuilding); 
             }
         }
 
-        //if (suppliedBuildings.Contains(newBuilding))
-        //{
-        //    Debug.Log("plugged in successfully");
-        //}
     }
 
     public void Unplug(Building unplug)
     {
         if (this != unplug)
         {
-            //if (suppliedBuildings.Contains(unplug))
-            //{
-            //Debug.Log("Unplugging " + unplug.name + " from " + this.name);
             suppliedBuildings.Remove(unplug);
-            //}
-
-            //if (!suppliedBuildings.Contains(unplug))
-            //{
-            //    Debug.Log("Unplugged successfully");
-            //}
         }
     }
 
@@ -309,7 +247,8 @@ public abstract class PowerSource : Building
 
         foreach(Building b in suppliedBuildings)
         {
-            b.SetPowerSource();
+            b.DestroyWires();
+            b.CreateWire();
         }
     }
 }

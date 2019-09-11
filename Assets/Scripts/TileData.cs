@@ -160,7 +160,7 @@ public class TileData
         {
             if (!building.Powered)
             {
-                building.SetPowerSource();
+                //building.SetPowerSource();
             }
         }
     }
@@ -174,7 +174,7 @@ public class TileData
 
         if (building != null)
         {
-             building.SetPowerSource();
+             //building.SetPowerSource();
         }
     }
 

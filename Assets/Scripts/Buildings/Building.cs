@@ -251,45 +251,30 @@ public abstract class Building : Entity
 
     public virtual void Place()
     {
-        if (buildingType != BuildingType.Hub)
-        {
-            if (powerSource == null)
-            {
-                SetPowerSource();
-            }
-        }
-
+//        if (buildingType != BuildingType.Hub)
+//        {
+//            if (powerSource == null)
+//            {
+//                SetPowerSource();
+//            }
+//        }
+        
+        CreateWire();
         ResourceController.Instance.AddBuilding(this);
         gameObject.layer = LayerMask.NameToLayer("Buildings");
         placed = true;
-
-        //GetComponent<Renderer>().material.shader = buildingShader;
     }
 
     public void SetPowerSource()
     {
-        //Debug.Log("Setting Power Source");
-
-        //if (location == null)
-        //{
-        //    Debug.Log("Location of " + this.name + " is null");
-        //}
-
-        //if (location.PowerSource == null)
-        //{
-        //    Debug.Log("Power Source is null");
-        //}
-
         powerSource = location.GetClosestPowerSource(this.transform);
-        //powerSource = location.PowerSource;
-
+        
         if (powerSource != null)
         {
-            //Debug.Log("Plugging In and Powering Up " + this.name);
             powerSource.PlugIn(this);
             PowerUp();
 
-            // Create wires between buidings
+            // Create wires between buildings
             wire = GetComponentInChildren<Wires>();
             if (wire)
             {
@@ -315,7 +300,6 @@ public abstract class Building : Entity
         }
         else
         {
-            //Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
             PowerDown();
 
             // Destroy wires
@@ -327,10 +311,45 @@ public abstract class Building : Entity
                     Destroy(wire.transform.GetChild(0).gameObject);
                 }
             }
-
         }
+    }
 
-        //Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);
+    public void CreateWire()
+    {
+        // Create wires between buildings
+        wire = GetComponentInChildren<Wires>();
+        if (wire)
+        {
+            if (this != WorldController.Instance.Hub)
+            {
+                Wires targetWire = location.PowerSource.GetComponentInChildren<Wires>();
+                
+                if (targetWire)
+                {
+                    wire.next = targetWire.gameObject;
+                    wire.CreateWire();
+                }
+            }
+        }
+    }
+
+    public void DestroyWires()
+    {
+        wire = GetComponentInChildren<Wires>();
+        if (wire)
+        {
+            // Destroy any already existing wires
+            if (wire.transform.childCount > 0)
+            {
+                for (int i = 0; i < wire.transform.childCount; i++)
+                {
+                    if (wire.transform.GetChild(i).name != "Cable Energy")
+                    {
+                        Destroy(wire.transform.GetChild(i).gameObject);
+                    }
+                }
+            }
+        }
     }
 
     public virtual void PowerUp()
@@ -403,12 +422,12 @@ public abstract class Building : Entity
 
     public void ShutdownBuilding()
     {
-        if (powerSource != null)
-        {
-            //Debug.Log("Unplugging from " + powerSource.name);
-            //  powerSource.SuppliedBuildings.Remove(this);
-            powerSource.Unplug(this);
-        }
+//        if (powerSource != null)
+//        {
+//            //Debug.Log("Unplugging from " + powerSource.name);
+//            //  powerSource.SuppliedBuildings.Remove(this);
+//            powerSource.Unplug(this);
+//        }
 
         PowerDown();
     }
@@ -420,6 +439,7 @@ public abstract class Building : Entity
         
         // Kill Cable Effect tween
         wire.sequence.Kill();
+        DestroyWires();
         
         if (buildingType == BuildingType.Hub)
         {

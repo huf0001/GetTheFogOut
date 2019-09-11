@@ -101,7 +101,7 @@ public class Harvester : Building
         {
             hvtProgress.Stop();
         }
-            base.PowerDown();
+        base.PowerDown();
     }
 
     public void Upgrade(Upgrade upgrade)
