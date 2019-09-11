@@ -176,6 +176,7 @@ MonoBehaviour:
   buildingInfo: {fileID: 0}
   endGameText: {fileID: 0}
   buttonClosed: 1
+  hud: {fileID: 0}
   powerImg: {fileID: 0}
   powerLevelSprites:
   - {fileID: 21300000, guid: 88d41290badea9d49a808952d37fc94c, type: 3}
@@ -405,16 +406,16 @@ MonoBehaviour:
   fogEffect: {fileID: 0}
   angry: 0
   damageOn: 1
-  fogSphereSpawnPointsParent: {fileID: 0}
   configuration: 5
   difficulty: 1
   expansionDirection: 0
   surroundingHubRange: 9
   fogAccelerates: 0
   fogFrozen: 0
-  maxFogSpheresCount: 5
   fogGrowth: 10
   fogSpillThreshold: 50
+  fogSphereSpawnPointsParent: {fileID: 0}
+  maxFogSpheresCount: 5
   fogSphereSpillMultiplier: 8
   earlyGameFogGrowth: 10
   midGameFogGrowth: 25
@@ -452,6 +453,8 @@ MonoBehaviour:
   fogDamageInterval: 0.02
   fogExpansionInterval: 0.5
   fogSphereInterval: 0.05
+  lightningInPlay: []
+  lightningInPool: []
 --- !u!114 &7305178377255849301
 MonoBehaviour:
   m_ObjectHideFlags: 0
