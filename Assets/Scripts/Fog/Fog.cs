@@ -756,14 +756,8 @@ public class Fog : MonoBehaviour
                 }
             }
 
-            if (Time.time - timeOfLastFillUpdate < fogFillInterval)
-            {
-                yield return new WaitForSeconds(Time.time - timeOfLastFillUpdate);
-            }
-            else
-            {
-                yield return null;
-            }            
+            float duration = Time.time - timeOfLastFillUpdate;
+            yield return new WaitForSeconds(Mathf.Max(0, fogFillInterval - duration));       
         }
     }
 
