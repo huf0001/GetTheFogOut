@@ -615,8 +615,8 @@ public class Fog : MonoBehaviour
     {
         StartCoroutine(UpdateFogUnitFill(delay + 0.1f));
         //InvokeRepeating(nameof(UpdateFogUnitFill), delay + 0.1f, fogFillInterval);
-        //StartCoroutine(ExpandFog(delay + 0.3f));
-        InvokeRepeating(nameof(ExpandFog), delay + 0.3f, fogExpansionInterval);
+        StartCoroutine(ExpandFog(delay + 0.3f));
+        //InvokeRepeating(nameof(ExpandFog), delay + 0.3f, fogExpansionInterval);
         //StartCoroutine(UpdateFogSpheres(delay + delay + 1f));
         InvokeRepeating(nameof(UpdateFogSpheres), delay + 1f, fogSphereInterval);
     }
@@ -699,8 +699,15 @@ public class Fog : MonoBehaviour
                 for (int i = 0; i < framesPerFillUpdate; i++)   //For each frame in the fog fill interval
                 {
                     List<FogUnit> toRenderOpacity = new List<FogUnit>();
+                    int startIndex = unitsPerFrame * i;
+                    int endIndex = Mathf.Min(unitsPerFrame * (i + 1), fogUnitsInPlay.Count);    //Ensures it doesn't overshoot
 
-                    for (int j = unitsPerFrame * i; j < unitsPerFrame * (i + 1) && j < FogUnitsInPlay.Count; j++) //For each unit that should be fillable within this frame
+                    if (i == framesPerFillUpdate - 1 && endIndex != fogUnitsInPlay.Count)   //Ensures it doesn't leave out any fog units
+                    {
+                        endIndex = fogUnitsInPlay.Count;
+                    }
+
+                    for (int j = startIndex; j < endIndex; j++) //For each unit that should be fillable within this frame
                     {
                         FogUnit f = fogUnitsInPlay[j];
 
@@ -761,12 +768,12 @@ public class Fog : MonoBehaviour
     }
 
     //Fog spills over onto adjacent tiles
-    private void ExpandFog(/*float delay*/)
+    IEnumerator ExpandFog(float delay)
     {
-        //yield return (delay * 1000);
+        yield return new WaitForSeconds(delay);
 
-        //while (fogUnitsInPlay.Count > 0)
-        //{
+        while (fogUnitsInPlay.Count > 0)
+        {
             List<TileData> newTiles = new List<TileData>();
 
             foreach (FogUnit f in fogUnitsInPlay)
@@ -798,8 +805,8 @@ public class Fog : MonoBehaviour
                 Debug.Log("More fog units than board tiles. There must be some overlapping.");
             }
 
-        //    yield return (1000 * fogExpansionInterval);
-        //}        
+            yield return new WaitForSeconds(fogExpansionInterval);
+        }
     }
 
     //Handles the fog spheres
