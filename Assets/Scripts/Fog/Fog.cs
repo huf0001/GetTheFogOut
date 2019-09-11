@@ -600,8 +600,7 @@ public class Fog : MonoBehaviour
     //Turns on the fog's sensitivity to damage
     public void BeginUpdatingDamage(float delay)
     {
-        //StartCoroutine(UpdateDamageToFogUnits(delay));
-        InvokeRepeating(nameof(UpdateDamageToFogUnits), delay, fogDamageInterval);
+        StartCoroutine(UpdateDamageToFogUnits(delay));
     }
 
     //Wakes up the fog, turning on its filling and expansion, and fog spheres
@@ -614,22 +613,19 @@ public class Fog : MonoBehaviour
     public void WakeUpFog(float delay)
     {
         StartCoroutine(UpdateFogUnitFill(delay + 0.1f));
-        //InvokeRepeating(nameof(UpdateFogUnitFill), delay + 0.1f, fogFillInterval);
         StartCoroutine(ExpandFog(delay + 0.3f));
-        //InvokeRepeating(nameof(ExpandFog), delay + 0.3f, fogExpansionInterval);
-        //StartCoroutine(UpdateFogSpheres(delay + delay + 1f));
-        InvokeRepeating(nameof(UpdateFogSpheres), delay + 1f, fogSphereInterval);
+        StartCoroutine(UpdateFogSpheres(delay + delay + 1f));
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
 
     //Handles the damaging of fog units
-    private void UpdateDamageToFogUnits(/*float delay*/)
+    IEnumerator UpdateDamageToFogUnits(float delay)
     {
-        //yield return delay * 1000;
+        yield return new WaitForSeconds(delay);
 
-        //while (fogUnitsInPlay.Count > 0)
-        //{
+        while (fogUnitsInPlay.Count > 0)
+        {
             List<FogUnit> toRender = new List<FogUnit>();
 
             foreach (FogUnit f in fogUnitsInPlay)
@@ -669,10 +665,10 @@ public class Fog : MonoBehaviour
                 CancelInvoke();
             }
 
-        //    yield return fogDamageInterval * 1000;
-        //}
+            yield return new WaitForSeconds(fogDamageInterval);
+        }
 
-        //ObjectiveController.Instance.FogDestroyed();
+        ObjectiveController.Instance.FogDestroyed();
     }
 
     //Fills the health of fog units
@@ -823,52 +819,15 @@ public class Fog : MonoBehaviour
             float duration = Time.time - timeOfLastExpansionUpdate;
             yield return new WaitForSeconds(Mathf.Max(0, fogExpansionInterval - duration));
         }
-
-        //while (fogUnitsInPlay.Count > 0)
-        //{
-
-        //    List<TileData> newTiles = new List<TileData>();
-
-        //    foreach (FogUnit f in fogUnitsInPlay)
-        //    {
-        //        if (!f.Spill && f.Health >= fogSpillThreshold)
-        //        {
-        //            f.Spill = true;
-
-        //            foreach (TileData a in f.Location.AdjacentTiles)
-        //            {
-        //                if (!a.buildingChecks.obstacle && !a.FogUnitActive && !newTiles.Contains(a))
-        //                {
-        //                    newTiles.Add(a);
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    if (newTiles.Count > 0)
-        //    {
-        //        foreach (TileData n in newTiles)
-        //        {
-        //            SpawnFogUnit(n.X, n.Z, fogUnitMinHealth);
-        //        }
-        //    }
-
-        //    if (fogUnitsInPlay.Count > xCount * zCount)
-        //    {
-        //        Debug.Log("More fog units than board tiles. There must be some overlapping.");
-        //    }
-
-        //    yield return new WaitForSeconds(fogExpansionInterval);
-        //}
     }
 
     //Handles the fog spheres
-    private void UpdateFogSpheres(/*float delay*/)
+    IEnumerator UpdateFogSpheres(float delay)
     {
-        //yield return delay * 1000;
+        yield return new WaitForSeconds(delay);
 
-        //while (fogUnitsInPlay.Count > 0)
-        //{
+        while (fogUnitsInPlay.Count > 0)
+        {
             if (!fogFrozen)
             {
                 foreach (FogSphere f in fogSpheresInPlay)
@@ -910,8 +869,8 @@ public class Fog : MonoBehaviour
                 SpawnFogSphere();
             }
 
-        //    yield return fogSphereInterval * 1000;
-        //}        
+            yield return new WaitForSeconds(fogSphereInterval);
+        }        
     }
 
     //Re-Pooling Methods-----------------------------------------------------------------------------------------------------------------------------
