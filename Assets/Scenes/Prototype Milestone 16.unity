@@ -16292,6 +16292,11 @@ PrefabInstance:
       propertyPath: fireLight
       value: 
       objectReference: {fileID: 1313726939}
+    - target: {fileID: 1676051121940668403, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 7478471421583233554, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
       propertyPath: m_IsActive
@@ -16360,22 +16365,22 @@ PrefabInstance:
     - target: {fileID: 4276422478709182062, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.10084741
+      value: -0.083784
       objectReference: {fileID: 0}
     - target: {fileID: 4276422478709182062, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6682709
+      value: -0.6706231
       objectReference: {fileID: 0}
     - target: {fileID: 4276422478709182062, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.057936102
+      value: -0.07664838
       objectReference: {fileID: 0}
     - target: {fileID: 4276422478709182062, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7347702
+      value: 0.7330552
       objectReference: {fileID: 0}
     - target: {fileID: 4276422478709182062, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
@@ -16385,7 +16390,7 @@ PrefabInstance:
     - target: {fileID: 4276422478709182062, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.052200846
+      value: -0.052200906
       objectReference: {fileID: 0}
     - target: {fileID: 4276422478709182062, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
@@ -30072,6 +30077,31 @@ PrefabInstance:
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 922240238}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: canvasAnimator
+      value: 
+      objectReference: {fileID: 1814959970}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: ground
+      value: 
+      objectReference: {fileID: 197805730}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: hub
+      value: 
+      objectReference: {fileID: 923276630}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: abilityMenu
+      value: 
+      objectReference: {fileID: 1613218890}
+    - target: {fileID: 1899903245264256474, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: fogSphereSpawnPointsParent
+      value: 
+      objectReference: {fileID: 555093653}
     - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: endGame
@@ -30222,6 +30252,11 @@ PrefabInstance:
       propertyPath: upgradesBg
       value: 
       objectReference: {fileID: 1846133974}
+    - target: {fileID: 1899903245264256472, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: hud
+      value: 
+      objectReference: {fileID: 1688950430}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow
@@ -30412,6 +30447,17 @@ PrefabInstance:
       propertyPath: tutProgressSlider
       value: 
       objectReference: {fileID: 1094405326}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: arrowToTargetPrefab
+      value: 
+      objectReference: {fileID: 8599427647162027438, guid: d157f3b0eefcb6743985ca736438dcff,
+        type: 3}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: skipTutorial
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow
@@ -30447,6 +30493,11 @@ PrefabInstance:
       propertyPath: thrusterCamera
       value: 
       objectReference: {fileID: 1296432936}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: hubScript
+      value: 
+      objectReference: {fileID: 923276630}
     - target: {fileID: 1899903245264256486, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: fogSphereSpawnPointsParent
@@ -33776,6 +33827,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b73f147f6fafb3242895252f4e5718fb, type: 3}
+--- !u!95 &1814959970 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 816149870217768558, guid: f0d96ef103d08e4429542615f2b52508,
+    type: 3}
+  m_PrefabInstance: {fileID: 922240204}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1816908164
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34384,7 +34441,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837765547}
-  m_LocalRotation: {x: -0.3399983, y: -0.27310467, z: 0.10338737, w: -0.89393854}
+  m_LocalRotation: {x: 0.31379417, y: 0.33017153, z: -0.117405765, w: 0.8824601}
   m_LocalPosition: {x: -0.4175685, y: 0.6265379, z: -0.40975994}
   m_LocalScale: {x: 0.08333336, y: 0.08333335, z: 0.08333335}
   m_Children:
@@ -35482,7 +35539,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1917008379
 RectTransform:
   m_ObjectHideFlags: 0

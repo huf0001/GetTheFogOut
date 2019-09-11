@@ -521,7 +521,7 @@ public abstract class Building : Entity
                     damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
                     damIndScript = damInd.GetComponent<DamageIndicator>();
 
-                    RectTransform rect = damInd.GetComponent<RectTransform>();
+                    //RectTransform rect = damInd.GetComponent<RectTransform>();
                 }
                 else damIndScript.On = true;
                 damIndScript.Locatable = this;

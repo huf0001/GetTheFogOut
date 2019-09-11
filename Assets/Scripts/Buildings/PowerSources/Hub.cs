@@ -10,6 +10,11 @@ public class Hub : PowerSource
     [SerializeField] private Light fireLight;
     private float tick = 0;
     private bool stillFire = true;
+
+    public GameObject BrokenShip;
+    public GameObject RepairedShip;
+    public GameObject AttachedWing;
+    
     protected void Awake()
     {
         if (Instance != null)

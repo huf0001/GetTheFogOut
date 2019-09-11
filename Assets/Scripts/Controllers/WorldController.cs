@@ -45,6 +45,7 @@ public class WorldController : MonoBehaviour
     [SerializeField] protected GameObject serialCamera;
     [SerializeField] private AbilityMenu abilityMenu;
     [SerializeField] private GameObject mainCamera;
+    [SerializeField] private Animator canvasAnimator;
 
     [Header("Public variable?")]
     public bool InBuildMode;
@@ -498,8 +499,12 @@ public class WorldController : MonoBehaviour
         if (win)
         {
             win.SetBool("Win", true);
+            if (ObjectiveController.Instance.ObjWindowVisible) ObjectiveController.Instance.ToggleObjWindow();
+            yield return new WaitForSeconds(0.5f);
+            canvasAnimator.enabled = true;
+            canvasAnimator.SetBool("Win", true);
         }
-        yield return new WaitForSeconds(8.0f);
+        yield return new WaitForSeconds(15.0f);
         GameWinUpdate();
     }
 
