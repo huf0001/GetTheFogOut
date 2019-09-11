@@ -52,7 +52,7 @@ public class DialogueBoxController : MonoBehaviour
     }
 
     //Toggles visibility of the objective window
-    protected void ToggleObjWindow()
+    public void ToggleObjWindow()
     {
         if (!objWindowVisible)
         {
