@@ -16309,6 +16309,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 1676051121940668403, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6408134455620286879, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
         type: 3}
       propertyPath: m_IsActive
@@ -16427,8 +16432,22 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5623844477841404641, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3070104903228247438, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6497169286510600957, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
+    - {fileID: 1033714804432011835, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
+    - {fileID: 8490024209929797844, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
+    - {fileID: 5593903636078831965, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
+    - {fileID: 2680120092342854859, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
 --- !u!4 &923276629 stripped
 Transform:
@@ -24077,6 +24096,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9ff5b1c68228ae4db9435030bf14584, type: 3}
+--- !u!1 &1322421410 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2872129096144649219, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 923276628}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1322421414
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322421410}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300002, guid: 7fefcd79bffda7d4db6d3030bab16d7a, type: 3}
 --- !u!1 &1323283267 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 945401805, guid: a9b2c2ea8472caa40b47a88cf3badc04,
@@ -26612,6 +26651,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9ff5b1c68228ae4db9435030bf14584, type: 3}
+--- !u!1 &1461439866 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3070104903228247438, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 923276628}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1461439870
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461439866}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300002, guid: 4d7df504264f1e842850e6da580c5963, type: 3}
 --- !u!1001 &1462837915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30014,6 +30073,207 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: objectiveWindow
+      value: 
+      objectReference: {fileID: 922240222}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: objectiveWindowOpenArrows
+      value: 
+      objectReference: {fileID: 922240221}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: aiText
+      value: 
+      objectReference: {fileID: 922240220}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: cameraController
+      value: 
+      objectReference: {fileID: 1296432935}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: mineralDepositCamera
+      value: 
+      objectReference: {fileID: 1296432934}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: sonarCamera
+      value: 
+      objectReference: {fileID: 1296432933}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: artilleryCamera
+      value: 
+      objectReference: {fileID: 1296432924}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: thrusterCamera
+      value: 
+      objectReference: {fileID: 1296432936}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: hub
+      value: 
+      objectReference: {fileID: 923276630}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: thruster
+      value: 
+      objectReference: {fileID: 2125899099}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: harvesterResource
+      value: 
+      objectReference: {fileID: 1497680398}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: extenderLandmark
+      value: 
+      objectReference: {fileID: 1831949332}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: generatorLandmark
+      value: 
+      objectReference: {fileID: 1034597338}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: sonarLandmark
+      value: 
+      objectReference: {fileID: 2132291125}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: fogExtenderLandmark
+      value: 
+      objectReference: {fileID: 2012087224}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: mortarLandmark
+      value: 
+      objectReference: {fileID: 1761293956}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: pulseDefenceLandmark
+      value: 
+      objectReference: {fileID: 324165211}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: buildingTarget
+      value: 
+      objectReference: {fileID: 1743676501}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: wKey
+      value: 
+      objectReference: {fileID: 922240219}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: aKey
+      value: 
+      objectReference: {fileID: 922240218}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: sKey
+      value: 
+      objectReference: {fileID: 922240217}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dKey
+      value: 
+      objectReference: {fileID: 922240216}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: zoomIn
+      value: 
+      objectReference: {fileID: 922240215}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: zoomOut
+      value: 
+      objectReference: {fileID: 922240214}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: buildMenuCanvasGroup
+      value: 
+      objectReference: {fileID: 268830197}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: harvesterHighlight
+      value: 
+      objectReference: {fileID: 922240247}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: extenderHighlight
+      value: 
+      objectReference: {fileID: 922240246}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: generatorHighlight
+      value: 
+      objectReference: {fileID: 922240245}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: mortarHighlight
+      value: 
+      objectReference: {fileID: 1560572320}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: pulseDefenceHighlight
+      value: 
+      objectReference: {fileID: 922240243}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: sonarHighlight
+      value: 
+      objectReference: {fileID: 922240213}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: powerDiagram
+      value: 
+      objectReference: {fileID: 922240233}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: batteryIcon
+      value: 
+      objectReference: {fileID: 922240234}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: abilityUnlockCanvas
+      value: 
+      objectReference: {fileID: 922240208}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: abilityMenu
+      value: 
+      objectReference: {fileID: 723504699}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: abilitySelectorRadialMenu
+      value: 
+      objectReference: {fileID: 922240232}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: uiLerpTarget
+      value: 
+      objectReference: {fileID: 922240242}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: tutProgressSlider
+      value: 
+      objectReference: {fileID: 1094405326}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: arrowToTargetPrefab
+      value: 
+      objectReference: {fileID: 8599427647162027438, guid: d157f3b0eefcb6743985ca736438dcff,
+        type: 3}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: skipTutorial
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -30279,207 +30539,6 @@ PrefabInstance:
       propertyPath: hud
       value: 
       objectReference: {fileID: 1688950430}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: objectiveWindow
-      value: 
-      objectReference: {fileID: 922240222}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: objectiveWindowOpenArrows
-      value: 
-      objectReference: {fileID: 922240221}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: aiText
-      value: 
-      objectReference: {fileID: 922240220}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: cameraController
-      value: 
-      objectReference: {fileID: 1296432935}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: mineralDepositCamera
-      value: 
-      objectReference: {fileID: 1296432934}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: sonarCamera
-      value: 
-      objectReference: {fileID: 1296432933}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: artilleryCamera
-      value: 
-      objectReference: {fileID: 1296432924}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: thrusterCamera
-      value: 
-      objectReference: {fileID: 1296432936}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: hub
-      value: 
-      objectReference: {fileID: 923276630}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: thruster
-      value: 
-      objectReference: {fileID: 2125899099}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: harvesterResource
-      value: 
-      objectReference: {fileID: 1497680398}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: extenderLandmark
-      value: 
-      objectReference: {fileID: 1831949332}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: generatorLandmark
-      value: 
-      objectReference: {fileID: 1034597338}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: sonarLandmark
-      value: 
-      objectReference: {fileID: 2132291125}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: fogExtenderLandmark
-      value: 
-      objectReference: {fileID: 2012087224}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: mortarLandmark
-      value: 
-      objectReference: {fileID: 1761293956}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: pulseDefenceLandmark
-      value: 
-      objectReference: {fileID: 324165211}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: buildingTarget
-      value: 
-      objectReference: {fileID: 1743676501}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: wKey
-      value: 
-      objectReference: {fileID: 922240219}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: aKey
-      value: 
-      objectReference: {fileID: 922240218}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: sKey
-      value: 
-      objectReference: {fileID: 922240217}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dKey
-      value: 
-      objectReference: {fileID: 922240216}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: zoomIn
-      value: 
-      objectReference: {fileID: 922240215}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: zoomOut
-      value: 
-      objectReference: {fileID: 922240214}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: buildMenuCanvasGroup
-      value: 
-      objectReference: {fileID: 268830197}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: harvesterHighlight
-      value: 
-      objectReference: {fileID: 922240247}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: extenderHighlight
-      value: 
-      objectReference: {fileID: 922240246}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: generatorHighlight
-      value: 
-      objectReference: {fileID: 922240245}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: mortarHighlight
-      value: 
-      objectReference: {fileID: 1560572320}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: pulseDefenceHighlight
-      value: 
-      objectReference: {fileID: 922240243}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: sonarHighlight
-      value: 
-      objectReference: {fileID: 922240213}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerDiagram
-      value: 
-      objectReference: {fileID: 922240233}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: batteryIcon
-      value: 
-      objectReference: {fileID: 922240234}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: abilityUnlockCanvas
-      value: 
-      objectReference: {fileID: 922240208}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: abilityMenu
-      value: 
-      objectReference: {fileID: 723504699}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: abilitySelectorRadialMenu
-      value: 
-      objectReference: {fileID: 922240232}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: uiLerpTarget
-      value: 
-      objectReference: {fileID: 922240242}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: tutProgressSlider
-      value: 
-      objectReference: {fileID: 1094405326}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: arrowToTargetPrefab
-      value: 
-      objectReference: {fileID: 8599427647162027438, guid: d157f3b0eefcb6743985ca736438dcff,
-        type: 3}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow
@@ -35275,6 +35334,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 929213805}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1902241125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4300742733447358106, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 923276628}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1902241129
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902241125}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300022, guid: 7fefcd79bffda7d4db6d3030bab16d7a, type: 3}
 --- !u!1 &1908975444
 GameObject:
   m_ObjectHideFlags: 0
@@ -38266,6 +38345,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 832234257}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2061649248 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5623844477841404641, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 923276628}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &2061649252
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061649248}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300022, guid: 4d7df504264f1e842850e6da580c5963, type: 3}
 --- !u!4 &2061657826 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1288633030, guid: d052e3fbbc0929a408e720b491187572,
