@@ -433,11 +433,6 @@ public class WorldController : MonoBehaviour
             hub = FindObjectOfType<Hub>();
         }
 
-        if (Input.GetButtonDown("Pause"))
-        {
-            SetPause(!pauseMenu.activeSelf);
-        }
-
         if (hubDestroyed)
         {
             Time.timeScale = 0.2f;
@@ -488,6 +483,10 @@ public class WorldController : MonoBehaviour
         if (dead)
         {
             dead.SetBool("IsDead", true);
+            if (ObjectiveController.Instance.ObjWindowVisible) ObjectiveController.Instance.ToggleObjWindow();
+            yield return new WaitForSeconds(0.5f);
+            canvasAnimator.enabled = true;
+            canvasAnimator.SetBool("EndGame", true);
         }
         yield return new WaitForSeconds(1f);
         GameOverUpdate();
@@ -502,7 +501,7 @@ public class WorldController : MonoBehaviour
             if (ObjectiveController.Instance.ObjWindowVisible) ObjectiveController.Instance.ToggleObjWindow();
             yield return new WaitForSeconds(0.5f);
             canvasAnimator.enabled = true;
-            canvasAnimator.SetBool("Win", true);
+            canvasAnimator.SetBool("EndGame", true);
         }
         yield return new WaitForSeconds(15.0f);
         GameWinUpdate();
