@@ -242,6 +242,7 @@ public class ObjectiveController : DialogueBoxController
                 if (TutorialController.Instance.SkipTutorial)
                 {
                     cameraController.MovementEnabled = false;
+                    hubScript.Animator.enabled = false;  //add this, so the repaired hub is shown/active ? not sure if we need animator to set to true back.
                     hubScript.BrokenShip.SetActive(false);
                     hubScript.AttachedWing.SetActive(false);
                     hubScript.RepairedShip.SetActive(true);
