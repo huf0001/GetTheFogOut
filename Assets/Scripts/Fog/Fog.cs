@@ -765,42 +765,101 @@ public class Fog : MonoBehaviour
     IEnumerator ExpandFog(float delay)
     {
         yield return new WaitForSeconds(delay);
+        float framesPerExpansionUpdate;
+        int unitsPerFrame;
+        float timeOfLastExpansionUpdate; //If done faster than the interval, wait the difference in time before resuming.
 
         while (fogUnitsInPlay.Count > 0)
         {
-            List<TileData> newTiles = new List<TileData>();
+            timeOfLastExpansionUpdate = Time.time;
+            framesPerExpansionUpdate = fogExpansionInterval / Time.deltaTime;
+            unitsPerFrame = (int)(fogUnitsInPlay.Count / framesPerExpansionUpdate);
 
-            foreach (FogUnit f in fogUnitsInPlay)
+            for (int i = 0; i < framesPerExpansionUpdate; i++)   //For each frame in the fog expansion interval
             {
-                if (!f.Spill && f.Health >= fogSpillThreshold)
-                {
-                    f.Spill = true;
+                List<TileData> newTiles = new List<TileData>();
+                int startIndex = unitsPerFrame * i;
+                int endIndex = Mathf.Min(unitsPerFrame * (i + 1), fogUnitsInPlay.Count);    //Ensures it doesn't overshoot
 
-                    foreach (TileData a in f.Location.AdjacentTiles)
+                if (i == framesPerExpansionUpdate - 1 && endIndex != fogUnitsInPlay.Count)   //Ensures it doesn't leave out any fog units
+                {
+                    endIndex = fogUnitsInPlay.Count;
+                }
+
+                for (int j = startIndex; j < endIndex; j++) //For each unit that should be checkable within this frame
+                {
+                    FogUnit f = fogUnitsInPlay[j];
+
+                    if (!f.Spill && f.Health >= fogSpillThreshold)
                     {
-                        if (!a.buildingChecks.obstacle && !a.FogUnitActive && !newTiles.Contains(a))
+                        f.Spill = true;
+
+                        foreach (TileData a in f.Location.AdjacentTiles)
                         {
-                            newTiles.Add(a);
+                            if (!a.buildingChecks.obstacle && !a.FogUnitActive && !newTiles.Contains(a))
+                            {
+                                newTiles.Add(a);
+                            }
                         }
                     }
                 }
-            }
 
-            if (newTiles.Count > 0)
-            {
-                foreach (TileData n in newTiles)
+                if (newTiles.Count > 0)
                 {
-                    SpawnFogUnit(n.X, n.Z, fogUnitMinHealth);
+                    foreach (TileData n in newTiles)
+                    {
+                        SpawnFogUnit(n.X, n.Z, fogUnitMinHealth);
+                    }
                 }
+
+                if (fogUnitsInPlay.Count > xCount * zCount)
+                {
+                    Debug.Log("More fog units than board tiles. There must be some overlapping.");
+                }
+
+                yield return null;
             }
 
-            if (fogUnitsInPlay.Count > xCount * zCount)
-            {
-                Debug.Log("More fog units than board tiles. There must be some overlapping.");
-            }
-
-            yield return new WaitForSeconds(fogExpansionInterval);
+            float duration = Time.time - timeOfLastExpansionUpdate;
+            yield return new WaitForSeconds(Mathf.Max(0, fogExpansionInterval - duration));
         }
+
+        //while (fogUnitsInPlay.Count > 0)
+        //{
+
+        //    List<TileData> newTiles = new List<TileData>();
+
+        //    foreach (FogUnit f in fogUnitsInPlay)
+        //    {
+        //        if (!f.Spill && f.Health >= fogSpillThreshold)
+        //        {
+        //            f.Spill = true;
+
+        //            foreach (TileData a in f.Location.AdjacentTiles)
+        //            {
+        //                if (!a.buildingChecks.obstacle && !a.FogUnitActive && !newTiles.Contains(a))
+        //                {
+        //                    newTiles.Add(a);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    if (newTiles.Count > 0)
+        //    {
+        //        foreach (TileData n in newTiles)
+        //        {
+        //            SpawnFogUnit(n.X, n.Z, fogUnitMinHealth);
+        //        }
+        //    }
+
+        //    if (fogUnitsInPlay.Count > xCount * zCount)
+        //    {
+        //        Debug.Log("More fog units than board tiles. There must be some overlapping.");
+        //    }
+
+        //    yield return new WaitForSeconds(fogExpansionInterval);
+        //}
     }
 
     //Handles the fog spheres
