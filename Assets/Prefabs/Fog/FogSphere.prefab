@@ -234,9 +234,9 @@ MonoBehaviour:
   maxHealth: 1
   damageLerpMultiplier: 3
   height: -0.1
-  minMovementSpeed: 2
-  maxMovementSpeed: 5
-  minSpeedWhileSpilling: 1
+  minMovementSpeed: 0.1
+  maxMovementSpeed: 1
+  minSpeedWhileSpilling: 0.1
   acceleration: 0.3
   currentMovementSpeed: 0
   waypoint: {fileID: 0}
@@ -337,7 +337,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   minSizeScale: 0.2
-  maxSizeScale: 2.3
+  maxSizeScale: 6
 --- !u!1 &3064332006645821888
 GameObject:
   m_ObjectHideFlags: 0
