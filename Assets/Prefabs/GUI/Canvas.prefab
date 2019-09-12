@@ -15943,11 +15943,11 @@ MonoBehaviour:
   - key: explain situation
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Hello, I am a state of the art emergency Nexus Drone that you will
-        be controlling from your ship.
+      dialogue: Hello, I am your very own Nexus Drone that you will be controlling
+        from your ship. You may call me Nexy.
     - aiExpression: 2
-      dialogue: You may call me Nexy. On a serious note, the ship is in pretty bad
-        shape.
+      dialogue: I'm going to teach you how to utilise me so you can get us out of
+        here alive.
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -15956,8 +15956,8 @@ MonoBehaviour:
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: To survive, you will need to learn how to control me. Press the WASD
-        keys to move me around, or press and hold the RMB while moving the mouse.
+      dialogue: Press the WASD keys to move me around, or press and hold the RMB while
+        moving the mouse.
   - key: zoom camera
     expressionDialoguePairs:
     - aiExpression: 2
@@ -15970,9 +15970,8 @@ MonoBehaviour:
         planet is full of a resource called {MINERALS}. '
     - aiExpression: 2
       dialogue: These will be key to keeping us alive. Your ship comes equipped with
-        a blueprint for a {HARVESTER}, that you can use to collect them.
-    - aiExpression: 2
-      dialogue: I will show you where to place one.
+        a blueprint for a {HARVESTER} that you can use to collect them. I will show
+        you where to place one.
   - key: build harvester icon
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16000,15 +15999,17 @@ MonoBehaviour:
   - key: explain power
     expressionDialoguePairs:
     - aiExpression: 3
-      dialogue: 'Oh, no! Those extra {HARVESTERS} have strained the power system.
-        To see how the power system works, hover over the [BATTERY ICON] next to your
-        minimap. '
+      dialogue: 'Ah, well...this isn''t good. Those extra {HARVESTERS} have strained
+        the power system. '
     - aiExpression: 2
       dialogue: Each building, aside from [POWER EXTENDERS], will consume power when
         they're placed.
     - aiExpression: 2
-      dialogue: When the [BATTERY ICON] reached 75%, buildings will progressively
-        shut down. It's of utmost importance that you refer to this indicator as often
+      dialogue: 'When the [BATTERY ICON] next to your minimap reaches 75%, buildings
+        will progressively shut down. '
+    - aiExpression: 2
+      dialogue: To see an explanation of the power system, hover over the [BATTERY
+        ICON]. It's of utmost importance that you refer to this indicator as often
         as possible.
   - key: build generator target
     expressionDialoguePairs:
@@ -16024,8 +16025,9 @@ MonoBehaviour:
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'Your ship has sustained serious damage upon landing. Use your new-found
-        skills to repair it, it''s the only way off this wretched planet. '
+      dialogue: 'Well, we won''t be getting off the planet any time soon with the
+        ship in this state. Use your new-found skills to repair it, it''s the only
+        way off this wretched planet. '
   - key: collect sonar
     expressionDialoguePairs:
     - aiExpression: 2
