@@ -8,25 +8,15 @@ public abstract class PowerSource : Building
 
     [SerializeField] protected List<Building> suppliedBuildings = new List<Building>();
 
+    public bool isConnectedToHub;
+
     public List<Building> SuppliedBuildings { get => suppliedBuildings; set => suppliedBuildings = value; }
-
-    // Start is called before the first frame update
-    protected override void Start()
-    {
-        base.Start();
-    //    showRange = false;
-    }
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
-        //ActivateTiles();
-    }
-
+    
+    
     public override void Place()
     {
         base.Place();
+        isConnectedToHub = true;
         ActivateTiles();
     }
 
@@ -146,28 +136,18 @@ public abstract class PowerSource : Building
         return harvesters;
     }
 
-    public void UpdateTiles()
-    { 
-        foreach (TileData tile in WorldController.Instance.ActiveTiles)
-        {
-            tile.PowerUp(this as PowerSource);
-        }
-
-        foreach (TileData tile in WorldController.Instance.DisableTiles)
-        {
-            tile.PowerDown(this as PowerSource);
-        }
-
-        Debug.Log("both are off");
-    }
-
     public void ActivateTiles()
     {
         List<TileData> tiles = location.CollectTilesInRange((int)powerRange);
+        tiles.Remove(location);
 
         foreach (TileData tile in tiles)
         {
-            tile.PowerUp(this as PowerSource);
+            if (tile.Position != location.Position)
+            {
+                tile.PowerUp(this as PowerSource);
+            }
+            
             if ((tile.X == 28) || (tile.X == 29) || (tile.X == 30))
             {
                 if ((tile.Z == 20) || (tile.Z == 21) || (tile.Z == 22))
@@ -193,7 +173,23 @@ public abstract class PowerSource : Building
                     }
                 }
             }
-            
+
+            if (tile.Building)
+            {
+                if (tile.Building.BuildingType == BuildingType.Extender)
+                {
+                    PowerSource relay = (PowerSource) tile.Building;
+                    if (!relay.isConnectedToHub)
+                    {
+                        relay.CreateWire();
+                        if (relay.powerSource == this)
+                        {
+                            relay.ActivateTiles();
+                            relay.isConnectedToHub = true;     
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -241,14 +237,36 @@ public abstract class PowerSource : Building
 
     public abstract bool SupplyingPower();
 
-    public void DismantlePowerSource()
+    public override void DismantleBuilding()
     {
         DeactivateTiles();
-
-        foreach(Building b in suppliedBuildings)
+        
+        List<Building> toRemove = new List<Building>();
+        foreach (var building in suppliedBuildings)
         {
-            b.DestroyWires();
-            b.CreateWire();
+            toRemove.Add(building);
         }
+        
+        Debug.Log(location.Position.x + location.Position.z);
+        foreach (var building in toRemove)
+        {
+            building.DestroyWires();
+            building.CreateWire();
+            if (building.BuildingType == BuildingType.Extender)
+            {
+                Debug.Log(building.Location.Position.x + building.Location.Position.z);
+                Debug.Log(building.powerSource.Location.Position.x + building.powerSource.Location.Position.z);
+
+                if (building.powerSource == null)
+                {
+                    PowerSource relay = (PowerSource) building;
+                    relay.isConnectedToHub = false;
+                    relay.DeactivateTiles();
+                }
+            }
+
+        }
+        
+        base.DismantleBuilding();
     }
 }

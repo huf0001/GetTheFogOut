@@ -14,7 +14,7 @@ public abstract class Building : Entity
     [SerializeField] protected float shield;
     [SerializeField] protected float visibilityRange;
     [SerializeField] protected float upkeep;
-    [SerializeField] protected PowerSource powerSource = null;
+    [SerializeField] public PowerSource powerSource = null;
     [SerializeField] protected bool powered = false;
     [SerializeField] protected bool placed = false;
     [SerializeField] protected BuildingType buildingType;
@@ -45,7 +45,7 @@ public abstract class Building : Entity
     protected bool isOverclockOn = false;
     public float overclockTimer;
     private Material shieldMat;
-    private Wires wire;
+    public Wires wire;
     protected Camera cam;
 
     private float toLerp = 1f;
@@ -322,12 +322,23 @@ public abstract class Building : Entity
         {
             if (this != WorldController.Instance.Hub)
             {
-                Wires targetWire = location.PowerSource.GetComponentInChildren<Wires>();
-                
-                if (targetWire)
+                if (location.PowerSource != null)
                 {
-                    wire.next = targetWire.gameObject;
-                    wire.CreateWire();
+                    Wires targetWire = location.PowerSource.GetComponentInChildren<Wires>();
+                    
+                    if (targetWire)
+                    {
+                        wire.next = targetWire.gameObject;
+                        wire.CreateWire();
+                    }
+                    
+                    location.PowerSource.PlugIn(this);
+                    powerSource = location.PowerSource;
+                }
+                else
+                {
+                    wire = null;
+                    PowerDown();
                 }
             }
         }
@@ -348,7 +359,12 @@ public abstract class Building : Entity
                         Destroy(wire.transform.GetChild(i).gameObject);
                     }
                 }
+                
+                powerSource.Unplug(this);
             }
+            
+            wire.sequence.Kill();
+            wire = null;
         }
     }
 
@@ -422,17 +438,10 @@ public abstract class Building : Entity
 
     public void ShutdownBuilding()
     {
-//        if (powerSource != null)
-//        {
-//            //Debug.Log("Unplugging from " + powerSource.name);
-//            //  powerSource.SuppliedBuildings.Remove(this);
-//            powerSource.Unplug(this);
-//        }
-
         PowerDown();
     }
 
-    public void DismantleBuilding()
+    public virtual void DismantleBuilding()
     {
         Debug.Log("Dismantling " + this.name);
         if (damInd) Destroy(damInd.gameObject);
@@ -446,16 +455,14 @@ public abstract class Building : Entity
             WorldController.Instance.HubDestroyed = true;
         }
 
-        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Extender)
-        {
-            PowerSource p = this as PowerSource;
-            p.DismantlePowerSource();
-        }
+//        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Extender)
+//        {
+//            PowerSource p = this as PowerSource;
+//            p.DismantlePowerSource();
+//        }
 
         ShutdownBuilding();
-
-        //MakeTilesNotVisible();
-
+        
         if (Location != null)
         {
             //Debug.Log("Removing from tile");
@@ -477,9 +484,7 @@ public abstract class Building : Entity
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_3", GetComponent<Transform>().position);
         }
         ResourceController.Instance.RemoveBuilding(this);
-
-        //Debug.Log("Should be removed from ResourceController's list of my building type");
-
+        
         if (this.transform.parent != null)
         {
             Destroy(this.transform.parent.gameObject);
@@ -492,18 +497,12 @@ public abstract class Building : Entity
         Destroy(this);
     }
 
-    //protected virtual void OnDestroy()
-    //{
-    //    //Debug.Log("Building.OnDestroy() called, attempting to destroy " + this.name);
-    //}
-
     public override TileData Location
     {
         get => base.Location;
 
         set
         {
-            //Debug.Log(this.name + "'s location has been set");
             base.Location = value;
         }
     }
