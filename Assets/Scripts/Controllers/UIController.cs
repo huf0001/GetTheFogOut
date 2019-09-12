@@ -398,6 +398,7 @@ public class UIController : MonoBehaviour
         animator.enabled = true;
         WorldController.Instance.GameWin = true;
         WorldController.Instance.GameOver = true;
+        Fog.Instance.DamageOn = false;
         //musicFMOD.GameWinMusic();
     }
 
