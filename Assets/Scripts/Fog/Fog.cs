@@ -6,7 +6,6 @@ using System.Numerics;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Profiling;
 using UnityEngine.Serialization;
 using Quaternion = UnityEngine.Quaternion;
@@ -38,13 +37,6 @@ public enum Difficulty
     Hard
 }
 
-//Simple struct to allow caching of the particle system
-public struct FogLightning
-{
-    public GameObject lightning;
-    public ParticleSystem lightningPS;
-}
-
 [Serializable]
 public struct FogDifficulty
 {
@@ -73,10 +65,6 @@ public class Fog : MonoBehaviour
     [SerializeField] private bool angry;
     [SerializeField] private bool damageOn;
 
-    [SerializeField] private Transform fogSphereInstantiationPoint;
-    [SerializeField] private GameObject fogSphereSpawnPointsParent;
-    [SerializeField] private bool validateFogSphereSpawnPoints;
-
     [SerializeField] private StartConfiguration configuration;
     [SerializeField] private Difficulty difficulty;
     [SerializeField] private FogExpansionDirection expansionDirection;
@@ -86,9 +74,11 @@ public class Fog : MonoBehaviour
     [Header("Fog Expansion")]
     [SerializeField] private bool fogAccelerates;
     [SerializeField] private bool fogFrozen;
-    [SerializeField] private float maxFogSpheresCount;
     [SerializeField] private float fogGrowth;
     [SerializeField] private float fogSpillThreshold;
+
+    [SerializeField] private GameObject fogSphereSpawnPointsParent;
+    [SerializeField] private float maxFogSpheresCount;
     [SerializeField] private float fogSphereSpillMultiplier;
 
     [Header("Fog Strength Over Time")]
@@ -133,7 +123,7 @@ public class Fog : MonoBehaviour
     private int intensity;
 
     private Vector3 hubPosition;
-    private List<Transform> fogSphereSpawnPoints;
+    private List<FogSphereWaypoint> fogSphereSpawnPoints;
 
     private float pauseTime;
 
@@ -148,8 +138,8 @@ public class Fog : MonoBehaviour
     private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();       //i.e. currently waiting to be re-pooled
     private List<FogSphere> fogSpheresInPool = new List<FogSphere>();               //i.e. currently inactive fog spheres waiting for spawning
 
-    private List<FogLightning> lightningInPlay = new List<FogLightning>();              //i.e. currently active lightning effects
-    private List<FogLightning> lightningInPool = new List<FogLightning>();              //i.e. currently inactive lightning effects in pool
+    public List<FogLightning> lightningInPlay = new List<FogLightning>();              //i.e. currently active lightning effects
+    public List<FogLightning> lightningInPool = new List<FogLightning>();              //i.e. currently inactive lightning effects in pool
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -240,7 +230,7 @@ public class Fog : MonoBehaviour
             Difficulty = (Difficulty)GlobalVars.Difficulty;
         }
 
-        fogSphereSpawnPoints = new List<Transform>(fogSphereSpawnPointsParent.GetComponentsInChildren<Transform>());
+        fogSphereSpawnPoints = new List<FogSphereWaypoint>(fogSphereSpawnPointsParent.GetComponentsInChildren<FogSphereWaypoint>());
         SetDifficulty();
         InitializePool(100);
         Intensity = 1;  //Sets the intensity-derived values to the default of their "Easy" values.
@@ -406,46 +396,6 @@ public class Fog : MonoBehaviour
                 fogSpheresInPool.Add(CreateFogSphere());
             }
         }
-
-        //Check if fog sphere spawn points are okay
-        if (validateFogSphereSpawnPoints)
-        {
-            foreach (Transform sp in fogSphereSpawnPoints)
-            {
-                Vector3 pos = sp.position;
-                Debug.Log($"Checking fog sphere spawn point at {pos}.");
-
-                if (!WorldController.Instance.TileExistsAt(pos))
-                {
-                    Debug.Log($"Cannot have a fog sphere spawn point at {pos}; there's no tile there.");
-                    continue;
-                }
-
-                TileData t = WorldController.Instance.GetTileAt(sp.position);
-
-                if (t.buildingChecks.obstacle)
-                {
-                    Debug.Log($"Cannot have a fog sphere spawn point at {pos}; the tile there is an obstacle.");
-                    continue;
-                }
-                else if (t.FogUnit == null)
-                {
-                    Debug.Log(
-                        $"Cannot have a fog sphere spawn point at {pos}; the fog unit for the corresponding tile is null.");
-                    continue;
-                }
-
-                FogSphere s = GetFogSphere();
-                pos = t.FogUnit.transform.position;
-                pos.y = hubPosition.y;
-                s.NavMeshAgent.enabled = true;
-                s.NavMeshAgent.Warp(pos);
-                s.NavMeshAgent.destination = hubPosition;
-
-                Debug.Log($"Fog sphere spawn point at {sp.position} is okay.");
-                ReturnFogSphereToPool(s);
-            }
-        }
     }
 
     //Spawning Methods - Fog Units-------------------------------------------------------------------------------------------------------------------
@@ -537,7 +487,7 @@ public class Fog : MonoBehaviour
     //Instantiates a fog sphere that isn't on the board or in the pool
     private FogSphere CreateFogSphere()
     {
-        FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, fogSphereInstantiationPoint, true);
+        FogSphere f = Instantiate<FogSphere>(fogSpherePrefab, transform, true);
         f.transform.position = transform.position;
         f.State = FogSphereState.None;
         f.Fog = this;
@@ -566,81 +516,64 @@ public class Fog : MonoBehaviour
     //Takes a fog unit and puts it on the board
     private void SpawnFogSphere()
     { 
-        FogUnit u = GetBorderFogUnit();
+        FogSphereWaypoint sp = GetSpawnPoint();
 
-        if (u != null)
+        if (sp != null)
         {
-            FogSphere s = GetFogSphere();
-            GameObject o = s.gameObject;
-            o.name = "FogSphereInPlay";
+            FogUnit fu = WorldController.Instance.GetTileAt(sp.transform.position).FogUnit;
+            FogSphere fs = GetFogSphere();
 
-            Vector3 pos = u.transform.position;
-            pos.y = hubPosition.y;
-            s.NavMeshAgent.enabled = true;
-            s.NavMeshAgent.Warp(pos);
-
-            if (s.NavMeshAgent.destination != hubPosition)
-            {
-                s.NavMeshAgent.destination = hubPosition;
-            }
-
-            //Errors shouldn't occur for the above if statement, but if it can't assign it, the below should handle the fog sphere 
-            //that can't spawn, and re-pool it. If the logerror from s.NavMeshAgent.destination = hubPosition halts the game execution,
-            //going to the Console window and unselecting Error Pause will get around that. Not ideal, but it works.
-            if (s.NavMeshAgent.destination != hubPosition)
-            {
-                ReturnFogSphereToPool(s);
-                return;
-            }
-
-            foreach (Renderer r in s.Renderers)
+            foreach (Renderer r in fs.Renderers)
             {
                 r.material = fogSphereVisibleMaterial;
             }
 
-            s.SpawningTile = u.Location;
-            s.Health = fogSphereMinHealth;
-            s.MaxHealth = fogSphereMaxHealth;
-            s.MaxSizeScale = fogSphereMaxSizeScale;
-            s.FogUnitMinHealth = fogUnitMinHealth;
-            s.FogUnitMaxHealth = fogUnitMaxHealth;
-            s.State = FogSphereState.MovingAndGrowing;
-            s.SetStartEmotion(angry);
-            s.RandomiseMovementSpeed();
-            s.UpdateSize();
-            s.RenderOpacity();
-            fogSpheresInPlay.Add(s);
+            fs.name = "FogSphereInPlay";
+            fs.transform.position = fu.transform.position;
+            fs.Waypoint = sp.GetNextWaypoint();
+            fs.transform.DOLookAt(fs.Waypoint.transform.position, 0);
+
+            fs.SpawningTile = fu.Location;
+            fs.Health = fogSphereMinHealth;
+            fs.MaxHealth = fogSphereMaxHealth;
+            fs.MaxSizeScale = fogSphereMaxSizeScale;
+            fs.FogUnitMinHealth = fogUnitMinHealth;
+            fs.FogUnitMaxHealth = fogUnitMaxHealth;
+            fs.State = FogSphereState.MovingAndGrowing;
+            fs.SetStartEmotion(angry);
+            fs.RandomiseMovementSpeed();
+            fs.UpdateSize();
+            fs.RenderOpacity();
+            fogSpheresInPlay.Add(fs);
         }
     }
 
     //Gets a random fog unit at the edge of the board
-    private FogUnit GetBorderFogUnit()
+    private FogSphereWaypoint GetSpawnPoint()
     {
-        //List<FogUnit> validBorderFogUnits = new List<FogUnit>(borderFogUnitsInPlay);
-        List<Transform> validSpawnPoints = new List<Transform>(fogSphereSpawnPoints);
+        List<FogSphereWaypoint> validSpawnPoints = new List<FogSphereWaypoint>(fogSphereSpawnPoints);
 
         while (validSpawnPoints.Count > 0)
         {
             bool valid = true;
-            Transform sp = validSpawnPoints[Random.Range(0, validSpawnPoints.Count - 1)];
+            FogSphereWaypoint sp = validSpawnPoints[Random.Range(0, validSpawnPoints.Count - 1)];
+            validSpawnPoints.Remove(sp);
 
-            if (!WorldController.Instance.TileExistsAt(sp.position))
+            if (!WorldController.Instance.TileExistsAt(sp.transform.position))
             {
-                validSpawnPoints.Remove(sp);
                 continue;
             }
 
-            TileData t = WorldController.Instance.GetTileAt(sp.position);
+            TileData t = WorldController.Instance.GetTileAt(sp.transform.position);
 
-            if (t.FogUnit == null || !t.FogUnitActive)
+            if (t.FogUnit == null || !t.FogUnitActive || t.FogUnit.Health < t.FogUnit.MaxHealth)
             {
-                validSpawnPoints.Remove(sp);
                 continue;
             }
 
             foreach (TileData a in t.AdjacentTiles)
             {
-                if (!a.FogUnitActive)
+                if (a.FogUnit == null || !a.FogUnitActive || a.FogUnit.Health < a.FogUnit.MaxHealth * 0.5)
                 {
                     valid = false;
                     break;
@@ -649,12 +582,8 @@ public class Fog : MonoBehaviour
 
             if (valid)
             {
-                return t.FogUnit;
-            }
-            else
-            {
-                validSpawnPoints.Remove(sp);
-            }            
+                return sp;
+            }       
         }
 
         return null;
@@ -671,7 +600,7 @@ public class Fog : MonoBehaviour
     //Turns on the fog's sensitivity to damage
     public void BeginUpdatingDamage(float delay)
     {
-        InvokeRepeating(nameof(UpdateDamageToFogUnits), delay, fogDamageInterval);
+        StartCoroutine(UpdateDamageToFogUnits(delay));
     }
 
     //Wakes up the fog, turning on its filling and expansion, and fog spheres
@@ -683,191 +612,265 @@ public class Fog : MonoBehaviour
     //Wakes up the fog, turning on its filling and expansion, and fog spheres
     public void WakeUpFog(float delay)
     {
-        InvokeRepeating(nameof(UpdateFogUnitFill), delay + 0.1f, fogFillInterval);
-        InvokeRepeating(nameof(ExpandFog), delay + 0.3f, fogExpansionInterval);
-        InvokeRepeating(nameof(UpdateFogSpheres), delay + 1f, fogSphereInterval);
+        StartCoroutine(UpdateFogUnitFill(delay + 0.1f));
+        StartCoroutine(ExpandFog(delay + 0.3f));
+        StartCoroutine(UpdateFogSpheres(delay + delay + 1f));
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
 
     //Handles the damaging of fog units
-    private void UpdateDamageToFogUnits()
+    IEnumerator UpdateDamageToFogUnits(float delay)
     {
-        List<FogUnit> toRender = new List<FogUnit>();
+        yield return new WaitForSeconds(delay);
 
-        foreach (FogUnit f in fogUnitsInPlay)
+        while (fogUnitsInPlay.Count > 0)
         {
-            if (f.TakingDamage)
-            {
-                f.UpdateDamageToFogUnit(fogDamageInterval);
-                toRender.Add(f);
-            }
-
-            if (f.ReturnToPool)
-            {
-                QueueFogUnitForPooling(f);
-                f.ReturnToPool = false;
-            }
-        }
-
-        if (fogUnitsToReturnToPool.Count > 0)
-        {
-            foreach (FogUnit f in fogUnitsToReturnToPool)
-            {
-                toRender.Remove(f);
-                ReturnFogUnitToPool(f);
-            }
-
-            fogUnitsToReturnToPool.Clear();
-        }
-
-        foreach (FogUnit f in toRender)
-        {
-            f.RenderOpacity();
-        }
-
-        if (fogUnitsInPlay.Count == 0)
-        {
-            ObjectiveController.Instance.FogDestroyed();
-            CancelInvoke();
-        }
-    }
-
-    //Fills the health of fog units
-    private void UpdateFogUnitFill()
-    {
-        List<FogUnit> toRenderOpacity = new List<FogUnit>();
-
-        if (!fogFrozen)
-        {
-            if (fogAccelerates && fogGrowth < 100)
-            {
-                fogGrowth += fogFillInterval;
-            }
+            List<FogUnit> toRender = new List<FogUnit>();
 
             foreach (FogUnit f in fogUnitsInPlay)
             {
-                f.RenderColour();
-
-                if (!f.NeighboursFull && f.Health >= fogSpillThreshold)
+                if (f.TakingDamage)
                 {
-                    int count = f.Location.AdjacentTiles.Count;
-                    int fullCount = 0;
+                    f.UpdateDamageToFogUnit(fogDamageInterval);
+                    toRender.Add(f);
+                }
 
-                    foreach (TileData t in f.Location.AdjacentTiles)
-                    {
-                        if (t.FogUnitActive)
-                        {
-                            FogUnit af = t.FogUnit;
-
-                            if (af.Health < f.Health)
-                            {
-                                af.Health += fogFillInterval * fogGrowth / count;
-
-                                if (!toRenderOpacity.Contains(af))
-                                {
-                                    toRenderOpacity.Add(af);
-                                }
-                            }
-                            else if (af.Health >= fogUnitMaxHealth)
-                            {
-                                fullCount++;
-                            }
-                        }
-                    }
-
-                    if (count == fullCount)
-                    {
-                        f.NeighboursFull = true;
-                    }
+                if (f.ReturnToPool)
+                {
+                    QueueFogUnitForPooling(f);
+                    f.ReturnToPool = false;
                 }
             }
 
-            foreach (FogUnit f in toRenderOpacity)
+            if (fogUnitsToReturnToPool.Count > 0)
+            {
+                foreach (FogUnit f in fogUnitsToReturnToPool)
+                {
+                    toRender.Remove(f);
+                    ReturnFogUnitToPool(f);
+                }
+
+                fogUnitsToReturnToPool.Clear();
+            }
+
+            foreach (FogUnit f in toRender)
             {
                 f.RenderOpacity();
             }
+
+            if (fogUnitsInPlay.Count == 0)
+            {
+                ObjectiveController.Instance.FogDestroyed();
+                CancelInvoke();
+            }
+
+            yield return new WaitForSeconds(fogDamageInterval);
+        }
+
+        ObjectiveController.Instance.FogDestroyed();
+    }
+
+    //Fills the health of fog units
+    IEnumerator UpdateFogUnitFill(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        float framesPerFillUpdate;
+        int unitsPerFrame;
+        float timeOfLastFillUpdate; //If done faster than the interval, wait the difference in time before resuming.
+
+        while (fogUnitsInPlay.Count > 0)
+        {
+            timeOfLastFillUpdate = Time.time;
+            framesPerFillUpdate = fogFillInterval / Time.deltaTime;
+            unitsPerFrame = (int)(fogUnitsInPlay.Count / framesPerFillUpdate);
+
+            if (!fogFrozen)
+            {
+                if (fogAccelerates && fogGrowth < 100)
+                {
+                    fogGrowth += fogFillInterval;
+                }
+
+                for (int i = 0; i < framesPerFillUpdate; i++)   //For each frame in the fog fill interval
+                {
+                    List<FogUnit> toRenderOpacity = new List<FogUnit>();
+                    int startIndex = unitsPerFrame * i;
+                    int endIndex = Mathf.Min(unitsPerFrame * (i + 1), fogUnitsInPlay.Count);    //Ensures it doesn't overshoot
+
+                    if (i == framesPerFillUpdate - 1 && endIndex != fogUnitsInPlay.Count)   //Ensures it doesn't leave out any fog units
+                    {
+                        endIndex = fogUnitsInPlay.Count;
+                    }
+
+                    for (int j = startIndex; j < endIndex; j++) //For each unit that should be fillable within this frame
+                    {
+                        FogUnit f = fogUnitsInPlay[j];
+
+                        f.RenderColour();
+
+                        if (!f.NeighboursFull && f.Health >= fogSpillThreshold)
+                        {
+                            int count = f.Location.AdjacentTiles.Count;
+                            int fullCount = 0;
+
+                            foreach (TileData t in f.Location.AdjacentTiles)
+                            {
+                                if (t.FogUnitActive)
+                                {
+                                    FogUnit af = t.FogUnit;
+
+                                    if (af.Health < f.Health)
+                                    {
+                                        af.Health += fogFillInterval * fogGrowth / count;
+
+                                        if (!toRenderOpacity.Contains(af))
+                                        {
+                                            toRenderOpacity.Add(af);
+                                        }
+                                    }
+                                    else if (af.Health >= fogUnitMaxHealth)
+                                    {
+                                        fullCount++;
+                                    }
+                                }
+                            }
+
+                            if (count == fullCount)
+                            {
+                                f.NeighboursFull = true;
+                            }
+                        }                        
+                    }
+
+                    foreach (FogUnit f in toRenderOpacity)
+                    {
+                        f.RenderOpacity();
+                    }
+
+                    yield return null;
+                }
+            }
+
+            float duration = Time.time - timeOfLastFillUpdate;
+            yield return new WaitForSeconds(Mathf.Max(0, fogFillInterval - duration));       
         }
     }
 
     //Fog spills over onto adjacent tiles
-    private void ExpandFog()
+    IEnumerator ExpandFog(float delay)
     {
-        List<TileData> newTiles = new List<TileData>();
+        yield return new WaitForSeconds(delay);
+        float framesPerExpansionUpdate;
+        int unitsPerFrame;
+        float timeOfLastExpansionUpdate; //If done faster than the interval, wait the difference in time before resuming.
 
-        foreach (FogUnit f in fogUnitsInPlay)
+        while (fogUnitsInPlay.Count > 0)
         {
-            if (!f.Spill && f.Health >= fogSpillThreshold)
-            {
-                f.Spill = true;
+            timeOfLastExpansionUpdate = Time.time;
+            framesPerExpansionUpdate = fogExpansionInterval / Time.deltaTime;
+            unitsPerFrame = (int)(fogUnitsInPlay.Count / framesPerExpansionUpdate);
 
-                foreach (TileData a in f.Location.AdjacentTiles)
+            for (int i = 0; i < framesPerExpansionUpdate; i++)   //For each frame in the fog expansion interval
+            {
+                List<TileData> newTiles = new List<TileData>();
+                int startIndex = unitsPerFrame * i;
+                int endIndex = Mathf.Min(unitsPerFrame * (i + 1), fogUnitsInPlay.Count);    //Ensures it doesn't overshoot
+
+                if (i == framesPerExpansionUpdate - 1 && endIndex != fogUnitsInPlay.Count)   //Ensures it doesn't leave out any fog units
                 {
-                    if (!a.buildingChecks.obstacle && !a.FogUnitActive && !newTiles.Contains(a))
+                    endIndex = fogUnitsInPlay.Count;
+                }
+
+                for (int j = startIndex; j < endIndex; j++) //For each unit that should be checkable within this frame
+                {
+                    FogUnit f = fogUnitsInPlay[j];
+
+                    if (!f.Spill && f.Health >= fogSpillThreshold)
                     {
-                        newTiles.Add(a);
+                        f.Spill = true;
+
+                        foreach (TileData a in f.Location.AdjacentTiles)
+                        {
+                            if (!a.buildingChecks.obstacle && !a.FogUnitActive && !newTiles.Contains(a))
+                            {
+                                newTiles.Add(a);
+                            }
+                        }
                     }
                 }
-            }
-        }
 
-        if (newTiles.Count > 0)
-        {
-            foreach (TileData n in newTiles)
-            {
-                SpawnFogUnit(n.X, n.Z, fogUnitMinHealth);
-            }
-        }
+                if (newTiles.Count > 0)
+                {
+                    foreach (TileData n in newTiles)
+                    {
+                        SpawnFogUnit(n.X, n.Z, fogUnitMinHealth);
+                    }
+                }
 
-        if (fogUnitsInPlay.Count > xCount * zCount)
-        {
-            Debug.Log("More fog units than board tiles. There must be some overlapping.");
+                if (fogUnitsInPlay.Count > xCount * zCount)
+                {
+                    Debug.Log("More fog units than board tiles. There must be some overlapping.");
+                }
+
+                yield return null;
+            }
+
+            float duration = Time.time - timeOfLastExpansionUpdate;
+            yield return new WaitForSeconds(Mathf.Max(0, fogExpansionInterval - duration));
         }
     }
 
     //Handles the fog spheres
-    private void UpdateFogSpheres()
+    IEnumerator UpdateFogSpheres(float delay)
     {
-        if (!fogFrozen)
-        {
-            foreach (FogSphere f in fogSpheresInPlay)
-            {
-                f.RenderColour();
+        yield return new WaitForSeconds(delay);
 
-                switch (f.State)
+        while (fogUnitsInPlay.Count > 0)
+        {
+            if (!fogFrozen)
+            {
+                foreach (FogSphere f in fogSpheresInPlay)
                 {
-                    case FogSphereState.Damaged:
-                        f.UpdateDamageToFogSphere(fogSphereInterval);
-                        break;
-                    case FogSphereState.MovingAndGrowing:
-                        f.Move(fogSphereInterval * 0.5f);
-                        f.Grow(fogSphereInterval * fogGrowth * 0.75f);
-                        break;
-                    case FogSphereState.Spilling:
-                        f.Move(fogSphereInterval * 0.5f);
-                        f.Spill(fogSphereInterval * fogGrowth * fogSphereSpillMultiplier);
-                        break;
-                    case FogSphereState.Attacking:
-                        f.Attack(fogSphereInterval * fogGrowth);
-                        break;
+                    f.RenderColour();
+
+                    switch (f.State)
+                    {
+                        case FogSphereState.Damaged:
+                            f.UpdateDamageToFogSphere(fogSphereInterval);
+                            break;
+                        case FogSphereState.MovingAndGrowing:
+                            f.Move(fogSphereInterval * 0.5f);
+                            f.Grow(fogSphereInterval * fogGrowth * 0.75f);
+                            break;
+                        case FogSphereState.Spilling:
+                            f.Move(fogSphereInterval * 0.5f);
+                            f.Spill(fogSphereInterval * fogGrowth * fogSphereSpillMultiplier);
+                            break;
+                        case FogSphereState.Attacking:
+                            f.Attack(fogSphereInterval * fogGrowth);
+                            break;
+                    }
+                }
+
+                if (fogSpheresToReturnToPool.Count > 0)
+                {
+                    foreach (FogSphere f in fogSpheresToReturnToPool)
+                    {
+                        ReturnFogSphereToPool(f);
+                    }
+
+                    fogSpheresToReturnToPool.Clear();
                 }
             }
 
-            if (fogSpheresToReturnToPool.Count > 0)
+            if (fogSpheresInPlay.Count < maxFogSpheresCount && !WorldController.Instance.GameOver)
             {
-                foreach (FogSphere f in fogSpheresToReturnToPool)
-                {
-                    ReturnFogSphereToPool(f);
-                }
-
-                fogSpheresToReturnToPool.Clear();
+                SpawnFogSphere();
             }
-        }
 
-        if (fogSpheresInPlay.Count < maxFogSpheresCount && !WorldController.Instance.GameOver)
-        {
-            SpawnFogSphere();
-        }
+            yield return new WaitForSeconds(fogSphereInterval);
+        }        
     }
 
     //Re-Pooling Methods-----------------------------------------------------------------------------------------------------------------------------
@@ -884,11 +887,6 @@ public class Fog : MonoBehaviour
         f.ActiveOnTile = false;
         f.Location.FogUnitActive = false;
         f.name = $"{f.name} (In Pool)";
-
-        //if (borderFogUnitsInPlay.Contains(f))
-        //{
-        //    borderFogUnitsInPlay.Remove(f);
-        //}
 
         foreach (TileData t in f.Location.AdjacentTiles)
         {
@@ -928,6 +926,7 @@ public class Fog : MonoBehaviour
         f.gameObject.SetActive(false);
         f.transform.position = transform.position;
         f.State = FogSphereState.None;
+        f.Waypoint = null;
 
         foreach(Renderer r in f.Renderers)
         {
@@ -942,7 +941,6 @@ public class Fog : MonoBehaviour
         f.SpiltFog.Clear();
         fogSpheresInPool.Add(f);
         fogSpheresInPlay.Remove(f);
-        f.NavMeshAgent.enabled = false;
     }
 
     //Fog Freezing Methods---------------------------------------------------------------------------------------------------------------------------
@@ -971,6 +969,87 @@ public class Fog : MonoBehaviour
         }
     }
 
+    //Fog Lightning Methods--------------------------------------------------------------------------------------------------------------------------
+    
+    private void InitializePool(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            AddLightningToPool();
+        }
+    }
+
+    private void AddLightningToPool()
+    {
+        FogLightning fogLightning = Instantiate(fogUnitPrefab.fogLightning).GetComponent<FogLightning>();
+        fogLightning.lightning.transform.SetParent(transform);
+        fogLightning.lightning.SetActive(false);
+        fogLightning.LightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
+        lightningInPool.Add(fogLightning);
+    }
+
+    private FogLightning GetLightningFromPool()
+    {
+        if (lightningInPool.Count > 0)
+        {
+            FogLightning fogLightning = lightningInPool[0];
+            lightningInPool.RemoveAt(0);
+            lightningInPlay.Add(fogLightning);
+            return fogLightning;
+        }
+        else
+        {
+            FogLightning fogLightning = Instantiate(fogUnitPrefab.fogLightning).GetComponent<FogLightning>();
+            fogLightning.lightning.transform.SetParent(transform);
+            fogLightning.LightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
+            lightningInPlay.Add(fogLightning);
+            return fogLightning;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        SelectedLightning();
+    }
+
+    private void SelectedLightning()
+    {
+        FogUnit f = fogUnits[Random.Range(0, 70), Random.Range(0, 70)];
+
+        if (f.ActiveOnTile)
+        {
+            PlayLightning(f);
+        }
+    }
+
+    private void PlayLightning(FogUnit fogUnit)
+    {
+        FogLightning fogLightning = GetLightningFromPool();
+        fogLightning.lightning.transform.position = fogUnit.transform.position;
+        fogLightning.lightning.SetActive(true);
+        fogLightning.LightningPS.Play();
+    }
+
+    private void ReturnLightningToPool()
+    {
+        List<FogLightning> toRemove = new List<FogLightning>();
+
+        foreach (FogLightning fogLightning in lightningInPlay)
+        {
+            if (fogLightning.LightningPS.isStopped)
+            {
+                toRemove.Add(fogLightning);
+            }
+        }
+
+        foreach (FogLightning fogLightning in toRemove)
+        {
+            fogLightning.lightning.SetActive(false);
+            lightningInPlay.Remove(fogLightning);
+            lightningInPool.Add(fogLightning);
+        }
+    }
+
     //Other Methods----------------------------------------------------------------------------------------------------------------------------------
 
     //Switches the fog between angry and not angry
@@ -988,83 +1067,4 @@ public class Fog : MonoBehaviour
             f.Angry = angry;
         }
     }
-    
-    private void SelectedLightning()
-    {
-        FogUnit f = fogUnits[Random.Range(0, 70), Random.Range(0, 70)];
-        if (fogUnitsInPlay.Contains(f))
-        {
-            PlayLightning(f);
-        }
-    }
-    
-    private void InitializePool(int amount)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            AddLightningToPool();
-        }
-    }
-
-    private void AddLightningToPool()
-    {
-        FogLightning fogLightning = new FogLightning {lightning = Instantiate(fogUnitPrefab.fogLightning)};
-        fogLightning.lightning.transform.SetParent(transform);
-        fogLightning.lightning.SetActive(false);
-        fogLightning.lightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
-        lightningInPool.Add(fogLightning);
-    }
-
-    private FogLightning GetLightningFromPool()
-    {
-        if (lightningInPool.Count > 0)
-        {
-            FogLightning fogLightning = lightningInPool[0];
-            lightningInPool.RemoveAt(0);
-            lightningInPlay.Add(fogLightning);
-            return fogLightning;
-        }
-        else
-        {
-            FogLightning fogLightning = new FogLightning {lightning = Instantiate(fogUnitPrefab.fogLightning)};
-            fogLightning.lightning.transform.SetParent(transform);
-            fogLightning.lightningPS = fogLightning.lightning.GetComponent<ParticleSystem>();
-            lightningInPlay.Add(fogLightning);
-            return fogLightning;
-        }
-    }
-
-    private void PlayLightning(FogUnit fogUnit)
-    {
-        FogLightning fogLightning = GetLightningFromPool();
-        fogLightning.lightning.transform.position = fogUnit.transform.position;
-        fogLightning.lightning.SetActive(true);
-        fogLightning.lightning.GetComponent<ParticleSystem>().Play();
-    }
-
-    private void ReturnLightningToPool()
-    {
-        List<FogLightning> toRemove = new List<FogLightning>();
-        foreach (FogLightning fogLightning in lightningInPlay)
-        {
-            if (fogLightning.lightningPS.isStopped)
-            {
-                toRemove.Add(fogLightning);
-            }
-        }
-
-        foreach (FogLightning fogLightning in toRemove)
-        {
-            fogLightning.lightning.SetActive(false);
-            lightningInPlay.Remove(fogLightning);
-            lightningInPool.Add(fogLightning);
-        }
-    }
-
-    private void Update()
-    {
-        SelectedLightning();
-        ReturnLightningToPool();
-    }
-
 }

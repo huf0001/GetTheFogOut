@@ -394,6 +394,8 @@ public class UIController : MonoBehaviour
     public void WinGame()
     {
         DOTween.Kill(launchButtonImage);
+        Animator animator = WorldController.Instance.Hub.GetComponent<Animator>();
+        animator.enabled = true;
         WorldController.Instance.GameWin = true;
         WorldController.Instance.GameOver = true;
         //musicFMOD.GameWinMusic();

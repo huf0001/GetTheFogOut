@@ -1166,8 +1166,8 @@ public class TutorialController : DialogueBoxController
                 cameraController.MovementEnabled = false;
 
                 // Update Hub model to fixed ship without thrusters / Particle effects
-                hub.transform.GetChild(0).gameObject.SetActive(false);
-                hub.transform.GetChild(1).gameObject.SetActive(true);
+                hub.BrokenShip.SetActive(false);
+                hub.RepairedShip.SetActive(true);
 
                 //Enable thruster to be clicked and collected for attaching
                 thruster.SetActive(true);

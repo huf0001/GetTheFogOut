@@ -42,9 +42,10 @@ public class WorldController : MonoBehaviour
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
-    [SerializeField] protected GameObject serialCamera;
+    //[SerializeField] protected GameObject serialCamera;
     [SerializeField] private AbilityMenu abilityMenu;
     [SerializeField] private GameObject mainCamera;
+    [SerializeField] private Animator canvasAnimator;
 
     [Header("Public variable?")]
     public bool InBuildMode;
@@ -137,9 +138,9 @@ public class WorldController : MonoBehaviour
 
         tm = FindObjectOfType<TowerManager>();
 
-        abilityMenu = GameObject.Find("AbilitySelectParent").GetComponent<AbilityMenu>();
-        serialCamera = GameObject.Find("CameraTarget");
-        mainCamera = GameObject.Find("Camera");
+        //abilityMenu = GameObject.Find("AbilitySelectParent").GetComponent<AbilityMenu>();
+        //serialCamera = GameObject.Find("CameraTarget");
+        //mainCamera = GameObject.Find("Camera");
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
     }
@@ -432,11 +433,6 @@ public class WorldController : MonoBehaviour
             hub = FindObjectOfType<Hub>();
         }
 
-        if (Input.GetButtonDown("Pause"))
-        {
-            SetPause(!pauseMenu.activeSelf);
-        }
-
         if (hubDestroyed)
         {
             Time.timeScale = 0.2f;
@@ -487,6 +483,10 @@ public class WorldController : MonoBehaviour
         if (dead)
         {
             dead.SetBool("IsDead", true);
+            if (ObjectiveController.Instance.ObjWindowVisible) ObjectiveController.Instance.ToggleObjWindow();
+            yield return new WaitForSeconds(0.5f);
+            canvasAnimator.enabled = true;
+            canvasAnimator.SetBool("EndGame", true);
         }
         yield return new WaitForSeconds(1f);
         GameOverUpdate();
@@ -498,8 +498,12 @@ public class WorldController : MonoBehaviour
         if (win)
         {
             win.SetBool("Win", true);
+            if (ObjectiveController.Instance.ObjWindowVisible) ObjectiveController.Instance.ToggleObjWindow();
+            yield return new WaitForSeconds(0.5f);
+            canvasAnimator.enabled = true;
+            canvasAnimator.SetBool("EndGame", true);
         }
-        yield return new WaitForSeconds(8.0f);
+        yield return new WaitForSeconds(15.0f);
         GameWinUpdate();
     }
 
