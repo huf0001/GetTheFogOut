@@ -16032,9 +16032,9 @@ MonoBehaviour:
         way off this wretched planet. '
   - key: collect sonar
     expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Task done, we're a step closer to escaping this horrid planet. Hey...
-        what's that canister there? Try picking it up.
+    - aiExpression: 1
+      dialogue: Great! The ship is partially repaired, that's a relief. Hey... what's
+        that canister there? Try picking it up.
   - key: select sonar
     expressionDialoguePairs:
     - aiExpression: 1
@@ -16048,10 +16048,9 @@ MonoBehaviour:
   - key: explain abilities
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Look, it worked! It's identified some useful items in the fog.
-    - aiExpression: 2
-      dialogue: 'Before we crashed, your ship came equipped with more than just the
-        Sonar. Maybe you could use it to find the rest of the ability canisters? '
+      dialogue: 'Look, it worked! '
+    - aiExpression: 5
+      dialogue: It's identified something...in the fog...
   - key: explain thruster
     expressionDialoguePairs:
     - aiExpression: 1
@@ -16066,12 +16065,13 @@ MonoBehaviour:
   - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Well, we can't sit here forever, we need to venture out if we want
-        to survive. The fog hasn't done anything to us yet, maybe try placing a [POWER
-        EXTENDER] in it?
+      dialogue: 'Well, the fog hasn''t harmed us so far, and we we can''t sit here
+        forever. We need to venture out if we want to survive. '
+    - aiExpression: 2
+      dialogue: Maybe try placing a [POWER EXTENDER] in the fog?
   - key: build mortar
     expressionDialoguePairs:
-    - aiExpression: 2
+    - aiExpression: 5
       dialogue: It's...it's ALIVE?! Great! What are we gonna do? I'm too young to
         die! My circuitry won't survive an onslaught from the fog...
     - aiExpression: 2
@@ -16111,6 +16111,9 @@ MonoBehaviour:
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
+      dialogue: My sensors are picking up three possible locations around the world
+        that the thruster could have dropped. Use the sonar to find it!
+    - aiExpression: 5
       dialogue: I've done what I can, the rest is up to you. Whatever you do, GET
         US OUT OF HERE!
   - key: start harvest stage
