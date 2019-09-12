@@ -1826,14 +1826,16 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.CollectSonar:
                 return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.BuildExtenderInFog:
-                if (subStage < 3)
-                {
-                    return tile.Resource == null;
-                }
-                else
-                {
-                    return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
-                }
+                return tile.Resource == null;
+            
+                //if (subStage < 3)
+                //{
+                //    return tile.Resource == null;
+                //}
+                //else
+                //{
+                //    return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
+                //}
             case TutorialStage.BuildPulseDefence:
                 tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
 
