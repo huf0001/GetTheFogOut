@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: -0.17052914, g: -0.17052914, b: -0.17052914, a: 1}
+  m_IndirectSpecularColor: {r: -0.28175104, g: -0.28175104, b: -0.28175104, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &24599212
 Transform:
   m_ObjectHideFlags: 0
@@ -547,7 +547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1005968885
 Transform:
   m_ObjectHideFlags: 0
@@ -898,6 +898,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d515833ba49804f4880616c7b8ac0b20, type: 3}
+--- !u!1001 &1480561556
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 537636214173195250, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_Name
+      value: Holo Harvester
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.30564523
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428519020496551658, guid: 83b4c172226db9d4592c5f3ca06d3014,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 83b4c172226db9d4592c5f3ca06d3014, type: 3}
 --- !u!1 &1547187483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,11 +1158,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 683996814274507510, guid: 4b11cdfd0ed975246be7b2958996c13a,
-        type: 3}
-      propertyPath: m_Name
-      value: Cable Energy
-      objectReference: {fileID: 0}
     - target: {fileID: 4710590666302283965, guid: 4b11cdfd0ed975246be7b2958996c13a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1148,6 +1212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 683996814274507510, guid: 4b11cdfd0ed975246be7b2958996c13a,
+        type: 3}
+      propertyPath: m_Name
+      value: Cable Energy
       objectReference: {fileID: 0}
     - target: {fileID: 846055841476615255, guid: 4b11cdfd0ed975246be7b2958996c13a,
         type: 3}
