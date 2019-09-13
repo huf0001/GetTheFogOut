@@ -54,12 +54,12 @@ public class Fog : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private FogSphere fogSpherePrefab;
     [SerializeField] private FogUnit fogUnitPrefab;
+    [SerializeField] private ParticleSystem fogEvaporation; 
 
     [Header("Materials")]
     [SerializeField] private Material fogUnitVisibleMaterial;
     [SerializeField] private Material fogSphereVisibleMaterial;
     [SerializeField] private Material invisibleMaterial;
-    [SerializeField] private Material fogEffect;
 
     [Header("General Settings")]
     [SerializeField] private bool angry;
@@ -140,6 +140,9 @@ public class Fog : MonoBehaviour
 
     public List<FogLightning> lightningInPlay = new List<FogLightning>();       //i.e. currently active lightning effects
     public List<FogLightning> lightningInPool = new List<FogLightning>();       //i.e. currently inactive lightning effects in pool
+
+    public List<ParticleSystem> evaporationInPlay = new List<ParticleSystem>(); //i.e. currently active fog evaporation effects
+    public List<ParticleSystem> evaporationInPool = new List<ParticleSystem>(); //i.e. currently inactive fog evaporation effects
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -652,6 +655,13 @@ public class Fog : MonoBehaviour
             foreach (FogUnit f in toRender)
             {
                 f.RenderOpacity();
+
+                //if (f.JustDealtDamage())
+                //{
+                //    ParticleSystem p = GetFogEvaporation();
+                //    p.transform.position = f.transform.position;
+                //    p.Play();
+                //}
             }
 
             if (fogUnitsInPlay.Count == 0)

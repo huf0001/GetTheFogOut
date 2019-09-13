@@ -260,6 +260,11 @@ public class FogUnit : Entity
         }
     }
 
+    public bool JustDealtDamage()
+    {
+        return takingDamage && startHealth == base.Health;
+    }
+
     //Tells Fog to put the fog unit back in the pool
     private void ReturnToFogPool()
     {
