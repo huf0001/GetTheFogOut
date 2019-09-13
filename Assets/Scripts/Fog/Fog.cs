@@ -469,12 +469,7 @@ public class Fog : MonoBehaviour
             f.SetStartEmotion(angry);
             f.RenderOpacity();
 
-            fogUnitsInPlay.Add(f);
-
-            //if (t.X == 0 || t.Z == 0 || t.X == xMax || t.Z == zMax)
-            //{
-            //    borderFogUnitsInPlay.Add(f);
-            //}
+            fogUnitsInPlay.Insert(Random.Range(0, fogUnitsInPlay.Count), f);
         }
         else if (f.ActiveOnTile)
         {
