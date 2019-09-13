@@ -2016,7 +2016,7 @@ public class TutorialController : DialogueBoxController
     //Borrowed and adapted from ObjectiveController
     IEnumerator CompleteTutorialObjective(string message)
     {
-        GameObject objComp = Instantiate(objectiveCompletePrefab, GameObject.Find("Canvas").transform);
+        GameObject objComp = Instantiate(ObjectiveController.Instance.ObjectiveCompletePrefab, GameObject.Find("Canvas").transform);//Apparently TC's prefab is broken, but OC's isn't
         GameObject objCompImage = objComp.GetComponentInChildren<Image>().gameObject;
         TextMeshProUGUI unlocksText = objCompImage.GetComponentInChildren<TextMeshProUGUI>();
 
