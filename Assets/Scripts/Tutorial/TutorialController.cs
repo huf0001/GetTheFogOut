@@ -222,7 +222,7 @@ public class TutorialController : DialogueBoxController
         zoomIn = GameObject.Find("ZoomInInput").GetComponent<CameraInput>();
         zoomOut = GameObject.Find("ZoomOutInput").GetComponent<CameraInput>();
 
-        abilitySelectorRadialMenu = new RadialMenu();
+        //abilitySelectorRadialMenu = new RadialMenu();
 
         minHarvesterColour = new Color32(224, 145, 0, 0);
         maxHarvesterColour = new Color32(255, 203, 64, 255);
@@ -239,7 +239,7 @@ public class TutorialController : DialogueBoxController
         minSonarColour = new Color32(255, 255, 255, 255);
         maxSonarColour = new Color32(241, 148, 12, 255);
 
-        arrowToTargetPrefab = new DamageIndicator();
+        //arrowToTargetPrefab = new DamageIndicator();
 
         decalMinLerp = 1.5f;
         decalMaxLerp = 3f;
@@ -247,7 +247,7 @@ public class TutorialController : DialogueBoxController
 
         tutProgressSlider.maxValue = 12;
 
-        //arrowToTarget = Instantiate(arrowToTargetPrefab, GameObject.Find("Warnings").transform).GetComponent<DamageIndicator>();
+        arrowToTarget = Instantiate(arrowToTargetPrefab, GameObject.Find("Warnings").transform).GetComponent<DamageIndicator>();
     }
 
     //Method called by WorldController to set up the tutorial's stuff; also organises the setup of the fog
@@ -257,9 +257,9 @@ public class TutorialController : DialogueBoxController
         Fog.Instance.enabled = true;
         Fog.Instance.SpawnStartingFog();
 
-        //arrowToTarget.Colour = Color.cyan;
-        //arrowToTarget.Locatable = buildingTarget;
-        //arrowToTarget.On = false;
+        arrowToTarget.Colour = Color.cyan;
+        arrowToTarget.Locatable = buildingTarget;
+        arrowToTarget.On = false;
 
         if (skipTutorial)
         {
@@ -2088,7 +2088,7 @@ public class TutorialController : DialogueBoxController
         tileTargetLerpProgress = 0f;
         tileTargetLerpForward = true;
 
-        //arrowToTarget.On = true;
+        arrowToTarget.On = true;
 
         ActivateMouse();
     }
@@ -2212,7 +2212,7 @@ public class TutorialController : DialogueBoxController
     private void DeactivateTarget()
     {
         targetRenderer.enabled = false;
-        //arrowToTarget.On = false;
+        arrowToTarget.On = false;
     }
 
     //Tutorial Utility Methods - UI Colour-Lerp Target----------------------------------------------------------------------------------------------
