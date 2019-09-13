@@ -316,6 +316,11 @@ public abstract class Building : Entity
 
     public void CreateWire()
     {
+        if (wire)
+        {
+            return;
+        }
+        
         // Create wires between buildings
         wire = GetComponentInChildren<Wires>();
         if (wire)
@@ -324,16 +329,20 @@ public abstract class Building : Entity
             {
                 if (location.PowerSource != null)
                 {
-                    Wires targetWire = location.PowerSource.GetComponentInChildren<Wires>();
-                    
-                    if (targetWire)
+                    if (location.PowerSource.AreYouConnectedToHub() || location.PowerSource == WorldController.Instance.Hub)
                     {
-                        wire.next = targetWire.gameObject;
-                        wire.CreateWire();
+                        Wires targetWire = location.PowerSource.GetComponentInChildren<Wires>();
+                        
+                        location.PowerSource.PlugIn(this);
+                        powerSource = location.PowerSource;
+                        
+                        if (targetWire)
+                        {
+                            wire.next = targetWire.gameObject;
+                            wire.CreateWire();
+                        }
+                        
                     }
-                    
-                    location.PowerSource.PlugIn(this);
-                    powerSource = location.PowerSource;
                 }
                 else
                 {
@@ -361,9 +370,12 @@ public abstract class Building : Entity
                 }
                 
                 powerSource.Unplug(this);
+                powerSource = null;
             }
-            
             wire.sequence.Kill();
+            wire.energyEffectParticle.Stop();
+            wire.energyEffectParticle.transform.position = transform.position;
+            wire.CleanUp();
             wire = null;
         }
     }
@@ -445,10 +457,14 @@ public abstract class Building : Entity
     {
         Debug.Log("Dismantling " + this.name);
         if (damInd) Destroy(damInd.gameObject);
-        
+
         // Kill Cable Effect tween
-        wire.sequence.Kill();
-        DestroyWires();
+        if (wire)
+        {
+            wire.sequence.Kill();
+            wire.isEffectOn = false;
+            DestroyWires();
+        }
         
         if (buildingType == BuildingType.Hub)
         {

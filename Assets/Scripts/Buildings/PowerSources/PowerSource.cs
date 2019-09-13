@@ -16,7 +16,7 @@ public abstract class PowerSource : Building
     public override void Place()
     {
         base.Place();
-        isConnectedToHub = true;
+        if (powerSource == WorldController.Instance.Hub) isConnectedToHub = true;
         ActivateTiles();
     }
 
@@ -138,6 +138,7 @@ public abstract class PowerSource : Building
 
     public void ActivateTiles()
     {
+        powered = true;
         List<TileData> tiles = location.CollectTilesInRange((int)powerRange);
         tiles.Remove(location);
 
@@ -179,13 +180,12 @@ public abstract class PowerSource : Building
                 if (tile.Building.BuildingType == BuildingType.Extender)
                 {
                     PowerSource relay = (PowerSource) tile.Building;
-                    if (!relay.isConnectedToHub)
+                    if (relay.AreYouConnectedToHub() && !relay.powered)
                     {
                         relay.CreateWire();
                         if (relay.powerSource == this)
                         {
-                            relay.ActivateTiles();
-                            relay.isConnectedToHub = true;     
+                            relay.ActivateTiles();   
                         }
                     }
                 }
@@ -195,6 +195,7 @@ public abstract class PowerSource : Building
 
     public void DeactivateTiles()
     {
+        powered = false;
         List<TileData> tiles = location.CollectTilesInRange((int)powerRange);
 
         foreach (TileData tile in tiles)
@@ -204,7 +205,21 @@ public abstract class PowerSource : Building
             {
                 WorldController.Instance.ActiveTiles.Remove(tile);
             }
+
+            if (tile.Building)
+            {
+                if (tile.Building.BuildingType == BuildingType.Extender && tile.Building.Powered)
+                {
+                    PowerSource relay = tile.Building as PowerSource;
+                    if (!relay.AreYouConnectedToHub())
+                    {
+                        relay.DeactivateTiles();
+                    }
+                }
+            }
         }
+
+        //isConnectedToHub = false;
     }
 
     public float PowerRange
@@ -239,8 +254,11 @@ public abstract class PowerSource : Building
 
     public override void DismantleBuilding()
     {
-        DeactivateTiles();
+        isConnectedToHub = false;
+        DestroyWires();
         
+        DeactivateTiles();
+
         List<Building> toRemove = new List<Building>();
         foreach (var building in suppliedBuildings)
         {
@@ -251,22 +269,48 @@ public abstract class PowerSource : Building
         foreach (var building in toRemove)
         {
             building.DestroyWires();
-            building.CreateWire();
             if (building.BuildingType == BuildingType.Extender)
             {
-                Debug.Log(building.Location.Position.x + building.Location.Position.z);
-                Debug.Log(building.powerSource.Location.Position.x + building.powerSource.Location.Position.z);
+                PowerSource relay = (PowerSource) building;
 
-                if (building.powerSource == null)
+                if (!relay.AreYouConnectedToHub())
                 {
-                    PowerSource relay = (PowerSource) building;
-                    relay.isConnectedToHub = false;
                     relay.DeactivateTiles();
                 }
+                else
+                {
+                    relay.ActivateTiles();
+                }
             }
-
+            building.CreateWire();
         }
         
         base.DismantleBuilding();
+    }
+
+    public bool AreYouConnectedToHub()
+    {
+        bool relayFound = false;
+
+        if (this == WorldController.Instance.Hub)
+        {
+            return true;
+        }
+        
+        if (isConnectedToHub)
+        {
+            return true;
+        }
+        else
+        {
+            if (powerSource == null)
+            {
+                return false;
+            }
+            else
+            {
+                return powerSource.AreYouConnectedToHub();
+            }
+        }
     }
 }

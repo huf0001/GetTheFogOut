@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -37,6 +38,7 @@ public class Wires : MonoBehaviour
     private Vector3 startPosition;
 
     public Sequence sequence;
+    public bool isEffectOn = false;
 
     void Start()
     {
@@ -91,6 +93,7 @@ public class Wires : MonoBehaviour
 
     public void StartEffect()
     {
+        isEffectOn = true;
         lineRenderer = GetComponentInChildren<LineRenderer>();
         
         if (!lineRenderer) return;
@@ -107,18 +110,41 @@ public class Wires : MonoBehaviour
 
     private void DoEffect()
     {
+        if (sequence != null)
+        {
+            sequence.Kill();
+            sequence = null;
+        }
+        
         sequence = DOTween.Sequence();
         sequence.Append(
             energyEffectGO.transform.DOPath(positions, 2f).OnComplete(delegate
               {
-                  energyEffectParticle.Stop();
-                  energyEffectGO.transform.position = startPosition;
-                  energyEffectParticle.Play();
-                  Invoke(nameof(DoEffect), Random.Range(5, 10));
+                  if (isEffectOn)
+                  {
+                      energyEffectParticle.Stop();
+                      energyEffectGO.transform.position = startPosition;
+                      energyEffectParticle.Play();
+                      Invoke(nameof(DoEffect), Random.Range(5, 10));
+                  }
               })
         );
     }
-    
+
+    public void CleanUp()
+    {
+        if (sequence != null)
+        {
+            sequence.Kill();
+            sequence = null;
+        }
+
+        curPosition = Vector3.zero;
+        nextPosition = Vector3.zero;
+        mainPointArr = new Vector3[0];
+        subPointArr = new Vector3[0, 0];
+        children = new GameObject[subSplines];
+    }
 
     public Vector3 DrawCosH(int i)
     {
