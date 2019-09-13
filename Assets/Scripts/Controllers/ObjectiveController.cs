@@ -58,6 +58,7 @@ public class ObjectiveController : DialogueBoxController
     public int MineralTarget { get => mineralTarget; }
     public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
     public int PowerTarget { get => powerTarget; }
+    public GameObject ObjectiveCompletePrefab { get => objectiveCompletePrefab; }
 
     // Start functions -------------------------------------------------------------------------------------
 
