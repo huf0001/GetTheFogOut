@@ -69,9 +69,6 @@ MonoBehaviour:
   buildingType: 1
   mineralCost: 0
   powerCost: 0
-  audioSpawn: {fileID: 0}
-  audioDamage: {fileID: 0}
-  audioDestroy: {fileID: 0}
   healthBarCanvas: {fileID: 0}
   healthBarImage: {fileID: 0}
   healthGradient:
@@ -106,12 +103,16 @@ MonoBehaviour:
   shieldBarTransform: {fileID: 0}
   shieldBarImage: {fileID: 0}
   damageIndicatorPrefab: {fileID: 0}
+  shieldObj: {fileID: 0}
   isShieldOn: 0
   overclockTimer: 0
   directDamage: 50
   aoeDamage: 25
   rateOfFire: 1
   placedInEditor: 0
+  mortarBarrelGO: {fileID: 0}
+  innerRange: 0
+  outerRange: 0
 --- !u!1 &3399616259244851626
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +201,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f8b97cb1c40b7a2469a118af737a3098, type: 2}
+  - {fileID: 2100000, guid: 0e85d487b089f034aa334a5ad6bcc6e3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
