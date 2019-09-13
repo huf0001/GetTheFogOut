@@ -26,6 +26,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int subStage = 0;
     [SerializeField] GameObject objectiveCompletePrefab;
     [SerializeField] GameObject hub;
+    [SerializeField] Hub hubScript;
     [SerializeField] public GameObject thruster;
     [SerializeField] int mineralTarget = 500;
     [SerializeField] int powerTarget = 500;
@@ -241,8 +242,10 @@ public class ObjectiveController : DialogueBoxController
                 if (TutorialController.Instance.SkipTutorial)
                 {
                     cameraController.MovementEnabled = false;
-                    hub.transform.GetChild(0).gameObject.SetActive(false);
-                    hub.transform.GetChild(1).gameObject.SetActive(true);
+                    hubScript.Animator.enabled = false;  //add this, so the repaired hub is shown/active ? not sure if we need animator to set to true back.
+                    hubScript.BrokenShip.SetActive(false);
+                    hubScript.AttachedWing.SetActive(false);
+                    hubScript.RepairedShip.SetActive(true);
                     // Run AI completion text
                     SendDialogue("start part stage", 1);
                     //Camera pans to the thruster
@@ -306,8 +309,9 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 6:
                 // Update hub model with attached thrusters
-                hub.transform.GetChild(1).gameObject.SetActive(false);
-                hub.transform.GetChild(2).gameObject.SetActive(true);
+                hubScript.BrokenShip.SetActive(false);
+                hubScript.RepairedShip.SetActive(false);
+                hubScript.AttachedWing.SetActive(true);
 
                 // Play music Var 3 soundtrack
                 musicFMOD.StageThreeMusic();
@@ -323,6 +327,7 @@ public class ObjectiveController : DialogueBoxController
 
     void SurvivalStage()
     {
+        Hub.Instance.extinguishingFire(); // smoke for the hub
         switch (subStage)
         {
             case 0:
@@ -374,7 +379,6 @@ public class ObjectiveController : DialogueBoxController
             case 4:
                 //Survival countdown
                 Tick();
-                Hub.Instance.extinguishingFire(); // smoke for the hub
                 Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
@@ -397,6 +401,11 @@ public class ObjectiveController : DialogueBoxController
                     IncrementSubStage();
                 }
 
+                break;
+            case 7:
+                break;
+            case 8:
+                UIController.instance.WinGame();
                 break;
             default:
                 // Note: if more stages are added to the objective controller, when the last one is fulfilled, you can't just 

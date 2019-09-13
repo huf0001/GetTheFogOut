@@ -11,7 +11,9 @@ public enum AIExpression
     None,
     Happy,
     Neutral,
-    Sad
+    Sad,
+    Excited,
+    Shocked
 }
 
 [Serializable]
@@ -70,6 +72,8 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private Sprite aiHappy;
     [SerializeField] private Sprite aiNeutral;
     [SerializeField] private Sprite aiSad;
+    [SerializeField] private Sprite aiExcited;
+    [SerializeField] private Sprite aiShocked;
 
     [Header("Images")]
     [SerializeField] private Image completeArrow;
@@ -145,6 +149,14 @@ public class DialogueBox : MonoBehaviour
         else if (aiImage.sprite == aiSad)
         {
             currentExpression = AIExpression.Sad;
+        }
+        else if (aiImage.sprite == aiExcited)
+        {
+            currentExpression = AIExpression.Excited;
+        }
+        else if (aiImage.sprite == aiShocked)
+        {
+            currentExpression = AIExpression.Shocked;
         }
 
         foreach (DialogueSet ds in dialogue)
@@ -424,6 +436,12 @@ public class DialogueBox : MonoBehaviour
                 break;
             case AIExpression.Sad:
                 aiImage.sprite = aiSad;
+                break;
+            case AIExpression.Excited:
+                aiImage.sprite = aiExcited;
+                break;
+            case AIExpression.Shocked:
+                aiImage.sprite = aiShocked;
                 break;
         }
     }

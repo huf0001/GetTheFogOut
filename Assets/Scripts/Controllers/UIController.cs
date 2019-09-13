@@ -13,7 +13,6 @@ public class UIController : MonoBehaviour
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
     public GameObject endGame, pauseGame;
-    GameObject hudBar;
     public BuildingSelector buildingSelector;
     public BuildingInfo buildingInfo;
     public TextMeshProUGUI endGameText;
@@ -28,6 +27,7 @@ public class UIController : MonoBehaviour
     private Image launchButtonImage;
     private MusicFMOD musicFMOD;
 
+    [SerializeField] private Image hud;
     [SerializeField] private Image powerImg;
     [SerializeField] private Sprite[] powerLevelSprites;
     [SerializeField] private Animator powerThresholds;
@@ -91,6 +91,7 @@ public class UIController : MonoBehaviour
         index = 0;
         temp = 2;
 
+        hud.alphaHitTestMinimumThreshold = 0.5f;
         launchButtonImage = objectiveButton.image;
         arrowInitialPosition = proceedArrows.GetComponent<RectTransform>().anchoredPosition;
         abilityImageParent = abilityImage.rectTransform.parent.GetComponent<RectTransform>();
@@ -138,6 +139,7 @@ public class UIController : MonoBehaviour
     // Functions dealing with the drop down objective button
     public void ShowRepairButton(string controller)
     {
+        DOTween.Kill(objectiveButtonBG);
         objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
@@ -291,6 +293,7 @@ public class UIController : MonoBehaviour
 
     public void CloseButton()
     {
+        DOTween.Kill(objectiveButtonBG);
         DOTween.Kill(launchButtonImage);
         launchButtonImage.color = new Color(1, 1, 1);
 
@@ -393,8 +396,11 @@ public class UIController : MonoBehaviour
     public void WinGame()
     {
         DOTween.Kill(launchButtonImage);
+        Animator animator = WorldController.Instance.Hub.GetComponent<Animator>();
+        animator.enabled = true;
         WorldController.Instance.GameWin = true;
         WorldController.Instance.GameOver = true;
+        Fog.Instance.DamageOn = false;
         //musicFMOD.GameWinMusic();
     }
 

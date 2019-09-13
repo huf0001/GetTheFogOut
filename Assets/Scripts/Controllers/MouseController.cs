@@ -218,7 +218,7 @@ public class MouseController : MonoBehaviour
 
             }else
             */
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables","Buildings" })) && WorldController.Instance.TileExistsAt(hit.point))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables", "Buildings" })) && WorldController.Instance.TileExistsAt(hit.point))
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
@@ -229,7 +229,7 @@ public class MouseController : MonoBehaviour
                     hit.collider.GetComponent<Collectable>()?.CollectAbility();
                     hit.collider.GetComponent<ShipComponent>()?.Collect();
                 }
-                else if (hit.collider.name == "pCube31")
+                else if (hit.collider.name == "pCube31" || hit.collider.name == "Ship:pCube5" || hit.collider.name == "polySurface22")
                 {
                     if (!UIController.instance.buildingInfo.Visible)
                     {
