@@ -37,7 +37,9 @@ public abstract class Building : Entity
     private bool damagingNotified = false;
     private bool damagedNotified = false;
     private float buildHealth;
+    private float halfHealth;
     private float regenWait = 5;
+    private float sirenWait = 0;
     private MeshRenderer rend;
     private GameObject damInd;
     private DamageIndicator damIndScript;
@@ -79,6 +81,7 @@ public abstract class Building : Entity
     protected virtual void Start()
     {
         MaxHealth = Health;
+        halfHealth = Health / 2;
         InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
         buildHealth = health;
         InvokeRepeating("CheckStillDamaging", 1, 5);
@@ -125,6 +128,23 @@ public abstract class Building : Entity
             regenWait = 5;
         }
 
+        if (health <= halfHealth && health > 0)
+        {
+            if (sirenWait <= 0)
+            {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingSiren", GetComponent<Transform>().position);
+                sirenWait = 1;
+            }
+            else
+            {
+                sirenWait -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            sirenWait = 0;
+        }
+
         // Process shield decay
         if (isShieldOn)
         {
@@ -133,7 +153,6 @@ public abstract class Building : Entity
 
         if (GotNoHealth())
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDestroyed", GetComponent<Transform>().position);
             DismantleBuilding();
         }
 
@@ -448,11 +467,7 @@ public abstract class Building : Entity
             UIController.instance.buildingInfo.HideInfo();
         }
 
-        if (GotNoHealth())
-        {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDestroyed", GetComponent<Transform>().position);
-        }
-        else
+        if (!GotNoHealth())
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_3", GetComponent<Transform>().position);
         }

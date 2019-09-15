@@ -30,26 +30,6 @@ public abstract class PowerSource : Building
         ActivateTiles();
     }
 
-    //public List<Battery> GetBatteries()
-    //{
-    //    List<Battery> batteries = new List<Battery>();
-
-    //    foreach (Building b in suppliedBuildings)
-    //    {
-    //        if (b.BuildingType == BuildingType.Battery)
-    //        {
-    //            batteries.Add(b as Battery);
-    //        }
-    //        else if (b.BuildingType == BuildingType.Extender)
-    //        {
-    //            Extender r = b as Extender;
-    //            batteries.AddRange(r.GetBatteries());
-    //        }
-    //    }
-
-    //    return batteries;
-    //}
-
     public List<Generator> GetGenerators()
     {
         List<Generator> generators = new List<Generator>();
