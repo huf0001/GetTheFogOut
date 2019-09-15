@@ -118,6 +118,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Move", GetComponent<Transform>().position);
         if (gameObject.name != "btn_remove")
         {
             if (Button.interactable)

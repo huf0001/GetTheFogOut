@@ -139,6 +139,7 @@ public class UIController : MonoBehaviour
     // Functions dealing with the drop down objective button
     public void ShowRepairButton(string controller)
     {
+        DOTween.Kill(objectiveButtonBG);
         objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
@@ -292,6 +293,7 @@ public class UIController : MonoBehaviour
 
     public void CloseButton()
     {
+        DOTween.Kill(objectiveButtonBG);
         DOTween.Kill(launchButtonImage);
         launchButtonImage.color = new Color(1, 1, 1);
 
@@ -398,6 +400,7 @@ public class UIController : MonoBehaviour
         animator.enabled = true;
         WorldController.Instance.GameWin = true;
         WorldController.Instance.GameOver = true;
+        Fog.Instance.DamageOn = false;
         //musicFMOD.GameWinMusic();
     }
 

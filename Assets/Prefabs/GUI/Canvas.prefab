@@ -827,7 +827,7 @@ RectTransform:
   - {fileID: 919886667296155068}
   - {fileID: 1240893840536857650}
   m_Father: {fileID: 4767305868293070532}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1167,80 +1167,6 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!1 &475624202866717283
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5906664483661582743}
-  - component: {fileID: 6686823918771130109}
-  - component: {fileID: 1521352554641901835}
-  m_Layer: 5
-  m_Name: CursorImage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &5906664483661582743
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 475624202866717283}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8171985708282168663}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 12, y: 6}
-  m_SizeDelta: {x: 32.62, y: 32.62}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &6686823918771130109
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 475624202866717283}
-  m_CullTransparentMesh: 0
---- !u!114 &1521352554641901835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 475624202866717283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: f1203281597d0bb45a6ce7e5146422e0, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
 --- !u!1 &510932132908591191
 GameObject:
   m_ObjectHideFlags: 0
@@ -5543,7 +5469,7 @@ RectTransform:
   m_Children:
   - {fileID: 6998205902158839161}
   m_Father: {fileID: 4767305868293070532}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -13223,7 +13149,7 @@ RectTransform:
   m_Children:
   - {fileID: 8776116374864908150}
   m_Father: {fileID: 4767305868293070532}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -15987,9 +15913,11 @@ MonoBehaviour:
   popUpSpeed: 0.5
   lerpTextInterval: 3
   currentExpression: 2
-  aiHappy: {fileID: 21300000, guid: 57cf26372aad19f4081fc68968bb688b, type: 3}
-  aiNeutral: {fileID: 21300000, guid: 34f56df7cb2d1ce4a8deeceaab0d11be, type: 3}
-  aiSad: {fileID: 21300000, guid: 65ba5082072636443bd63b29e5960785, type: 3}
+  aiHappy: {fileID: 21300000, guid: 20160e8531466be44bd97d94d1cea942, type: 3}
+  aiNeutral: {fileID: 21300000, guid: ddd601705bbedf74b81560db7212e247, type: 3}
+  aiSad: {fileID: 21300000, guid: 5cfa629b4d8a83e45a737dfea47c4734, type: 3}
+  aiExcited: {fileID: 21300000, guid: 8a6ab34c1878076408a74c1af3f63cbb, type: 3}
+  aiShocked: {fileID: 21300000, guid: 4e545855c6ceb5e469653563aebac0b3, type: 3}
   completeArrow: {fileID: 1155963844638083134}
   continueArrow: {fileID: 7982337903545462730}
   colourTags:
@@ -16017,10 +15945,11 @@ MonoBehaviour:
   - key: explain situation
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Hello! I am a Nexus Drone. Beep beep boop....
+      dialogue: Hello, I am your very own Nexus Drone that you will be controlling
+        from your ship. You may call me Nexy.
     - aiExpression: 2
-      dialogue: Hah! Just kidding. You can call me Nexy. On a more serious note, that
-        was a rough landing. The ship is in pretty bad shape.
+      dialogue: I'm going to teach you how to utilise me so you can get us out of
+        here alive.
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16029,9 +15958,8 @@ MonoBehaviour:
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: To survive, you will need to learn how to control me from your ship.
-        Press the WASD keys to move me around, or press and hold the RMB while moving
-        the mouse.
+      dialogue: Press the WASD keys to move me around, or press and hold the RMB while
+        moving the mouse.
   - key: zoom camera
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16044,9 +15972,8 @@ MonoBehaviour:
         planet is full of a resource called {MINERALS}. '
     - aiExpression: 2
       dialogue: These will be key to keeping us alive. Your ship comes equipped with
-        a blueprint for a {HARVESTER}.
-    - aiExpression: 2
-      dialogue: I will show you where to place one.
+        a blueprint for a {HARVESTER} that you can use to collect them. I will show
+        you where to place one.
   - key: build harvester icon
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16074,15 +16001,17 @@ MonoBehaviour:
   - key: explain power
     expressionDialoguePairs:
     - aiExpression: 3
-      dialogue: 'Oh, no! Those extra {HARVESTERS} have strained the power system.
-        To see how the power system works, hover over the [BATTERY ICON] next to your
-        minimap. '
+      dialogue: 'Ah, well...this isn''t good. Those extra {HARVESTERS} have strained
+        the power system. '
     - aiExpression: 2
       dialogue: Each building, aside from [POWER EXTENDERS], will consume power when
         they're placed.
     - aiExpression: 2
-      dialogue: When the [BATTERY ICON] reached 75%, buildings will progressively
-        shut down. It's of utmost importance that you refer to this indicator as often
+      dialogue: 'When the [BATTERY ICON] next to your minimap reaches 75%, buildings
+        will progressively shut down. '
+    - aiExpression: 2
+      dialogue: To see an explanation of the power system, hover over the [BATTERY
+        ICON]. It's of utmost importance that you refer to this indicator as often
         as possible.
   - key: build generator target
     expressionDialoguePairs:
@@ -16098,13 +16027,14 @@ MonoBehaviour:
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'Your ship has sustained serious damage upon landing. Use your new-found
-        skills to repair it, it''s the only way off this wretched planet. '
+      dialogue: 'Well, we won''t be getting off the planet any time soon with the
+        ship in this state. Use your new-found skills to repair it, it''s the only
+        way off this wretched planet. '
   - key: collect sonar
     expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: Task done, we're a step closer to escaping this horrid planet. Hey...
-        what's that canister there? Try picking it up.
+    - aiExpression: 1
+      dialogue: Great! The ship is partially repaired, that's a relief. Hey... what's
+        that canister there? Try picking it up.
   - key: select sonar
     expressionDialoguePairs:
     - aiExpression: 1
@@ -16113,15 +16043,14 @@ MonoBehaviour:
   - key: activate sonar
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Once selected, click womewhere on the ground. If the sonar finds an
+      dialogue: Once selected, click somewhere on the ground. If the sonar finds an
         object, it will ping back with its location.
   - key: explain abilities
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Look, it worked! It's identified some useful items in the fog.
-    - aiExpression: 2
-      dialogue: 'Before we crashed, your ship came equipped with more than just the
-        Sonar. Maybe you could use it to find the rest of the ability canisters? '
+      dialogue: 'Look, it worked! '
+    - aiExpression: 5
+      dialogue: It's identified something...in the fog...
   - key: explain thruster
     expressionDialoguePairs:
     - aiExpression: 1
@@ -16136,20 +16065,20 @@ MonoBehaviour:
   - key: build extender in fog
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Well, we can't sit here forever, we need to venture out if we want
-        to survive. The fog hasn't done anything to us yet, maybe try placing a [POWER
-        EXTENDER] in it?
+      dialogue: 'Well, the fog hasn''t harmed us so far, and we we can''t sit here
+        forever. We need to venture out if we want to survive. '
+    - aiExpression: 2
+      dialogue: Maybe try placing a [POWER EXTENDER] in the fog?
   - key: build mortar
     expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: As if crash landing wasn't enough... now we're surrounded by a man-dissolving
-        fog? Great! What are we gonna do? I'm too young to die! My circuitry won't
-        survive an onslaught from the fog...
+    - aiExpression: 5
+      dialogue: It's...it's ALIVE?! Great! What are we gonna do? I'm too young to
+        die! My circuitry won't survive an onslaught from the fog...
     - aiExpression: 2
       dialogue: I... oh, ah, I apologise. Back to the task at hand. Your ship comes
         equipped with two defence buildings, a <MORTAR> and a <PULSE DEFENCE>.
     - aiExpression: 2
-      dialogue: 'The <MORTAR> is a tower best used at long range. Place one here. '
+      dialogue: The <MORTAR> is a tower best used at long range. Place one here.
   - key: build pulse defence
     expressionDialoguePairs:
     - aiExpression: 1
@@ -16159,7 +16088,7 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 1
       dialogue: Once you're prepared, press the <ACTIVATE> button at the bottom of
-        your screen to boot up youur <DEFENCES>.
+        your screen to boot up your <DEFENCES>.
   - key: activate defences in range
     expressionDialoguePairs:
     - aiExpression: 1
@@ -16182,9 +16111,11 @@ MonoBehaviour:
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Well, now that you know the basics, the rest is up to you. I will
-        aid you where I can. I would suggest exploring your surroundings and collecting
-        some more {MINERALS}, maybe even get to your ship's thruster.
+      dialogue: My sensors are picking up three possible locations around the world
+        that the thruster could have dropped. Use the sonar to find it!
+    - aiExpression: 5
+      dialogue: I've done what I can, the rest is up to you. Whatever you do, GET
+        US OUT OF HERE!
   - key: start harvest stage
     expressionDialoguePairs:
     - aiExpression: 2
@@ -17080,6 +17011,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4767305868293070532}
+  - component: {fileID: 816149870217768558}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -17106,7 +17038,6 @@ Transform:
   - {fileID: 4767305867898273338}
   - {fileID: 5205657237161067795}
   - {fileID: 8783893419477216581}
-  - {fileID: 8171985708282168663}
   - {fileID: 2754767819312247726}
   - {fileID: 8425893264608524768}
   - {fileID: 8643980609105312851}
@@ -17116,6 +17047,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &816149870217768558
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4767305868293070533}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9e32c6b8e420f7e4c8fa1dd161ca8e1c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4767305868476615678
 GameObject:
   m_ObjectHideFlags: 0
@@ -20557,7 +20507,7 @@ RectTransform:
   - {fileID: 287174712039169452}
   - {fileID: 24054663290938300}
   m_Father: {fileID: 4767305868293070532}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -25216,105 +25166,6 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &7287179260435197405
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8171985708282168663}
-  - component: {fileID: 928680398917167651}
-  - component: {fileID: 3729779168597228982}
-  - component: {fileID: 1493379095531613862}
-  m_Layer: 5
-  m_Name: Cursor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &8171985708282168663
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7287179260435197405}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_Children:
-  - {fileID: 5906664483661582743}
-  m_Father: {fileID: 4767305868293070532}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
---- !u!223 &928680398917167651
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7287179260435197405}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!114 &3729779168597228982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7287179260435197405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1280, y: 720}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
---- !u!114 &1493379095531613862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7287179260435197405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &7293110206816392024
 GameObject:
   m_ObjectHideFlags: 0
@@ -27364,7 +27215,7 @@ RectTransform:
   - {fileID: 4220352100938254045}
   - {fileID: 5316795013588155625}
   m_Father: {fileID: 4767305868293070532}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -28566,7 +28417,7 @@ RectTransform:
   - {fileID: 1682807422224611713}
   - {fileID: 2351042267069658473}
   m_Father: {fileID: 4767305868293070532}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

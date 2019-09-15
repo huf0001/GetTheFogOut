@@ -10,7 +10,7 @@ public class FogUnit : Entity
     //Serialized Fields
     [Header("Opacity")]
     [SerializeField] private float startOpacity;
-    [SerializeField] private float endOpacity;
+    [SerializeField] private float endOpacity = 0.9f;
 
     [Header("Colour")]
     [SerializeField] private float colourLerpSpeedMultiplier = 0.2f;

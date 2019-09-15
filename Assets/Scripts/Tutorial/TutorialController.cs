@@ -87,7 +87,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark mortarLandmark;
     [SerializeField] private Landmark pulseDefenceLandmark;
     [SerializeField] private Locatable buildingTarget;
-    [SerializeField] private GameObject arrowToTargetPrefab;
+    [SerializeField] private DamageIndicator arrowToTargetPrefab;
 
     [Header("UI Elements")]
     [SerializeField] private CameraInput wKey;
@@ -190,6 +190,8 @@ public class TutorialController : DialogueBoxController
     //Ensures singleton-ness
     private void Awake()
     {
+        objectiveCompletePrefab = new GameObject();
+
         if (Instance != null)
         {
             Debug.LogError("There should never be 2 or more tutorial managers.");
@@ -207,6 +209,41 @@ public class TutorialController : DialogueBoxController
         {
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         }
+
+        //mineralDepositCamera = GameObject.Find("CM Minerals Camera").GetComponent<CinemachineVirtualCamera>(); ;
+        //sonarCamera = GameObject.Find("CM SonarCamera").GetComponent<CinemachineVirtualCamera>(); ;
+        //artilleryCamera = GameObject.Find("CM Artillery Camera").GetComponent<CinemachineVirtualCamera>(); ;
+        //thrusterCamera = GameObject.Find("CM Thruster Camera").GetComponent<CinemachineVirtualCamera>(); ;
+
+        wKey = GameObject.Find("WKey").GetComponent<CameraInput>();
+        aKey = GameObject.Find("AKey").GetComponent<CameraInput>();
+        sKey = GameObject.Find("SKey").GetComponent<CameraInput>();
+        dKey = GameObject.Find("DKey").GetComponent<CameraInput>();
+        zoomIn = GameObject.Find("ZoomInInput").GetComponent<CameraInput>();
+        zoomOut = GameObject.Find("ZoomOutInput").GetComponent<CameraInput>();
+
+        //abilitySelectorRadialMenu = new RadialMenu();
+
+        minHarvesterColour = new Color32(224, 145, 0, 0);
+        maxHarvesterColour = new Color32(255, 203, 64, 255);
+        minPowerBuildingColour = new Color32(0, 166, 81, 0);
+        maxPowerBuildingColour = new Color32(49, 255, 0, 255);
+        minDefencesColour = new Color32(113, 66, 236, 0);
+        maxDefencesColour = new Color32(175, 78, 255, 255);
+        batteryEmptyColour = new Color32(255, 0, 0, 255);
+        batteryLowColour = new Color32(255, 140, 0, 255);
+        batteryHalfColour = new Color32(255, 255, 0, 255);
+        batteryHighColour = new Color32(191, 255, 0, 255);
+        batteryFullColour = new Color32(0, 255, 0, 255);
+        abilityMenuColour = new Color32(77, 210, 255, 255);
+        minSonarColour = new Color32(255, 255, 255, 255);
+        maxSonarColour = new Color32(241, 148, 12, 255);
+
+        //arrowToTargetPrefab = new DamageIndicator();
+
+        decalMinLerp = 1.5f;
+        decalMaxLerp = 3f;
+        batteryIconMinLerp = 0.5f;
 
         tutProgressSlider.maxValue = 12;
 
@@ -1029,6 +1066,10 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 6:
+                // Update Hub model to fixed ship without thrusters / Particle effects
+                hub.Animator.enabled = false;   //Apparently interferes with setting the repaired ship to active=true unless you disable it.
+                hub.BrokenShip.SetActive(false);
+                hub.RepairedShip.SetActive(true);
                 StartCoroutine(CompleteTutorialObjective("You repaired damage to your ship!"));
                 IncrementSubStage();
                 break;
@@ -1164,11 +1205,6 @@ public class TutorialController : DialogueBoxController
                 break;
             case 13:
                 cameraController.MovementEnabled = false;
-
-                // Update Hub model to fixed ship without thrusters / Particle effects
-                hub.BrokenShip.SetActive(false);
-                hub.RepairedShip.SetActive(true);
-
                 //Enable thruster to be clicked and collected for attaching
                 thruster.SetActive(true);
 
@@ -1176,24 +1212,11 @@ public class TutorialController : DialogueBoxController
                 stage = TutorialStage.SonarActivated;
                 SendDialogue("explain abilities", 1);
                 break;
-            //case 14:
-            //    if (dialogueRead)
-            //    {
-            //        DismissDialogue();
-            //    }
-
-            //    break;
-            //case 15:
-            //    SendDialogue("explain thruster", 1);
-            //    artilleryCamera.gameObject.SetActive(false);
-            //    thrusterCamera.gameObject.SetActive(true);
-            //    break;
             case 14:
                 if (dialogueRead)
                 {
                     lerpTargetsRemaining.Remove(sonarLandmark);
                     DismissDialogue();
-                    //thrusterCamera.gameObject.SetActive(false);
                     artilleryCamera.gameObject.SetActive(false);
                     cameraController.MovementEnabled = true;
                     stage = TutorialStage.BuildExtenderInFog;
@@ -1826,14 +1849,16 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.CollectSonar:
                 return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.BuildExtenderInFog:
-                if (subStage < 3)
-                {
-                    return tile.Resource == null;
-                }
-                else
-                {
-                    return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
-                }
+                return tile.Resource == null;
+            
+                //if (subStage < 3)
+                //{
+                //    return tile.Resource == null;
+                //}
+                //else
+                //{
+                //    return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
+                //}
             case TutorialStage.BuildPulseDefence:
                 tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
 
@@ -1991,7 +2016,7 @@ public class TutorialController : DialogueBoxController
     //Borrowed and adapted from ObjectiveController
     IEnumerator CompleteTutorialObjective(string message)
     {
-        GameObject objComp = Instantiate(objectiveCompletePrefab, GameObject.Find("Canvas").transform);
+        GameObject objComp = Instantiate(ObjectiveController.Instance.ObjectiveCompletePrefab, GameObject.Find("Canvas").transform);//Apparently TC's prefab is broken, but OC's isn't
         GameObject objCompImage = objComp.GetComponentInChildren<Image>().gameObject;
         TextMeshProUGUI unlocksText = objCompImage.GetComponentInChildren<TextMeshProUGUI>();
 

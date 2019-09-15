@@ -73,9 +73,9 @@ MonoBehaviour:
     collected: 0
   - component: 2
     collected: 0
-  serialCamera: {fileID: 0}
   abilityMenu: {fileID: 0}
   mainCamera: {fileID: 0}
+  canvasAnimator: {fileID: 0}
   InBuildMode: 1
   pauseMenu: {fileID: 0}
   hvstUpgradeLevel: {fileID: 0}
@@ -176,6 +176,7 @@ MonoBehaviour:
   buildingInfo: {fileID: 0}
   endGameText: {fileID: 0}
   buttonClosed: 1
+  hud: {fileID: 0}
   powerImg: {fileID: 0}
   powerLevelSprites:
   - {fileID: 21300000, guid: 88d41290badea9d49a808952d37fc94c, type: 3}
@@ -294,7 +295,7 @@ MonoBehaviour:
   mortarLandmark: {fileID: 0}
   pulseDefenceLandmark: {fileID: 0}
   buildingTarget: {fileID: 0}
-  arrowToTargetPrefab: {fileID: 8599427647162027438, guid: d157f3b0eefcb6743985ca736438dcff,
+  arrowToTargetPrefab: {fileID: 3286938245972313546, guid: d157f3b0eefcb6743985ca736438dcff,
     type: 3}
   wKey: {fileID: 0}
   aKey: {fileID: 0}
@@ -356,6 +357,7 @@ MonoBehaviour:
   objectiveCompletePrefab: {fileID: 2273471419132843575, guid: 53f4928f807d9b64bbacc1c4655740f2,
     type: 3}
   hub: {fileID: 0}
+  hubScript: {fileID: 0}
   thruster: {fileID: 0}
   mineralTarget: 500
   powerTarget: 500
@@ -405,16 +407,16 @@ MonoBehaviour:
   fogEffect: {fileID: 0}
   angry: 0
   damageOn: 1
-  fogSphereSpawnPointsParent: {fileID: 0}
   configuration: 5
   difficulty: 1
   expansionDirection: 0
   surroundingHubRange: 9
   fogAccelerates: 0
   fogFrozen: 0
-  maxFogSpheresCount: 5
   fogGrowth: 10
   fogSpillThreshold: 50
+  fogSphereSpawnPointsParent: {fileID: 0}
+  maxFogSpheresCount: 5
   fogSphereSpillMultiplier: 8
   earlyGameFogGrowth: 10
   midGameFogGrowth: 25
@@ -442,9 +444,9 @@ MonoBehaviour:
     earlyGameGrowthMultiplier: 2
     midGameGrowthMultiplier: 2
     lateGameGrowthMultiplier: 2
-  earlyGameMaxFogSphereSize: 2.3
-  midGameMaxFogSphereSize: 3.45
-  lateGameMaxFogSphereSize: 4.6
+  earlyGameMaxFogSphereSize: 4
+  midGameMaxFogSphereSize: 5
+  lateGameMaxFogSphereSize: 6
   fogSphereMinHealth: 0.001
   fogUnitMinHealth: 0.001
   fogUnitMaxHealth: 100
@@ -452,6 +454,8 @@ MonoBehaviour:
   fogDamageInterval: 0.02
   fogExpansionInterval: 0.5
   fogSphereInterval: 0.05
+  lightningInPlay: []
+  lightningInPool: []
 --- !u!114 &7305178377255849301
 MonoBehaviour:
   m_ObjectHideFlags: 0

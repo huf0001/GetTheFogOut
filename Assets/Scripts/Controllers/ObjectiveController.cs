@@ -58,6 +58,7 @@ public class ObjectiveController : DialogueBoxController
     public int MineralTarget { get => mineralTarget; }
     public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
     public int PowerTarget { get => powerTarget; }
+    public GameObject ObjectiveCompletePrefab { get => objectiveCompletePrefab; }
 
     // Start functions -------------------------------------------------------------------------------------
 
@@ -92,14 +93,6 @@ public class ObjectiveController : DialogueBoxController
         Profiler.BeginSample("objective");
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
-            
-            // This is very performance heavy, not sure if required so won't delete for now. 
-            /* if (GameObject.Find("MusicFMOD") != null)
-            {
-                musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-            } */
-            
-            
             CheckObjectiveStage(); 
         }
         Profiler.EndSample();
@@ -242,6 +235,7 @@ public class ObjectiveController : DialogueBoxController
                 if (TutorialController.Instance.SkipTutorial)
                 {
                     cameraController.MovementEnabled = false;
+                    hubScript.Animator.enabled = false;  //add this, so the repaired hub is shown/active ? not sure if we need animator to set to true back.
                     hubScript.BrokenShip.SetActive(false);
                     hubScript.AttachedWing.SetActive(false);
                     hubScript.RepairedShip.SetActive(true);

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -83,7 +84,7 @@ public class ArcDefence : Defence
 
     TileData GetTarget()
     {
-        // Get the tile with the highest fog concentration.
+        // Get the closest fog tile.
         List<TileData> fogTiles = new List<TileData>();
         List<TileData> tiles = location.CollectTilesInRange((int)visibilityRange);
 
@@ -94,11 +95,13 @@ public class ArcDefence : Defence
                 fogTiles.Add(tile);
             }
         }
-
-        fogTiles.Sort((t1, t2) => t1.FogUnit.Health.CompareTo(t2.FogUnit.Health));
-        fogTiles.Reverse();
-
-        if (fogTiles.Count > 0)
+        
+        if (fogTiles.Count > 1)
+        {
+            fogTiles = fogTiles.OrderBy(x => Vector3.Distance(this.transform.position, x.Position)).ToList();
+            return fogTiles[0];
+        } 
+        else if (fogTiles.Count == 1)
         {
             TileData target = fogTiles[0];
             return target;
