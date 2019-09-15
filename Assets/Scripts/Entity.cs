@@ -16,6 +16,7 @@ public abstract class Entity : Locatable
     {
         if (health <= 0)
         {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDestroyed", GetComponent<Transform>().position);
             return true;
         }
 

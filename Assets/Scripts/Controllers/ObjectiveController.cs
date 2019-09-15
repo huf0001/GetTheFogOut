@@ -93,14 +93,6 @@ public class ObjectiveController : DialogueBoxController
         Profiler.BeginSample("objective");
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
-            
-            // This is very performance heavy, not sure if required so won't delete for now. 
-            /* if (GameObject.Find("MusicFMOD") != null)
-            {
-                musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-            } */
-            
-            
             CheckObjectiveStage(); 
         }
         Profiler.EndSample();

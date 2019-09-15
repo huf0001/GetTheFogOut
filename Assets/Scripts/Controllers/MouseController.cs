@@ -247,7 +247,7 @@ public class MouseController : MonoBehaviour
                     tile = WorldController.Instance.GetTileAt(hit.point);
                     if (tile.isBuildable)
                     {
-                        if (tile.PowerSource != null && TutorialController.Instance.TileAllowed(tile))
+                        if (WorldController.Instance.ActiveTiles.Contains((tile)) && TutorialController.Instance.TileAllowed(tile))
                         {
                             if (!UIController.instance.buildingSelector.Visible)
                             {
@@ -344,22 +344,11 @@ public class MouseController : MonoBehaviour
 
                 // Place new building
                 Vector3 PosToInst = new Vector3(tile.X, height, tile.Z);
-                //Debug.Log(tile.X + " " + tile.Z);
                 GameObject buildingGo = Instantiate(toBuild, PosToInst, Quaternion.Euler(0f, 0f, 0f));
                 building = buildingGo.GetComponentInChildren<Building>();
                 buildingGo.transform.SetParent(WorldController.Instance.Ground.transform);
                 tile.Building = building;
                 building.Location = tile;
-
-                // Give the building a copy of RecourceController   //ResourceController is now a public static class; Building calls it directly to get a reference to it.
-                //if (resourceController == null)
-                //{
-                //    Debug.Log("resourceController is null in MouseController");
-                //}
-                //else
-                //{
-                //    building.ResourceController = resourceController;
-                //}
 
                 // Set and play animation
                 building.Animator = buildingGo.GetComponentInChildren<Animator>();

@@ -14,7 +14,7 @@ public abstract class Building : Entity
     [SerializeField] protected float shield;
     [SerializeField] protected float visibilityRange;
     [SerializeField] protected float upkeep;
-    [SerializeField] protected PowerSource powerSource = null;
+    [SerializeField] public PowerSource powerSource = null;
     [SerializeField] protected bool powered = false;
     [SerializeField] protected bool placed = false;
     [SerializeField] protected BuildingType buildingType;
@@ -37,7 +37,9 @@ public abstract class Building : Entity
     private bool damagingNotified = false;
     private bool damagedNotified = false;
     private float buildHealth;
+    private float halfHealth;
     private float regenWait = 5;
+    private float sirenWait = 0;
     private MeshRenderer rend;
     private GameObject damInd;
     private DamageIndicator damIndScript;
@@ -45,7 +47,7 @@ public abstract class Building : Entity
     protected bool isOverclockOn = false;
     public float overclockTimer;
     private Material shieldMat;
-    private Wires wire;
+    public Wires wire;
     protected Camera cam;
 
     private float toLerp = 1f;
@@ -79,6 +81,7 @@ public abstract class Building : Entity
     protected virtual void Start()
     {
         MaxHealth = Health;
+        halfHealth = Health / 2;
         InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
         buildHealth = health;
         InvokeRepeating("CheckStillDamaging", 1, 5);
@@ -125,6 +128,23 @@ public abstract class Building : Entity
             regenWait = 5;
         }
 
+        if (health <= halfHealth && health > 0)
+        {
+            if (sirenWait <= 0)
+            {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingSiren", GetComponent<Transform>().position);
+                sirenWait = 1;
+            }
+            else
+            {
+                sirenWait -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            sirenWait = 0;
+        }
+
         // Process shield decay
         if (isShieldOn)
         {
@@ -133,7 +153,6 @@ public abstract class Building : Entity
 
         if (GotNoHealth())
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDestroyed", GetComponent<Transform>().position);
             DismantleBuilding();
         }
 
@@ -251,45 +270,30 @@ public abstract class Building : Entity
 
     public virtual void Place()
     {
-        if (buildingType != BuildingType.Hub)
-        {
-            if (powerSource == null)
-            {
-                SetPowerSource();
-            }
-        }
-
+//        if (buildingType != BuildingType.Hub)
+//        {
+//            if (powerSource == null)
+//            {
+//                SetPowerSource();
+//            }
+//        }
+        
+        CreateWire();
         ResourceController.Instance.AddBuilding(this);
         gameObject.layer = LayerMask.NameToLayer("Buildings");
         placed = true;
-
-        //GetComponent<Renderer>().material.shader = buildingShader;
     }
 
     public void SetPowerSource()
     {
-        //Debug.Log("Setting Power Source");
-
-        //if (location == null)
-        //{
-        //    Debug.Log("Location of " + this.name + " is null");
-        //}
-
-        //if (location.PowerSource == null)
-        //{
-        //    Debug.Log("Power Source is null");
-        //}
-
         powerSource = location.GetClosestPowerSource(this.transform);
-        //powerSource = location.PowerSource;
-
+        
         if (powerSource != null)
         {
-            //Debug.Log("Plugging In and Powering Up " + this.name);
             powerSource.PlugIn(this);
             PowerUp();
 
-            // Create wires between buidings
+            // Create wires between buildings
             wire = GetComponentInChildren<Wires>();
             if (wire)
             {
@@ -315,7 +319,6 @@ public abstract class Building : Entity
         }
         else
         {
-            //Debug.Log("Trigger PowerDown for " + this.name + " from Building.SetPowerSource()");
             PowerDown();
 
             // Destroy wires
@@ -327,10 +330,73 @@ public abstract class Building : Entity
                     Destroy(wire.transform.GetChild(0).gameObject);
                 }
             }
-
         }
+    }
 
-        //Debug.Log(this.name + ": power source is " + powerSource.name + ". Location is (" + location.X + "," + location.Z + "). Powered up is" + powered);
+    public void CreateWire()
+    {
+        if (wire)
+        {
+            return;
+        }
+        
+        // Create wires between buildings
+        wire = GetComponentInChildren<Wires>();
+        if (wire)
+        {
+            if (this != WorldController.Instance.Hub)
+            {
+                if (location.PowerSource != null)
+                {
+                    if (location.PowerSource.AreYouConnectedToHub() || location.PowerSource == WorldController.Instance.Hub)
+                    {
+                        Wires targetWire = location.PowerSource.GetComponentInChildren<Wires>();
+                        
+                        location.PowerSource.PlugIn(this);
+                        powerSource = location.PowerSource;
+                        
+                        if (targetWire)
+                        {
+                            wire.next = targetWire.gameObject;
+                            wire.CreateWire();
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    wire = null;
+                    PowerDown();
+                }
+            }
+        }
+    }
+
+    public void DestroyWires()
+    {
+        wire = GetComponentInChildren<Wires>();
+        if (wire)
+        {
+            // Destroy any already existing wires
+            if (wire.transform.childCount > 0)
+            {
+                for (int i = 0; i < wire.transform.childCount; i++)
+                {
+                    if (wire.transform.GetChild(i).name != "Cable Energy")
+                    {
+                        Destroy(wire.transform.GetChild(i).gameObject);
+                    }
+                }
+                
+                powerSource.Unplug(this);
+                powerSource = null;
+            }
+            wire.sequence.Kill();
+            wire.energyEffectParticle.Stop();
+            wire.energyEffectParticle.transform.position = transform.position;
+            wire.CleanUp();
+            wire = null;
+        }
     }
 
     public virtual void PowerUp()
@@ -403,39 +469,35 @@ public abstract class Building : Entity
 
     public void ShutdownBuilding()
     {
-        if (powerSource != null)
-        {
-            //Debug.Log("Unplugging from " + powerSource.name);
-            //  powerSource.SuppliedBuildings.Remove(this);
-            powerSource.Unplug(this);
-        }
-
         PowerDown();
     }
 
-    public void DismantleBuilding()
+    public virtual void DismantleBuilding()
     {
         Debug.Log("Dismantling " + this.name);
         if (damInd) Destroy(damInd.gameObject);
-        
+
         // Kill Cable Effect tween
-        wire.sequence.Kill();
+        if (wire)
+        {
+            wire.sequence.Kill();
+            wire.isEffectOn = false;
+            DestroyWires();
+        }
         
         if (buildingType == BuildingType.Hub)
         {
             WorldController.Instance.HubDestroyed = true;
         }
 
-        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Extender)
-        {
-            PowerSource p = this as PowerSource;
-            p.DismantlePowerSource();
-        }
+//        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Extender)
+//        {
+//            PowerSource p = this as PowerSource;
+//            p.DismantlePowerSource();
+//        }
 
         ShutdownBuilding();
-
-        //MakeTilesNotVisible();
-
+        
         if (Location != null)
         {
             //Debug.Log("Removing from tile");
@@ -448,18 +510,12 @@ public abstract class Building : Entity
             UIController.instance.buildingInfo.HideInfo();
         }
 
-        if (GotNoHealth())
-        {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDestroyed", GetComponent<Transform>().position);
-        }
-        else
+        if (!GotNoHealth())
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_3", GetComponent<Transform>().position);
         }
         ResourceController.Instance.RemoveBuilding(this);
-
-        //Debug.Log("Should be removed from ResourceController's list of my building type");
-
+        
         if (this.transform.parent != null)
         {
             Destroy(this.transform.parent.gameObject);
@@ -472,18 +528,12 @@ public abstract class Building : Entity
         Destroy(this);
     }
 
-    //protected virtual void OnDestroy()
-    //{
-    //    //Debug.Log("Building.OnDestroy() called, attempting to destroy " + this.name);
-    //}
-
     public override TileData Location
     {
         get => base.Location;
 
         set
         {
-            //Debug.Log(this.name + "'s location has been set");
             base.Location = value;
         }
     }

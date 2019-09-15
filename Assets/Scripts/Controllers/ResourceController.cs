@@ -79,239 +79,199 @@ public class ResourceController : MonoBehaviour
         powerChange = 0;
         mineralChange = 0;
 
-        //Get connected buildings
-        List<Generator> connectedGenerators = hub.GetGenerators();
-        List<Relay> connectedRelays = hub.GetExtenders();
-        List<ArcDefence> connectedMortars = hub.GetMortars();
-        List<RepelFan> connectedPulseDefences = hub.GetPulseDefences();
-        List<Harvester> connectedHarvesters = hub.GetHarvesters();
-        
         //Process power and power supplying
-        CalculatePowerSupply(connectedGenerators, connectedRelays);
-        CalculateUpkeep(connectedMortars, connectedPulseDefences, connectedHarvesters);
-        SupplyPower(connectedMortars, connectedPulseDefences, connectedHarvesters);        
+        CalculatePowerSupply();
+        CalculateUpkeep();
+        SupplyPower();        
         
         //Makes sure power and minerals don't exceed their maximum values
         CheckLimits();
     }
 
     //Calculates how much power is supplied by all buildings
-    private void CalculatePowerSupply(List<Generator> connectedGenerators, List<Relay> connectedExtenders)
+    private void CalculatePowerSupply()
     {
         //Provide hub's power contribution
         storedPower += hub.Upkeep;
         powerChange += hub.Upkeep;
         
         //Get Generators' power contributions
-        foreach (Generator generator in connectedGenerators)
+        foreach (Generator generator in generators)
         {
-            storedPower += generator.Upkeep * generator.OverclockValue;
-            powerChange += generator.Upkeep * generator.OverclockValue;
-        }
-
-        //Supply power to connected generators
-        if (connectedGenerators.Count > 0)
-        {
-            foreach (Generator g in generators)
+            if (WorldController.Instance.ActiveTiles.Contains(generator.Location))
             {
-                if (connectedGenerators.Contains(g))
-                {
-                    g.PowerUp();
-                }
-                else
-                {
-                    g.PowerDown();
-                }
+                storedPower += generator.Upkeep * generator.OverclockValue;
+                powerChange += generator.Upkeep * generator.OverclockValue;
             }
         }
 
-        //Supply power to connected extenders
-        if (connectedExtenders.Count > 0)
+        //Supply power to connected generators
+        foreach (Generator g in generators)
         {
-            foreach (Relay r in extenders)
+            if (WorldController.Instance.ActiveTiles.Contains(g.Location))
             {
-                if (connectedExtenders.Contains(r))
-                {
-                    storedPower += r.Upkeep;
-                    powerChange += r.Upkeep;
+                g.PowerUp();
+            }
+            else
+            {
+                g.PowerDown();
+            }
+        }
 
-                    if (storedPower >= 0)
-                    {
-                        r.PowerUp();
-                    }
-                    else
-                    {
-                        r.PowerDown();
-                    }
+
+        //Supply power to connected extenders
+
+        foreach (Relay r in extenders)
+        {
+            if (WorldController.Instance.ActiveTiles.Contains(r.Location))
+            {
+                storedPower += r.Upkeep;
+                powerChange += r.Upkeep;
+
+                if (storedPower >= 0)
+                {
+                    r.PowerUp();
                 }
                 else
                 {
                     r.PowerDown();
                 }
             }
+            else
+            {
+                r.PowerDown();
+            }
         }
     }
 
     //Calculates how much power is used by all buildings
-    private void CalculateUpkeep(List<ArcDefence> connectedMortars, List<RepelFan> connectedPulseDefences, List<Harvester> connectedHarvesters)
+    private void CalculateUpkeep()
     {
         //Gets the power drain by the mortars
-        if (connectedMortars.Count > 0)
+        foreach (ArcDefence m in mortars)
         {
-            foreach (ArcDefence m in mortars)
+            if (WorldController.Instance.ActiveTiles.Contains(m.Location))
             {
-                if (connectedMortars.Contains(m))
-                {
-                    storedPower += m.Upkeep;
-                    powerChange += m.Upkeep;
-                }
+                storedPower += m.Upkeep;
+                powerChange += m.Upkeep;
             }
         }
 
         //Gets the power drain by the pulse defences
-        if (connectedPulseDefences.Count > 0)
+        foreach (RepelFan pd in pulseDefences)
         {
-            foreach (RepelFan pd in pulseDefences)
+            if (WorldController.Instance.ActiveTiles.Contains(pd.Location))
             {
-                if (connectedPulseDefences.Contains(pd))
-                {
-                    storedPower += pd.Upkeep;
-                    powerChange += pd.Upkeep;
-                }
+                storedPower += pd.Upkeep;
+                powerChange += pd.Upkeep;
             }
         }
 
         //Gets the power drain by the harvesters
-        if (connectedHarvesters.Count > 0)
+        foreach (Harvester h in harvesters)
         {
-            foreach (Harvester h in harvesters)
+            if (WorldController.Instance.ActiveTiles.Contains(h.Location))
             {
-                if (connectedHarvesters.Contains(h))
-                {
-                    storedPower += h.Upkeep;
-                    powerChange += h.Upkeep;                    
-                }
+                storedPower += h.Upkeep;
+                powerChange += h.Upkeep;                    
             }
         }
     }
 
     //Supplies powers to buildings based on the current stored power
-    private void SupplyPower(List<ArcDefence> connectedMortars, List<RepelFan> connectedPulseDefences, List<Harvester> connectedHarvesters)
+    private void SupplyPower()
     {
         //Powers mortars
-        if (connectedMortars.Count > 0)
+
+        if (storedPower > 75)
         {
-            if (storedPower > 75)
+            foreach (ArcDefence ac in mortars)
             {
-                foreach (ArcDefence ac in mortars)
+                if (WorldController.Instance.ActiveTiles.Contains(ac.Location))
                 {
-                    if (connectedMortars.Contains(ac))
-                    {
-                        ac.PowerUp();
-                    }
-                    else
-                    {
-                        ac.PowerDown();
-                    }
+                    ac.PowerUp();
                 }
-            }
-            else
-            {
-                foreach (ArcDefence ac in mortars)
+                else
                 {
                     ac.PowerDown();
                 }
             }
         }
+        else
+        {
+            foreach (ArcDefence ac in mortars)
+            {
+                ac.PowerDown();
+            }
+        }
 
         //Powers pulse defences
-        if (connectedPulseDefences.Count > 0)
+        if (storedPower > 25)
         {
-            if (storedPower > 25)
+            foreach (RepelFan pd in pulseDefences)
             {
-                foreach (RepelFan pd in pulseDefences)
+                if (WorldController.Instance.ActiveTiles.Contains(pd.Location))
                 {
-                    if (connectedPulseDefences.Contains(pd))
-                    {
-                        pd.PowerUp();
-                    }
-                    else
-                    {
-                        pd.PowerDown();
-                    }
+                    pd.PowerUp();
                 }
-            }
-            else
-            {
-                foreach (RepelFan pd in pulseDefences)
+                else
                 {
                     pd.PowerDown();
                 }
             }
         }
+        else
+        {
+            foreach (RepelFan pd in pulseDefences)
+            {
+                pd.PowerDown();
+            }
+        }
 
         //Powers harvesters
-        if (connectedHarvesters.Count > 0)
+        if (storedPower > 0)
         {
-            bool needDestroy = false;
-
-            if (storedPower > 0)
+            foreach (Harvester h in harvesters)
             {
-                foreach (Harvester h in harvesters)
+                if (WorldController.Instance.ActiveTiles.Contains(h.Location))
                 {
-                    if (connectedHarvesters.Contains(h))
+                    h.PowerUp();
+
+                    if (h.Location.Resource != null)
                     {
-                        h.PowerUp();
-
-                        if (h.Location.Resource != null)
+                        switch (h.Location.Resource.ResourceType)
                         {
-                            switch (h.Location.Resource.ResourceType)
-                            {
-                                case Resource.Power:
-                                    storedPower += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
-                                    powerChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
-                                    break;
-                                case Resource.Mineral:
-                                    mineralChange += h.HarvestAmt * h.OverclockValue * (int)h.Location.Resource.ResMultiplier;
-                                    h.Location.Resource.Health -= h.HarvestAmt * h.OverclockValue;
+                            case Resource.Power:
+                                storedPower += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
+                                powerChange += h.HarvestAmt * (int)h.Location.Resource.ResMultiplier;
+                                break;
+                            case Resource.Mineral:
+                                mineralChange += h.HarvestAmt * h.OverclockValue * (int)h.Location.Resource.ResMultiplier;
+                                h.Location.Resource.Health -= h.HarvestAmt * h.OverclockValue;
 
-                                    if (h.Location.Resource.Health <= 0)
-                                    {
-                                        ResourceNode.Destroy(h.Location.Resource.gameObject);
-                                        h.TurnOnMineralIndicator();
-                                        h.ShutdownBuilding();
-                                        needDestroy = true;
-                                        //    h.Location.Building.ShutdownBuilding();   // if you dont want to destroy, this line, insteat, will turn power off
-                                    }
-
-                                    break;
-                            }
+                                if (h.Location.Resource.Health <= 0)
+                                {
+                                    Destroy(h.Location.Resource.gameObject);
+                                    h.TurnOnMineralIndicator();
+                                    h.ShutdownBuilding();
+                                }
+                                break;
                         }
                     }
-                    else
-                    {
-                        h.PowerDown();
-                    }
                 }
-
-                storedMineral += mineralChange;
-            }
-            else
-            {
-                foreach (Harvester h in harvesters)
+                else
                 {
                     h.PowerDown();
                 }
             }
 
-            if (hvtSelfDestroy)
+            storedMineral += mineralChange;
+        }
+        else
+        {
+            foreach (Harvester h in harvesters)
             {
-                if (needDestroy)
-                {
-                    MouseController.Instance.ReturnCost(harvesters[0].Location);
-                    MouseController.Instance.RemoveBulding(harvesters[0]);
-                    //    harvesters[0].Location.Building.DismantleBuilding();  //alternatively
-                }
+                h.PowerDown();
             }
         }
     }

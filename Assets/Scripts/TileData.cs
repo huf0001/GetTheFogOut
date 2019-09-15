@@ -18,7 +18,7 @@ public struct BuildingChecks
 public class TileData
 {
     //Serialized Fields
-    [SerializeField] private List<PowerSource> powerSources = new List<PowerSource>();
+    [SerializeField] public List<PowerSource> powerSources = new List<PowerSource>();
 
     [SerializeField] private ResourceNode resource = null;
     [SerializeField] private Building building = null;
@@ -158,24 +158,19 @@ public class TileData
 
         if (building != null)
         {
-            if (!building.Powered)
+            if (!building.powerSource)
             {
-                building.SetPowerSource();
+                if (!building.wire)
+                {
+                    building.CreateWire();
+                }
             }
         }
     }
 
     public void PowerDown(PowerSource power)
     {
-        if (powerSources.Contains(power))
-        {
-            powerSources.Remove(power);
-        }
-
-        if (building != null)
-        {
-             building.SetPowerSource();
-        }
+        powerSources.Remove(power);
     }
 
     public void AddObserver(Building observer)
