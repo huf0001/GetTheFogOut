@@ -402,6 +402,10 @@ public class DialogueBox : MonoBehaviour
         {
             ChangeAIExpression(dialogueDictionary[currentDialogueKey][dialogueIndex].AIExpression);
         }
+        //else
+        //{
+        //    Debug.Log($"Keeping dialogue expression as {currentExpression}");
+        //}
 
         dialogueIndex++;
         lerpTextMaxIndex = currentText.Length - 1;
@@ -418,6 +422,10 @@ public class DialogueBox : MonoBehaviour
         {
             ChangeAIExpression(dialogueDictionary[currentDialogueKey][dialogueIndex].AIExpression);
         }
+        //else
+        //{
+        //    Debug.Log($"Keeping dialogue expression as {currentExpression}");
+        //}
 
         dialogueIndex++;
         lerpTextMaxIndex = 0;
@@ -426,6 +434,9 @@ public class DialogueBox : MonoBehaviour
     //Updates the sprite of aiImage
     private void ChangeAIExpression(AIExpression expression)
     {
+        //Debug.Log($"Changing AIExpression from {currentExpression} to {expression}");
+        currentExpression = expression;
+
         switch (expression)
         {
             case AIExpression.Happy:
@@ -444,6 +455,8 @@ public class DialogueBox : MonoBehaviour
                 aiImage.sprite = aiShocked;
                 break;
         }
+
+        //Debug.Log($"AIExpression is now {currentExpression}");
     }
 
     //Utility Methods - Progress / Finish Dialogue---------------------------------------------------------------------------------------------------
