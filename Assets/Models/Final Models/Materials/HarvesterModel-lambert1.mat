@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: HarvesterModel-lambert1
   m_Shader: {fileID: 4800000, guid: 0e58a1a2c193f27458a9f52a6e45a8ce, type: 3}
-  m_ShaderKeywords: _EMISSION _GLOW_ON _TOGGLESWITCH0_ON
+  m_ShaderKeywords: _DAMAGED_ON _EMISSION _GLOW_ON _TOGGLESWITCH0_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -86,6 +86,8 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Damaged: 1
+    - _DanageTimescale: 10
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EdgeWidth: 3
@@ -109,15 +111,16 @@ Material:
     - _SpecularHighlights: 1
     - _Speed: 1
     - _SrcBlend: 1
-    - _Teleport: -2
+    - _Teleport: -20
     - _ToggleSwitch0: 1
     - _UVSec: 0
-    - _Upgraded: 1
+    - _Upgraded: 0
     - _VertOffsetStrength: 0
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _DamageColour: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _Fresnel: {r: 1.06425, g: 0, b: 2, a: 0}
     - _GlowColour: {r: 4, g: 0.56544495, b: 0, a: 0}
