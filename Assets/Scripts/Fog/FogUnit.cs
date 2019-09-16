@@ -46,7 +46,7 @@ public class FogUnit : Entity
     private float startHealth;
     private float targetHealth;
     private bool takingDamage = false;
-    //private float damageLerpProgress = 0;
+    private bool evaporating = false;
 
     private Renderer fogRenderer;
     private GameObject Lightning;
@@ -67,6 +67,7 @@ public class FogUnit : Entity
     public bool ActiveOnTile { get => activeOnTile; set => activeOnTile = value; }
     public bool Angry { get => angry; set => angry = value; }
     public float Damage { get => damage; set => damage = value; }
+    public bool Evaporating { get => evaporating; set => evaporating = value; }
     public bool FillingFromFogSphere {  get => fillingFromFogSphere; set => fillingFromFogSphere = value; }
     public Renderer FogRenderer { get => fogRenderer; set => fogRenderer = value; }
     public bool NeighboursFull { get => neighboursFull; set => neighboursFull = value; }

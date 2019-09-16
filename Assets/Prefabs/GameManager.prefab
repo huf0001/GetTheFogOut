@@ -399,12 +399,13 @@ MonoBehaviour:
     type: 3}
   fogUnitPrefab: {fileID: 2516856455530505698, guid: 81ce07d50c91d3843b2866edb20d15f5,
     type: 3}
+  fogEvaporation: {fileID: 2028136061241728811, guid: 48bd17ea509944d4cb06f7e7564ee1a6,
+    type: 3}
   fogUnitVisibleMaterial: {fileID: 2100000, guid: 976576b6c0c3b694ebc4f1e0c727c264,
     type: 2}
   fogSphereVisibleMaterial: {fileID: 2100000, guid: 0f85bc7ba0a833c41a8cad54d25286fa,
     type: 2}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
-  fogEffect: {fileID: 0}
   angry: 0
   damageOn: 1
   configuration: 5
@@ -456,6 +457,8 @@ MonoBehaviour:
   fogSphereInterval: 0.05
   lightningInPlay: []
   lightningInPool: []
+  evaporationInPlay: []
+  evaporationInPool: []
 --- !u!114 &7305178377255849301
 MonoBehaviour:
   m_ObjectHideFlags: 0
