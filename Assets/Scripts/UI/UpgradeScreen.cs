@@ -26,6 +26,19 @@ public class UpgradeScreen : MonoBehaviour
     [SerializeField] private btn_tower pulseDefenceButton;
     [Header("Upgrade Costs")]
     [SerializeField] private UpgradeCost[] upgradeCosts;
+    [Header("Upgrade Buttons")]
+    [SerializeField] private Button harv1_1;
+    [SerializeField] private Button harv1_2;
+    [SerializeField] private Button harv2_1;
+    [SerializeField] private Button harv2_2;
+    [SerializeField] private Button puls1_1;
+    [SerializeField] private Button puls1_2;
+    [SerializeField] private Button puls2_1;
+    [SerializeField] private Button puls2_2;
+    [SerializeField] private Button mort1_1;
+    [SerializeField] private Button mort1_2;
+    [SerializeField] private Button mort2_1;
+    [SerializeField] private Button mort2_2;
 
     private Image buttonImg, lineImg, otherLineImg;
     private CanvasGroup canvas;
@@ -61,9 +74,11 @@ public class UpgradeScreen : MonoBehaviour
                             {
                                 case 1:
                                     harvesterButton.UniqueStatVal = 2.5f;
+                                    harv1_1.interactable = false;
                                     break;
                                 case 2:
                                     harvesterButton.UniqueStatVal = 3;
+                                    harv1_2.interactable = false;
                                     break;
                             }
                             break;
@@ -72,9 +87,11 @@ public class UpgradeScreen : MonoBehaviour
                             {
                                 case 1:
                                     harvesterButton.PowCostVal = -0.8f;
+                                    harv2_1.interactable = false;
                                     break;
                                 case 2:
                                     harvesterButton.PowCostVal = -0.5f;
+                                    harv2_2.interactable = false;
                                     break;
                             }
                             break;
@@ -90,16 +107,26 @@ public class UpgradeScreen : MonoBehaviour
                     switch (upgrade.pathNum)
                     {
                         case 1:
-                            
+                            switch (upgrade.upgradeNum)
+                            {
+                                case 1:
+                                    mort1_1.interactable = false;
+                                    break;
+                                case 2:
+                                    mort1_2.interactable = false;
+                                    break;
+                            }
                             break;
                         case 2:
                             switch (upgrade.upgradeNum)
                             {
                                 case 1:
                                     mortarButton.PowCostVal = -1.6f;
+                                    mort2_1.interactable = false;
                                     break;
                                 case 2:
                                     mortarButton.PowCostVal = -1;
+                                    mort2_2.interactable = false;
                                     break;
                             }
                             break;
@@ -119,9 +146,11 @@ public class UpgradeScreen : MonoBehaviour
                             {
                                 case 1:
                                     pulseDefenceButton.UniqueStatVal = 3;
+                                    puls1_1.interactable = false;
                                     break;
                                 case 2:
                                     pulseDefenceButton.UniqueStatVal = 4;
+                                    puls1_2.interactable = false;
                                     break;
                             }
                             break;
@@ -130,9 +159,11 @@ public class UpgradeScreen : MonoBehaviour
                             {
                                 case 1:
                                     pulseDefenceButton.PowCostVal = -0.8f;
+                                    puls2_1.interactable = false;
                                     break;
                                 case 2:
                                     pulseDefenceButton.PowCostVal = -0.5f;
+                                    puls2_2.interactable = false;
                                     break;
                             }
                             break;
