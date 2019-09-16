@@ -666,6 +666,15 @@ public class UIController : MonoBehaviour
                 hudObjText.text = "<b>Activate Defences</b>";
                 objWindowText.text = "<size=75%>Activate the defences to clear the fog away. You may like to build more before doing so, however.\n\n";
                 break;
+            case TutorialStage.CollectMineralsForUpgrades:
+                hudObjText.text = "<b>Collect Minerals</b>";
+                objWindowText.text = "<size=75%>Gather enough mineral resources to upgrade your ship.\n\n" +
+                    $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {TutorialController.Instance.MineralsForUpgradesGoal} <size=90%><sprite=\"all_icons\" index=2>";
+                break;
+            case TutorialStage.Upgrades:
+                hudObjText.text = "<b>Upgrades</b>";
+                objWindowText.text = "<size=75%>Learn how to use the upgrades system.\n\n";
+                break;
             case TutorialStage.BuildDefencesInRange:
                 hudObjText.text = "<b>Build Defences In Range</b>";
                 objWindowText.text = "<size=75%>Build defences within striking range of the fog.\n\n";
