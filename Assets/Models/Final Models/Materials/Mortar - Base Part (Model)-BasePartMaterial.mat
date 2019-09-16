@@ -86,10 +86,13 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Damaged: 0
+    - _DanageTimescale: 5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EdgeWidth: 3
     - _EmmisionStrength: 1
+    - _FresnelPower: 0.63
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -109,14 +112,17 @@ Material:
     - _SrcBlend: 1
     - _Teleport: -2
     - _UVSec: 0
+    - _Upgraded: 0
     - _VertOffsetStrength: 0
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DamageColour: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColour: {r: 4, g: 0.56544495, b: 0, a: 0}
     - _NoiseDirection: {r: 0, g: -1, b: 0, a: 0}
     - _OutlineColour: {r: 2, g: 1.686275, b: 0, a: 0}
     - _Tiling: {r: 5, g: 5, b: 0, a: 0}
     - _Tint: {r: 1, g: 1, b: 1, a: 0}
+    - _UpgradeColour: {r: 0, g: 1, b: 0, a: 0}
