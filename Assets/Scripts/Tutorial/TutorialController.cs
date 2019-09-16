@@ -59,7 +59,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private int subStage = 1;
     [SerializeField] private BuildingType currentlyBuilding = BuildingType.None;
     [SerializeField] private ButtonType currentlyLerping;
-    [SerializeField] private TileData currentTile = null;
+    [SerializeField] private TileData targetTile = null;
     [SerializeField] private TileData lastTileChecked;
     [SerializeField] private GameObject objectiveCompletePrefab;
     
@@ -71,10 +71,8 @@ public class TutorialController : DialogueBoxController
 
     [Header("Cameras")]
     [SerializeField] private CameraController cameraController;
-    [SerializeField] private CinemachineVirtualCamera mineralDepositCamera;
     [SerializeField] private CinemachineVirtualCamera sonarCamera;
     [SerializeField] private CinemachineVirtualCamera artilleryCamera;
-    [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     [Header("Game Objects")]
     [SerializeField] private Hub hub;
@@ -177,7 +175,7 @@ public class TutorialController : DialogueBoxController
     public int BuiltGeneratorsGoal { get => builtGeneratorsGoal; }
     public int BuiltHarvestersExtendedGoal { get => builtHarvestersExtendedGoal; }
     public int CollectedMineralsGoal { get => collectedMineralsGoal; }
-    public TileData CurrentTile { get => currentTile; }
+    public TileData TargetTile { get => targetTile; }
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
     public bool DefencesOn { get => defencesOn; }
@@ -210,19 +208,12 @@ public class TutorialController : DialogueBoxController
             musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
         }
 
-        //mineralDepositCamera = GameObject.Find("CM Minerals Camera").GetComponent<CinemachineVirtualCamera>(); ;
-        //sonarCamera = GameObject.Find("CM SonarCamera").GetComponent<CinemachineVirtualCamera>(); ;
-        //artilleryCamera = GameObject.Find("CM Artillery Camera").GetComponent<CinemachineVirtualCamera>(); ;
-        //thrusterCamera = GameObject.Find("CM Thruster Camera").GetComponent<CinemachineVirtualCamera>(); ;
-
         wKey = GameObject.Find("WKey").GetComponent<CameraInput>();
         aKey = GameObject.Find("AKey").GetComponent<CameraInput>();
         sKey = GameObject.Find("SKey").GetComponent<CameraInput>();
         dKey = GameObject.Find("DKey").GetComponent<CameraInput>();
         zoomIn = GameObject.Find("ZoomInInput").GetComponent<CameraInput>();
         zoomOut = GameObject.Find("ZoomOutInput").GetComponent<CameraInput>();
-
-        //abilitySelectorRadialMenu = new RadialMenu();
 
         minHarvesterColour = new Color32(224, 145, 0, 0);
         maxHarvesterColour = new Color32(255, 203, 64, 255);
@@ -239,7 +230,6 @@ public class TutorialController : DialogueBoxController
         minSonarColour = new Color32(255, 255, 255, 255);
         maxSonarColour = new Color32(241, 148, 12, 255);
 
-        //arrowToTargetPrefab = new DamageIndicator();
 
         decalMinLerp = 1.5f;
         decalMaxLerp = 3f;
@@ -412,8 +402,10 @@ public class TutorialController : DialogueBoxController
                 if (dialogueRead)
                 {
                     DismissDialogue();
-                    stage = TutorialStage.CameraControls;
                     ResetSubStage();
+
+                    stage = TutorialStage.CameraControls;
+
                     tutProgressSlider.value++;
                 }
 
@@ -431,8 +423,8 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("move camera", 1);
+                UIController.instance.UpdateObjectiveText(stage);
 
                 if (!objWindowVisible)
                 {
@@ -494,11 +486,12 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
-                stage = TutorialStage.BuildHarvesters;
-                currentlyBuilding = BuildingType.Harvester;
-                ResetSubStage();
-                tutProgressSlider.value++;
                 wKey.transform.parent.gameObject.SetActive(false);
+                ResetSubStage();
+
+                stage = TutorialStage.BuildHarvesters;
+
+                tutProgressSlider.value++;
 
                 break;
             default:
@@ -542,6 +535,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
+                currentlyBuilding = BuildingType.Harvester;
                 SendDialogue("build harvester target", 1);
                 ActivateMouse();
 
@@ -632,6 +626,7 @@ public class TutorialController : DialogueBoxController
                 DeactivateUIColourLerpTarget();
                 Destroy(harvesterHighlight);
                 harvesterHighlight = null;
+
                 SendDialogue("build more harvesters", 1);
                 ActivateMouse();
                 break;
@@ -665,9 +660,12 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 13:
-                stage = TutorialStage.BuildExtender;
-                currentlyBuilding = BuildingType.Extender;
+                currentlyBuilding = BuildingType.None;
+                currentlyLerping = ButtonType.None;
                 ResetSubStage();
+
+                stage = TutorialStage.BuildExtender;
+
                 tutProgressSlider.value++;
                 break;
             default:
@@ -683,6 +681,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
+                currentlyBuilding = BuildingType.Extender;
                 SendDialogue("build extender target", 1);
                 UIController.instance.UpdateObjectiveText(stage);
                 ActivateMouse();
@@ -752,15 +751,17 @@ public class TutorialController : DialogueBoxController
                 break;
             case 7:
                 //Turn off UI element prompting player to build a relay on the prompted tile
-                lerpTargetsRemaining.Remove(extenderLandmark);
-                stage = TutorialStage.BuildHarvestersExtended;
-                currentlyBuilding = BuildingType.Harvester;
+                currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
-                ResetSubStage();
                 DeactivateTarget();
                 DeactivateUIColourLerpTarget();
+                lerpTargetsRemaining.Remove(extenderLandmark);
                 Destroy(extenderHighlight);
                 extenderHighlight = null;
+                ResetSubStage();
+
+                stage = TutorialStage.BuildHarvestersExtended;
+                
                 tutProgressSlider.value++;
                 break;
             default:
@@ -776,6 +777,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
+                currentlyBuilding = BuildingType.Harvester;
                 SendDialogue("build more harvesters extended", 1);
                 UIController.instance.UpdateObjectiveText(stage);
                 ActivateMouse();
@@ -817,10 +819,13 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 5:
-                stage = TutorialStage.WaitingForPowerDrop;
-                currentlyBuilding = BuildingType.Generator;
+                currentlyBuilding = BuildingType.None;
+                currentlyLerping = ButtonType.None;
                 ResetSubStage();
+
+                stage = TutorialStage.WaitingForPowerDrop;
                 UIController.instance.UpdateObjectiveText(stage);
+
                 tutProgressSlider.value++;
                 break;
             default:
@@ -839,8 +844,9 @@ public class TutorialController : DialogueBoxController
                 if (ResourceController.Instance.StoredPower < 75)
                 {
                     stage = TutorialStage.MouseOverPowerDiagram;
-                    UIController.instance.UpdateObjectiveText(stage);
+                    currentlyBuilding = BuildingType.Generator;
                     SendDialogue("explain power", 1);
+                    UIController.instance.UpdateObjectiveText(stage);
                     ActivateUIScalingLerpTarget(batteryIcon, batteryIconMinLerp, Color.clear);
 
                     if (!objWindowVisible)
@@ -870,9 +876,10 @@ public class TutorialController : DialogueBoxController
                 break;
             case 4:
                 DeactivateUIScalingLerpTarget();
+
                 stage = TutorialStage.BuildGenerator;
-                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("build generator target", 1);
+                UIController.instance.UpdateObjectiveText(stage);
                 ActivateMouse();
 
                 if (!objWindowVisible)
@@ -913,8 +920,9 @@ public class TutorialController : DialogueBoxController
                 break;
             case 8:
                 DeactivateTarget();
-                ActivateUIColourLerpTarget(generatorHighlight, minPowerBuildingColour, maxPowerBuildingColour);
+
                 currentlyLerping = ButtonType.Generator;
+                ActivateUIColourLerpTarget(generatorHighlight, minPowerBuildingColour, maxPowerBuildingColour);
                 IncrementSubStage();
                 break;
             case 9:
@@ -955,14 +963,15 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 11:
-                lerpTargetsRemaining.Remove(generatorLandmark);
                 DeactivateUIColourLerpTarget();
+                lerpTargetsRemaining.Remove(generatorLandmark);
                 Destroy(generatorHighlight);
                 generatorHighlight = null;
-                SendDialogue("build more generators", 1);
-                ActivateMouse();
+
                 stage = TutorialStage.BuildMoreGenerators;
+                SendDialogue("build more generators", 1);
                 UIController.instance.UpdateObjectiveText(stage);
+                ActivateMouse();
 
                 if (!objWindowVisible)
                 {
@@ -1000,11 +1009,12 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 16:
-                ObjectiveController.Instance.GeneratorLimit = originalGeneratorLimit;
-                stage = TutorialStage.CollectMinerals;
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
+
+                stage = TutorialStage.CollectMinerals;
+                ObjectiveController.Instance.GeneratorLimit = originalGeneratorLimit;
                 tutProgressSlider.value++;
                 break;
             default:
@@ -1076,9 +1086,12 @@ public class TutorialController : DialogueBoxController
             case 7:
                 break;
             case 8:
-                stage = TutorialStage.CollectSonar;
                 currentlyBuilding = BuildingType.None;
+                currentlyLerping = ButtonType.None;
                 ResetSubStage();
+
+                stage = TutorialStage.CollectSonar;
+
                 tutProgressSlider.value++;
                 break;
             default:
@@ -1095,9 +1108,9 @@ public class TutorialController : DialogueBoxController
         {
             case 1:
                 cameraController.MovementEnabled = false;
-                UIController.instance.UpdateObjectiveText(stage);
                 sonarCamera.gameObject.SetActive(true);
                 SendDialogue("collect sonar", 1);
+                UIController.instance.UpdateObjectiveText(stage);
                 break;
             case 2:
                 if (AbilityController.Instance.AbilityCollected[AbilityEnum.Sonar])
@@ -1148,6 +1161,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 7:
                 DeactivateUIScalingLerpTarget();
+
                 ActivateUIColourLerpTarget(sonarHighlight, minSonarColour, maxSonarColour);
                 IncrementSubStage();
                 break;
@@ -1155,6 +1169,7 @@ public class TutorialController : DialogueBoxController
                 if (abilitySelectorRadialMenu.Radius == 0)
                 {
                     DeactivateUIColourLerpTarget();
+
                     ActivateUIScalingLerpTarget(abilityMenu, abilityMenuMinLerp, abilityMenuColour);
                     GoToSubStage(5);
                 }
@@ -1172,6 +1187,7 @@ public class TutorialController : DialogueBoxController
                 if (abilitySelectorRadialMenu.Radius == 0)
                 {
                     DeactivateUIColourLerpTarget();
+
                     ActivateUIScalingLerpTarget(abilityMenu, abilityMenuMinLerp, abilityMenuColour);
                     GoToSubStage(6);
                 }
@@ -1183,6 +1199,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 10:
                 DeactivateUIColourLerpTarget();
+
                 SendDialogue("activate sonar", 1);
                 break;
             case 11:
@@ -1205,23 +1222,23 @@ public class TutorialController : DialogueBoxController
                 break;
             case 13:
                 cameraController.MovementEnabled = false;
-                //Enable thruster to be clicked and collected for attaching
+                artilleryCamera.gameObject.SetActive(true);
                 thruster.SetActive(true);
 
-                artilleryCamera.gameObject.SetActive(true);
                 stage = TutorialStage.SonarActivated;
                 SendDialogue("explain abilities", 1);
                 break;
             case 14:
                 if (dialogueRead)
                 {
+                    artilleryCamera.gameObject.SetActive(false);
                     lerpTargetsRemaining.Remove(sonarLandmark);
                     DismissDialogue();
-                    artilleryCamera.gameObject.SetActive(false);
-                    cameraController.MovementEnabled = true;
-                    stage = TutorialStage.BuildExtenderInFog;
-                    currentlyBuilding = BuildingType.Extender;
                     ResetSubStage();
+
+                    stage = TutorialStage.BuildExtenderInFog;
+                    cameraController.MovementEnabled = true;
+
                     tutProgressSlider.value++;
                 }
 
@@ -1239,8 +1256,9 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(stage);
+                currentlyBuilding = BuildingType.Extender;
                 SendDialogue("build extender in fog", 1);
+                UIController.instance.UpdateObjectiveText(stage);
                 ActivateMouse();
 
                 if (!objWindowVisible)
@@ -1320,10 +1338,12 @@ public class TutorialController : DialogueBoxController
                 break;
             case 7:
                 lerpTargetsRemaining.Remove(fogExtenderLandmark);
-                stage = TutorialStage.BuildMortar;
-                currentlyBuilding = BuildingType.AirCannon;
+                currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
+
+                stage = TutorialStage.BuildMortar;
+
                 tutProgressSlider.value++;
                 break;
             default:
@@ -1339,8 +1359,9 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(stage);
+                currentlyBuilding = BuildingType.AirCannon;
                 SendDialogue("build mortar", 1);
+                UIController.instance.UpdateObjectiveText(stage);
                 ActivateMouse();
 
                 if (!objWindowVisible)
@@ -1383,8 +1404,9 @@ public class TutorialController : DialogueBoxController
                 break;
             case 5:
                 DeactivateTarget();
-                ActivateUIColourLerpTarget(mortarHighlight, minDefencesColour, maxDefencesColour);
+
                 currentlyLerping = ButtonType.AirCannon;
+                ActivateUIColourLerpTarget(mortarHighlight, minDefencesColour, maxDefencesColour);
                 IncrementSubStage();
                 break;
             case 6:
@@ -1408,14 +1430,17 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
-                lerpTargetsRemaining.Remove(generatorLandmark);
-                stage = TutorialStage.BuildPulseDefence;
-                currentlyBuilding = BuildingType.FogRepeller;
-                ResetSubStage();
+                currentlyBuilding = BuildingType.None;
+                currentlyLerping = ButtonType.None;
                 DeactivateTarget();
+                lerpTargetsRemaining.Remove(generatorLandmark);
                 DeactivateUIColourLerpTarget();
                 Destroy(mortarHighlight);
                 mortarHighlight = null;
+                ResetSubStage();
+
+                stage = TutorialStage.BuildPulseDefence;
+
                 tutProgressSlider.value++;
                 break;
             default:
@@ -1431,8 +1456,9 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                UIController.instance.UpdateObjectiveText(stage);
+                currentlyBuilding = BuildingType.FogRepeller;
                 SendDialogue("build pulse defence", 1);
+                UIController.instance.UpdateObjectiveText(stage);
                 ActivateMouse();
 
                 if (!objWindowVisible)
@@ -1499,20 +1525,24 @@ public class TutorialController : DialogueBoxController
                 break;
             case 5:
                 DeactivateTarget();
-                ActivateUIColourLerpTarget(pulseDefenceHighlight, minDefencesColour, maxDefencesColour);
+
                 currentlyLerping = ButtonType.FogRepeller;
+                ActivateUIColourLerpTarget(pulseDefenceHighlight, minDefencesColour, maxDefencesColour);
                 IncrementSubStage();
                 break;
             case 6:
                 if (Hub.Instance.GetPulseDefences().Count == 1)
                 {
-                    lerpTargetsRemaining.Remove(pulseDefenceLandmark);
-                    stage = TutorialStage.DefenceActivation;
                     currentlyBuilding = BuildingType.None;
-                    ResetSubStage();
+                    currentlyLerping = ButtonType.None;
                     DeactivateUIColourLerpTarget();
+                    lerpTargetsRemaining.Remove(pulseDefenceLandmark);
                     Destroy(pulseDefenceHighlight);
                     pulseDefenceHighlight = null;
+                    ResetSubStage();
+
+                    stage = TutorialStage.DefenceActivation;
+
                     tutProgressSlider.value++;
                 }
                 else if (buildMenuCanvasGroup.alpha == 0)
@@ -1548,8 +1578,8 @@ public class TutorialController : DialogueBoxController
                     UIController.instance.ShowActivateButton();
                 }
 
-                UIController.instance.UpdateObjectiveText(stage);
                 SendDialogue("activate defences", 1);
+                UIController.instance.UpdateObjectiveText(stage);
                 break;
             case 2:
                 if (dialogueRead)
@@ -1590,10 +1620,11 @@ public class TutorialController : DialogueBoxController
             case 7:
                 break;
             case 8:
-                SendDialogue("finished", 1);
-                stage = TutorialStage.Finished;
                 tutProgressSlider.gameObject.SetActive(false);
                 ResetSubStage();
+
+                stage = TutorialStage.Finished;
+                SendDialogue("finished", 1);
                 ObjectiveController.Instance.IncrementStage();
                 musicFMOD.StageTwoMusic();
                 break;
@@ -1830,7 +1861,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else
                 {
-                    return tile == currentTile;
+                    return tile == targetTile;
                 }
 
             case TutorialStage.BuildHarvestersExtended:
@@ -1842,7 +1873,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else
                 {
-                    return tile == currentTile;
+                    return tile == targetTile;
                 }
             case TutorialStage.BuildMoreGenerators:
                 return tile.Resource == null && !tile.FogUnitActive;
@@ -1880,7 +1911,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else
                 {
-                    return tile == currentTile;
+                    return tile == targetTile;
                 }
             case TutorialStage.CollectMinerals:
             case TutorialStage.DefenceActivation:
@@ -1900,7 +1931,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.Finished:
                 return true;
             default:
-                return tile == currentTile;
+                return tile == targetTile;
         }
     }
 
@@ -2062,12 +2093,12 @@ public class TutorialController : DialogueBoxController
     {
         GetLocationOf(l);
 
-        if (currentTile.Building != null && stage != TutorialStage.BuildHarvesters && stage != TutorialStage.BuildExtenderInFog)
+        if (targetTile.Building != null && stage != TutorialStage.BuildHarvesters && stage != TutorialStage.BuildExtenderInFog)
         {
             l = GetBackupTarget(l);
         }
 
-        buildingTarget.Location = currentTile;
+        buildingTarget.Location = targetTile;
         buildingTarget.transform.position = l.transform.position;
         targetRenderer.enabled = true;
 
@@ -2084,14 +2115,14 @@ public class TutorialController : DialogueBoxController
     {
         if (l != null)
         {
-            currentTile = l.Location;
+            targetTile = l.Location;
         }
         else
         {
             Debug.Log("Locatable l in TutorialController.GetLocationOf(Locatable l) is null");
         }
 
-        if (currentTile == null)
+        if (targetTile == null)
         {
             Debug.Log("TutorialController.CurrentTile is null");
         }
@@ -2108,7 +2139,7 @@ public class TutorialController : DialogueBoxController
             invalidTiles.Add(t.Location);
         }
 
-        foreach (TileData t in currentTile.AllAdjacentTiles)
+        foreach (TileData t in targetTile.AllAdjacentTiles)
         {
             if (!invalidTiles.Contains(t) && t.Building == null && t.Resource == null && t.PowerSource != null && !t.FogUnitActive && !t.buildingChecks.obstacle)
             {
@@ -2128,8 +2159,8 @@ public class TutorialController : DialogueBoxController
                     }
                     else
                     {
-                        float dist = Vector3.Distance(currentTile.Position, t.Position);
-                        float bestDist = Vector3.Distance(currentTile.Position, alternatives[0].Position);
+                        float dist = Vector3.Distance(targetTile.Position, t.Position);
+                        float bestDist = Vector3.Distance(targetTile.Position, alternatives[0].Position);
 
                         if (dist < bestDist)
                         {
@@ -2147,9 +2178,9 @@ public class TutorialController : DialogueBoxController
 
         if (alternatives.Count > 0)
         {
-            currentTile = alternatives[UnityEngine.Random.Range(0, alternatives.Count)];
-            l.Location = currentTile;
-            l.transform.position = currentTile.Position;
+            targetTile = alternatives[UnityEngine.Random.Range(0, alternatives.Count)];
+            l.Location = targetTile;
+            l.transform.position = targetTile.Position;
         }
 
         return l;
@@ -2191,7 +2222,7 @@ public class TutorialController : DialogueBoxController
     //Check if the building currently being built at a specific location has been built
     private bool BuiltCurrentlyBuilding()
     {
-        return currentTile != null && currentTile.Building != null && currentTile.Building.BuildingType == currentlyBuilding;
+        return targetTile != null && targetTile.Building != null && targetTile.Building.BuildingType == currentlyBuilding;
     }
 
     //Deactivates the building target
