@@ -124,6 +124,7 @@ public class DialogueBox : MonoBehaviour
     //Public Properties
     public bool Activated { get => activated; }
     public string CurrentDialogueSet { get => currentDialogueKey; }
+    public int DialogueIndex { get => dialogueIndex; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 

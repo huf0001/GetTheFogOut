@@ -843,11 +843,8 @@ public class TutorialController : DialogueBoxController
             case 1:
                 if (ResourceController.Instance.StoredPower < 75)
                 {
-                    stage = TutorialStage.MouseOverPowerDiagram;
                     currentlyBuilding = BuildingType.Generator;
                     SendDialogue("explain power", 1);
-                    UIController.instance.UpdateObjectiveText(stage);
-                    ActivateUIScalingLerpTarget(batteryIcon, batteryIconMinLerp, Color.clear);
 
                     if (!objWindowVisible)
                     {
@@ -857,24 +854,38 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 2:
+                if (aiText.DialogueIndex == 4)
+                {
+                    //DismissDialogue();
+                    IncrementSubStage();
+                }
+                break;
+            case 3:
+                stage = TutorialStage.MouseOverPowerDiagram;
+                //SendDialogue("mouse over power", 0);  //If switching back, remove IncrementSubstage() call
+                UIController.instance.UpdateObjectiveText(stage);
+                ActivateUIScalingLerpTarget(batteryIcon, batteryIconMinLerp, Color.clear);
+                IncrementSubStage();
+                break;
+            case 4:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (powerDiagram.fillAmount == 1)
                 {
-                    GoToSubStage(4);
+                    GoToSubStage(6);
                 }
 
                 break;
-            case 3:
+            case 5:
                 if (powerDiagram.fillAmount == 1)
                 {
                     IncrementSubStage();
                 }
 
                 break;
-            case 4:
+            case 6:
                 DeactivateUIScalingLerpTarget();
 
                 stage = TutorialStage.BuildGenerator;
@@ -888,7 +899,7 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 5:
+            case 7:
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -896,48 +907,48 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (tileClicked)       //If the player ignores the dialogue
                 {
-                    GoToSubStage(8);
+                    GoToSubStage(10);
                 }
 
                 break;
-            case 6:
+            case 8:
                 if (dialogueRead)           //If the player opens and closes the build menu; they may not have read the dialogue
                 {
                     DismissDialogue();
                 }
                 else if (tileClicked)
                 {
-                    GoToSubStage(8);
+                    GoToSubStage(10);
                 }
 
                 break;
-            case 7:
+            case 9:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 8:
+            case 10:
                 DeactivateTarget();
 
                 currentlyLerping = ButtonType.Generator;
                 ActivateUIColourLerpTarget(generatorHighlight, minPowerBuildingColour, maxPowerBuildingColour);
                 IncrementSubStage();
                 break;
-            case 9:
+            case 11:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (ResourceController.Instance.Generators.Count == 1)
                 {
-                    GoToSubStage(11);
+                    GoToSubStage(13);
                 }
                 else if (buildMenuCanvasGroup.alpha == 0)
                 {
                     DeactivateUIColourLerpTarget();
-                    GoToSubStage(6);
+                    GoToSubStage(8);
 
                     if (generatorLandmark.Location != lastTileChecked)
                     {
@@ -949,7 +960,7 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 10:
+            case 12:
                 if (ResourceController.Instance.Generators.Count == 1)
                 {
                     IncrementSubStage();
@@ -957,12 +968,12 @@ public class TutorialController : DialogueBoxController
                 else if (buildMenuCanvasGroup.alpha == 0)
                 {
                     DeactivateUIColourLerpTarget();
-                    GoToSubStage(6);
+                    GoToSubStage(8);
                     ActivateTarget(generatorLandmark);
                 }
 
                 break;
-            case 11:
+            case 13:
                 DeactivateUIColourLerpTarget();
                 lerpTargetsRemaining.Remove(generatorLandmark);
                 Destroy(generatorHighlight);
@@ -979,36 +990,36 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case 12:
+            case 14:
                 if (dialogueRead)
                 {
                     DismissDialogue();
                 }
                 else if (tileClicked)
                 {
-                    GoToSubStage(14);
+                    GoToSubStage(16);
                 }
 
                 break;
-            case 13:
+            case 15:
                 if (tileClicked)
                 {
                     DismissMouse();
                 }
 
                 break;
-            case 14:
+            case 16:
                 currentlyLerping = ButtonType.Generator;
                 IncrementSubStage();
                 break;
-            case 15:
+            case 17:
                 if (ResourceController.Instance.Generators.Count == builtGeneratorsGoal)
                 {
                     IncrementSubStage();
                 }
 
                 break;
-            case 16:
+            case 18:
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
@@ -1867,7 +1878,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildHarvestersExtended:
                 return !tile.FogUnitActive;
             case TutorialStage.BuildGenerator:
-                if (subStage == 5)
+                if (subStage == 7)
                 {
                     return tile.Resource == null && !tile.FogUnitActive;
                 }
