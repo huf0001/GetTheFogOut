@@ -54,12 +54,12 @@ public class Fog : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private FogSphere fogSpherePrefab;
     [SerializeField] private FogUnit fogUnitPrefab;
+    [SerializeField] private ParticleSystem fogEvaporation; 
 
     [Header("Materials")]
     [SerializeField] private Material fogUnitVisibleMaterial;
     [SerializeField] private Material fogSphereVisibleMaterial;
     [SerializeField] private Material invisibleMaterial;
-    [SerializeField] private Material fogEffect;
 
     [Header("General Settings")]
     [SerializeField] private bool angry;
@@ -140,6 +140,9 @@ public class Fog : MonoBehaviour
 
     public List<FogLightning> lightningInPlay = new List<FogLightning>();       //i.e. currently active lightning effects
     public List<FogLightning> lightningInPool = new List<FogLightning>();       //i.e. currently inactive lightning effects in pool
+
+    public List<ParticleSystem> evaporationInPlay = new List<ParticleSystem>(); //i.e. currently active fog evaporation effects
+    public List<ParticleSystem> evaporationInPool = new List<ParticleSystem>(); //i.e. currently inactive fog evaporation effects
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -388,13 +391,16 @@ public class Fog : MonoBehaviour
                 break;
         }
 
-        //Populate fog sphere pool with fog spheres
-        if (fogSpheresInPool.Count == 0)
+        //Populate fog evaporation pool with evaporation particle effects
+        while (evaporationInPool.Count < 30)
         {
-            for (int i = 0; i < maxFogSpheresCount * 2; i++)
-            {
-                fogSpheresInPool.Add(CreateFogSphere());
-            }
+            evaporationInPool.Add(CreateFogEvaporation());
+        }
+
+        //Populate fog sphere pool with fog spheres
+        while (fogSpheresInPool.Count < maxFogSpheresCount * 2)
+        {
+            fogSpheresInPool.Add(CreateFogSphere());
         }
     }
 
@@ -475,6 +481,34 @@ public class Fog : MonoBehaviour
         {
             Debug.Log($"Error: Cannot spawn Fog.fogUnits[{t.X}, {t.Z}]; it is already in play.");
         }
+    }
+
+    //Spawning Methods - Angry Fog Evaporation Effect------------------------------------------------------------------------------------------------
+
+    //Instantiates and returns a new fog evaporation particle effect
+    private ParticleSystem CreateFogEvaporation()
+    {
+        return Instantiate(fogEvaporation, transform, true);
+    }
+
+    //Gets a pooled fog evaporation particle effect if there is one, and creates a new one if there isn't.
+    private ParticleSystem GetFogEvaporation(Vector3 position)
+    {
+        ParticleSystem e;
+
+        if (evaporationInPool.Count > 0)
+        {
+            e = evaporationInPool[0];
+            evaporationInPool.Remove(e);           
+        }
+        else
+        {
+            e = CreateFogEvaporation();
+        }
+
+        evaporationInPlay.Add(e);
+        e.transform.position = position;
+        return e;
     }
 
     //Spawning Methods - Fog Spheres-----------------------------------------------------------------------------------------------------------------
@@ -618,11 +652,12 @@ public class Fog : MonoBehaviour
     IEnumerator UpdateDamageToFogUnits(float delay)
     {
         yield return new WaitForSeconds(delay);
+        List<FogUnit> toRender = new List<FogUnit>();
+        List<ParticleSystem> evaporationToPool = new List<ParticleSystem>();
 
         while (fogUnitsInPlay.Count > 0)
         {
-            List<FogUnit> toRender = new List<FogUnit>();
-
+            //Check for fog units taking damage
             foreach (FogUnit f in fogUnitsInPlay)
             {
                 if (f.TakingDamage)
@@ -638,6 +673,7 @@ public class Fog : MonoBehaviour
                 }
             }
 
+            //Don't render those that are dead
             if (fogUnitsToReturnToPool.Count > 0)
             {
                 foreach (FogUnit f in fogUnitsToReturnToPool)
@@ -649,15 +685,42 @@ public class Fog : MonoBehaviour
                 fogUnitsToReturnToPool.Clear();
             }
 
+            //Render those that aren't dead
             foreach (FogUnit f in toRender)
             {
                 f.RenderOpacity();
+
+                if (!f.Evaporating)
+                {
+                    f.Evaporating = true;
+                    ParticleSystem e = GetFogEvaporation(f.transform.position);
+                    e.transform.position = f.transform.position;
+                    e.Play();
+                }
             }
 
-            if (fogUnitsInPlay.Count == 0)
+            toRender.Clear();
+
+            //Check for evaporations that are done
+            foreach (ParticleSystem e in evaporationInPlay)
             {
-                ObjectiveController.Instance.FogDestroyed();
-                CancelInvoke();
+                if (!e.isPlaying)
+                {
+                    evaporationToPool.Add(e);
+                }
+            }
+
+            //Pool those that are
+            if (evaporationToPool.Count > 0)
+            {
+                foreach (ParticleSystem e in evaporationToPool)
+                {
+                    WorldController.Instance.GetTileAt(e.transform.position).FogUnit.Evaporating = false;
+                    evaporationInPlay.Remove(e);
+                    evaporationInPool.Add(e);
+                }
+
+                evaporationToPool.Clear();
             }
 
             yield return new WaitForSeconds(fogDamageInterval);
@@ -950,18 +1013,20 @@ public class Fog : MonoBehaviour
             f.GetComponent<Renderer>().material.SetFloat("_FPS", 0f);
         }
 
-        Invoke(nameof(UnFreezeFog), duration);
+        StartCoroutine(UnFreezeFog(duration));
     }
 
     //Handles timing out of the fog freeze
-    private void UnFreezeFog()
+    IEnumerator UnFreezeFog(float delay)
     {
-        fogFrozen = false;
+        yield return new WaitForSeconds(delay);
 
         foreach (FogUnit f in fogUnitsInPlay)
         {
             f.FogRenderer.material.SetFloat("_FPS", 16f);
         }
+
+        fogFrozen = false;
     }
 
     //Fog Lightning Methods--------------------------------------------------------------------------------------------------------------------------
