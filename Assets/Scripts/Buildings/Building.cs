@@ -68,7 +68,7 @@ public abstract class Building : Entity
 
     public int OverclockValue
     {
-        get { return IsOverclockOn ? 3 : 1; }
+        get { return isOverclockOn ? 3 : 1; }
     }
 
     public virtual bool IsOverclockOn
@@ -262,6 +262,7 @@ public abstract class Building : Entity
             {
                 TakingDamage = false;
                 damagingNotified = false;
+                rend.material.SetInt("_Damaged", 0);
                 if (damIndScript) damIndScript.On = false;
             }
             buildHealth = Health;
@@ -270,14 +271,14 @@ public abstract class Building : Entity
 
     public virtual void Place()
     {
-//        if (buildingType != BuildingType.Hub)
-//        {
-//            if (powerSource == null)
-//            {
-//                SetPowerSource();
-//            }
-//        }
-        
+        //        if (buildingType != BuildingType.Hub)
+        //        {
+        //            if (powerSource == null)
+        //            {
+        //                SetPowerSource();
+        //            }
+        //        }
+
         CreateWire();
         ResourceController.Instance.AddBuilding(this);
         gameObject.layer = LayerMask.NameToLayer("Buildings");
@@ -287,7 +288,7 @@ public abstract class Building : Entity
     public void SetPowerSource()
     {
         powerSource = location.GetClosestPowerSource(this.transform);
-        
+
         if (powerSource != null)
         {
             powerSource.PlugIn(this);
@@ -339,7 +340,7 @@ public abstract class Building : Entity
         {
             return;
         }
-        
+
         // Create wires between buildings
         wire = GetComponentInChildren<Wires>();
         if (wire)
@@ -351,16 +352,16 @@ public abstract class Building : Entity
                     if (location.PowerSource.AreYouConnectedToHub() || location.PowerSource == WorldController.Instance.Hub)
                     {
                         Wires targetWire = location.PowerSource.GetComponentInChildren<Wires>();
-                        
+
                         location.PowerSource.PlugIn(this);
                         powerSource = location.PowerSource;
-                        
+
                         if (targetWire)
                         {
                             wire.next = targetWire.gameObject;
                             wire.CreateWire();
                         }
-                        
+
                     }
                 }
                 else
@@ -387,7 +388,7 @@ public abstract class Building : Entity
                         Destroy(wire.transform.GetChild(i).gameObject);
                     }
                 }
-                
+
                 powerSource.Unplug(this);
                 powerSource = null;
             }
@@ -484,20 +485,20 @@ public abstract class Building : Entity
             wire.isEffectOn = false;
             DestroyWires();
         }
-        
+
         if (buildingType == BuildingType.Hub)
         {
             WorldController.Instance.HubDestroyed = true;
         }
 
-//        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Extender)
-//        {
-//            PowerSource p = this as PowerSource;
-//            p.DismantlePowerSource();
-//        }
+        //        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Extender)
+        //        {
+        //            PowerSource p = this as PowerSource;
+        //            p.DismantlePowerSource();
+        //        }
 
         ShutdownBuilding();
-        
+
         if (Location != null)
         {
             //Debug.Log("Removing from tile");
@@ -515,7 +516,7 @@ public abstract class Building : Entity
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_3", GetComponent<Transform>().position);
         }
         ResourceController.Instance.RemoveBuilding(this);
-        
+
         if (this.transform.parent != null)
         {
             Destroy(this.transform.parent.gameObject);
@@ -570,13 +571,14 @@ public abstract class Building : Entity
                 {
                     damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
                     damIndScript = damInd.GetComponent<DamageIndicator>();
-
-                    //RectTransform rect = damInd.GetComponent<RectTransform>();
+                    damIndScript.Locatable = this;
+                    damIndScript.On = true;
                 }
                 else damIndScript.On = true;
-                damIndScript.Locatable = this;
+
+                rend.material.SetInt("_Damaged", 1);
             }
-            
+
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", transform.position);
             damagingNotified = true;
         }
