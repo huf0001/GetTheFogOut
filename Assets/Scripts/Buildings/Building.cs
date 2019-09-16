@@ -231,7 +231,7 @@ public abstract class Building : Entity
             healthBarCanvas.gameObject.SetActive(true);
         }
 
-        healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
+        //healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
         if (buildingType != BuildingType.Hub)
         {
             healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
