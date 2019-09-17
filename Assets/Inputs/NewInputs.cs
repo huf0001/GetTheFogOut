@@ -88,6 +88,14 @@ public class NewInputs : IInputActionCollection
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Ability"",
+                    ""type"": ""Button"",
+                    ""id"": ""0dc2b82f-6eb6-47ae-b292-2f9e3a625130"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -310,6 +318,17 @@ public class NewInputs : IInputActionCollection
                     ""action"": ""Cancel Building Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""934767c3-322f-49ca-ac31-3f6736a2bb89"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Ability"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -352,6 +371,7 @@ public class NewInputs : IInputActionCollection
         m_InputMap_OpenCloseObjectiveWindow = m_InputMap.GetAction("Open/Close Objective Window");
         m_InputMap_CameraCenter = m_InputMap.GetAction("Camera Center");
         m_InputMap_CancelBuildingMenu = m_InputMap.GetAction("Cancel Building Menu");
+        m_InputMap_Ability = m_InputMap.GetAction("Ability");
     }
 
     ~NewInputs()
@@ -410,6 +430,7 @@ public class NewInputs : IInputActionCollection
     private readonly InputAction m_InputMap_OpenCloseObjectiveWindow;
     private readonly InputAction m_InputMap_CameraCenter;
     private readonly InputAction m_InputMap_CancelBuildingMenu;
+    private readonly InputAction m_InputMap_Ability;
     public struct InputMapActions
     {
         private NewInputs m_Wrapper;
@@ -423,6 +444,7 @@ public class NewInputs : IInputActionCollection
         public InputAction @OpenCloseObjectiveWindow => m_Wrapper.m_InputMap_OpenCloseObjectiveWindow;
         public InputAction @CameraCenter => m_Wrapper.m_InputMap_CameraCenter;
         public InputAction @CancelBuildingMenu => m_Wrapper.m_InputMap_CancelBuildingMenu;
+        public InputAction @Ability => m_Wrapper.m_InputMap_Ability;
         public InputActionMap Get() { return m_Wrapper.m_InputMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -459,6 +481,9 @@ public class NewInputs : IInputActionCollection
                 CancelBuildingMenu.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCancelBuildingMenu;
                 CancelBuildingMenu.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCancelBuildingMenu;
                 CancelBuildingMenu.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnCancelBuildingMenu;
+                Ability.started -= m_Wrapper.m_InputMapActionsCallbackInterface.OnAbility;
+                Ability.performed -= m_Wrapper.m_InputMapActionsCallbackInterface.OnAbility;
+                Ability.canceled -= m_Wrapper.m_InputMapActionsCallbackInterface.OnAbility;
             }
             m_Wrapper.m_InputMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -490,6 +515,9 @@ public class NewInputs : IInputActionCollection
                 CancelBuildingMenu.started += instance.OnCancelBuildingMenu;
                 CancelBuildingMenu.performed += instance.OnCancelBuildingMenu;
                 CancelBuildingMenu.canceled += instance.OnCancelBuildingMenu;
+                Ability.started += instance.OnAbility;
+                Ability.performed += instance.OnAbility;
+                Ability.canceled += instance.OnAbility;
             }
         }
     }
@@ -523,5 +551,6 @@ public class NewInputs : IInputActionCollection
         void OnOpenCloseObjectiveWindow(InputAction.CallbackContext context);
         void OnCameraCenter(InputAction.CallbackContext context);
         void OnCancelBuildingMenu(InputAction.CallbackContext context);
+        void OnAbility(InputAction.CallbackContext context);
     }
 }
