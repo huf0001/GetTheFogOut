@@ -50,14 +50,14 @@ public class AbilityMenu : MonoBehaviour
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Move", GetComponent<Transform>().position);
         toggleButton.interactable = false;
+        Visible = true;
+        buttons.alpha = 1;
         DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).SetEase(Ease.OutBack).
             OnComplete(delegate
             {
                 buttons.interactable = true;
                 buttons.blocksRaycasts = true;
                 toggleButton.interactable = true;
-                Visible = true;
-                buttons.alpha = 1;
             });
     }
 
@@ -71,12 +71,12 @@ public class AbilityMenu : MonoBehaviour
         toggleButton.interactable = false;
         buttons.interactable = false;
         buttons.blocksRaycasts = false;
+        Visible = false;
         DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, 0, 0.3f).SetEase(Ease.InBack).
             OnComplete(delegate
             {
                 buttons.alpha = 0;
                 toggleButton.interactable = true;
-                Visible = false;
             });
         if (AbilityController.Instance.AbilityDescGO.activeSelf)
         {

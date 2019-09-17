@@ -20,8 +20,10 @@ public abstract class Building : Entity
     [SerializeField] protected BuildingType buildingType;
     [SerializeField] protected int mineralCost, powerCost;
     [SerializeField] protected RectTransform healthBarCanvas;
+    [SerializeField, FormerlySerializedAs("healthBarImage")] protected Image healthBarMask;
     [SerializeField] protected Image healthBarImage;
-    [SerializeField] protected Gradient healthGradient;
+    [SerializeField, GradientUsage(true)] protected Gradient healthGradient;
+    [SerializeField, ColorUsage(true, true)] protected Color redHDR;
     [SerializeField, FormerlySerializedAs("shieldBarCanvas")] protected RectTransform shieldBarTransform;
     [SerializeField] protected Image shieldBarImage;
     [SerializeField] protected GameObject damageIndicatorPrefab;
@@ -231,16 +233,23 @@ public abstract class Building : Entity
             healthBarCanvas.gameObject.SetActive(true);
         }
 
-        //healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
+        if (health > halfHealth)
+        {
+            DOTween.Kill(healthBarImage);
+            healthBarImage.color = healthGradient.Evaluate(healthBarMask.fillAmount);
+        }
+        else if (!DOTween.IsTweening(healthBarImage)) healthBarImage.DOColor(redHDR, 0.5f).SetLoops(-1, LoopType.Yoyo);
+
+
         if (buildingType != BuildingType.Hub)
         {
-            healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
+            healthBarMask.fillAmount = health / maxHealth * 0.75f;
             healthBarCanvas.LookAt(new Vector3(cam.transform.position.x, 0, cam.transform.position.z));
             healthBarCanvas.Rotate(0, 135, 0);
         }
         else
         {
-            healthBarImage.fillAmount = Health / MaxHealth;
+            healthBarMask.fillAmount = health / maxHealth;
             healthBarCanvas.LookAt(cam.transform);
         }
     }
@@ -389,7 +398,7 @@ public abstract class Building : Entity
                     }
                 }
 
-                powerSource.Unplug(this);
+                powerSource?.Unplug(this);
                 powerSource = null;
             }
             wire.sequence.Kill();
@@ -477,6 +486,7 @@ public abstract class Building : Entity
     {
         Debug.Log("Dismantling " + this.name);
         if (damInd) Destroy(damInd.gameObject);
+        DOTween.Kill(healthBarImage);
 
         // Kill Cable Effect tween
         if (wire)
