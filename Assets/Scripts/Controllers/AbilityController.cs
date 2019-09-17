@@ -30,6 +30,7 @@ public class AbilityController : MonoBehaviour
     private Camera cam;
 
     [SerializeField] private GameObject rangeIndicatorGO;
+    [SerializeField] public GameObject AbilityDescGO;
 
     // Public Properties -----------------------------------------------------------------------------------------------
     public Button[] abilityButtons;
@@ -202,6 +203,10 @@ public class AbilityController : MonoBehaviour
 
     private void ProcessInput()
     {
+        if (WorldController.Instance.Inputs.InputMap.Ability.triggered)
+        {
+            AbilityMenu.Instance.ToggleMenu();
+        }
         if (IsAbilitySelected)
         {
             // Use ability
