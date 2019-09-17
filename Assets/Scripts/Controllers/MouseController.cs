@@ -181,6 +181,10 @@ public class MouseController : MonoBehaviour
         if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
         {
             UpdateHoveredTile(false);
+            if (WorldController.Instance.Inputs.InputMap.CancelBuildingMenu.triggered)
+            {
+                UIController.instance.buildingSelector.ToggleVisibility();
+            }
         }
         else
         {

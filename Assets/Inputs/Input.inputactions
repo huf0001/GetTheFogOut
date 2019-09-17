@@ -70,13 +70,21 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Ability",
+                    "name": "Cancel Building Menu",
                     "type": "Button",
-                    "id": "0dc2b82f-6eb6-47ae-b292-2f9e3a625130",
+                    "id": "b06e3702-9607-4bd2-ba89-81b2d6069b0e",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
-                }
+                },
+				{
+					"name": "Ability",
+                    "type": "Button",
+                    "id": "0dc2b82f-6eb6-47ae-b292-2f9e3a625130",
+					"expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+				{
             ],
             "bindings": [
                 {
@@ -290,15 +298,26 @@
                 },
                 {
                     "name": "",
-                    "id": "934767c3-322f-49ca-ac31-3f6736a2bb89",
+                    "id": "256b6463-ade7-4568-90bc-43bf3910fd85",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "Cancel Building Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+				{
+					"name": "",
+					"id": "934767c3-322f-49ca-ac31-3f6736a2bb89",
                     "path": "<Keyboard>/e",
                     "interactions": "Press",
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "Ability",
-                    "isComposite": false,
+					"isComposite": false,
                     "isPartOfComposite": false
-                }
+				}
             ]
         }
     ],
