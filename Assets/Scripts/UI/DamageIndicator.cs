@@ -12,11 +12,13 @@ public class DamageIndicator : MonoBehaviour
     [SerializeField] private float rightEdgeBuffer = 300;
     [SerializeField] private float topEdgeBuffer = 300;
     [SerializeField] private float bottomEdgeBuffer = 300;
+    [SerializeField] private TextMeshProUGUI exclamationMark;
+    [SerializeField] private Image silhouette;
+    [SerializeField] private Sprite[] silhouettes;
 
     private RectTransform rectTransform;
     private Rect screen;
     private CanvasGroup icon;
-    private TextMeshProUGUI exclamationMark;
     private bool on = true;
     private Transform camTarget;
     private Camera cam;
@@ -31,6 +33,11 @@ public class DamageIndicator : MonoBehaviour
             if (!value)
             {
                 icon.alpha = 0;
+                CancelInvoke(nameof(ChangeSprite));
+            }
+            else if (Locatable as Building)
+            {
+                InvokeRepeating(nameof(ChangeSprite), 0.5f, 0.5f);
             }
         }
     }
@@ -40,7 +47,6 @@ public class DamageIndicator : MonoBehaviour
         set
         {
             GetComponent<Image>().color = value;
-            exclamationMark = GetComponentInChildren<TextMeshProUGUI>();
             exclamationMark.color = value;
         }
     }
@@ -50,8 +56,29 @@ public class DamageIndicator : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         screen = new Rect(0, 0, Screen.width, Screen.height);
         icon = GetComponent<CanvasGroup>();
-        if (!exclamationMark) exclamationMark = GetComponentInChildren<TextMeshProUGUI>();
         cam = Camera.main;
+
+        Building build = Locatable as Building;
+        switch (build?.BuildingType)
+        {
+            case BuildingType.AirCannon:
+                silhouette.sprite = silhouettes[2];
+                break;
+            case BuildingType.Extender:
+                silhouette.sprite = silhouettes[4];
+                break;
+            case BuildingType.FogRepeller:
+                silhouette.sprite = silhouettes[3];
+                break;
+            case BuildingType.Generator:
+                silhouette.sprite = silhouettes[0];
+                break;
+            case BuildingType.Harvester:
+                silhouette.sprite = silhouettes[1];
+                break;
+            default:
+                break;
+        }
     }
 
     private void Update()
@@ -103,5 +130,20 @@ public class DamageIndicator : MonoBehaviour
         float rotZ = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         rectTransform.rotation = Quaternion.AngleAxis(rotZ + 180, Vector3.forward);
         exclamationMark.rectTransform.rotation = Quaternion.identity;
+        silhouette.rectTransform.rotation = Quaternion.identity;
+    }
+
+    private void ChangeSprite()
+    {
+        if (silhouette.enabled)
+        {
+            silhouette.enabled = false;
+            exclamationMark.enabled = true;
+        }
+        else
+        {
+            silhouette.enabled = true;
+            exclamationMark.enabled = false;
+        }
     }
 }

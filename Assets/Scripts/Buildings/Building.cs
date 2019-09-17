@@ -20,8 +20,10 @@ public abstract class Building : Entity
     [SerializeField] protected BuildingType buildingType;
     [SerializeField] protected int mineralCost, powerCost;
     [SerializeField] protected RectTransform healthBarCanvas;
+    [SerializeField, FormerlySerializedAs("healthBarImage")] protected Image healthBarMask;
     [SerializeField] protected Image healthBarImage;
-    [SerializeField] protected Gradient healthGradient;
+    [SerializeField, GradientUsage(true)] protected Gradient healthGradient;
+    [SerializeField, ColorUsage(true, true)] protected Color redHDR;
     [SerializeField, FormerlySerializedAs("shieldBarCanvas")] protected RectTransform shieldBarTransform;
     [SerializeField] protected Image shieldBarImage;
     [SerializeField] protected GameObject damageIndicatorPrefab;
@@ -68,7 +70,7 @@ public abstract class Building : Entity
 
     public int OverclockValue
     {
-        get { return IsOverclockOn ? 3 : 1; }
+        get { return isOverclockOn ? 3 : 1; }
     }
 
     public virtual bool IsOverclockOn
@@ -231,16 +233,23 @@ public abstract class Building : Entity
             healthBarCanvas.gameObject.SetActive(true);
         }
 
-        healthBarImage.color = healthGradient.Evaluate(healthBarImage.fillAmount);
+        if (health > halfHealth)
+        {
+            DOTween.Kill(healthBarImage);
+            healthBarImage.color = healthGradient.Evaluate(healthBarMask.fillAmount);
+        }
+        else if (!DOTween.IsTweening(healthBarImage)) healthBarImage.DOColor(redHDR, 0.5f).SetLoops(-1, LoopType.Yoyo);
+
+
         if (buildingType != BuildingType.Hub)
         {
-            healthBarImage.fillAmount = (Health / MaxHealth) * 0.75f;
+            healthBarMask.fillAmount = health / maxHealth * 0.75f;
             healthBarCanvas.LookAt(new Vector3(cam.transform.position.x, 0, cam.transform.position.z));
             healthBarCanvas.Rotate(0, 135, 0);
         }
         else
         {
-            healthBarImage.fillAmount = Health / MaxHealth;
+            healthBarMask.fillAmount = health / maxHealth;
             healthBarCanvas.LookAt(cam.transform);
         }
     }
@@ -262,6 +271,7 @@ public abstract class Building : Entity
             {
                 TakingDamage = false;
                 damagingNotified = false;
+                rend.material.SetInt("_Damaged", 0);
                 if (damIndScript) damIndScript.On = false;
             }
             buildHealth = Health;
@@ -270,14 +280,14 @@ public abstract class Building : Entity
 
     public virtual void Place()
     {
-//        if (buildingType != BuildingType.Hub)
-//        {
-//            if (powerSource == null)
-//            {
-//                SetPowerSource();
-//            }
-//        }
-        
+        //        if (buildingType != BuildingType.Hub)
+        //        {
+        //            if (powerSource == null)
+        //            {
+        //                SetPowerSource();
+        //            }
+        //        }
+
         CreateWire();
         ResourceController.Instance.AddBuilding(this);
         gameObject.layer = LayerMask.NameToLayer("Buildings");
@@ -287,7 +297,7 @@ public abstract class Building : Entity
     public void SetPowerSource()
     {
         powerSource = location.GetClosestPowerSource(this.transform);
-        
+
         if (powerSource != null)
         {
             powerSource.PlugIn(this);
@@ -339,7 +349,7 @@ public abstract class Building : Entity
         {
             return;
         }
-        
+
         // Create wires between buildings
         wire = GetComponentInChildren<Wires>();
         if (wire)
@@ -351,16 +361,16 @@ public abstract class Building : Entity
                     if (location.PowerSource.AreYouConnectedToHub() || location.PowerSource == WorldController.Instance.Hub)
                     {
                         Wires targetWire = location.PowerSource.GetComponentInChildren<Wires>();
-                        
+
                         location.PowerSource.PlugIn(this);
                         powerSource = location.PowerSource;
-                        
+
                         if (targetWire)
                         {
                             wire.next = targetWire.gameObject;
                             wire.CreateWire();
                         }
-                        
+
                     }
                 }
                 else
@@ -387,8 +397,8 @@ public abstract class Building : Entity
                         Destroy(wire.transform.GetChild(i).gameObject);
                     }
                 }
-                
-                powerSource.Unplug(this);
+
+                powerSource?.Unplug(this);
                 powerSource = null;
             }
             wire.sequence.Kill();
@@ -476,6 +486,7 @@ public abstract class Building : Entity
     {
         Debug.Log("Dismantling " + this.name);
         if (damInd) Destroy(damInd.gameObject);
+        DOTween.Kill(healthBarImage);
 
         // Kill Cable Effect tween
         if (wire)
@@ -484,20 +495,20 @@ public abstract class Building : Entity
             wire.isEffectOn = false;
             DestroyWires();
         }
-        
+
         if (buildingType == BuildingType.Hub)
         {
             WorldController.Instance.HubDestroyed = true;
         }
 
-//        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Extender)
-//        {
-//            PowerSource p = this as PowerSource;
-//            p.DismantlePowerSource();
-//        }
+        //        if (buildingType == BuildingType.Hub || buildingType == BuildingType.Extender)
+        //        {
+        //            PowerSource p = this as PowerSource;
+        //            p.DismantlePowerSource();
+        //        }
 
         ShutdownBuilding();
-        
+
         if (Location != null)
         {
             //Debug.Log("Removing from tile");
@@ -515,7 +526,7 @@ public abstract class Building : Entity
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_3", GetComponent<Transform>().position);
         }
         ResourceController.Instance.RemoveBuilding(this);
-        
+
         if (this.transform.parent != null)
         {
             Destroy(this.transform.parent.gameObject);
@@ -570,13 +581,14 @@ public abstract class Building : Entity
                 {
                     damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
                     damIndScript = damInd.GetComponent<DamageIndicator>();
-
-                    //RectTransform rect = damInd.GetComponent<RectTransform>();
+                    damIndScript.Locatable = this;
+                    damIndScript.On = true;
                 }
                 else damIndScript.On = true;
-                damIndScript.Locatable = this;
+
+                rend.material.SetInt("_Damaged", 1);
             }
-            
+
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", transform.position);
             damagingNotified = true;
         }
