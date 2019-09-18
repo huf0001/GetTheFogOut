@@ -138,10 +138,10 @@ public class RepelFan : Defence
                 switch (upgrade.upgradeNum)
                 {
                     case 1:
-                        upkeep = 0.8f;
+                        upkeep = -0.8f;
                         break;
                     case 2:
-                        upkeep = 0.5f;
+                        upkeep = -0.5f;
                         break;
                 }
                 break;

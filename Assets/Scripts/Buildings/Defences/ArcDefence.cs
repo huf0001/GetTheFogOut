@@ -147,10 +147,10 @@ public class ArcDefence : Defence
                 switch (upgrade.upgradeNum)
                 {
                     case 1:
-                        upkeep = 1.6f;
+                        upkeep = -1.6f;
                         break;
                     case 2:
-                        upkeep = 1f;
+                        upkeep = -1f;
                         break;
                 }
                 break;
