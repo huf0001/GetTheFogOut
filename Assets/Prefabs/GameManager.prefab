@@ -280,6 +280,7 @@ MonoBehaviour:
   builtHarvestersExtendedGoal: 5
   builtGeneratorsGoal: 3
   collectedMineralsGoal: 300
+  mineralsForUpgradesGoal: 700
   cameraController: {fileID: 0}
   sonarCamera: {fileID: 0}
   artilleryCamera: {fileID: 0}
@@ -313,6 +314,8 @@ MonoBehaviour:
   abilityUnlockCanvas: {fileID: 0}
   abilityMenu: {fileID: 0}
   abilitySelectorRadialMenu: {fileID: 0}
+  upgradesButton: {fileID: 0}
+  upgradesCanvas: {fileID: 0}
   uiLerpTarget: {fileID: 0}
   tutProgressSlider: {fileID: 0}
   decalMinLerp: 1.5
@@ -379,7 +382,7 @@ MonoBehaviour:
   poolSize: 30
   projectilePrefab: {fileID: 2058973584694880921, guid: 0133ff06884692d4baf63c0b7da6096d,
     type: 3}
-  visibleMaterial: {fileID: 2100000, guid: f551b82fe732f0b409ba5fe50e2cf6d1, type: 2}
+  visibleMaterial: {fileID: 0}
   invisibleMaterial: {fileID: 2100000, guid: baf857a11c8c1c944a1dbbada574e406, type: 2}
 --- !u!114 &1899903245264256486
 MonoBehaviour:
