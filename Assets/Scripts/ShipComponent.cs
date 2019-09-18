@@ -28,7 +28,7 @@ public class ShipComponent : Entity
     // Update is called once per frame
     void Update()
     {
-        if (location.FogUnitActive)
+        if (location.FogUnitActive && location.PowerSource)
         {
             missingWingMaterial.SetFloat("_Toggle", 1f);
         }
@@ -56,7 +56,7 @@ public class ShipComponent : Entity
 
     public void Collect()
     {
-        if (!Location.FogUnitActive)
+        if (!Location.FogUnitActive && location.PowerSource)
         {
             WorldController.Instance.GetShipComponent(id).Collected = true;
             UIController.instance.buildingInfo.HideInfo();
