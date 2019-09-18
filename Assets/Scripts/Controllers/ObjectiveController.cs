@@ -28,7 +28,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] GameObject hub;
     [SerializeField] Hub hubScript;
     [SerializeField] public GameObject thruster;
-    [SerializeField] int mineralTarget = 500;
+    [SerializeField] int mineralTarget = 300;
     [SerializeField] int powerTarget = 500;
     [SerializeField] int generatorLimit = 3;
 
