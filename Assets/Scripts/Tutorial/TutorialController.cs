@@ -85,6 +85,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private Landmark extenderLandmark;
     [SerializeField] private Landmark generatorLandmark;
     [SerializeField] private Landmark sonarLandmark;
+    [SerializeField] private Landmark activateSonarLandmark;
     [SerializeField] private Landmark fogExtenderLandmark;
     [SerializeField] private Landmark mortarLandmark;
     [SerializeField] private Landmark pulseDefenceLandmark;
@@ -267,6 +268,7 @@ public class TutorialController : DialogueBoxController
             lerpTargetsRemaining.Add(extenderLandmark);
             lerpTargetsRemaining.Add(generatorLandmark);
             lerpTargetsRemaining.Add(sonarLandmark);
+            lerpTargetsRemaining.Add(activateSonarLandmark);
             lerpTargetsRemaining.Add(fogExtenderLandmark);
             lerpTargetsRemaining.Add(mortarLandmark);
             lerpTargetsRemaining.Add(pulseDefenceLandmark);
@@ -1179,6 +1181,7 @@ public class TutorialController : DialogueBoxController
                 DeactivateUIColourLerpTarget();
 
                 SendDialogue("activate sonar", 1);
+                ActivateTarget(activateSonarLandmark);
                 break;
             case 11:
                 if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
@@ -1199,18 +1202,20 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 13:
+                DeactivateTarget();
                 cameraController.MovementEnabled = false;
-                artilleryCamera.gameObject.SetActive(true);
-                thruster.SetActive(true);
 
                 stage = TutorialStage.SonarActivated;
                 SendDialogue("explain abilities", 1);
+                artilleryCamera.gameObject.SetActive(true);
+                thruster.SetActive(true);
                 break;
             case 14:
                 if (dialogueRead)
                 {
                     artilleryCamera.gameObject.SetActive(false);
                     lerpTargetsRemaining.Remove(sonarLandmark);
+                    lerpTargetsRemaining.Remove(activateSonarLandmark);
                     DismissDialogue();
                     ResetSubStage();
 
@@ -2087,10 +2092,6 @@ public class TutorialController : DialogueBoxController
                     return button == currentlyLerping || button == ButtonType.Destroy;
             }
         }
-        //else if (button == ButtonType.Upgrades)
-        //{
-        //    return stage == TutorialStage.Upgrades || stage == TutorialStage.Finished;
-        //}
 
         return false;
     }
@@ -2314,7 +2315,17 @@ public class TutorialController : DialogueBoxController
     //Lerp the target decal
     private void LerpDecal()
     {
-        float lerped = Mathf.Lerp(decalMinLerp, decalMaxLerp, tileTargetLerpProgress);
+        float lerped;
+
+        if (stage != TutorialStage.ActivateSonar)
+        {
+            lerped = Mathf.Lerp(decalMinLerp, decalMaxLerp, tileTargetLerpProgress);
+        }
+        else
+        {
+            lerped = Mathf.Lerp(decalMinLerp * 3, decalMaxLerp * 3, tileTargetLerpProgress);
+        }
+
         buildingTarget.transform.localScale = new Vector3(lerped, 1, lerped);
 
         UpdateTileTargetLerpValues();
