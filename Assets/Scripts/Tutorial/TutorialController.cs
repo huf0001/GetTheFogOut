@@ -222,27 +222,9 @@ public class TutorialController : DialogueBoxController
         zoomIn = GameObject.Find("ZoomInInput").GetComponent<CameraInput>();
         zoomOut = GameObject.Find("ZoomOutInput").GetComponent<CameraInput>();
 
-        minHarvesterColour = new Color32(224, 145, 0, 0);
-        maxHarvesterColour = new Color32(255, 203, 64, 255);
-        minPowerBuildingColour = new Color32(0, 166, 81, 0);
-        maxPowerBuildingColour = new Color32(49, 255, 0, 255);
-        minDefencesColour = new Color32(113, 66, 236, 0);
-        maxDefencesColour = new Color32(175, 78, 255, 255);
-        batteryEmptyColour = new Color32(255, 0, 0, 255);
-        batteryLowColour = new Color32(255, 140, 0, 255);
-        batteryHalfColour = new Color32(255, 255, 0, 255);
-        batteryHighColour = new Color32(191, 255, 0, 255);
-        batteryFullColour = new Color32(0, 255, 0, 255);
-        abilityMenuColour = new Color32(77, 210, 255, 255);
-        minSonarColour = new Color32(255, 255, 255, 255);
-        maxSonarColour = new Color32(241, 148, 12, 255);
-
-
         decalMinLerp = 1.5f;
         decalMaxLerp = 3f;
         batteryIconMinLerp = 0.5f;
-
-        tutProgressSlider.maxValue = 12;
 
         arrowToTarget = Instantiate(arrowToTargetPrefab, GameObject.Find("Warnings").transform).GetComponent<DamageIndicator>();
     }
@@ -513,34 +495,6 @@ public class TutorialController : DialogueBoxController
                 break;
         }
     }
-
-    //Nexy pans to a mineral deposit and explains it to the player
-    //private void ExplainMinerals()
-    //{
-    //    switch (subStage)
-    //    {
-    //        case 1:
-    //            cameraController.MovementEnabled = false;
-    //            SendDialogue("explain minerals", 1);
-    //            mineralDepositCamera.gameObject.SetActive(true);
-    //            break;
-    //        case 2:
-    //            if (dialogueRead)
-    //            {
-    //                mineralDepositCamera.gameObject.SetActive(false);
-    //                DismissDialogue();
-    //            }
-
-    //            break;
-    //        case 3:
-    //            stage = TutorialStage.BuildHarvesters;
-    //            currentlyBuilding = BuildingType.Harvester;
-    //            cameraController.MovementEnabled = true;
-    //            ResetSubStage();
-    //            tutProgressSlider.value++;
-    //            break;
-    //    }
-    //}
 
     //Player learns about and builds a harvester
     private void BuildHarvesters()
@@ -1747,7 +1701,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                SendDialogue("upgrades click button", 0);
+                SendDialogue("upgrades click icon", 0);
                 break;
             case 5:
                 if (dialogueRead)
@@ -1768,16 +1722,25 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
-                Debug.Log("Registered button clicks");
-                IncrementSubStage();
+                SendDialogue("upgrades use upgrade", 0);
                 break;
             case 8:
+                if (WorldController.Instance.UpgradeUsed)
+                {
+                    tutProgressSlider.value++;
+                    StartCoroutine(CompleteTutorialObjective("You finished the tutorial!"));
+                    IncrementSubStage();
+                }
+
                 break;
-            case 20:
+            case 9:
+                break;
+            case 10:
+                tutProgressSlider.gameObject.SetActive(false);
                 ResetSubStage();
 
                 stage = TutorialStage.Finished;
-                tutProgressSlider.gameObject.SetActive(false);
+                SendDialogue("finished", 1);
                 ObjectiveController.Instance.IncrementStage();
                 break;
             default:
