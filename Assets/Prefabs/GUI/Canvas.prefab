@@ -16120,6 +16120,22 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: Hold on, you need to build defences within striking distance of the
         fog. Their range isn't infinite, you know.
+  - key: collect minerals for upgrades
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Collect minerals for upgrades
+  - key: upgrades click ship
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Click ship
+  - key: upgrades click icon
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Click icon
+  - key: upgrades use upgrade
+    expressionDialoguePairs:
+    - aiExpression: 2
+      dialogue: Use an upgrade
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 5
@@ -16527,7 +16543,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 32767
   m_TargetDisplay: 0
 --- !u!114 &4767305867727933495
 MonoBehaviour:
@@ -25923,7 +25939,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 14
   m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:

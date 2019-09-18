@@ -30,6 +30,8 @@ public enum TutorialStage
     BuildMortar,
     BuildPulseDefence,
     DefenceActivation,
+    CollectMineralsForUpgrades,
+    Upgrades,
     DontBuildInFog,
     BuildDefencesInRange,
     Finished
@@ -43,7 +45,8 @@ public enum ButtonType
     Harvester,
     Extender,
     FogRepeller,
-    Destroy
+    Destroy,
+    Upgrades
 }
 
 public class TutorialController : DialogueBoxController
@@ -68,6 +71,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private int builtHarvestersExtendedGoal;
     [SerializeField] private int builtGeneratorsGoal;
     [SerializeField] private int collectedMineralsGoal;
+    [SerializeField] private int mineralsForUpgradesGoal;
 
     [Header("Cameras")]
     [SerializeField] private CameraController cameraController;
@@ -106,6 +110,8 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private GameObject abilityUnlockCanvas;
     [SerializeField] private Image abilityMenu;
     [SerializeField] private RadialMenu abilitySelectorRadialMenu;
+    [SerializeField] private GameObject upgradesButton;
+    [SerializeField] private GameObject upgradesCanvas;
     [SerializeField] private Image uiLerpTarget;
     [SerializeField] private Slider tutProgressSlider;
 
@@ -179,6 +185,7 @@ public class TutorialController : DialogueBoxController
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
     public bool DefencesOn { get => defencesOn; }
+    public float MineralsForUpgradesGoal { get => mineralsForUpgradesGoal; }
     public bool SkipTutorial { get => skipTutorial; }
     public TutorialStage Stage { get => stage; }
     public Image UILerpTarget { get => uiLerpTarget; }
@@ -215,27 +222,9 @@ public class TutorialController : DialogueBoxController
         zoomIn = GameObject.Find("ZoomInInput").GetComponent<CameraInput>();
         zoomOut = GameObject.Find("ZoomOutInput").GetComponent<CameraInput>();
 
-        minHarvesterColour = new Color32(224, 145, 0, 0);
-        maxHarvesterColour = new Color32(255, 203, 64, 255);
-        minPowerBuildingColour = new Color32(0, 166, 81, 0);
-        maxPowerBuildingColour = new Color32(49, 255, 0, 255);
-        minDefencesColour = new Color32(113, 66, 236, 0);
-        maxDefencesColour = new Color32(175, 78, 255, 255);
-        batteryEmptyColour = new Color32(255, 0, 0, 255);
-        batteryLowColour = new Color32(255, 140, 0, 255);
-        batteryHalfColour = new Color32(255, 255, 0, 255);
-        batteryHighColour = new Color32(191, 255, 0, 255);
-        batteryFullColour = new Color32(0, 255, 0, 255);
-        abilityMenuColour = new Color32(77, 210, 255, 255);
-        minSonarColour = new Color32(255, 255, 255, 255);
-        maxSonarColour = new Color32(241, 148, 12, 255);
-
-
         decalMinLerp = 1.5f;
         decalMaxLerp = 3f;
         batteryIconMinLerp = 0.5f;
-
-        tutProgressSlider.maxValue = 12;
 
         arrowToTarget = Instantiate(arrowToTargetPrefab, GameObject.Find("Warnings").transform).GetComponent<DamageIndicator>();
     }
@@ -364,6 +353,12 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.DefenceActivation:
                 DefenceActivation();
+                break;
+            case TutorialStage.CollectMineralsForUpgrades:
+                CollectMineralsForUpgrades();
+                break;
+            case TutorialStage.Upgrades:
+                Upgrades();
                 break;
             case TutorialStage.DontBuildInFog:
                 DontBuildInFog();
@@ -500,34 +495,6 @@ public class TutorialController : DialogueBoxController
                 break;
         }
     }
-
-    //Nexy pans to a mineral deposit and explains it to the player
-    //private void ExplainMinerals()
-    //{
-    //    switch (subStage)
-    //    {
-    //        case 1:
-    //            cameraController.MovementEnabled = false;
-    //            SendDialogue("explain minerals", 1);
-    //            mineralDepositCamera.gameObject.SetActive(true);
-    //            break;
-    //        case 2:
-    //            if (dialogueRead)
-    //            {
-    //                mineralDepositCamera.gameObject.SetActive(false);
-    //                DismissDialogue();
-    //            }
-
-    //            break;
-    //        case 3:
-    //            stage = TutorialStage.BuildHarvesters;
-    //            currentlyBuilding = BuildingType.Harvester;
-    //            cameraController.MovementEnabled = true;
-    //            ResetSubStage();
-    //            tutProgressSlider.value++;
-    //            break;
-    //    }
-    //}
 
     //Player learns about and builds a harvester
     private void BuildHarvesters()
@@ -1631,13 +1598,150 @@ public class TutorialController : DialogueBoxController
             case 7:
                 break;
             case 8:
+                ResetSubStage();
+
+                stage = TutorialStage.CollectMineralsForUpgrades;        
+                musicFMOD.StageTwoMusic();
+
+                tutProgressSlider.value++;
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
+
+    //Prompts player to collect minerals for upgrading their ship
+    private void CollectMineralsForUpgrades()
+    {
+        switch (subStage)
+        {
+            case 1:
+                if (ResourceController.Instance.StoredMineral >= mineralsForUpgradesGoal)
+                {
+                    stage = TutorialStage.Upgrades;
+                    Upgrades();
+                }
+                else
+                {
+                    SendDialogue("collect minerals for upgrades", 1);
+                    UIController.instance.UpdateObjectiveText(stage);
+
+                    if (!objWindowVisible)
+                    {
+                        ToggleObjWindow();
+                    }
+                }                
+
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (ResourceController.Instance.StoredMineral >= mineralsForUpgradesGoal)
+                {
+                    GoToSubStage(4);
+                }
+
+                break;
+            case 3:
+                if (ResourceController.Instance.StoredMineral >= mineralsForUpgradesGoal)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 4:
+                ResetSubStage();
+
+                stage = TutorialStage.Upgrades;
+
+                tutProgressSlider.value++;
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
+                break;
+        }
+    }
+
+    //Player learns about and uses upgrades
+    private void Upgrades()
+    {
+        switch (subStage)
+        {
+            case 1:
+                SendDialogue("upgrades click ship", 1);
+                UIController.instance.UpdateObjectiveText(stage);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
+                break;
+            case 2:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (upgradesButton.activeSelf)
+                {
+                    GoToSubStage(4);
+                }
+
+                break;
+            case 3:
+                if (upgradesButton.activeSelf)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 4:
+                SendDialogue("upgrades click icon", 0);
+                break;
+            case 5:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (upgradesCanvas.activeSelf)
+                {
+                    GoToSubStage(7);
+                }
+
+                break;
+            case 6:
+                if (upgradesCanvas.activeSelf)
+                {
+                    GoToSubStage(7);
+                }
+
+                break;
+            case 7:
+                SendDialogue("upgrades use upgrade", 0);
+                break;
+            case 8:
+                if (WorldController.Instance.UpgradeUsed)
+                {
+                    tutProgressSlider.value++;
+                    StartCoroutine(CompleteTutorialObjective("You finished the tutorial!"));
+                    IncrementSubStage();
+                }
+
+                break;
+            case 9:
+                break;
+            case 10:
                 tutProgressSlider.gameObject.SetActive(false);
                 ResetSubStage();
 
                 stage = TutorialStage.Finished;
                 SendDialogue("finished", 1);
                 ObjectiveController.Instance.IncrementStage();
-                musicFMOD.StageTwoMusic();
                 break;
             default:
                 SendDialogue("error", 1);
@@ -1929,7 +2033,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildDefencesInRange:
                 tileOkay = !tile.FogUnitActive || tile.Building != null;
 
-                if (!tileOkay && !aiText.Activated)
+                if (!tileOkay && tile.FogUnitActive && !aiText.Activated)
                 {
                     savedTutorialStage = stage;
                     savedSubStage = subStage;
@@ -1939,6 +2043,8 @@ public class TutorialController : DialogueBoxController
                 }
 
                 return tileOkay;
+            case TutorialStage.CollectMineralsForUpgrades:
+            case TutorialStage.Upgrades:
             case TutorialStage.Finished:
                 return true;
             default:
@@ -1972,6 +2078,8 @@ public class TutorialController : DialogueBoxController
                            || button == ButtonType.Destroy;
                 case TutorialStage.DefenceActivation:
                 case TutorialStage.BuildDefencesInRange:
+                case TutorialStage.CollectMineralsForUpgrades:
+                case TutorialStage.Upgrades:
                 case TutorialStage.Finished:
                     return true;
                 default:

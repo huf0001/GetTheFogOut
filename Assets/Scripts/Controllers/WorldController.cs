@@ -87,7 +87,6 @@ public class WorldController : MonoBehaviour
     public PowerSource tempPower;
 
     //Public Properties
-    // public static WorldController used to get the instance of the WorldManager from anywhere.
     public static WorldController Instance { get; protected set; }
     public TileData[,] Tiles { get => tiles; }
     public GameObject Ground { get => ground; set => ground = value; }
@@ -99,6 +98,14 @@ public class WorldController : MonoBehaviour
     public bool GameWin { get => gameWin; set => gameWin = value; }
     public bool GameOver { get => gameOver; set => gameOver = value; }
     public NewInputs Inputs { get; set; }
+
+    public bool UpgradeUsed
+    {
+        get
+        {
+            return hvstUpgradeLevel != null || mortarUpgradeLevel != null || pulseDefUpgradeLevel != null;
+        }
+    }
 
     //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
     private void Start()
