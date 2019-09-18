@@ -37,6 +37,10 @@ public class Hub : PowerSource
     protected override void Update()
     {
         base.Update();
+        if (isDestroyed())
+        {
+            WorldController.Instance.HubDestroyed = true;
+        }
     }
 
     public override bool SupplyingPower()
