@@ -77,6 +77,7 @@ public class Wires : MonoBehaviour
                 children[i] = new GameObject("Child0" + i);
                 children[i].transform.parent = transform;
                 LineRenderer temp = children[i].AddComponent<LineRenderer>();
+                lineRenderer = temp;
                 temp.positionCount = steps;
                 temp.startWidth = radius;
                 temp.endWidth = radius;
@@ -94,7 +95,6 @@ public class Wires : MonoBehaviour
     public void StartEffect()
     {
         isEffectOn = true;
-        lineRenderer = GetComponentInChildren<LineRenderer>();
         
         if (!lineRenderer) return;
         

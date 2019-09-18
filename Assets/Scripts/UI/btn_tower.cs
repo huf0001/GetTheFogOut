@@ -141,6 +141,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 // Make it known player can't build more generators
                 buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
                     $"<line-height=80% size=65%>You have the max number of generators.";
+                uniqueStat.text = $"{ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit} Built";
             }
             else
             {

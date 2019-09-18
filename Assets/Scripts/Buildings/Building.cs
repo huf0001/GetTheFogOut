@@ -240,18 +240,8 @@ public abstract class Building : Entity
         }
         else if (!DOTween.IsTweening(healthBarImage)) healthBarImage.DOColor(redHDR, 0.5f).SetLoops(-1, LoopType.Yoyo);
 
-
-        if (buildingType != BuildingType.Hub)
-        {
-            healthBarMask.fillAmount = health / maxHealth * 0.75f;
-            healthBarCanvas.LookAt(new Vector3(cam.transform.position.x, 0, cam.transform.position.z));
-            healthBarCanvas.Rotate(0, 135, 0);
-        }
-        else
-        {
-            healthBarMask.fillAmount = health / maxHealth;
-            healthBarCanvas.LookAt(cam.transform);
-        }
+        healthBarMask.fillAmount = health / maxHealth;
+        healthBarCanvas.LookAt(cam.transform);
     }
 
     private void RepairBuilding()

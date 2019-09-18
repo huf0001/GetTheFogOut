@@ -15958,7 +15958,7 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: Hello, I am your ship's Nexus Drone. You may call me Nexy.
-    - aiExpression: 2
+    - aiExpression: 3
       dialogue: The rough landing appears to have done some serious damage to the
         ship, which is our only way out of here.
   - key: explain minerals
@@ -15969,8 +15969,8 @@ MonoBehaviour:
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'To survive, I''m going to teach you how to control me from your ship.
-        Press the WASD keys to move me around. '
+      dialogue: 'To survive, I''m going to teach you how to control me. Press the
+        WASD keys to move me around. '
   - key: zoom camera
     expressionDialoguePairs:
     - aiExpression: 2
@@ -15991,9 +15991,9 @@ MonoBehaviour:
         to place one.
   - key: build more harvesters
     expressionDialoguePairs:
-    - aiExpression: 1
+    - aiExpression: 4
       dialogue: 'Perfect! Now the {HARVESTER} will be collecting minerals for storage. '
-    - aiExpression: 1
+    - aiExpression: 2
       dialogue: 'Once the {HARVESTER} has exhausted the {MINERAL} it''s on, it will
         show an &X& icon above it. '
   - key: build extender target
@@ -16018,7 +16018,7 @@ MonoBehaviour:
       dialogue: Each building, aside from [POWER EXTENDERS], will consume power when
         they're placed.
     - aiExpression: 2
-      dialogue: When the ship's battery reaches 75%, any building you have placed
+      dialogue: When the ship's [BATTERY] reaches 75%, any building you have placed
         will progressively shut down.
     - aiExpression: 2
       dialogue: To see an explanation of the power system, hover over the [BATTERY
@@ -16138,12 +16138,12 @@ MonoBehaviour:
       dialogue: Use an upgrade
   - key: finished
     expressionDialoguePairs:
-    - aiExpression: 2
-      dialogue: My sensors are picking up three possible locations around the world
-        that the thruster could have dropped. Use the sonar to find it!
     - aiExpression: 5
-      dialogue: I've done what I can, the rest is up to you. Whatever you do, GET
-        US OUT OF HERE!
+      dialogue: Is..is the fog seeping towards us? No, no, no!
+    - aiExpression: 5
+      dialogue: It's messing with my sensors, I can't pick up the location of the
+        thruster, you're going to need to use the sonar. I've done what I can, the
+        rest is up to you. Whatever you do, GET US OUT OF HERE!
   - key: start harvest stage
     expressionDialoguePairs:
     - aiExpression: 2
