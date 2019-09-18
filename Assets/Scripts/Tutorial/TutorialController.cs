@@ -2079,6 +2079,7 @@ public class TutorialController : DialogueBoxController
                 case TutorialStage.DefenceActivation:
                 case TutorialStage.BuildDefencesInRange:
                 case TutorialStage.CollectMineralsForUpgrades:
+                    return button != ButtonType.Upgrades;
                 case TutorialStage.Upgrades:
                 case TutorialStage.Finished:
                     return true;
@@ -2086,6 +2087,10 @@ public class TutorialController : DialogueBoxController
                     return button == currentlyLerping || button == ButtonType.Destroy;
             }
         }
+        //else if (button == ButtonType.Upgrades)
+        //{
+        //    return stage == TutorialStage.Upgrades || stage == TutorialStage.Finished;
+        //}
 
         return false;
     }
@@ -2112,6 +2117,7 @@ public class TutorialController : DialogueBoxController
         }
 
         result.Add(ButtonType.Destroy);
+        result.Add(ButtonType.Upgrades);
         return result;
     }
 
