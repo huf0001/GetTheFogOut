@@ -465,7 +465,7 @@ public class WorldController : MonoBehaviour
 
     public void SetPause(bool pause)
     {
-        if (!uiController.buildingSelector.Visible && !uiController.buildingInfo.Visible && !abilityMenu.Visible)
+        if (!uiController.buildingSelector.Visible && !uiController.buildingInfo.Visible)
         {
             pauseMenu.SetActive(!pauseMenu.activeSelf);
 
