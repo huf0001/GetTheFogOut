@@ -3,30 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
+using DG.Tweening;
 
 public class BuildingInfo : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI mainText;
-    [SerializeField] GameObject healthBar;
-    [SerializeField] Image healthBarFill;
-    [SerializeField] Button destroyButton;
-    [SerializeField] Button upgradeButton;
-    [SerializeField] Gradient healthGradient;
+    [SerializeField] private TextMeshProUGUI mainText;
+    [SerializeField] private GameObject healthBar;
+    [SerializeField, FormerlySerializedAs("healthBarFill")] private Image healthBarMask;
+    [SerializeField] private Image healthBarFill;
+    [SerializeField, GradientUsage(true)] private Gradient healthGradient;
+    [SerializeField, ColorUsage(true, true)] private Color redHDR;
+    [SerializeField] private TextMeshProUGUI refundText;
+    [SerializeField] private Button destroyButton;
+    [SerializeField] private Button upgradeButton;
     [SerializeField] private Image bg;
+
     [HideInInspector] public Building building;
+
     private ShipComponent shipComp;
-    private int mineralHealth;
+    private int mineralHealth, refundCost;
     private float mineralTime, mineralVal, mineral;
     private Transform Range;
     private Camera cam;
+
     public bool Visible { get; private set; }
 
     private void Update()
     {
         if (healthBar.activeSelf)
         {
-            healthBarFill.fillAmount = building.Health / building.MaxHealth;
-            healthBarFill.color = healthGradient.Evaluate(healthBarFill.fillAmount);
+            healthBarMask.fillAmount = building.Health / building.MaxHealth;
+            if (healthBarMask.fillAmount > 0.5)
+            {
+                DOTween.Kill(healthBarFill);
+                healthBarFill.color = healthGradient.Evaluate(healthBarMask.fillAmount);
+            }
+            else if (!DOTween.IsTweening(healthBarFill)) healthBarFill.DOColor(redHDR, 0.5f).SetLoops(-1, LoopType.Yoyo);
         }
         if (Visible)
         {
@@ -44,6 +57,7 @@ public class BuildingInfo : MonoBehaviour
 
     private void UpdateText()
     {
+        // General text updates
         mainText.text = $"<b>{building.name}</b>\n" +
             $"HP\n";
         if (building.Powered)
@@ -55,6 +69,7 @@ public class BuildingInfo : MonoBehaviour
             mainText.text += "<color=\"red\">NO POWER</color>\n";
         }
 
+        // Update mineral health value
         if (building.BuildingType == BuildingType.Harvester)
         {
             if (building.Location.Resource.Health != mineral)
@@ -72,6 +87,33 @@ public class BuildingInfo : MonoBehaviour
             }
             mainText.text += $"\n<color=#e09100><size=125%><sprite=\"all_icons\" index=2><size=100%>Remaining: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))}</color>";
         }
+
+        // Update refund cost
+        if (building.BuildingType != BuildingType.Hub)
+        {
+            int returnCost = building.MineralCost;
+            if (building.BuildingType != BuildingType.Extender)
+            {
+                if (building.Health != building.MaxHealth)
+                {
+                    if (building.Health < 40 && building.Health > 25)
+                    {
+                        returnCost = Mathf.RoundToInt(returnCost * 0.71429f);
+                    }
+
+                    if (building.Health < 20 && building.Health > 5)
+                    {
+                        returnCost = Mathf.RoundToInt(returnCost * 0.5f);
+                    }
+                }
+            }
+
+            if (returnCost != refundCost)
+            {
+                refundCost = returnCost;
+                refundText.text = $"Refund:\n{refundCost}<size=130%><sprite=\"all_icons\" index=2>";
+            }
+        }
     }
 
     public void ShowInfo(Building b)
@@ -85,11 +127,13 @@ public class BuildingInfo : MonoBehaviour
             bg.color = new Color32(0, 92, 118, 237);
             destroyButton.gameObject.SetActive(false);
             upgradeButton.gameObject.SetActive(true);
+            refundText.gameObject.SetActive(false);
         }
         else
         {
             destroyButton.gameObject.SetActive(true);
             upgradeButton.gameObject.SetActive(false);
+            refundText.gameObject.SetActive(true);
         }
         if (building.BuildingType == BuildingType.Battery || building.BuildingType == BuildingType.Generator || building.BuildingType == BuildingType.Extender)
         {
@@ -148,6 +192,8 @@ public class BuildingInfo : MonoBehaviour
     public void HideInfo()
     {
         CancelInvoke("UpdateText");
+        DOTween.Kill(healthBarFill);
+        healthBarFill.color = healthGradient.Evaluate(healthBarMask.fillAmount);
         building = null;
         shipComp = null;
         gameObject.SetActive(false);

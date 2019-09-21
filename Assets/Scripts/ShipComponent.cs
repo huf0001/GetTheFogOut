@@ -10,7 +10,7 @@ public enum ShipComponentsEnum
     Hull
 }
 
-public class ShipComponent : Entity
+public class ShipComponent : Entity, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Component ID")]
     [SerializeField] private ShipComponentsEnum id;
@@ -38,7 +38,7 @@ public class ShipComponent : Entity
         }
     }
 
-    private void OnMouseEnter()
+    public void OnPointerEnter(PointerEventData pointerEventData)
     {
         if (!UIController.instance.buildingInfo.Visible && !WorldController.Instance.IsPointerOverGameObject())
         {
@@ -46,7 +46,7 @@ public class ShipComponent : Entity
         }
     }
 
-    private void OnMouseExit()
+    public void OnPointerExit(PointerEventData pointerEventData)
     {
         if (!UIController.instance.buildingInfo.building)
         {

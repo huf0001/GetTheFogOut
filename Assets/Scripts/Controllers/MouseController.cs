@@ -87,7 +87,7 @@ public class MouseController : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-            
+
             if (!WorldController.Instance.IsPointerOverGameObject() && Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("GridPlanes")))
             {
                 if (WorldController.Instance.TileExistsAt(hit.point))
@@ -181,7 +181,7 @@ public class MouseController : MonoBehaviour
         if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
         {
             UpdateHoveredTile(false);
-            if (WorldController.Instance.Inputs.InputMap.CancelBuildingMenu.triggered)
+            if (WorldController.Instance.Inputs.InputMap.CancelBuildingMenu.triggered && UIController.instance.buildingSelector.Visible)
             {
                 UIController.instance.buildingSelector.ToggleVisibility();
             }
@@ -205,30 +205,15 @@ public class MouseController : MonoBehaviour
             TileData tile;
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-            /*
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Buildings")))
-            {
-                if (!UIController.instance.buildingInfo.Visible)
-                {
-                    Building b;
-                    if (hit.collider.name == "pCube31")
-                    {
-                        b = Hub.Instance;
-                        UIController.instance.buildingInfo.ShowInfo(b);
-                    }
-                }
-                else
-                    UIController.instance.buildingInfo.HideInfo();
 
-            }else
-            */
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables", "Buildings" })) && WorldController.Instance.TileExistsAt(hit.point))
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
                     changeTileMaterial(WorldController.Instance.normalTile);
                     towerManager.CancelBuild();
-                } else if (hit.collider.gameObject.layer == 15)
+                }
+                else if (hit.collider.gameObject.layer == 15)
                 {
                     hit.collider.GetComponent<Collectable>()?.CollectAbility();
                     hit.collider.GetComponent<ShipComponent>()?.Collect();
@@ -241,9 +226,11 @@ public class MouseController : MonoBehaviour
                         UIController.instance.buildingInfo.ShowInfo(b);
                     }
                     else
+                    {
                         UIController.instance.buildingInfo.HideInfo();
+                    }
 
-                    TileData t = WorldController.Instance.GetTileAt(36,34);
+                    TileData t = WorldController.Instance.GetTileAt(36, 34);
                     towerManager.CurrentTile = t;
                 }
                 else
@@ -265,11 +252,14 @@ public class MouseController : MonoBehaviour
 
                             towerManager.CurrentTile = tile;
                         }
-                    } else
+                    }
+                    else
+                    {
                         towerManager.CurrentTile = tile;
+                    }
                 }
             }
-            
+
         }
     }
 
@@ -291,13 +281,11 @@ public class MouseController : MonoBehaviour
                         if (building.Health < 40 && building.Health > 25)
                         {
                             returnCost = Mathf.RoundToInt(returnCost / 1.4f);
-                            Debug.Log(building.Health + " NNNNNN" + returnCost);
                         }
 
                         if (building.Health < 20 && building.Health > 5)
                         {
-                            returnCost = Mathf.RoundToInt(returnCost / 2f);
-                            Debug.Log(building.Health + " YYY" + returnCost);
+                            returnCost = Mathf.RoundToInt(returnCost * 0.5f);
                         }
                     }
                 }
