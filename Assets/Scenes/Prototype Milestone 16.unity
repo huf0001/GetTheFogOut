@@ -15732,6 +15732,31 @@ PrefabInstance:
       propertyPath: eventSystem
       value: 
       objectReference: {fileID: 2054234529}
+    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8839552120422238798, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -15953,31 +15978,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2562452973530461076, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4951663937154285971, guid: f0d96ef103d08e4429542615f2b52508,
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
@@ -30736,11 +30736,6 @@ PrefabInstance:
       propertyPath: tutProgressSlider
       value: 
       objectReference: {fileID: 1094405326}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow
@@ -30796,6 +30791,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1755397224}
     - target: {fileID: 1869141249, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
+      propertyPath: AbilityDescGO
+      value: 
+      objectReference: {fileID: 2059266059}
+    - target: {fileID: 1869141249, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
       propertyPath: abilityButtons.Array.data[0]
       value: 
       objectReference: {fileID: 922240212}
@@ -30815,10 +30814,6 @@ PrefabInstance:
       propertyPath: abilityButtons.Array.data[4]
       value: 
       objectReference: {fileID: 922240210}
-    - target: {fileID: 1869141249, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
-      propertyPath: AbilityDescGO
-      value: 
-      objectReference: {fileID: 2059266059}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c327127a5d1d641479ca91d40ce5c9e5, type: 3}
 --- !u!114 &1644847194 stripped
