@@ -240,6 +240,12 @@ public class TutorialController : DialogueBoxController
             Fog.Instance.WakeUpFog(5);
             Fog.Instance.BeginUpdatingDamage(5);
             tutProgressSlider.gameObject.SetActive(false);
+
+            //For playing straight from the game scene rather than from main menu
+            if (ObjectiveController.Instance.CurrStage == (int)ObjectiveStage.None)
+            {
+                ObjectiveController.Instance.IncrementStage();
+            }
         }
         else
         {

@@ -36,6 +36,8 @@ public class FogSphere : MonoBehaviour
 
     [Header("Spilling")]
     [SerializeField] private int maxSpiltFogCount;
+    [SerializeField] private float sphereHealthDropMultiplier;
+    [SerializeField] private float unitFillRateMultiplier;
 
     [Header("Damage")]
     [SerializeField] private float damage;
@@ -358,14 +360,14 @@ public class FogSphere : MonoBehaviour
         bool readyToSpillFurther = true;
         List<FogUnit> full = new List<FogUnit>();
 
-        Health -= increment;
+        Health -= increment * sphereHealthDropMultiplier;
         UpdateSize();
         RenderColour();
         RenderOpacity();
 
         foreach (FogUnit f in spiltFog)
         {
-            f.Health += increment * (maxSpiltFogCount / spiltFog.Count);
+            f.Health += increment * unitFillRateMultiplier * (maxSpiltFogCount / spiltFog.Count);
             f.RenderColour();
             f.RenderOpacity();
 

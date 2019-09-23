@@ -79,7 +79,6 @@ public class Fog : MonoBehaviour
 
     [SerializeField] private GameObject fogSphereSpawnPointsParent;
     [SerializeField] private float maxFogSpheresCount;
-    [SerializeField] private float fogSphereSpillMultiplier;
 
     [Header("Fog Strength Over Time")]
     [SerializeField] private float earlyGameFogGrowth;
@@ -138,11 +137,11 @@ public class Fog : MonoBehaviour
     private List<FogSphere> fogSpheresToReturnToPool = new List<FogSphere>();   //i.e. currently waiting to be re-pooled
     private List<FogSphere> fogSpheresInPool = new List<FogSphere>();           //i.e. currently inactive fog spheres waiting for spawning
 
-    public List<FogLightning> lightningInPlay = new List<FogLightning>();       //i.e. currently active lightning effects
-    public List<FogLightning> lightningInPool = new List<FogLightning>();       //i.e. currently inactive lightning effects in pool
+    private List<FogLightning> lightningInPlay = new List<FogLightning>();       //i.e. currently active lightning effects
+    private List<FogLightning> lightningInPool = new List<FogLightning>();       //i.e. currently inactive lightning effects in pool
 
-    public List<ParticleSystem> evaporationInPlay = new List<ParticleSystem>(); //i.e. currently active fog evaporation effects
-    public List<ParticleSystem> evaporationInPool = new List<ParticleSystem>(); //i.e. currently inactive fog evaporation effects
+    private List<ParticleSystem> evaporationInPlay = new List<ParticleSystem>(); //i.e. currently active fog evaporation effects
+    private List<ParticleSystem> evaporationInPool = new List<ParticleSystem>(); //i.e. currently inactive fog evaporation effects
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -151,6 +150,8 @@ public class Fog : MonoBehaviour
     public bool                  DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public List<FogUnit>         FogUnitsInPlay { get => fogUnitsInPlay; }
+    public List<FogLightning>    LightningInPlay { get => lightningInPlay; }
+    public List<FogLightning>    LightningInPool { get => lightningInPool; }
     public int                   XMax { get => xMax; }
     public int                   ZMax { get => zMax; }
 
@@ -902,7 +903,7 @@ public class Fog : MonoBehaviour
                             break;
                         case FogSphereState.Spilling:
                             f.Move(fogSphereInterval * 0.5f);
-                            f.Spill(fogSphereInterval * fogGrowth * fogSphereSpillMultiplier);
+                            f.Spill(fogSphereInterval * fogGrowth);
                             break;
                         case FogSphereState.Attacking:
                             f.Attack(fogSphereInterval * fogGrowth);

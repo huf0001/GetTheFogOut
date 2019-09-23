@@ -29,8 +29,8 @@ public class FogLightning : MonoBehaviour
         if (lightningPS.isStopped)
         {
             lightning.SetActive(false);
-            Fog.Instance.lightningInPlay.Remove(this);
-            Fog.Instance.lightningInPool.Add(this);
+            Fog.Instance.LightningInPlay.Remove(this);
+            Fog.Instance.LightningInPool.Add(this);
         }
     }
 
