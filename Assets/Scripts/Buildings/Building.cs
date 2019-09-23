@@ -130,12 +130,12 @@ public abstract class Building : Entity
             regenWait = 5;
         }
 
-        if (health <= halfHealth && health > 0)
+        if (health <= halfHealth && health > 0 && TakingDamage)
         {
             if (sirenWait <= 0)
-            {
+                {
                 FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingSiren", GetComponent<Transform>().position);
-                sirenWait = 1;
+                sirenWait = 2;
             }
             else
             {
