@@ -411,7 +411,7 @@ MonoBehaviour:
   angry: 0
   damageOn: 1
   configuration: 5
-  difficulty: 1
+  difficulty: 2
   expansionDirection: 0
   surroundingHubRange: 9
   fogAccelerates: 0
@@ -427,22 +427,22 @@ MonoBehaviour:
   earlyGameMaxFogSphereHealth: 100
   midGameMaxFogSphereHealth: 150
   lateGameMaxFogSphereHealth: 200
-  chillMultipliers:
+  easyMultipliers:
     fogDamageMultiplier: 0.5
     earlyGameGrowthMultiplier: 0.5
     midGameGrowthMultiplier: 0.5
     lateGameGrowthMultiplier: 0.5
-  easyMultipliers:
+  mediumMultipliers:
     fogDamageMultiplier: 0.7
-    earlyGameGrowthMultiplier: 0.5
-    midGameGrowthMultiplier: 0.5
-    lateGameGrowthMultiplier: 0.5
-  normalMultipliers:
+    earlyGameGrowthMultiplier: 0.7
+    midGameGrowthMultiplier: 0.7
+    lateGameGrowthMultiplier: 0.7
+  hardMultipliers:
     fogDamageMultiplier: 1
     earlyGameGrowthMultiplier: 1
     midGameGrowthMultiplier: 1
     lateGameGrowthMultiplier: 1
-  hardMultipliers:
+  veryHardMultipliers:
     fogDamageMultiplier: 2
     earlyGameGrowthMultiplier: 2
     midGameGrowthMultiplier: 2

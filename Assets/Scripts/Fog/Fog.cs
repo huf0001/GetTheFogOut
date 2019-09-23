@@ -31,10 +31,10 @@ public enum StartConfiguration
 
 public enum Difficulty
 {
-    Chill,
     Easy,
-    Normal,
-    Hard
+    Medium,
+    Hard,
+    VeryHard
 }
 
 [Serializable]
@@ -90,10 +90,10 @@ public class Fog : MonoBehaviour
     [SerializeField] private float lateGameMaxFogSphereHealth;
 
     [Header("Fog Strength Multipliers by Difficulty")]
-    [SerializeField] private FogDifficulty chillMultipliers;
     [SerializeField] private FogDifficulty easyMultipliers;
-    [SerializeField] private FogDifficulty normalMultipliers;
+    [SerializeField] private FogDifficulty mediumMultipliers;
     [SerializeField] private FogDifficulty hardMultipliers;
+    [SerializeField] private FogDifficulty veryHardMultipliers;
 
     [Header("Fog Sphere Size Over Time")]
     [SerializeField] private float earlyGameMaxFogSphereSize;
@@ -151,7 +151,6 @@ public class Fog : MonoBehaviour
     public bool                  DamageOn { get => damageOn; set => damageOn = value; }
     public FogExpansionDirection ExpansionDirection { get => expansionDirection; }
     public List<FogUnit>         FogUnitsInPlay { get => fogUnitsInPlay; }
-    public Difficulty            Difficulty { get => difficulty; set => difficulty = value; }
     public int                   XMax { get => xMax; }
     public int                   ZMax { get => zMax; }
 
@@ -230,7 +229,7 @@ public class Fog : MonoBehaviour
         Instance = this;
         if (GlobalVars.LoadedFromMenu)
         {
-            Difficulty = (Difficulty)GlobalVars.Difficulty;
+            difficulty = (Difficulty)GlobalVars.Difficulty;
         }
 
         fogSphereSpawnPoints = new List<FogSphereWaypoint>(fogSphereSpawnPointsParent.GetComponentsInChildren<FogSphereWaypoint>());
@@ -246,29 +245,29 @@ public class Fog : MonoBehaviour
 
         switch (difficulty)
         {
-            case Difficulty.Chill:
-                fogDamage *= chillMultipliers.fogDamageMultiplier;
-                earlyGameFogGrowth *= chillMultipliers.earlyGameGrowthMultiplier;
-                midGameFogGrowth *= chillMultipliers.midGameGrowthMultiplier;
-                lateGameFogGrowth *= chillMultipliers.lateGameGrowthMultiplier;
-                break;
             case Difficulty.Easy:
-                fogDamage *= chillMultipliers.fogDamageMultiplier;
+                fogDamage *= easyMultipliers.fogDamageMultiplier;
                 earlyGameFogGrowth *= easyMultipliers.earlyGameGrowthMultiplier;
                 midGameFogGrowth *= easyMultipliers.midGameGrowthMultiplier;
                 lateGameFogGrowth *= easyMultipliers.lateGameGrowthMultiplier;
                 break;
-            case Difficulty.Normal:
-                fogDamage *= normalMultipliers.fogDamageMultiplier;
-                earlyGameFogGrowth *= normalMultipliers.earlyGameGrowthMultiplier;
-                midGameFogGrowth *= normalMultipliers.midGameGrowthMultiplier;
-                lateGameFogGrowth *= normalMultipliers.lateGameGrowthMultiplier;
+            case Difficulty.Medium:
+                fogDamage *= mediumMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= mediumMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= mediumMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= mediumMultipliers.lateGameGrowthMultiplier;
                 break;
             case Difficulty.Hard:
                 fogDamage *= hardMultipliers.fogDamageMultiplier;
                 earlyGameFogGrowth *= hardMultipliers.earlyGameGrowthMultiplier;
                 midGameFogGrowth *= hardMultipliers.midGameGrowthMultiplier;
                 lateGameFogGrowth *= hardMultipliers.lateGameGrowthMultiplier;
+                break;
+            case Difficulty.VeryHard:
+                fogDamage *= veryHardMultipliers.fogDamageMultiplier;
+                earlyGameFogGrowth *= veryHardMultipliers.earlyGameGrowthMultiplier;
+                midGameFogGrowth *= veryHardMultipliers.midGameGrowthMultiplier;
+                lateGameFogGrowth *= veryHardMultipliers.lateGameGrowthMultiplier;
                 break;
         }
     }
