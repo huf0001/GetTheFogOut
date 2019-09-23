@@ -55,7 +55,7 @@ public class TutorialController : DialogueBoxController
 
     //Serialized Fields
     [Header("Skip Tutorial")]
-    [SerializeField] private bool skipTutorial = true;
+    [SerializeField] private bool skipTutorial = false;
 
     [Header("Tutorial Game State")]
     [SerializeField] private TutorialStage stage = TutorialStage.ExplainSituation;
@@ -65,7 +65,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private TileData targetTile = null;
     [SerializeField] private TileData lastTileChecked;
     [SerializeField] private GameObject objectiveCompletePrefab;
-    
+
     [Header("Goals")]
     [SerializeField] private int builtHarvestersGoal;
     [SerializeField] private int builtHarvestersExtendedGoal;
@@ -157,18 +157,16 @@ public class TutorialController : DialogueBoxController
     private TileData sonarLandmarkTile;
     private DamageIndicator arrowToTarget = null;
 
-    private MusicFMOD musicFMOD;
-
     private bool lerpUIScalingTarget = false;
     private Image currentUILerpFocus;
     private float uiMinLerp;
     //private float uiMaxLerp;
-    
+
     private bool lerpUIColourTarget = false;
     private Image uiColourLerpTarget = null;
     private Color minLerpColour;
     private Color maxLerpColour;
-    
+
     private float uiTargetLerpProgress = 0f;
     private bool uiTargetLerpForward = true;
     private bool lerpPaused = false;
@@ -210,12 +208,6 @@ public class TutorialController : DialogueBoxController
             skipTutorial = GlobalVars.SkipTut;
         }
 
-        //Setup music
-        if (GameObject.Find("MusicFMOD") != null)
-        {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
-        }
-
         wKey = GameObject.Find("WKey").GetComponent<CameraInput>();
         aKey = GameObject.Find("AKey").GetComponent<CameraInput>();
         sKey = GameObject.Find("SKey").GetComponent<CameraInput>();
@@ -243,13 +235,11 @@ public class TutorialController : DialogueBoxController
 
         if (skipTutorial)
         {
+            stage = TutorialStage.Finished;
+            defencesOn = true;
             Fog.Instance.WakeUpFog(5);
             Fog.Instance.BeginUpdatingDamage(5);
-            stage = TutorialStage.Finished;
             tutProgressSlider.gameObject.SetActive(false);
-            ObjectiveController.Instance.IncrementStage();
-            defencesOn = true;
-            wKey.transform.parent.gameObject.SetActive(false);
         }
         else
         {
@@ -548,7 +538,7 @@ public class TutorialController : DialogueBoxController
                     DeactivateTarget();
                     ActivateUIColourLerpTarget(harvesterHighlight, minHarvesterColour, maxHarvesterColour);
                 }
-                
+
                 break;
             case 5:
                 currentlyLerping = ButtonType.Harvester;
@@ -678,7 +668,7 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissDialogue();
                 }
-                else if (tileClicked)      
+                else if (tileClicked)
                 {
                     DeactivateTarget();
                     GoToSubStage(5);
@@ -730,7 +720,7 @@ public class TutorialController : DialogueBoxController
                 ResetSubStage();
 
                 stage = TutorialStage.BuildHarvestersExtended;
-                
+
                 tutProgressSlider.value++;
                 break;
             default:
@@ -1604,10 +1594,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case 8:
                 ResetSubStage();
-
-                stage = TutorialStage.CollectMineralsForUpgrades;        
-                musicFMOD.StageTwoMusic();
-
+                stage = TutorialStage.CollectMineralsForUpgrades;
                 tutProgressSlider.value++;
                 break;
             default:
@@ -1637,7 +1624,7 @@ public class TutorialController : DialogueBoxController
                     {
                         ToggleObjWindow();
                     }
-                }                
+                }
 
                 break;
             case 2:
@@ -1743,8 +1730,8 @@ public class TutorialController : DialogueBoxController
             case 10:
                 tutProgressSlider.gameObject.SetActive(false);
                 ResetSubStage();
-
                 stage = TutorialStage.Finished;
+                GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageTwoMusic();
                 SendDialogue("finished", 1);
                 ObjectiveController.Instance.IncrementStage();
                 break;
@@ -2001,15 +1988,15 @@ public class TutorialController : DialogueBoxController
                 return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.BuildExtenderInFog:
                 return tile.Resource == null;
-            
-                //if (subStage < 3)
-                //{
-                //    return tile.Resource == null;
-                //}
-                //else
-                //{
-                //    return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
-                //}
+
+            //if (subStage < 3)
+            //{
+            //    return tile.Resource == null;
+            //}
+            //else
+            //{
+            //    return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
+            //}
             case TutorialStage.BuildPulseDefence:
                 tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
 
@@ -2069,17 +2056,17 @@ public class TutorialController : DialogueBoxController
                         || button == ButtonType.Harvester
                         || button == ButtonType.Destroy;
                 case TutorialStage.CollectMinerals:
-                    return button == ButtonType.Extender 
-                           || button == ButtonType.Harvester 
-                           || button == ButtonType.Generator 
+                    return button == ButtonType.Extender
+                           || button == ButtonType.Harvester
+                           || button == ButtonType.Generator
                            || button == ButtonType.Destroy;
                 case TutorialStage.CollectSonar:
                 case TutorialStage.BuildExtenderInFog:
                     return button == ButtonType.Extender
                            || button == ButtonType.Destroy;
                 case TutorialStage.BuildPulseDefence:
-                    return (button == ButtonType.FogRepeller && subStage >= 5) 
-                           || (button == ButtonType.Extender && lastTileChecked != pulseDefenceLandmark.Location) 
+                    return (button == ButtonType.FogRepeller && subStage >= 5)
+                           || (button == ButtonType.Extender && lastTileChecked != pulseDefenceLandmark.Location)
                            || button == ButtonType.Destroy;
                 case TutorialStage.DefenceActivation:
                 case TutorialStage.BuildDefencesInRange:
@@ -2396,7 +2383,7 @@ public class TutorialController : DialogueBoxController
     public void PauseColourLerp(Image calledBy)
     {
         if (lerpUIColourTarget && uiColourLerpTarget == calledBy)
-        { 
+        {
             uiColourLerpTarget.color = maxLerpColour;
             lerpPaused = true;
         }
@@ -2421,11 +2408,11 @@ public class TutorialController : DialogueBoxController
         lerpPaused = false;
         uiTargetLerpForward = true;
         uiTargetLerpProgress = 0;
-        
+
         minLerpColour = Color.clear;
         maxLerpColour = Color.clear;
         uiLerpTarget.color = Color.clear;
-        
+
         uiColourLerpTarget.gameObject.SetActive(false);
         uiColourLerpTarget = null;
     }
@@ -2564,4 +2551,3 @@ public class TutorialController : DialogueBoxController
         }
     }
 }
-

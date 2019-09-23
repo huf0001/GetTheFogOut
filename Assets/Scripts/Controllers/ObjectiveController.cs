@@ -20,6 +20,8 @@ public class ObjectiveController : DialogueBoxController
 {
     // Fields -------------------------------------------------------------------------------------
 
+    private bool skipTutorial = false;
+
     // Serialized Fields
     [SerializeField] bool objectivesOn = true;
     [SerializeField] ObjectiveStage currStage = ObjectiveStage.None;
@@ -46,8 +48,6 @@ public class ObjectiveController : DialogueBoxController
     private float tick = 0;
     private int countdown = 60;
 
-    private MusicFMOD musicFMOD;
-
     // Public Properties -------------------------------------------------------------------------------------
 
     // Basic Public Properties
@@ -69,12 +69,16 @@ public class ObjectiveController : DialogueBoxController
             Debug.LogError("There should never be 2 or more objective managers.");
         }
 
-        Instance = this;
-
-        if (GameObject.Find("MusicFMOD") != null)
+        if (GlobalVars.LoadedFromMenu)
         {
-            musicFMOD = GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>();
+            skipTutorial = GlobalVars.SkipTut;
+            if (skipTutorial)
+            {
+                currStage = ObjectiveStage.HarvestMinerals;
+            }
         }
+
+        Instance = this;
     }
 
     // Start is called before the first frame update
@@ -93,7 +97,7 @@ public class ObjectiveController : DialogueBoxController
         Profiler.BeginSample("objective");
         if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
         {
-            CheckObjectiveStage(); 
+            CheckObjectiveStage();
         }
         Profiler.EndSample();
 
@@ -108,17 +112,15 @@ public class ObjectiveController : DialogueBoxController
     {
         switch (currStage)
         {
-
             case ObjectiveStage.HarvestMinerals:
-                musicFMOD.StageOneMusic();
                 HarvestMineralStage();
                 break;
             case ObjectiveStage.RecoverPart:
-                musicFMOD.StageTwoMusic();
+                GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageTwoMusic();
                 RecoverPartStage();
                 break;
             case ObjectiveStage.SurvivalStage:
-                musicFMOD.StageThreeMusic();
+                GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageThreeMusic();
                 SurvivalStage();
                 break;
             case ObjectiveStage.Finished:
@@ -230,7 +232,7 @@ public class ObjectiveController : DialogueBoxController
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.Intensity += 1;
                 // Play music Var 2 soundtrack
-                musicFMOD.StageTwoMusic();
+                GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageTwoMusic();
 
                 if (TutorialController.Instance.SkipTutorial)
                 {
@@ -268,7 +270,7 @@ public class ObjectiveController : DialogueBoxController
             case 2:
                 // Update objectives window to 'Recover ship thrusters'
                 // End stage if the part is collected
-                
+
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
                     thruster.SetActive(false);
@@ -307,7 +309,7 @@ public class ObjectiveController : DialogueBoxController
                 hubScript.AttachedWing.SetActive(true);
 
                 // Play music Var 3 soundtrack
-                musicFMOD.StageThreeMusic();
+                GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageThreeMusic();
 
                 //Go to next stage
                 IncrementStage();
