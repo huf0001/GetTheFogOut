@@ -48,6 +48,7 @@ public class BuildingSelector : MonoBehaviour
     {
         DOTween.Kill("BuildMenu");
         visible = true;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
         selectParent.alpha = 1;
         DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, radius, 0.3f).SetId("BuildMenu").SetEase(Ease.OutBack).OnComplete(
             delegate
@@ -61,6 +62,7 @@ public class BuildingSelector : MonoBehaviour
     {
         DOTween.Kill("BuildMenu");
         visible = false;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", GetComponent<Transform>().position);
         selectParent.interactable = false;
         selectParent.blocksRaycasts = false;
         DOTween.To(() => radialMenu.Radius, x => radialMenu.Radius = x, 0, 0.3f).SetId("BuildMenu").SetEase(Ease.InBack).OnComplete(
