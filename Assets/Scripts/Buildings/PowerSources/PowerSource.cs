@@ -290,8 +290,6 @@ public abstract class PowerSource : Building
 
     public bool AreYouConnectedToHub()
     {
-        bool relayFound = false;
-
         if (this == WorldController.Instance.Hub)
         {
             return true;
