@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 2842}
   - component: {fileID: 2673}
   m_Layer: 0
-  m_Name: Hub
+  m_Name: Ship
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -381,8 +381,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0413272, y: 1.0413272, z: 1.0413272}
   m_Children:
-  - {fileID: 6925544636977587097}
   - {fileID: 2745}
+  - {fileID: 6925544636977587097}
   m_Father: {fileID: 1716}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -492,7 +492,7 @@ RectTransform:
   m_Children:
   - {fileID: 2781}
   m_Father: {fileID: 2778}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -622,8 +622,8 @@ RectTransform:
   m_Father: {fileID: 6925544636977587097}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.25}
-  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -655,14 +655,14 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a45f0ad44553ef04d88f812291a14c36, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe73a6c16983df540a3329cd7bd849c8, type: 3}
   m_Type: 3
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 1
   m_UseSpriteMesh: 0
 --- !u!1 &2562920940232684819
 GameObject:
@@ -1015,7 +1015,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6925544636977587097
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1023,18 +1023,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7571043477103794436}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -0.013501999, y: 0.013501999, z: 0.013501999}
+  m_LocalScale: {x: -0.013501998, y: 0.013501998, z: 0.013501998}
   m_Children:
   - {fileID: 105825164652980529}
   m_Father: {fileID: 2778}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.7}
-  m_SizeDelta: {x: 110, y: 22}
+  m_AnchoredPosition: {x: 0, y: 0.69999987}
+  m_SizeDelta: {x: 100, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &209979997531636623
 PrefabInstance:
@@ -1463,6 +1463,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1716}
     m_Modifications:
+    - target: {fileID: 6282645419555270051, guid: 47c24e168b0e01746a267deca948ef2c,
+        type: 3}
+      propertyPath: m_Name
+      value: FIRE
+      objectReference: {fileID: 0}
     - target: {fileID: 1389846019426272261, guid: 47c24e168b0e01746a267deca948ef2c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1532,11 +1537,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.47757024
-      objectReference: {fileID: 0}
-    - target: {fileID: 6282645419555270051, guid: 47c24e168b0e01746a267deca948ef2c,
-        type: 3}
-      propertyPath: m_Name
-      value: FIRE
       objectReference: {fileID: 0}
     - target: {fileID: 4404459315284764451, guid: 47c24e168b0e01746a267deca948ef2c,
         type: 3}
