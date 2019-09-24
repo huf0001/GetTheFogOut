@@ -1122,7 +1122,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 71fef88574749824c9c72f5408dfed24, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2624,7 +2624,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0, g: 1, b: 0.96124196, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -2642,7 +2642,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3780895184462632946}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -4935,7 +4935,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6627,7 +6627,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: e52bdfd632d57c5498fe392020b8cc2c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12354,7 +12354,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 86abca0cb27436f44957221b1a8e2314, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12428,7 +12428,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 0c528fe86b16564418d2814c28a09a0b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13870,7 +13870,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: bc9f3fe05d906f544913e8cb31ca0608, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16710,9 +16710,14 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: Hello, I am your ship's Nexus Drone. You may call me Nexy.
+    - aiExpression: 2
+      dialogue: The thick fog that's covering the planet appears to have dissipated
+        upon landing. If my calculations are correct, there is a 65% chance of it
+        being hostile. Regardless, I don't feel like sticking around to find out.
     - aiExpression: 3
-      dialogue: The rough landing appears to have done some serious damage to the
-        ship, which is our only way out of here.
+      dialogue: The thruster and other important ship components are missing. You're
+        the only one that can get us out of here, so I'm going to teach you how to
+        survive.
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16721,8 +16726,8 @@ MonoBehaviour:
   - key: move camera
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'To survive, I''m going to teach you how to control me. Press the
-        WASD keys to move me around. '
+      dialogue: 'To start, I''m going to teach you how to utilise me. Press the WASD
+        keys to move me around. '
   - key: zoom camera
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16739,8 +16744,7 @@ MonoBehaviour:
   - key: build harvester icon
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Now that the building menu is open, click on the {HARVESTER} icon
-        to place one.
+      dialogue: Now click on the {HARVESTER} icon.
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 4
@@ -16748,6 +16752,9 @@ MonoBehaviour:
     - aiExpression: 2
       dialogue: 'Once the {HARVESTER} has exhausted the {MINERAL} it''s on, it will
         show an &X& icon above it. '
+    - aiExpression: 2
+      dialogue: Try placing a couple more {HARVESTERS} to increase your {MINERAL}
+        generation.
   - key: build extender target
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16802,19 +16809,17 @@ MonoBehaviour:
   - key: select sonar
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Oh! It's the sonar. It must have fallen out of the ship when we landed.
-        Click the button on the left of your screen to open the ability menu.
+      dialogue: Oh! It's the sonar! This is one of the components of the ship that
+        was lost on impact. Click on the icon on the top right of your minimap.
   - key: activate sonar
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Once selected, click somewhere on the ground. If the sonar finds an
-        object, it will ping back with its location.
+      dialogue: 'Once selected, click somewhere on the ground. If the sonar finds
+        an object, it will ping back with its location. '
   - key: explain abilities
     expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: 'Look, it worked! '
     - aiExpression: 5
-      dialogue: It's identified something...in the fog...
+      dialogue: Look, it worked! It's identified something...in the fog...
   - key: explain thruster
     expressionDialoguePairs:
     - aiExpression: 1
@@ -16836,8 +16841,8 @@ MonoBehaviour:
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 5
-      dialogue: It's...it's ALIVE?! Great! What are we gonna do? I'm too young to
-        die! My circuitry won't survive an onslaught from the fog...
+      dialogue: It..it IS alive?! Great! What are we gonna do? I'm too young to die!
+        My circuitry won't survive an onslaught from the fog...
     - aiExpression: 2
       dialogue: I... oh, ah, I apologise. Back to the task at hand. Your ship comes
         equipped with two defence buildings, a <MORTAR> and a <PULSE DEFENCE>.
@@ -16894,8 +16899,11 @@ MonoBehaviour:
       dialogue: Is..is the fog seeping towards us? No, no, no!
     - aiExpression: 5
       dialogue: It's messing with my sensors, I can't pick up the location of the
-        thruster, you're going to need to use the sonar. I've done what I can, the
-        rest is up to you. Whatever you do, GET US OUT OF HERE!
+        thruster, you're going to need to use the sonar. Don't forget to find the
+        other ship components too, they should appear in the fog when you clear it!
+    - aiExpression: 5
+      dialogue: I've done what I can, the rest is up to you. Whatever you do, GET
+        US OUT OF HERE!
   - key: start harvest stage
     expressionDialoguePairs:
     - aiExpression: 2
@@ -20609,7 +20617,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: e52bdfd632d57c5498fe392020b8cc2c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -22295,7 +22303,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 44114eae34a836e4190b3186c8369f48, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -23607,7 +23615,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 4b73dc026211dc2459ae0bc10336f0b2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -23970,7 +23978,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: e52bdfd632d57c5498fe392020b8cc2c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -24044,7 +24052,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 0c528fe86b16564418d2814c28a09a0b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -24792,7 +24800,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 0c528fe86b16564418d2814c28a09a0b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -24963,7 +24971,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294957155
+    rgba: 4278227935
   m_fontColor: {r: 0.8745099, g: 0.5764706, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -25023,13 +25031,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 4702406519825394724}
-    characterCount: 0
+    characterCount: 9
     spriteCount: 0
     spaceCount: 0
-    wordCount: 0
+    wordCount: 1
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -26352,7 +26360,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 1493ae0b94243fe48842b78d5a75fbe2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

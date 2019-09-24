@@ -140,7 +140,7 @@ public class FogSphere : MonoBehaviour
     {
         colour = Shader.PropertyToID("_Colour");
         alpha = Shader.PropertyToID("_Alpha");
-        hub = GameObject.Find("Hub").GetComponent<Hub>();
+        hub = GameObject.Find("Ship").GetComponent<Hub>();
         hubPosition = hub.transform.position;
     }
 
