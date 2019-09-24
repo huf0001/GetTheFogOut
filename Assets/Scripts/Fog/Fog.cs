@@ -289,7 +289,7 @@ public class Fog : MonoBehaviour
         zCount = WorldController.Instance.Length;
         xMax = xCount - 1;
         zMax = zCount - 1;
-        hubPosition = GameObject.Find("Hub").transform.position;
+        hubPosition = GameObject.Find("Ship").transform.position;
 
         //Create fog unit array
         fogUnits = new FogUnit[xCount, zCount];
