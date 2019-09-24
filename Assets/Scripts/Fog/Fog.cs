@@ -54,7 +54,8 @@ public class Fog : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private FogSphere fogSpherePrefab;
     [SerializeField] private FogUnit fogUnitPrefab;
-    [SerializeField] private ParticleSystem fogEvaporation; 
+    [SerializeField] private ParticleSystem fogEvaporation;
+    [SerializeField] private bool usingFogEvaporation;
 
     [Header("Materials")]
     [SerializeField] private Material fogUnitVisibleMaterial;
@@ -690,7 +691,7 @@ public class Fog : MonoBehaviour
             {
                 f.RenderOpacity();
 
-                if (!f.Evaporating)
+                if (usingFogEvaporation && !f.Evaporating)
                 {
                     f.Evaporating = true;
                     ParticleSystem e = GetFogEvaporation(f.transform.position);
@@ -701,27 +702,30 @@ public class Fog : MonoBehaviour
 
             toRender.Clear();
 
-            //Check for evaporations that are done
-            foreach (ParticleSystem e in evaporationInPlay)
+            if (usingFogEvaporation)
             {
-                if (!e.isPlaying)
+                //Check for evaporations that are done
+                foreach (ParticleSystem e in evaporationInPlay)
                 {
-                    evaporationToPool.Add(e);
-                }
-            }
-
-            //Pool those that are
-            if (evaporationToPool.Count > 0)
-            {
-                foreach (ParticleSystem e in evaporationToPool)
-                {
-                    WorldController.Instance.GetTileAt(e.transform.position).FogUnit.Evaporating = false;
-                    evaporationInPlay.Remove(e);
-                    evaporationInPool.Add(e);
+                    if (!e.isPlaying)
+                    {
+                        evaporationToPool.Add(e);
+                    }
                 }
 
-                evaporationToPool.Clear();
-            }
+                //Pool those that are
+                if (evaporationToPool.Count > 0)
+                {
+                    foreach (ParticleSystem e in evaporationToPool)
+                    {
+                        WorldController.Instance.GetTileAt(e.transform.position).FogUnit.Evaporating = false;
+                        evaporationInPlay.Remove(e);
+                        evaporationInPool.Add(e);
+                    }
+
+                    evaporationToPool.Clear();
+                }
+            }            
 
             yield return new WaitForSeconds(fogDamageInterval);
         }
