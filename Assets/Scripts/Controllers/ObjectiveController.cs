@@ -12,6 +12,7 @@ public enum ObjectiveStage
     None,
     HarvestMinerals,
     RecoverPart,
+    Upgrades,
     SurvivalStage,
     Finished
 }
@@ -23,19 +24,30 @@ public class ObjectiveController : DialogueBoxController
     private bool skipTutorial = false;
 
     // Serialized Fields
-    [SerializeField] bool objectivesOn = true;
+    [Header("Stages")]
     [SerializeField] ObjectiveStage currStage = ObjectiveStage.None;
     [SerializeField] int subStage = 0;
+    [SerializeField] bool objectivesOn = true;
+
+    [Header("Progression of Objectives")]
+    [SerializeField] int generatorLimit = 3;
+    [SerializeField] int mineralTarget = 300;
+    //[SerializeField] int powerTarget = 500;
     [SerializeField] GameObject objectiveCompletePrefab;
-    [SerializeField] GameObject hub;
+
+    [Header("Hub")]
+    //[SerializeField] GameObject hub;
     [SerializeField] Hub hubScript;
     [SerializeField] public GameObject thruster;
-    [SerializeField] int mineralTarget = 300;
-    [SerializeField] int powerTarget = 500;
-    [SerializeField] int generatorLimit = 3;
 
+    [Header("Cameras")]
     [SerializeField] private CameraController cameraController;
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
+
+    [Header("Upgrades Tutorial")]
+    [SerializeField] int mineralsForUpgrades = 750;
+    [SerializeField] private GameObject upgradesButton;
+    [SerializeField] private GameObject upgradesCanvas;
 
     // Non-Serialized Fields
     // bool stageComplete = false;
@@ -48,6 +60,9 @@ public class ObjectiveController : DialogueBoxController
     private float tick = 0;
     private int countdown = 60;
 
+    private bool completedUpgrades = false;
+    private float upgradesTimer = 0;
+
     // Public Properties -------------------------------------------------------------------------------------
 
     // Basic Public Properties
@@ -56,9 +71,9 @@ public class ObjectiveController : DialogueBoxController
     public int CurrStage { get => (int)currStage; }
     public int GeneratorLimit { get => generatorLimit; set => generatorLimit = value; }
     public int MineralTarget { get => mineralTarget; }
-    public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
-    public int PowerTarget { get => powerTarget; }
     public GameObject ObjectiveCompletePrefab { get => objectiveCompletePrefab; }
+    public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
+    //public int PowerTarget { get => powerTarget; }
 
     // Start functions -------------------------------------------------------------------------------------
 
@@ -118,6 +133,9 @@ public class ObjectiveController : DialogueBoxController
             case ObjectiveStage.RecoverPart:
                 GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageTwoMusic();
                 RecoverPartStage();
+                break;
+            case ObjectiveStage.Upgrades:
+                UpgradesStage();
                 break;
             case ObjectiveStage.SurvivalStage:
                 GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageThreeMusic();
@@ -187,7 +205,7 @@ public class ObjectiveController : DialogueBoxController
                 // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
                 if (ResourceController.Instance.StoredMineral >= mineralTarget)
                 {
-                    ChangeToSubStage(3);
+                    GoToSubStage(3);
                 }
                 else if (dialogueRead)
                 {
@@ -215,7 +233,7 @@ public class ObjectiveController : DialogueBoxController
                 {
                     UIController.instance.CloseButton();
                     SendDialogue("maintain minerals", 1);
-                    ChangeToSubStage(1);
+                    GoToSubStage(1);
                 }
 
                 break;
@@ -226,6 +244,8 @@ public class ObjectiveController : DialogueBoxController
 
     void RecoverPartStage()
     {
+        upgradesTimer += Time.deltaTime;
+
         switch (subStage)
         {
             case 0:
@@ -252,7 +272,7 @@ public class ObjectiveController : DialogueBoxController
                 else
                 {
                     generatorLimit += 4;    //Would normally be incremented in IncrementStage()
-                    ChangeToSubStage(2);
+                    GoToSubStage(2);
                 }
 
                 break;
@@ -263,7 +283,7 @@ public class ObjectiveController : DialogueBoxController
                     thrusterCamera.gameObject.SetActive(false);
                     cameraController.MovementEnabled = true;
                     DismissDialogue();
-                    ChangeToSubStage(3);
+                    GoToSubStage(3);
                 }
 
                 break;
@@ -274,13 +294,17 @@ public class ObjectiveController : DialogueBoxController
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
                     thruster.SetActive(false);
-                    ChangeToSubStage(4);
+                    GoToSubStage(4);
                 }
                 else if (dialogueRead)
                 {
                     DismissDialogue();
                 }
-
+                else if (!TutorialController.Instance.SkipTutorial && !completedUpgrades && ResourceController.Instance.StoredMineral > mineralsForUpgrades && upgradesTimer > 30)
+                {
+                    ResetSubStage();
+                    currStage = ObjectiveStage.Upgrades;
+                }
                 break;
             case 3:
                 // Update objectives window to 'Recover ship thrusters'
@@ -289,6 +313,11 @@ public class ObjectiveController : DialogueBoxController
                 {
                     thruster.SetActive(false);
                     IncrementSubStage();
+                }
+                else if (!TutorialController.Instance.SkipTutorial && !completedUpgrades && ResourceController.Instance.StoredMineral > mineralsForUpgrades && upgradesTimer > 30)
+                {
+                    ResetSubStage();
+                    currStage = ObjectiveStage.Upgrades;
                 }
 
                 break;
@@ -312,10 +341,94 @@ public class ObjectiveController : DialogueBoxController
                 GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageThreeMusic();
 
                 //Go to next stage
-                IncrementStage();
+                GoToStage(ObjectiveStage.SurvivalStage);
 
                 break;
             default:
+                break;
+        }
+    }
+
+    //Player learns about and uses upgrades
+    private void UpgradesStage()
+    {
+        switch (subStage)
+        {
+            case 0:
+                Debug.Log("Upgrades0");
+                SendDialogue("upgrades click ship", 1);
+                UIController.instance.UpdateObjectiveText(currStage);
+
+                if (!objWindowVisible)
+                {
+                    ToggleObjWindow();
+                }
+
+                IncrementSubStage();
+                break;
+            case 1:
+                Debug.Log("Upgrades1");
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (upgradesButton.activeSelf)
+                {
+                    GoToSubStage(3);
+                }
+
+                break;
+            case 2:
+                if (upgradesButton.activeSelf)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 3:
+                SendDialogue("upgrades click icon", 0);
+                IncrementSubStage();
+                break;
+            case 4:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (upgradesCanvas.activeSelf)
+                {
+                    GoToSubStage(6);
+                }
+
+                break;
+            case 5:
+                if (upgradesCanvas.activeSelf)
+                {
+                    GoToSubStage(6);
+                }
+
+                break;
+            case 6:
+                SendDialogue("upgrades use upgrade", 0);
+                IncrementSubStage();
+                break;
+            case 7:
+                if (WorldController.Instance.UpgradeUsed)
+                {
+                    //StartCoroutine(CompleteTutorialObjective("You finished the tutorial!"));
+                    IncrementSubStage();
+                }
+
+                break;
+            case 8:
+            //    break;
+            //case 9:
+                SendDialogue("upgrades finished", 1);
+                currStage = ObjectiveStage.RecoverPart;
+                subStage = 2;
+                break;
+            default:
+                SendDialogue("error", 1);
+                Debug.Log("inaccurate sub stage");
                 break;
         }
     }
@@ -342,7 +455,7 @@ public class ObjectiveController : DialogueBoxController
                 if (countdown <= 0)
                 {
                     tick = 0;
-                    ChangeToSubStage(5);
+                    GoToSubStage(5);
                 }
                 else if (dialogueRead)
                 {
@@ -363,7 +476,7 @@ public class ObjectiveController : DialogueBoxController
                 if (countdown <= 0)
                 {
                     tick = 0;
-                    ChangeToSubStage(5);
+                    GoToSubStage(5);
                 }
                 else if (dialogueRead)
                 {
@@ -446,7 +559,7 @@ public class ObjectiveController : DialogueBoxController
         IncrementSubStage();
     }
 
-    public void ChangeToSubStage(int nextSubStage)
+    public void GoToSubStage(int nextSubStage)
     {
         ResetDialogueRead();
         subStage = nextSubStage;
@@ -470,6 +583,26 @@ public class ObjectiveController : DialogueBoxController
         ResetSubStage();
         // stageComplete = false;
         currStage++;
+    }
+
+    public void GoToStage(ObjectiveStage stage)
+    {
+        if (currStage != 0)
+        {
+            generatorLimit += 4;
+            StartCoroutine(CompleteObjective());
+        }
+        else
+        {
+            if (!objWindowVisible)
+            {
+                ToggleObjWindow();
+            }
+        }
+
+        ResetSubStage();
+        // stageComplete = false;
+        currStage = stage;
     }
 
     public void IncrementSubStage()

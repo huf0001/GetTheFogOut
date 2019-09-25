@@ -591,6 +591,10 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<size=75%>Push your way through the fog to find the missing thruster from your ship.\n\n" +
                     "Thruster: " + (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected ? f : nf);
                 break;
+            case ObjectiveStage.Upgrades:
+                hudObjText.text = "<b>Upgrades</b>";
+                objWindowText.text = "<size=75%>Learn how to use the upgrades system.\n\n";
+                break;
             case ObjectiveStage.SurvivalStage:
                 hudObjText.text = "<b>Leave the Planet</b>";
                 objWindowText.text = "<size=75%>Your ship is undergoing repairs. Protect yourself from the fog until you are ready to leave, then blast off this wretched planet!\n\n" +
@@ -666,15 +670,15 @@ public class UIController : MonoBehaviour
                 hudObjText.text = "<b>Activate Defences</b>";
                 objWindowText.text = "<size=75%>Activate the defences to clear the fog away. You may like to build more before doing so, however.\n\n";
                 break;
-            case TutorialStage.CollectMineralsForUpgrades:
-                hudObjText.text = "<b>Collect Minerals</b>";
-                objWindowText.text = "<size=75%>Gather enough mineral resources to upgrade your ship.\n\n" +
-                    $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {TutorialController.Instance.MineralsForUpgradesGoal} <size=90%><sprite=\"all_icons\" index=2>";
-                break;
-            case TutorialStage.Upgrades:
-                hudObjText.text = "<b>Upgrades</b>";
-                objWindowText.text = "<size=75%>Learn how to use the upgrades system.\n\n";
-                break;
+            //case TutorialStage.CollectMineralsForUpgrades:
+            //    hudObjText.text = "<b>Collect Minerals</b>";
+            //    objWindowText.text = "<size=75%>Gather enough mineral resources to upgrade your ship.\n\n" +
+            //        $"Target: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))} / {TutorialController.Instance.MineralsForUpgradesGoal} <size=90%><sprite=\"all_icons\" index=2>";
+            //    break;
+            //case TutorialStage.Upgrades:
+            //    hudObjText.text = "<b>Upgrades</b>";
+            //    objWindowText.text = "<size=75%>Learn how to use the upgrades system.\n\n";
+            //    break;
             case TutorialStage.BuildDefencesInRange:
                 hudObjText.text = "<b>Build Defences In Range</b>";
                 objWindowText.text = "<size=75%>Build defences within striking range of the fog.\n\n";
