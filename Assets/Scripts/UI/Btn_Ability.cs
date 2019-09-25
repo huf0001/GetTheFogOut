@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine;
 
-public class Btn_Ability : MonoBehaviour
+public class Btn_Ability : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField] private Ability abilityObject;
     [SerializeField] private TextMeshProUGUI descTextBox;
@@ -41,5 +45,10 @@ public class Btn_Ability : MonoBehaviour
         {
             AbilityController.Instance.OnButtonClicked(abilityObject);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Move", GetComponent<Transform>().position);
     }
 }

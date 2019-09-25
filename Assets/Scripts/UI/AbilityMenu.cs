@@ -48,7 +48,6 @@ public class AbilityMenu : MonoBehaviour
 
     private void OpenMenu()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Move", GetComponent<Transform>().position);
         toggleButton.interactable = false;
         Visible = true;
         buttons.alpha = 1;
@@ -63,7 +62,6 @@ public class AbilityMenu : MonoBehaviour
 
     private void CloseMenu()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Move", GetComponent<Transform>().position);
         if (AbilityController.Instance.IsAbilitySelected)
         {
             AbilityController.Instance.CancelAbility();
