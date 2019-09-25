@@ -313,6 +313,61 @@ public class MouseController : MonoBehaviour
             building.DismantleBuilding();
         }
     }
+	
+	    public void checkUpgrade(BuildingType building, GameObject b)
+    {
+        if (building == BuildingType.AirCannon)
+        {
+            if (WorldController.Instance.mortarUpgradeLevel)
+            {
+                upgradeMaterial(WorldController.Instance.mortarUpgradeLevel.upgradeNum, b,true);
+            }
+        }
+        else if (building == BuildingType.FogRepeller)
+        {
+            if (WorldController.Instance.pulseDefUpgradeLevel)
+            {
+                upgradeMaterial(WorldController.Instance.pulseDefUpgradeLevel.upgradeNum, b,false);
+            }
+        }
+        else if (building == BuildingType.Harvester)
+        {
+            if (WorldController.Instance.hvstUpgradeLevel)
+            {
+                upgradeMaterial(WorldController.Instance.hvstUpgradeLevel.upgradeNum,b,false);
+            }
+        }
+    }
+    public void upgradeMaterial(int level, GameObject b,bool air)
+    {
+        Material mr = b.GetComponentInChildren<MeshRenderer>().material;
+        Color lvl = mr.GetColor("_UpgradeColour");
+        if (level == 1)
+        {
+            lvl = new Color(0f, 174f, 191f);
+        }
+        else if (level == 2)
+        {
+            lvl = new Color(107f, 0f, 191f);
+        }
+        if (air) //b.GetComponent<Building>().BuildingType == BuildingType.AirCannon
+        {
+            MeshRenderer[] meshs = b.GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer m in meshs)
+            {
+                Material k = m.material;
+                k.SetColor("_UpgradeColour", lvl);
+                k.SetFloat("_Upgraded", 1);
+            }
+        }
+        else
+        {
+            mr = b.GetComponentInChildren<MeshRenderer>().material;
+            mr.SetColor("_UpgradeColour", lvl);
+            mr.SetFloat("_Upgraded", 1);
+        }
+     //   Debug.Log(mr.material.GetFloat("_Upgraded"));
+    }
 
     // Builds the building given on the tile given.
     public void Build(GameObject toBuild, TileData tile, float height)
@@ -349,6 +404,7 @@ public class MouseController : MonoBehaviour
                     building.Animator.SetBool("Built", true);
                 }
 
+                checkUpgrade(buildType,buildingGo);
                 //Tell the building to do things it should do when placed
                 building.Place();
                 changeTileMaterial(WorldController.Instance.normalTile);
