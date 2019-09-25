@@ -3445,6 +3445,7 @@ GameObject:
   - component: {fileID: 1331445678302875939}
   - component: {fileID: 5591990865660745365}
   - component: {fileID: 5676302124776278998}
+  - component: {fileID: 93298144133807026}
   m_Layer: 5
   m_Name: FreezeFog
   m_TagString: Untagged
@@ -3652,6 +3653,19 @@ MonoBehaviour:
   costTextBox: {fileID: 8375024729752705781}
   abilityName: Freeze Fog
   abilityDescription: An icy cold blast that freezes all fog around it for 10 seconds.
+--- !u!114 &93298144133807026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331445678302875937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee00e31d2dfe15a48a8823f9a596ae2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 43
 --- !u!1 &1404108584369145475
 GameObject:
   m_ObjectHideFlags: 0
@@ -11466,6 +11480,7 @@ GameObject:
   - component: {fileID: 3185451658077460619}
   - component: {fileID: 3185451658077460852}
   - component: {fileID: 8346436459869904578}
+  - component: {fileID: 7045528559427831699}
   - component: {fileID: 2880133560169335019}
   m_Layer: 5
   m_Name: ArtilleryBlast
@@ -11657,6 +11672,19 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &7045528559427831699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3185451658077460854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee00e31d2dfe15a48a8823f9a596ae2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 45
 --- !u!114 &2880133560169335019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15204,6 +15232,7 @@ GameObject:
   - component: {fileID: 4536729845608844090}
   - component: {fileID: 6995553777640361100}
   - component: {fileID: 4110233546365997080}
+  - component: {fileID: 8302832262404600524}
   m_Layer: 5
   m_Name: BuildingDefence
   m_TagString: Untagged
@@ -15412,6 +15441,19 @@ MonoBehaviour:
   abilityName: Defence Mode
   abilityDescription: All buildings in a selected area will gain extra health for
     30 seconds.
+--- !u!114 &8302832262404600524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4536729845608844088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee00e31d2dfe15a48a8823f9a596ae2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 44
 --- !u!1 &4549374788728836684
 GameObject:
   m_ObjectHideFlags: 0
@@ -20307,6 +20349,7 @@ GameObject:
   - component: {fileID: 5139642504653535104}
   - component: {fileID: 1779816280964444214}
   - component: {fileID: 2533413594492121232}
+  - component: {fileID: 1223779485134615614}
   m_Layer: 5
   m_Name: Overclock
   m_TagString: Untagged
@@ -20515,6 +20558,19 @@ MonoBehaviour:
   abilityName: Overclock
   abilityDescription: Select an area on the grid that contains buildings and boost
     their performance for 10 seconds.
+--- !u!114 &1223779485134615614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5139642504653535106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee00e31d2dfe15a48a8823f9a596ae2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 42
 --- !u!1 &5156435144640871527
 GameObject:
   m_ObjectHideFlags: 0
@@ -22021,6 +22077,7 @@ GameObject:
   - component: {fileID: 5855586694076376964}
   - component: {fileID: 5855586694076376699}
   - component: {fileID: 1054891007350792653}
+  - component: {fileID: 8499925342961614522}
   - component: {fileID: 2618340501484081911}
   m_Layer: 5
   m_Name: Sonar
@@ -22235,6 +22292,19 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &8499925342961614522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855586694076376697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee00e31d2dfe15a48a8823f9a596ae2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 41
 --- !u!114 &2618340501484081911
 MonoBehaviour:
   m_ObjectHideFlags: 0

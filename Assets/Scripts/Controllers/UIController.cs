@@ -25,7 +25,6 @@ public class UIController : MonoBehaviour
     private float powerTime = 0.0f, mineralTime = 0.0f;
     private bool isCursorOn = false;
     private Image launchButtonImage;
-    private MusicFMOD musicFMOD;
 
     [SerializeField] private Image hud;
     [SerializeField] private Image powerImg;
@@ -111,11 +110,11 @@ public class UIController : MonoBehaviour
         mineralTime += Time.deltaTime;
         UpdateResourceText();
 
-        if (Input.GetKeyDown("c"))
-        {
-            isCursorOn = !isCursorOn;
-            cursor.SetActive(isCursorOn);
-        }
+        //if (Input.GetKeyDown("c"))
+        //{
+        //    isCursorOn = !isCursorOn;
+        //    cursor.SetActive(isCursorOn);
+        //}
     }
 
     // find sliders and text
@@ -401,7 +400,6 @@ public class UIController : MonoBehaviour
         WorldController.Instance.GameWin = true;
         WorldController.Instance.GameOver = true;
         Fog.Instance.DamageOn = false;
-        //musicFMOD.GameWinMusic();
     }
 
     // End Game Method
