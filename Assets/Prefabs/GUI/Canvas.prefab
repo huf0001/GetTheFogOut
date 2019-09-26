@@ -16936,20 +16936,27 @@ MonoBehaviour:
       dialogue: Collect minerals for upgrades
   - key: upgrades click ship
     expressionDialoguePairs:
+    - aiExpression: 1
+      dialogue: You seem to have a generous amount of minerals stockpiled. If you
+        wish, you can upgrade your buildings to increase their effectiveness.
     - aiExpression: 2
-      dialogue: Click ship
+      dialogue: Start by clicking on your ship.
   - key: upgrades click icon
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Click icon
+      dialogue: Next, click the arrow button to access the upgrade trees.
   - key: upgrades use upgrade
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Use an upgrade
+      dialogue: These are the buildings that you can upgrade. Each branch will affect
+        important stats of your buildings.
+    - aiExpression: 2
+      dialogue: Be sure to read the changes before you choose, once you have chosen
+        you won't be able to purchase upgrades from another branch.
   - key: upgrades finished
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Upgrades finished, find thruster
+      dialogue: Now, get back to finding that thruster!
   - key: finished
     expressionDialoguePairs:
     - aiExpression: 5
