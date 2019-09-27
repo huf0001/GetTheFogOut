@@ -355,7 +355,6 @@ public class ObjectiveController : DialogueBoxController
         switch (subStage)
         {
             case 0:
-                Debug.Log("Upgrades0");
                 SendDialogue("upgrades click ship", 1);
                 UIController.instance.UpdateObjectiveText(currStage);
 
@@ -367,7 +366,6 @@ public class ObjectiveController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 1:
-                Debug.Log("Upgrades1");
                 if (dialogueRead)
                 {
                     DismissDialogue();
@@ -396,6 +394,7 @@ public class ObjectiveController : DialogueBoxController
                 }
                 else if (upgradesCanvas.activeSelf)
                 {
+                    Time.timeScale = 0;
                     GoToSubStage(6);
                 }
 
@@ -412,6 +411,18 @@ public class ObjectiveController : DialogueBoxController
                 IncrementSubStage();
                 break;
             case 7:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (WorldController.Instance.UpgradeUsed)
+                {
+                    //StartCoroutine(CompleteTutorialObjective("You finished the tutorial!"));
+                    GoToSubStage(9);
+                }
+
+                break;
+            case 8:
                 if (WorldController.Instance.UpgradeUsed)
                 {
                     //StartCoroutine(CompleteTutorialObjective("You finished the tutorial!"));
@@ -419,10 +430,34 @@ public class ObjectiveController : DialogueBoxController
                 }
 
                 break;
-            case 8:
-            //    break;
-            //case 9:
-                SendDialogue("upgrades finished", 1);
+            case 9:
+                //    break;
+                //case 9:
+                SendDialogue("upgrades finished", 0);
+                IncrementSubStage();
+                break;
+            case 10:
+                if (dialogueRead)
+                {
+                    DismissDialogue();
+                }
+                else if (!upgradesCanvas.activeSelf)
+                {
+                    GoToSubStage(12);
+                }
+
+                break;
+            case 11:
+                if (!upgradesCanvas.activeSelf)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+
+            case 12:
+                completedUpgrades = true;
+                Time.timeScale = 1;
                 currStage = ObjectiveStage.RecoverPart;
                 subStage = 2;
                 break;
