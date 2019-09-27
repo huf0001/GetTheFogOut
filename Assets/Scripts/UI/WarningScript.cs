@@ -39,9 +39,7 @@ public class WarningScript : MonoBehaviour
     [SerializeField] AudioClip audioDamageAlert;
     [SerializeField] AudioClip audioPowerGridOverloadedAlert;
 
-
-    // Start is called before the first frame update
-    void Start()
+    void Start()    // Start is called before the first frame update
     {
         tint = GetComponent<Image>();
         resourceController = ResourceController.Instance;
@@ -53,8 +51,7 @@ public class WarningScript : MonoBehaviour
         buildingStatus.text = NORMAL + "All buildings are healthy";
     }
 
-    // Update is called once per frame
-    void Update()
+    void Update()   // Update is called once per frame
     {
         CheckStates();
 
@@ -219,14 +216,7 @@ public class WarningScript : MonoBehaviour
 
         Sequence showMessage = DOTween.Sequence();
         showMessage.Append(messageTrans.DOAnchorPosX(-330, 0.5f).SetEase(Ease.OutExpo));
-        //if (building != null)
-        //{
-        //    showMessage.Append(messageTrans.DOShakeAnchorPos(3.5f, 5, 100));
-        //}
-        //else
-        //{
-            showMessage.AppendInterval(3.5f);
-        //}
+        showMessage.AppendInterval(3.5f);
         showMessage.Append(messageTrans.DOAnchorPosX(5, 0.5f).SetEase(Ease.InExpo)).OnComplete(
         delegate
         {
@@ -235,8 +225,7 @@ public class WarningScript : MonoBehaviour
             Destroy(message);
             for (int i = index; i < existingMessages.Count; i++)
             {
-                //existingMessages[i].transform.position += new Vector3(0, Screen.height / 20);
-                existingMessages[i].GetComponent<WarningPopup>().Index = i;
+                existingMessages[i].GetComponent<WarningPopup>().Index = i; //existingMessages[i].transform.position += new Vector3(0, Screen.height / 20);
             }
         });
     }
