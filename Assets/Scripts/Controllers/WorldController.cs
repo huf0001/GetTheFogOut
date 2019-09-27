@@ -80,6 +80,7 @@ public class WorldController : MonoBehaviour
 
     //Flags
     private bool hubDestroyed = false;
+    public bool isGamePaused;
 
     private int index;
     private bool thrusterToggle = true;
@@ -458,6 +459,7 @@ public class WorldController : MonoBehaviour
                 musicVolume = 1f;
             }
 
+            isGamePaused = pause;
             musicBus.setVolume(musicVolume);
         }
     }

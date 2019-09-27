@@ -203,7 +203,7 @@ public class AbilityController : MonoBehaviour
 
     private void ProcessInput()
     {
-        if (WorldController.Instance.Inputs.InputMap.Ability.triggered)
+        if (WorldController.Instance.Inputs.InputMap.Ability.triggered && !WorldController.Instance.isGamePaused)
         {
             AbilityMenu.Instance.ToggleMenu();
         }

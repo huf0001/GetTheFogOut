@@ -28,14 +28,22 @@ public class ShipComponent : Entity, IPointerEnterHandler, IPointerExitHandler
     // Update is called once per frame
     void Update()
     {
-        if (location.FogUnitActive && location.PowerSource)
+        if (location.FogUnitActive && !location.PowerSource)
         {
             missingWingMaterial.SetFloat("_Toggle", 1f);
         }
         else
         {
-            missingWingMaterial.SetFloat("_Toggle", 0f);
+            if (location.FogUnit.Health > 0)
+            {
+                missingWingMaterial.SetFloat("_Toggle", 1f);
+            } 
+            else
+            {
+                missingWingMaterial.SetFloat("_Toggle", 0f);
+            }
         }
+        
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
