@@ -288,6 +288,17 @@ public class NewInputs : IInputActionCollection
                 },
                 {
                     ""name"": """",
+                    ""id"": ""5fbcfd38-cbe2-4ebb-93c3-22a33d90ca18"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Proceed Dialogue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""f6682a78-49bd-4988-a2b8-5e7c2c16b2f1"",
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",

@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine;
 
 public class Btn_Ability : MonoBehaviour, IPointerEnterHandler
 {

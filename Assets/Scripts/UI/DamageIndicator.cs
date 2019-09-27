@@ -13,15 +13,18 @@ public class DamageIndicator : MonoBehaviour
     [SerializeField] private float topEdgeBuffer = 300;
     [SerializeField] private float bottomEdgeBuffer = 300;
     [SerializeField] private TextMeshProUGUI exclamationMark;
+    [SerializeField] private Gradient damageGradient;
     [SerializeField] private Image silhouette;
     [SerializeField] private Sprite[] silhouettes;
 
     private RectTransform rectTransform;
     private Rect screen;
-    private CanvasGroup icon;
+    private CanvasGroup canvasGroup;
     private bool on = true;
     private Transform camTarget;
     private Camera cam;
+    private Image icon;
+
     public Locatable Locatable { get; set; }
     public bool On
     {
@@ -32,7 +35,7 @@ public class DamageIndicator : MonoBehaviour
 
             if (!value)
             {
-                icon.alpha = 0;
+                canvasGroup.alpha = 0;
                 CancelInvoke(nameof(ChangeSprite));
             }
             else if (Locatable as Building)
@@ -46,8 +49,9 @@ public class DamageIndicator : MonoBehaviour
     {
         set
         {
-            GetComponent<Image>().color = value;
+            icon.color = value;
             exclamationMark.color = value;
+            silhouette.color = value;
         }
     }
 
@@ -55,7 +59,8 @@ public class DamageIndicator : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         screen = new Rect(0, 0, Screen.width, Screen.height);
-        icon = GetComponent<CanvasGroup>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        icon = GetComponent<Image>();
         cam = Camera.main;
 
         Building build = Locatable as Building;
@@ -87,31 +92,32 @@ public class DamageIndicator : MonoBehaviour
         {
             Vector3 lookAtPos = Camera.main.WorldToScreenPoint(Locatable.transform.position);
 
-            if (!screen.Contains(lookAtPos))
-            {
-                rectTransform.position = lookAtPos;
-                ClampIcon();
-                RotateIcon(lookAtPos);
-
-                if (icon.alpha == 0)
-                {
-                    icon.alpha = 1;
-                }
-            }
-            else if (Locatable as Building)
+            if (Locatable as Building)
             {
                 rectTransform.position = lookAtPos;
                 ClampIcon(new Vector2(0, 50));
                 RotateIcon(lookAtPos);
 
-                if (icon.alpha == 0)
+                if (canvasGroup.alpha == 0)
                 {
-                    icon.alpha = 1;
+                    canvasGroup.alpha = 1;
+                }
+                Colour = damageGradient.Evaluate(((Building)Locatable).Health / ((Building)Locatable).MaxHealth);
+            }
+            else if (!screen.Contains(lookAtPos))
+            {
+                rectTransform.position = lookAtPos;
+                ClampIcon();
+                RotateIcon(lookAtPos);
+
+                if (canvasGroup.alpha == 0)
+                {
+                    canvasGroup.alpha = 1;
                 }
             }
-            else if (icon.alpha == 1)
+            else if (canvasGroup.alpha == 1)
             {
-                icon.alpha = 0;
+                canvasGroup.alpha = 0;
             }
         }
     }

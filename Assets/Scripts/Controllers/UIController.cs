@@ -58,6 +58,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI abilityNameText;
     [SerializeField] private TextMeshProUGUI abilityDescText;
     [SerializeField, TextArea] private string[] abilityDescriptions;
+    [SerializeField] private TextMeshProUGUI[] abilityHotkeyTextboxes;
     [Header("Upgrades")]
     [SerializeField] private GameObject upgradesCanvas;
     [SerializeField] private Transform upgradesBg;
@@ -348,6 +349,7 @@ public class UIController : MonoBehaviour
                 abilityNameText.text = "Sonar";
                 abilityDescText.text = abilityDescriptions[4];
                 abilityButtons[4].interactable = true;
+                abilityHotkeyTextboxes[4].color = new Color(1, 1, 1);
                 break;
         }
         abilityUnlockBG.DOScale(1, 0.3f).SetUpdate(true).SetEase(Ease.OutBack);
@@ -356,6 +358,7 @@ public class UIController : MonoBehaviour
 
     public void FinishAbilityUnlock()
     {
+        DOTween.Complete(abilityUnlockBG);
         DOTween.Kill(proceedArrows);
         proceedArrows.anchoredPosition = arrowInitialPosition;
         abilityImageParent.DOScale(0.45f, 0.6f);
