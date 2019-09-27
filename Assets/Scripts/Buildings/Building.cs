@@ -41,7 +41,7 @@ public abstract class Building : Entity
     private float buildHealth;
     private float halfHealth;
     private float regenWait = 5;
-    private float sirenWait = 0;
+    private bool sirenPlayed = false;
     private MeshRenderer rend;
     private GameObject damInd;
     private DamageIndicator damIndScript;
@@ -123,6 +123,7 @@ public abstract class Building : Entity
             else
             {
                 regenWait -= Time.deltaTime;
+                sirenPlayed = false;
             }
         }
         else
@@ -132,19 +133,11 @@ public abstract class Building : Entity
 
         if (health <= halfHealth && health > 0 && TakingDamage)
         {
-            if (sirenWait <= 0)
-                {
-                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingSiren", GetComponent<Transform>().position);
-                sirenWait = 2;
-            }
-            else
+            if (!sirenPlayed)
             {
-                sirenWait -= Time.deltaTime;
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingSiren", GetComponent<Transform>().position);
+                sirenPlayed = true;
             }
-        }
-        else
-        {
-            sirenWait = 0;
         }
 
         // Process shield decay

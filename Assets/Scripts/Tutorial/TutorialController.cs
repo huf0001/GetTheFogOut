@@ -1018,12 +1018,13 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 2:
-                // Update objective window with 0-500 mineral gauge, and button for fix hull when gauge filled
+                // Update objective window with 0-300 mineral gauge, and button for fix hull when gauge filled
                 if (ResourceController.Instance.StoredMineral >= collectedMineralsGoal)
                 {
                     GoToSubStage(4);
                 }
-                else if (dialogueRead)
+
+                if (dialogueRead)
                 {
                     DismissDialogue();
                 }
@@ -1051,7 +1052,6 @@ public class TutorialController : DialogueBoxController
                     SendDialogue("maintain minerals", 1);
                     GoToSubStage(2);
                 }
-
                 break;
             case 6:
                 // Update Hub model to fixed ship without thrusters / Particle effects

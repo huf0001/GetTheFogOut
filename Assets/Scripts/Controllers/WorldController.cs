@@ -36,13 +36,12 @@ public class WorldController : MonoBehaviour
     [Header("Prefab/Gameobject assignment")]
     [SerializeField] private GameObject ground;
 
-    [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab/*, hubPrefab, *//*mineralPrefab*/;
+    [SerializeField] public GameObject planeGridprefab, minimapPlanePrefab;
     [SerializeField] public Material normalTile, hoverTile, collectibleTile;
 
     [SerializeField] private Hub hub = null;
     [SerializeField] private TileData[,] tiles;
     [SerializeField] private List<ShipComponentState> shipComponents = new List<ShipComponentState>();
-    //[SerializeField] protected GameObject serialCamera;
     [SerializeField] private AbilityMenu abilityMenu;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private Animator canvasAnimator;
@@ -145,16 +144,11 @@ public class WorldController : MonoBehaviour
         cam = Camera.main;
 
         tm = FindObjectOfType<TowerManager>();
-
-        //abilityMenu = GameObject.Find("AbilitySelectParent").GetComponent<AbilityMenu>();
-        //serialCamera = GameObject.Find("CameraTarget");
-        //mainCamera = GameObject.Find("Camera");
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
     }
 
-    void SetResourcesToTiles()
-    // Collect all Resources in the scene and assign them to the closest tile
+    void SetResourcesToTiles()  // Collect all Resources in the scene and assign them to the closest tile
     {
         ResourceNode[] resources = FindObjectsOfType<ResourceNode>();
 
@@ -175,8 +169,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    void SetBuildingsToTiles()
-    // Collect all Buildings in the scene and assign them to the closest tile
+    void SetBuildingsToTiles()  // Collect all Buildings in the scene and assign them to the closest tile
     {
         Building[] buildings = FindObjectsOfType<Building>();
         ShipComponent[] shipComponentList = FindObjectsOfType<ShipComponent>();
@@ -191,8 +184,7 @@ public class WorldController : MonoBehaviour
                 b.Animator = b.GetComponentInChildren<Animator>();
                 b.Animator.SetBool("Built", true);
 
-                // Centre on tile
-                Vector3 pos = b.transform.position;
+                Vector3 pos = b.transform.position; // Centre on tile
                 pos.x = Mathf.Round(pos.x);
                 pos.z = Mathf.Round(pos.z);
                 b.transform.position = pos;
@@ -235,8 +227,7 @@ public class WorldController : MonoBehaviour
             tile.buildingChecks.collectable = true;
             c.Location = tile;
 
-            // Centre on tile
-            Vector3 pos = position;
+            Vector3 pos = position; // Centre on tile
             pos.x = Mathf.Round(pos.x);
             pos.z = Mathf.Round(pos.z);
             position = pos;
@@ -306,8 +297,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    //Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
-    public void ConnectAdjacentTiles()
+    public void ConnectAdjacentTiles()  //Connects each tile to its orthogonally adjacent and diagonally adjacent neighbours
     {
         TileData a;
 
@@ -400,7 +390,6 @@ public class WorldController : MonoBehaviour
             {
                 StartCoroutine("PlayDeadAnimator");
             }
-            //   GameOverUpdate();
         }
     }
 
@@ -416,18 +405,7 @@ public class WorldController : MonoBehaviour
             RenderTower();
         }
         showActiveTiles();
-        /*
-        if (ObjectiveController.Instance.thruster.activeSelf)
-        {
-            thrusterTilesOn();
-
-        }
-
-        if (GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
-        {
-            thrusterTilesOff();
-        }
-        */
+        
         if (Inputs.InputMap.Pause.triggered)
         {
             Destroy(TowerSpawn);
@@ -705,12 +683,6 @@ public class WorldController : MonoBehaviour
                         MeshRenderer mesh = tile.plane.GetComponent<MeshRenderer>();
                         mesh.material = collectibleTile;
                     }
-                    /*
-                    if (tile == WorldController.Instance.GetTileAt(36,34))
-                    {
-                        Destroy(tile.plane);
-                    }
-                    */
                 }
             }
 
@@ -767,12 +739,10 @@ public class WorldController : MonoBehaviour
                             activeTiles.Add(tile);
                         }
                         DisableTiles.Remove(tile);
-                        tile.PowerUp(tempPower);
-                        //             Debug.Log(tile.Name);
+                        tile.PowerUp(tempPower); // Debug.Log(tile.Name);
                     }
                 }
-            }
-            //    Debug.Log("off");
+            }   // Debug.Log("off");
             thrusterToggle = true;
         }
     }
@@ -794,12 +764,10 @@ public class WorldController : MonoBehaviour
                             MouseController.Instance.RemoveBulding(MouseController.Instance.ReturnCost(tile.getself()));
                         }
                         tempPower = tile.getself().PowerSource;
-                        tile.PowerDown(tempPower);
-                        //     Debug.Log(tile.Name);
+                        tile.PowerDown(tempPower);  // Debug.Log(tile.Name);
                     }
                 }
-            }
-            //    Debug.Log("on");
+            }   // Debug.Log("on");
             thrusterToggle = false;
         }
     }
