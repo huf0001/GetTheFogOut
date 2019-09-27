@@ -30,7 +30,9 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] bool objectivesOn = true;
 
     [Header("Progression of Objectives")]
-    [SerializeField] int generatorLimit = 3;
+    [SerializeField] int earlyGameGeneratorLimit;
+    [SerializeField] int midGameGeneratorLimit;
+    [SerializeField] int lateGameGeneratorLimit;
     [SerializeField] int mineralTarget = 300;
     //[SerializeField] int powerTarget = 500;
     [SerializeField] GameObject objectiveCompletePrefab;
@@ -63,6 +65,8 @@ public class ObjectiveController : DialogueBoxController
     private bool completedUpgrades = false;
     private float upgradesTimer = 0;
 
+    private int generatorLimit;
+
     // Public Properties -------------------------------------------------------------------------------------
 
     // Basic Public Properties
@@ -70,6 +74,7 @@ public class ObjectiveController : DialogueBoxController
     public int Countdown { get => countdown; set => countdown = value; }
     public int CurrStage { get => (int)currStage; }
     public int GeneratorLimit { get => generatorLimit; set => generatorLimit = value; }
+    public int EarlyGameGeneratorLimit { get => earlyGameGeneratorLimit; set => earlyGameGeneratorLimit = value; }
     public int MineralTarget { get => mineralTarget; }
     public GameObject ObjectiveCompletePrefab { get => objectiveCompletePrefab; }
     public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
@@ -251,6 +256,7 @@ public class ObjectiveController : DialogueBoxController
             case 0:
                 // Set fog AI to 'Moderate Aggression'
                 Fog.Instance.Intensity += 1;
+                generatorLimit = midGameGeneratorLimit;
                 // Play music Var 2 soundtrack
                 GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageTwoMusic();
 
@@ -271,7 +277,7 @@ public class ObjectiveController : DialogueBoxController
                 }
                 else
                 {
-                    generatorLimit += 4;    //Would normally be incremented in IncrementStage()
+                    //generatorLimit += 4;    //Would normally be incremented in IncrementStage()
                     GoToSubStage(2);
                 }
 
@@ -476,6 +482,7 @@ public class ObjectiveController : DialogueBoxController
             case 0:
                 // Set fog AI to 'Overly Aggressive'
                 Fog.Instance.Intensity += 1;
+                generatorLimit = lateGameGeneratorLimit;
 
                 // Run AI completion text
                 SendDialogue("end part stage", 1);
@@ -604,8 +611,8 @@ public class ObjectiveController : DialogueBoxController
     {
         if (currStage != 0)
         {
-            generatorLimit += 4;
-            StartCoroutine(CompleteObjective());
+            //generatorLimit += 4;
+            StartCoroutine(CompleteObjective($"You can build a maximum of {generatorLimit + 10} generators now!"));
         }
         else
         {
@@ -624,8 +631,8 @@ public class ObjectiveController : DialogueBoxController
     {
         if (currStage != 0)
         {
-            generatorLimit += 4;
-            StartCoroutine(CompleteObjective());
+            //generatorLimit += 4;
+            StartCoroutine(CompleteObjective($"You can build a maximum of {generatorLimit + 10} generators now!"));
         }
         else
         {
@@ -656,12 +663,12 @@ public class ObjectiveController : DialogueBoxController
     }
 
     // run as coroutine
-    IEnumerator CompleteObjective()
+    IEnumerator CompleteObjective(string message)
     {
         GameObject objComp = Instantiate(objectiveCompletePrefab, GameObject.Find("Canvas").transform);
         GameObject objCompImage = objComp.GetComponentInChildren<Image>().gameObject;
         TextMeshProUGUI unlocksText = objCompImage.GetComponentInChildren<TextMeshProUGUI>();
-        unlocksText.text = $"You can build a maximum of {generatorLimit} generators now!";
+        unlocksText.text = message;
         objCompImage.GetComponent<RectTransform>().DOAnchorPosX(0, 0.3f).SetEase(Ease.OutQuad).SetUpdate(true);
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-Win", GetComponent<Transform>().position);
         yield return new WaitForSecondsRealtime(5f);
