@@ -81,6 +81,7 @@ MonoBehaviour:
   hvstUpgradeLevel: {fileID: 0}
   mortarUpgradeLevel: {fileID: 0}
   pulseDefUpgradeLevel: {fileID: 0}
+  isGamePaused: 0
   tempPower: {fileID: 0}
 --- !u!114 &1210913968312047254
 MonoBehaviour:
@@ -428,13 +429,13 @@ MonoBehaviour:
   lateGameMaxFogSphereHealth: 200
   easyMultipliers:
     fogDamageMultiplier: 0.5
-    earlyGameGrowthMultiplier: 0.5
-    midGameGrowthMultiplier: 0.5
-    lateGameGrowthMultiplier: 0.5
+    earlyGameGrowthMultiplier: 0.1
+    midGameGrowthMultiplier: 0.2
+    lateGameGrowthMultiplier: 0.4
   mediumMultipliers:
     fogDamageMultiplier: 0.7
-    earlyGameGrowthMultiplier: 0.7
-    midGameGrowthMultiplier: 0.7
+    earlyGameGrowthMultiplier: 0.2
+    midGameGrowthMultiplier: 0.3
     lateGameGrowthMultiplier: 0.7
   hardMultipliers:
     fogDamageMultiplier: 1
