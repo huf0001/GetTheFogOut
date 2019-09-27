@@ -119,6 +119,8 @@ public class BuildingInfo : MonoBehaviour
     public void ShowInfo(Building b)
     {
         if (!cam) cam = Camera.main;
+        DOTween.Kill(bg);
+        bg.rectTransform.DOScale(1, 0.3f);
 
         building = b;
         shipComp = null;
@@ -196,11 +198,16 @@ public class BuildingInfo : MonoBehaviour
         healthBarFill.color = healthGradient.Evaluate(healthBarMask.fillAmount);
         building = null;
         shipComp = null;
-        gameObject.SetActive(false);
         if (Range)
         {
             Range.gameObject.SetActive(false);
         }
-        Visible = false;
+        DOTween.Kill(bg);
+        bg.rectTransform.DOScale(0.01f, 0.3f).OnComplete(
+            delegate
+            {
+                gameObject.SetActive(false);
+                Visible = false;
+            });
     }
 }
