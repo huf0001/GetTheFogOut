@@ -146,7 +146,6 @@ public class TutorialController : DialogueBoxController
     private float tileTargetLerpProgress = 0f;
     private bool tileTargetLerpForward = true;
 
-    private int originalGeneratorLimit;
     private int extendersGoal;
     private bool defencesOn = false;
     private int mortarsGoal;
@@ -240,6 +239,7 @@ public class TutorialController : DialogueBoxController
             Fog.Instance.WakeUpFog(5);
             Fog.Instance.BeginUpdatingDamage(5);
             tutProgressSlider.gameObject.SetActive(false);
+            ObjectiveController.Instance.GeneratorLimit = ObjectiveController.Instance.EarlyGameGeneratorLimit;
 
             //For playing straight from the game scene rather than from main menu
             if (ObjectiveController.Instance.CurrStage == (int)ObjectiveStage.None)
@@ -251,12 +251,11 @@ public class TutorialController : DialogueBoxController
         {
             sonarLandmarkTile = WorldController.Instance.GetTileAt(sonarLandmark.transform.position);
             targetRenderer = buildingTarget.GetComponent<MeshRenderer>();
-            originalGeneratorLimit = ObjectiveController.Instance.GeneratorLimit;
             ObjectiveController.Instance.GeneratorLimit = builtGeneratorsGoal;
 
-            if (builtGeneratorsGoal > originalGeneratorLimit)
+            if (builtGeneratorsGoal > ObjectiveController.Instance.EarlyGameGeneratorLimit)
             {
-                Debug.Log("Warning: TutorialController.builtGeneratorsGoal > originalGeneratorLimit. Shouldn't it be <=?");
+                Debug.Log("Warning: TutorialController.builtGeneratorsGoal > ObjectiveController.Instance.EarlyGameGeneratorLimit. Shouldn't it be <=?");
             }
 
             lerpTargetsRemaining = new List<Locatable>();
@@ -990,7 +989,7 @@ public class TutorialController : DialogueBoxController
                 ResetSubStage();
 
                 stage = TutorialStage.CollectMinerals;
-                ObjectiveController.Instance.GeneratorLimit = originalGeneratorLimit;
+                ObjectiveController.Instance.GeneratorLimit = ObjectiveController.Instance.EarlyGameGeneratorLimit;
                 tutProgressSlider.value++;
                 break;
             default:
