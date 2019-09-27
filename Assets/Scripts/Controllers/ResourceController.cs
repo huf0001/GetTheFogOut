@@ -27,6 +27,8 @@ public class ResourceController : MonoBehaviour
 
     private List<Building> buildings = new List<Building>();
 
+    public float powerChangePauseThreshold;
+
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
@@ -92,7 +94,6 @@ public class ResourceController : MonoBehaviour
     private void CalculatePowerSupply()
     {
         //Provide hub's power contribution
-        storedPower += hub.Upkeep;
         powerChange += hub.Upkeep;
         
         //Get Generators' power contributions
@@ -100,7 +101,6 @@ public class ResourceController : MonoBehaviour
         {
             if (WorldController.Instance.ActiveTiles.Contains(generator.Location))
             {
-                storedPower += generator.Upkeep * generator.OverclockValue;
                 powerChange += generator.Upkeep * generator.OverclockValue;
             }
         }
@@ -118,14 +118,11 @@ public class ResourceController : MonoBehaviour
             }
         }
 
-
         //Supply power to connected extenders
-
         foreach (Relay r in extenders)
         {
             if (WorldController.Instance.ActiveTiles.Contains(r.Location))
             {
-                storedPower += r.Upkeep;
                 powerChange += r.Upkeep;
 
                 if (storedPower >= 0)
@@ -152,7 +149,6 @@ public class ResourceController : MonoBehaviour
         {
             if (WorldController.Instance.ActiveTiles.Contains(m.Location))
             {
-                storedPower += m.Upkeep;
                 powerChange += m.Upkeep;
             }
         }
@@ -162,7 +158,6 @@ public class ResourceController : MonoBehaviour
         {
             if (WorldController.Instance.ActiveTiles.Contains(pd.Location))
             {
-                storedPower += pd.Upkeep;
                 powerChange += pd.Upkeep;
             }
         }
@@ -172,8 +167,24 @@ public class ResourceController : MonoBehaviour
         {
             if (WorldController.Instance.ActiveTiles.Contains(h.Location))
             {
-                storedPower += h.Upkeep;
-                powerChange += h.Upkeep;                    
+                powerChange += h.Upkeep;
+            }
+        }
+
+        if (powerChangePauseThreshold == -1)
+        {
+            storedPower += powerChange;
+        }
+        else if (powerChangePauseThreshold != -1)
+        {
+            if (storedPower >= powerChangePauseThreshold)
+            {
+                storedPower = Mathf.Max(storedPower + powerChange, powerChangePauseThreshold);
+            }
+            
+            if (storedPower <= powerChangePauseThreshold)
+            {
+                powerChange = 0;
             }
         }
     }
@@ -396,5 +407,17 @@ public class ResourceController : MonoBehaviour
                 Debug.Log("BuildingType not accepted");
                 break;
         }
+    }
+
+    //Pauses power drop once the power drops below a specified threshold
+    public void PausePowerChange(float threshold)
+    {
+        powerChangePauseThreshold = threshold;
+    }
+
+    //Unpauses the pause to power drop
+    public void UnPausePowerChange()
+    {
+        powerChangePauseThreshold = -1;
     }
 }

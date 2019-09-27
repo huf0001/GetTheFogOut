@@ -805,7 +805,9 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                if (ResourceController.Instance.StoredPower < 75)
+                ResourceController.Instance.PausePowerChange(75);
+
+                if (ResourceController.Instance.StoredPower <= 75)
                 {
                     currentlyBuilding = BuildingType.Generator;
                     SendDialogue("explain power", 1);
@@ -938,6 +940,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 13:
+                ResourceController.Instance.UnPausePowerChange();
                 DeactivateUIColourLerpTarget();
                 lerpTargetsRemaining.Remove(generatorLandmark);
                 Destroy(generatorHighlight);
