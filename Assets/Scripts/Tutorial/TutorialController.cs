@@ -77,6 +77,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraController cameraController;
     [SerializeField] private CinemachineVirtualCamera sonarCamera;
     [SerializeField] private CinemachineVirtualCamera artilleryCamera;
+    [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
     [Header("Game Objects")]
     [SerializeField] private Hub hub;
@@ -160,7 +161,6 @@ public class TutorialController : DialogueBoxController
     private bool lerpUIScalingTarget = false;
     private Image currentUILerpFocus;
     private float uiMinLerp;
-    //private float uiMaxLerp;
 
     private bool lerpUIColourTarget = false;
     private Image uiColourLerpTarget = null;
@@ -1209,15 +1209,34 @@ public class TutorialController : DialogueBoxController
             case 14:
                 if (dialogueRead)
                 {
+                    DismissDialogue();
                     artilleryCamera.gameObject.SetActive(false);
                     lerpTargetsRemaining.Remove(sonarLandmark);
                     lerpTargetsRemaining.Remove(activateSonarLandmark);
+
+                    base.SendDialogue("detecting thruster", 0.5f);       //Using base so as to not double up on IncrementSubStage() calls
+                }
+
+                break;
+            case 15:
+                if (dialogueRead)
+                {
                     DismissDialogue();
+
+                    thrusterCamera.gameObject.SetActive(true);
+                    base.SendDialogue("explain thruster", 0.5f);
+                }
+
+                break;
+            case 16:
+                if (dialogueRead)
+                {
+                    thrusterCamera.gameObject.SetActive(false);
+                    DismissDialogue();                    
                     ResetSubStage();
 
                     stage = TutorialStage.BuildExtenderInFog;
                     cameraController.MovementEnabled = true;
-
                     tutProgressSlider.value++;
                 }
 
@@ -1604,7 +1623,7 @@ public class TutorialController : DialogueBoxController
 
                 stage = TutorialStage.Finished;
                 GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageTwoMusic();
-                SendDialogue("finished", 1);
+                SendDialogue("finished", 1);            //TODO: add timeout for this piece of dialogue
                 ObjectiveController.Instance.IncrementStage();
                 break;
 
