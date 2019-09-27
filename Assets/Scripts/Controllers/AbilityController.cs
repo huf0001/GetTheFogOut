@@ -192,7 +192,7 @@ public class AbilityController : MonoBehaviour
             MouseController.Instance.isBuildAvaliable = false;
 
             // Set correct range for the range indicator
-            Vector3 scale = new Vector3(ability.targetRadius * 2, 0.01f, ability.targetRadius * 2);
+            Vector3 scale = new Vector3(ability.targetRadius * 2, 30, ability.targetRadius * 2);
             rangeIndicatorGO.transform.localScale = scale;
         }
         else
