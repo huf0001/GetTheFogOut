@@ -16761,15 +16761,8 @@ MonoBehaviour:
   - key: explain situation
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Hello, I am your ship's Nexus Drone. You may call me Nexy.
-    - aiExpression: 2
-      dialogue: The thick fog that's covering the planet appears to have dissipated
-        upon landing. If my calculations are correct, there is a 65% chance of it
-        being hostile. Regardless, I don't feel like sticking around to find out.
-    - aiExpression: 3
-      dialogue: The thruster and other important ship components are missing. You're
-        the only one that can get us out of here, so I'm going to teach you how to
-        survive.
+      dialogue: 'Hello, I am your ship''s Nexus Drone. I have been designed to aid
+        your survival. '
   - key: explain minerals
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16813,8 +16806,8 @@ MonoBehaviour:
       dialogue: 'Now, you see the green grid around your ship? It represents the area
         available to place buildings on. '
     - aiExpression: 2
-      dialogue: Right now it's too small to reach minerals nearby. You will need to
-        place a [POWER EXTENDER]. I will show you where to place one.
+      dialogue: 'Right now it''s too small to reach minerals nearby. You will need
+        to place a [POWER EXTENDER]. '
   - key: build more harvesters extended
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16838,12 +16831,11 @@ MonoBehaviour:
   - key: build generator target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: To manage your power consumption, you can place [POWER GENERATORS].
-        They will increase the rate that you can regenerate power. Try placing a [POWER
-        GENERATOR].
+      dialogue: 'To manage your power consumption, you can place [POWER GENERATORS].
+        They will increase the rate that you can regenerate power. '
   - key: build more generators
     expressionDialoguePairs:
-    - aiExpression: 1
+    - aiExpression: 4
       dialogue: Good, that appears to have saved us from disaster. Try placing a couple
         more.
   - key: collect minerals
@@ -16860,14 +16852,14 @@ MonoBehaviour:
         it.
   - key: select sonar
     expressionDialoguePairs:
-    - aiExpression: 1
-      dialogue: Oh! It's the sonar! This is one of the components of the ship that
-        was lost on impact. Click on the icon on the top right of your minimap.
+    - aiExpression: 4
+      dialogue: Oh! It's the sonar! It must have fallen out of the ship upon landing.
+        Click on the icon on the top right of your minimap.
   - key: activate sonar
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'Once selected, click somewhere on the ground. If the sonar finds
-        an object, it will ping back with its location. '
+      dialogue: 'Once selected, you can click on the ground. If the sonar finds an
+        object, it will ping back with its location. '
   - key: explain abilities
     expressionDialoguePairs:
     - aiExpression: 5
@@ -16875,12 +16867,12 @@ MonoBehaviour:
   - key: detecting thruster
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Detecting thruster . . .
+      dialogue: 'Hey, my sensors are detecting an anomaly nearby... '
   - key: explain thruster
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: Ooh! And here's the thruster. We'll be needing that too, if we want
-        to get off this planet.
+      dialogue: Ooh! There's the thruster. We'll be needing that too, if we want to
+        get off this planet.
   - key: extend to thruster
     expressionDialoguePairs:
     - aiExpression: 2
@@ -16964,10 +16956,6 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 5
       dialogue: Is..is the fog seeping towards us? No, no, no!
-    - aiExpression: 5
-      dialogue: It's messing with my sensors, I can't pick up the location of the
-        thruster, you're going to need to use the sonar. Don't forget to find the
-        other ship components too, they should appear in the fog when you clear it!
     - aiExpression: 5
       dialogue: I've done what I can, the rest is up to you. Whatever you do, GET
         US OUT OF HERE!
