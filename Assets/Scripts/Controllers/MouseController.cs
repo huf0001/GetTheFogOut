@@ -124,7 +124,6 @@ public class MouseController : MonoBehaviour
                             {
                                 changeTileMaterial(WorldController.Instance.normalTile);
                             }
-
                         }
                     }
                 }
@@ -205,7 +204,7 @@ public class MouseController : MonoBehaviour
             TileData tile;
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-
+            
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables", "Buildings" })) && WorldController.Instance.TileExistsAt(hit.point))
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)

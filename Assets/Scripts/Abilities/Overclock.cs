@@ -45,6 +45,7 @@ namespace Abilities
                     AbilityController.Instance.StartCoroutine(TurnOffOverclock(t.Building));
                 }
             }
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-OverClock", tile.Position);
         }
 
         private IEnumerator TurnOffOverclock(Building b)

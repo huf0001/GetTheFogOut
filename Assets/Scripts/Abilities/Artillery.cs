@@ -17,12 +17,10 @@ namespace Abilities
         public override void TriggerAbility(TileData tile)
         {
             AbilityController.Instance.StartCoroutine(KillFog(tile));
-            
-            // TODO: Audio effect
-            
             GameObject effectGO = Instantiate(
                 effectPrefab, tile.Position, Quaternion.Euler(0, 0, 0), WorldController.Instance.transform);
             AbilityController.Instance.StartCoroutine(KillEffect(effectGO));
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-ArtilleryStrike", tile.Position);
         }
 
         IEnumerator KillEffect(GameObject g)

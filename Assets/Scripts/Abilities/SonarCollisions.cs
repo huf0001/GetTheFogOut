@@ -21,6 +21,7 @@ namespace Abilities
             GameObject sonarEffect = Instantiate(sonarPingBackPrefab, collectable.transform.position, Quaternion.Euler(Vector3.zero));
             sonarEffect.GetComponent<Animator>().enabled = true;
             AbilityController.Instance.StartCoroutine(OnAnimationComplete(sonarEffect.GetComponent<Animator>()));
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-SonarPingback", GetComponent<Transform>().position);
         }
         
         IEnumerator OnAnimationComplete(Animator animator)

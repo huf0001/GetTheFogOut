@@ -45,6 +45,7 @@ namespace Abilities
                 GameObject sonarEffect = Instantiate(sonarEffectPrefab, tile.Position, Quaternion.Euler(Vector3.zero));
                 sonarEffect.GetComponent<Animator>().enabled = true;
                 AbilityController.Instance.StartCoroutine(OnAnimationComplete(sonarEffect.GetComponent<Animator>()));
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sonar", tile.Position);
             }
         }
 
