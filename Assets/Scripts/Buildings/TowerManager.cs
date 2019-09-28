@@ -124,19 +124,11 @@ public class TowerManager : MonoBehaviour
 
     public void CancelBuild()
     {
-        //if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Xbox_B")) // && buildingType != TutorialController.Instance.CurrentlyBuilding <--- this breaks closing the building menu when not in the tutorial
-        //{
         selectedTower = null;
         currentTile = null;
         Destroy(hologramTower);
-        if (UIController.instance.buildingSelector.Visible)
-        { 
-            UIController.instance.buildingSelector.ToggleVisibility();
-        }
-        UIController.instance.buildingInfo.HideInfo();
+        if (UIController.instance.buildingSelector.Visible) UIController.instance.buildingSelector.ToggleVisibility();
+        if (!UIController.instance.UpgradeWindowVisible) UIController.instance.buildingInfo.HideInfo();
         buildingType = BuildingType.None;
-        //}
-        //selectedTower = null;
-        //buildingType = BuildingType.None;
     }
 }

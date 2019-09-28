@@ -48,10 +48,10 @@ public class BuildingInfo : MonoBehaviour
                 mineralTime += Time.deltaTime;
                 transform.position = cam.WorldToScreenPoint(building.transform.position) + new Vector3(Screen.width / 13, 0);
             }
-            else
-            {
-                transform.position = cam.WorldToScreenPoint(shipComp.transform.position) + new Vector3(Screen.width / 13, 0);
-            }
+            //else
+            //{
+            //    transform.position = cam.WorldToScreenPoint(shipComp.transform.position) + new Vector3(Screen.width / 13, 0);
+            //}
         }
     }
 
@@ -194,20 +194,21 @@ public class BuildingInfo : MonoBehaviour
     public void HideInfo()
     {
         CancelInvoke("UpdateText");
-        DOTween.Kill(healthBarFill);
-        healthBarFill.color = healthGradient.Evaluate(healthBarMask.fillAmount);
-        building = null;
-        shipComp = null;
         if (Range)
         {
             Range.gameObject.SetActive(false);
         }
+
         DOTween.Kill(bg);
         bg.rectTransform.DOScale(0.01f, 0.3f).OnComplete(
             delegate
             {
+                DOTween.Kill(healthBarFill);
+                healthBarFill.color = healthGradient.Evaluate(healthBarMask.fillAmount);
                 gameObject.SetActive(false);
                 Visible = false;
+                building = null;
+                shipComp = null;
             });
     }
 }

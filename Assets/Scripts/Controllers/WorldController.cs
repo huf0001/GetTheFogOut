@@ -466,6 +466,10 @@ public class WorldController : MonoBehaviour
 
     IEnumerator PlayDeadAnimator()
     {
+        foreach (Building b in resourceController.Buildings)
+        {
+            b.HideHealthBar();
+        }
         Animator dead = mainCamera.GetComponent<Animator>();
         if (dead)
         {
@@ -486,6 +490,7 @@ public class WorldController : MonoBehaviour
         {
             win.SetBool("Win", true);
             if (ObjectiveController.Instance.ObjWindowVisible) ObjectiveController.Instance.ToggleObjWindow();
+            if (uiController.buildingInfo.Visible) uiController.buildingInfo.HideInfo();
             yield return new WaitForSeconds(0.5f);
             canvasAnimator.enabled = true;
             canvasAnimator.SetBool("EndGame", true);

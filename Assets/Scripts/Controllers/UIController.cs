@@ -73,6 +73,7 @@ public class UIController : MonoBehaviour
     private float currentPowerValDisplayed = 0;
 
     public float CurrentPowerValDisplayed { get => currentPowerValDisplayed; }
+    public bool UpgradeWindowVisible { get; set; }
 
     // Start is called before the first frame update
     void Awake()
@@ -107,15 +108,14 @@ public class UIController : MonoBehaviour
             resourceController = ResourceController.Instance;
         }
 
+        if (WorldController.Instance.Inputs.InputMap.Pause.triggered)
+        {
+            HideUpgradeWindow();
+        }
+
         powerTime += Time.deltaTime;
         mineralTime += Time.deltaTime;
         UpdateResourceText();
-
-        //if (Input.GetKeyDown("c"))
-        //{
-        //    isCursorOn = !isCursorOn;
-        //    cursor.SetActive(isCursorOn);
-        //}
     }
 
     // find sliders and text
@@ -325,24 +325,28 @@ public class UIController : MonoBehaviour
                 abilityNameText.text = "Artillery Blast";
                 abilityDescText.text = abilityDescriptions[0];
                 abilityButtons[0].interactable = true;
+                abilityHotkeyTextboxes[0].color = new Color(1, 1, 1);
                 break;
             case AbilityEnum.BuildingDefence:
                 abilityImage.sprite = abilitySprites[1];
                 abilityNameText.text = "Defence Mode";
                 abilityDescText.text = abilityDescriptions[1];
                 abilityButtons[1].interactable = true;
+                abilityHotkeyTextboxes[1].color = new Color(1, 1, 1);
                 break;
             case AbilityEnum.FreezeFog:
                 abilityImage.sprite = abilitySprites[2];
                 abilityNameText.text = "Freeze Fog";
                 abilityDescText.text = abilityDescriptions[2];
                 abilityButtons[2].interactable = true;
+                abilityHotkeyTextboxes[2].color = new Color(1, 1, 1);
                 break;
             case AbilityEnum.Overclock:
                 abilityImage.sprite = abilitySprites[3];
                 abilityNameText.text = "Overclock";
                 abilityDescText.text = abilityDescriptions[3];
                 abilityButtons[3].interactable = true;
+                abilityHotkeyTextboxes[3].color = new Color(1, 1, 1);
                 break;
             case AbilityEnum.Sonar:
                 abilityImage.sprite = abilitySprites[4];
@@ -381,16 +385,19 @@ public class UIController : MonoBehaviour
     public void ShowUpgradeWindow()
     {
         upgradesCanvas.SetActive(true);
+        UpgradeWindowVisible = true;
         upgradesBg.DOScale(1, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
         Time.timeScale = 0.1f;
     }
 
     public void HideUpgradeWindow()
     {
+        DOTween.Complete(upgradesBg);
         upgradesBg.DOScale(0.01f, 0.3f).SetEase(Ease.InBack).SetUpdate(true).OnComplete(
             delegate
             {
                 upgradesCanvas.SetActive(false);
+                UpgradeWindowVisible = false;
             });
         Time.timeScale = 1;
     }

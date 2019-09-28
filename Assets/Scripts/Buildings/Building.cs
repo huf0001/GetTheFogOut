@@ -51,6 +51,7 @@ public abstract class Building : Entity
     private Material shieldMat;
     public Wires wire;
     protected Camera cam;
+    private bool hideHealthBar = false;
 
     private float toLerp = 1f;
     private float ShieldCheck = 50f;
@@ -108,7 +109,7 @@ public abstract class Building : Entity
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (placed)
+        if (!hideHealthBar)
         {
             UpdateHealthBar();
         }
@@ -235,6 +236,12 @@ public abstract class Building : Entity
 
         healthBarMask.fillAmount = health / maxHealth;
         healthBarCanvas.LookAt(cam.transform);
+    }
+    
+    public void HideHealthBar()
+    {
+        healthBarCanvas.gameObject.SetActive(false);
+        hideHealthBar = true;
     }
 
     private void RepairBuilding()
