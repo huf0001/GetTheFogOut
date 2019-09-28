@@ -570,10 +570,15 @@ public abstract class Building : Entity
                 else damIndScript.On = true;
 
                 rend.material.SetInt("_Damaged", 1);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", transform.position);
             }
 
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", transform.position);
             damagingNotified = true;
+        }
+
+        if (BuildingType == BuildingType.Hub)
+        {
+            WorldController.Instance.Hub.PlaySiren();
         }
     }
 }

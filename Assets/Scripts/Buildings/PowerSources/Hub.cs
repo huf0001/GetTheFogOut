@@ -10,11 +10,12 @@ public class Hub : PowerSource
     [SerializeField] private Light fireLight;
     private float tick = 0;
     private bool stillFire = true;
+    private bool isPlayingSiren;
 
     public GameObject BrokenShip;
     public GameObject RepairedShip;
     public GameObject AttachedWing;
-    
+
     protected void Awake()
     {
         if (Instance != null)
@@ -98,6 +99,21 @@ public class Hub : PowerSource
         }
         else
             return false;
+    }
+
+    public void PlaySiren()
+    {
+        if (!isPlayingSiren)
+        {
+            isPlayingSiren = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingSirenHub", transform.position);
+            Invoke(nameof(StopSirenNoise), 1f);
+        }
+    }
+
+    private void StopSirenNoise()
+    {
+        isPlayingSiren = false;
     }
 
 }
