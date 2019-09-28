@@ -168,19 +168,19 @@ public class ObjectiveController : DialogueBoxController
             }
         }
 
-        if (powerOverloaded && !alertedAboutOverload && !aiText.Activated && (Time.fixedTime - lastOverload) >= 5f)
+        if (powerOverloaded && !alertedAboutOverload && !dialogueBox.Activated && (Time.fixedTime - lastOverload) >= 5f)
         {
             lastOverloadDialogue = Time.fixedTime;
             SendDialogue("power overloaded", 0f);
             alertedAboutOverload = true;
         }
-        else if (powerOverloaded && alertedAboutOverload && aiText.Activated && aiText.CurrentDialogueSet != "power overloaded" && (Time.fixedTime - lastOverload) <= 2f)
+        else if (powerOverloaded && alertedAboutOverload && dialogueBox.Activated && dialogueBox.CurrentDialogueSet != "power overloaded" && (Time.fixedTime - lastOverload) <= 2f)
         {
             alertedAboutOverload = false;
         }
-        else if (aiText.Activated && aiText.CurrentDialogueSet == "power overloaded" && (!powerOverloaded || (Time.fixedTime - lastOverloadDialogue) >= 10f))
+        else if (dialogueBox.Activated && dialogueBox.CurrentDialogueSet == "power overloaded" && (!powerOverloaded || (Time.fixedTime - lastOverloadDialogue) >= 10f))
         {
-            aiText.SubmitDeactivation();
+            dialogueBox.SubmitDeactivation();
         }
     }
 
@@ -277,12 +277,12 @@ public class ObjectiveController : DialogueBoxController
                 }
                 else
                 {
-                    //generatorLimit += 4;    //Would normally be incremented in IncrementStage()
                     GoToSubStage(2);
                 }
 
                 break;
             case 1:
+                //Read dialogue about the thruster (only if skipped tutorial), then revert back to playing
                 if (dialogueRead)
                 {
                     Time.timeScale = 1f;
@@ -302,6 +302,10 @@ public class ObjectiveController : DialogueBoxController
                     thruster.SetActive(false);
                     GoToSubStage(4);
                 }
+                else if (dialogueBox.DialogueTimer >= 10 && dialogueBox.Activated)
+                {
+                    dialogueBox.RegisterDialogueRead();
+                }
                 else if (dialogueRead)
                 {
                     DismissDialogue();
@@ -311,6 +315,8 @@ public class ObjectiveController : DialogueBoxController
                     ResetSubStage();
                     currStage = ObjectiveStage.Upgrades;
                 }
+
+
                 break;
             case 3:
                 // Update objectives window to 'Recover ship thrusters'

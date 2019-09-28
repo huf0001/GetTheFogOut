@@ -121,10 +121,13 @@ public class DialogueBox : MonoBehaviour
     private RectTransform continueArrowTransform;
     private RectTransform completeArrowTransform;
 
+    private float dialogueTimer = 0;
+
     //Public Properties
     public bool Activated { get => activated; }
     public string CurrentDialogueSet { get => currentDialogueKey; }
     public int DialogueIndex { get => dialogueIndex; }
+    public float DialogueTimer { get => dialogueTimer; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -188,6 +191,8 @@ public class DialogueBox : MonoBehaviour
     {
         if (clickable)
         {
+            dialogueTimer += Time.deltaTime;
+
             if (!continueArrow.enabled && dialogueIndex < dialogueDictionary[currentDialogueKey].Count)
             {
                 if (completeArrow.enabled)
@@ -196,6 +201,7 @@ public class DialogueBox : MonoBehaviour
                     completeArrowTransform.anchoredPosition = arrowInitialPosition;
                     completeArrow.enabled = false;
                 }
+
                 continueArrow.enabled = true;
                 continueArrowTransform.DOAnchorPosX(arrowInitialPosition.x + 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
             }
@@ -207,6 +213,7 @@ public class DialogueBox : MonoBehaviour
                     continueArrowTransform.anchoredPosition = arrowInitialPosition;
                     continueArrow.enabled = false;
                 }
+
                 completeArrow.enabled = true;
                 completeArrowTransform.DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
             }
@@ -372,6 +379,7 @@ public class DialogueBox : MonoBehaviour
             delegate
             {
                 clickable = true;
+                dialogueTimer = 0;
             });
     }
 
@@ -410,6 +418,7 @@ public class DialogueBox : MonoBehaviour
 
         dialogueIndex++;
         lerpTextMaxIndex = currentText.Length - 1;
+        dialogueTimer = 0;
     }
 
     //Lerps the next lot of dialogue onto the dialogue box
@@ -430,6 +439,7 @@ public class DialogueBox : MonoBehaviour
 
         dialogueIndex++;
         lerpTextMaxIndex = 0;
+        dialogueTimer = 0;
     }
 
     //Updates the sprite of aiImage
@@ -463,7 +473,7 @@ public class DialogueBox : MonoBehaviour
     //Utility Methods - Progress / Finish Dialogue---------------------------------------------------------------------------------------------------
 
     //Called by OnClick to register that the player has read the currently displayed dialogue
-    private void RegisterDialogueRead()
+    public void RegisterDialogueRead()
     {
         if (clickable)
         {
@@ -491,6 +501,7 @@ public class DialogueBox : MonoBehaviour
     //Tweens the dialogue box out
     private void DeactivateDialogueBox()
     {
+        dialogueTimer = 0;
         deactivating = true;
         countdown.rectTransform.DOAnchorPosY(20, popUpSpeed).SetEase(Ease.InBack);
         objButton.rectTransform.DOAnchorPosY(20, popUpSpeed).SetEase(Ease.InBack);

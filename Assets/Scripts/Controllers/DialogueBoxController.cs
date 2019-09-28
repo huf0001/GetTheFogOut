@@ -14,7 +14,7 @@ public class DialogueBoxController : MonoBehaviour
     [Header("Objective UI Elements")]
     [SerializeField] GameObject objectiveWindow;
     [SerializeField] GameObject objectiveWindowOpenArrows;
-    [SerializeField] protected DialogueBox aiText;
+    [SerializeField] protected DialogueBox dialogueBox;
 
     //Non-Serialized fields
     protected bool dialogueRead = false;
@@ -30,7 +30,7 @@ public class DialogueBoxController : MonoBehaviour
     protected virtual void SendDialogue(string dialogueKey, float invokeDelay)
     {
         //Pass dialogue to DialogueBox for it to display during its next update
-        aiText.SubmitDialogueSet(dialogueKey, invokeDelay);
+        dialogueBox.SubmitDialogueSet(dialogueKey, invokeDelay);
     }
 
     //Called by btnTutorial to register that that button has been clicked

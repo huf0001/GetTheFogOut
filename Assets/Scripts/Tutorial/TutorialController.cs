@@ -820,7 +820,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 2:
-                if (aiText.DialogueIndex == 4)
+                if (dialogueBox.DialogueIndex == 4)
                 {
                     //DismissDialogue();
                     IncrementSubStage();
@@ -1625,7 +1625,7 @@ public class TutorialController : DialogueBoxController
 
                 stage = TutorialStage.Finished;
                 GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageTwoMusic();
-                SendDialogue("finished", 1);            //TODO: add timeout for this piece of dialogue
+                SendDialogue("finished", 1);
                 ObjectiveController.Instance.IncrementStage();
                 break;
 
@@ -2036,7 +2036,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildPulseDefence:
                 tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
 
-                if (!tileOkay && !aiText.Activated)
+                if (!tileOkay && !dialogueBox.Activated)
                 {
                     savedTutorialStage = stage;
                     savedSubStage = subStage;
@@ -2061,7 +2061,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildDefencesInRange:
                 tileOkay = !tile.FogUnitActive || tile.Building != null;
 
-                if (!tileOkay && tile.FogUnitActive && !aiText.Activated)
+                if (!tileOkay && tile.FogUnitActive && !dialogueBox.Activated)
                 {
                     savedTutorialStage = stage;
                     savedSubStage = subStage;

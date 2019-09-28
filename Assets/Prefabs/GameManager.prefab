@@ -107,6 +107,7 @@ MonoBehaviour:
   harvesters: []
   extenders: []
   hvtSelfDestroy: 0
+  powerChangePauseThreshold: 0
 --- !u!114 &1899903245264256476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +232,12 @@ MonoBehaviour:
   - An intense surge of electricity that causes buildings to temporarily perform better.
   - A small, short blip that will reveal the locations of useful items within a specific
     radius.
+  abilityHotkeyTextboxes:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   upgradesCanvas: {fileID: 0}
   upgradesBg: {fileID: 0}
 --- !u!114 &334475222590731063
@@ -247,7 +254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectiveWindow: {fileID: 0}
   objectiveWindowOpenArrows: {fileID: 0}
-  aiText: {fileID: 0}
+  dialogueBox: {fileID: 0}
   skipTutorial: 0
   stage: 1
   subStage: 1
@@ -351,7 +358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectiveWindow: {fileID: 0}
   objectiveWindowOpenArrows: {fileID: 0}
-  aiText: {fileID: 0}
+  dialogueBox: {fileID: 0}
   currStage: 0
   subStage: 0
   objectivesOn: 1
