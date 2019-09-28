@@ -499,6 +499,7 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
+                ResourceController.Instance.PausePowerChange(75);
                 currentlyBuilding = BuildingType.Harvester;
                 SendDialogue("build harvester target", 1);
                 ActivateMouse();
@@ -805,8 +806,6 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
-                ResourceController.Instance.PausePowerChange(75);
-
                 if (ResourceController.Instance.StoredPower <= 75)
                 {
                     currentlyBuilding = BuildingType.Generator;
