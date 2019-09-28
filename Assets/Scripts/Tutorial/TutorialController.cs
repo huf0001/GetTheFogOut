@@ -2021,7 +2021,7 @@ public class TutorialController : DialogueBoxController
             case TutorialStage.BuildMoreGenerators:
                 return tile.Resource == null && !tile.FogUnitActive;
             case TutorialStage.CollectSonar:
-                return tile.Resource == null && !tile.FogUnitActive;
+                return !tile.FogUnitActive;
             case TutorialStage.BuildExtenderInFog:
                 return tile.Resource == null;
 
@@ -2097,6 +2097,10 @@ public class TutorialController : DialogueBoxController
                            || button == ButtonType.Generator
                            || button == ButtonType.Destroy;
                 case TutorialStage.CollectSonar:
+                    return button == ButtonType.Extender
+                        || button == ButtonType.Generator
+                        || button == ButtonType.Harvester
+                        || button == ButtonType.Destroy;
                 case TutorialStage.BuildExtenderInFog:
                     return button == ButtonType.Extender
                            || button == ButtonType.Destroy;
