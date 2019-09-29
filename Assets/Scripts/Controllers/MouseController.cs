@@ -235,13 +235,17 @@ public class MouseController : MonoBehaviour
                 else
                 {
                     tile = WorldController.Instance.GetTileAt(hit.point);
+ 
                     if (tile.isBuildable)
                     {
                         if (WorldController.Instance.ActiveTiles.Contains((tile)) && TutorialController.Instance.TileAllowed(tile))
                         {
                             if (!UIController.instance.buildingSelector.Visible)
                             {
-                                WorldController.Instance.CheckTileContents(tile);
+                                if (!AbilityController.Instance.checkTrigger())
+                                {
+                                    WorldController.Instance.CheckTileContents(tile);
+                                }
                             }
 
                             if (reportTutorialClick)

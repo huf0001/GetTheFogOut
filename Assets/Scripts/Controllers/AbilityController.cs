@@ -201,6 +201,17 @@ public class AbilityController : MonoBehaviour
         }
     }
 
+    public bool checkTrigger()
+    {
+        bool ability = false;
+        if (abilityTriggered[AbilityEnum.Artillery] || abilityTriggered[AbilityEnum.BuildingDefence] || abilityTriggered[AbilityEnum.FreezeFog] || abilityTriggered[AbilityEnum.Overclock] || abilityTriggered[AbilityEnum.Sonar])
+        {
+            ability = true;
+        }
+
+        return ability;
+    }
+
     private void ProcessInput()
     {
         if (WorldController.Instance.Inputs.InputMap.Ability.triggered && !WorldController.Instance.isGamePaused)
@@ -224,7 +235,7 @@ public class AbilityController : MonoBehaviour
                     // TODO: Start visual cooldown stuff
                     IsAbilitySelected = false;
                     selectedAbility = null;
-                    MouseController.Instance.isBuildAvaliable = true;
+                   MouseController.Instance.isBuildAvaliable = true;
                 }
             }
             // Cancel ability
