@@ -147,10 +147,7 @@ public abstract class Building : Entity
             checkShieldAbility();
         }
 
-        if (GotNoHealth())
-        {
-            DismantleBuilding();
-        }
+        CheckDismantle();
 
     }
 
@@ -489,6 +486,14 @@ public abstract class Building : Entity
     public void ShutdownBuilding()
     {
         PowerDown();
+    }
+
+    protected virtual void CheckDismantle()
+    {
+        if (GotNoHealth())
+        {
+            DismantleBuilding();
+        }
     }
 
     public virtual void DismantleBuilding()

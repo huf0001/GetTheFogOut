@@ -16,6 +16,8 @@ public class Hub : PowerSource
     public GameObject RepairedShip;
     public GameObject AttachedWing;
 
+    private bool dismantling = false;
+
     protected void Awake()
     {
         if (Instance != null)
@@ -134,4 +136,12 @@ public class Hub : PowerSource
         isPlayingSiren = false;
     }
 
+    protected override void CheckDismantle()
+    {
+        if (GotNoHealth() && !dismantling)
+        {
+            dismantling = true;
+            Invoke(nameof(DismantleBuilding), 0.5f);
+        }
+    }
 }
