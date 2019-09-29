@@ -255,7 +255,7 @@ public class ObjectiveController : DialogueBoxController
         {
             case 0:
                 // Set fog AI to 'Moderate Aggression'
-                Fog.Instance.Intensity += 1;
+                Fog.Instance.Intensity = 2;
                 generatorLimit = midGameGeneratorLimit;
                 // Play music Var 2 soundtrack
                 GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageTwoMusic();
@@ -487,7 +487,7 @@ public class ObjectiveController : DialogueBoxController
         {
             case 0:
                 // Set fog AI to 'Overly Aggressive'
-                Fog.Instance.Intensity += 1;
+                Fog.Instance.Intensity = 3;
                 generatorLimit = lateGameGeneratorLimit;
 
                 // Run AI completion text
