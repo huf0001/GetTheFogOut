@@ -421,7 +421,7 @@ public class WorldController : MonoBehaviour
 
         if (hubDestroyed)
         {
-            Time.timeScale = 0.2f;
+            //Time.timeScale = 0.2f;
             GameOver = true;
             InBuildMode = false;
         }
