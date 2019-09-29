@@ -243,7 +243,8 @@ MonoBehaviour:
   redHDR: {r: 1, g: 0, b: 0, a: 1}
   shieldBarTransform: {fileID: 6925544636977587097}
   shieldBarImage: {fileID: 4880273238995875392}
-  damageIndicatorPrefab: {fileID: 0}
+  damageIndicatorPrefab: {fileID: 8599427647162027438, guid: d157f3b0eefcb6743985ca736438dcff,
+    type: 3}
   shieldObj: {fileID: 0}
   isShieldOn: 0
   overclockTimer: 0
@@ -1184,6 +1185,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1716}
     m_Modifications:
+    - target: {fileID: 3781018147186229703, guid: a542255d695fb6b4ab2f98921b54030e,
+        type: 3}
+      propertyPath: m_Name
+      value: PowerlineConnection (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 3784284891155029228, guid: a542255d695fb6b4ab2f98921b54030e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1253,11 +1259,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.14285713
-      objectReference: {fileID: 0}
-    - target: {fileID: 3781018147186229703, guid: a542255d695fb6b4ab2f98921b54030e,
-        type: 3}
-      propertyPath: m_Name
-      value: PowerlineConnection (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a542255d695fb6b4ab2f98921b54030e, type: 3}

@@ -81,6 +81,9 @@ public class DamageIndicator : MonoBehaviour
             case BuildingType.Harvester:
                 silhouette.sprite = silhouettes[1];
                 break;
+            case BuildingType.Hub:
+                silhouette.sprite = silhouettes[5];
+                break;
             default:
                 break;
         }

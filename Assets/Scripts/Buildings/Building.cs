@@ -234,7 +234,7 @@ public abstract class Building : Entity
         healthBarMask.fillAmount = health / maxHealth;
         healthBarCanvas.LookAt(cam.transform);
     }
-    
+
     public void HideHealthBar()
     {
         healthBarCanvas.gameObject.SetActive(false);
@@ -273,7 +273,8 @@ public abstract class Building : Entity
                             }
                         }
                     }
-                } else
+                }
+                else
                 {
                     rend.material.SetInt("_Damaged", 0);
                 };
@@ -589,22 +590,23 @@ public abstract class Building : Entity
 
         if (!damagingNotified)
         {
+            if (!damInd)
+            {
+                damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
+                damIndScript = damInd.GetComponent<DamageIndicator>();
+                damIndScript.Locatable = this;
+                damIndScript.On = true;
+            }
+            else damIndScript.On = true;
+
             if (BuildingType != BuildingType.Hub)
             {
-                if (!damInd)
-                {
-                    damInd = Instantiate(damageIndicatorPrefab, GameObject.Find("Warnings").transform);
-                    damIndScript = damInd.GetComponent<DamageIndicator>();
-                    damIndScript.Locatable = this;
-                    damIndScript.On = true;
-                }
-                else damIndScript.On = true;
-
                 rend.material.SetInt("_Damaged", 1);
                 FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", transform.position);
             }
             else
             {
+                damInd.transform.localScale *= 1.3f;
                 if (Hub.Instance.BrokenShip.activeInHierarchy || Hub.Instance.AttachedWing.activeInHierarchy || Hub.Instance.RepairedShip.activeInHierarchy)
                 {
                     GameObject go = Hub.Instance.getActiveShip();
