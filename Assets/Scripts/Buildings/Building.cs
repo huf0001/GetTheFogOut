@@ -186,15 +186,7 @@ public abstract class Building : Entity
         if (isShieldOn)
         {
             FillHealthBar();
-
-            if (buildingType != BuildingType.Hub)
-            {
-                shieldBarImage.fillAmount = (shield / 50) * 0.75f;
-            }
-            else
-            {
-                shieldBarImage.fillAmount = shield / 50;
-            }
+            shieldBarImage.fillAmount = shield / 50;
         }
         else if (Health < MaxHealth)
         {
@@ -606,7 +598,7 @@ public abstract class Building : Entity
             }
             else
             {
-                damInd.transform.localScale *= 1.3f;
+                if (damInd.transform.localScale.x == 1) damInd.transform.localScale *= 1.3f;
                 if (Hub.Instance.BrokenShip.activeInHierarchy || Hub.Instance.AttachedWing.activeInHierarchy || Hub.Instance.RepairedShip.activeInHierarchy)
                 {
                     GameObject go = Hub.Instance.getActiveShip();
