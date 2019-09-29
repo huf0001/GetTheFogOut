@@ -89,6 +89,24 @@ public class Hub : PowerSource
         }
     }
 
+    public GameObject getActiveShip()
+    {
+        GameObject act;
+        if (BrokenShip.activeInHierarchy)
+        {
+            act = BrokenShip;
+        }
+        else if (RepairedShip.activeInHierarchy)
+        {
+            act = RepairedShip;
+        }
+        else        {
+            act = AttachedWing;
+        }
+
+        return act;
+    }
+
     private bool delay(int wait)
     {
         tick += Time.deltaTime;

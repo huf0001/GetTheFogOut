@@ -483,7 +483,6 @@ public class UIController : MonoBehaviour
             {
                 currentPowerValDisplayed = 100;
             }
-            Debug.Log(powerVal + " " + power);
             powerText.text = currentPowerValDisplayed + "%" + "\n<size=80%><color=" + colour + powerChange.ToString("F1") + " %/s</color>";
 
             if (currentPowerValDisplayed == 0)

@@ -261,7 +261,26 @@ public abstract class Building : Entity
             {
                 TakingDamage = false;
                 damagingNotified = false;
-                rend.material.SetInt("_Damaged", 0);
+                if (BuildingType == BuildingType.Hub)
+                {
+                    if (Hub.Instance.BrokenShip.activeInHierarchy || Hub.Instance.AttachedWing.activeInHierarchy || Hub.Instance.RepairedShip.activeInHierarchy)
+                    {
+                        GameObject go = Hub.Instance.getActiveShip();
+                        MeshRenderer[] meshs = go.GetComponentsInChildren<MeshRenderer>();
+                        foreach (MeshRenderer m in meshs)
+                        {
+                            Material[] ma = m.materials;
+                            foreach (Material k in ma)
+                            {
+                                k.SetInt("_Damaged", 0);
+                            }
+                        }
+                    }
+                } else
+                {
+                    rend.material.SetInt("_Damaged", 0);
+                };
+
                 if (damIndScript) damIndScript.On = false;
             }
             buildHealth = Health;
@@ -578,6 +597,22 @@ public abstract class Building : Entity
 
                 rend.material.SetInt("_Damaged", 1);
                 FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingDamaged", transform.position);
+            }
+            else
+            {
+                if (Hub.Instance.BrokenShip.activeInHierarchy || Hub.Instance.AttachedWing.activeInHierarchy || Hub.Instance.RepairedShip.activeInHierarchy)
+                {
+                    GameObject go = Hub.Instance.getActiveShip();
+                    MeshRenderer[] meshs = go.GetComponentsInChildren<MeshRenderer>();
+                    foreach (MeshRenderer m in meshs)
+                    {
+                        Material[] ma = m.materials;
+                        foreach (Material k in ma)
+                        {
+                            k.SetInt("_Damaged", 1);
+                        }
+                    }
+                }
             }
 
             damagingNotified = true;
