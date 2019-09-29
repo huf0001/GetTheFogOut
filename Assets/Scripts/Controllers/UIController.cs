@@ -108,7 +108,7 @@ public class UIController : MonoBehaviour
             resourceController = ResourceController.Instance;
         }
 
-        if (WorldController.Instance.Inputs.InputMap.Pause.triggered)
+        if (WorldController.Instance.Inputs.InputMap.Pause.triggered && UpgradeWindowVisible)
         {
             HideUpgradeWindow();
         }
