@@ -453,8 +453,8 @@ public class UIController : MonoBehaviour
         objArrowBG.color = colour;
         dialogueBoxBG.color = colour;
         objTitleBG.color = colour;
-        countdownSliderBG.color = colour;
-        objectiveButtonBG.color = colour;
+        countdownSliderBG.color = new Color(colour.r, colour.g, colour.b, countdownSliderBG.color.a);
+        objectiveButtonBG.color = new Color(colour.r, colour.g, colour.b, objectiveButtonBG.color.a);
     }
 
     private void ChangeColor(Color newColor, bool flash)
