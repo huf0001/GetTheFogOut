@@ -7,6 +7,13 @@ using UnityEngine.UI;
 using UnityEngine.Serialization;
 using DG.Tweening;
 
+[Serializable]
+public struct HudColour
+{
+    public string key;
+    public Color value;
+}
+
 public class UIController : MonoBehaviour
 {
     public static UIController instance = null;
@@ -32,6 +39,12 @@ public class UIController : MonoBehaviour
     [SerializeField] private Animator powerThresholds;
     [SerializeField] private TextMeshProUGUI objWindowText;
     [SerializeField] private TextMeshProUGUI hudObjText;
+    [SerializeField] private Image objBG;
+    [SerializeField] private Image objTitleBG;
+    [SerializeField] private Image objArrowBG;
+    [SerializeField] private Image dialogueBoxBG;
+    [SerializeField] private HudColour[] hudColours;
+
     [Header("Tile Colours")]
     [SerializeField] private Color powerLow;
     [SerializeField] private Color powerMedium;
@@ -381,7 +394,7 @@ public class UIController : MonoBehaviour
             });
         Time.timeScale = 1;
     }
-    
+
     public void ShowUpgradeWindow()
     {
         upgradesCanvas.SetActive(true);
@@ -422,6 +435,26 @@ public class UIController : MonoBehaviour
     public void ToggleCursor(bool isOn)
     {
         cursor.SetActive(isOn);
+    }
+
+    public void ChangeUIColour(string key)
+    {
+        Color colour = Color.white;
+        foreach (HudColour h in hudColours)
+        {
+            if (h.key == key)
+            {
+                colour = h.value;
+            }
+        }
+
+        hud.color = colour;
+        objBG.color = colour;
+        objArrowBG.color = colour;
+        dialogueBoxBG.color = colour;
+        objTitleBG.color = colour;
+        countdownSliderBG.color = new Color(colour.r, colour.g, colour.b, countdownSliderBG.color.a);
+        objectiveButtonBG.color = new Color(colour.r, colour.g, colour.b, objectiveButtonBG.color.a);
     }
 
     private void ChangeColor(Color newColor, bool flash)

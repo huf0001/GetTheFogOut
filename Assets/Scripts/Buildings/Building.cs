@@ -265,6 +265,7 @@ public abstract class Building : Entity
                             }
                         }
                     }
+                    UIController.instance.ChangeUIColour("normal");
                 }
                 else
                 {
@@ -612,6 +613,7 @@ public abstract class Building : Entity
                         }
                     }
                 }
+                UIController.instance.ChangeUIColour("damage");
             }
 
             damagingNotified = true;
