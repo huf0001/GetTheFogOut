@@ -118,8 +118,9 @@ public class BuildingInfo : MonoBehaviour
 
     public void ShowInfo(Building b)
     {
+        if (DOTween.IsTweening(bg)) return;
         if (!cam) cam = Camera.main;
-        DOTween.Kill(bg);
+        Visible = true;
         bg.rectTransform.DOScale(1, 0.3f);
 
         building = b;
@@ -161,7 +162,6 @@ public class BuildingInfo : MonoBehaviour
         healthBar.SetActive(true);
         transform.position = cam.WorldToScreenPoint(b.transform.position) + new Vector3(Screen.width / 13, 0);
         gameObject.SetActive(true);
-        Visible = true;
         InvokeRepeating("UpdateText", 0.1f, 0.1f);
     }
 
@@ -193,13 +193,13 @@ public class BuildingInfo : MonoBehaviour
 
     public void HideInfo()
     {
+        if (DOTween.IsTweening(bg)) return;
         CancelInvoke("UpdateText");
         if (Range)
         {
             Range.gameObject.SetActive(false);
         }
 
-        DOTween.Kill(bg);
         bg.rectTransform.DOScale(0.01f, 0.3f).OnComplete(
             delegate
             {
