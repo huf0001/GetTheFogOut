@@ -50,7 +50,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private Color powerMedium;
     [SerializeField] private Color powerHigh;
     [SerializeField] private Color powerMax;
-    [SerializeField] private Color powerCurrent;
+    [SerializeField] public Color powerCurrent;
     [Header("Objective Buttons")]
     [SerializeField, FormerlySerializedAs("launchCanvas")] private GameObject objectiveProceedCanvas;
     [SerializeField, FormerlySerializedAs("launchButtonBG")] private Image objectiveButtonBG;

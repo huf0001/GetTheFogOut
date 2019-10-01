@@ -28,6 +28,7 @@ public class MouseController : MonoBehaviour
     private bool hovertoggle = true;
     private Camera cam;
     private Keyboard kb;
+    private Color curr;
     // Test for game pause/over mouse to not build/destroy buildings
     // private bool isStopped = false;
 
@@ -60,6 +61,7 @@ public class MouseController : MonoBehaviour
         tutorialController = GetComponent<TutorialController>();
         cam = Camera.main;
         kb = InputSystem.GetDevice<Keyboard>();
+        curr = WorldController.Instance.normalTile.GetColor("_BaseColor");
     }
 
     // Update is called once per frame
@@ -93,44 +95,59 @@ public class MouseController : MonoBehaviour
                 if (WorldController.Instance.TileExistsAt(hit.point))
                 {
                     TileData t = WorldController.Instance.GetTileAt(hit.point);
+                    //      Color test = t.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
+                    //     Debug.Log(test);
+
                     if (hovertoggle)
                     {
                         hovertoggle = false;
-                        changeTileMaterial(WorldController.Instance.normalTile);
+                        //    changeTileMaterial(WorldController.Instance.normalTile);
+                        changeTileMaterial(false);
 
                         if (!t.buildingChecks.collectable)
                         {
                             hoveredTile = t;
-                            changeTileMaterial(WorldController.Instance.hoverTile);
+                       //     changeTileMaterial(WorldController.Instance.hoverTile);
+                            changeTileMaterial(true);
                         }
                         else
-                            changeTileMaterial(WorldController.Instance.normalTile);
-
+                            //  changeTileMaterial(WorldController.Instance.normalTile);
+                            changeTileMaterial(false);
                     }
                     else
                     {
-                        if (!(hoveredTile.Equals(t)))
+                        if (!curr.Equals(UIController.instance.powerCurrent))
                         {
                             hovertoggle = true;
-                            /*
-                            if (hoveredTile.plane == null)
+                            //   changeTileMaterial(WorldController.Instance.normalTile);
+                            changeTileMaterial(false);
+                            curr = UIController.instance.powerCurrent;
+
+                        }else if (!(hoveredTile.Equals(t)))
                             {
-                                Debug.Log("tst");
-                                hoveredTile = WorldController.Instance.GetTileAt(hit.point);
-                                changeTileMaterial(WorldController.Instance.hoverTile);
-                            }
-                            else*/
-                            if (!t.buildingChecks.collectable)
-                            {
-                                changeTileMaterial(WorldController.Instance.normalTile);
-                            }
+                                hovertoggle = true;
+                                /*
+                                if (hoveredTile.plane == null)
+                                {
+                                    Debug.Log("tst");
+                                    hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                                    changeTileMaterial(WorldController.Instance.hoverTile);
+                                }
+                                else*/
+                            
+                                if (!t.buildingChecks.collectable)
+                                {
+                                //    changeTileMaterial(WorldController.Instance.normalTile);
+                                changeTileMaterial(false);
+                                }
                         }
                     }
                 }
             }
             else
             {
-                changeTileMaterial(WorldController.Instance.normalTile);
+                //   changeTileMaterial(WorldController.Instance.normalTile);
+                changeTileMaterial(false);
             }
         }
         else
@@ -139,13 +156,11 @@ public class MouseController : MonoBehaviour
             {
                 if (towerManager.CurrentTile.plane)
                 {
-                    changeTileMaterial(WorldController.Instance.normalTile);
-
+                    //    changeTileMaterial(WorldController.Instance.normalTile);
+                    changeTileMaterial(false);
                     if ((!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile)))
                     {
-                        Color newColor = towerManager.CurrentTile.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
-                        newColor.a = 0.8f;
-                        towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", newColor);
+                        towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", getHoveredTileColor());
                     }
                     hoveredTile = towerManager.CurrentTile;
                 }
@@ -156,7 +171,30 @@ public class MouseController : MonoBehaviour
             }
         }
     }
+    public void changeTileMaterial(bool ison)
+    {
+        if (hoveredTile != null)
+        {
+            if (hoveredTile.plane != null)
+            {
+                if(ison)
+                {
+                    hoveredTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", getHoveredTileColor());
+                }else
+                {
+                    hoveredTile.plane.GetComponent<Renderer>().material = WorldController.Instance.normalTile;
+                }
+            }
+        }
+    }
 
+    public Color getHoveredTileColor()
+    {
+        Color current = UIController.instance.powerCurrent;
+        current.a = 0.8f;
+        return current;
+    }
+    /*
     public void changeTileMaterial(Material mat)
     {
         if (hoveredTile != null)
@@ -174,7 +212,7 @@ public class MouseController : MonoBehaviour
             }
         }
     }
-
+    */
     void selectedTile()
     {
         if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
@@ -209,7 +247,8 @@ public class MouseController : MonoBehaviour
             {
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
-                    changeTileMaterial(WorldController.Instance.normalTile);
+                    //   changeTileMaterial(WorldController.Instance.normalTile);
+                    changeTileMaterial(false);
                     towerManager.CancelBuild();
                 }
                 else if (hit.collider.gameObject.layer == 15)
@@ -410,7 +449,8 @@ public class MouseController : MonoBehaviour
                 checkUpgrade(buildType,buildingGo);
                 //Tell the building to do things it should do when placed
                 building.Place();
-                changeTileMaterial(WorldController.Instance.normalTile);
+                //    changeTileMaterial(WorldController.Instance.normalTile);
+                changeTileMaterial(false);
                 UIController.instance.buildingSelector.ToggleVisibility();
                 StartCoroutine(FloatText(buildingGo.transform, -building.MineralCost));
             }
