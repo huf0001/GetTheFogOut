@@ -167,7 +167,7 @@ public class MouseController : MonoBehaviour
             }
             else
             {
-                towerManager.CurrentTile = hoveredTile;
+             //   towerManager.CurrentTile = hoveredTile;
             }
         }
     }
@@ -248,7 +248,7 @@ public class MouseController : MonoBehaviour
                 if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
                 {
                     //   changeTileMaterial(WorldController.Instance.normalTile);
-                    changeTileMaterial(false);
+                    //   changeTileMaterial(false);
                     towerManager.CancelBuild();
                 }
                 else if (hit.collider.gameObject.layer == 15)
@@ -273,6 +273,7 @@ public class MouseController : MonoBehaviour
                 }
                 else
                 {
+                    
                     tile = WorldController.Instance.GetTileAt(hit.point);
  
                     if (tile.isBuildable)
