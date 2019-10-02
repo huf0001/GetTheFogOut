@@ -259,6 +259,10 @@ public class MouseController : MonoBehaviour
                 }
                 else if (hit.collider.tag == "Building")
                 {
+                    if (UIController.instance.buildingSelector.Visible)
+                    {
+                        UIController.instance.buildingSelector.ToggleVisibility();
+                    }
                     currentTile = WorldController.Instance.GetTileAt(hit.point);
                     if (!UIController.instance.buildingInfo.Visible)
                     {
@@ -269,7 +273,6 @@ public class MouseController : MonoBehaviour
                     {
                         UIController.instance.buildingInfo.HideInfo();
                     }
-                //    Debug.Log(hit.collider.name);
                 }
                 else if (hit.collider.name == "pCube31" || hit.collider.name == "Ship:pCube5" || hit.collider.name == "polySurface22") // check for hub
                 {
@@ -304,8 +307,8 @@ public class MouseController : MonoBehaviour
                             {
                                 if (!AbilityController.Instance.checkTrigger())
                                 {
+                                //    WorldController.Instance.CheckTileContents(currentTile);
                                     UIController.instance.buildingSelector.QuickCloseMenu();
-                                    WorldController.Instance.CheckTileContents(currentTile);
                                 }
                             }
 
