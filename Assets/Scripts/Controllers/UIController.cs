@@ -399,6 +399,7 @@ public class UIController : MonoBehaviour
         upgradesCanvas.SetActive(true);
         UpgradeWindowVisible = true;
         upgradesBg.DOScale(1, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", transform.position);
         Time.timeScale = 0.1f;
     }
 
@@ -412,6 +413,7 @@ public class UIController : MonoBehaviour
                 UpgradeWindowVisible = false;
             });
         Time.timeScale = 1;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", transform.position);
     }
 
     public void WinGame()

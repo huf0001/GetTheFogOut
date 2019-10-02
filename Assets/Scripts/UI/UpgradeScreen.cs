@@ -58,6 +58,7 @@ public class UpgradeScreen : MonoBehaviour
         if (ResourceController.Instance.StoredMineral >= upgrade.cost)
         {
             ResourceController.Instance.StoredMineral -= upgrade.cost;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Move", transform.position);
             switch (upgrade.buildingType)
             {
                 case BuildingType.Harvester:
@@ -219,5 +220,13 @@ public class UpgradeScreen : MonoBehaviour
     public void UnlockNextUpgrade(Button button)
     {
         nextButton = button;
+    }
+
+    public void OnHover(Button button)
+    {
+        if (button.IsInteractable())
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Move", transform.position);
+        }
     }
 }

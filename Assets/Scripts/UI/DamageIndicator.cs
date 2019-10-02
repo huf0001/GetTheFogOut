@@ -97,17 +97,10 @@ public class DamageIndicator : MonoBehaviour
 
             if (Locatable as Building)
             {
-                rectTransform.position = lookAtPos;
-                ClampIcon(new Vector2(0, 50));
-                RotateIcon(lookAtPos);
-
-                if (canvasGroup.alpha == 0)
-                {
-                    canvasGroup.alpha = 1;
-                }
                 Colour = damageGradient.Evaluate(((Building)Locatable).Health / ((Building)Locatable).MaxHealth);
             }
-            else if (!screen.Contains(lookAtPos))
+
+            if (!screen.Contains(lookAtPos))
             {
                 rectTransform.position = lookAtPos;
                 ClampIcon();

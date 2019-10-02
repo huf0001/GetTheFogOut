@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using FMOD.Studio;
+using FMODUnity;
 
 public class Hub : PowerSource
 { 
@@ -11,6 +13,7 @@ public class Hub : PowerSource
     private float tick = 0;
     private bool stillFire = true;
     private bool isPlayingSiren;
+    private EventInstance fireSound;
 
     public GameObject BrokenShip;
     public GameObject RepairedShip;
@@ -34,6 +37,8 @@ public class Hub : PowerSource
         base.Start();
         
         powerSource = null;
+        fireSound = RuntimeManager.CreateInstance("event:/SFX/3D-ShipFire");
+        fireSound.start();
     }
 
     // Update is called once per frame
@@ -84,6 +89,7 @@ public class Hub : PowerSource
                             fireLight.enabled = false;
                             stillFire = false;
                             Fires.SetActive(false);
+                            fireSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                     }
                     tick = 0;
                 }
