@@ -406,6 +406,7 @@ public class MouseController : MonoBehaviour
             {
                 Material k = m.material;
                 k.SetColor("_UpgradeColour", lvl);
+                k.SetFloat("_FresnelPower", 10f);
                 k.SetFloat("_Upgraded", 1);
             }
         }
@@ -414,6 +415,7 @@ public class MouseController : MonoBehaviour
             mr = b.GetComponentInChildren<MeshRenderer>().material;
             mr.SetColor("_UpgradeColour", lvl);
             mr.SetFloat("_Upgraded", 1);
+            mr.SetFloat("_FresnelPower", 10f);
         }
      //   Debug.Log(mr.material.GetFloat("_Upgraded"));
     }
