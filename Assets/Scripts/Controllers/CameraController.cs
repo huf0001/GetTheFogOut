@@ -13,7 +13,6 @@ public class CameraController : MonoBehaviour
     private CinemachineFollowZoom zoom;
 
     [SerializeField] float moveSpeed = 20f;
-    //[SerializeField] float rotationSpeed = 40f;
     [SerializeField] float zoomMulti = 10f;
     [SerializeField] float dragSpeed = 0.005f;
     //[SerializeField] bool enableEdgePan = false;
@@ -24,7 +23,6 @@ public class CameraController : MonoBehaviour
     private Quaternion rotation;
     private Vector3 xMove;
     private Vector3 zMove;
-    private float rMove;
     private Transform myTransform;
     private Vector3 move;
     private float zoomVal;
@@ -67,7 +65,6 @@ public class CameraController : MonoBehaviour
 
     void RunCameraPan()
     {
-        //camera.gameObject.SetActive(true);
         serialCameraCutscene.gameObject.SetActive(false);
         movementEnabled = true;
         finishedOpeningCameraPan = true;
@@ -99,8 +96,7 @@ public class CameraController : MonoBehaviour
                 pan = dragSpeed / 10;
             }
         }
-    //    Debug.Log("level zoom : " + zoom + "   speed: " + pan);
-        return pan;
+        return pan; // Debug.Log("level zoom : " + zoom + "   speed: " + pan);
     }
 
     void UpdateCameraMovement()
@@ -108,8 +104,7 @@ public class CameraController : MonoBehaviour
         if (Time.timeScale == 1 && movementEnabled)
         {
             bool hasChanged = false;
-            //Only run if player is moving left/right/up/down
-            if (move != Vector3.zero)
+            if (move != Vector3.zero) // Only run if player is moving left/right/up/down
             {
                 forward = myTransform.forward;
                 right = myTransform.right;
@@ -129,22 +124,14 @@ public class CameraController : MonoBehaviour
             zoomVal = ZoomVal / 3f;
             zoom.m_Width = Mathf.Lerp(zoom.m_Width, zoom.m_Width -= zoomVal * zoomMulti, 0.4f);
 
-            if (zoom.m_Width <= 4)
-            {
-                zoom.m_Width = 4;
-            }
-
-            if (zoom.m_Width > 22)
-            {
-                zoom.m_Width = 22;
-            }
+            if (zoom.m_Width <= 4) zoom.m_Width = 4;
+            if (zoom.m_Width > 22) zoom.m_Width = 22;
 
             //Handle screen dragging if right click is held down
             if (Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)
             {
               //  dragSpeed = panSpeed(zoom.m_Width);
-              //  Debug.Log(zoom.m_Width + "   f  " + dragSpeed);
-                //Right or middle mouse
+              //  Debug.Log(zoom.m_Width + "   f  " + dragSpeed); // Right or middle mouse
                 float h = panSpeed(zoom.m_Width) * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
                 float v = panSpeed(zoom.m_Width) * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;
                 transform.Translate(h, 0, v, transform);
@@ -152,20 +139,9 @@ public class CameraController : MonoBehaviour
                 hasChanged = true;
             }
 
-            // Zoom
-            //if (Input.GetAxisRaw("Zoom") != 0)
-            //{
-            //camera.m_Lens.FieldOfView -= Input.GetAxis("Zoom") * zoomMulti;
-            //camera.m_Lens.FieldOfView = Mathf.Clamp(camera.m_Lens.FieldOfView, 12f, 29f);
-
-            //  zoom.m_Width -= zoomVal * zoomMulti;
-            //   zoom.m_Width = Mathf.Clamp(zoom.m_Width, 4, 20);
-            //}
-
             if (hasChanged)
             {
                 Vector3 pos = myTransform.localPosition;
-
                 // Boundry checks
                 pos.x = Mathf.Clamp(pos.x, 0f, WorldController.Instance.Width);
                 pos.z = Mathf.Clamp(pos.z, 0f, WorldController.Instance.Length);

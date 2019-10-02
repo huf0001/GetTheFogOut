@@ -30,7 +30,6 @@ public class UIController : MonoBehaviour
     private float power = 0, powerChange = 0, mineral = 0;
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
-    private bool isCursorOn = false;
     private Image launchButtonImage;
 
     [SerializeField] private Image hud;
