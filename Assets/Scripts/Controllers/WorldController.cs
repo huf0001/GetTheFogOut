@@ -143,7 +143,7 @@ public class WorldController : MonoBehaviour
         Instance = this;
         cam = Camera.main;
 
-        tm = FindObjectOfType<TowerManager>();
+        tm = GetComponent<TowerManager>();
         uiController = GetComponent<UIController>();
         resourceController = ResourceController.Instance;
     }

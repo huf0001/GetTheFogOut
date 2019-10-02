@@ -14,6 +14,8 @@ public class MouseController : MonoBehaviour
     //[SerializeField] private int generatorInterval = 5;
     //[SerializeField] private WarningScript warningScript;
 
+    [SerializeField] private TileData currentTile;
+
     // Non-serialized fields
     private Hub hub = null;
     private ResourceController resourceController = null;
@@ -36,6 +38,7 @@ public class MouseController : MonoBehaviour
     public static MouseController Instance { get; protected set; }
     public Hub Hub { get => hub; set => hub = value; }
     public bool ReportTutorialClick { get => reportTutorialClick; set => reportTutorialClick = value; }
+    public TileData CurrentTile { get => currentTile; }
 
     // Start / Update Unity Methods ------------------------------------------------------
 
@@ -56,7 +59,7 @@ public class MouseController : MonoBehaviour
         WorldController.Instance.Inputs.InputMap.Build.performed += ctx => UpdatePlacingAlt();
         resourceController = ResourceController.Instance;
         hub = WorldController.Instance.Hub;
-        towerManager = FindObjectOfType<TowerManager>();
+        towerManager = GetComponent<TowerManager>();
         floatingTextController = GetComponent<FloatingTextController>();
         tutorialController = GetComponent<TutorialController>();
         cam = Camera.main;
@@ -77,7 +80,7 @@ public class MouseController : MonoBehaviour
         {
             if (kb.deleteKey.wasPressedThisFrame)
             {
-                Building removeBuilding = ReturnCost(towerManager.CurrentTile);
+                Building removeBuilding = ReturnCost(currentTile);
                 RemoveBulding(removeBuilding);
             }
         }
@@ -151,17 +154,17 @@ public class MouseController : MonoBehaviour
         }
         else
         {
-            if (towerManager.CurrentTile != null)
+            if (currentTile != null)
             {
-                if (towerManager.CurrentTile.plane)
+                if (currentTile.plane)
                 {
                     //    changeTileMaterial(WorldController.Instance.normalTile);
                     changeTileMaterial(false);
-                    if ((!towerManager.CurrentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile)))
+                    if ((!currentTile.plane.GetComponent<Renderer>().material.Equals(WorldController.Instance.hoverTile)))
                     {
-                        towerManager.CurrentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", getHoveredTileColor());
+                        currentTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", getHoveredTileColor());
                     }
-                    hoveredTile = towerManager.CurrentTile;
+                    hoveredTile = currentTile;
                 }
             }
             else
@@ -238,7 +241,6 @@ public class MouseController : MonoBehaviour
 
         if (Time.timeScale == 1f && !WorldController.Instance.IsPointerOverGameObject() && isBuildAvaliable == true)
         {
-            TileData tile;
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             
@@ -257,6 +259,8 @@ public class MouseController : MonoBehaviour
                 }
                 else if (hit.collider.name == "pCube31" || hit.collider.name == "Ship:pCube5" || hit.collider.name == "polySurface22")
                 {
+                    currentTile = WorldController.Instance.GetTileAt(36, 34);
+
                     if (!UIController.instance.buildingInfo.Visible)
                     {
                         Building b = Hub.Instance;
@@ -266,24 +270,20 @@ public class MouseController : MonoBehaviour
                     {
                         UIController.instance.buildingInfo.HideInfo();
                     }
-
-                    TileData t = WorldController.Instance.GetTileAt(36, 34);
-                    towerManager.CurrentTile = t;
                 }
                 else
-                {
-                    
-                    tile = WorldController.Instance.GetTileAt(hit.point);
+                {                    
+                    currentTile = WorldController.Instance.GetTileAt(hit.point);
  
-                    if (tile.isBuildable)
+                    if (currentTile.isBuildable)
                     {
-                        if (WorldController.Instance.ActiveTiles.Contains((tile)) && TutorialController.Instance.TileAllowed(tile))
+                        if (WorldController.Instance.ActiveTiles.Contains((currentTile)) && TutorialController.Instance.TileAllowed(currentTile))
                         {
                             if (!UIController.instance.buildingSelector.Visible)
                             {
                                 if (!AbilityController.Instance.checkTrigger())
                                 {
-                                    WorldController.Instance.CheckTileContents(tile);
+                                    WorldController.Instance.CheckTileContents(currentTile);
                                 }
                             }
                             else
@@ -291,7 +291,7 @@ public class MouseController : MonoBehaviour
                                 if (!AbilityController.Instance.checkTrigger())
                                 {
                                     UIController.instance.buildingSelector.QuickCloseMenu();
-                                    WorldController.Instance.CheckTileContents(tile);
+                                    WorldController.Instance.CheckTileContents(currentTile);
                                 }
                             }
 
@@ -306,7 +306,6 @@ public class MouseController : MonoBehaviour
                             towerManager.CancelBuild();
                         }
                     }
-                    towerManager.CurrentTile = tile;
                 }
             }
 

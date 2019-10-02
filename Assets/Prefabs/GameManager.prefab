@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 1899903245264256486}
   - component: {fileID: 7305178377255849301}
   - component: {fileID: 1869141249}
+  - component: {fileID: 1644847198}
+  - component: {fileID: 1644847199}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -124,17 +126,6 @@ MonoBehaviour:
   buildingType: 0
   emptyprefab: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
     type: 3}
-  currentTile:
-    powerSources: []
-    resource: {fileID: 0}
-    building: {fileID: 0}
-    collectible: {fileID: 0}
-    onMaterial: {fileID: 0}
-    visibleMaterial: {fileID: 0}
-    startMaterial: {fileID: 0}
-    x: 0
-    z: 0
-    plane: {fileID: 0}
   hologramTower: {fileID: 0}
 --- !u!114 &1899903245264256477
 MonoBehaviour:
@@ -148,6 +139,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1692cc51973ab7c4bb849fb4c44e3bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentTile:
+    powerSources: []
+    resource: {fileID: 0}
+    building: {fileID: 0}
+    collectible: {fileID: 0}
+    onMaterial: {fileID: 0}
+    visibleMaterial: {fileID: 0}
+    startMaterial: {fileID: 0}
+    x: 0
+    z: 0
+    plane: {fileID: 0}
   hoveredTile:
     powerSources: []
     resource: {fileID: 0}
@@ -264,7 +266,7 @@ MonoBehaviour:
   objectiveWindow: {fileID: 0}
   objectiveWindowOpenArrows: {fileID: 0}
   dialogueBox: {fileID: 0}
-  skipTutorial: 0
+  skipTutorial: 1
   stage: 1
   subStage: 1
   currentlyBuilding: 0
@@ -509,3 +511,27 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &1644847198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899903245264256479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc65f3c5d3beb0f49ac16532dfd6e99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1644847199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899903245264256479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b387851015e1b45ba53da8edb4c756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -2016,9 +2016,18 @@ public class TutorialController : DialogueBoxController
                 {
                     return tile == targetTile;
                 }
-
+            case TutorialStage.BuildExtender:
+            case TutorialStage.BuildMortar:
+                if (subStage < 3)
+                {
+                    return tile.Resource == null && !tile.FogUnitActive;
+                }
+                else
+                {
+                    return tile == targetTile;
+                }
             case TutorialStage.BuildHarvestersExtended:
-                return !tile.FogUnitActive;
+                return tile.Resource != null && !tile.FogUnitActive;
             case TutorialStage.BuildGenerator:
                 if (subStage == 7)
                 {
@@ -2030,23 +2039,12 @@ public class TutorialController : DialogueBoxController
                 }
             case TutorialStage.BuildMoreGenerators:
                 return tile.Resource == null && !tile.FogUnitActive;
-            case TutorialStage.CollectSonar:
-                return !tile.FogUnitActive;
-            case TutorialStage.BuildExtenderInFog:
-                return tile.Resource == null;
+            case TutorialStage.CollectMinerals:
+            case TutorialStage.DefenceActivation:
+            case TutorialStage.BuildDefencesInRange:
+                tileOkay = !tile.FogUnitActive || tile.Building != null;
 
-            //if (subStage < 3)
-            //{
-            //    return tile.Resource == null;
-            //}
-            //else
-            //{
-            //    return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
-            //}
-            case TutorialStage.BuildPulseDefence:
-                tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
-
-                if (!tileOkay && !dialogueBox.Activated)
+                if (!tileOkay && tile.FogUnitActive && !dialogueBox.Activated)
                 {
                     savedTutorialStage = stage;
                     savedSubStage = subStage;
@@ -2056,22 +2054,14 @@ public class TutorialController : DialogueBoxController
                 }
 
                 return tileOkay;
-            case TutorialStage.BuildExtender:
-            case TutorialStage.BuildMortar:
-                if (subStage < 3)
-                {
-                    return tile.Resource == null && !tile.FogUnitActive;
-                }
-                else
-                {
-                    return tile == targetTile;
-                }
-            case TutorialStage.CollectMinerals:
-            case TutorialStage.DefenceActivation:
-            case TutorialStage.BuildDefencesInRange:
-                tileOkay = !tile.FogUnitActive || tile.Building != null;
+            case TutorialStage.CollectSonar:
+                return !tile.FogUnitActive;
+            case TutorialStage.BuildExtenderInFog:
+                return tile.Resource == null;
+            case TutorialStage.BuildPulseDefence:
+                tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
 
-                if (!tileOkay && tile.FogUnitActive && !dialogueBox.Activated)
+                if (!tileOkay && !dialogueBox.Activated)
                 {
                     savedTutorialStage = stage;
                     savedSubStage = subStage;
@@ -2104,7 +2094,7 @@ public class TutorialController : DialogueBoxController
                 case TutorialStage.BuildExtender:
                     return button == ButtonType.Extender;
                 case TutorialStage.BuildGenerator:
-                    Debug.Log("CheckingBuildGenerator");
+                case TutorialStage.BuildMoreGenerators:
                     return button == ButtonType.Generator;
                 case TutorialStage.CollectMinerals:
                 case TutorialStage.CollectSonar:
