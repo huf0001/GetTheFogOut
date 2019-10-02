@@ -245,7 +245,7 @@ public class MouseController : MonoBehaviour
             
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables", "Buildings" })) && WorldController.Instance.TileExistsAt(hit.point))
             {
-                if (UIController.instance.buildingSelector.Visible || UIController.instance.buildingInfo.Visible)
+                if (UIController.instance.buildingInfo.Visible)
                 {
                     //   changeTileMaterial(WorldController.Instance.normalTile);
                     //   changeTileMaterial(false);
@@ -287,19 +287,27 @@ public class MouseController : MonoBehaviour
                                     WorldController.Instance.CheckTileContents(tile);
                                 }
                             }
+                            else
+                            {
+                                if (!AbilityController.Instance.checkTrigger())
+                                {
+                                    UIController.instance.buildingSelector.QuickCloseMenu();
+                                    WorldController.Instance.CheckTileContents(tile);
+                                }
+                            }
 
                             if (reportTutorialClick)
                             {
                                 TutorialController.Instance.RegisterMouseClicked();
                             }
 
-                            towerManager.CurrentTile = tile;
+                        }
+                        else if (UIController.instance.buildingSelector.Visible)
+                        {
+                            towerManager.CancelBuild();
                         }
                     }
-                    else
-                    {
-                        towerManager.CurrentTile = tile;
-                    }
+                    towerManager.CurrentTile = tile;
                 }
             }
 
