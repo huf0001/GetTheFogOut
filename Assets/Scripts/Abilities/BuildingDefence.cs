@@ -22,6 +22,7 @@ namespace Abilities
                     building.isShieldOn = true;
                 }
             }
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Shield", tile.Position);
         }
     }
 }

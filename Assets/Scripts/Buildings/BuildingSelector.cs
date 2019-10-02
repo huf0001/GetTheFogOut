@@ -72,6 +72,16 @@ public class BuildingSelector : MonoBehaviour
             });
     }
 
+    public void QuickCloseMenu()
+    {
+        DOTween.Kill("BuildMenu");
+        visible = false;
+        selectParent.interactable = false;
+        selectParent.blocksRaycasts = false;
+        radialMenu.Radius = 0;
+        selectParent.alpha = 0;
+    }
+
     public void freezeCam()
     {
         CinemachineVirtualCamera CMVcam = GameObject.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>();
