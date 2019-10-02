@@ -242,11 +242,14 @@ public class ResourceController : MonoBehaviour
         //Powers harvesters
         if (storedPower > 0)
         {
-            foreach (Harvester h in harvesters)
+            foreach (Harvester h in new List<Harvester>(harvesters))
             {
                 if (WorldController.Instance.ActiveTiles.Contains(h.Location))
                 {
-                    h.PowerUp();
+                    if (h.Location.Resource.Health != 0)
+                    {
+                        h.PowerUp();
+                    }
 
                     if (h.Location.Resource != null)
                     {
@@ -265,6 +268,7 @@ public class ResourceController : MonoBehaviour
                                     Destroy(h.Location.Resource.gameObject);
                                     h.TurnOnMineralIndicator();
                                     h.ShutdownBuilding();
+                                    RemoveBuilding(h);
                                 }
                                 break;
                         }
