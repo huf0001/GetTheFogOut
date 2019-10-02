@@ -257,7 +257,21 @@ public class MouseController : MonoBehaviour
                     hit.collider.GetComponent<Collectable>()?.CollectAbility();
                     hit.collider.GetComponent<ShipComponent>()?.Collect();
                 }
-                else if (hit.collider.name == "pCube31" || hit.collider.name == "Ship:pCube5" || hit.collider.name == "polySurface22")
+                else if (hit.collider.tag == "Building")
+                {
+                    currentTile = WorldController.Instance.GetTileAt(hit.point);
+                    if (!UIController.instance.buildingInfo.Visible)
+                    {
+                        Building b = hit.collider.gameObject.GetComponentInChildren<Building>();
+                        UIController.instance.buildingInfo.ShowInfo(b);
+                    }
+                    else
+                    {
+                        UIController.instance.buildingInfo.HideInfo();
+                    }
+                    Debug.Log(hit.collider.name);
+                }
+                else if (hit.collider.name == "pCube31" || hit.collider.name == "Ship:pCube5" || hit.collider.name == "polySurface22") // check for hub
                 {
                     currentTile = WorldController.Instance.GetTileAt(36, 34);
 
@@ -272,9 +286,9 @@ public class MouseController : MonoBehaviour
                     }
                 }
                 else
-                {                    
+                {
                     currentTile = WorldController.Instance.GetTileAt(hit.point);
- 
+
                     if (currentTile.isBuildable)
                     {
                         if (WorldController.Instance.ActiveTiles.Contains((currentTile)) && TutorialController.Instance.TileAllowed(currentTile))
