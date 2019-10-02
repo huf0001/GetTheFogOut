@@ -37,6 +37,8 @@ public class Projectile : MonoBehaviour
         transform.position = origin;
         transform.rotation = Quaternion.LookRotation(Vo);
         gameObject.GetComponent<Rigidbody>().velocity = Vo;
+        
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-MortarLaunch", transform.position);
     }
 
     Vector3 CalculateVelocity(Vector3 target, Vector3 origin, float time)
@@ -89,7 +91,6 @@ public class Projectile : MonoBehaviour
                     tileHit.FogUnit.DealDamageToFogUnit(damage);
                 }
                 
-                Destroy((Instantiate(hitEffect, transform.position, transform.rotation)), 1f);
 
                 List<TileData> outerTiles = tileHit.CollectTilesInRange(outerRange);
                 foreach (TileData tile in outerTiles)
@@ -101,6 +102,9 @@ public class Projectile : MonoBehaviour
                 }
             }
         }
+        
+        Destroy((Instantiate(hitEffect, transform.position, transform.rotation)), 1f);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-MortarHit", transform.position);
 
         // Return the projectile to the pool
         timeToReturn = 0.7f;
