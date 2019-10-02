@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: -0.27982417, g: -0.27982417, b: -0.27982417, a: 1}
+  m_IndirectSpecularColor: {r: -0.2822469, g: -0.2822469, b: -0.2822469, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9848,6 +9848,8 @@ GameObject:
   - component: {fileID: 5368890507166640902}
   - component: {fileID: 8518025857038421224}
   - component: {fileID: 4351332407372536565}
+  - component: {fileID: 3245726574725107946}
+  - component: {fileID: 3245726574725107945}
   - component: {fileID: 3245726574725107944}
   m_Layer: 5
   m_Name: MainMenu
@@ -9868,6 +9870,30 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &3245726574725107945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3245726574725107943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc65f3c5d3beb0f49ac16532dfd6e99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3245726574725107946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3245726574725107943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b387851015e1b45ba53da8edb4c756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &3302076316452697434
 CanvasRenderer:
   m_ObjectHideFlags: 0
