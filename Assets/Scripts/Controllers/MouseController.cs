@@ -97,10 +97,9 @@ public class MouseController : MonoBehaviour
                     TileData t = WorldController.Instance.GetTileAt(hit.point);
                     //      Color test = t.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
                     //     Debug.Log(test);
-
                     if (hovertoggle)
                     {
-                        hovertoggle = false;
+                     //   hovertoggle = false;
                         //    changeTileMaterial(WorldController.Instance.normalTile);
                         changeTileMaterial(false);
 
