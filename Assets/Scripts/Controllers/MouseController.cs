@@ -269,7 +269,7 @@ public class MouseController : MonoBehaviour
                     {
                         UIController.instance.buildingInfo.HideInfo();
                     }
-                    Debug.Log(hit.collider.name);
+                //    Debug.Log(hit.collider.name);
                 }
                 else if (hit.collider.name == "pCube31" || hit.collider.name == "Ship:pCube5" || hit.collider.name == "polySurface22") // check for hub
                 {
