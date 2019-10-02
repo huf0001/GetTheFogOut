@@ -662,6 +662,10 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<size=75%>Learn how to move your Nexus Drone.\n\n";
                 break;
             case TutorialStage.BuildHarvesters:
+                hudObjText.text = "<b>Build Harvesters</b>";
+                objWindowText.text = $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersGoal} mineral Harvesters to collect building materials.\n\n" +
+                    $"Target: {ResourceController.Instance.Harvesters.Count} / {TutorialController.Instance.BuiltHarvestersGoal} Harvesters";
+                break;
             case TutorialStage.BuildHarvestersExtended:
                 hudObjText.text = "<b>Build Harvesters</b>";
                 objWindowText.text = $"<size=75%>Build {TutorialController.Instance.BuiltHarvestersExtendedGoal} mineral Harvesters to collect building materials.\n\n" +

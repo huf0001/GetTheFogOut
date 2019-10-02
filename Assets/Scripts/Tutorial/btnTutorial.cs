@@ -16,6 +16,7 @@ public class btnTutorial : MonoBehaviour
 
     //Public Properties
     public Button Button { get => button; }
+    public ButtonType ButtonType { get => buildingType; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -31,7 +32,7 @@ public class btnTutorial : MonoBehaviour
     //Controls when lerping happens based on outside variables
     private void Update()
     {
-        if ((UIController.instance.buildingSelector.Visible || buildingType == ButtonType.Upgrades) && tutorialController.ButtonAllowed(buildingType) && tutorialController.Stage != TutorialStage.Finished)
+        if ((UIController.instance.buildingSelector.Visible || buildingType == ButtonType.Upgrades || buildingType == ButtonType.Destroy) && tutorialController.ButtonAllowed(buildingType) && tutorialController.Stage != TutorialStage.Finished)
         {
             button.interactable = true;
         }

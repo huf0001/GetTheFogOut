@@ -68,7 +68,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void Start()
     {
-        if (gameObject.name == "btn_remove") return;
+        if (gameObject.name == "btn_remove" || gameObject.name == "RemoveIcon") return;
         Button = GetComponent<Button>();
 
         buttonColour = buttonBG.GetComponent<Image>().color;
@@ -104,7 +104,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private void Update()
     {
-        if (gameObject.name != "btn_remove" && keyInfo.alpha == 1 && buildingCost.color != Color.white && minCostVal < ResourceController.Instance.StoredMineral)
+        if ((gameObject.name != "btn_remove" && gameObject.name != "RemoveIcon") && keyInfo.alpha == 1 && buildingCost.color != Color.white && minCostVal < ResourceController.Instance.StoredMineral)
         {
             buildingCost.color = Color.white;
             minCost.color = Color.white;
@@ -119,7 +119,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerEnter(PointerEventData eventData)
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Move", GetComponent<Transform>().position);
-        if (gameObject.name != "btn_remove")
+        if (gameObject.name != "btn_remove" && gameObject.name != "RemoveIcon")
         {
             if (Button.interactable)
             {
@@ -179,7 +179,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (gameObject.name != "btn_remove")
+        if (gameObject.name != "btn_remove" && gameObject.name != "RemoveIcon")
         {
             DOTween.Kill(buttonBG);
             buildingDesc.text = "";
