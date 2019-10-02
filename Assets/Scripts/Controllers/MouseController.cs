@@ -99,7 +99,6 @@ public class MouseController : MonoBehaviour
                 {
                     TileData t = WorldController.Instance.GetTileAt(hit.point);
                     //      Color test = t.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
-                    //     Debug.Log(test);
                     if (hovertoggle)
                     {
                      //   hovertoggle = false;
@@ -169,7 +168,7 @@ public class MouseController : MonoBehaviour
             }
             else
             {
-             //   towerManager.CurrentTile = hoveredTile;
+              //  currentTile = hoveredTile;
             }
         }
     }
@@ -277,6 +276,11 @@ public class MouseController : MonoBehaviour
                 else if (hit.collider.name == "pCube31" || hit.collider.name == "Ship:pCube5" || hit.collider.name == "polySurface22") // check for hub
                 {
                     currentTile = WorldController.Instance.GetTileAt(36, 34);
+                    if (UIController.instance.buildingSelector.Visible)
+                    {
+                        changeTileMaterial(false);
+                        UIController.instance.buildingSelector.ToggleVisibility();
+                    }
 
                     if (!UIController.instance.buildingInfo.Visible)
                     {
@@ -287,6 +291,7 @@ public class MouseController : MonoBehaviour
                     {
                         UIController.instance.buildingInfo.HideInfo();
                     }
+
                 }
                 else
                 {
@@ -434,7 +439,6 @@ public class MouseController : MonoBehaviour
             mr.SetFloat("_Upgraded", 1);
             mr.SetFloat("_FresnelPower", 10f);
         }
-     //   Debug.Log(mr.material.GetFloat("_Upgraded"));
     }
 
     // Builds the building given on the tile given.
