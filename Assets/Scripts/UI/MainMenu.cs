@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private string gameScene;
     [SerializeField] private CanvasGroup mainCanvasGroup;
     [SerializeField] private TextMeshProUGUI difficultyButtonText;
+    [SerializeField] private TextMeshProUGUI tutorialToggleText;
     [Header("Loading Screen")]
     [SerializeField] private Slider loadingBar;
     [SerializeField] private CanvasGroup loadingCanvasGroup;
@@ -50,10 +51,12 @@ public class MainMenu : MonoBehaviour
         if (!skipTutorial)
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
+            tutorialToggleText.text = "Tutorial       On : <color=#666>Off</color>";
         }
         else
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", GetComponent<Transform>().position);
+            tutorialToggleText.text = "Tutorial       <color=#666>On</color> : Off";
         }
     }
 

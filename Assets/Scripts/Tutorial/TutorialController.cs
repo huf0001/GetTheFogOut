@@ -177,6 +177,7 @@ public class TutorialController : DialogueBoxController
     //Basic Public Properties
     public static TutorialController Instance { get; protected set; }
     public int BuiltGeneratorsGoal { get => builtGeneratorsGoal; }
+    public int BuiltHarvestersGoal { get => builtHarvestersGoal; }
     public int BuiltHarvestersExtendedGoal { get => builtHarvestersExtendedGoal; }
     public int CollectedMineralsGoal { get => collectedMineralsGoal; }
     public TileData TargetTile { get => targetTile; }
@@ -742,6 +743,16 @@ public class TutorialController : DialogueBoxController
         switch (subStage)
         {
             case 1:
+                builtHarvestersExtendedGoal = builtHarvestersGoal;
+
+                foreach (Harvester h in ResourceController.Instance.Harvesters)
+                {
+                    if (h.Location.Resource != null && h.Location.PowerSource != null)
+                    {
+                        builtHarvestersExtendedGoal++;
+                    }
+                }
+
                 currentlyBuilding = BuildingType.Harvester;
                 SendDialogue("build more harvesters extended", 1);
                 UIController.instance.UpdateObjectiveText(stage);
@@ -2082,31 +2093,32 @@ public class TutorialController : DialogueBoxController
     //Checking if a button is acceptable
     public bool ButtonAllowed(ButtonType button)
     {
+        //TODO: strip out upgrades enum references in TutorialController.
         if (ButtonsNormallyAllowed(lastTileChecked).Contains(button))
         {
             switch (stage)
             {
+                case TutorialStage.BuildHarvesters:
                 case TutorialStage.BuildHarvestersExtended:
-                    return button == ButtonType.Extender
-                        || button == ButtonType.Harvester
-                        || button == ButtonType.Destroy;
+                    return button == ButtonType.Harvester;
+                case TutorialStage.BuildExtender:
+                    return button == ButtonType.Extender;
+                case TutorialStage.BuildGenerator:
+                    Debug.Log("CheckingBuildGenerator");
+                    return button == ButtonType.Generator;
                 case TutorialStage.CollectMinerals:
+                case TutorialStage.CollectSonar:
                     return button == ButtonType.Extender
                            || button == ButtonType.Harvester
                            || button == ButtonType.Generator
                            || button == ButtonType.Destroy;
-                case TutorialStage.CollectSonar:
-                    return button == ButtonType.Extender
-                        || button == ButtonType.Generator
-                        || button == ButtonType.Harvester
-                        || button == ButtonType.Destroy;
                 case TutorialStage.BuildExtenderInFog:
-                    return button == ButtonType.Extender
-                           || button == ButtonType.Destroy;
+                    return button == ButtonType.Extender;
+                case TutorialStage.BuildMortar:
+                    return button == ButtonType.AirCannon;
                 case TutorialStage.BuildPulseDefence:
                     return (button == ButtonType.FogRepeller && subStage >= 5)
-                           || (button == ButtonType.Extender && lastTileChecked != pulseDefenceLandmark.Location)
-                           || button == ButtonType.Destroy;
+                           || (button == ButtonType.Extender && lastTileChecked != pulseDefenceLandmark.Location);
                 case TutorialStage.DefenceActivation:
                 case TutorialStage.BuildDefencesInRange:
                 case TutorialStage.CollectMineralsForUpgrades:

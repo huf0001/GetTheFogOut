@@ -72,13 +72,17 @@ public class BuildingInfo : MonoBehaviour
         // Update mineral health value
         if (building.BuildingType == BuildingType.Harvester)
         {
+            mineralVal = building.Location.Resource.Health + 1;
             if (building.Location.Resource.Health != mineral)
             {
                 mineralVal = mineral;
                 mineral = building.Location.Resource.Health;
                 mineralTime = 0;
             }
-
+            if (mineralVal <= 0)
+            {
+                mineralVal = 0;
+            }
             if (!Visible)
             {
                 mineralVal = mineral;
