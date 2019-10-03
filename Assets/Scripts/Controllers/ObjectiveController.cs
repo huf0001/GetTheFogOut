@@ -408,7 +408,7 @@ public class ObjectiveController : DialogueBoxController
                 }
                 else if (upgradesCanvas.activeSelf)
                 {
-                    Time.timeScale = 0;
+                    Time.timeScale = 0.01f;
                     GoToSubStage(6);
                 }
 
