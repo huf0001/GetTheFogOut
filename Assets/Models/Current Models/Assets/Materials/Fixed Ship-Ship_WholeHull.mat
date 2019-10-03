@@ -201,6 +201,8 @@ Material:
     - _CullMode: 2
     - _CullModeForward: 2
     - _Cutoff: 0.5
+    - _Damaged: 0
+    - _DanageTimescale: 5
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
     - _DetailNormalScale: 1
@@ -227,6 +229,7 @@ Material:
     - _DoubleSidedNormalMode: 1
     - _Drag: 1
     - _DstBlend: 0
+    - _EdgeWidth: 3
     - _EmissiveColorMode: 1
     - _EmmisionStrength: 0
     - _EnableBlendModePreserveSpecularLighting: 1
@@ -236,6 +239,7 @@ Material:
     - _EnableSpecularOcclusion: 0
     - _EnableWind: 0
     - _EnergyConservingSpecularColor: 1
+    - _FresnelPower: 0.63
     - _HdrpVersion: 2
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
@@ -258,12 +262,17 @@ Material:
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _NormalStrength: 1
+    - _Overclock: 0
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
     - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
+    - _Party: 0
+    - _PartyPower: 0.5
+    - _PartyTime: 2
     - _PreRefractionPass: 0
+    - _PulseSpeed: 20
     - _ReceivesSSR: 1
     - _RefractionModel: 0
     - _Reverse: 0
@@ -299,6 +308,7 @@ Material:
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
+    - _Upgraded: 0
     - _UseShadowThreshold: 0
     - _VertOffsetStrength: 0
     - _ZTestDepthEqualForOpaque: 4
@@ -314,6 +324,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DamageColour: {r: 0.68235296, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
@@ -321,6 +332,7 @@ Material:
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _NoiseDirection: {r: 0, g: -1, b: 0, a: 0}
+    - _OutlineColour: {r: 2, g: 1.686275, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _Tiling: {r: 5, g: 5, b: 0, a: 0}
@@ -329,3 +341,4 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
+    - _UpgradeColour: {r: 0, g: 1, b: 0, a: 0}
