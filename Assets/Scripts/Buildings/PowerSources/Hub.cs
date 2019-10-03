@@ -151,7 +151,7 @@ public class Hub : PowerSource
     {
         if (damageMarker.Location.FogUnitActive)
         {
-            //Debug.Log($"Hub taking damage to {damageMarker.name}");
+            Debug.Log($"Hub taking damage to {damageMarker.name}");
             Location.FogUnit.DealDamageToBuilding();
         }
     }
