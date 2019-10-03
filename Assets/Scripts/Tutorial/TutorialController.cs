@@ -746,9 +746,9 @@ public class TutorialController : DialogueBoxController
             case 1:
                 builtHarvestersExtendedGoal = builtHarvestersGoal;
 
-                foreach (Harvester h in ResourceController.Instance.Harvesters)
+                foreach (TileData t in WorldController.Instance.ActiveTiles)
                 {
-                    if (h.Location.Resource != null && h.Location.PowerSource != null)
+                    if (t.Resource != null && t.PowerSource != null && t.Building == null && !t.FogUnitActive)
                     {
                         builtHarvestersExtendedGoal++;
                     }
