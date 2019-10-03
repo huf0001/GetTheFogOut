@@ -220,7 +220,7 @@ public class AbilityController : MonoBehaviour
             {
                 if (!abilityTriggered[selectedAbility.AbilityType])
                 {
-                    if (selectedAbility.AbilityType == AbilityEnum.Sonar && TutorialController.Instance.Stage == TutorialStage.ActivateSonar && !TutorialController.Instance.TileAllowed(selectedTile))
+                    if (selectedAbility.AbilityType == AbilityEnum.Sonar && TutorialController.Instance.Stage == TutorialStage.ActivateSonar && !TutorialController.Instance.TileAllowed(selectedTile, false))
                     {
                         return;
                     }

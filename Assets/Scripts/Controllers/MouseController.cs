@@ -295,42 +295,43 @@ public class MouseController : MonoBehaviour
                 }
                 else
                 {
-                    currentTile = WorldController.Instance.GetTileAt(hit.point);
+                    TileData tile = WorldController.Instance.GetTileAt(hit.point);
 
-                    if (currentTile.isBuildable)
+                    if (tile.isBuildable)
                     {
-                        if (WorldController.Instance.ActiveTiles.Contains((currentTile)) && TutorialController.Instance.TileAllowed(currentTile))
+                        if (WorldController.Instance.ActiveTiles.Contains(tile) && TutorialController.Instance.TileAllowed(tile, !UIController.instance.buildingSelector.Visible))
                         {
-                            if (!UIController.instance.buildingSelector.Visible)
+                            if (!AbilityController.Instance.checkTrigger())
                             {
-                                if (!AbilityController.Instance.checkTrigger())
+                                if (!UIController.instance.buildingSelector.Visible)
                                 {
-                                    WorldController.Instance.CheckTileContents(currentTile);
+                                    WorldController.Instance.CheckTileContents(tile);
                                 }
-                            }
-                            else
-                            {
-                                if (!AbilityController.Instance.checkTrigger())
+                                else if (tile != currentTile)
                                 {
-                                //    WorldController.Instance.CheckTileContents(currentTile);
                                     UIController.instance.buildingSelector.QuickCloseMenu();
+                                    WorldController.Instance.CheckTileContents(tile);
                                 }
-                            }
+                                else
+                                {
+                                    towerManager.CancelBuild();
+                                }
+                            }                            
 
                             if (reportTutorialClick)
                             {
                                 TutorialController.Instance.RegisterMouseClicked();
                             }
-
                         }
                         else if (UIController.instance.buildingSelector.Visible)
                         {
                             towerManager.CancelBuild();
                         }
+
+                        currentTile = tile;
                     }
                 }
             }
-
         }
     }
 

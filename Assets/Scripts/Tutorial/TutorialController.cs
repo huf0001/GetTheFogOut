@@ -1997,10 +1997,16 @@ public class TutorialController : DialogueBoxController
     //Tutorial Utility Methods - Checking if X is allowed--------------------------------------------------------------------------------------------
 
     //Checking if a tile is acceptable
-    public bool TileAllowed(TileData tile)
+    public bool TileAllowed(TileData tile, bool saveTile)
     {
-        lastTileChecked = tile;
+        Debug.Log("TileAllowed()");
         bool tileOkay;
+
+        if (saveTile)
+        {
+            Debug.Log("TileAllowed() saved tile");
+            lastTileChecked = tile;
+        }
 
         if (!cameraController.FinishedOpeningCameraPan || (stage <= TutorialStage.CollectSonar && tile == sonarLandmarkTile))
         {
