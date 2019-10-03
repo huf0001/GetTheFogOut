@@ -120,6 +120,7 @@ public class TutorialController : DialogueBoxController
     [Header("UI Lerp Ranges")]
     [SerializeField] private float decalMinLerp;
     [SerializeField] private float decalMaxLerp;
+    [SerializeField] private float largeLerpMultiplier;
     [SerializeField] private float batteryIconMinLerp;
     [SerializeField] private bool multipleLerpRingsForBattery;
     [SerializeField] private float abilityMenuMinLerp;
@@ -2057,6 +2058,8 @@ public class TutorialController : DialogueBoxController
                 return tileOkay;
             case TutorialStage.CollectSonar:
                 return !tile.FogUnitActive;
+            case TutorialStage.ActivateSonar:
+                return Vector3.Distance(tile.Position, buildingTarget.transform.position) < targetRenderer.bounds.extents.x;  //.x or .z will work perfectly fine here, they'll have the radius (orthogonal extent) of the lerp target
             case TutorialStage.BuildExtenderInFog:
                 return tile.Resource == null;
             case TutorialStage.BuildPulseDefence:
@@ -2352,7 +2355,7 @@ public class TutorialController : DialogueBoxController
         }
         else
         {
-            lerped = Mathf.Lerp(decalMinLerp * 3, decalMaxLerp * 3, tileTargetLerpProgress);
+            lerped = Mathf.Lerp(decalMinLerp * largeLerpMultiplier, decalMaxLerp * largeLerpMultiplier, tileTargetLerpProgress);
         }
 
         buildingTarget.transform.localScale = new Vector3(lerped, 1, lerped);
