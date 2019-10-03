@@ -51,12 +51,12 @@ public class MainMenu : MonoBehaviour
         if (!skipTutorial)
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
-            tutorialToggleText.text = "Tutorial       On : <color=#666>Off</color>";
+            tutorialToggleText.text = "Tutorial       On : <color=#6666>Off</color>";
         }
         else
         {
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", GetComponent<Transform>().position);
-            tutorialToggleText.text = "Tutorial       <color=#666>On</color> : Off";
+            tutorialToggleText.text = "Tutorial       <color=#6666>On</color> : Off";
         }
     }
 
