@@ -25,9 +25,12 @@ public class Btn_Ability : MonoBehaviour, IPointerEnterHandler
 
     public void UpdateTextBox()
     {
-        descTextBox.text = $"<b>{abilityName}</b>\n" +
-            $"{(AbilityController.Instance.AbilityCollected[abilityObject.AbilityType] ? abilityDescription : "Missing Module. It must have fallen somewhere else.")}";
-        costTextBox.text = $"<color={(abilityCost < ResourceController.Instance.StoredPower ? ENOUGH : NOT_ENOUGH)}>{abilityCost}<sprite=\"all_icons\" index=0>";
+        descTextBox.text = $"<b>{(AbilityController.Instance.AbilityCollected[abilityObject.AbilityType] ? abilityName : "???")}</b>\n" +
+            $"{(AbilityController.Instance.AbilityCollected[abilityObject.AbilityType] ? abilityDescription : "?????? ??????")}";
+        if (AbilityController.Instance.AbilityCollected[abilityObject.AbilityType])
+        {
+            costTextBox.text = $"<color={(abilityCost < ResourceController.Instance.StoredPower ? ENOUGH : NOT_ENOUGH)}>{abilityCost}<sprite=\"all_icons\" index=0>";
+        }
     }
 
     public void CheckPowerLevel()
