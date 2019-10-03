@@ -264,9 +264,10 @@ public class ObjectiveController : DialogueBoxController
                 {
                     cameraController.MovementEnabled = false;
                     hubScript.Animator.enabled = false;  //add this, so the repaired hub is shown/active ? not sure if we need animator to set to true back.
-                    hubScript.BrokenShip.SetActive(false);
-                    hubScript.AttachedWing.SetActive(false);
-                    hubScript.RepairedShip.SetActive(true);
+                    hubScript.SetCurrentModel("repaired");
+                    //hubScript.BrokenShip.SetActive(false);
+                    //hubScript.AttachedWing.SetActive(false);
+                    //hubScript.RepairedShip.SetActive(true);
                     // Run AI completion text
                     SendDialogue("start part stage", 1);
                     //Camera pans to the thruster
@@ -345,9 +346,10 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 6:
                 // Update hub model with attached thrusters
-                hubScript.BrokenShip.SetActive(false);
-                hubScript.RepairedShip.SetActive(false);
-                hubScript.AttachedWing.SetActive(true);
+                hubScript.SetCurrentModel("attached");
+                //hubScript.BrokenShip.SetActive(false);
+                //hubScript.RepairedShip.SetActive(false);
+                //hubScript.AttachedWing.SetActive(true);
 
                 // Play music Var 3 soundtrack
                 GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageThreeMusic();

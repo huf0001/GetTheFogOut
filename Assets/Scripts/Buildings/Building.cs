@@ -10,7 +10,9 @@ using DG.Tweening;
 
 public abstract class Building : Entity
 {
-    //Serialized fields
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
+
+    //Serialized Fields
     [SerializeField] protected float shield;
     [SerializeField] protected float visibilityRange;
     [SerializeField] protected float upkeep;
@@ -32,7 +34,8 @@ public abstract class Building : Entity
     //[SerializeField] private Shader hologramShader;
     //[SerializeField] private Shader buildingShader;
 
-    //Non-serialized fields
+    //Non-Serialized Fields--------------------------------------------------------------------------------------------------------------------------
+
     private Animator animator;
 
     protected float shieldTime;
@@ -55,29 +58,37 @@ public abstract class Building : Entity
 
     private float toLerp = 1f;
     private float ShieldCheck = 50f;
-    //Public properties
-    //public ResourceController ResourceController { get => resourceController; set => resourceController = value; }
-    public float Upkeep { get => upkeep; }
-    public BuildingType BuildingType { get => buildingType; }
+
+    //Public Properties------------------------------------------------------------------------------------------------------------------------------
+
     public Animator Animator { get => animator; set => animator = value; }
-    public bool Powered { get => powered; }
-    public bool Placed { get => placed; }
+    public BuildingType BuildingType { get => buildingType; }
+    public virtual bool IsOverclockOn { get => isOverclockOn; set => isOverclockOn = value; }
     public int MineralCost { get => mineralCost; }
+    public bool Placed { get => placed; }
     public int PowerCost { get => powerCost; }
+    public bool Powered { get => powered; }
     public float Shield { get => shield; set => shield = value; }
     public float ShieldTime { get => shieldTime; set => shieldTime = value; }
-
     public bool TakingDamage { get; private set; }
+    public float Upkeep { get => upkeep; }
+
+    public override TileData Location
+    {
+        get => base.Location;
+
+        set
+        {
+            base.Location = value;
+        }
+    }
 
     public int OverclockValue
     {
-        get { return isOverclockOn ? 3 : 1; }
-    }
-
-    public virtual bool IsOverclockOn
-    {
-        get { return isOverclockOn; }
-        set { isOverclockOn = value; }
+        get
+        {
+            return isOverclockOn ? 3 : 1;
+        }
     }
 
     // Start is called before the first frame update
@@ -85,24 +96,60 @@ public abstract class Building : Entity
     {
         MaxHealth = Health;
         halfHealth = Health / 2;
-        InvokeRepeating("CheckForDamage", 0.1f, 0.5f);
+        InvokeRepeating(nameof(CheckForDamage), 0.1f, 0.5f);
         buildHealth = health;
-        InvokeRepeating("CheckStillDamaging", 1, 5);
+        InvokeRepeating(nameof(CheckStillDamaging), 1, 5);
+
         if (shieldObj != null)
         {
             shieldMat = shieldObj.GetComponent<Renderer>().material;
 
         }
+
         rend = GetComponentInChildren<MeshRenderer>();
         cam = Camera.main;
     }
 
-    //TODO: says it's never used, double check
-    private void CheckForDamage()
+    protected virtual void CheckForDamage()
     {
         if (Fog.Instance.DamageOn && Location.FogUnitActive)
         {
             Location.FogUnit.DealDamageToBuilding();
+        }
+    }
+
+    private void CheckStillDamaging()
+    {
+        if (TakingDamage)
+        {
+            if (buildHealth == Health)
+            {
+                TakingDamage = false;
+                damagingNotified = false;
+                if (BuildingType == BuildingType.Hub)
+                {
+                    if (Hub.Instance.ShipIsActive)
+                    {
+                        MeshRenderer[] meshs = Hub.Instance.CurrentModel.GetComponentsInChildren<MeshRenderer>();
+                        foreach (MeshRenderer m in meshs)
+                        {
+                            Material[] ma = m.materials;
+                            foreach (Material k in ma)
+                            {
+                                k.SetInt("_Damaged", 0);
+                            }
+                        }
+                    }
+                    UIController.instance.ChangeUIColour("normal");
+                }
+                else
+                {
+                    rend.material.SetInt("_Damaged", 0);
+                };
+
+                if (damIndScript) damIndScript.On = false;
+            }
+            buildHealth = Health;
         }
     }
 
@@ -233,50 +280,14 @@ public abstract class Building : Entity
         hideHealthBar = true;
     }
 
-    private void RepairBuilding()
+    protected virtual void RepairBuilding()
     {
         health += 2f;
         if (health >= MaxHealth)
         {
             health = MaxHealth;
         }
-    }
-
-    private void CheckStillDamaging()
-    {
-        if (TakingDamage)
-        {
-            if (buildHealth == Health)
-            {
-                TakingDamage = false;
-                damagingNotified = false;
-                if (BuildingType == BuildingType.Hub)
-                {
-                    if (Hub.Instance.BrokenShip.activeInHierarchy || Hub.Instance.AttachedWing.activeInHierarchy || Hub.Instance.RepairedShip.activeInHierarchy)
-                    {
-                        GameObject go = Hub.Instance.getActiveShip();
-                        MeshRenderer[] meshs = go.GetComponentsInChildren<MeshRenderer>();
-                        foreach (MeshRenderer m in meshs)
-                        {
-                            Material[] ma = m.materials;
-                            foreach (Material k in ma)
-                            {
-                                k.SetInt("_Damaged", 0);
-                            }
-                        }
-                    }
-                    UIController.instance.ChangeUIColour("normal");
-                }
-                else
-                {
-                    rend.material.SetInt("_Damaged", 0);
-                };
-
-                if (damIndScript) damIndScript.On = false;
-            }
-            buildHealth = Health;
-        }
-    }
+    }   
 
     public virtual void Place()
     {
@@ -547,16 +558,6 @@ public abstract class Building : Entity
         Destroy(this);
     }
 
-    public override TileData Location
-    {
-        get => base.Location;
-
-        set
-        {
-            base.Location = value;
-        }
-    }
-
     public void DealDamageToBuilding(float damageVal)
     {
         if (damagedNotified)
@@ -600,10 +601,9 @@ public abstract class Building : Entity
             else
             {
                 if (damInd.transform.localScale.x == 1) damInd.transform.localScale *= 1.3f;
-                if (Hub.Instance.BrokenShip.activeInHierarchy || Hub.Instance.AttachedWing.activeInHierarchy || Hub.Instance.RepairedShip.activeInHierarchy)
+                if (Hub.Instance.ShipIsActive)
                 {
-                    GameObject go = Hub.Instance.getActiveShip();
-                    MeshRenderer[] meshs = go.GetComponentsInChildren<MeshRenderer>();
+                    MeshRenderer[] meshs = Hub.Instance.CurrentModel.GetComponentsInChildren<MeshRenderer>();
                     foreach (MeshRenderer m in meshs)
                     {
                         Material[] ma = m.materials;

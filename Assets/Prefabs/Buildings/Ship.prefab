@@ -253,6 +253,13 @@ MonoBehaviour:
   powerRange: 5
   suppliedBuildings: []
   isConnectedToHub: 0
+  brokenShip: {fileID: 1676051121940668403}
+  repairedShip: {fileID: 6408134455620286879}
+  attachedWing: {fileID: 7478471421583233554}
+  cockpitDamageMarker: {fileID: 0}
+  enginesDamageMarker: {fileID: 0}
+  leftWingDamageMarker: {fileID: 0}
+  rightWingDamageMarker: {fileID: 0}
   Fires: {fileID: 0}
   fireLight: {fileID: 0}
   BrokenShip: {fileID: 1676051121940668403}
@@ -1366,11 +1373,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1716}
     m_Modifications:
-    - target: {fileID: 3781018147186229703, guid: a542255d695fb6b4ab2f98921b54030e,
-        type: 3}
-      propertyPath: m_Name
-      value: PowerlineConnection (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 3784284891155029228, guid: a542255d695fb6b4ab2f98921b54030e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1440,6 +1442,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.14285713
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781018147186229703, guid: a542255d695fb6b4ab2f98921b54030e,
+        type: 3}
+      propertyPath: m_Name
+      value: PowerlineConnection (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a542255d695fb6b4ab2f98921b54030e, type: 3}

@@ -1066,8 +1066,9 @@ public class TutorialController : DialogueBoxController
             case 6:
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.Animator.enabled = false;   //Apparently interferes with setting the repaired ship to active=true unless you disable it.
-                hub.BrokenShip.SetActive(false);
-                hub.RepairedShip.SetActive(true);
+                hub.SetCurrentModel("repaired");
+                //hub.BrokenShip.SetActive(false);
+                //hub.RepairedShip.SetActive(true);
                 StartCoroutine(CompleteTutorialObjective("You repaired damage to your ship!"));
                 IncrementSubStage();
                 break;

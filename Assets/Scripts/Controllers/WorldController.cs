@@ -181,6 +181,16 @@ public class WorldController : MonoBehaviour
                 TileData tile = GetTileAt(b.transform.position);
                 tile.Building = b;
                 b.Location = tile;
+
+                List<Locatable> damageMarkers = (b as Hub).DamageMarkers;
+
+                foreach (Locatable damageMarker in damageMarkers)
+                {
+                    tile = GetTileAt(damageMarker.transform.position);
+                    tile.Building = b;
+                    damageMarker.Location = tile;
+                }
+
                 b.Animator = b.GetComponentInChildren<Animator>();
                 b.Animator.SetBool("Built", true);
 
@@ -192,11 +202,7 @@ public class WorldController : MonoBehaviour
                 b.Place();
                 break;
             }
-        }
-
-        foreach (Building b in buildings)
-        {
-            if (b.BuildingType != BuildingType.Hub)
+            else
             {
                 TileData tile = GetTileAt(b.transform.parent.position);
                 b.Location = tile;
