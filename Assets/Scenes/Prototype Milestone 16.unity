@@ -5074,9 +5074,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 305072445}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 678737022}
+  m_Script: {fileID: 909124597}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusOffset: 0
+  m_Profile: {fileID: 11400000, guid: 274e836dc78a858488c1684c9bbb5ccc, type: 2}
 --- !u!1001 &306134866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6755,9 +6758,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 397156726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 678737022}
+  m_Script: {fileID: 909124597}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusOffset: 0
+  m_Profile: {fileID: 11400000, guid: 274e836dc78a858488c1684c9bbb5ccc, type: 2}
 --- !u!114 &400079135 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1442872716054673926, guid: f0d96ef103d08e4429542615f2b52508,
@@ -15327,6 +15333,20 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 908894908}
   m_PrefabAsset: {fileID: 0}
+--- !u!115 &909124597
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 5
+  m_Script: 
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_ExecutionOrder: 0
+  m_ClassName: CinemachinePostProcessing
+  m_Namespace: Cinemachine.PostFX
 --- !u!1001 &910414568
 PrefabInstance:
   m_ObjectHideFlags: 0
