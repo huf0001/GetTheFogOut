@@ -24,6 +24,7 @@ public class ResourceController : MonoBehaviour
     private Hub hub = null;
 
     private List<Building> buildings = new List<Building>();
+    private List<Harvester> activeHarvesters;
 
     public float powerChangePauseThreshold;
 
@@ -46,6 +47,7 @@ public class ResourceController : MonoBehaviour
     public List<RepelFan> PulseDefences { get => pulseDefences; set => pulseDefences = value; }
 
 
+
     // [SerializeField] protected AudioSource audioMaxPower;
     // [SerializeField] protected AudioSource audioMaxMineral;
     // [SerializeField] protected AudioSource audioOverload;
@@ -66,6 +68,7 @@ public class ResourceController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        activeHarvesters = new List<Harvester>(harvesters);
         hub = WorldController.Instance.Hub;
         InvokeRepeating("ProcessUpkeep", 1f, 1f);
     }
@@ -161,7 +164,7 @@ public class ResourceController : MonoBehaviour
         }
 
         //Gets the power drain by the harvesters
-        foreach (Harvester h in harvesters)
+        foreach (Harvester h in activeHarvesters)
         {
             if (WorldController.Instance.ActiveTiles.Contains(h.Location))
             {
@@ -240,7 +243,7 @@ public class ResourceController : MonoBehaviour
         //Powers harvesters
         if (storedPower > 0)
         {
-            foreach (Harvester h in new List<Harvester>(harvesters))
+            foreach (Harvester h in harvesters)
             {
                 if (WorldController.Instance.ActiveTiles.Contains(h.Location))
                 {
@@ -266,7 +269,8 @@ public class ResourceController : MonoBehaviour
                                     Destroy(h.Location.Resource.gameObject);
                                     h.TurnOnMineralIndicator();
                                     h.ShutdownBuilding();
-                                    RemoveBuilding(h);
+                                    activeHarvesters.Remove(h);
+                                  //  RemoveBuilding(h);
                                 }
                                 break;
                         }
@@ -347,6 +351,7 @@ public class ResourceController : MonoBehaviour
                 break;
             case BuildingType.Harvester:
                 harvesters.Add(b as Harvester);
+                activeHarvesters.Add(b as Harvester);
                 break;
             case BuildingType.Extender:
                 extenders.Add(b as Relay);
@@ -386,6 +391,7 @@ public class ResourceController : MonoBehaviour
                 break;
             case BuildingType.Harvester:
                 harvesters.Remove(b as Harvester);
+                activeHarvesters.Remove(b as Harvester);
                 if (harvesters.Contains(b as Harvester))
                 {
                     Debug.Log("Harvester removal failed");

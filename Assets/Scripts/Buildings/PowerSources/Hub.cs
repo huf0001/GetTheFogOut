@@ -7,7 +7,22 @@ using FMODUnity;
 
 public class Hub : PowerSource
 { 
-    public static Hub Instance { get; protected set; }
+    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
+
+    //Serialized Fields
+
+    [Header("Models")]
+    [SerializeField] private GameObject brokenShip;
+    [SerializeField] private GameObject repairedShip;
+    [SerializeField] private GameObject attachedWing;
+
+    [Header("Damage Markers")]
+    [SerializeField] private Locatable cockpitDamageMarker;
+    [SerializeField] private Locatable enginesDamageMarker;
+    [SerializeField] private Locatable leftWingDamageMarker;
+    [SerializeField] private Locatable rightWingDamageMarker;
+
+    [Header("Fire")]
     [SerializeField] private GameObject Fires;
     [SerializeField] private Light fireLight;
     private float tick = 0;
@@ -15,11 +30,48 @@ public class Hub : PowerSource
     private bool isPlayingSiren;
     private EventInstance fireSound;
 
-    public GameObject BrokenShip;
-    public GameObject RepairedShip;
-    public GameObject AttachedWing;
+    //public GameObject BrokenShip;
+    //public GameObject RepairedShip;
+    //public GameObject AttachedWing;
 
+    //Non-Serialized Fields
     private bool dismantling = false;
+    private GameObject currentModel;
+
+    //Public Properties------------------------------------------------------------------------------------------------------------------------------
+
+    public static Hub Instance { get; protected set; }
+
+    public GameObject CurrentModel { get => currentModel; }
+
+    public List<Locatable> DamageMarkers { get => new List<Locatable>() { cockpitDamageMarker, enginesDamageMarker, leftWingDamageMarker, rightWingDamageMarker }; }
+    public bool ShipIsActive { get => brokenShip.activeInHierarchy || repairedShip.activeInHierarchy || attachedWing.activeInHierarchy; }
+
+    //public GameObject getActiveShip()
+    //{
+    //    GameObject act;
+    //    if (BrokenShip.activeInHierarchy)
+    //    {
+    //        act = BrokenShip;
+    //    }
+    //    else if (RepairedShip.activeInHierarchy)
+    //    {
+    //        act = RepairedShip;
+    //    }
+    //    else
+    //    {
+    //        act = AttachedWing;
+    //    }
+
+    //    return act;
+    //}
+
+    public override bool SupplyingPower()
+    {
+        return true;
+    }
+
+    //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
     protected void Awake()
     {
@@ -39,21 +91,80 @@ public class Hub : PowerSource
         powerSource = null;
         fireSound = RuntimeManager.CreateInstance("event:/SFX/3D-ShipFire");
         fireSound.start();
+        currentModel = brokenShip;
     }
+
+    //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+
         if (isDestroyed())
         {
             WorldController.Instance.HubDestroyed = true;
         }
     }
 
-    public override bool SupplyingPower()
+    public void SetCurrentModel(string model)
     {
-        return true;
+        currentModel.SetActive(false);
+
+        switch (model)
+        {
+            case "broken":
+                currentModel = brokenShip;
+                currentModel.SetActive(true);
+                break;
+            case "repaired":
+                currentModel = repairedShip;
+                currentModel.SetActive(true);
+                break;
+            case "attached":
+                currentModel = attachedWing;
+                currentModel.SetActive(true);
+                break;
+            default:
+                Debug.Log($"Error: invalid ship model \"{model}\" submitted to Hub.CurrentModel().");
+                break;
+        }
+    }
+
+    protected override void CheckForDamage()
+    {
+        //Debug.Log("Hub.CheckForDamage");
+        if (Fog.Instance.DamageOn)
+        {
+            CheckForDamage(cockpitDamageMarker);
+            CheckForDamage(enginesDamageMarker);
+            CheckForDamage(rightWingDamageMarker);
+
+            if (currentModel == attachedWing)
+            {
+                CheckForDamage(leftWingDamageMarker);
+            }
+        }
+    }
+
+    private void CheckForDamage(Locatable damageMarker)
+    {
+        if (damageMarker.Location.FogUnitActive)
+        {
+            //Debug.Log($"Hub taking damage to {damageMarker.name}");
+            Location.FogUnit.DealDamageToBuilding();
+        }
+    }
+
+    protected override void RepairBuilding()
+    {
+        //Debug.Log("Hub.RepairBuilding");
+        health += 6f;
+
+        if (health >= MaxHealth)
+        {
+            health = MaxHealth;
+        }
     }
 
     public bool isDestroyed()
@@ -66,6 +177,21 @@ public class Hub : PowerSource
         {
             return false;
         }
+    }
+
+    public void PlaySiren()
+    {
+        if (!isPlayingSiren)
+        {
+            isPlayingSiren = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingSirenHub", transform.position);
+            Invoke(nameof(StopSirenNoise), 1f);
+        }
+    }
+
+    private void StopSirenNoise()
+    {
+        isPlayingSiren = false;
     }
 
     public void extinguishingFire()
@@ -97,24 +223,6 @@ public class Hub : PowerSource
         }
     }
 
-    public GameObject getActiveShip()
-    {
-        GameObject act;
-        if (BrokenShip.activeInHierarchy)
-        {
-            act = BrokenShip;
-        }
-        else if (RepairedShip.activeInHierarchy)
-        {
-            act = RepairedShip;
-        }
-        else        {
-            act = AttachedWing;
-        }
-
-        return act;
-    }
-
     private bool delay(int wait)
     {
         tick += Time.deltaTime;
@@ -125,21 +233,6 @@ public class Hub : PowerSource
         }
         else
             return false;
-    }
-
-    public void PlaySiren()
-    {
-        if (!isPlayingSiren)
-        {
-            isPlayingSiren = true;
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingSirenHub", transform.position);
-            Invoke(nameof(StopSirenNoise), 1f);
-        }
-    }
-
-    private void StopSirenNoise()
-    {
-        isPlayingSiren = false;
     }
 
     protected override void CheckDismantle()

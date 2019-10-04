@@ -203,13 +203,7 @@ public class AbilityController : MonoBehaviour
 
     public bool checkTrigger()
     {
-        bool ability = false;
-        if (abilityTriggered[AbilityEnum.Artillery] || abilityTriggered[AbilityEnum.BuildingDefence] || abilityTriggered[AbilityEnum.FreezeFog] || abilityTriggered[AbilityEnum.Overclock] || abilityTriggered[AbilityEnum.Sonar])
-        {
-            ability = true;
-        }
-
-        return ability;
+        return abilityTriggered[AbilityEnum.Artillery] || abilityTriggered[AbilityEnum.BuildingDefence] || abilityTriggered[AbilityEnum.FreezeFog] || abilityTriggered[AbilityEnum.Overclock] || abilityTriggered[AbilityEnum.Sonar];
     }
 
     private void ProcessInput()
@@ -218,6 +212,7 @@ public class AbilityController : MonoBehaviour
         {
             AbilityMenu.Instance.ToggleMenu();
         }
+
         if (IsAbilitySelected)
         {
             // Use ability
@@ -225,6 +220,11 @@ public class AbilityController : MonoBehaviour
             {
                 if (!abilityTriggered[selectedAbility.AbilityType])
                 {
+                    if (selectedAbility.AbilityType == AbilityEnum.Sonar && TutorialController.Instance.Stage == TutorialStage.ActivateSonar && !TutorialController.Instance.TileAllowed(selectedTile, false))
+                    {
+                        return;
+                    }
+
                     // Power check is done on button click to assist in providing feedback to player
                     selectedAbility.TriggerAbility(selectedTile);
                     abilityTriggered[selectedAbility.AbilityType] = true;
@@ -235,7 +235,7 @@ public class AbilityController : MonoBehaviour
                     // TODO: Start visual cooldown stuff
                     IsAbilitySelected = false;
                     selectedAbility = null;
-                   MouseController.Instance.isBuildAvaliable = true;
+                    MouseController.Instance.isBuildAvaliable = true;
                 }
             }
             // Cancel ability

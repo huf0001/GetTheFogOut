@@ -5,23 +5,32 @@ using UnityEngine.EventSystems;
 
 public class TowerManager : MonoBehaviour
 {
-
     [SerializeField] private btn_tower selectedTower;
     [SerializeField] private BuildingType buildingType = BuildingType.None;
     [SerializeField] private GameObject emptyprefab;
-    [SerializeField] private TileData currentTile;
     [SerializeField] private GameObject hologramTower;
 
-
+    public static TowerManager Instance { get; protected set; }
     public btn_tower SelectedTower { get => selectedTower; set => selectedTower = value; }
     public BuildingType TowerBuildingType { get => buildingType; set => buildingType = value; }
-    public TileData CurrentTile { get => currentTile; set => currentTile = value; }
+
+    void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("There should never be 2 or more tutorial managers.");
+        }
+
+        Instance = this;
+    }
 
     //TODO: TOGGLE ?
     //DESC: click on the button will get the value of the assigned value(button) ? xD
     public void OnButtonClicked(btn_tower chooseTower)
     {
         selectedTower = chooseTower;
+
+        TileData currentTile = MouseController.Instance.CurrentTile;
 
         if (currentTile != null)
         {
@@ -68,6 +77,7 @@ public class TowerManager : MonoBehaviour
     public void OnHoverEnter(btn_tower tower)
     {
         GameObject TowerToSpawn;
+        TileData currentTile = MouseController.Instance.CurrentTile;
 
         if (currentTile != null && tower.Button.interactable)
         {
@@ -125,7 +135,7 @@ public class TowerManager : MonoBehaviour
     public void CancelBuild()
     {
         selectedTower = null;
-        currentTile = null;
+        //MouseController.Instance.CurrentTile = null;
         Destroy(hologramTower);
         if (UIController.instance.buildingSelector.Visible) UIController.instance.buildingSelector.ToggleVisibility();
         if (!UIController.instance.UpgradeWindowVisible) UIController.instance.buildingInfo.HideInfo();

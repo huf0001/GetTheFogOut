@@ -67,6 +67,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private Image abilityImage;
     [SerializeField] private Sprite[] abilitySprites;
     [SerializeField] private Button[] abilityButtons;
+    [SerializeField] private Image[] abilityButtonIcons;
+    [SerializeField] private TextMeshProUGUI[] abilityButtonUnknown;
     [SerializeField] private TextMeshProUGUI abilityNameText;
     [SerializeField] private TextMeshProUGUI abilityDescText;
     [SerializeField, TextArea] private string[] abilityDescriptions;
@@ -337,6 +339,8 @@ public class UIController : MonoBehaviour
                 abilityNameText.text = "Artillery Blast";
                 abilityDescText.text = abilityDescriptions[0];
                 abilityButtons[0].interactable = true;
+                abilityButtonIcons[0].enabled = true;
+                abilityButtonUnknown[0].enabled = false;
                 abilityHotkeyTextboxes[0].color = new Color(1, 1, 1);
                 break;
             case AbilityEnum.BuildingDefence:
@@ -344,6 +348,8 @@ public class UIController : MonoBehaviour
                 abilityNameText.text = "Defence Mode";
                 abilityDescText.text = abilityDescriptions[1];
                 abilityButtons[1].interactable = true;
+                abilityButtonIcons[1].enabled = true;
+                abilityButtonUnknown[1].enabled = false;
                 abilityHotkeyTextboxes[1].color = new Color(1, 1, 1);
                 break;
             case AbilityEnum.FreezeFog:
@@ -351,6 +357,8 @@ public class UIController : MonoBehaviour
                 abilityNameText.text = "Freeze Fog";
                 abilityDescText.text = abilityDescriptions[2];
                 abilityButtons[2].interactable = true;
+                abilityButtonIcons[2].enabled = true;
+                abilityButtonUnknown[2].enabled = false;
                 abilityHotkeyTextboxes[2].color = new Color(1, 1, 1);
                 break;
             case AbilityEnum.Overclock:
@@ -358,6 +366,8 @@ public class UIController : MonoBehaviour
                 abilityNameText.text = "Overclock";
                 abilityDescText.text = abilityDescriptions[3];
                 abilityButtons[3].interactable = true;
+                abilityButtonIcons[3].enabled = true;
+                abilityButtonUnknown[3].enabled = false;
                 abilityHotkeyTextboxes[3].color = new Color(1, 1, 1);
                 break;
             case AbilityEnum.Sonar:
@@ -365,6 +375,8 @@ public class UIController : MonoBehaviour
                 abilityNameText.text = "Sonar";
                 abilityDescText.text = abilityDescriptions[4];
                 abilityButtons[4].interactable = true;
+                abilityButtonIcons[4].enabled = true;
+                abilityButtonUnknown[4].enabled = false;
                 abilityHotkeyTextboxes[4].color = new Color(1, 1, 1);
                 break;
         }

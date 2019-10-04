@@ -120,6 +120,7 @@ public class TutorialController : DialogueBoxController
     [Header("UI Lerp Ranges")]
     [SerializeField] private float decalMinLerp;
     [SerializeField] private float decalMaxLerp;
+    [SerializeField] private float largeLerpMultiplier;
     [SerializeField] private float batteryIconMinLerp;
     [SerializeField] private bool multipleLerpRingsForBattery;
     [SerializeField] private float abilityMenuMinLerp;
@@ -745,9 +746,9 @@ public class TutorialController : DialogueBoxController
             case 1:
                 builtHarvestersExtendedGoal = builtHarvestersGoal;
 
-                foreach (Harvester h in ResourceController.Instance.Harvesters)
+                foreach (TileData t in WorldController.Instance.ActiveTiles)
                 {
-                    if (h.Location.Resource != null && h.Location.PowerSource != null)
+                    if (t.Resource != null && t.PowerSource != null && t.Building == null && !t.FogUnitActive)
                     {
                         builtHarvestersExtendedGoal++;
                     }
@@ -1066,8 +1067,9 @@ public class TutorialController : DialogueBoxController
             case 6:
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.Animator.enabled = false;   //Apparently interferes with setting the repaired ship to active=true unless you disable it.
-                hub.BrokenShip.SetActive(false);
-                hub.RepairedShip.SetActive(true);
+                hub.SetCurrentModel("repaired");
+                //hub.BrokenShip.SetActive(false);
+                //hub.RepairedShip.SetActive(true);
                 StartCoroutine(CompleteTutorialObjective("You repaired damage to your ship!"));
                 IncrementSubStage();
                 break;
@@ -1995,10 +1997,16 @@ public class TutorialController : DialogueBoxController
     //Tutorial Utility Methods - Checking if X is allowed--------------------------------------------------------------------------------------------
 
     //Checking if a tile is acceptable
-    public bool TileAllowed(TileData tile)
+    public bool TileAllowed(TileData tile, bool saveTile)
     {
-        lastTileChecked = tile;
+        Debug.Log("TileAllowed()");
         bool tileOkay;
+
+        if (saveTile)
+        {
+            Debug.Log("TileAllowed() saved tile");
+            lastTileChecked = tile;
+        }
 
         if (!cameraController.FinishedOpeningCameraPan || (stage <= TutorialStage.CollectSonar && tile == sonarLandmarkTile))
         {
@@ -2016,9 +2024,18 @@ public class TutorialController : DialogueBoxController
                 {
                     return tile == targetTile;
                 }
-
+            case TutorialStage.BuildExtender:
+            case TutorialStage.BuildMortar:
+                if (subStage < 3)
+                {
+                    return tile.Resource == null && !tile.FogUnitActive;
+                }
+                else
+                {
+                    return tile == targetTile;
+                }
             case TutorialStage.BuildHarvestersExtended:
-                return !tile.FogUnitActive;
+                return tile.Resource != null && !tile.FogUnitActive;
             case TutorialStage.BuildGenerator:
                 if (subStage == 7)
                 {
@@ -2030,23 +2047,12 @@ public class TutorialController : DialogueBoxController
                 }
             case TutorialStage.BuildMoreGenerators:
                 return tile.Resource == null && !tile.FogUnitActive;
-            case TutorialStage.CollectSonar:
-                return !tile.FogUnitActive;
-            case TutorialStage.BuildExtenderInFog:
-                return tile.Resource == null;
+            case TutorialStage.CollectMinerals:
+            case TutorialStage.DefenceActivation:
+            case TutorialStage.BuildDefencesInRange:
+                tileOkay = !tile.FogUnitActive || tile.Building != null;
 
-            //if (subStage < 3)
-            //{
-            //    return tile.Resource == null;
-            //}
-            //else
-            //{
-            //    return tile == currentTile || (tile.Resource == null && !tile.FogUnitActive);
-            //}
-            case TutorialStage.BuildPulseDefence:
-                tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
-
-                if (!tileOkay && !dialogueBox.Activated)
+                if (!tileOkay && tile.FogUnitActive && !dialogueBox.Activated)
                 {
                     savedTutorialStage = stage;
                     savedSubStage = subStage;
@@ -2056,22 +2062,16 @@ public class TutorialController : DialogueBoxController
                 }
 
                 return tileOkay;
-            case TutorialStage.BuildExtender:
-            case TutorialStage.BuildMortar:
-                if (subStage < 3)
-                {
-                    return tile.Resource == null && !tile.FogUnitActive;
-                }
-                else
-                {
-                    return tile == targetTile;
-                }
-            case TutorialStage.CollectMinerals:
-            case TutorialStage.DefenceActivation:
-            case TutorialStage.BuildDefencesInRange:
-                tileOkay = !tile.FogUnitActive || tile.Building != null;
+            case TutorialStage.CollectSonar:
+                return !tile.FogUnitActive;
+            case TutorialStage.ActivateSonar:
+                return Vector3.Distance(tile.Position, buildingTarget.transform.position) < targetRenderer.bounds.extents.x;  //.x or .z will work perfectly fine here, they'll have the radius (orthogonal extent) of the lerp target
+            case TutorialStage.BuildExtenderInFog:
+                return tile.Resource == null;
+            case TutorialStage.BuildPulseDefence:
+                tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
 
-                if (!tileOkay && tile.FogUnitActive && !dialogueBox.Activated)
+                if (!tileOkay && !dialogueBox.Activated)
                 {
                     savedTutorialStage = stage;
                     savedSubStage = subStage;
@@ -2104,7 +2104,7 @@ public class TutorialController : DialogueBoxController
                 case TutorialStage.BuildExtender:
                     return button == ButtonType.Extender;
                 case TutorialStage.BuildGenerator:
-                    Debug.Log("CheckingBuildGenerator");
+                case TutorialStage.BuildMoreGenerators:
                     return button == ButtonType.Generator;
                 case TutorialStage.CollectMinerals:
                 case TutorialStage.CollectSonar:
@@ -2361,7 +2361,7 @@ public class TutorialController : DialogueBoxController
         }
         else
         {
-            lerped = Mathf.Lerp(decalMinLerp * 3, decalMaxLerp * 3, tileTargetLerpProgress);
+            lerped = Mathf.Lerp(decalMinLerp * largeLerpMultiplier, decalMaxLerp * largeLerpMultiplier, tileTargetLerpProgress);
         }
 
         buildingTarget.transform.localScale = new Vector3(lerped, 1, lerped);

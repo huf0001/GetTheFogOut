@@ -373,8 +373,8 @@ public class DialogueBox : MonoBehaviour
     {
         nextDialogueSetReady = true;
 
-        countdown.rectTransform.DOAnchorPosY(-18 + 125, popUpSpeed).SetEase(Ease.OutBack);
-        objButton.rectTransform.DOAnchorPosY(-18 + 125, popUpSpeed).SetEase(Ease.OutBack);
+        countdown.rectTransform.DOAnchorPosY(-18 + 150, popUpSpeed).SetEase(Ease.OutBack);
+        objButton.rectTransform.DOAnchorPosY(-18 + 150, popUpSpeed).SetEase(Ease.OutBack);
         dialogueRectTransform.DOAnchorPosY(-18, popUpSpeed).SetEase(Ease.OutBack).SetUpdate(true).OnComplete(
             delegate
             {
