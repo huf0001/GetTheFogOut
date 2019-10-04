@@ -25,21 +25,26 @@ namespace Abilities
                     Renderer[] renderers = t.Building.GetComponentsInChildren<Renderer>();
                     foreach (Renderer renderer in renderers)
                     {
-                        renderer.material.SetFloat("_Overclock", 1f);
+                        if (t.Building.BuildingType != BuildingType.Hub)
+                        {
+                            renderer.material.SetFloat("_Overclock", 1f);
+                        }
                     }
-                    
-                    switch (t.Building.BuildingType)
-                    {
-                        case BuildingType.Harvester:
-                            main.startSpeed = 8f;
-                            main.startLifetime = 1.25f;
+              //      Debug.Log(t.Building.name);
 
-                            break;
-                        case BuildingType.FogRepeller:
-                            t.Building.GetComponentInChildren<ParticleSystem>().emission.
-                                SetBurst(0 , new ParticleSystem.Burst(0f, 2, 10, 0.5f));
-                            break;
-                    }
+                        switch (t.Building.BuildingType)
+                        {
+                            case BuildingType.Harvester:
+                                main.startSpeed = 8f;
+                                main.startLifetime = 1.25f;
+
+                                break;
+                            case BuildingType.FogRepeller:
+                                t.Building.GetComponentInChildren<ParticleSystem>().emission.
+                                    SetBurst(0, new ParticleSystem.Burst(0f, 2, 10, 0.5f));
+                                break;
+                        }
+                    
                     
                     timer = duration;
                     AbilityController.Instance.StartCoroutine(TurnOffOverclock(t.Building));
