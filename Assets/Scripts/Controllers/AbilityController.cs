@@ -208,7 +208,7 @@ public class AbilityController : MonoBehaviour
 
     private void ProcessInput()
     {
-        if (WorldController.Instance.Inputs.InputMap.Ability.triggered && !WorldController.Instance.isGamePaused)
+        if (WorldController.Instance.Inputs.InputMap.Ability.triggered && !WorldController.Instance.isGamePaused && !WorldController.Instance.GameWin && !WorldController.Instance.GameOver && !UIController.instance.UpgradeWindowVisible)
         {
             AbilityMenu.Instance.ToggleMenu();
         }

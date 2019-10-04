@@ -3582,6 +3582,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9ff5b1c68228ae4db9435030bf14584, type: 3}
+--- !u!114 &174999339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4130326813268969668, guid: f0d96ef103d08e4429542615f2b52508,
+    type: 3}
+  m_PrefabInstance: {fileID: 922240204}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &176666511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4465,27 +4477,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9ff5b1c68228ae4db9435030bf14584, type: 3}
---- !u!1 &217219057 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7796566619149965143, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
-    type: 3}
-  m_PrefabInstance: {fileID: 1296432923}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &217219058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 217219057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 678737022}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FocusTracksTarget: 0
-  m_FocusOffset: 0
-  m_Profile: {fileID: 0}
 --- !u!1001 &217810639
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5068,9 +5059,6 @@ MonoBehaviour:
   m_Script: {fileID: 678737022}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FocusTracksTarget: 0
-  m_FocusOffset: 0
-  m_Profile: {fileID: 0}
 --- !u!1001 &306134866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6752,9 +6740,6 @@ MonoBehaviour:
   m_Script: {fileID: 678737022}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FocusTracksTarget: 0
-  m_FocusOffset: 0
-  m_Profile: {fileID: 0}
 --- !u!114 &400079135 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1442872716054673926, guid: f0d96ef103d08e4429542615f2b52508,
@@ -16535,7 +16520,21 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 52402b4d2736c7d49be08095dd394aed, type: 2}
+    - target: {fileID: 5149356341038195702, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 52402b4d2736c7d49be08095dd394aed, type: 2}
     - target: {fileID: 2845, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 52402b4d2736c7d49be08095dd394aed, type: 2}
+    - target: {fileID: 2845, guid: b7d9903c73fb97d4aa49ad21e8cac3f2, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 52402b4d2736c7d49be08095dd394aed, type: 2}
+    - target: {fileID: 1525713298988684551, guid: b7d9903c73fb97d4aa49ad21e8cac3f2,
+        type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 52402b4d2736c7d49be08095dd394aed, type: 2}
@@ -30384,6 +30383,206 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: objectiveWindow
+      value: 
+      objectReference: {fileID: 922240222}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: objectiveWindowOpenArrows
+      value: 
+      objectReference: {fileID: 922240221}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dialogueBox
+      value: 
+      objectReference: {fileID: 922240220}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: cameraController
+      value: 
+      objectReference: {fileID: 1296432935}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: sonarCamera
+      value: 
+      objectReference: {fileID: 1296432933}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: artilleryCamera
+      value: 
+      objectReference: {fileID: 1296432924}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: thrusterCamera
+      value: 
+      objectReference: {fileID: 1296432936}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: hub
+      value: 
+      objectReference: {fileID: 923276630}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: thruster
+      value: 
+      objectReference: {fileID: 2125899099}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: harvesterResource
+      value: 
+      objectReference: {fileID: 1497680398}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: extenderLandmark
+      value: 
+      objectReference: {fileID: 1831949332}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: generatorLandmark
+      value: 
+      objectReference: {fileID: 1034597338}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: sonarLandmark
+      value: 
+      objectReference: {fileID: 2132291125}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: activateSonarLandmark
+      value: 
+      objectReference: {fileID: 1467210816}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: fogExtenderLandmark
+      value: 
+      objectReference: {fileID: 2012087224}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: mortarLandmark
+      value: 
+      objectReference: {fileID: 1761293956}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: pulseDefenceLandmark
+      value: 
+      objectReference: {fileID: 324165211}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: buildingTarget
+      value: 
+      objectReference: {fileID: 1743676501}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: wKey
+      value: 
+      objectReference: {fileID: 922240219}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: aKey
+      value: 
+      objectReference: {fileID: 922240218}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: sKey
+      value: 
+      objectReference: {fileID: 922240217}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: dKey
+      value: 
+      objectReference: {fileID: 922240216}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: zoomIn
+      value: 
+      objectReference: {fileID: 922240215}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: zoomOut
+      value: 
+      objectReference: {fileID: 922240214}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: buildMenuCanvasGroup
+      value: 
+      objectReference: {fileID: 268830197}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: harvesterHighlight
+      value: 
+      objectReference: {fileID: 922240247}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: extenderHighlight
+      value: 
+      objectReference: {fileID: 922240246}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: generatorHighlight
+      value: 
+      objectReference: {fileID: 922240245}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: mortarHighlight
+      value: 
+      objectReference: {fileID: 1560572320}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: pulseDefenceHighlight
+      value: 
+      objectReference: {fileID: 922240243}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: sonarHighlight
+      value: 
+      objectReference: {fileID: 922240213}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: powerDiagram
+      value: 
+      objectReference: {fileID: 922240233}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: batteryIcon
+      value: 
+      objectReference: {fileID: 922240234}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: abilityUnlockCanvas
+      value: 
+      objectReference: {fileID: 922240208}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: abilityMenu
+      value: 
+      objectReference: {fileID: 723504699}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: abilitySelectorRadialMenu
+      value: 
+      objectReference: {fileID: 922240232}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: uiLerpTarget
+      value: 
+      objectReference: {fileID: 922240242}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: tutProgressSlider
+      value: 
+      objectReference: {fileID: 1094405326}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: skipTutorial
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: skipTutorial
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1899903245264256475, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -30728,207 +30927,7 @@ PrefabInstance:
         type: 3}
       propertyPath: abilityButtonIcons.Array.data[4]
       value: 
-      objectReference: {fileID: 1094405326}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: objectiveWindow
-      value: 
-      objectReference: {fileID: 922240222}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: objectiveWindowOpenArrows
-      value: 
-      objectReference: {fileID: 922240221}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dialogueBox
-      value: 
-      objectReference: {fileID: 922240220}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: cameraController
-      value: 
-      objectReference: {fileID: 1296432935}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: sonarCamera
-      value: 
-      objectReference: {fileID: 1296432933}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: artilleryCamera
-      value: 
-      objectReference: {fileID: 1296432924}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: thrusterCamera
-      value: 
-      objectReference: {fileID: 1296432936}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: hub
-      value: 
-      objectReference: {fileID: 923276630}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: thruster
-      value: 
-      objectReference: {fileID: 2125899099}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: harvesterResource
-      value: 
-      objectReference: {fileID: 1497680398}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: extenderLandmark
-      value: 
-      objectReference: {fileID: 1831949332}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: generatorLandmark
-      value: 
-      objectReference: {fileID: 1034597338}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: sonarLandmark
-      value: 
-      objectReference: {fileID: 2132291125}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: activateSonarLandmark
-      value: 
-      objectReference: {fileID: 1467210816}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: fogExtenderLandmark
-      value: 
-      objectReference: {fileID: 2012087224}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: mortarLandmark
-      value: 
-      objectReference: {fileID: 1761293956}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: pulseDefenceLandmark
-      value: 
-      objectReference: {fileID: 324165211}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: buildingTarget
-      value: 
-      objectReference: {fileID: 1743676501}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: wKey
-      value: 
-      objectReference: {fileID: 922240219}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: aKey
-      value: 
-      objectReference: {fileID: 922240218}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: sKey
-      value: 
-      objectReference: {fileID: 922240217}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: dKey
-      value: 
-      objectReference: {fileID: 922240216}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: zoomIn
-      value: 
-      objectReference: {fileID: 922240215}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: zoomOut
-      value: 
-      objectReference: {fileID: 922240214}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: buildMenuCanvasGroup
-      value: 
-      objectReference: {fileID: 268830197}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: harvesterHighlight
-      value: 
-      objectReference: {fileID: 922240247}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: extenderHighlight
-      value: 
-      objectReference: {fileID: 922240246}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: generatorHighlight
-      value: 
-      objectReference: {fileID: 922240245}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: mortarHighlight
-      value: 
-      objectReference: {fileID: 1560572320}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: pulseDefenceHighlight
-      value: 
-      objectReference: {fileID: 922240243}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: sonarHighlight
-      value: 
-      objectReference: {fileID: 922240213}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: powerDiagram
-      value: 
-      objectReference: {fileID: 922240233}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: batteryIcon
-      value: 
-      objectReference: {fileID: 922240234}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: abilityUnlockCanvas
-      value: 
-      objectReference: {fileID: 922240208}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: abilityMenu
-      value: 
-      objectReference: {fileID: 723504699}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: abilitySelectorRadialMenu
-      value: 
-      objectReference: {fileID: 922240232}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: uiLerpTarget
-      value: 
-      objectReference: {fileID: 922240242}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: tutProgressSlider
-      value: 
-      objectReference: {fileID: 1094405326}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
-        type: 3}
-      propertyPath: skipTutorial
-      value: 0
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 174999339}
     - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: objectiveWindow

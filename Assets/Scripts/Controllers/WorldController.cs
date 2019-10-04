@@ -620,9 +620,20 @@ public class WorldController : MonoBehaviour
         {
             foreach (Button b in buttons)
             {
-                if (b.gameObject.name == "btn_harvester" || (b.gameObject.name == "btn_generator" && resourceController.Generators.Count >= ObjectiveController.Instance.GeneratorLimit))
+                if (b.gameObject.name == "btn_harvester")
                 {
                     b.interactable = false;
+                }
+                else if (b.gameObject.name == "btn_generator")
+                {
+                    if (resourceController.Generators.Count >= ObjectiveController.Instance.GeneratorLimit)
+                    {
+                        b.interactable = false;
+                    }
+                    else
+                    {
+                        b.interactable = true;
+                    }
                 }
                 else
                 {

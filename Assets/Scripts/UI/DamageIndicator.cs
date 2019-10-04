@@ -58,7 +58,7 @@ public class DamageIndicator : MonoBehaviour
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-        screen = new Rect(0, 0, Screen.width, Screen.height);
+        screen = new Rect(leftEdgeBuffer, bottomEdgeBuffer, Screen.width - (leftEdgeBuffer + rightEdgeBuffer), Screen.height - (bottomEdgeBuffer + topEdgeBuffer));
         canvasGroup = GetComponent<CanvasGroup>();
         icon = GetComponent<Image>();
         cam = Camera.main;

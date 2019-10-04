@@ -20,8 +20,6 @@ public class ResourceController : MonoBehaviour
     [SerializeField] private List<Harvester> harvesters = new List<Harvester>();
     [SerializeField] private List<Relay> extenders = new List<Relay>();
 
-    [SerializeField] private bool hvtSelfDestroy = false;
-
     //Non-serialized fields
     private Hub hub = null;
 

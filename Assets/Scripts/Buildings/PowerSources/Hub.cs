@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using FMOD.Studio;
-using FMODUnity;
 
 public class Hub : PowerSource
 { 
@@ -28,11 +26,7 @@ public class Hub : PowerSource
     private float tick = 0;
     private bool stillFire = true;
     private bool isPlayingSiren;
-    private EventInstance fireSound;
-
-    //public GameObject BrokenShip;
-    //public GameObject RepairedShip;
-    //public GameObject AttachedWing;
+    private FMOD.Studio.EventInstance fireSound;
 
     //Non-Serialized Fields
     private bool dismantling = false;
@@ -46,25 +40,6 @@ public class Hub : PowerSource
 
     public List<Locatable> DamageMarkers { get => new List<Locatable>() { cockpitDamageMarker, enginesDamageMarker, leftWingDamageMarker, rightWingDamageMarker }; }
     public bool ShipIsActive { get => brokenShip.activeInHierarchy || repairedShip.activeInHierarchy || attachedWing.activeInHierarchy; }
-
-    //public GameObject getActiveShip()
-    //{
-    //    GameObject act;
-    //    if (BrokenShip.activeInHierarchy)
-    //    {
-    //        act = BrokenShip;
-    //    }
-    //    else if (RepairedShip.activeInHierarchy)
-    //    {
-    //        act = RepairedShip;
-    //    }
-    //    else
-    //    {
-    //        act = AttachedWing;
-    //    }
-
-    //    return act;
-    //}
 
     public override bool SupplyingPower()
     {
@@ -89,7 +64,8 @@ public class Hub : PowerSource
         base.Start();
         
         powerSource = null;
-        fireSound = RuntimeManager.CreateInstance("event:/SFX/3D-ShipFire");
+        fireSound = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/3D-ShipFire");
+        fireSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
         fireSound.start();
         currentModel = brokenShip;
     }
