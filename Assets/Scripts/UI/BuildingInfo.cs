@@ -58,65 +58,68 @@ public class BuildingInfo : MonoBehaviour
     private void UpdateText()
     {
         // General text updates
-        mainText.text = $"<b>{building.name}</b>\n" +
-            $"HP\n";
-        if (building.Powered)
+        if (Visible)
         {
-            mainText.text += "<color=#009900>POWERED</color>\n";
-        }
-        else
-        {
-            mainText.text += "<color=\"red\">NO POWER</color>\n";
-        }
+            mainText.text = $"<b>{building.name}</b>\n" +
+                $"HP\n";
+            if (building.Powered)
+            {
+                mainText.text += "<color=#009900>POWERED</color>\n";
+            }
+            else
+            {
+                mainText.text += "<color=\"red\">NO POWER</color>\n";
+            }
 
-        // Update mineral health value
-        if (building.BuildingType == BuildingType.Harvester)
-        {
-            mineralVal = building.Location.Resource.Health + Mathf.Round(ResourceController.Instance.MineralChange/2);
-            if (building.Location.Resource.Health != mineral)
+            // Update mineral health value
+            if (building.BuildingType == BuildingType.Harvester)
             {
-                mineralVal = mineral;
-                mineral = building.Location.Resource.Health;
-                mineralTime = 0;
-            }
-            if (mineral <= 0)
-            {
-                mineral = 0;
-                mineralVal = 0;
-            }
-            if (!Visible)
-            {
-                mineralVal = mineral;
-                mainText.text += $"\n<color=#e09100><size=125%><sprite=\"all_icons\" index=2><size=100%>Remaining: {mineral}</color>";
-                return;
-            }
-            mainText.text += $"\n<color=#e09100><size=125%><sprite=\"all_icons\" index=2><size=100%>Remaining: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))}</color>";
-        }
-
-        // Update refund cost
-        if (building.BuildingType != BuildingType.Hub)
-        {
-            int returnCost = building.MineralCost;
-            if (building.BuildingType != BuildingType.Extender)
-            {
-                if (building.Health != building.MaxHealth)
+                mineralVal = building.Location.Resource.Health + Mathf.Round(ResourceController.Instance.MineralChange / 2);
+                if (building.Location.Resource.Health != mineral)
                 {
-                    if (building.Health < 40 && building.Health > 25)
-                    {
-                        returnCost = Mathf.RoundToInt(returnCost * 0.71429f);
-                    }
+                    mineralVal = mineral;
+                    mineral = building.Location.Resource.Health;
+                    mineralTime = 0;
+                }
+                if (mineral <= 0)
+                {
+                    mineral = 0;
+                    mineralVal = 0;
+                }
+                if (!Visible)
+                {
+                    mineralVal = mineral;
+                    mainText.text += $"\n<color=#e09100><size=125%><sprite=\"all_icons\" index=2><size=100%>Remaining: {mineral}</color>";
+                    return;
+                }
+                mainText.text += $"\n<color=#e09100><size=125%><sprite=\"all_icons\" index=2><size=100%>Remaining: {Mathf.Round(Mathf.Lerp(mineralVal, mineral, mineralTime))}</color>";
+            }
 
-                    if (building.Health < 20 && building.Health > 5)
+            // Update refund cost
+            if (building.BuildingType != BuildingType.Hub)
+            {
+                int returnCost = building.MineralCost;
+                if (building.BuildingType != BuildingType.Extender)
+                {
+                    if (building.Health != building.MaxHealth)
                     {
-                        returnCost = Mathf.RoundToInt(returnCost * 0.5f);
+                        if (building.Health < 40 && building.Health > 25)
+                        {
+                            returnCost = Mathf.RoundToInt(returnCost * 0.71429f);
+                        }
+
+                        if (building.Health < 20 && building.Health > 5)
+                        {
+                            returnCost = Mathf.RoundToInt(returnCost * 0.5f);
+                        }
                     }
                 }
-            }
 
-            if (returnCost != refundCost)
-            {
-                refundCost = returnCost;
-                refundText.text = $"Refund:\n{refundCost}<size=130%><sprite=\"all_icons\" index=2>";
+                if (returnCost != refundCost)
+                {
+                    refundCost = returnCost;
+                    refundText.text = $"Refund:\n{refundCost}<size=130%><sprite=\"all_icons\" index=2>";
+                }
             }
         }
     }
@@ -155,7 +158,7 @@ public class BuildingInfo : MonoBehaviour
         {
             bg.color = new Color32(113, 66, 236, 237);
         }
-        UpdateText();
+            UpdateText();
 
         Transform range = b.transform.Find("Range");
         if (range)
