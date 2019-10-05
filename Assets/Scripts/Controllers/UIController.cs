@@ -693,13 +693,13 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<size=75%>Move the mouse over the power icon to view the diagram explaining how power works.\n\n";
                 break;
             case TutorialStage.BuildGenerator:
-                hudObjText.text = "<b>Build Generator</b>";
-                objWindowText.text = "<size=75%>Build a Power Generator to increase your available power generation.\n\n";
+                hudObjText.text = "<b>Build Power Supply</b>";
+                objWindowText.text = "<size=75%>Build a Power Supply to increase your available power generation.\n\n";
                 break;
             case TutorialStage.BuildMoreGenerators:
-                hudObjText.text = "<b>Build Generators</b>";
-                objWindowText.text = $"<size=75%>Build {TutorialController.Instance.BuiltGeneratorsGoal} Generators to increase your available power generation.\n\n" +
-                     $"Target: {ResourceController.Instance.Generators.Count} / {TutorialController.Instance.BuiltGeneratorsGoal} Generators";
+                hudObjText.text = "<b>Build Power Supplies</b>";
+                objWindowText.text = $"<size=75%>Build {TutorialController.Instance.BuiltGeneratorsGoal} Supplies to increase your available power generation.\n\n" +
+                     $"Target: {ResourceController.Instance.Generators.Count} / {TutorialController.Instance.BuiltGeneratorsGoal} Supplies";
                 break;
             case TutorialStage.CollectMinerals:
                 hudObjText.text = "<b>Repair the Hull</b>";

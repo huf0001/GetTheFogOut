@@ -158,7 +158,7 @@ public class BuildingInfo : MonoBehaviour
         {
             bg.color = new Color32(113, 66, 236, 237);
         }
-            UpdateText();
+        UpdateText();
 
         Transform range = b.transform.Find("Range");
         if (range)

@@ -600,7 +600,7 @@ public abstract class Building : Entity
             }
             else
             {
-                if (damInd.transform.localScale.x == 1) damInd.transform.localScale *= 1.3f;
+                if (damInd.transform.localScale.x == 1) damInd.transform.localScale *= 1.5f;
                 if (Hub.Instance.ShipIsActive)
                 {
                     MeshRenderer[] meshs = Hub.Instance.CurrentModel.GetComponentsInChildren<MeshRenderer>();
