@@ -164,7 +164,7 @@ public class ObjectiveController : DialogueBoxController
 
     private void CheckPowerOverloaded()
     {
-        powerOverloaded = ResourceController.Instance.PowerChange < 0;
+        powerOverloaded = ResourceController.Instance.PowerChange < 0 || ResourceController.Instance.StoredPower <= 0;
 
         //Power Overloaded-ness changed
         if (powerOverloaded != powerOverloadedLastUpdate)
