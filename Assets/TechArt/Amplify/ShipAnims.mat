@@ -10,7 +10,7 @@ Material:
   m_Name: ShipAnims
   m_Shader: {fileID: 4800000, guid: 62930c441ac74e847942d05297dbe19b, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -20,5 +20,8 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
+    - _Fresnel: 5
     - __dirty: 0
-    m_Colors: []
+    m_Colors:
+    - _Base: {r: 0.245283, g: 0.245283, b: 0.245283, a: 0}
+    - _Emission: {r: 0.7490196, g: 0.13333334, b: 0, a: 0}
