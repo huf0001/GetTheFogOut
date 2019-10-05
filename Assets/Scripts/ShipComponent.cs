@@ -34,7 +34,7 @@ public class ShipComponent : Entity, IPointerEnterHandler, IPointerExitHandler
         }
         else
         {
-            if (location.FogUnit.Health > 0)
+            if (location.FogUnit.Health >= 50)
             {
                 missingWingMaterial.SetFloat("_Toggle", 1f);
             } 
