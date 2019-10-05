@@ -17914,7 +17914,12 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 3
       dialogue: Power generation exceeded! Try destroying some buildings or building
-        more generators.
+        more [POWER SUPPLIERS].
+  - key: hub damaged
+    expressionDialoguePairs:
+    - aiExpression: 3
+      dialogue: The ship is taking damage! Try building some <DEFENCES> to clear the
+        fog away.
   - key: maintain minerals
     expressionDialoguePairs:
     - aiExpression: 3

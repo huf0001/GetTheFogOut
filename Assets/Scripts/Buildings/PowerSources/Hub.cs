@@ -28,9 +28,22 @@ public class Hub : PowerSource
     private bool isPlayingSiren;
     private FMOD.Studio.EventInstance fireSound;
 
+    [Header("Dialogue")]
+    [SerializeField] private DialogueBox dialogueBox;
+
     //Non-Serialized Fields
     private bool dismantling = false;
     private GameObject currentModel;
+
+    private float startingHealth;
+    private bool hubDamaged = false;
+    private bool hubDamagedLastUpdate = false;
+    private bool alertedAboutDamage = false;
+    private float lastDamage = -1f;
+    private float lastDamageDialogue = -1f;
+    private float hubDamagedAlertWait = 0f;
+    private float hubDamagedAlertInitialWait = 10f;
+    private float hubDamagedAlertCooldownWait = 30f;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -39,6 +52,8 @@ public class Hub : PowerSource
     public GameObject CurrentModel { get => currentModel; }
 
     public List<Locatable> DamageMarkers { get => new List<Locatable>() { cockpitDamageMarker, enginesDamageMarker, leftWingDamageMarker, rightWingDamageMarker }; }
+    public bool IsDestroyed { get => Health <= 0; }
+
     public bool ShipIsActive { get => brokenShip.activeInHierarchy || repairedShip.activeInHierarchy || attachedWing.activeInHierarchy; }
 
     public override bool SupplyingPower()
@@ -62,7 +77,9 @@ public class Hub : PowerSource
     protected override void Start()
     {
         base.Start();
-        
+
+        startingHealth = health;
+        lastDamage = Time.fixedTime;
         powerSource = null;
         fireSound = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/3D-ShipFire");
         fireSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
@@ -71,17 +88,6 @@ public class Hub : PowerSource
     }
 
     //Recurring Methods------------------------------------------------------------------------------------------------------------------------------
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
-
-        if (isDestroyed())
-        {
-            WorldController.Instance.HubDestroyed = true;
-        }
-    }
 
     public void SetCurrentModel(string model)
     {
@@ -109,7 +115,6 @@ public class Hub : PowerSource
 
     protected override void CheckForDamage()
     {
-        //Debug.Log("Hub.CheckForDamage");
         if (Fog.Instance.DamageOn)
         {
             CheckForDamage(cockpitDamageMarker);
@@ -127,31 +132,80 @@ public class Hub : PowerSource
     {
         if (damageMarker.Location.FogUnitActive)
         {
-            //Debug.Log($"Hub taking damage to {damageMarker.name}");
             Location.FogUnit.DealDamageToBuilding();
+        }
+    }
+
+    // Update is called once per frame
+    protected override void Update()
+    {
+        base.Update();
+
+        if (IsDestroyed)
+        {
+            WorldController.Instance.HubDestroyed = true;
+        }
+        else
+        {
+            CheckDamaged();
+        }
+    }
+
+    private void CheckDamaged()
+    {
+        hubDamaged = TakingDamage;
+
+        //Hub damaged-ness changed
+        if (hubDamaged != hubDamagedLastUpdate)
+        {
+            hubDamagedLastUpdate = !hubDamagedLastUpdate;
+
+            if (hubDamaged)
+            {
+                lastDamage = Time.fixedTime;
+                hubDamagedAlertWait = hubDamagedAlertInitialWait;
+                alertedAboutDamage = false;
+            }
+        }
+
+        //Damaged, health below 75%, and no dialogue up
+        if (hubDamaged && health / startingHealth < 0.75 && !alertedAboutDamage && !dialogueBox.Activated && (Time.fixedTime - lastDamage) > hubDamagedAlertWait)
+        {
+            alertedAboutDamage = true;
+            lastDamageDialogue = Time.fixedTime;
+            dialogueBox.SubmitDialogueSet("hub damaged", 0f);
+        }
+        //Alert timed out or no longer taking damage
+        else if (dialogueBox.Activated && dialogueBox.CurrentDialogueSet == "hub damaged" && (!hubDamaged || (Time.fixedTime - lastDamageDialogue) > 10f))
+        {
+            dialogueBox.SubmitDeactivation();
+        }
+        //Dialogue deactivating while damaged
+        else if (hubDamaged && dialogueBox.Deactivating)
+        {
+            lastDamage = Time.fixedTime;
+            alertedAboutDamage = false;
+
+            //Alert timed out
+            if (dialogueBox.LastDialogueSet == "hub damaged")
+            {
+                hubDamagedAlertWait = hubDamagedAlertCooldownWait;
+            }
+            //Other dialogue came up
+            else
+            {
+                hubDamagedAlertWait = hubDamagedAlertInitialWait;
+            }
         }
     }
 
     protected override void RepairBuilding()
     {
-        //Debug.Log("Hub.RepairBuilding");
         health += 6f;
 
         if (health >= MaxHealth)
         {
             health = MaxHealth;
-        }
-    }
-
-    public bool isDestroyed()
-    {
-        if (Health <= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 

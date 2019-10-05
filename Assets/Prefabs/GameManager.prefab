@@ -108,7 +108,6 @@ MonoBehaviour:
   generators: []
   harvesters: []
   extenders: []
-  hvtSelfDestroy: 0
   powerChangePauseThreshold: 0
 --- !u!114 &1899903245264256476
 MonoBehaviour:
@@ -233,16 +232,27 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  abilityButtonIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  abilityButtonUnknown:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   abilityNameText: {fileID: 0}
   abilityDescText: {fileID: 0}
   abilityDescriptions:
-  - Powerful projeciles are launched into the air and do substantial damage to the
-    fog when they come crashing down.
+  - A powerful projectile that does substantial damage to the fog.
   - A shield that spawns around buildings to keep the fog from dissolving them.
-  - An icy cold blast that will freeze any fog in its way.
-  - An intense surge of electricity that causes buildings to temporarily perform better.
-  - A small, short blip that will reveal the locations of useful items within a specific
-    radius.
+  - An icy cold blast that will temporarily freeze the fog.
+  - An intense surge of electricity that causes buildings improve their function for
+    a short time.
+  - A short blip that reveals the locations of useful items.
   abilityHotkeyTextboxes:
   - {fileID: 0}
   - {fileID: 0}
@@ -266,7 +276,7 @@ MonoBehaviour:
   objectiveWindow: {fileID: 0}
   objectiveWindowOpenArrows: {fileID: 0}
   dialogueBox: {fileID: 0}
-  skipTutorial: 0
+  skipTutorial: 1
   stage: 1
   subStage: 1
   currentlyBuilding: 0

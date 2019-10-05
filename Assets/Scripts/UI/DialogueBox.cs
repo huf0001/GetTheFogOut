@@ -196,29 +196,36 @@ public class DialogueBox : MonoBehaviour
         {
             dialogueTimer += Time.deltaTime;
 
-            if (!continueArrow.enabled && dialogueIndex < dialogueDictionary[currentDialogueKey].Count)
+            if (dialogueDictionary.ContainsKey(currentDialogueKey))
             {
-                if (completeArrow.enabled)
+                if (!continueArrow.enabled && dialogueIndex < dialogueDictionary[currentDialogueKey].Count)
                 {
-                    DOTween.Kill(completeArrowTransform);
-                    completeArrowTransform.anchoredPosition = arrowInitialPosition;
-                    completeArrow.enabled = false;
-                }
+                    if (completeArrow.enabled)
+                    {
+                        DOTween.Kill(completeArrowTransform);
+                        completeArrowTransform.anchoredPosition = arrowInitialPosition;
+                        completeArrow.enabled = false;
+                    }
 
-                continueArrow.enabled = true;
-                continueArrowTransform.DOAnchorPosX(arrowInitialPosition.x + 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+                    continueArrow.enabled = true;
+                    continueArrowTransform.DOAnchorPosX(arrowInitialPosition.x + 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+                }
+                else if (!completeArrow.enabled && dialogueIndex == dialogueDictionary[currentDialogueKey].Count)
+                {
+                    if (continueArrow.enabled)
+                    {
+                        DOTween.Kill(continueArrowTransform);
+                        continueArrowTransform.anchoredPosition = arrowInitialPosition;
+                        continueArrow.enabled = false;
+                    }
+
+                    completeArrow.enabled = true;
+                    completeArrowTransform.DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+                }
             }
-            else if (!completeArrow.enabled && dialogueIndex == dialogueDictionary[currentDialogueKey].Count)
+            else
             {
-                if (continueArrow.enabled)
-                {
-                    DOTween.Kill(continueArrowTransform);
-                    continueArrowTransform.anchoredPosition = arrowInitialPosition;
-                    continueArrow.enabled = false;
-                }
-
-                completeArrow.enabled = true;
-                completeArrowTransform.DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+                Debug.Log($"Cannot display dialogue set {currentDialogueKey}; Dialogue Key {currentDialogueKey} doesn't exist.");
             }
         }
 
