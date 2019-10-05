@@ -21,6 +21,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     [SerializeField, Tooltip("Building flavour text"), TextArea] string descText;
     [Header("Key Info")]
     [SerializeField] private CanvasGroup keyInfo;
+    [SerializeField] private TextMeshProUGUI buildName;
     [SerializeField] private TextMeshProUGUI minCost;
     [SerializeField] private TextMeshProUGUI powCost;
     [SerializeField] private TextMeshProUGUI uniqueStat;
@@ -98,13 +99,14 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 break;
         }
 
+        buildName.text = buildingName;
         minCost.text = $"<size=250%><sprite=\"all_icons\" index=2>\n<size=120%>{minCostVal}";
         powCost.text = $"<size=250%><sprite=\"all_icons\" index=0>\n<size=120%>{(powCostVal > 0 ? "+" : "") + powCostVal.ToString("F1")}\n%/s";
     }
 
     private void Update()
     {
-        if ((gameObject.name != "btn_remove" && gameObject.name != "RemoveIcon") && keyInfo.alpha == 1 && buildingCost.color != Color.white && minCostVal < ResourceController.Instance.StoredMineral)
+        if (gameObject.name != "btn_remove" && gameObject.name != "RemoveIcon" && keyInfo.alpha == 1 && buildingCost.color != Color.white && minCostVal < ResourceController.Instance.StoredMineral)
         {
             buildingCost.color = Color.white;
             minCost.color = Color.white;
@@ -139,7 +141,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             else if (gameObject.name == "btn_generator" && ResourceController.Instance.Generators.Count == ObjectiveController.Instance.GeneratorLimit)
             {
                 // Make it known player can't build more generators
-                buildingDesc.text = $"<b>Power Generator</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
+                buildingDesc.text = $"<b>{buildingName}</b> {ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit}  +{powCostVal} %/s<sprite=\"all_icons\" index=0>\n" +
                     $"<line-height=80% size=65%>You have the max number of generators.";
                 uniqueStat.text = $"{ResourceController.Instance.Generators.Count}/{ObjectiveController.Instance.GeneratorLimit} Built";
             }

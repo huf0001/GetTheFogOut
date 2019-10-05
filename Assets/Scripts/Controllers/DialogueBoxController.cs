@@ -56,7 +56,7 @@ public class DialogueBoxController : MonoBehaviour
     {
         if (!objWindowVisible)
         {
-            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosY(200, 0.3f).SetEase(Ease.OutCubic);
+            objectiveWindow.GetComponent<RectTransform>().DOAnchorPosY(205, 0.3f).SetEase(Ease.OutCubic);
             objectiveWindowOpenArrows.GetComponent<RectTransform>().DORotate(new Vector3(0, 0, 270), 0.3f);
             TutorialController.Instance.ObjWindowVisible = true;
             ObjectiveController.Instance.ObjWindowVisible = true;
