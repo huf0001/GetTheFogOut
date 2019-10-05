@@ -299,7 +299,7 @@ public class MouseController : MonoBehaviour
 
                     if (tile.isBuildable)
                     {
-                        if (WorldController.Instance.ActiveTiles.Contains(tile) && TutorialController.Instance.TileAllowed(tile, !UIController.instance.buildingSelector.Visible))
+                        if (WorldController.Instance.ActiveTiles.Contains(tile) && TutorialController.Instance.TileAllowed(tile/*, !UIController.instance.buildingSelector.Visible*/))
                         {
                             if (!AbilityController.Instance.checkTrigger())
                             {
