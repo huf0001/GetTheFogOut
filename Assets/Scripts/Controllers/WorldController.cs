@@ -495,6 +495,7 @@ public class WorldController : MonoBehaviour
         if (win)
         {
             win.SetBool("Win", true);
+            musicFMOD.GameWinMusic();
             if (ObjectiveController.Instance.ObjWindowVisible) ObjectiveController.Instance.ToggleObjWindow();
             if (uiController.buildingInfo.Visible) uiController.buildingInfo.HideInfo();
             yield return new WaitForSeconds(0.5f);
@@ -507,7 +508,6 @@ public class WorldController : MonoBehaviour
 
     private void GameWinUpdate()
     {
-        musicFMOD.GameWinMusic();
         uiController.EndGameDisplay("You win!"); //Display win UI
     }
 
