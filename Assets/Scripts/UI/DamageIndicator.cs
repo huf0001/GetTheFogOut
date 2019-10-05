@@ -58,7 +58,10 @@ public class DamageIndicator : MonoBehaviour
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-        screen = new Rect(leftEdgeBuffer, bottomEdgeBuffer, Screen.width - (leftEdgeBuffer + rightEdgeBuffer), Screen.height - (bottomEdgeBuffer + topEdgeBuffer));
+        screen = new Rect(Screen.width / (1280 / (leftEdgeBuffer - 20)),
+            Screen.height / (720 / (bottomEdgeBuffer - 20)),
+            Screen.width - (Screen.width / (1280 / (leftEdgeBuffer + rightEdgeBuffer + 20))),
+            Screen.height - (Screen.height / (720 / (bottomEdgeBuffer + topEdgeBuffer + 20))));
         canvasGroup = GetComponent<CanvasGroup>();
         icon = GetComponent<Image>();
         cam = Camera.main;
@@ -100,6 +103,17 @@ public class DamageIndicator : MonoBehaviour
                 Colour = damageGradient.Evaluate(((Building)Locatable).Health / ((Building)Locatable).MaxHealth);
             }
 
+            if (Locatable as Hub)
+            {
+                rectTransform.position = lookAtPos;
+                ClampIcon(new Vector2(0, 40));
+                RotateIcon(lookAtPos);
+
+                if (canvasGroup.alpha == 0)
+                {
+                    canvasGroup.alpha = 1;
+                }
+            }
             if (!screen.Contains(lookAtPos))
             {
                 rectTransform.position = lookAtPos;

@@ -153,13 +153,14 @@ public class UIController : MonoBehaviour
     // Functions dealing with the drop down objective button
     public void ShowRepairButton(string controller)
     {
-        DOTween.Kill(objectiveButtonBG);
+        DOTween.Kill("ObjectiveButtonClose");
         objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(objectiveButtonBG.DOFade(0.93f, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
+            .SetId("ObjectiveButtonOpen")
             .OnComplete(
             delegate
             {
@@ -307,13 +308,14 @@ public class UIController : MonoBehaviour
 
     public void CloseButton()
     {
-        DOTween.Kill(objectiveButtonBG);
-        DOTween.Kill(launchButtonImage);
+        if (DOTween.IsTweening("ObjectiveButtonOpen")) DOTween.Kill("ObjectiveButtonOpen");
+        else DOTween.Kill(launchButtonImage);
         launchButtonImage.color = new Color(1, 1, 1);
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
         .Append(objectiveButtonBG.DOFade(0, 1))
+        .SetId("ObjectiveButtonClose")
         .OnComplete(
         delegate
         {
@@ -693,13 +695,13 @@ public class UIController : MonoBehaviour
                 objWindowText.text = "<size=75%>Move the mouse over the power icon to view the diagram explaining how power works.\n\n";
                 break;
             case TutorialStage.BuildGenerator:
-                hudObjText.text = "<b>Build Generator</b>";
-                objWindowText.text = "<size=75%>Build a Power Generator to increase your available power generation.\n\n";
+                hudObjText.text = "<b>Build Power Supply</b>";
+                objWindowText.text = "<size=75%>Build a Power Supply to increase your available power generation.\n\n";
                 break;
             case TutorialStage.BuildMoreGenerators:
-                hudObjText.text = "<b>Build Generators</b>";
-                objWindowText.text = $"<size=75%>Build {TutorialController.Instance.BuiltGeneratorsGoal} Generators to increase your available power generation.\n\n" +
-                     $"Target: {ResourceController.Instance.Generators.Count} / {TutorialController.Instance.BuiltGeneratorsGoal} Generators";
+                hudObjText.text = "<b>Build Power Supplies</b>";
+                objWindowText.text = $"<size=75%>Build {TutorialController.Instance.BuiltGeneratorsGoal} Supplies to increase your available power generation.\n\n" +
+                     $"Target: {ResourceController.Instance.Generators.Count} / {TutorialController.Instance.BuiltGeneratorsGoal} Supplies";
                 break;
             case TutorialStage.CollectMinerals:
                 hudObjText.text = "<b>Repair the Hull</b>";

@@ -90,7 +90,7 @@ public class Collectable : Locatable, ICollectible
 
             if (location.FogUnitActive)
             {
-                if (location.FogUnit.Health <= 0 && location.PowerSource && !WorldController.Instance.IsPointerOverGameObject())
+                if (location.FogUnit.Health <= 50 && location.PowerSource && !WorldController.Instance.IsPointerOverGameObject())
                 {
                     if (ability.AbilityType != AbilityEnum.None)
                     {
@@ -134,7 +134,7 @@ public class Collectable : Locatable, ICollectible
 
             if (location.FogUnitActive)
             {
-                if (location.FogUnit.Health <= 0 && location.PowerSource && !WorldController.Instance.IsPointerOverGameObject())
+                if (location.FogUnit.Health <= 50 && location.PowerSource && !WorldController.Instance.IsPointerOverGameObject())
                 {
                     if (ability.AbilityType != AbilityEnum.None)
                     {

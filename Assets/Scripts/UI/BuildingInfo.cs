@@ -74,7 +74,7 @@ public class BuildingInfo : MonoBehaviour
             // Update mineral health value
             if (building.BuildingType == BuildingType.Harvester)
             {
-                mineralVal = building.Location.Resource.Health + Mathf.Round(ResourceController.Instance.MineralChange / 2);
+                //mineralVal = building.Location.Resource.Health + Mathf.Round(ResourceController.Instance.MineralChange / 2);
                 if (building.Location.Resource.Health != mineral)
                 {
                     mineralVal = mineral;
@@ -158,7 +158,7 @@ public class BuildingInfo : MonoBehaviour
         {
             bg.color = new Color32(113, 66, 236, 237);
         }
-            UpdateText();
+        UpdateText();
 
         Transform range = b.transform.Find("Range");
         if (range)
