@@ -153,14 +153,14 @@ public class UIController : MonoBehaviour
     // Functions dealing with the drop down objective button
     public void ShowRepairButton(string controller)
     {
-        DOTween.Kill("ObjectiveButton");
+        DOTween.Kill("ObjectiveButtonClose");
         objectiveProceedCanvas.SetActive(true);
         launchButtonImage.sprite = objectiveButtonSprites[0];
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(objectiveButtonBG.DOFade(0.93f, 1))
             .Append(launchButtonImage.DOFade(1, 0.5f))
-            .SetId("ObjectiveButton")
+            .SetId("ObjectiveButtonOpen")
             .OnComplete(
             delegate
             {
@@ -308,14 +308,14 @@ public class UIController : MonoBehaviour
 
     public void CloseButton()
     {
-        if (DOTween.IsTweening("ObjectiveButton")) DOTween.Kill("ObjectiveButton");
+        if (DOTween.IsTweening("ObjectiveButtonOpen")) DOTween.Kill("ObjectiveButtonOpen");
         else DOTween.Kill(launchButtonImage);
         launchButtonImage.color = new Color(1, 1, 1);
 
         Sequence showLaunch = DOTween.Sequence();
         showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
         .Append(objectiveButtonBG.DOFade(0, 1))
-        .SetId("ObjectiveButton")
+        .SetId("ObjectiveButtonClose")
         .OnComplete(
         delegate
         {
