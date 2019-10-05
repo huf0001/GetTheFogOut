@@ -129,7 +129,7 @@ public class BuildingInfo : MonoBehaviour
         if (DOTween.IsTweening(bg)) return;
         if (!cam) cam = Camera.main;
         Visible = true;
-        bg.rectTransform.DOScale(1, 0.3f);
+        bg.rectTransform.DOScale(1, 0.2f).SetEase(Ease.OutBack, 1.2f);
 
         building = b;
         shipComp = null;
@@ -208,7 +208,7 @@ public class BuildingInfo : MonoBehaviour
             Range.gameObject.SetActive(false);
         }
 
-        bg.rectTransform.DOScale(0.01f, 0.3f).OnComplete(
+        bg.rectTransform.DOScale(0.01f, 0.3f).SetEase(Ease.InBack, 1.2f).OnComplete(
             delegate
             {
                 DOTween.Kill(healthBarFill);
