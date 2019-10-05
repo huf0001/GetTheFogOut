@@ -4,6 +4,9 @@ Shader "TechArt/Animations/Ship"
 {
 	Properties
 	{
+		[HDR]_Emission("Emission", Color) = (0.8207547,0.2228396,0,0)
+		_Base("Base", Color) = (0.245283,0.245283,0.245283,0)
+		_Fresnel("Fresnel", Float) = 5
 		[HideInInspector] __dirty( "", Int ) = 1
 	}
 
@@ -17,21 +20,24 @@ Shader "TechArt/Animations/Ship"
 		#pragma target 3.0
 		struct Input
 		{
+			float4 vertexColor : COLOR;
 			float3 worldPos;
 			float3 worldNormal;
 		};
 
+		uniform float4 _Base;
+		uniform float _Fresnel;
+		uniform float4 _Emission;
+
 		void surf( Input i , inout SurfaceOutputStandard o )
 		{
-			float4 color1 = IsGammaSpace() ? float4(0.245283,0.245283,0.245283,0) : float4(0.0490081,0.0490081,0.0490081,0);
-			o.Albedo = color1.rgb;
+			o.Albedo = ( _Base * i.vertexColor ).rgb;
 			float3 ase_worldPos = i.worldPos;
 			float3 ase_worldViewDir = normalize( UnityWorldSpaceViewDir( ase_worldPos ) );
 			float3 ase_worldNormal = i.worldNormal;
 			float fresnelNdotV3 = dot( ase_worldNormal, ase_worldViewDir );
-			float fresnelNode3 = ( 0.0 + 1.0 * pow( 1.0 - fresnelNdotV3, 5.0 ) );
-			float4 color5 = IsGammaSpace() ? float4(0.8207547,0.2228396,0,0) : float4(0.6396053,0.04067243,0,0);
-			o.Emission = ( fresnelNode3 * color5 ).rgb;
+			float fresnelNode3 = ( 0.0 + 1.0 * pow( 1.0 - fresnelNdotV3, _Fresnel ) );
+			o.Emission = ( fresnelNode3 * _Emission * i.vertexColor ).rgb;
 			o.Metallic = 1.0;
 			o.Alpha = 1;
 		}
@@ -65,6 +71,7 @@ Shader "TechArt/Animations/Ship"
 				V2F_SHADOW_CASTER;
 				float3 worldPos : TEXCOORD1;
 				float3 worldNormal : TEXCOORD2;
+				half4 color : COLOR0;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
@@ -80,6 +87,7 @@ Shader "TechArt/Animations/Ship"
 				o.worldNormal = worldNormal;
 				o.worldPos = worldPos;
 				TRANSFER_SHADOW_CASTER_NORMALOFFSET( o )
+				o.color = v.color;
 				return o;
 			}
 			half4 frag( v2f IN
@@ -95,6 +103,7 @@ Shader "TechArt/Animations/Ship"
 				half3 worldViewDir = normalize( UnityWorldSpaceViewDir( worldPos ) );
 				surfIN.worldPos = worldPos;
 				surfIN.worldNormal = IN.worldNormal;
+				surfIN.vertexColor = IN.color;
 				SurfaceOutputStandard o;
 				UNITY_INITIALIZE_OUTPUT( SurfaceOutputStandard, o )
 				surf( surfIN, o );
@@ -111,17 +120,24 @@ Shader "TechArt/Animations/Ship"
 }
 /*ASEBEGIN
 Version=17000
-1825;73;1255;656;1532.711;297.9391;1.467735;True;False
+7;50;3826;969;3473.792;567.2683;1.467735;True;False
+Node;AmplifyShaderEditor.RangedFloatNode;8;-1122.48,370.6144;Float;False;Property;_Fresnel;Fresnel;2;0;Create;True;0;0;False;0;5;5;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.FresnelNode;3;-709.3113,173.2038;Float;True;Standard;WorldNormal;ViewDir;False;5;0;FLOAT3;0,0,1;False;4;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;5;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;5;-643.2632,397.7671;Float;False;Constant;_Color1;Color 1;0;1;[HDR];Create;True;0;0;False;0;0.8207547,0.2228396,0,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.ColorNode;1;-392.2797,-137.956;Float;False;Constant;_Color0;Color 0;0;0;Create;True;0;0;False;0;0.245283,0.245283,0.245283,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.VertexColorNode;7;-909.6589,-66.77065;Float;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;5;-643.2632,397.7671;Float;False;Property;_Emission;Emission;0;1;[HDR];Create;True;0;0;False;0;0.8207547,0.2228396,0,0;0.8207547,0.2228396,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;1;-424.57,-157.0365;Float;False;Property;_Base;Base;1;0;Create;True;0;0;False;0;0.245283,0.245283,0.245283,0;0.245283,0.245283,0.245283,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;2;-298.3445,52.84955;Float;False;Constant;_Float0;Float 0;0;0;Create;True;0;0;False;0;1;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;4;-308.6203,224.5746;Float;False;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;4;-308.6203,224.5746;Float;False;3;3;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;6;-152.3074,-55.02889;Float;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.StandardSurfaceOutputNode;0;0,0;Float;False;True;2;Float;ASEMaterialInspector;0;0;Standard;TechArt/Animations/Ship;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;Back;0;False;-1;0;False;-1;False;0;False;-1;0;False;-1;False;0;Opaque;0.5;True;True;0;False;Opaque;;Geometry;All;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;0;False;-1;False;0;False;-1;255;False;-1;255;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;False;2;15;10;25;False;0.5;True;0;0;False;-1;0;False;-1;0;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;0;0,0,0,0;VertexOffset;True;False;Cylindrical;False;Relative;0;;-1;-1;-1;-1;0;False;0;0;False;-1;-1;0;False;-1;0;0;0;False;0.1;False;-1;0;False;-1;16;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0;False;9;FLOAT;0;False;10;FLOAT;0;False;13;FLOAT3;0,0,0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
+WireConnection;3;3;8;0
 WireConnection;4;0;3;0
 WireConnection;4;1;5;0
-WireConnection;0;0;1;0
+WireConnection;4;2;7;0
+WireConnection;6;0;1;0
+WireConnection;6;1;7;0
+WireConnection;0;0;6;0
 WireConnection;0;2;4;0
 WireConnection;0;3;2;0
 ASEEND*/
-//CHKSM=CB6C248779E6AB6390C15DA3CA359391D909B88D
+//CHKSM=9F46754AD2C951FA86A77D8F64645229F2A0D302
