@@ -59,6 +59,11 @@ public class ObjectiveController : DialogueBoxController
     private bool powerOverloadedLastUpdate = false;
     private float lastOverload = -1f;
     private float lastOverloadDialogue = -1f;
+    private float powerOverloadAlertWait = 10f;
+    private float powerOverloadAlertInitialWait = 10f;
+    private float powerOverloadAlertCooldownWait = 30f;
+
+
     private float tick = 0;
     private int countdown = 60;
 
@@ -66,6 +71,9 @@ public class ObjectiveController : DialogueBoxController
     private float upgradesTimer = 0;
 
     private int generatorLimit;
+
+    private float negativePowerDuration = 0f;
+    private bool alertedToNegativePower = false;
 
     // Public Properties -------------------------------------------------------------------------------------
 
@@ -156,7 +164,9 @@ public class ObjectiveController : DialogueBoxController
 
     private void CheckPowerOverloaded()
     {
-        //Debug.Log("Checking Power Overloaded");
+        powerOverloaded = ResourceController.Instance.PowerChange < 0;
+
+        //Power Overloaded-ness changed
         if (powerOverloaded != powerOverloadedLastUpdate)
         {
             powerOverloadedLastUpdate = !powerOverloadedLastUpdate;
@@ -165,22 +175,38 @@ public class ObjectiveController : DialogueBoxController
             {
                 lastOverload = Time.fixedTime;
                 alertedAboutOverload = false;
+                powerOverloadAlertWait = powerOverloadAlertInitialWait;
             }
         }
 
-        if (powerOverloaded && !alertedAboutOverload && !dialogueBox.Activated && (Time.fixedTime - lastOverload) >= 5f)
+        //Overloaded and no dialogue up
+        if (powerOverloaded && !alertedAboutOverload && !dialogueBox.Activated && (Time.fixedTime - lastOverload) > powerOverloadAlertWait)
         {
             lastOverloadDialogue = Time.fixedTime;
             SendDialogue("power overloaded", 0f);
             alertedAboutOverload = true;
         }
-        else if (powerOverloaded && alertedAboutOverload && dialogueBox.Activated && dialogueBox.CurrentDialogueSet != "power overloaded" && (Time.fixedTime - lastOverload) <= 2f)
-        {
-            alertedAboutOverload = false;
-        }
-        else if (dialogueBox.Activated && dialogueBox.CurrentDialogueSet == "power overloaded" && (!powerOverloaded || (Time.fixedTime - lastOverloadDialogue) >= 10f))
+        //Alert timed out or power restored
+        else if (dialogueBox.Activated && dialogueBox.CurrentDialogueSet == "power overloaded" && (!powerOverloaded || (Time.fixedTime - lastOverloadDialogue) > 10f))
         {
             dialogueBox.SubmitDeactivation();
+        }
+        //Dialogue deactivating while overloaded
+        else if (powerOverloaded && dialogueBox.Deactivating)
+        {
+            lastOverload = Time.fixedTime;
+            alertedAboutOverload = false;
+                
+            //Alert timed out
+            if (dialogueBox.LastDialogueSet == "power overloaded")
+            {
+                powerOverloadAlertWait = powerOverloadAlertCooldownWait;
+            }
+            //Other dialogue came up
+            else
+            {
+                powerOverloadAlertWait = powerOverloadAlertInitialWait;
+            }  
         }
     }
 

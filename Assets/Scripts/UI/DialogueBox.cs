@@ -100,6 +100,7 @@ public class DialogueBox : MonoBehaviour
 
     private Dictionary<string, List<ExpressionDialoguePair>> dialogueDictionary = new Dictionary<string, List<ExpressionDialoguePair>>();
     private string currentDialogueKey = "";
+    private string lastDialogueKey = "";
     private int dialogueIndex = 0;
     private string currentText = "";
     private string pendingText = "";
@@ -126,8 +127,10 @@ public class DialogueBox : MonoBehaviour
     //Public Properties
     public bool Activated { get => activated; }
     public string CurrentDialogueSet { get => currentDialogueKey; }
+    public bool Deactivating { get => deactivating; }
     public int DialogueIndex { get => dialogueIndex; }
     public float DialogueTimer { get => dialogueTimer; }
+    public string LastDialogueSet { get => lastDialogueKey; }
 
     //Setup Methods----------------------------------------------------------------------------------------------------------------------------------
 
@@ -238,6 +241,7 @@ public class DialogueBox : MonoBehaviour
         }
         else if (deactivationSubmitted && activated)
         {
+            lastDialogueKey = currentDialogueKey;
             currentDialogueKey = "";
             clickable = false;
             DeactivateDialogueBox();
@@ -355,6 +359,7 @@ public class DialogueBox : MonoBehaviour
             originalRectTransformPosition = GetComponent<RectTransform>().anchoredPosition;
 
             dialogueIndex = 0;
+            lastDialogueKey = currentDialogueKey == "" ? lastDialogueKey : currentDialogueKey;
             currentDialogueKey = key;
 
             activated = true;
@@ -388,6 +393,7 @@ public class DialogueBox : MonoBehaviour
     {
         if (dialogueDictionary.ContainsKey(key) && dialogueDictionary[key].Count > 0)
         {
+            lastDialogueKey = currentDialogueKey;
             currentDialogueKey = key;
             dialogueIndex = 0;
             LerpNext();
@@ -491,6 +497,7 @@ public class DialogueBox : MonoBehaviour
             }
             else if (activated)
             {
+                lastDialogueKey = currentDialogueKey;
                 currentDialogueKey = "";
                 clickable = false;
                 DeactivateDialogueBox();
