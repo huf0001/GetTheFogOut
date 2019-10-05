@@ -30,8 +30,6 @@ public enum TutorialStage
     BuildMortar,
     BuildPulseDefence,
     DefenceActivation,
-    CollectMineralsForUpgrades,
-    Upgrades,
     DontBuildInFog,
     BuildDefencesInRange,
     Finished
@@ -71,7 +69,6 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private int builtHarvestersExtendedGoal;
     [SerializeField] private int builtGeneratorsGoal;
     [SerializeField] private int collectedMineralsGoal;
-    //[SerializeField] private int mineralsForUpgradesGoal;
 
     [Header("Cameras")]
     [SerializeField] private CameraController cameraController;
@@ -112,8 +109,6 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private GameObject abilityUnlockCanvas;
     [SerializeField] private Image abilityMenu;
     [SerializeField] private RadialMenu abilitySelectorRadialMenu;
-    //[SerializeField] private GameObject upgradesButton;
-    //[SerializeField] private GameObject upgradesCanvas;
     [SerializeField] private Image uiLerpTarget;
     [SerializeField] private Slider tutProgressSlider;
 
@@ -172,7 +167,7 @@ public class TutorialController : DialogueBoxController
     private bool lerpPaused = false;
 
     private List<Locatable> lerpTargetsRemaining;
-    private bool lerpTargetLocked = false;
+    private bool lerpTargetLock = false;
 
     //Public Properties------------------------------------------------------------------------------------------------------------------------------
 
@@ -186,7 +181,6 @@ public class TutorialController : DialogueBoxController
     public BuildingType CurrentlyBuilding { get => currentlyBuilding; }
     public ButtonType CurrentlyLerping { get => currentlyLerping; }
     public bool DefencesOn { get => defencesOn; }
-    //public float MineralsForUpgradesGoal { get => mineralsForUpgradesGoal; }
     public bool SkipTutorial { get => skipTutorial; }
     public TutorialStage Stage { get => stage; }
     public Image UILerpTarget { get => uiLerpTarget; }
@@ -567,10 +561,10 @@ public class TutorialController : DialogueBoxController
                     DeactivateUIColourLerpTarget();
                     GoToSubStage(3);
 
-                    if (harvesterResource.Location != lastTileChecked)
-                    {
-                        harvesterResource = lastTileChecked.Resource;
-                    }
+                    //if (harvesterResource.Location != lastTileChecked)
+                    //{
+                    //    harvesterResource = lastTileChecked.Resource;
+                    //}
 
                     ActivateTarget(harvesterResource);
                 }
@@ -590,7 +584,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 8:
-                lerpTargetLocked = false;
+                lerpTargetLock = false;
                 lerpTargetsRemaining.Remove(harvesterResource);
                 DeactivateUIColourLerpTarget();
                 Destroy(harvesterHighlight);
@@ -708,11 +702,11 @@ public class TutorialController : DialogueBoxController
                     GoToSubStage(3);    //2 rather than 3 in case the player hasn't read any of this stage's dialogue
                     DeactivateUIColourLerpTarget();
 
-                    if (extenderLandmark.Location != lastTileChecked)
-                    {
-                        extenderLandmark.Location = lastTileChecked;
-                        extenderLandmark.transform.position = lastTileChecked.Position;
-                    }
+                    //if (extenderLandmark.Location != lastTileChecked)
+                    //{
+                    //    extenderLandmark.Location = lastTileChecked;
+                    //    extenderLandmark.transform.position = lastTileChecked.Position;
+                    //}
 
                     ActivateTarget(extenderLandmark);
                 }
@@ -724,7 +718,7 @@ public class TutorialController : DialogueBoxController
                 currentlyLerping = ButtonType.None;
                 DeactivateTarget();
                 DeactivateUIColourLerpTarget();
-                lerpTargetLocked = false;
+                lerpTargetLock = false;
                 lerpTargetsRemaining.Remove(extenderLandmark);
                 Destroy(extenderHighlight);
                 extenderHighlight = null;
@@ -799,7 +793,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 5:
-                lerpTargetLocked = false;
+                lerpTargetLock = false;
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
@@ -931,11 +925,11 @@ public class TutorialController : DialogueBoxController
                     DeactivateUIColourLerpTarget();
                     GoToSubStage(8);
 
-                    if (generatorLandmark.Location != lastTileChecked)
-                    {
-                        generatorLandmark.Location = lastTileChecked;
-                        generatorLandmark.transform.position = lastTileChecked.Position;
-                    }
+                    //if (generatorLandmark.Location != lastTileChecked)
+                    //{
+                    //    generatorLandmark.Location = lastTileChecked;
+                    //    generatorLandmark.transform.position = lastTileChecked.Position;
+                    //}
 
                     ActivateTarget(generatorLandmark);
                 }
@@ -957,7 +951,7 @@ public class TutorialController : DialogueBoxController
             case 13:
                 ResourceController.Instance.UnPausePowerChange();
                 DeactivateUIColourLerpTarget();
-                lerpTargetLocked = false;
+                lerpTargetLock = false;
                 lerpTargetsRemaining.Remove(generatorLandmark);
                 Destroy(generatorHighlight);
                 generatorHighlight = null;
@@ -1073,15 +1067,13 @@ public class TutorialController : DialogueBoxController
                 // Update Hub model to fixed ship without thrusters / Particle effects
                 hub.Animator.enabled = false;   //Apparently interferes with setting the repaired ship to active=true unless you disable it.
                 hub.SetCurrentModel("repaired");
-                //hub.BrokenShip.SetActive(false);
-                //hub.RepairedShip.SetActive(true);
                 StartCoroutine(CompleteTutorialObjective("You repaired damage to your ship!"));
                 IncrementSubStage();
                 break;
             case 7:
                 break;
             case 8:
-                lerpTargetLocked = false;
+                lerpTargetLock = false;
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
                 ResetSubStage();
@@ -1231,7 +1223,7 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissDialogue();
                     artilleryCamera.gameObject.SetActive(false);
-                    lerpTargetLocked = false;
+                    lerpTargetLock = false;
                     lerpTargetsRemaining.Remove(sonarLandmark);
                     lerpTargetsRemaining.Remove(activateSonarLandmark);
 
@@ -1301,11 +1293,11 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissMouse();
 
-                    if (fogExtenderLandmark.Location != lastTileChecked && lastTileChecked.FogUnitActive)
-                    {
-                        fogExtenderLandmark.Location = lastTileChecked;
-                        fogExtenderLandmark.transform.position = lastTileChecked.Position;
-                    }
+                    //if (fogExtenderLandmark.Location != lastTileChecked && lastTileChecked.FogUnitActive)
+                    //{
+                    //    fogExtenderLandmark.Location = lastTileChecked;
+                    //    fogExtenderLandmark.transform.position = lastTileChecked.Position;
+                    //}
 
                     ActivateTarget(fogExtenderLandmark);
                 }
@@ -1317,7 +1309,7 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissDialogue();
                 }
-                else if (lastTileChecked.FogUnitActive && tileClicked)
+                else if (/*lastTileChecked.FogUnitActive && */tileClicked)
                 {
                     DeactivateTarget();
                     GoToSubStage(5);
@@ -1325,7 +1317,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
-                if (lastTileChecked.FogUnitActive && tileClicked)
+                if (/*lastTileChecked.FogUnitActive && */tileClicked)
                 {
                     DeactivateTarget();
                     DismissMouse();
@@ -1342,15 +1334,15 @@ public class TutorialController : DialogueBoxController
                     }
                 }
 
-                if (lastTileChecked.FogUnitActive && buildMenuCanvasGroup.alpha == 0)
+                if (buildMenuCanvasGroup.alpha == 0)
                 {
                     GoToSubStage(3);
 
-                    if (fogExtenderLandmark.Location != lastTileChecked && lastTileChecked.FogUnitActive)
-                    {
-                        fogExtenderLandmark.Location = lastTileChecked;
-                        fogExtenderLandmark.transform.position = lastTileChecked.Position;
-                    }
+                    //if (fogExtenderLandmark.Location != lastTileChecked && lastTileChecked.FogUnitActive)
+                    //{
+                    //    fogExtenderLandmark.Location = lastTileChecked;
+                    //    fogExtenderLandmark.transform.position = lastTileChecked.Position;
+                    //}
 
                     ActivateTarget(fogExtenderLandmark);
                 }
@@ -1369,7 +1361,7 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 7:
-                lerpTargetLocked = false;
+                lerpTargetLock = false;
                 lerpTargetsRemaining.Remove(fogExtenderLandmark);
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
@@ -1452,11 +1444,11 @@ public class TutorialController : DialogueBoxController
                     DeactivateUIColourLerpTarget();
                     GoToSubStage(3);
 
-                    if (mortarLandmark.Location != lastTileChecked)
-                    {
-                        mortarLandmark.Location = lastTileChecked;
-                        mortarLandmark.transform.position = lastTileChecked.Position;
-                    }
+                    //if (mortarLandmark.Location != lastTileChecked)
+                    //{
+                    //    mortarLandmark.Location = lastTileChecked;
+                    //    mortarLandmark.transform.position = lastTileChecked.Position;
+                    //}
 
                     ActivateTarget(mortarLandmark);
                 }
@@ -1466,7 +1458,7 @@ public class TutorialController : DialogueBoxController
                 currentlyBuilding = BuildingType.None;
                 currentlyLerping = ButtonType.None;
                 DeactivateTarget();
-                lerpTargetLocked = false;
+                lerpTargetLock = false;
                 lerpTargetsRemaining.Remove(mortarLandmark);
                 DeactivateUIColourLerpTarget();
                 Destroy(mortarHighlight);
@@ -1570,7 +1562,7 @@ public class TutorialController : DialogueBoxController
                     currentlyBuilding = BuildingType.None;
                     currentlyLerping = ButtonType.None;
                     DeactivateUIColourLerpTarget();
-                    lerpTargetLocked = false;
+                    lerpTargetLock = false;
                     lerpTargetsRemaining.Remove(pulseDefenceLandmark);
                     Destroy(pulseDefenceHighlight);
                     pulseDefenceHighlight = null;
@@ -1585,11 +1577,11 @@ public class TutorialController : DialogueBoxController
                     DeactivateUIColourLerpTarget();
                     GoToSubStage(3);
 
-                    if (pulseDefenceLandmark.Location != lastTileChecked)
-                    {
-                        pulseDefenceLandmark.Location = lastTileChecked;
-                        pulseDefenceLandmark.transform.position = lastTileChecked.Position;
-                    }
+                    //if (pulseDefenceLandmark.Location != lastTileChecked)
+                    //{
+                    //    pulseDefenceLandmark.Location = lastTileChecked;
+                    //    pulseDefenceLandmark.transform.position = lastTileChecked.Position;
+                    //}
 
                     ActivateTarget(pulseDefenceLandmark);
                 }
@@ -1655,7 +1647,7 @@ public class TutorialController : DialogueBoxController
             case 7:
                 break;
             case 8:
-                lerpTargetLocked = false;
+                lerpTargetLock = false;
                 tutProgressSlider.gameObject.SetActive(false);
                 ResetSubStage();
 
@@ -2021,9 +2013,8 @@ public class TutorialController : DialogueBoxController
     //Tutorial Utility Methods - Checking if X is allowed--------------------------------------------------------------------------------------------
 
     //Checking if a tile is acceptable
-    public bool TileAllowed(TileData tile, bool saveTile)
+    public bool TileAllowed(TileData tile/*, bool saveTile*/)
     {
-        Debug.Log("TileAllowed()");
         bool tileOkay;
 
         if (!cameraController.FinishedOpeningCameraPan || (stage <= TutorialStage.CollectSonar && tile == sonarLandmarkTile))
@@ -2034,7 +2025,7 @@ public class TutorialController : DialogueBoxController
         switch (stage)
         {
             case TutorialStage.BuildHarvesters:
-                if (subStage < 3 || subStage > 6 || !lerpTargetLocked)
+                if (subStage < 3 || subStage > 6 || !lerpTargetLock)
                 {
                     tileOkay = tile.Resource != null && !tile.FogUnitActive;
                 }
@@ -2046,7 +2037,7 @@ public class TutorialController : DialogueBoxController
                 break;
             case TutorialStage.BuildExtender:
             case TutorialStage.BuildMortar:
-                if (subStage < 3 || !lerpTargetLocked)
+                if (subStage < 3 || !lerpTargetLock)
                 {
                     tileOkay = tile.Resource == null && !tile.FogUnitActive;
                 }
@@ -2060,7 +2051,7 @@ public class TutorialController : DialogueBoxController
                 tileOkay = tile.Resource != null && !tile.FogUnitActive;
                 break;
             case TutorialStage.BuildGenerator:
-                if (subStage == 7 || !lerpTargetLocked)
+                if (subStage == 7 || !lerpTargetLock)
                 {
                     tileOkay = tile.Resource == null && !tile.FogUnitActive;
                 }
@@ -2095,7 +2086,7 @@ public class TutorialController : DialogueBoxController
                 tileOkay = Vector3.Distance(tile.Position, buildingTarget.transform.position) < targetRenderer.bounds.extents.x;  //.x or .z will work perfectly fine here, they'll have the radius (orthogonal extent) of the lerp target
                 break;
             case TutorialStage.BuildExtenderInFog:
-                tileOkay = tile.Resource == null;
+                tileOkay = tile.Resource == null;   //TODO: add extra substages if power doesn't reach fog? Would need to be accounted for here.
                 break;
             case TutorialStage.BuildPulseDefence:
                 tileOkay = (tile.Resource == null && !tile.FogUnitActive) || tile.Building != null;
@@ -2110,8 +2101,6 @@ public class TutorialController : DialogueBoxController
                 }
 
                 break;
-            case TutorialStage.CollectMineralsForUpgrades:
-            case TutorialStage.Upgrades:
             case TutorialStage.Finished:
                 tileOkay = true;
                 break;
@@ -2121,11 +2110,17 @@ public class TutorialController : DialogueBoxController
                 break;
         }
 
-        if (tileOkay && (saveTile || !lerpTargetLocked) && (stage != TutorialStage.BuildExtenderInFog || tile.FogUnitActive))//TODO: need to have saving the lerp circle restricted to tiles with fog for this stage.
+        //if (tileOkay && (saveTile /*|| !lerpTargetLock*/) && (stage != TutorialStage.BuildExtenderInFog || tile.FogUnitActive))
+        //{
+        //    lastTileChecked = tile;
+        //}
+
+        if (tileOkay || !lerpTargetLock)
         {
-            Debug.Log("TileAllowed() saved tile");
             lastTileChecked = tile;
         }
+
+        //lastTileChecked = tile;
 
         return tileOkay;
     }
@@ -2133,45 +2128,55 @@ public class TutorialController : DialogueBoxController
     //Checking if a button is acceptable
     public bool ButtonAllowed(ButtonType button)
     {
-        //TODO: strip out upgrades enum references in TutorialController.
+        bool buttonOkay = false;
+
         if (ButtonsNormallyAllowed(lastTileChecked).Contains(button))
         {
             switch (stage)
             {
                 case TutorialStage.BuildHarvesters:
                 case TutorialStage.BuildHarvestersExtended:
-                    return button == ButtonType.Harvester;
+                    buttonOkay = button == ButtonType.Harvester;
+                    break;
                 case TutorialStage.BuildExtender:
-                    return button == ButtonType.Extender;
+                    buttonOkay = button == ButtonType.Extender;
+                    break;
                 case TutorialStage.BuildGenerator:
                 case TutorialStage.BuildMoreGenerators:
-                    return button == ButtonType.Generator;
+                    buttonOkay = button == ButtonType.Generator;
+                    Debug.Log($"Stage BuildGenerator / BuildMoreGenerators. ButtonType: {button}; ButtonOkay: {buttonOkay}");
+                    break;
                 case TutorialStage.CollectMinerals:
                 case TutorialStage.CollectSonar:
-                    return button == ButtonType.Extender
+                    buttonOkay = button == ButtonType.Extender
                            || button == ButtonType.Harvester
                            || button == ButtonType.Generator
                            || button == ButtonType.Destroy;
+                    break;
                 case TutorialStage.BuildExtenderInFog:
-                    return button == ButtonType.Extender;
+                    buttonOkay = button == ButtonType.Extender;
+                    break;
                 case TutorialStage.BuildMortar:
-                    return button == ButtonType.AirCannon;
+                    buttonOkay = button == ButtonType.AirCannon;
+                    break;
                 case TutorialStage.BuildPulseDefence:
-                    return (button == ButtonType.FogRepeller && subStage >= 5)
+                    buttonOkay = (button == ButtonType.FogRepeller && subStage >= 5)
                            || (button == ButtonType.Extender && lastTileChecked != pulseDefenceLandmark.Location);
+                    break;
                 case TutorialStage.DefenceActivation:
                 case TutorialStage.BuildDefencesInRange:
-                case TutorialStage.CollectMineralsForUpgrades:
-                    return button != ButtonType.Upgrades;
-                case TutorialStage.Upgrades:
+                    buttonOkay = button != ButtonType.Upgrades;
+                    break;
                 case TutorialStage.Finished:
-                    return true;
+                    buttonOkay = true;
+                    break;
                 default:
-                    return button == currentlyLerping || button == ButtonType.Destroy;
+                    buttonOkay = button == currentlyLerping || button == ButtonType.Destroy;
+                    break;
             }
         }
 
-        return false;
+        return buttonOkay;
     }
 
     //Getting the normally acceptable buttons for a tile
@@ -2295,7 +2300,7 @@ public class TutorialController : DialogueBoxController
     //Activate the building target at the locatable's location
     private void ActivateTarget(Locatable l)
     {
-        lerpTargetLocked = true;
+        lerpTargetLock = true;
         GetLocationOf(l);
 
         if (targetTile.Building != null && stage != TutorialStage.BuildHarvesters && stage != TutorialStage.BuildExtenderInFog)
