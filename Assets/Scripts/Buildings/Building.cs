@@ -181,7 +181,7 @@ public abstract class Building : Entity
 
         if (health <= halfHealth && health > 0 && TakingDamage)
         {
-            if (!sirenPlayed)
+            if (!sirenPlayed && this != WorldController.Instance.Hub)
             {
                 FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-BuildingSiren", GetComponent<Transform>().position);
                 sirenPlayed = true;
