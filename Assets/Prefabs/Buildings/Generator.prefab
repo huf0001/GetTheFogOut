@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5390339707230004132}
   - component: {fileID: 9215261648573801679}
   m_Layer: 0
-  m_Name: Power Generator
+  m_Name: Power Supply
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -992,6 +992,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6457896931312284326}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: d8879d09a0faaa74587f7d8861c219d1,
+        type: 3}
+      propertyPath: m_Name
+      value: PowerConnector
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d8879d09a0faaa74587f7d8861c219d1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1062,11 +1067,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: d8879d09a0faaa74587f7d8861c219d1,
-        type: 3}
-      propertyPath: m_Name
-      value: PowerConnector
-      objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: d8879d09a0faaa74587f7d8861c219d1,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1087,6 +1087,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8293534179026107392}
     m_Modifications:
+    - target: {fileID: 3781018147186229703, guid: a542255d695fb6b4ab2f98921b54030e,
+        type: 3}
+      propertyPath: m_Name
+      value: PowerlineConnection
+      objectReference: {fileID: 0}
     - target: {fileID: 3784284891155029228, guid: a542255d695fb6b4ab2f98921b54030e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1156,11 +1161,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.020202022
-      objectReference: {fileID: 0}
-    - target: {fileID: 3781018147186229703, guid: a542255d695fb6b4ab2f98921b54030e,
-        type: 3}
-      propertyPath: m_Name
-      value: PowerlineConnection
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a542255d695fb6b4ab2f98921b54030e, type: 3}
