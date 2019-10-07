@@ -480,6 +480,7 @@ public class WorldController : MonoBehaviour
         if (dead)
         {
             dead.SetBool("IsDead", true);
+            musicFMOD.GameLoseMusic();
             if (ObjectiveController.Instance.ObjWindowVisible) ObjectiveController.Instance.ToggleObjWindow();
             yield return new WaitForSeconds(0.5f);
             canvasAnimator.enabled = true;
@@ -513,7 +514,6 @@ public class WorldController : MonoBehaviour
 
     private void GameOverUpdate()
     {
-        musicFMOD.GameLoseMusic();
         uiController.EndGameDisplay("You lose!"); //Display lose UI     
     }
 
