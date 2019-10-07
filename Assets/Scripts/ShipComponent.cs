@@ -69,5 +69,9 @@ public class ShipComponent : Entity, IPointerEnterHandler, IPointerExitHandler
             WorldController.Instance.GetShipComponent(id).Collected = true;
             UIController.instance.buildingInfo.HideInfo();
         }
+        else if(location.FogUnit.Health <= 50)
+        {
+            WorldController.Instance.GetShipComponent(id).Collected = true;
+        }
     }
 }
