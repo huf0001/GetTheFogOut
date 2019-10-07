@@ -1277,11 +1277,20 @@ public class TutorialController : DialogueBoxController
                     ToggleObjWindow();
                 }
 
+                if (fogExtenderLandmark.Location.PowerSource == null)
+                {
+                    //Debug.Log("Case 1: landmark not powered. Finding new tile");
+                    RepositionFogExtenderLandmark();
+                }
+
+                //Debug.Log("Finished BuildExtenderInFog case 1");
+
                 break;
             case 2:
                 if (dialogueRead)
                 {
                     DismissDialogue();
+                    //Debug.Log("Case 2: dialogue read, activating target");
                     ActivateTarget(fogExtenderLandmark);
                 }
                 else if (lastTileChecked.FogUnitActive && tileClicked)
@@ -1293,6 +1302,12 @@ public class TutorialController : DialogueBoxController
                 {
                     DismissMouse();
 
+                    if (fogExtenderLandmark.Location.PowerSource == null || !fogExtenderLandmark.Location.FogUnitActive)
+                    {
+                        //Debug.Log("Case 2: landmark not powered, last tile clicked didn't have an active fog unit. finding new tile for landmark");
+                        RepositionFogExtenderLandmark();
+                    }
+
                     //if (fogExtenderLandmark.Location != lastTileChecked && lastTileChecked.FogUnitActive)
                     //{
                     //    fogExtenderLandmark.Location = lastTileChecked;
@@ -1300,8 +1315,7 @@ public class TutorialController : DialogueBoxController
                     //}
 
                     ActivateTarget(fogExtenderLandmark);
-                }
-                
+                }                
 
                 break;
             case 3:
@@ -1344,6 +1358,8 @@ public class TutorialController : DialogueBoxController
                     //    fogExtenderLandmark.transform.position = lastTileChecked.Position;
                     //}
 
+                    //If it reaches this, then it can automatically be assumed that the extender placed was on a tile without fog, or there was no extender placed.
+                    RepositionFogExtenderLandmark();
                     ActivateTarget(fogExtenderLandmark);
                 }
 
@@ -1490,6 +1506,13 @@ public class TutorialController : DialogueBoxController
                 if (!objWindowVisible)
                 {
                     ToggleObjWindow();
+                }
+
+                //In case of no extenders reaching the original landmark location
+                //All powered tiles will be > 0 distance away from the hub. At the very least, one around the edge of the hub's power supply range will be selected.
+                if (pulseDefenceLandmark.Location.PowerSource == null)
+                {
+                    RepositionPulseDefenceLandmark();
                 }
 
                 break;
@@ -2296,6 +2319,105 @@ public class TutorialController : DialogueBoxController
     }
 
     //Tutorial Utility Methods - (Targeted) Building-------------------------------------------------------------------------------------------------
+
+    //In case the player cannot immediately build in the fog
+    private void RepositionFogExtenderLandmark()
+    {
+        //Checks for tiles that would satisfy this objective
+        List<TileData> poweredFogTiles = new List<TileData>();
+
+        foreach (TileData t in WorldController.Instance.ActiveTiles)
+        {
+            if (t.FogUnitActive && t.Building == null)
+            {
+                //Debug.Log("Found powered fog tile");
+                poweredFogTiles.Add(t);
+            }
+        }
+
+        if (poweredFogTiles.Count > 0)
+        {
+            TileData temp = poweredFogTiles[UnityEngine.Random.Range(0, poweredFogTiles.Count)];
+            fogExtenderLandmark.Location = temp;
+            fogExtenderLandmark.transform.position = temp.Position;
+            return;
+        }
+
+        //If finds none, checks for tile that will get the player the closest to such a tile
+        TileData tile = null;
+        float tileToHub = 0;
+        float tileToOriginalLandmark = 9999;
+
+        foreach (TileData t in WorldController.Instance.ActiveTiles)
+        {
+            if (t.Building == null && (Vector3.Distance(t.Position, hub.Location.Position) > tileToHub || (Vector3.Distance(t.Position, hub.Location.Position) > tileToHub - 0.25 && Vector3.Distance(t.Position, fogExtenderLandmark.Location.Position) < tileToOriginalLandmark)))
+            {
+                tile = t;
+                tileToHub = Vector3.Distance(t.Position, hub.Location.Position);
+                tileToOriginalLandmark = Vector3.Distance(t.Position, fogExtenderLandmark.Location.Position);
+            }
+
+            //if (Vector3.Distance(t.Position, hub.Location.Position) > tileToHub)
+            //{
+            //    //Debug.Log("Found tile farther away from hub");
+            //    tile = t;
+            //    tileToHub = Vector3.Distance(t.Position, hub.Location.Position);
+            //    tileToOriginalLandmark = Vector3.Distance(t.Position, fogExtenderLandmark.Location.Position);
+            //}
+            //else if (Vector3.Distance(t.Position, hub.Location.Position) > tileToHub - 0.25 && Vector3.Distance(t.Position, fogExtenderLandmark.Location.Position) < tileToOriginalLandmark)
+            //{
+            //    //Debug.Log("Found tile in acceptable distance and closer to original landmark");
+            //    tile = t;
+            //    tileToHub = Vector3.Distance(t.Position, hub.Location.Position);
+            //    tileToOriginalLandmark = Vector3.Distance(t.Position, fogExtenderLandmark.Location.Position);
+            //}
+        }
+
+        if (tile != null)
+        {
+            fogExtenderLandmark.Location = tile;
+            fogExtenderLandmark.transform.position = tile.Position;
+        }
+    }
+
+    //In case the original landmark is not being supplied with power
+    private void RepositionPulseDefenceLandmark()
+    {
+        TileData tile = null;
+        float tileToHub = 0;
+        float tileToOriginalLandmark = 9999;
+
+        foreach (TileData t in WorldController.Instance.ActiveTiles)
+        {
+            if (t.Building == null && !t.FogUnitActive && (Vector3.Distance(t.Position, hub.Location.Position) > tileToHub || (Vector3.Distance(t.Position, hub.Location.Position) > tileToHub - 0.25 && Vector3.Distance(t.Position, pulseDefenceLandmark.Location.Position) < tileToOriginalLandmark)))
+            {
+                tile = t;
+                tileToHub = Vector3.Distance(t.Position, hub.Location.Position);
+                tileToOriginalLandmark = Vector3.Distance(t.Position, pulseDefenceLandmark.Location.Position);
+            }
+
+            //if (Vector3.Distance(t.Position, hub.Location.Position) > tileToHub)
+            //{
+            //    //Debug.Log("Found tile farther away from hub");
+            //    tile = t;
+            //    tileToHub = Vector3.Distance(t.Position, hub.Location.Position);
+            //    tileToOriginalLandmark = Vector3.Distance(t.Position, pulseDefenceLandmark.Location.Position);
+            //}
+            //else if (Vector3.Distance(t.Position, hub.Location.Position) > tileToHub - 0.25 && Vector3.Distance(t.Position, pulseDefenceLandmark.Location.Position) < tileToOriginalLandmark)
+            //{
+            //    //Debug.Log("Found tile in acceptable distance and closer to original landmark");
+            //    tile = t;
+            //    tileToHub = Vector3.Distance(t.Position, hub.Location.Position);
+            //    tileToOriginalLandmark = Vector3.Distance(t.Position, pulseDefenceLandmark.Location.Position);
+            //}
+        }
+
+        if (tile != null)
+        {
+            pulseDefenceLandmark.Location = tile;
+            pulseDefenceLandmark.transform.position = tile.Position;
+        }
+    }
 
     //Activate the building target at the locatable's location
     private void ActivateTarget(Locatable l)
