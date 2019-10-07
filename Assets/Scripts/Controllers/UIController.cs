@@ -85,6 +85,7 @@ public class UIController : MonoBehaviour
     private Vector3 abilityImageOriginalPos;
 
     private float currentPowerValDisplayed = 0;
+    private bool unlockingAbility = false;
 
     public float CurrentPowerValDisplayed { get => currentPowerValDisplayed; }
     public bool UpgradeWindowVisible { get; set; }
@@ -332,80 +333,110 @@ public class UIController : MonoBehaviour
     // Ability unlock screen
     public void AbilityUnlock(Ability ability)
     {
-        Time.timeScale = 0.1f;
-        abilityUnlockCanvas.gameObject.SetActive(true);
-        switch (ability.AbilityType)
+        Debug.Log("AbilityUnlock");
+
+        if (!unlockingAbility)
         {
-            case AbilityEnum.Artillery:
-                abilityImage.sprite = abilitySprites[0];
-                abilityNameText.text = "Artillery Blast";
-                abilityDescText.text = abilityDescriptions[0];
-                abilityButtons[0].interactable = true;
-                abilityButtonIcons[0].enabled = true;
-                abilityButtonUnknown[0].enabled = false;
-                abilityHotkeyTextboxes[0].color = new Color(1, 1, 1);
-                break;
-            case AbilityEnum.BuildingDefence:
-                abilityImage.sprite = abilitySprites[1];
-                abilityNameText.text = "Defence Mode";
-                abilityDescText.text = abilityDescriptions[1];
-                abilityButtons[1].interactable = true;
-                abilityButtonIcons[1].enabled = true;
-                abilityButtonUnknown[1].enabled = false;
-                abilityHotkeyTextboxes[1].color = new Color(1, 1, 1);
-                break;
-            case AbilityEnum.FreezeFog:
-                abilityImage.sprite = abilitySprites[2];
-                abilityNameText.text = "Freeze Fog";
-                abilityDescText.text = abilityDescriptions[2];
-                abilityButtons[2].interactable = true;
-                abilityButtonIcons[2].enabled = true;
-                abilityButtonUnknown[2].enabled = false;
-                abilityHotkeyTextboxes[2].color = new Color(1, 1, 1);
-                break;
-            case AbilityEnum.Overclock:
-                abilityImage.sprite = abilitySprites[3];
-                abilityNameText.text = "Overclock";
-                abilityDescText.text = abilityDescriptions[3];
-                abilityButtons[3].interactable = true;
-                abilityButtonIcons[3].enabled = true;
-                abilityButtonUnknown[3].enabled = false;
-                abilityHotkeyTextboxes[3].color = new Color(1, 1, 1);
-                break;
-            case AbilityEnum.Sonar:
-                abilityImage.sprite = abilitySprites[4];
-                abilityNameText.text = "Sonar";
-                abilityDescText.text = abilityDescriptions[4];
-                abilityButtons[4].interactable = true;
-                abilityButtonIcons[4].enabled = true;
-                abilityButtonUnknown[4].enabled = false;
-                abilityHotkeyTextboxes[4].color = new Color(1, 1, 1);
-                break;
+            Debug.Log("Unlocking new ability");
+            Time.timeScale = 0.1f;
+            unlockingAbility = true;
+            abilityUnlockCanvas.gameObject.SetActive(true);
+
+            switch (ability.AbilityType)
+            {
+                case AbilityEnum.Artillery:
+                    abilityImage.sprite = abilitySprites[0];
+                    abilityNameText.text = "Artillery Blast";
+                    abilityDescText.text = abilityDescriptions[0];
+                    abilityButtons[0].interactable = true;
+                    abilityButtonIcons[0].enabled = true;
+                    abilityButtonUnknown[0].enabled = false;
+                    abilityHotkeyTextboxes[0].color = new Color(1, 1, 1);
+                    break;
+                case AbilityEnum.BuildingDefence:
+                    abilityImage.sprite = abilitySprites[1];
+                    abilityNameText.text = "Defence Mode";
+                    abilityDescText.text = abilityDescriptions[1];
+                    abilityButtons[1].interactable = true;
+                    abilityButtonIcons[1].enabled = true;
+                    abilityButtonUnknown[1].enabled = false;
+                    abilityHotkeyTextboxes[1].color = new Color(1, 1, 1);
+                    break;
+                case AbilityEnum.FreezeFog:
+                    abilityImage.sprite = abilitySprites[2];
+                    abilityNameText.text = "Freeze Fog";
+                    abilityDescText.text = abilityDescriptions[2];
+                    abilityButtons[2].interactable = true;
+                    abilityButtonIcons[2].enabled = true;
+                    abilityButtonUnknown[2].enabled = false;
+                    abilityHotkeyTextboxes[2].color = new Color(1, 1, 1);
+                    break;
+                case AbilityEnum.Overclock:
+                    abilityImage.sprite = abilitySprites[3];
+                    abilityNameText.text = "Overclock";
+                    abilityDescText.text = abilityDescriptions[3];
+                    abilityButtons[3].interactable = true;
+                    abilityButtonIcons[3].enabled = true;
+                    abilityButtonUnknown[3].enabled = false;
+                    abilityHotkeyTextboxes[3].color = new Color(1, 1, 1);
+                    break;
+                case AbilityEnum.Sonar:
+                    abilityImage.sprite = abilitySprites[4];
+                    abilityNameText.text = "Sonar";
+                    abilityDescText.text = abilityDescriptions[4];
+                    abilityButtons[4].interactable = true;
+                    abilityButtonIcons[4].enabled = true;
+                    abilityButtonUnknown[4].enabled = false;
+                    abilityHotkeyTextboxes[4].color = new Color(1, 1, 1);
+                    break;
+            }
+
+            proceedArrows.DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+            abilityUnlockBG.DOScale(1, 0.3f).SetUpdate(true).SetEase(Ease.OutBack).OnComplete(
+                delegate
+                {
+                    Debug.Log("Finished showing ability unlock");
+                    unlockingAbility = false;
+                });
         }
-        abilityUnlockBG.DOScale(1, 0.3f).SetUpdate(true).SetEase(Ease.OutBack);
-        proceedArrows.DOAnchorPosY(arrowInitialPosition.y - 5, 0.3f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+        else
+        {
+            Debug.Log("Waiting for unlock to finish before unlocking new ability");
+        }
     }
+        
 
     public void FinishAbilityUnlock()
     {
-        DOTween.Complete(abilityUnlockBG);
-        DOTween.Kill(proceedArrows);
-        proceedArrows.anchoredPosition = arrowInitialPosition;
-        abilityImageParent.DOScale(0.45f, 0.6f);
-        abilityImageParent.DOMove(abilityButtons[0].transform.parent.position, 0.6f).OnComplete(
-            delegate
-            {
-                abilityImageParent.gameObject.SetActive(false);
-                abilityUnlockBG.DOScale(0.01f, 0.3f).SetUpdate(true).SetEase(Ease.InBack).OnComplete(
-                    delegate
-                    {
-                        abilityImageParent.anchoredPosition = abilityImageOriginalPos;
-                        abilityImageParent.gameObject.SetActive(true);
-                        abilityImageParent.localScale = new Vector3(1, 1, 1);
-                        abilityUnlockCanvas.gameObject.SetActive(false);
-                    });
-            });
-        Time.timeScale = 1;
+        Debug.Log("FinishAbilityUnlock");
+
+        if (!unlockingAbility)
+        {
+            Debug.Log("FinishAbilityUnlock; OpenAbilityUnlock finished");
+            DOTween.Complete(abilityUnlockBG);
+            DOTween.Kill(proceedArrows);
+            proceedArrows.anchoredPosition = arrowInitialPosition;
+            abilityImageParent.DOScale(0.45f, 0.6f);
+            abilityImageParent.DOMove(abilityButtons[0].transform.parent.position, 0.6f).OnComplete(
+                delegate
+                {
+                    abilityImageParent.gameObject.SetActive(false);
+                    abilityUnlockBG.DOScale(0.01f, 0.3f).SetUpdate(true).SetEase(Ease.InBack).OnComplete(
+                        delegate
+                        {
+                            abilityImageParent.anchoredPosition = abilityImageOriginalPos;
+                            abilityImageParent.gameObject.SetActive(true);
+                            abilityImageParent.localScale = new Vector3(1, 1, 1);
+                            abilityUnlockCanvas.gameObject.SetActive(false);
+                        });
+                });
+            Time.timeScale = 1;
+            Debug.Log("FinishedUnlockingAbility");
+        }
+        else
+        {
+            Debug.Log("Waiting for unlock to finish");
+        }
     }
 
     public void ShowUpgradeWindow()
