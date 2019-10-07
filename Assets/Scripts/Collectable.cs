@@ -141,6 +141,7 @@ public class Collectable : Locatable, ICollectible
                         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_1", GetComponent<Transform>().position);
                         AbilityController.Instance.AbilityCollected[ability.AbilityType] = true;
                         UIController.instance.AbilityUnlock(ability);
+                        location.plane.GetComponent<MeshRenderer>().material = WorldController.Instance.normalTile;
                         Invoke(nameof(DestroyCollectable), 0.05f);
                     }
                 }
