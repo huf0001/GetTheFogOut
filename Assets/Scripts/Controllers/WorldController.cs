@@ -187,8 +187,12 @@ public class WorldController : MonoBehaviour
                 foreach (Locatable damageMarker in damageMarkers)
                 {
                     tile = GetTileAt(damageMarker.transform.position);
-                    tile.Building = b;
                     damageMarker.Location = tile;
+
+                    if (damageMarker.gameObject.name != "LeftWingDamageMarker")
+                    {
+                        tile.Building = b;
+                    }
                 }
 
                 b.Animator = b.GetComponentInChildren<Animator>();
@@ -291,6 +295,7 @@ public class WorldController : MonoBehaviour
     private void CreateMinimapTiles()
     {
         GameObject grids = GameObject.Find("MinimapPlanes");
+
         foreach (TileData tile in tiles)
         {
             Vector3 pos = Vector3.zero;
@@ -300,6 +305,7 @@ public class WorldController : MonoBehaviour
             GameObject minimapTile = Instantiate(minimapPlanePrefab, pos, minimapPlanePrefab.transform.localRotation);
             minimapTile.transform.SetParent(grids.transform);
             minimapTile.GetComponent<MinimapTile>().Tile = tile;
+            tile.MinimapTile = minimapTile.GetComponent<MinimapTile>();
         }
     }
 

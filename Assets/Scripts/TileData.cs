@@ -46,22 +46,23 @@ public class TileData
     private List<Building> observers = new List<Building>();
     private bool visited = false;
 
+    private MinimapTile minimapTile;
+
     //Public Fields
     public GameObject plane;
 
     //Public Properties
+    public List<TileData> AdjacentTiles { get => adjacentTiles; }
+    public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
+    public BuildingChecks buildingChecks;
     public bool FogUnitActive { get => fogUnitActive; set => fogUnitActive = value; }
+    public MinimapTile MinimapTile { get => minimapTile; set => minimapTile = value; }
     public string Name { get => $"Tile ({x},{z})"; }
+    public GameObject PlacedTower { get => placedTower; set => placedTower = value; }
+    public ResourceNode Resource { get => resource; set => resource = value; }
     public bool Visited { get => visited; set => visited = value; }
     public int X { get => x; set => x = value; }
     public int Z { get => z; set => z = value; }
-
-    public BuildingChecks buildingChecks;
-    public GameObject PlacedTower { get => placedTower; set => placedTower = value; }
-    public ResourceNode Resource { get => resource; set => resource = value; }
-
-    public List<TileData> AdjacentTiles { get => adjacentTiles; }
-    public List<TileData> AllAdjacentTiles { get => allAdjacentTiles; }
 
     //Altered public properties
     public Building Building

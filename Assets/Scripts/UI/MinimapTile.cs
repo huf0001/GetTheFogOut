@@ -39,6 +39,23 @@ public class MinimapTile : MonoBehaviour
         }
     }
 
+    public void StartCheckColour()
+    {
+        if (Tile.Building.BuildingType == BuildingType.Hub && curColour != shipTile)
+        {
+            material.SetColor("_BaseColor", shipTile);
+            curColour = shipTile;
+            rend.SetPropertyBlock(material);
+        }
+
+        InvokeRepeating(nameof(CheckColour), 0.1f, 0.5f);
+    }
+
+    public void StopCheckColour()
+    {
+        CancelInvoke();
+    }
+
     private void CheckColour()
     {
         if (Tile.Building)

@@ -106,6 +106,18 @@ public class Hub : PowerSource
             case "attached":
                 currentModel = attachedWing;
                 currentModel.SetActive(true);
+                leftWingDamageMarker.Location.Building = this;
+
+                //Ensure they flash blue and white on the minimap synchronously
+                cockpitDamageMarker.Location.MinimapTile.StopCheckColour();
+                enginesDamageMarker.Location.MinimapTile.StopCheckColour();
+                leftWingDamageMarker.Location.MinimapTile.StopCheckColour();
+                rightWingDamageMarker.Location.MinimapTile.StopCheckColour();
+
+                cockpitDamageMarker.Location.MinimapTile.StartCheckColour();
+                enginesDamageMarker.Location.MinimapTile.StartCheckColour();
+                leftWingDamageMarker.Location.MinimapTile.StartCheckColour();
+                rightWingDamageMarker.Location.MinimapTile.StartCheckColour();
                 break;
             default:
                 Debug.Log($"Error: invalid ship model \"{model}\" submitted to Hub.CurrentModel().");
