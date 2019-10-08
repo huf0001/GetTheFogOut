@@ -99,20 +99,9 @@ public class BuildingInfo : MonoBehaviour
             if (building.BuildingType != BuildingType.Hub)
             {
                 int returnCost = building.MineralCost;
-                if (building.BuildingType != BuildingType.Extender)
+                if (building.BuildingType != BuildingType.Extender && building.Health != building.MaxHealth)
                 {
-                    if (building.Health != building.MaxHealth)
-                    {
-                        if (building.Health < 40 && building.Health > 25)
-                        {
-                            returnCost = Mathf.RoundToInt(returnCost * 0.71429f);
-                        }
-
-                        if (building.Health < 20 && building.Health > 5)
-                        {
-                            returnCost = Mathf.RoundToInt(returnCost * 0.5f);
-                        }
-                    }
+                    returnCost = Mathf.RoundToInt(returnCost * building.Health / building.MaxHealth);
                 }
 
                 if (returnCost != refundCost)

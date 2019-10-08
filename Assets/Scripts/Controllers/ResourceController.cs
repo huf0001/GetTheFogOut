@@ -33,7 +33,7 @@ public class ResourceController : MonoBehaviour
     //Basic Public Properties
     public static ResourceController Instance { get; protected set; }
 
-    //public int MaxPower { get => maxPower; set => maxPower = value; }
+    public int MaxMineral { get => maxMineral; set => maxMineral = value; }
     public float StoredPower { get => storedPower; set => storedPower = value; }
     public float StoredMineral { get => storedMineral; set => storedMineral = value; }
     public float PowerChange { get => powerChange; set => powerChange = value; }
