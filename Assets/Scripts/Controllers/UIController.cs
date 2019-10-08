@@ -86,6 +86,7 @@ public class UIController : MonoBehaviour
 
     private float currentPowerValDisplayed = 0;
     private bool unlockingAbility = false;
+    private bool activeState = false;
 
     public float CurrentPowerValDisplayed { get => currentPowerValDisplayed; }
     public bool UpgradeWindowVisible { get; set; }
@@ -131,6 +132,12 @@ public class UIController : MonoBehaviour
         powerTime += Time.deltaTime;
         mineralTime += Time.deltaTime;
         UpdateResourceText();
+
+        if (activeState != abilityUnlockCanvas.gameObject.activeSelf)
+        {
+            activeState = !activeState;
+            Debug.Log($"AbilityUnlockCanvas.activeSelf is {activeState}");
+        }
     }
 
     // find sliders and text
