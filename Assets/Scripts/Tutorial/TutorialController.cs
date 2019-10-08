@@ -1092,6 +1092,8 @@ public class TutorialController : DialogueBoxController
     //Player collects the sonar ability canister, uses the sonar and is prompted to collect more ability canisters and the thruster
     private void CollectSonar()
     {
+        //TODO: case 4 should wait for ability to close before doing its stuff
+        //TODO: is there a way to lock input while the camera is panning? maybe that'll help too.
         switch (subStage)
         {
             case 1:
@@ -1123,6 +1125,12 @@ public class TutorialController : DialogueBoxController
 
                 break;
             case 4:
+                if (Time.timeScale != 1)
+                {
+                    Debug.Log("Fixing timescale");
+                    Time.timeScale = 1;
+                }
+
                 stage = TutorialStage.ActivateSonar;
                 SendDialogue("select sonar", 1);
                 ActivateUIScalingLerpTarget(abilityMenu, abilityMenuMinLerp, abilityMenuColour);
@@ -2183,8 +2191,8 @@ public class TutorialController : DialogueBoxController
                     buttonOkay = button == ButtonType.AirCannon;
                     break;
                 case TutorialStage.BuildPulseDefence:
-                    buttonOkay = (button == ButtonType.FogRepeller && subStage >= 5)
-                           || (button == ButtonType.Extender && lastTileChecked != pulseDefenceLandmark.Location);
+                    buttonOkay = (button == ButtonType.FogRepeller /*&& subStage >= 5*/)
+                           /*|| (button == ButtonType.Extender && lastTileChecked != pulseDefenceLandmark.Location)*/;
                     break;
                 case TutorialStage.DefenceActivation:
                 case TutorialStage.BuildDefencesInRange:
