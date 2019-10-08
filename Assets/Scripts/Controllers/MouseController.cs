@@ -101,14 +101,14 @@ public class MouseController : MonoBehaviour
                     //      Color test = t.plane.GetComponent<Renderer>().material.GetColor("_BaseColor");
                     if (hovertoggle)
                     {
-                     //   hovertoggle = false;
+                        //   hovertoggle = false;
                         //    changeTileMaterial(WorldController.Instance.normalTile);
                         changeTileMaterial(false);
 
                         if (!t.buildingChecks.collectable)
                         {
                             hoveredTile = t;
-                       //     changeTileMaterial(WorldController.Instance.hoverTile);
+                            //     changeTileMaterial(WorldController.Instance.hoverTile);
                             changeTileMaterial(true);
                         }
                         else
@@ -124,23 +124,24 @@ public class MouseController : MonoBehaviour
                             changeTileMaterial(false);
                             curr = UIController.instance.powerCurrent;
 
-                        }else if (!(hoveredTile.Equals(t)))
+                        }
+                        else if (!(hoveredTile.Equals(t)))
+                        {
+                            hovertoggle = true;
+                            /*
+                            if (hoveredTile.plane == null)
                             {
-                                hovertoggle = true;
-                                /*
-                                if (hoveredTile.plane == null)
-                                {
-                                    Debug.Log("tst");
-                                    hoveredTile = WorldController.Instance.GetTileAt(hit.point);
-                                    changeTileMaterial(WorldController.Instance.hoverTile);
-                                }
-                                else*/
-                            
-                                if (!t.buildingChecks.collectable)
-                                {
+                                Debug.Log("tst");
+                                hoveredTile = WorldController.Instance.GetTileAt(hit.point);
+                                changeTileMaterial(WorldController.Instance.hoverTile);
+                            }
+                            else*/
+
+                            if (!t.buildingChecks.collectable)
+                            {
                                 //    changeTileMaterial(WorldController.Instance.normalTile);
                                 changeTileMaterial(false);
-                                }
+                            }
                         }
                     }
                 }
@@ -168,7 +169,7 @@ public class MouseController : MonoBehaviour
             }
             else
             {
-              //  currentTile = hoveredTile;
+                //  currentTile = hoveredTile;
             }
         }
     }
@@ -178,10 +179,11 @@ public class MouseController : MonoBehaviour
         {
             if (hoveredTile.plane != null)
             {
-                if(ison)
+                if (ison)
                 {
                     hoveredTile.plane.GetComponent<Renderer>().material.SetColor("_BaseColor", getHoveredTileColor());
-                }else
+                }
+                else
                 {
                     hoveredTile.plane.GetComponent<Renderer>().material = WorldController.Instance.normalTile;
                 }
@@ -242,7 +244,7 @@ public class MouseController : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-            
+
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "Tiles", "Collectables", "Buildings" })) && WorldController.Instance.TileExistsAt(hit.point))
             {
                 if (UIController.instance.buildingInfo.Visible)
@@ -316,7 +318,7 @@ public class MouseController : MonoBehaviour
                                 {
                                     towerManager.CancelBuild();
                                 }
-                            }                            
+                            }
 
                             if (reportTutorialClick)
                             {
@@ -346,25 +348,18 @@ public class MouseController : MonoBehaviour
             if (building.BuildingType != BuildingType.Hub)
             {
                 returnCost = building.MineralCost;
-                if (building.BuildingType != BuildingType.Extender)
+                if (building.BuildingType != BuildingType.Extender && building.Health != building.MaxHealth)
                 {
-                    if (building.Health != building.MaxHealth)
-                    {
-                        if (building.Health < 40 && building.Health > 25)
-                        {
-                            returnCost = Mathf.RoundToInt(returnCost / 1.4f);
-                        }
-
-                        if (building.Health < 20 && building.Health > 5)
-                        {
-                            returnCost = Mathf.RoundToInt(returnCost * 0.5f);
-                        }
-                    }
+                    returnCost = Mathf.RoundToInt(returnCost * building.Health / building.MaxHealth);
                 }
 
                 // add required resources
-                resourceController.StoredPower += building.PowerCost;
+                //resourceController.StoredPower += building.PowerCost;
                 resourceController.StoredMineral += returnCost;
+                if (resourceController.StoredMineral > resourceController.MaxMineral)
+                {
+                    resourceController.StoredMineral = resourceController.MaxMineral;
+                }
                 StartCoroutine(FloatText(building.transform, returnCost));
                 return building;
             }
@@ -385,32 +380,32 @@ public class MouseController : MonoBehaviour
             building.DismantleBuilding();
         }
     }
-	
-	    public void checkUpgrade(BuildingType building, GameObject b)
+
+    public void checkUpgrade(BuildingType building, GameObject b)
     {
         if (building == BuildingType.AirCannon)
         {
             if (WorldController.Instance.mortarUpgradeLevel)
             {
-                upgradeMaterial(WorldController.Instance.mortarUpgradeLevel.upgradeNum, b,true);
+                upgradeMaterial(WorldController.Instance.mortarUpgradeLevel.upgradeNum, b, true);
             }
         }
         else if (building == BuildingType.FogRepeller)
         {
             if (WorldController.Instance.pulseDefUpgradeLevel)
             {
-                upgradeMaterial(WorldController.Instance.pulseDefUpgradeLevel.upgradeNum, b,false);
+                upgradeMaterial(WorldController.Instance.pulseDefUpgradeLevel.upgradeNum, b, false);
             }
         }
         else if (building == BuildingType.Harvester)
         {
             if (WorldController.Instance.hvstUpgradeLevel)
             {
-                upgradeMaterial(WorldController.Instance.hvstUpgradeLevel.upgradeNum,b,false);
+                upgradeMaterial(WorldController.Instance.hvstUpgradeLevel.upgradeNum, b, false);
             }
         }
     }
-    public void upgradeMaterial(int level, GameObject b,bool air)
+    public void upgradeMaterial(int level, GameObject b, bool air)
     {
         Material mr = b.GetComponentInChildren<MeshRenderer>().material;
         Color lvl = mr.GetColor("_UpgradeColour");
@@ -477,7 +472,7 @@ public class MouseController : MonoBehaviour
                     building.Animator.SetBool("Built", true);
                 }
 
-                checkUpgrade(buildType,buildingGo);
+                checkUpgrade(buildType, buildingGo);
                 //Tell the building to do things it should do when placed
                 building.Place();
                 //    changeTileMaterial(WorldController.Instance.normalTile);
