@@ -1635,6 +1635,7 @@ public class TutorialController : DialogueBoxController
             case 1:
                 if (UIController.instance.buttonClosed)
                 {
+                    Debug.Log("Showing Activate Defences Button");
                     UIController.instance.ShowActivateButton();
                 }
 
@@ -1644,6 +1645,7 @@ public class TutorialController : DialogueBoxController
             case 2:
                 if (dialogueRead)
                 {
+                    Debug.Log("Dismissing 'Activate Defences' dialogue");
                     DismissDialogue();
                 }
 
@@ -1652,6 +1654,7 @@ public class TutorialController : DialogueBoxController
                 //Waiting for the big button to be pressed
                 break;
             case 4:
+                Debug.Log("Turning on pulse defence pulses, waking up fog.");
                 foreach (RepelFan pd in ResourceController.Instance.PulseDefences)
                 {
                     pd.GetComponentInChildren<ParticleSystem>().Play();
@@ -1689,11 +1692,6 @@ public class TutorialController : DialogueBoxController
                 SendDialogue("finished", 1);
                 ObjectiveController.Instance.IncrementStage();
                 break;
-
-            //ResetSubStage();
-            //stage = TutorialStage.CollectMineralsForUpgrades;
-            //tutProgressSlider.value++;
-            //break;
             default:
                 SendDialogue("error", 1);
                 Debug.Log("inaccurate sub stage");
@@ -2177,7 +2175,7 @@ public class TutorialController : DialogueBoxController
                 case TutorialStage.BuildGenerator:
                 case TutorialStage.BuildMoreGenerators:
                     buttonOkay = button == ButtonType.Generator;
-                    Debug.Log($"Stage BuildGenerator / BuildMoreGenerators. ButtonType: {button}; ButtonOkay: {buttonOkay}");
+                    //Debug.Log($"Stage BuildGenerator / BuildMoreGenerators. ButtonType: {button}; ButtonOkay: {buttonOkay}");
                     break;
                 case TutorialStage.CollectMinerals:
                 case TutorialStage.CollectSonar:
@@ -2325,6 +2323,7 @@ public class TutorialController : DialogueBoxController
     //Called to advance the defence activation stage to sub-stage 4
     public void ActivateDefences()
     {
+        Debug.Log("Running TutorialController.ActivateDefences(); activate button pressed");
         GoToSubStage(4);
     }
 
@@ -2432,6 +2431,7 @@ public class TutorialController : DialogueBoxController
     //Activate the building target at the locatable's location
     private void ActivateTarget(Locatable l)
     {
+        //if (buildMenuCanvasGroup.alpha)
         lerpTargetLock = true;
         GetLocationOf(l);
 

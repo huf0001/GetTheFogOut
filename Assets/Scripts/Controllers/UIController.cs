@@ -86,7 +86,9 @@ public class UIController : MonoBehaviour
 
     private float currentPowerValDisplayed = 0;
     private bool unlockingAbility = false;
-    private bool activeState = false;
+    //private bool activeState = false;
+    private bool openingButton = false;
+    private bool closingButton = false;
 
     public float CurrentPowerValDisplayed { get => currentPowerValDisplayed; }
     public bool UpgradeWindowVisible { get; set; }
@@ -133,11 +135,11 @@ public class UIController : MonoBehaviour
         mineralTime += Time.deltaTime;
         UpdateResourceText();
 
-        if (activeState != abilityUnlockCanvas.gameObject.activeSelf)
-        {
-            activeState = !activeState;
-            Debug.Log($"AbilityUnlockCanvas.activeSelf is {activeState}");
-        }
+        //if (activeState != abilityUnlockCanvas.gameObject.activeSelf)
+        //{
+        //    activeState = !activeState;
+        //    Debug.Log($"AbilityUnlockCanvas.activeSelf is {activeState}");
+        //}
     }
 
     // find sliders and text
@@ -288,53 +290,67 @@ public class UIController : MonoBehaviour
 
     public void ShowActivateButton()
     {
-        objectiveProceedCanvas.SetActive(true);
-        launchButtonImage.sprite = objectiveButtonSprites[3];
+        if (buttonClosed && !openingButton)
+        //if (true)
+        {
+            openingButton = true;
+            objectiveProceedCanvas.SetActive(true);
+            launchButtonImage.sprite = objectiveButtonSprites[3];
 
-        Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(objectiveButtonBG.DOFade(0.93f, 1))
-            .Append(launchButtonImage.DOFade(1, 0.5f))
-            .OnComplete(
-                delegate
-                {
-                    objectiveButton.enabled = true;
-                    buttonClosed = false;
-                    objectiveButton.onClick.AddListener(
-                        delegate
-                        {
-                            if (TutorialController.Instance.DefencesOperable())     //If returns false, DefencesOperable() sets up the BuildDefencesInRange() stage
+            Sequence showLaunch = DOTween.Sequence();
+            showLaunch.Append(objectiveButtonBG.DOFade(0.93f, 1))
+                .Append(launchButtonImage.DOFade(1, 0.5f))
+                .OnComplete(
+                    delegate
+                    {
+                        Debug.Log("Mark1");
+                        objectiveButton.enabled = true;
+                        buttonClosed = false;
+                        objectiveButton.onClick.AddListener(
+                            delegate
                             {
-                                TutorialController.Instance.ActivateDefences();
-                            }
+                                Debug.Log("Mark2");
+                                if (TutorialController.Instance.DefencesOperable())     //If returns false, DefencesOperable() sets up the BuildDefencesInRange() stage
+                                {
+                                    TutorialController.Instance.ActivateDefences();
+                                }
 
-                            objectiveButton.enabled = false;
-                            CloseButton();
-                        });
-                    launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
-                });
+                                objectiveButton.enabled = false;
+                                CloseButton();
+                            });
+                        launchButtonImage.DOColor(new Color(0.5f, 0.5f, 0.5f), 1).SetLoops(-1, LoopType.Yoyo);
+                        openingButton = false;
+                    });
+        }
     }
 
     public void CloseButton()
     {
-        if (DOTween.IsTweening("ObjectiveButtonOpen")) DOTween.Kill("ObjectiveButtonOpen");
-        else DOTween.Kill(launchButtonImage);
-        launchButtonImage.color = new Color(1, 1, 1);
-
-        Sequence showLaunch = DOTween.Sequence();
-        showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
-        .Append(objectiveButtonBG.DOFade(0, 1))
-        .SetId("ObjectiveButtonClose")
-        .OnComplete(
-        delegate
-        {
-            objectiveButton.onClick.RemoveAllListeners();
-            objectiveButton.enabled = false;
-            if (ObjectiveController.Instance.CurrStage != (int)ObjectiveStage.SurvivalStage)
+        if (!buttonClosed && !closingButton)
+        //if (true)
             {
-                objectiveProceedCanvas.SetActive(false);
-            }
-            buttonClosed = true;
-        });
+            closingButton = true;
+            if (DOTween.IsTweening("ObjectiveButtonOpen")) DOTween.Kill("ObjectiveButtonOpen");
+            else DOTween.Kill(launchButtonImage);
+            launchButtonImage.color = new Color(1, 1, 1);
+
+            Sequence showLaunch = DOTween.Sequence();
+            showLaunch.Append(launchButtonImage.DOFade(0, 0.5f))
+            .Append(objectiveButtonBG.DOFade(0, 1))
+            .SetId("ObjectiveButtonClose")
+            .OnComplete(
+            delegate
+            {
+                objectiveButton.onClick.RemoveAllListeners();
+                objectiveButton.enabled = false;
+                if (ObjectiveController.Instance.CurrStage != (int)ObjectiveStage.SurvivalStage)
+                {
+                    objectiveProceedCanvas.SetActive(false);
+                }
+                buttonClosed = true;
+                closingButton = false;
+            });
+        }
     }
 
     // Ability unlock screen
