@@ -7,7 +7,7 @@ public class RepelFan : Defence
 {
     public int repelRange;
     public GameObject shockwave;
-    
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -126,11 +126,13 @@ public class RepelFan : Defence
                 {
                     case 1:
                         repelRange = 3;
-                        shockwave.transform.localScale = new Vector3(1.3f, 1f, 1.3f);
+                        shockwave.transform.localScale = new Vector3(1.2f, 1f, 1.2f);
+                        rangeIndicator.transform.localScale = new Vector3(1f,0.3636363f, 1f);
                         break;
                     case 2:
                         repelRange = 4;
-                        shockwave.transform.localScale = new Vector3(1.65f, 1f, 1.65f);
+                        shockwave.transform.localScale = new Vector3(1.55f, 1f, 1.55f);
+                        rangeIndicator.transform.localScale = new Vector3(1.3f,0.3636363f, 1.3f);
                         break;
                 }
                 break;
