@@ -498,7 +498,6 @@ public class WorldController : MonoBehaviour
             win.SetBool("Win", true);
             musicFMOD.GameWinMusic();
             if (ObjectiveController.Instance.ObjWindowVisible) ObjectiveController.Instance.ToggleObjWindow();
-            if (uiController.buildingInfo.Visible) uiController.buildingInfo.HideInfo();
             yield return new WaitForSeconds(0.5f);
             canvasAnimator.enabled = true;
             canvasAnimator.SetBool("EndGame", true);
