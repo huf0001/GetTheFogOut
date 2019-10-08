@@ -2431,25 +2431,27 @@ public class TutorialController : DialogueBoxController
     //Activate the building target at the locatable's location
     private void ActivateTarget(Locatable l)
     {
-        //if (buildMenuCanvasGroup.alpha)
-        lerpTargetLock = true;
-        GetLocationOf(l);
-
-        if (targetTile.Building != null && stage != TutorialStage.BuildHarvesters && stage != TutorialStage.BuildExtenderInFog)
+        if (buildMenuCanvasGroup.alpha == 0)
         {
-            l = GetBackupTarget(l);
-        }
+            lerpTargetLock = true;
+            GetLocationOf(l);
 
-        buildingTarget.Location = targetTile;
-        buildingTarget.transform.position = l.transform.position;
-        targetRenderer.enabled = true;
+            if (targetTile.Building != null && stage != TutorialStage.BuildHarvesters && stage != TutorialStage.BuildExtenderInFog)
+            {
+                l = GetBackupTarget(l);
+            }
 
-        tileTargetLerpProgress = 0f;
-        tileTargetLerpForward = true;
+            buildingTarget.Location = targetTile;
+            buildingTarget.transform.position = l.transform.position;
+            targetRenderer.enabled = true;
 
-        arrowToTarget.On = true;
+            tileTargetLerpProgress = 0f;
+            tileTargetLerpForward = true;
 
-        ActivateMouse();
+            arrowToTarget.On = true;
+
+            ActivateMouse();
+        }        
     }
 
     //Get location of a locatable object
