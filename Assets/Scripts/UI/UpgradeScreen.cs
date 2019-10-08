@@ -66,7 +66,7 @@ public class UpgradeScreen : MonoBehaviour
                     foreach (Harvester harvester in ResourceController.Instance.Harvesters)
                     {
                         harvester.Upgrade(upgrade);
-						MouseController.Instance.upgradeMaterial(upgrade.upgradeNum, harvester.gameObject,false);
+						MouseController.Instance.UpgradeMaterial(upgrade.upgradeNum, harvester.gameObject,false);
                     }
 
                     switch (upgrade.pathNum)
@@ -104,7 +104,7 @@ public class UpgradeScreen : MonoBehaviour
                     foreach (ArcDefence mortar in ResourceController.Instance.Mortars)
                     {
                         mortar.Upgrade(upgrade);
-						MouseController.Instance.upgradeMaterial(upgrade.upgradeNum, mortar.gameObject,true);
+						MouseController.Instance.UpgradeMaterial(upgrade.upgradeNum, mortar.gameObject,true);
                     }
 
                     switch (upgrade.pathNum)
@@ -140,7 +140,7 @@ public class UpgradeScreen : MonoBehaviour
                     foreach (RepelFan pulseDefence in ResourceController.Instance.PulseDefences)
                     {
                         pulseDefence.Upgrade(upgrade);
-						MouseController.Instance.upgradeMaterial(upgrade.upgradeNum, pulseDefence.gameObject,false);
+						MouseController.Instance.UpgradeMaterial(upgrade.upgradeNum, pulseDefence.gameObject,false);
                     }
 
                     switch (upgrade.pathNum)

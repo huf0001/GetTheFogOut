@@ -15,6 +15,8 @@ public class MouseController : MonoBehaviour
     //[SerializeField] private WarningScript warningScript;
 
     [SerializeField] private TileData currentTile;
+    [SerializeField, ColorUsage(true, true)] private Color upgradeOneColour = new Color(0f, 174f, 191f);
+    [SerializeField, ColorUsage(true, true)] private Color upgradeTwoColour = new Color(107f, 0f, 191f);
 
     // Non-serialized fields
     private Hub hub = null;
@@ -387,35 +389,35 @@ public class MouseController : MonoBehaviour
         {
             if (WorldController.Instance.mortarUpgradeLevel)
             {
-                upgradeMaterial(WorldController.Instance.mortarUpgradeLevel.upgradeNum, b, true);
+                UpgradeMaterial(WorldController.Instance.mortarUpgradeLevel.upgradeNum, b, true);
             }
         }
         else if (building == BuildingType.FogRepeller)
         {
             if (WorldController.Instance.pulseDefUpgradeLevel)
             {
-                upgradeMaterial(WorldController.Instance.pulseDefUpgradeLevel.upgradeNum, b, false);
+                UpgradeMaterial(WorldController.Instance.pulseDefUpgradeLevel.upgradeNum, b, false);
             }
         }
         else if (building == BuildingType.Harvester)
         {
             if (WorldController.Instance.hvstUpgradeLevel)
             {
-                upgradeMaterial(WorldController.Instance.hvstUpgradeLevel.upgradeNum, b, false);
+                UpgradeMaterial(WorldController.Instance.hvstUpgradeLevel.upgradeNum, b, false);
             }
         }
     }
-    public void upgradeMaterial(int level, GameObject b, bool air)
+    public void UpgradeMaterial(int level, GameObject b, bool air)
     {
         Material mr = b.GetComponentInChildren<MeshRenderer>().material;
         Color lvl = mr.GetColor("_UpgradeColour");
         if (level == 1)
         {
-            lvl = new Color(0f, 174f, 191f);
+            lvl = upgradeOneColour;
         }
         else if (level == 2)
         {
-            lvl = new Color(107f, 0f, 191f);
+            lvl = upgradeTwoColour;
         }
         if (air) //b.GetComponent<Building>().BuildingType == BuildingType.AirCannon
         {
@@ -424,7 +426,6 @@ public class MouseController : MonoBehaviour
             {
                 Material k = m.material;
                 k.SetColor("_UpgradeColour", lvl);
-                k.SetFloat("_FresnelPower", 10f);
                 k.SetFloat("_Upgraded", 1);
             }
         }
@@ -433,7 +434,6 @@ public class MouseController : MonoBehaviour
             mr = b.GetComponentInChildren<MeshRenderer>().material;
             mr.SetColor("_UpgradeColour", lvl);
             mr.SetFloat("_Upgraded", 1);
-            mr.SetFloat("_FresnelPower", 10f);
         }
     }
 
