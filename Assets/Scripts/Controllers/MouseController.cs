@@ -78,7 +78,7 @@ public class MouseController : MonoBehaviour
     {
         if (UIController.instance.buildingInfo.Visible)
         {
-            if (kb.deleteKey.wasPressedThisFrame)
+            if (kb.deleteKey.wasPressedThisFrame && TutorialController.Instance.ButtonAllowed(ButtonType.Destroy))
             {
                 Building removeBuilding = ReturnCost(currentTile);
                 RemoveBulding(removeBuilding);
