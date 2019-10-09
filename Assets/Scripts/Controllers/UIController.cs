@@ -705,7 +705,8 @@ public class UIController : MonoBehaviour
                 break;
             case ObjectiveStage.Upgrades:
                 hudObjText.text = "<b>Upgrades</b>";
-                objWindowText.text = "<size=75%>Learn how to use the upgrades system.\n\n";
+                objWindowText.text = "<size=75%>Learn how to use the upgrades system.\n\n" + 
+                    "Click on the ship to get started.";
                 break;
             case ObjectiveStage.SurvivalStage:
                 hudObjText.text = "<b>Leave the Planet</b>";
