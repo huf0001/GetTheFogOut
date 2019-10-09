@@ -130,6 +130,7 @@ public class WorldController : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 0;
         Inputs = new NewInputs();
         Inputs.Enable();
         Inputs.InputMap.Pause.performed += ctx => SetPause(!pauseMenu.activeSelf);
