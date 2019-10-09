@@ -144,6 +144,9 @@ MonoBehaviour:
   frequency: 0.5
   amplitude: 1
   material: {fileID: 2100000, guid: 80261332021fc874cb44f54046fd792e, type: 2}
+  energyEffectGO: {fileID: 0}
+  energyEffectParticle: {fileID: 0}
+  isEffectOn: 0
 --- !u!1 &877303130950911262
 GameObject:
   m_ObjectHideFlags: 0
@@ -5237,6 +5240,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3188993291426899388}
+  - component: {fileID: 4801548952774084055}
   m_Layer: 0
   m_Name: Holo Pulse Defence
   m_TagString: Building
@@ -5260,6 +5264,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4801548952774084055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431417736350030835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb0e3f40e7e92d54a9ac0323aa518197, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rangeIndicator: {fileID: 6806288077379595016}
 --- !u!1 &6629987578879876510
 GameObject:
   m_ObjectHideFlags: 0
@@ -5324,7 +5341,7 @@ Transform:
   m_GameObject: {fileID: 6806288077379595016}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.08, z: 0}
-  m_LocalScale: {x: 7, y: 7, z: 7}
+  m_LocalScale: {x: 5, y: 7, z: 5}
   m_Children: []
   m_Father: {fileID: 3188993291426899388}
   m_RootOrder: 0

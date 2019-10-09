@@ -9,6 +9,8 @@ public abstract class Defence : Building
     [SerializeField] protected float rateOfFire;
     [SerializeField] protected bool placedInEditor ;
 
+    public GameObject rangeIndicator;
+
     public override bool IsOverclockOn
     {
         get { return isOverclockOn; }
