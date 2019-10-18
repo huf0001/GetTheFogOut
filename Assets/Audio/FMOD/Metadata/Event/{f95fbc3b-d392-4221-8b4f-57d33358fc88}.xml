@@ -90,7 +90,7 @@
 	<object class="MixerBusPanner" id="{d26b6cd8-19b4-4ba8-b5af-d4d74e9d824a}" />
 	<object class="SingleSound" id="{41053fb8-bfdf-4d8a-99be-190c6ef1e2c9}">
 		<property name="length">
-			<value>2.3500000000000005</value>
+			<value>1.1500000000000001</value>
 		</property>
 		<property name="timelockedOffset">
 			<value>0.30000000000000004</value>
@@ -118,6 +118,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{53e1a357-8fcb-45a4-8aa6-962751a7f845}">
 		<relationship name="effects">
+			<destination>{353f9385-ed95-4fc5-b337-69dc27cf8f9d}</destination>
 			<destination>{f6254bcc-edef-420d-8d0f-1c152be53fd4}</destination>
 			<destination>{7bc30616-b87c-4b96-9a76-3856b7425395}</destination>
 		</relationship>
@@ -130,6 +131,14 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{f1cfe5e9-9b2c-4d85-8f37-a61be17929d0}" />
+	<object class="FlangerEffect" id="{353f9385-ed95-4fc5-b337-69dc27cf8f9d}">
+		<property name="rate">
+			<value>1</value>
+		</property>
+		<property name="mix">
+			<value>100</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{f6254bcc-edef-420d-8d0f-1c152be53fd4}" />
 	<object class="PitchShifterEffect" id="{7bc30616-b87c-4b96-9a76-3856b7425395}">
 		<property name="pitch">

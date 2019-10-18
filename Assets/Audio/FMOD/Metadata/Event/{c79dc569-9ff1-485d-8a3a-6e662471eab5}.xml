@@ -89,9 +89,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{b12b2eed-abaa-42e9-997e-0b21336ee152}" />
 	<object class="SingleSound" id="{94573ec3-084f-4491-a6ea-32cf81c49bde}">
-		<property name="length">
-			<value>1.9941723356009067</value>
-		</property>
 		<property name="timelockedOffset">
 			<value>0.15000000000000002</value>
 		</property>
@@ -118,6 +115,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{2cf117ae-ebc0-444d-87f3-73f64ac7378f}">
 		<relationship name="effects">
+			<destination>{ed6bac68-aa0b-4d07-8db6-8df799700580}</destination>
 			<destination>{b1df1255-2d1a-4a12-9fc4-7f523fe29aa2}</destination>
 			<destination>{666c6ff9-9a67-4f26-9f6f-97aed69113ad}</destination>
 		</relationship>
@@ -130,6 +128,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{8446a523-8956-481d-bcc8-01cc9213f8a1}" />
+	<object class="FlangerEffect" id="{ed6bac68-aa0b-4d07-8db6-8df799700580}">
+		<property name="rate">
+			<value>0.719999969</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{b1df1255-2d1a-4a12-9fc4-7f523fe29aa2}" />
 	<object class="SpatialiserEffect" id="{666c6ff9-9a67-4f26-9f6f-97aed69113ad}" />
 	<object class="MixerBusFader" id="{1f1ded1a-5f14-4e3b-a927-7034b1d91bd0}" />
