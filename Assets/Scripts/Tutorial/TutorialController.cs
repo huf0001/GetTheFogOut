@@ -7,6 +7,7 @@ using Cinemachine;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -95,6 +96,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraInput aKey;
     [SerializeField] private CameraInput sKey;
     [SerializeField] private CameraInput dKey;
+    [SerializeField] private CameraInput rmb;
     [SerializeField] private CameraInput zoomIn;
     [SerializeField] private CameraInput zoomOut;
     [SerializeField] private CanvasGroup buildMenuCanvasGroup;
@@ -424,6 +426,7 @@ public class TutorialController : DialogueBoxController
                 aKey.LerpIn();
                 sKey.LerpIn();
                 dKey.LerpIn();
+                rmb.LerpIn();
                 break;
             case 2:
                 GetCameraInputs();
@@ -434,6 +437,35 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
+                    if (!rmb.LerpOutCalled)
+                    {
+                        rmb.LerpOut();
+                    }
+
+                    GoToSubStage(4);
+                }
+                else if (rmb.Finished)
+                {
+                    if (!wKey.LerpOutCalled)
+                    {
+                        wKey.LerpOut();
+                    }
+
+                    if (!aKey.LerpOutCalled)
+                    {
+                        aKey.LerpOut();
+                    }
+
+                    if (!sKey.LerpOutCalled)
+                    {
+                        sKey.LerpOut();
+                    }
+
+                    if (!dKey.LerpOutCalled)
+                    {
+                        dKey.LerpOut();
+                    }
+
                     GoToSubStage(4);
                 }
 
@@ -443,6 +475,35 @@ public class TutorialController : DialogueBoxController
 
                 if (wKey.Finished && aKey.Finished && sKey.Finished && dKey.Finished)
                 {
+                    if (!rmb.LerpOutCalled)
+                    {
+                        rmb.LerpOut();
+                    }
+
+                    IncrementSubStage();
+                }
+                else if (rmb.Finished)
+                {
+                    if (!wKey.LerpOutCalled)
+                    {
+                        wKey.LerpOut();
+                    }
+
+                    if (!aKey.LerpOutCalled)
+                    {
+                        aKey.LerpOut();
+                    }
+
+                    if (!sKey.LerpOutCalled)
+                    {
+                        sKey.LerpOut();
+                    }
+
+                    if (!dKey.LerpOutCalled)
+                    {
+                        dKey.LerpOut();
+                    }
+
                     IncrementSubStage();
                 }
 
@@ -1699,144 +1760,6 @@ public class TutorialController : DialogueBoxController
         }
     }
 
-    ////Prompts player to collect minerals for upgrading their ship
-    //private void CollectMineralsForUpgrades()
-    //{
-    //    switch (subStage)
-    //    {
-    //        case 1:
-    //            if (ResourceController.Instance.StoredMineral >= mineralsForUpgradesGoal)
-    //            {
-    //                stage = TutorialStage.Upgrades;
-    //                Upgrades();
-    //            }
-    //            else
-    //            {
-    //                SendDialogue("collect minerals for upgrades", 1);
-    //                UIController.instance.UpdateObjectiveText(stage);
-
-    //                if (!objWindowVisible)
-    //                {
-    //                    ToggleObjWindow();
-    //                }
-    //            }
-
-    //            break;
-    //        case 2:
-    //            if (dialogueRead)
-    //            {
-    //                DismissDialogue();
-    //            }
-    //            else if (ResourceController.Instance.StoredMineral >= mineralsForUpgradesGoal)
-    //            {
-    //                GoToSubStage(4);
-    //            }
-
-    //            break;
-    //        case 3:
-    //            if (ResourceController.Instance.StoredMineral >= mineralsForUpgradesGoal)
-    //            {
-    //                IncrementSubStage();
-    //            }
-
-    //            break;
-    //        case 4:
-    //            ResetSubStage();
-
-    //            stage = TutorialStage.Upgrades;
-
-    //            tutProgressSlider.value++;
-    //            break;
-    //        default:
-    //            SendDialogue("error", 1);
-    //            Debug.Log("inaccurate sub stage");
-    //            break;
-    //    }
-    //}
-
-    ////Player learns about and uses upgrades
-    //private void Upgrades()
-    //{
-    //    switch (subStage)
-    //    {
-    //        case 1:
-    //            SendDialogue("upgrades click ship", 1);
-    //            UIController.instance.UpdateObjectiveText(stage);
-
-    //            if (!objWindowVisible)
-    //            {
-    //                ToggleObjWindow();
-    //            }
-
-    //            break;
-    //        case 2:
-    //            if (dialogueRead)
-    //            {
-    //                DismissDialogue();
-    //            }
-    //            else if (upgradesButton.activeSelf)
-    //            {
-    //                GoToSubStage(4);
-    //            }
-
-    //            break;
-    //        case 3:
-    //            if (upgradesButton.activeSelf)
-    //            {
-    //                IncrementSubStage();
-    //            }
-
-    //            break;
-    //        case 4:
-    //            SendDialogue("upgrades click icon", 0);
-    //            break;
-    //        case 5:
-    //            if (dialogueRead)
-    //            {
-    //                DismissDialogue();
-    //            }
-    //            else if (upgradesCanvas.activeSelf)
-    //            {
-    //                GoToSubStage(7);
-    //            }
-
-    //            break;
-    //        case 6:
-    //            if (upgradesCanvas.activeSelf)
-    //            {
-    //                GoToSubStage(7);
-    //            }
-
-    //            break;
-    //        case 7:
-    //            SendDialogue("upgrades use upgrade", 0);
-    //            break;
-    //        case 8:
-    //            if (WorldController.Instance.UpgradeUsed)
-    //            {
-    //                tutProgressSlider.value++;
-    //                StartCoroutine(CompleteTutorialObjective("You finished the tutorial!"));
-    //                IncrementSubStage();
-    //            }
-
-    //            break;
-    //        case 9:
-    //            break;
-    //        case 10:
-    //            tutProgressSlider.gameObject.SetActive(false);
-    //            ResetSubStage();
-    //            stage = TutorialStage.Finished;
-    //            GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageTwoMusic();
-    //            SendDialogue("finished", 1);
-    //            ObjectiveController.Instance.IncrementStage();
-    //            break;
-    //        default:
-    //            SendDialogue("error", 1);
-    //            Debug.Log("inaccurate sub stage");
-    //            break;
-    //    }
-    //}
-
     //Tutorial Utility Methods - "Error" Stages------------------------------------------------------------------------------------------------------
 
     //Reprimands the player if they try and build something in the fog after they find out it's dangerous.
@@ -1994,24 +1917,25 @@ public class TutorialController : DialogueBoxController
         return false;
     }
 
-    //Tutorial Utility Methods - Camera--------------------------------------------------------------------------------------------------------------
+    //Tutorial Utility Methods - Input---------------------------------------------------------------------------------------------------------------
 
-    //Checks WASD inputs for camera movement part of the tutorial
+    //Checks inputs for camera movement part of the tutorial
     private void GetCameraInputs()
     {
         if (subStage < 4)
         {
-            GetCameraInput("Vertical", sKey, wKey);
-            GetCameraInput("Horizontal", aKey, dKey);
+            GetPositiveNegativeInput("Vertical", sKey, wKey);
+            GetPositiveNegativeInput("Horizontal", aKey, dKey);
+            GetRMBInput();
         }
         else
         {
-            GetCameraInput("Zoom", zoomOut, zoomIn);
+            GetPositiveNegativeInput("Zoom", zoomOut, zoomIn);
         }
     }
 
-    //Checks a specific camera input's input
-    private void GetCameraInput(string input, CameraInput negativeInput, CameraInput positiveInput)
+    //Checks a specific WASD / Scroll input's input
+    private void GetPositiveNegativeInput(string input, CameraInput negativeInput, CameraInput positiveInput)
     {
         float inputValue;
 
@@ -2038,6 +1962,19 @@ public class TutorialController : DialogueBoxController
         else if (inputValue < 0 && !negativeInput.LerpOutCalled)
         {
             negativeInput.LerpOut();
+        }
+    }
+
+    //Checks RMB input
+    private void GetRMBInput()
+    {
+        Vector3 cameraMovement = WorldController.Instance.Inputs.InputMap.CameraDrag.ReadValue<Vector2>();
+
+        if ((Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed) 
+            && (cameraMovement.x != 0 || cameraMovement.y != 0)
+            && !rmb.LerpOutCalled)
+        {
+            rmb.LerpOut();
         }
     }
 

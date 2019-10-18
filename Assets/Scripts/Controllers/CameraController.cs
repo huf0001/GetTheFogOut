@@ -144,7 +144,7 @@ public class CameraController : MonoBehaviour
                 float h = panSpeed(zoom.m_Width) * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
                 float v = panSpeed(zoom.m_Width) * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;
                 transform.Translate(h, 0, v, transform);
-
+                
                 hasChanged = true;
             }
 
