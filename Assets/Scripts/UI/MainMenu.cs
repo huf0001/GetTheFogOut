@@ -19,7 +19,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI loadingMessageBox;
     [SerializeField] private string[] loadingMessages;
     [Header("Difficulty Sub-menu")]
-    [SerializeField] private CanvasGroup difficultySubmenu;
     [SerializeField, TextArea] private string[] difficultyDescriptions;
     [SerializeField] private TextMeshProUGUI difficultyDescText;
 
@@ -50,12 +49,12 @@ public class MainMenu : MonoBehaviour
         skipTutorial = !tutorialOn;
         if (!skipTutorial)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", transform.position);
             tutorialToggleText.text = "Tutorial       On : <color=#6666>Off</color>";
         }
         else
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", GetComponent<Transform>().position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", transform.position);
             tutorialToggleText.text = "Tutorial       <color=#6666>On</color> : Off";
         }
     }
@@ -64,16 +63,16 @@ public class MainMenu : MonoBehaviour
     {
         difficulty = diff;
         difficultyDescText.text = difficultyDescriptions[difficulty];
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", transform.position);
     }
 
-    public void OpenMenu()
+    public void OpenMenu(CanvasGroup submenu)
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", GetComponent<Transform>().position);
-        StartCoroutine(OpenDifficultyMenu());
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Select", transform.position);
+        StartCoroutine(OpenDifficultyMenu(submenu));
     }
 
-    private IEnumerator OpenDifficultyMenu()
+    private IEnumerator OpenDifficultyMenu(CanvasGroup submenu)
     {
         mainCanvasGroup.blocksRaycasts = false;
         yield return new WaitForSeconds(0.1f);
@@ -82,19 +81,19 @@ public class MainMenu : MonoBehaviour
             .OnComplete(
             delegate
             {
-                difficultySubmenu.DOFade(1, 0.5f);
-                difficultySubmenu.interactable = true;
-                difficultySubmenu.blocksRaycasts = true;
+                submenu.DOFade(1, 0.5f);
+                submenu.interactable = true;
+                submenu.blocksRaycasts = true;
             });
     }
 
-    public void CloseMenu()
+    public void CloseMenu(CanvasGroup submenu)
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/2D-UI_Back", GetComponent<Transform>().position);
-        StartCoroutine(CloseDifficultyMenu());
+        StartCoroutine(CloseDifficultyMenu(submenu));
     }
 
-    private IEnumerator CloseDifficultyMenu()
+    private IEnumerator CloseDifficultyMenu(CanvasGroup submenu)
     {
         switch (difficulty)
         {
@@ -111,10 +110,10 @@ public class MainMenu : MonoBehaviour
                 difficultyButtonText.text = "Difficulty: Very Hard";
                 break;
         }
-        difficultySubmenu.blocksRaycasts = false;
+        submenu.blocksRaycasts = false;
         yield return new WaitForSeconds(0.1f);
-        difficultySubmenu.interactable = false;
-        difficultySubmenu.DOFade(0, 0.5f)
+        submenu.interactable = false;
+        submenu.DOFade(0, 0.5f)
             .OnComplete(
             delegate
             {
