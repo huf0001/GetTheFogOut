@@ -110,7 +110,11 @@ public class UIController : MonoBehaviour
         index = 0;
         temp = 2;
 
-        hud.alphaHitTestMinimumThreshold = 0.5f;
+        //objBG.alphaHitTestMinimumThreshold = 0.1f;
+        //objTitleBG.alphaHitTestMinimumThreshold = 0.1f;
+        //objArrowBG.alphaHitTestMinimumThreshold = 0.1f;
+        hud.alphaHitTestMinimumThreshold = 0.35f;
+
         launchButtonImage = objectiveButton.image;
         arrowInitialPosition = proceedArrows.GetComponent<RectTransform>().anchoredPosition;
         abilityImageParent = abilityImage.rectTransform.parent.GetComponent<RectTransform>();
@@ -328,7 +332,7 @@ public class UIController : MonoBehaviour
     {
         if (!buttonClosed && !closingButton)
         //if (true)
-            {
+        {
             closingButton = true;
             if (DOTween.IsTweening("ObjectiveButtonOpen")) DOTween.Kill("ObjectiveButtonOpen");
             else DOTween.Kill(launchButtonImage);
@@ -427,7 +431,7 @@ public class UIController : MonoBehaviour
             Debug.Log("Waiting for unlock to finish before unlocking new ability");
         }
     }
-        
+
 
     public void FinishAbilityUnlock()
     {
@@ -705,7 +709,7 @@ public class UIController : MonoBehaviour
                 break;
             case ObjectiveStage.Upgrades:
                 hudObjText.text = "<b>Upgrades</b>";
-                objWindowText.text = "<size=75%>Learn how to use the upgrades system.\n\n" + 
+                objWindowText.text = "<size=75%>Learn how to use the upgrades system.\n\n" +
                     "Click on the ship to get started.";
                 break;
             case ObjectiveStage.SurvivalStage:
