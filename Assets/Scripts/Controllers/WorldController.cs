@@ -55,9 +55,7 @@ public class WorldController : MonoBehaviour
     private FMOD.Studio.Bus musicBus;
     private float musicVolume = 1f;
 
-    public Upgrade hvstUpgradeLevel;
-    public Upgrade mortarUpgradeLevel;
-    public Upgrade pulseDefUpgradeLevel;
+    public Upgrade hvstUpgradeLevel, mortarUpgradeLevel, pulseDefUpgradeLevel;
 
     //Non-Serialized Fields
     private GameObject temp, TowerSpawn, TowerToSpawn, tiletest, tmp;
@@ -69,8 +67,6 @@ public class WorldController : MonoBehaviour
     //Other Controllers
     private ResourceController resourceController;
     private UIController uiController;
-
-    //private List<TileData> ThrusterList = new List<TileData>();
 
     private List<TileData> activeTiles = new List<TileData>();
     public List<TileData> ActiveTiles { get => activeTiles; }
@@ -440,11 +436,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// To replace EventSystem.current.IsPointerOverGameObject() since it is not compatible with the new Input System
-    /// </summary>
-    /// <returns>Returns true if pointer over UI object</returns>
-    public bool IsPointerOverGameObject()
+    public bool IsPointerOverGameObject() // Replaces EventSystem.current.IsPointerOverGameObject(), not compatible with new Input System. Returns true if pointer over UI object
     {
         PointerEventData pointer = new PointerEventData(EventSystem.current);
         pointer.position = Mouse.current.position.ReadValue();
@@ -513,14 +505,14 @@ public class WorldController : MonoBehaviour
         GameWinUpdate();
     }
 
-    private void GameWinUpdate()
+    private void GameWinUpdate() // Display win UI
     {
-        uiController.EndGameDisplay("You win!"); //Display win UI
+        uiController.EndGameDisplay("You win!");
     }
 
-    private void GameOverUpdate()
+    private void GameOverUpdate() // Display lose UI     
     {
-        uiController.EndGameDisplay("You lose!"); //Display lose UI     
+        uiController.EndGameDisplay("You lose!");
     }
 
     private void RenderTower()
