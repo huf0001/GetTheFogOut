@@ -100,6 +100,10 @@ public class FogUnit : Entity
 
                 targetHealth = base.Health;
             }
+            else if (value > 0)
+            {
+                Debug.Log("Fog unit taking damage; can't set fog unit health.");
+            }
         }
     }
     

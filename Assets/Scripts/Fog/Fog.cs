@@ -740,12 +740,15 @@ public class Fog : MonoBehaviour
         float framesPerFillUpdate;
         int unitsPerFrame;
         float timeOfLastFillUpdate; //If done faster than the interval, wait the difference in time before resuming.
+        float timeOfLastFill;
+        int alertCount = 0;
 
         while (fogUnitsInPlay.Count > 0)
         {
             timeOfLastFillUpdate = Time.time;
             framesPerFillUpdate = fogFillInterval / Time.deltaTime;
             unitsPerFrame = (int)(fogUnitsInPlay.Count / framesPerFillUpdate);
+            timeOfLastFill = 0;
 
             if (!fogFrozen)
             {
@@ -805,17 +808,25 @@ public class Fog : MonoBehaviour
                         }                        
                     }
 
-                    foreach (FogUnit f in toRenderOpacity)
+                    if (toRenderOpacity.Count > 0)
                     {
-                        f.RenderOpacity();
-                    }
+                        timeOfLastFill = Time.time;
+                        alertCount++;
+
+                        foreach (FogUnit f in toRenderOpacity)
+                        {
+                            f.RenderOpacity();
+                        }
+                    }                   
 
                     yield return null;
                 }
             }
 
             float duration = Time.time - timeOfLastFillUpdate;
-            yield return new WaitForSeconds(Mathf.Max(0, fogFillInterval - duration));       
+            float fogFillDelayToNextCycle = Mathf.Max(0, fogFillInterval - duration);
+            Debug.Log($"FogUnit fill cycle finished. Alert no.: {alertCount}, Time: {(int)Time.time}, Delay until next cycle: {fogFillDelayToNextCycle} seconds, Time since last fill: {Time.time - timeOfLastFill}");
+            yield return new WaitForSeconds(fogFillDelayToNextCycle);       
         }
     }
 
