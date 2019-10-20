@@ -166,12 +166,23 @@ public class Fog : MonoBehaviour
 
         set
         {
-            if (intensity != value && value >= 1 && value <= 3)
+            if (intensity != value && value >= 0 && value <= 3)
             {
                 intensity = value;
 
                 switch (intensity)
                 {
+                    case 0:
+                        fogGrowth = easyMultipliers.earlyGameGrowthMultiplier * 0.5f;
+                        fogSphereMaxHealth = earlyGameMaxFogSphereHealth;
+                        fogSphereMaxSizeScale = earlyGameMaxFogSphereSize;
+
+                        if (angry)
+                        {
+                            ToggleAnger();
+                        }
+
+                        break;
                     case 1:
                         fogGrowth = earlyGameFogGrowth;
                         fogSphereMaxHealth = earlyGameMaxFogSphereHealth;
@@ -209,11 +220,11 @@ public class Fog : MonoBehaviour
             }
             else if (value < 1)
             {
-                Debug.Log("Fog.Instance.Intensity has to be >= 1 (and <= 3). Try again, you cabbage!");
+                Debug.Log("Fog.Instance.Intensity has to be >= 0 (and <= 3). Try again, you cabbage!");
             }
             else if (value > 3)
             {
-                Debug.Log("Fog.Instance.Intensity has to be <= 3 (and >= 1). Try again, you cabbage!");
+                Debug.Log("Fog.Instance.Intensity has to be <= 3 (and >= 0). Try again, you cabbage!");
             }
         }
     }
@@ -229,6 +240,7 @@ public class Fog : MonoBehaviour
         }
 
         Instance = this;
+
         if (GlobalVars.LoadedFromMenu)
         {
             difficulty = (Difficulty)GlobalVars.Difficulty;
@@ -631,12 +643,6 @@ public class Fog : MonoBehaviour
     public void BeginUpdatingDamage(float delay)
     {
         StartCoroutine(UpdateDamageToFogUnits(delay));
-    }
-
-    //Wakes up the fog, turning on its filling and expansion, and fog spheres
-    public void WakeUpFog()
-    {
-        WakeUpFog(0);
     }
 
     //Wakes up the fog, turning on its filling and expansion, and fog spheres

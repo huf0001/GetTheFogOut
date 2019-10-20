@@ -102,7 +102,7 @@ public class FogUnit : Entity
             }
             else if (value > 0)
             {
-                Debug.Log("Fog unit taking damage; can't set fog unit health.");
+                Debug.Log($"{name} taking damage; can't set {name} health.");
             }
         }
     }
