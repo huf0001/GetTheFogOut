@@ -17577,8 +17577,7 @@ MonoBehaviour:
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'I have scanned this desolate planet and it contains a resource called
-        {MINERALS}. '
+      dialogue: Scattered around the planet is a resource called {MINERALS}.
     - aiExpression: 2
       dialogue: These will be key to keeping us alive. Your ship comes equipped with
         a blueprint for a {HARVESTER} that you can use to collect them. I will show
@@ -17590,7 +17589,7 @@ MonoBehaviour:
   - key: build more harvesters
     expressionDialoguePairs:
     - aiExpression: 4
-      dialogue: 'Perfect! Now the {HARVESTER} will be collecting minerals for storage. '
+      dialogue: 'Perfect! Now the {HARVESTER} will be collecting {MINERALS} for storage. '
     - aiExpression: 2
       dialogue: 'Once the {HARVESTER} has exhausted the {MINERAL} it''s on, it will
         show an &X& icon above it. '
@@ -19883,7 +19882,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6195752891288055357
 RectTransform:
   m_ObjectHideFlags: 0
