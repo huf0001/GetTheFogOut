@@ -1348,6 +1348,10 @@ public class TutorialController : DialogueBoxController
                     ToggleObjWindow();
                 }
 
+                //TODO: flip a coin and select NW or SSW
+                //TODO: by default, programmatically select a position for the fog extender landmark that is towards the selected direction -> closest to a matching landmark?
+                //Wait . . . a set of landmarks for each direction, and only reselect when that tile is occupied, keeping the new selection as close to the original as possible?
+                //TODO: once fog extender is sorted for this, also need to do mortar and pulse defence to keep defences stuff consistent and not give the player whiplash
                 if (fogExtenderLandmark.Location.PowerSource == null)
                 {
                     //Debug.Log("Case 1: landmark not powered. Finding new tile");
