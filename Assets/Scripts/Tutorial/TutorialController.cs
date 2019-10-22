@@ -1441,6 +1441,8 @@ public class TutorialController : DialogueBoxController
                 {
                     if (e.TakingDamage)
                     {
+                        Fog.Instance.Intensity = 0;
+                        Fog.Instance.WakeUpFog(0);
                         IncrementSubStage();
                         return;
                     }
@@ -1730,7 +1732,8 @@ public class TutorialController : DialogueBoxController
                 {
                     if (f.TakingDamage)
                     {
-                        Fog.Instance.WakeUpFog();
+                        //Fog.Instance.WakeUpFog();
+                        Fog.Instance.Intensity = 1;
                         IncrementSubStage();
                         break;
                     }
