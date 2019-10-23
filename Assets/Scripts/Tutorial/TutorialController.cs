@@ -2311,17 +2311,17 @@ public class TutorialController : DialogueBoxController
         Landmark landmark = null;
 
         //Check default NW and S landmark tiles
-        if (nwTile.PowerSource != null && nwTile.Building == null && !nwTile.buildingChecks.obstacle && (sTile.PowerSource == null || sTile.Building != null || sTile.buildingChecks.obstacle))
+        if (nwTile.PowerSource != null && nwTile.Building == null && !nwTile.buildingChecks.obstacle && !nwTile.buildingChecks.collectable && (sTile.PowerSource == null || sTile.Building != null || sTile.buildingChecks.obstacle || sTile.buildingChecks.collectable))
         {
             landmark = fogExtenderNWLandmark;
             tile = landmark.Location;
         }
-        else if (sTile.PowerSource != null && sTile.Building == null && !sTile.buildingChecks.obstacle && (nwTile.PowerSource == null || nwTile.Building != null || nwTile.buildingChecks.obstacle))
+        else if (sTile.PowerSource != null && sTile.Building == null && !sTile.buildingChecks.obstacle && !sTile.buildingChecks.collectable && (nwTile.PowerSource == null || nwTile.Building != null || nwTile.buildingChecks.obstacle || nwTile.buildingChecks.collectable))
         {
             landmark = fogExtenderSLandmark;
             tile = landmark.Location;
         }
-        else if (nwTile.PowerSource != null && sTile.PowerSource != null && nwTile.Building == null && sTile.Building == null && !nwTile.buildingChecks.obstacle && !sTile.buildingChecks.obstacle)
+        else if (nwTile.PowerSource != null && sTile.PowerSource != null && nwTile.Building == null && sTile.Building == null && !nwTile.buildingChecks.obstacle && !sTile.buildingChecks.obstacle && !nwTile.buildingChecks.collectable && !sTile.buildingChecks.collectable)
         {
             if (Random.Range(0, 2) == 0)    //Random.Range(int, int):int --> the first parameter is included, the second is excluded. A <= result < B. Therefore to get [0, 1], need to specify as [0, 2)
             {
@@ -2344,7 +2344,7 @@ public class TutorialController : DialogueBoxController
 
             foreach (TileData t in WorldController.Instance.ActiveTiles)
             {
-                if (t.FogUnitActive && t.Building == null && !t.buildingChecks.obstacle && (t.Z > felNorthWestInitialXMin || (t.X < felSouthXMax && t.Z < felSouthZMax)))
+                if (t.FogUnitActive && t.Building == null && !t.buildingChecks.obstacle && !t.buildingChecks.collectable && (t.Z > felNorthWestInitialXMin || (t.X < felSouthXMax && t.Z < felSouthZMax)))
                 {
                     poweredFogTiles.Add(t);
                 }
@@ -2393,7 +2393,7 @@ public class TutorialController : DialogueBoxController
                 //If found none, checks for tile that will get the player the closest to default NW and S landmark tiles
                 foreach (TileData t in WorldController.Instance.ActiveTiles)
                 {
-                    if (t.Building == null && !t.buildingChecks.obstacle && (t.Z > felNorthWestBackupXMin || (t.X < felSouthXMax && t.Z < felSouthZMax)))
+                    if (t.Building == null && !t.buildingChecks.obstacle && !t.buildingChecks.collectable && (t.Z > felNorthWestBackupXMin || (t.X < felSouthXMax && t.Z < felSouthZMax)))
                     {
                         //Reset per-iteration variables
                         newLandmark = null;
