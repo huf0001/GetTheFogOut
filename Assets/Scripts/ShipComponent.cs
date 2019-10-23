@@ -68,10 +68,12 @@ public class ShipComponent : Entity, IPointerEnterHandler, IPointerExitHandler
         {
             WorldController.Instance.GetShipComponent(id).Collected = true;
             UIController.instance.buildingInfo.HideInfo();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_1", transform.position);
         }
         else if(location.FogUnit.Health <= 50)
         {
             WorldController.Instance.GetShipComponent(id).Collected = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/3D-Sting_1", transform.position);
         }
     }
 }

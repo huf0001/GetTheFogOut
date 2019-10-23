@@ -447,7 +447,7 @@ public class Fog : MonoBehaviour
         }
         else
         {
-            Debug.Log($"No tile exists at ({x},{z}). Cannot create a fog unit there.");
+            //Debug.Log($"No tile exists at ({x},{z}). Cannot create a fog unit there.");
         }
 
         fogUnits[x, z] = f;
@@ -492,7 +492,7 @@ public class Fog : MonoBehaviour
         }
         else if (f.ActiveOnTile)
         {
-            Debug.Log($"Error: Cannot spawn Fog.fogUnits[{t.X}, {t.Z}]; it is already in play.");
+            //Debug.Log($"Error: Cannot spawn Fog.fogUnits[{t.X}, {t.Z}]; it is already in play.");
         }
     }
 
@@ -831,7 +831,7 @@ public class Fog : MonoBehaviour
 
             float duration = Time.time - timeOfLastFillUpdate;
             float fogFillDelayToNextCycle = Mathf.Max(0, fogFillInterval - duration);
-            Debug.Log($"FogUnit fill cycle finished. Alert no.: {alertCount}, Time: {(int)Time.time}, Delay until next cycle: {fogFillDelayToNextCycle} seconds, Time since last fill: {Time.time - timeOfLastFill}");
+            //Debug.Log($"FogUnit fill cycle finished. Alert no.: {alertCount}, Time: {(int)Time.time}, Delay until next cycle: {fogFillDelayToNextCycle} seconds, Time since last fill: {Time.time - timeOfLastFill}");
             yield return new WaitForSeconds(fogFillDelayToNextCycle);       
         }
     }
@@ -889,7 +889,7 @@ public class Fog : MonoBehaviour
 
                 if (fogUnitsInPlay.Count > xCount * zCount)
                 {
-                    Debug.Log("More fog units than board tiles. There must be some overlapping.");
+                    //Debug.Log("More fog units than board tiles. There must be some overlapping.");
                 }
 
                 yield return null;
