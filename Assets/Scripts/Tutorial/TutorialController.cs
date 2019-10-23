@@ -2306,138 +2306,57 @@ public class TutorialController : DialogueBoxController
         //Whole-loop variables
         TileData tile = null;
         Landmark landmark = null;
-        float tileToSelectedLandmark = 9999;
-
-        //Per-iteration variables
-        Landmark newLandmark = null;
-        float newTileToLandmark = 9999;
 
         //Check default NW and S landmark tiles
-        if (nwTile.PowerSource != null && nwTile.Building == null && (sTile.PowerSource == null || sTile.Building != null))
+        if (nwTile.PowerSource != null && nwTile.Building == null && !nwTile.buildingChecks.obstacle && (sTile.PowerSource == null || sTile.Building != null || sTile.buildingChecks.obstacle))
         {
-            fogExtenderSelectedLandmark = fogExtenderNWLandmark;
-            //mortarSelectedLandmark = mortarNWLandmark;
-            //pulseDefenceSelectedLandmark = pulseDefenceNWLandmark;
-            //return;
+            landmark = fogExtenderNWLandmark;
+            tile = landmark.Location;
         }
-        else if (sTile.PowerSource != null && sTile.Building == null && (nwTile.PowerSource == null || nwTile.Building != null))
+        else if (sTile.PowerSource != null && sTile.Building == null && !sTile.buildingChecks.obstacle && (nwTile.PowerSource == null || nwTile.Building != null || nwTile.buildingChecks.obstacle))
         {
-            fogExtenderSelectedLandmark = fogExtenderSLandmark;
-            //mortarSelectedLandmark = mortarSLandmark;
-            //pulseDefenceSelectedLandmark = pulseDefenceSLandmark;
-            //return;
+            landmark = fogExtenderSLandmark;
+            tile = landmark.Location;
         }
-        else if (nwTile.PowerSource != null && sTile.PowerSource != null && nwTile.Building == null && sTile.Building == null)
+        else if (nwTile.PowerSource != null && sTile.PowerSource != null && nwTile.Building == null && sTile.Building == null && !nwTile.buildingChecks.obstacle && !sTile.buildingChecks.obstacle)
         {
-            if (Random.Range(0, 1) == 0)
+            if (Random.Range(0, 2) == 0)    //Random.Range(int, int):int --> the first parameter is included, the second is excluded. A <= result < B. Therefore to get [0, 1], need to specify as [0, 2)
             {
-                fogExtenderSelectedLandmark = fogExtenderNWLandmark;
-                //mortarSelectedLandmark = mortarNWLandmark;
-                //pulseDefenceSelectedLandmark = pulseDefenceNWLandmark;
+                landmark = fogExtenderNWLandmark;
             }
             else
             {
-                fogExtenderSelectedLandmark = fogExtenderSLandmark;
-                //mortarSelectedLandmark = mortarSLandmark;
-                //pulseDefenceSelectedLandmark = pulseDefenceSLandmark;
+                landmark = fogExtenderSLandmark;
             }
 
-            //return;
+            tile = landmark.Location;
         }
-
-        //If invalid, checks for closest valid tiles
-        List<TileData> poweredFogTiles = new List<TileData>();
-
-        foreach (TileData t in WorldController.Instance.ActiveTiles)
+        else
         {
-            if (t.FogUnitActive && t.Building == null && (t.Z > felNorthWestInitialXMin || (t.X < felSouthXMax && t.Z < felSouthZMax)))
-            {
-                //Debug.Log("Found powered fog tile in acceptable area");
-                poweredFogTiles.Add(t);
-            }
-        }
+            //If invalid, checks for closest valid tiles
+            List<TileData> poweredFogTiles = new List<TileData>();
+            float tileToSelectedLandmark = 9999;
+            Landmark newLandmark = null;
+            float newTileToLandmark = 9999;
 
-        //If found one
-        if (poweredFogTiles.Count == 1)
-        {
-            TileData temp = poweredFogTiles[0];
-            fogExtenderSelectedLandmark = Vector2.Distance(temp.Position, nwTile.Position) < Vector2.Distance(temp.Position, sTile.Position) ? fogExtenderNWLandmark : fogExtenderSLandmark;
-            fogExtenderSelectedLandmark.Location = temp;
-            fogExtenderSelectedLandmark.transform.position = temp.Position;
-
-            //if (fogExtenderSelectedLandmark = fogExtenderNWLandmark)
-            //{
-            //    mortarSelectedLandmark = mortarNWLandmark;
-            //    pulseDefenceSelectedLandmark = pulseDefenceNWLandmark;
-            //}
-            //else
-            //{
-            //    mortarSelectedLandmark = mortarSLandmark;
-            //    pulseDefenceSelectedLandmark = pulseDefenceSLandmark;
-            //}
-
-            //return;
-        }
-        //If found more than one
-        else if (poweredFogTiles.Count > 1)
-        {
-            foreach (TileData t in poweredFogTiles)
-            {
-                //Reset per-iteration variables
-                newLandmark = null;
-                newTileToLandmark = 9999;
-
-                if (t.X > felNorthWestInitialXMin)
-                {
-                    newLandmark = fogExtenderNWLandmark;
-                    newTileToLandmark = Vector3.Distance(t.Position, nwTile.Position);
-                }
-                else if (t.X < felSouthXMax && t.X < felSouthZMax)
-                {
-                    newLandmark = fogExtenderSLandmark;
-                    newTileToLandmark = Vector3.Distance(t.Position, sTile.Position);
-                }
-
-                if (newTileToLandmark < tileToSelectedLandmark)
-                {
-                    landmark = newLandmark;
-                    tile = t;
-                }
-            }
-
-            //Precautionary check
-            if (tile != null)
-            {
-                fogExtenderSelectedLandmark = landmark;
-                fogExtenderSelectedLandmark.Location = tile;
-                fogExtenderSelectedLandmark.transform.position = tile.Position;
-
-                //if (fogExtenderSelectedLandmark = fogExtenderNWLandmark)
-                //{
-                //    mortarSelectedLandmark = mortarNWLandmark;
-                //    pulseDefenceSelectedLandmark = pulseDefenceNWLandmark;
-                //}
-                //else
-                //{
-                //    mortarSelectedLandmark = mortarSLandmark;
-                //    pulseDefenceSelectedLandmark = pulseDefenceSLandmark;
-                //}
-
-                //return;
-            }
-        }
-
-        if (fogExtenderSelectedLandmark == null)
-        {
-            //Reset whole-loop variables
-            tile = null;
-            landmark = null;
-            tileToSelectedLandmark = 9999;
-
-            //If found none, checks for tile that will get the player the closest to default NW and S landmark tiles
             foreach (TileData t in WorldController.Instance.ActiveTiles)
             {
-                if (t.Building == null && (t.Z > felNorthWestBackupXMin || (t.X < felSouthXMax && t.Z < felSouthZMax)))
+                if (t.FogUnitActive && t.Building == null && !t.buildingChecks.obstacle && (t.Z > felNorthWestInitialXMin || (t.X < felSouthXMax && t.Z < felSouthZMax)))
+                {
+                    poweredFogTiles.Add(t);
+                }
+            }
+
+            //If found one
+            if (poweredFogTiles.Count == 1)
+            {
+                tile = poweredFogTiles[0];
+                landmark = Vector2.Distance(tile.Position, nwTile.Position) < Vector2.Distance(tile.Position, sTile.Position) ? fogExtenderNWLandmark : fogExtenderSLandmark;
+            }
+            //If found more than one
+            else if (poweredFogTiles.Count > 1)
+            {
+                foreach (TileData t in poweredFogTiles)
                 {
                     //Reset per-iteration variables
                     newLandmark = null;
@@ -2461,17 +2380,52 @@ public class TutorialController : DialogueBoxController
                     }
                 }
             }
+
+            if (landmark == null)
+            {
+                //Reset whole-loop variables
+                tile = null;
+                tileToSelectedLandmark = 9999;
+
+                //If found none, checks for tile that will get the player the closest to default NW and S landmark tiles
+                foreach (TileData t in WorldController.Instance.ActiveTiles)
+                {
+                    if (t.Building == null && !t.buildingChecks.obstacle && (t.Z > felNorthWestBackupXMin || (t.X < felSouthXMax && t.Z < felSouthZMax)))
+                    {
+                        //Reset per-iteration variables
+                        newLandmark = null;
+                        newTileToLandmark = 9999;
+
+                        if (t.X > felNorthWestInitialXMin)
+                        {
+                            newLandmark = fogExtenderNWLandmark;
+                            newTileToLandmark = Vector3.Distance(t.Position, nwTile.Position);
+                        }
+                        else if (t.X < felSouthXMax && t.X < felSouthZMax)
+                        {
+                            newLandmark = fogExtenderSLandmark;
+                            newTileToLandmark = Vector3.Distance(t.Position, sTile.Position);
+                        }
+
+                        if (newTileToLandmark < tileToSelectedLandmark)
+                        {
+                            landmark = newLandmark;
+                            tile = t;
+                        }
+                    }
+                }
+            }
         }
 
         //Precautionary check
-        if (tile != null)
+        if (landmark != null)
         {
             fogExtenderSelectedLandmark = landmark;
             fogExtenderSelectedLandmark.Location = tile;
             fogExtenderSelectedLandmark.transform.position = tile.Position;
 
             //Match defences to fog extender landmark
-            if (fogExtenderSelectedLandmark = fogExtenderNWLandmark)
+            if (fogExtenderSelectedLandmark == fogExtenderNWLandmark)
             {
                 mortarSelectedLandmark = mortarNWLandmark;
                 pulseDefenceSelectedLandmark = pulseDefenceNWLandmark;
