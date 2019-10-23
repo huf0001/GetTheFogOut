@@ -17,18 +17,6 @@ public class UpgradeController : MonoBehaviour
     public int upgradeLevel;
     public string selectedBuilding;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void GetBuilding(string selected)
     {
         selectedBuilding = selected;

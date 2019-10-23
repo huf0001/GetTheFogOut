@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ResourceController : MonoBehaviour
 {
-    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
+    //Fields------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
     [SerializeField] private int maxPower;
@@ -28,7 +28,7 @@ public class ResourceController : MonoBehaviour
 
     public float powerChangePauseThreshold;
 
-    //Public Properties------------------------------------------------------------------------------------------------------------------------------
+    //Public Properties-------------------------------------------------------------------------------------------------
 
     //Basic Public Properties
     public static ResourceController Instance { get; protected set; }
@@ -45,15 +45,9 @@ public class ResourceController : MonoBehaviour
     public List<Harvester> Harvesters { get => harvesters; set => harvesters = value; }
     public List<ArcDefence> Mortars { get => mortars; set => mortars = value; }
     public List<RepelFan> PulseDefences { get => pulseDefences; set => pulseDefences = value; }
+    
 
-
-
-    // [SerializeField] protected AudioSource audioMaxPower;
-    // [SerializeField] protected AudioSource audioMaxMineral;
-    // [SerializeField] protected AudioSource audioOverload;
-    // private bool maxPowPlayed = false, maxMinPlayed = false, overloadPlayed = false;
-
-    //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
+    //Start-Up Methods--------------------------------------------------------------------------------------------------
 
     private void Awake()
     {
@@ -73,7 +67,7 @@ public class ResourceController : MonoBehaviour
         InvokeRepeating("ProcessUpkeep", 1f, 1f);
     }
 
-    //Recurring Methods - Processing Upkeep----------------------------------------------------------------------------------------------------------
+    //Recurring Methods - Processing Upkeep-----------------------------------------------------------------------------
 
     //Manages the buildings, calculating power supply and supplying it as needed
     private void ProcessUpkeep()
@@ -194,7 +188,6 @@ public class ResourceController : MonoBehaviour
     private void SupplyPower()
     {
         //Powers mortars
-
         if (storedPower > 75)
         {
             foreach (ArcDefence ac in mortars)
@@ -270,7 +263,6 @@ public class ResourceController : MonoBehaviour
                                     h.TurnOnMineralIndicator();
                                     h.ShutdownBuilding();
                                     activeHarvesters.Remove(h);
-                                  //  RemoveBuilding(h);
                                 }
                                 break;
                         }
@@ -299,15 +291,9 @@ public class ResourceController : MonoBehaviour
         if (storedPower >= maxPower)
         {
             storedPower = maxPower;
-            // if (!maxPowPlayed)
-            // {
-            //     audioMaxPower.Play();
-            //     maxPowPlayed = true;
-            // }
         }
         else
         {
-            // maxPowPlayed = false;
 
             if (storedPower < 0)
             {
@@ -318,16 +304,9 @@ public class ResourceController : MonoBehaviour
         if (storedMineral >= maxMineral)
         {
             storedMineral = maxMineral;
-            // if (!maxMinPlayed)
-            // {
-            //     audioMaxMineral.Play();
-            //     maxMinPlayed = true;
-            // }
         }
         else
         {
-            // maxMinPlayed = false;
-
             if (storedMineral < 0)
             {
                 storedMineral = 0;
@@ -335,7 +314,7 @@ public class ResourceController : MonoBehaviour
         }
     }
 
-    //Triggered Methods------------------------------------------------------------------------------------------------------------------------------
+    //Triggered Methods-------------------------------------------------------------------------------------------------
 
     //Adds a building to the list of its type of building
     public void AddBuilding(Building b)
