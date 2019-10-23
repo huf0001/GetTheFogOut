@@ -19,7 +19,7 @@ public enum ObjectiveStage
 
 public class ObjectiveController : DialogueBoxController
 {
-    // Fields -------------------------------------------------------------------------------------
+    // Fields ----------------------------------------------------------------------------------------------------------
 
     private bool skipTutorial = false;
 
@@ -34,11 +34,9 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] int midGameGeneratorLimit;
     [SerializeField] int lateGameGeneratorLimit;
     [SerializeField] int mineralTarget = 300;
-    //[SerializeField] int powerTarget = 500;
     [SerializeField] GameObject objectiveCompletePrefab;
 
     [Header("Hub")]
-    //[SerializeField] GameObject hub;
     [SerializeField] Hub hubScript;
     [SerializeField] public GameObject thruster;
 
@@ -51,8 +49,7 @@ public class ObjectiveController : DialogueBoxController
     [SerializeField] private GameObject upgradesButton;
     [SerializeField] private GameObject upgradesCanvas;
 
-    // Non-Serialized Fields
-    // bool stageComplete = false;
+    // Non-Serialized Fields -------------------------------------------------------------------------------------------
 
     private bool powerOverloaded = false;
     private bool alertedAboutOverload = false;
@@ -75,7 +72,7 @@ public class ObjectiveController : DialogueBoxController
     private float negativePowerDuration = 0f;
     private bool alertedToNegativePower = false;
 
-    // Public Properties -------------------------------------------------------------------------------------
+    // Public Properties -----------------------------------------------------------------------------------------------
 
     // Basic Public Properties
     public static ObjectiveController Instance { get; protected set; }
@@ -88,7 +85,7 @@ public class ObjectiveController : DialogueBoxController
     public bool PowerOverloaded { get => powerOverloaded; set => powerOverloaded = value; }
     //public int PowerTarget { get => powerTarget; }
 
-    // Start functions -------------------------------------------------------------------------------------
+    // Start functions -------------------------------------------------------------------------------------------------
 
     private void Awake()
     {
@@ -117,13 +114,13 @@ public class ObjectiveController : DialogueBoxController
         WorldController.Instance.Inputs.InputMap.OpenCloseObjectiveWindow.performed += ctx => ToggleObjWindow();
     }
 
-    // Update Functions -------------------------------------------------------------------------------------
+    // Update Functions ------------------------------------------------------------------------------------------------
 
     // Update is called once per frame
     void Update()
     {
         Profiler.BeginSample("objective");
-        if (objectivesOn) // && TutorialController.Instance.TutorialStage == TutorialStage.Finished)
+        if (objectivesOn)
         {
             CheckObjectiveStage();
         }
@@ -210,7 +207,7 @@ public class ObjectiveController : DialogueBoxController
         }
     }
 
-    // Stage Functions ----------------------------------------------------------------------------------------
+    // Stage Functions -------------------------------------------------------------------------------------------------
 
     void HarvestMineralStage()
     {
@@ -291,9 +288,6 @@ public class ObjectiveController : DialogueBoxController
                     cameraController.MovementEnabled = false;
                     hubScript.Animator.enabled = false;  //add this, so the repaired hub is shown/active ? not sure if we need animator to set to true back.
                     hubScript.SetCurrentModel("repaired");
-                    //hubScript.BrokenShip.SetActive(false);
-                    //hubScript.AttachedWing.SetActive(false);
-                    //hubScript.RepairedShip.SetActive(true);
                     // Run AI completion text
                     SendDialogue("start part stage", 1);
                     //Camera pans to the thruster
@@ -373,9 +367,6 @@ public class ObjectiveController : DialogueBoxController
             case 6:
                 // Update hub model with attached thrusters
                 hubScript.SetCurrentModel("attached");
-                //hubScript.BrokenShip.SetActive(false);
-                //hubScript.RepairedShip.SetActive(false);
-                //hubScript.AttachedWing.SetActive(true);
 
                 // Play music Var 3 soundtrack
                 GameObject.Find("MusicFMOD").GetComponent<MusicFMOD>().StageThreeMusic();
@@ -457,7 +448,6 @@ public class ObjectiveController : DialogueBoxController
                 }
                 else if (WorldController.Instance.UpgradeUsed)
                 {
-                    //StartCoroutine(CompleteTutorialObjective("You finished the tutorial!"));
                     GoToSubStage(9);
                 }
 
@@ -465,14 +455,11 @@ public class ObjectiveController : DialogueBoxController
             case 8:
                 if (WorldController.Instance.UpgradeUsed)
                 {
-                    //StartCoroutine(CompleteTutorialObjective("You finished the tutorial!"));
                     IncrementSubStage();
                 }
 
                 break;
             case 9:
-                //    break;
-                //case 9:
                 SendDialogue("upgrades finished", 0);
                 IncrementSubStage();
                 break;
@@ -526,7 +513,6 @@ public class ObjectiveController : DialogueBoxController
             case 1:
                 //Survival countdown
                 Tick();
-                //Debug.Log($"Countdown: {countdown}");
 
                 if (countdown <= 0)
                 {
@@ -599,7 +585,7 @@ public class ObjectiveController : DialogueBoxController
         }
     }
 
-    // Utility Functions ------------------------------------------------------------------------------------------
+    // Utility Functions -----------------------------------------------------------------------------------------------
 
     private void Tick()
     {
@@ -696,7 +682,7 @@ public class ObjectiveController : DialogueBoxController
         subStage = 0;
     }
 
-    // run as coroutine
+    // Run as coroutine
     IEnumerator CompleteObjective(string message)
     {
         GameObject objComp = Instantiate(objectiveCompletePrefab, GameObject.Find("Canvas").transform);
