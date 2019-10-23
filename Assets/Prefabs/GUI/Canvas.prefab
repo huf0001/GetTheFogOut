@@ -17577,7 +17577,7 @@ MonoBehaviour:
   - key: build harvester target
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: Scattered around the planet is a resource called {MINERALS}.
+      dialogue: 'There are {MINERALS} scattered around this planet. '
     - aiExpression: 2
       dialogue: These will be key to keeping us alive. Your ship comes equipped with
         a blueprint for a {HARVESTER} that you can use to collect them. I will show
@@ -17602,7 +17602,7 @@ MonoBehaviour:
       dialogue: 'Now, you see the green grid around your ship? It represents the area
         available to place buildings on. '
     - aiExpression: 2
-      dialogue: 'Right now it''s too small to reach minerals nearby. You will need
+      dialogue: 'Right now it''s too small to reach {MINERALS} nearby. You will need
         to place a [POWER EXTENDER]. '
   - key: build more harvesters extended
     expressionDialoguePairs:
@@ -17612,7 +17612,7 @@ MonoBehaviour:
   - key: explain power
     expressionDialoguePairs:
     - aiExpression: 3
-      dialogue: 'Ah, well...this isn''t good. Those extra {HARVESTERS} have strained
+      dialogue: 'Ah, well... this isn''t good. Those extra {HARVESTERS} have strained
         the power system. '
     - aiExpression: 2
       dialogue: Most buildings available to you will cost power to function, aside
@@ -17637,9 +17637,9 @@ MonoBehaviour:
   - key: collect minerals
     expressionDialoguePairs:
     - aiExpression: 2
-      dialogue: 'Well, we won''t be getting off the planet any time soon with the
-        ship in this state. Use your new-found skills to repair it, it''s the only
-        way off this wretched planet. '
+      dialogue: 'Well, we won''t be getting out of here any time soon with the ship
+        in this state. Use your new-found skills to repair it, it''s the only way
+        off this wretched planet. '
   - key: collect sonar
     expressionDialoguePairs:
     - aiExpression: 1
@@ -17658,12 +17658,14 @@ MonoBehaviour:
         object, it will ping back with its location. '
   - key: explain abilities
     expressionDialoguePairs:
-    - aiExpression: 5
-      dialogue: Look, it worked! It's identified something...in the fog...
+    - aiExpression: 4
+      dialogue: 'Look, it worked! It''s found something. Items that are found will
+        reveal their locations temporarily and you will have to use the sonar again
+        to find them. '
   - key: detecting thruster
     expressionDialoguePairs:
     - aiExpression: 1
-      dialogue: 'Hey, my sensors are detecting an anomaly nearby... '
+      dialogue: 'Hey, my sensors are now detecting an anomaly nearby... '
   - key: explain thruster
     expressionDialoguePairs:
     - aiExpression: 1
@@ -17685,8 +17687,9 @@ MonoBehaviour:
   - key: build mortar
     expressionDialoguePairs:
     - aiExpression: 5
-      dialogue: Is..is the fog seeping towards us? No, no, no! What are we gonna do?
-        I'm too young to die! My circuitry won't survive an onslaught from the fog...
+      dialogue: It's ALIVE?! It's seeping towards us! No, no, no! What are we gonna
+        do? I'm too young to die! My circuitry won't survive an onslaught from the
+        fog...
     - aiExpression: 2
       dialogue: I... oh, ah, I apologise. Back to the task at hand. Your ship comes
         equipped with two defence buildings, a <MORTAR> and a <PULSE DEFENCE>.
@@ -17719,7 +17722,7 @@ MonoBehaviour:
     expressionDialoguePairs:
     - aiExpression: 2
       dialogue: Hey, weren't you paying attention? If you build something there, the
-        fog will just destroy it. Let's pay attention to the task at hand.
+        fog will just destroy it. Let's get back to the task at hand.
   - key: need defences
     expressionDialoguePairs:
     - aiExpression: 2
@@ -17754,8 +17757,6 @@ MonoBehaviour:
       dialogue: Now, get back to finding that thruster!
   - key: finished
     expressionDialoguePairs:
-    - aiExpression: 5
-      dialogue: 'It''s coming towards us even faster now? '
     - aiExpression: 5
       dialogue: I've done what I can, the rest is up to you. Whatever you do, GET
         US OUT OF HERE!
