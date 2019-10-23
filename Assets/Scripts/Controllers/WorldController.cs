@@ -25,7 +25,7 @@ public class ShipComponentState
 
 public class WorldController : MonoBehaviour
 {
-    //Fields-----------------------------------------------------------------------------------------------------------------------------------------
+    //Fields------------------------------------------------------------------------------------------------------------
 
     //Serialized Fields
     [Header("World Spawning Rules")]
@@ -103,7 +103,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    //Start-Up Methods-------------------------------------------------------------------------------------------------------------------------------
+    //Start-Up Methods--------------------------------------------------------------------------------------------------
     private void Start()
     {
         index = 0;
@@ -223,7 +223,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    void SetCollectablesToTiles()
+    void SetCollectablesToTiles() // Collect all Colleactables in the scene and assign them to the closest tile
     {
         Collectable[] collectables = FindObjectsOfType<Collectable>();
         foreach (Collectable c in collectables)
@@ -242,7 +242,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    void SetLandmarksToTiles()
+    void SetLandmarksToTiles() // Collect all Landmarks in the scene and assign them to the closest tile
     {
         Landmark[] landmarks = FindObjectsOfType<Landmark>();
 
@@ -252,7 +252,7 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    void SetRocksToTiles()
+    void SetRocksToTiles() // Collect all Rocks in the scene and assign them to the closest tile
     {
         TileBlock[] tileBlocks = FindObjectsOfType<TileBlock>();
 
@@ -422,7 +422,6 @@ public class WorldController : MonoBehaviour
             InBuildMode = false;
         }
 
-        // TEMP FIX, SHOULD BE REMOVED LATER
         if (hub == null)
         {
             hub = FindObjectOfType<Hub>();
@@ -430,7 +429,6 @@ public class WorldController : MonoBehaviour
 
         if (hubDestroyed)
         {
-            //Time.timeScale = 0.2f;
             GameOver = true;
             InBuildMode = false;
         }
@@ -555,6 +553,9 @@ public class WorldController : MonoBehaviour
         }
     }
 
+    
+    // Tile Methods ----------------------------------------------------------------------------------------------------
+    
     public bool TileExistsAt(Vector2 position)
     {
         return TileExistsAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));

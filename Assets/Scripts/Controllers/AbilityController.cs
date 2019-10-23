@@ -41,7 +41,6 @@ public class AbilityController : MonoBehaviour
         set
         {
             collectedObjects = value;
-            UpdateButtons();
         }
     }
 
@@ -128,31 +127,6 @@ public class AbilityController : MonoBehaviour
         }
     }
 
-    void UpdateButtons()
-    {
-        // Update buttons when the related objects are collected, @Liam
-        foreach (Collectable collectibleObject in collectedObjects)
-        {
-            switch (collectibleObject.CollectableName)
-            {
-                case "BuildingDefence":
-                    // If button not enabled, enable
-                    // Repeat for each below
-                    break;
-                case "DamageBlast":
-                    break;
-                case "FreezeFog":
-                    break;
-                case "Overclock":
-                    break;
-                case "Sonar":
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
     void UpdateButtonCooldowns()
     {
         List<AbilityEnum> cooldownsToUpdate = new List<AbilityEnum>();
@@ -231,8 +205,6 @@ public class AbilityController : MonoBehaviour
                     abilityCooldowns[selectedAbility.AbilityType] = selectedAbility.baseCoolDown;
                     cooldownsRunning++;
                     ResourceController.Instance.StoredPower -= selectedAbility.powerCost;
-                    // TODO: Play sound effect
-                    // TODO: Start visual cooldown stuff
                     IsAbilitySelected = false;
                     selectedAbility = null;
                     MouseController.Instance.isBuildAvaliable = true;
