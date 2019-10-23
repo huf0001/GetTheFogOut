@@ -16,6 +16,7 @@ public struct HudColour
 
 public class UIController : MonoBehaviour
 {
+    // Fields ----------------------------------------------------------------------------------------------------------
     public static UIController instance = null;
 
     TextMeshProUGUI powerText, organicText, mineralText, fuelText;
@@ -31,7 +32,20 @@ public class UIController : MonoBehaviour
     private float powerVal = 0.0f, mineralVal = 0.0f;
     private float powerTime = 0.0f, mineralTime = 0.0f;
     private Image launchButtonImage;
+    
+    ResourceController resourceController = null;
+    private int index, temp;
+    private MeshRenderer tile;
+    private Vector2 arrowInitialPosition;
+    private RectTransform abilityImageParent;
+    private Vector3 abilityImageOriginalPos;
 
+    private float currentPowerValDisplayed = 0;
+    private bool unlockingAbility = false;
+    private bool openingButton = false;
+    private bool closingButton = false;
+
+    // SerializedFields ------------------------------------------------------------------------------------------------
     [SerializeField] private Image hud;
     [SerializeField] private Image powerImg;
     [SerializeField] private Sprite[] powerLevelSprites;
@@ -76,23 +90,12 @@ public class UIController : MonoBehaviour
     [Header("Upgrades")]
     [SerializeField] private GameObject upgradesCanvas;
     [SerializeField] private Transform upgradesBg;
-
-    ResourceController resourceController = null;
-    private int index, temp;
-    private MeshRenderer tile;
-    private Vector2 arrowInitialPosition;
-    private RectTransform abilityImageParent;
-    private Vector3 abilityImageOriginalPos;
-
-    private float currentPowerValDisplayed = 0;
-    private bool unlockingAbility = false;
-    //private bool activeState = false;
-    private bool openingButton = false;
-    private bool closingButton = false;
-
+    
     public float CurrentPowerValDisplayed { get => currentPowerValDisplayed; }
     public bool UpgradeWindowVisible { get; set; }
 
+    // Startup Methods -------------------------------------------------------------------------------------------------
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -122,6 +125,16 @@ public class UIController : MonoBehaviour
         FindSliders();
     }
 
+    // find sliders and text
+    void FindSliders()
+    {
+        powerText = GameObject.Find("PowerLevel").GetComponent<TextMeshProUGUI>();
+        mineralText = GameObject.Find("MineralLevel").GetComponent<TextMeshProUGUI>();
+    }
+    
+    
+    // Update Methods --------------------------------------------------------------------------------------------------
+    
     // Update is called once per frame
     void Update()
     {
@@ -138,19 +151,6 @@ public class UIController : MonoBehaviour
         powerTime += Time.deltaTime;
         mineralTime += Time.deltaTime;
         UpdateResourceText();
-
-        //if (activeState != abilityUnlockCanvas.gameObject.activeSelf)
-        //{
-        //    activeState = !activeState;
-        //    Debug.Log($"AbilityUnlockCanvas.activeSelf is {activeState}");
-        //}
-    }
-
-    // find sliders and text
-    void FindSliders()
-    {
-        powerText = GameObject.Find("PowerLevel").GetComponent<TextMeshProUGUI>();
-        mineralText = GameObject.Find("MineralLevel").GetComponent<TextMeshProUGUI>();
     }
 
     // Power Threshold image show and hide methods
@@ -295,7 +295,6 @@ public class UIController : MonoBehaviour
     public void ShowActivateButton()
     {
         if (buttonClosed && !openingButton)
-        //if (true)
         {
             openingButton = true;
             objectiveProceedCanvas.SetActive(true);
@@ -331,7 +330,6 @@ public class UIController : MonoBehaviour
     public void CloseButton()
     {
         if (!buttonClosed && !closingButton)
-        //if (true)
         {
             closingButton = true;
             if (DOTween.IsTweening("ObjectiveButtonOpen")) DOTween.Kill("ObjectiveButtonOpen");

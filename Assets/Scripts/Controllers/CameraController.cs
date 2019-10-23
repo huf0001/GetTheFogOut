@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class CameraController : MonoBehaviour
 {
+    
+    // Private fields --------------------------------------------------------------------------------------------------
     [SerializeField] CinemachineVirtualCamera serialCamera;
     [SerializeField] CinemachineVirtualCamera serialCameraCutscene;
     [SerializeField] bool runCameraPan;
@@ -15,7 +17,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] float moveSpeed = 20f;
     [SerializeField] float zoomMulti = 10f;
     [SerializeField] float dragSpeed = 0.005f;
-    //[SerializeField] bool enableEdgePan = false;
 
     private bool isBuildingSelect;
     private Vector3 forward;
@@ -31,11 +32,14 @@ public class CameraController : MonoBehaviour
     private bool movementEnabled = false;
     private bool finishedOpeningCameraPan = false;
 
+    // Public fields ---------------------------------------------------------------------------------------------------
     public Vector3 Move { get => move; }
     public float ZoomVal { get => zoomVal; }
     public bool MovementEnabled { get => movementEnabled; set => movementEnabled = value; }
     public bool FinishedOpeningCameraPan { get => finishedOpeningCameraPan; }
 
+    
+    // Startup functions -----------------------------------------------------------------------------------------------
     private void Awake()
     {
         Home = new Vector3(34.77f, 0.95f, 33.4f);
@@ -69,6 +73,9 @@ public class CameraController : MonoBehaviour
         finishedOpeningCameraPan = true;
     }
 
+    
+    // Update functions ------------------------------------------------------------------------------------------------
+    
     // Update is called once per frame
     void Update()
     {
@@ -82,7 +89,6 @@ public class CameraController : MonoBehaviour
         if (!WorldController.Instance.isGamePaused && inputs.InputMap.CameraCenter.triggered)
         {
             transform.DOMove(Home, 0.3f).Kill(true);
-            //     inputs.InputMap.CameraCenter.performed += ctx => transform.DOMove(Home, 0.3f).Kill(true);
         }
     }
 
@@ -105,7 +111,7 @@ public class CameraController : MonoBehaviour
                 pan = dragSpeed / 10;
             }
         }
-        return pan; // Debug.Log("level zoom : " + zoom + "   speed: " + pan);
+        return pan; 
     }
 
     void UpdateCameraMovement()
@@ -139,8 +145,6 @@ public class CameraController : MonoBehaviour
             //Handle screen dragging if right click is held down
             if (Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)
             {
-              //  dragSpeed = panSpeed(zoom.m_Width);
-              //  Debug.Log(zoom.m_Width + "   f  " + dragSpeed); // Right or middle mouse
                 float h = panSpeed(zoom.m_Width) * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().x;
                 float v = panSpeed(zoom.m_Width) * serialCamera.m_Lens.FieldOfView * -inputs.InputMap.CameraDrag.ReadValue<Vector2>().y;
                 transform.Translate(h, 0, v, transform);
