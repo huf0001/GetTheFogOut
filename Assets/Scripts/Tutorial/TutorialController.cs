@@ -75,6 +75,7 @@ public class TutorialController : DialogueBoxController
     [Header("Cameras")]
     [SerializeField] private CameraController cameraController;
     [SerializeField] private CinemachineVirtualCamera sonarCamera;
+    [SerializeField] private CinemachineVirtualCamera activateSonarCamera;
     [SerializeField] private CinemachineVirtualCamera artilleryCamera;
     [SerializeField] private CinemachineVirtualCamera thrusterCamera;
 
@@ -1278,6 +1279,7 @@ public class TutorialController : DialogueBoxController
 
                 SendDialogue("activate sonar", 1);
                 ActivateTarget(activateSonarLandmark);
+                activateSonarCamera.gameObject.SetActive(true);
                 break;
             case 11:
                 if (AbilityController.Instance.AbilityTriggered[AbilityEnum.Sonar])
@@ -1303,6 +1305,7 @@ public class TutorialController : DialogueBoxController
 
                 stage = TutorialStage.SonarActivated;
                 SendDialogue("explain abilities", 1);
+                activateSonarCamera.gameObject.SetActive(false);
                 artilleryCamera.gameObject.SetActive(true);
                 thruster.SetActive(true);
                 break;
