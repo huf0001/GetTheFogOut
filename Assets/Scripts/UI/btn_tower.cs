@@ -61,7 +61,7 @@ public class btn_tower : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     uniqueStat.text = $"Range: {uniqueStatVal} tiles";
                     break;
                 case "btn_harvester":
-                    uniqueStat.text = $"+{uniqueStatVal.ToString("F1")} <sprite=\"all_icons\" index=2>/s";
+                    uniqueStat.text = $"+{uniqueStatVal.ToString("F1")} <size=150%><sprite=\"all_icons\" index=2><size=100%>/s";
                     break;
             }
         }

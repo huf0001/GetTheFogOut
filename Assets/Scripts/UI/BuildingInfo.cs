@@ -141,7 +141,7 @@ public class BuildingInfo : MonoBehaviour
         }
         else if (building.BuildingType == BuildingType.Harvester)
         {
-            bg.color = new Color32(224, 145, 0, 237);
+            bg.color = new Color32(65, 112, 201, 237);
         }
         else if (building.BuildingType == BuildingType.FogRepeller || building.BuildingType == BuildingType.AirCannon)
         {
