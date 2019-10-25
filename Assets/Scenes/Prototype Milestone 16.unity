@@ -5071,6 +5071,9 @@ MonoBehaviour:
   m_Script: {fileID: 2125775951}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusOffset: 0
+  m_Profile: {fileID: 0}
 --- !u!1001 &306134866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6752,6 +6755,9 @@ MonoBehaviour:
   m_Script: {fileID: 2125775951}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusOffset: 0
+  m_Profile: {fileID: 0}
 --- !u!114 &400079135 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1442872716054673926, guid: f0d96ef103d08e4429542615f2b52508,
@@ -23846,6 +23852,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1289951769}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1291293951 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9114063093221511437, guid: aa7e59ea9523fb940a622b7db33bee17,
+    type: 3}
+  m_PrefabInstance: {fileID: 2125899098}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1296432923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24440,6 +24452,9 @@ MonoBehaviour:
   m_Script: {fileID: 2125775951}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusOffset: 0
+  m_Profile: {fileID: 0}
 --- !u!114 &1296432933 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7842235391680540932, guid: d7ecb5b25ac30f24eaf36ffcc437ab87,
@@ -31521,7 +31536,7 @@ PrefabInstance:
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: skipTutorial
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 334475222590731063, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
@@ -31908,6 +31923,16 @@ PrefabInstance:
       propertyPath: upgradesCanvas
       value: 
       objectReference: {fileID: 1938465405}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: thrusterMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 079fd36b188a32e4c9d90a235911b83c, type: 2}
+    - target: {fileID: 4019818891569145385, guid: c327127a5d1d641479ca91d40ce5c9e5,
+        type: 3}
+      propertyPath: thrusterChildWithMaterial
+      value: 
+      objectReference: {fileID: 1291293951}
     - target: {fileID: 3646138034780775634, guid: c327127a5d1d641479ca91d40ce5c9e5,
         type: 3}
       propertyPath: visibleMaterial

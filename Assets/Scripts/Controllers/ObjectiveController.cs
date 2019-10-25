@@ -38,7 +38,7 @@ public class ObjectiveController : DialogueBoxController
 
     [Header("Hub")]
     [SerializeField] Hub hubScript;
-    [SerializeField] public GameObject thruster;
+    [SerializeField] private GameObject thruster;
 
     [Header("Cameras")]
     [SerializeField] private CameraController cameraController;
@@ -320,7 +320,10 @@ public class ObjectiveController : DialogueBoxController
 
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
-                    thruster.SetActive(false);
+                    //thrusterChildWithMaterial.GetComponent<MeshRenderer>().material.DOFloat(1, "_Lerp", 1f);
+
+                    thruster.GetComponentInChildren<MeshRenderer>().material.DOFloat(1, "_Lerp", 1f);
+                    thruster.transform.DOMoveY(transform.position.y - 0.5f, 1);
                     GoToSubStage(4);
                 }
                 else if (dialogueBox.DialogueTimer >= 10 && dialogueBox.Activated)
@@ -344,7 +347,11 @@ public class ObjectiveController : DialogueBoxController
                 // End stage if the part is collected
                 if (WorldController.Instance.GetShipComponent(ShipComponentsEnum.Thrusters).Collected)
                 {
-                    thruster.SetActive(false);
+
+                    //thrusterChildWithMaterial.GetComponent<MeshRenderer>().material.DOFloat(1, "_Lerp", 1f);
+
+                    thruster.GetComponentInChildren<MeshRenderer>().material.DOFloat(1, "_Lerp", 1f);
+                    thruster.transform.DOMoveY(transform.position.y - 0.5f, 1);
                     IncrementSubStage();
                 }
                 else if (!TutorialController.Instance.SkipTutorial && !completedUpgrades && ResourceController.Instance.StoredMineral > mineralsForUpgrades && upgradesTimer > 30)
@@ -366,6 +373,7 @@ public class ObjectiveController : DialogueBoxController
                 break;
             case 6:
                 // Update hub model with attached thrusters
+                thruster.SetActive(false);
                 hubScript.SetCurrentModel("attached");
 
                 // Play music Var 3 soundtrack
