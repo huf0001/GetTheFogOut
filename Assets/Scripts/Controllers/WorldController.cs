@@ -45,6 +45,9 @@ public class WorldController : MonoBehaviour
     [SerializeField] private AbilityMenu abilityMenu;
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private Animator canvasAnimator;
+    [SerializeField] private Image winGameImage;
+    [SerializeField] private Image loseGameImage;
+
 
     [Header("Public variable?")]
     public bool InBuildMode;
@@ -434,7 +437,11 @@ public class WorldController : MonoBehaviour
         }
     }
 
-    public bool IsPointerOverGameObject() // Replaces EventSystem.current.IsPointerOverGameObject(), not compatible with new Input System. Returns true if pointer over UI object
+    /// <summary>
+    /// Replaces EventSystem.current.IsPointerOverGameObject(), not compatible with new Input System.
+    /// </summary>
+    /// <returns>Returns true if pointer over UI object</returns>
+    public bool IsPointerOverGameObject()
     {
         PointerEventData pointer = new PointerEventData(EventSystem.current);
         pointer.position = Mouse.current.position.ReadValue();
@@ -506,11 +513,13 @@ public class WorldController : MonoBehaviour
     private void GameWinUpdate() // Display win UI
     {
         uiController.EndGameDisplay("You win!");
+        winGameImage.gameObject.SetActive(true);
     }
 
     private void GameOverUpdate() // Display lose UI     
     {
         uiController.EndGameDisplay("You lose!");
+        loseGameImage.gameObject.SetActive(true);
     }
 
     private void RenderTower()

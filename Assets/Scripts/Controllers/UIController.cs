@@ -499,7 +499,7 @@ public class UIController : MonoBehaviour
     // End Game Method
     public void EndGameDisplay(string text)
     {
-        endGameText.text = text;
+        //endGameText.text = text;
         endGame.SetActive(true);
     }
 
