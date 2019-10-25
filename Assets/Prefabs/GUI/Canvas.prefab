@@ -6949,6 +6949,8 @@ GameObject:
   - component: {fileID: 3922811852967653246}
   - component: {fileID: 5427246003866142006}
   - component: {fileID: 7700762759364409111}
+  - component: {fileID: 3002035537289717518}
+  - component: {fileID: 1982927396693461542}
   m_Layer: 5
   m_Name: BuildIcon
   m_TagString: Untagged
@@ -7012,6 +7014,76 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &3002035537289717518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2296720600249830789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 0, g: 0.36078432, b: 0.4666667, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.5185516, b: 0, a: 1}
+    m_PressedColor: {r: 0.7830189, g: 0.40532744, b: 0, a: 1}
+    m_SelectedColor: {r: 1, g: 0.5176471, b: 0, a: 1}
+    m_DisabledColor: {r: 0, g: 0.36078432, b: 0.4666667, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 7700762759364409111}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2505737457742917309}
+          m_ObjectArgumentAssemblyTypeName: btn_tower, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &1982927396693461542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2296720600249830789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b84e20b213e0ff4f81f71f8026af855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingType: 7
+  button: {fileID: 0}
 --- !u!1 &2296822934369640121
 GameObject:
   m_ObjectHideFlags: 0
@@ -23713,6 +23785,9 @@ GameObject:
   - component: {fileID: 2874385510936825274}
   - component: {fileID: 1168686048036998362}
   - component: {fileID: 5392160850501829119}
+  - component: {fileID: 6895092495794512693}
+  - component: {fileID: 6130147577561893956}
+  - component: {fileID: 4751661713510980072}
   m_Layer: 5
   m_Name: RemoveIcon
   m_TagString: Untagged
@@ -23776,6 +23851,106 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &6895092495794512693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5868124757749602674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 0, g: 0.36078432, b: 0.4666667, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.5185516, b: 0, a: 1}
+    m_PressedColor: {r: 0.7830189, g: 0.40532744, b: 0, a: 1}
+    m_SelectedColor: {r: 1, g: 0.5176471, b: 0, a: 1}
+    m_DisabledColor: {r: 0, g: 0.36078432, b: 0.4666667, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 5392160850501829119}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1899903245264256476, guid: c327127a5d1d641479ca91d40ce5c9e5,
+          type: 3}
+        m_MethodName: OnButtonClicked
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2505737457742917309}
+          m_ObjectArgumentAssemblyTypeName: btn_tower, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &6130147577561893956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5868124757749602674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d3d421faae22e942918259188a52b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holo_prefab: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
+    type: 3}
+  build_prefab: {fileID: 6711755444035163130, guid: ebc6f9df10b7d2c4d9a823eb456de311,
+    type: 3}
+  towerType: 0
+  buttonBG: {fileID: 0}
+  buttonHighlight: {fileID: 0}
+  buildingDescBG: {fileID: 0}
+  buildingDesc: {fileID: 4767305868169174225}
+  buildingCost: {fileID: 6153769857162608600}
+  buildingName: 
+  descText: 
+  keyInfo: {fileID: 0}
+  buildName: {fileID: 0}
+  minCost: {fileID: 0}
+  powCost: {fileID: 0}
+  uniqueStat: {fileID: 0}
+--- !u!114 &4751661713510980072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5868124757749602674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b84e20b213e0ff4f81f71f8026af855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingType: 6
+  button: {fileID: 0}
 --- !u!1 &5941619585188278970
 GameObject:
   m_ObjectHideFlags: 0
