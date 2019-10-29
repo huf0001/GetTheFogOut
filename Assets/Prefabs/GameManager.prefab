@@ -78,6 +78,8 @@ MonoBehaviour:
   abilityMenu: {fileID: 0}
   mainCamera: {fileID: 0}
   canvasAnimator: {fileID: 0}
+  winGameImage: {fileID: 0}
+  loseGameImage: {fileID: 0}
   InBuildMode: 1
   pauseMenu: {fileID: 0}
   hvstUpgradeLevel: {fileID: 0}
@@ -278,7 +280,7 @@ MonoBehaviour:
   objectiveWindow: {fileID: 0}
   objectiveWindowOpenArrows: {fileID: 0}
   dialogueBox: {fileID: 0}
-  skipTutorial: 0
+  skipTutorial: 1
   stage: 1
   subStage: 1
   currentlyBuilding: 0
@@ -313,6 +315,7 @@ MonoBehaviour:
   collectedMineralsGoal: 300
   cameraController: {fileID: 0}
   sonarCamera: {fileID: 0}
+  activateSonarCamera: {fileID: 0}
   artilleryCamera: {fileID: 0}
   thrusterCamera: {fileID: 0}
   hub: {fileID: 0}
@@ -340,6 +343,7 @@ MonoBehaviour:
   sKey: {fileID: 0}
   dKey: {fileID: 0}
   rmb: {fileID: 0}
+  mouse: {fileID: 0}
   zoomIn: {fileID: 0}
   zoomOut: {fileID: 0}
   buildMenuCanvasGroup: {fileID: 0}

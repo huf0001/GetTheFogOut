@@ -108,6 +108,7 @@ public class TutorialController : DialogueBoxController
     [SerializeField] private CameraInput sKey;
     [SerializeField] private CameraInput dKey;
     [SerializeField] private CameraInput rmb;
+    [SerializeField] private CameraInput mouse;
     [SerializeField] private CameraInput zoomIn;
     [SerializeField] private CameraInput zoomOut;
     [SerializeField] private CanvasGroup buildMenuCanvasGroup;
@@ -530,6 +531,7 @@ public class TutorialController : DialogueBoxController
                 SendDialogue("zoom camera", 1);
                 zoomIn.LerpIn();
                 zoomOut.LerpIn();
+                mouse.LerpIn();
                 break;
             case 5:
                 GetCameraInputs();
@@ -540,6 +542,7 @@ public class TutorialController : DialogueBoxController
                 }
                 else if (zoomIn.Finished && zoomOut.Finished)
                 {
+                    mouse.LerpOut();
                     GoToSubStage(7);
                 }
 
@@ -549,11 +552,19 @@ public class TutorialController : DialogueBoxController
 
                 if (zoomIn.Finished && zoomOut.Finished)
                 {
+                    mouse.LerpOut();
                     IncrementSubStage();
                 }
 
                 break;
             case 7:
+                if (mouse.Finished)
+                {
+                    IncrementSubStage();
+                }
+
+                break;
+            case 8:
                 wKey.transform.parent.gameObject.SetActive(false);
                 ResetSubStage();
 
